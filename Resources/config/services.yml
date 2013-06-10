@@ -1,0 +1,27 @@
+services:
+
+    sg_serializer.method:
+        class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
+
+    sg_serializer.encoder.json:
+        class: Symfony\Component\Serializer\Encoder\JsonEncoder
+
+    sg_serializer:
+        class: Symfony\Component\Serializer\Serializer
+        arguments:
+            - [@sg_serializer.method]
+            - [@sg_serializer.encoder.json]
+
+    sg_datatables.factory:
+        class: Sg\DatatablesBundle\Factory\DatatableFactory
+        arguments: [@twig]
+
+    sg_datatables.twig.extension:
+        class: Sg\DatatablesBundle\Twig\DatatableTwigExtension
+        tags:
+            - { name: twig.extension }
+
+    sg_datatables:
+        class: Sg\DatatablesBundle\Manager\DatatableDataManager
+        scope: request
+        arguments: [@doctrine, @request, @sg_serializer, @logger]

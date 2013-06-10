@@ -1,0 +1,191 @@
+{% block sg_datatable %}
+
+    {% block sg_datatable_html %}
+
+        <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="{{ id }}">
+            <thead>
+                <tr>
+                    {% for th in tableHeaders %}
+                        <th>{{ th }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+    {% endblock %}
+
+    {% block sg_datatable_js %}
+
+        <script>
+
+            $(document).ready(function () {
+
+                var selector = "#{{ id }}";
+
+                var defaults = {
+                    "bProcessing": true,
+                    "bServerSide": true,
+                    "sAjaxSource": "{{ path(sAjaxSource) }}",
+                    "sDom": "<'row'<'{{ sDomOptions.sDomLength }}'l><'{{ sDomOptions.sDomFilter }}'f>r>t<'row'<'{{ sDomOptions.sDomInfo }}'i><'{{ sDomOptions.sDomPagination }}'p>>",
+                    "sPaginationType": "bootstrap",
+                    "aLengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "All"]],
+                    "iDisplayLength": 5,
+                    "oLanguage": {
+                        "sProcessing": "<img src='{{ asset('bundles/sgdatatables/images/loading.gif') }}' style='margin-left: 20px; margin-bottom: 5px;' />" + " {{ 'sg.datatables.sProcessing'|trans({}, 'DatatablesBundle') }}",
+                        "sLengthMenu": "{{ 'sg.datatables.sLengthMenu'|trans({}, 'DatatablesBundle') }}",
+                        "sZeroRecords": "{{ 'sg.datatables.sZeroRecords'|trans({}, 'DatatablesBundle') }}",
+                        "sInfo": "{{ 'sg.datatables.sInfo'|trans({}, 'DatatablesBundle') }}",
+                        "sInfoEmpty": "{{ 'sg.datatables.sInfoEmpty'|trans({}, 'DatatablesBundle') }}",
+                        "sInfoFiltered": "{{ 'sg.datatables.sInfoFiltered'|trans({}, 'DatatablesBundle') }}",
+                        "sInfoPostFix": "{{ 'sg.datatables.sInfoPostFix'|trans({}, 'DatatablesBundle') }}",
+                        "sSearch": "{{ 'sg.datatables.sSearch'|trans({}, 'DatatablesBundle') }}",
+                        "sUrl": "",
+                        "oPaginate": {
+                            "sFirst": "{{ 'sg.datatables.sFirst'|trans({}, 'DatatablesBundle') }}",
+                            "sPrevious": "{{ 'sg.datatables.sPrevious'|trans({}, 'DatatablesBundle') }}",
+                            "sNext": "{{ 'sg.datatables.sNext'|trans({}, 'DatatablesBundle') }}",
+                            "sLast": "{{ 'sg.datatables.sLast'|trans({}, 'DatatablesBundle') }}"
+                        }
+                    }
+                };
+
+                $.extend(defaults, {
+                    "aoColumns": [
+                        {% for field in fields %}
+                            {
+                                {% if field.mData != null %}
+                                    "mData": "{{ field.mData }}",
+                                {% else %}
+                                    "mData": null,
+                                {% endif %}
+
+                                {% if field.sName != '' %}
+                                    "sName": "{{ field.sName }}",
+                                {% endif %}
+
+                                {% if field.sClass != '' %}
+                                    "sClass": "{{ field.sClass }}",
+                                {% endif %}
+
+                                {% if field.renderArray == true %}
+                                    "mRender": "[, ].{{ field.renderArrayFieldName }}",
+                                {% endif %}
+
+                                {% if field.mRender != null %}
+                                    "mRender": function(data, type, full) {
+                                        return {{ field.mRender }};
+                                    },
+                                {% endif %}
+
+                                {% if field.bSortable == false %}
+                                    "bSortable": false,
+                                {% else %}
+                                    "bSortable": true,
+                                {% endif %}
+
+                                {% if field.bSearchable == false %}
+                                    "bSearchable": false,
+                                {% else %}
+                                    "bSearchable": true,
+                                {% endif %}
+
+                                {% if field.sWidth != '' %}
+                                    "sWidth": "{{ field.sWidth }}"
+                                {% endif %}
+                            },
+                        {% endfor %}
+                    ]
+                });
+
+                var oTable = $(selector).dataTable(defaults);
+
+                var anOpen = [];
+
+                $(selector).on("click", "td.details_control", function () {
+                    var nTr = this.parentNode;
+                    var i = $.inArray(nTr, anOpen);
+
+                    if (i === -1) {
+                        $("i", this).attr("class", "icon-minus");
+                        oTable.fnOpen(nTr, getDetails(oTable, nTr), "details");
+                        anOpen.push(nTr);
+                    }
+                    else {
+                        $("i", this).attr("class", "icon-plus");
+                        oTable.fnClose(nTr);
+                        anOpen.splice(i, 1);
+                    }
+                });
+
+                function getDetails(oTable, nTr) {
+                    return "Test";
+                }
+            });
+
+        </script>
+
+    {% endblock %}
+
+    {% block sg_datatable_render_functions %}
+
+        <script>
+
+            function render_action_icons(data, type, full) {
+                if (type != "display")
+                    return data;
+
+                {% if showPath != '' %}
+                    var show_url = "{{ path(showPath, {'id': 'placeholder_id'}) }}";
+                    show_url = show_url.replace("placeholder_id", data);
+                {% endif %}
+
+                {% if editPath != '' %}
+                    var edit_url = "{{ path(editPath, {'id': 'placeholder_id'}) }}";
+                    edit_url = edit_url.replace("placeholder_id", data);
+                {% endif %}
+
+                {% if deletePath != '' %}
+                    var delete_url = "{{ path(deletePath, {'id': 'placeholder_id'}) }}";
+                    delete_url = delete_url.replace("placeholder", data);
+                {% endif %}
+
+                var show = "<a class='btn btn-mini' rel='tooltip' title='Anzeigen' href='" +
+                           show_url +
+                           "'><i class='icon-eye-open'></i></a>";
+
+                var edit = "<a class='btn btn-mini' rel='tooltip' title='Ändern' href='" +
+                           edit_url +
+                           "'><i class='icon-edit'></i></a>";
+
+                var del = "<a class='btn btn-mini' rel='tooltip' title='Löschen' href='" +
+                          delete_url +
+                          "'><i class='icon-trash'></i></a>";
+
+                return show + " " + edit + " " + del;
+            }
+
+            function render_boolean_icons(data, type, full) {
+                if (type != "display")
+                    return data;
+
+                if (data == true) {
+                    return "<i class='icon-ok'></i>";
+                } else {
+                    return "<i class='icon-remove'></i>";
+                }
+            }
+
+            function render_plus_icon(data, type, full) {
+                if (type != "display")
+                    return data;
+
+                return "<i class='icon-plus'></i>";
+            }
+
+        </script>
+
+    {% endblock %}
+
+{% endblock  %}
