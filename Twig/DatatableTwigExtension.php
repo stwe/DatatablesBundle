@@ -3,7 +3,7 @@
 namespace Sg\DatatablesBundle\Twig;
 
 use Twig_Extension;
-use Twig_Function_Method;
+use Twig_SimpleFunction;
 use Sg\DatatablesBundle\Datatable\AbstractDatatableView;
 
 /**
@@ -27,7 +27,7 @@ class DatatableTwigExtension extends Twig_Extension
     public function getFunctions()
     {
         return array(
-            'datatable_render' => new Twig_Function_Method($this, 'datatableRender', array('is_safe' => array('html')))
+            new Twig_SimpleFunction('datatable_render', array($this, 'datatableRender'), array('is_safe' => array('all')))
         );
     }
 
