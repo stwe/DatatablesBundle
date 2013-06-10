@@ -15,7 +15,6 @@
         "symfony/framework-bundle": "~2.1"
     },
     "suggest": {
-        "components/jquery": "Add jQuery support, suggest dev-master",
         "twitter/bootstrap": "Add Bootstrap Css support, suggest  v2.3.2"
     },
     "target-dir": "Sg/DatatablesBundle",
