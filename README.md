@@ -65,12 +65,12 @@ Before installing DatatablesBundle you need to have a working installation of Sy
 
 4. Bootstrap 2.3 installation
 
-The DatatablesBundle no contains the assets files from Twitter Bootstrap. You can e.g. download a ZIP archive with the files
-from the Bootstrap repository on Github.
+    The DatatablesBundle no contains the assets files from Twitter Bootstrap. You can e.g. download a ZIP archive with the files
+    from the Bootstrap repository on Github.
 
-* Copy into the DatatablesBundle\Resources\public\css directory the bootstrap css file.
-* Copy into the DatatablesBundle\Resources\public\img directory the bootstrap icons files.
-* Copy into the DatatablesBundle\Resources\public\js directory the bootstrap js file.
+    * Copy into the DatatablesBundle\Resources\public\css directory the bootstrap css file.
+    * Copy into the DatatablesBundle\Resources\public\img directory the bootstrap icons files.
+    * Copy into the DatatablesBundle\Resources\public\js directory the bootstrap js file.
 
 # Example
 
@@ -237,6 +237,101 @@ from the Bootstrap repository on Github.
         return $datatable->getSearchResults();
     }
     ```
+
+5. Working with Associations
+
+    We extend the user entity to multiple OneToMany associations (Post and Comment).
+
+    ``` php
+    <?php
+
+    namespace Sg\UserBundle\Entity;
+
+    use Doctrine\Common\Collections\ArrayCollection;
+    use FOS\UserBundle\Model\User as BaseUser;
+    use Doctrine\ORM\Mapping as ORM;
+    use Sg\AppBundle\Entity\Comment;
+    use Sg\AppBundle\Entity\Post;
+
+    /**
+     * Class User
+     *
+     * @ORM\Entity
+     * @ORM\Table(name="fos_user")
+     *
+     * @package Sg\UserBundle\Entity
+     */
+    class User extends BaseUser
+    {
+        /**
+         * @ORM\Id
+         * @ORM\Column(type="integer")
+         * @ORM\GeneratedValue(strategy="AUTO")
+         */
+        protected $id;
+
+        /**
+         * @ORM\OneToMany(
+         *     targetEntity="Sg\AppBundle\Entity\Post",
+         *     mappedBy="createdBy"
+         * )
+         */
+        private $posts;
+
+        /**
+         * @ORM\OneToMany(
+         *     targetEntity="Sg\AppBundle\Entity\Comment",
+         *     mappedBy="createdBy"
+         * )
+         */
+        private $comments;
+
+
+        /**
+         * Ctor.
+         */
+        public function __construct()
+        {
+            parent::__construct();
+
+            // your own logic
+
+            $this->posts = new ArrayCollection();
+            $this->comments = new ArrayCollection();
+        }
+
+        // ...
+
+    }
+    ```
+
+    For a comma-separated view of all blog titles we add the following to the UserDatatable class.
+
+    ``` php
+    $this->setTableHeaders(array(
+        'Username',
+        'Email',
+        'Enabled',
+        'Posts',
+        ''
+    ));
+
+    $postsField = new Field('posts');
+    $postsField->setRenderArray(true);
+    $postsField->setRenderArrayFieldName('title');
+    $postsField->setSName('posts.title');
+
+    $this->addField($nameField);
+    $this->addField($emailField);
+    $this->addField($enabledField);
+    $this->addField($postsField);
+    $this->addField($idField);
+    ```
+
+    The result should looks like that:
+
+    <div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/screenshots/screenshot2.jpg"></div>
+
 
 
 
