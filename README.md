@@ -2,6 +2,8 @@
 
 Symfony2 Datatables For Doctrine Entities.
 
+Status: not yet ready, hard-development
+
 Before installing DatatablesBundle you need to have a working installation of Symfony2.
 
 # Screenshot
