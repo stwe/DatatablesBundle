@@ -45,25 +45,7 @@ Before installing DatatablesBundle you need to have a working installation of Sy
     }
     ```
 
-3. Your base.html.twig
-
-    ``` html
-    <!DOCTYPE html>
-    <html>
-        <head>
-            <meta charset="UTF-8" />
-            <title>{% block title %}Welcome!{% endblock %}</title>
-            {% block javascripts %}{% endblock %}
-            {% block stylesheets %}{% endblock %}
-            <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-        </head>
-        <body>
-            {% block body %}{% endblock %}
-        </body>
-    </html>
-    ```
-
-4. Bootstrap 2.3 installation
+3. Bootstrap 2.3 installation
 
     The DatatablesBundle no contains the assets files from Twitter Bootstrap. You can e.g. download a ZIP archive with the files
     from the Bootstrap repository on Github.
@@ -81,23 +63,27 @@ Before installing DatatablesBundle you need to have a working installation of Sy
 
     {% block title %}UserBundle{% endblock %}
 
-    {% block javascripts %}
-        <script src="{{ asset('bundles/sgdatatables/js/jquery-2.0.2.min.js') }}" type="text/javascript"></script>
-        <script src="{{ asset('bundles/sgdatatables/js/bootstrap.min.js') }}" type="text/javascript"></script>
-        <script src="{{ asset('bundles/sgdatatables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
-        <script src="{{ asset('bundles/sgdatatables/js/dataTables_bootstrap.js') }}" type="text/javascript"></script>
-    {% endblock %}
-
     {% block stylesheets %}
+
         <link href="{{ asset('bundles/sgdatatables/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('bundles/sgdatatables/css/dataTables_bootstrap.css') }}" rel="stylesheet" type="text/css" />
+
     {% endblock %}
 
     {% block body%}
+
+        {% block scripts %}
+            <script src="{{ asset('bundles/sgdatatables/js/jquery-2.0.2.min.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sgdatatables/js/bootstrap.min.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sgdatatables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sgdatatables/js/dataTables_bootstrap.js') }}" type="text/javascript"></script>
+        {% endblock %}
+
         <div class="container">
             {% block content %}
             {% endblock %}
         </div>
+
     {% endblock %}
     ```
 
