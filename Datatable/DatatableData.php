@@ -49,7 +49,7 @@ class DatatableData
     private $logger;
 
     /**
-     * Information for DataTables to use for rendering
+     * Information for DataTables to use for rendering.
      *
      * @var int
      */
@@ -63,49 +63,49 @@ class DatatableData
     private $sSearch;
 
     /**
-     * Display start point in the current data set
+     * Display start point in the current data set.
      *
      * @var int
      */
     private $iDisplayStart;
 
     /**
-     * Number of records that the table can display in the current draw
+     * Number of records that the table can display in the current draw.
      *
      * @var int
      */
     private $iDisplayLength;
 
     /**
-     * True if the global filter should be treated as a regular expression for advanced filtering, false if not
+     * True if the global filter should be treated as a regular expression for advanced filtering, false if not.
      *
      * @var boolean
      */
     private $bRegex;
 
     /**
-     * Number of columns being displayed
+     * Number of columns being displayed.
      *
      * @var int
      */
     private $iColumns;
 
     /**
-     * Number of columns to sort on
+     * Number of columns to sort on.
      *
      * @var int
      */
     private $iSortingCols;
 
     /**
-     * Column being sorted on
+     * Column being sorted on.
      *
      * @var int
      */
     private $iSortCol0;
 
     /**
-     * Direction to be sorted - "desc" or "asc"
+     * Direction to be sorted - "desc" or "asc".
      *
      * @var string
      */
