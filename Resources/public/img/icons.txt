@@ -1,4 +1,0 @@
-Copy into this directory the bootstrap icons:
-
-  - glyphicons-halflings.png
-  - glyphicons-halflings-white.png

@@ -1,3 +1,0 @@
-Copy into this directory the bootstrap css file:
-
-  - bootstrap.min.css
