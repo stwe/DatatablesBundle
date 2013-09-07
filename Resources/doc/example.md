@@ -11,7 +11,6 @@
 
         {% stylesheets
             '@bootstrap_css'
-            '@datatables_css'
             'bundles/sgdatatables/css/dataTables_bootstrap.css'
             filter='cssrewrite' %}
             <link href="{{ asset_url }}" rel="stylesheet" type="text/css"/>
