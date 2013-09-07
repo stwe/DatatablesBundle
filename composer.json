@@ -1,27 +1,40 @@
 {
     "name": "sg/datatablesbundle",
-    "description": "Symfony2 Datatables For Doctrine Entities",
-    "keywords": ["Symfony2", "Datatables", "Grid", "Table"],
+    "type": "symfony-bundle",
+    "description": "This Bundle integrates the jQuery DataTables plugin into your Symfony2 application. Compatible with Doctrine ORM.",
+    "keywords": ["Symfony2", "Datatable", "Grid", "Table"],
     "homepage": "https://github.com/stwe/DatatablesBundle",
     "license": "MIT",
-    "type": "symfony-bundle",
     "authors": [
         {
             "name": "stwe"
         }
     ],
+    "support": {
+        "issues": "https://github.com/stwe/DatatablesBundle/issues"
+    },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "datatables/datatables",
+                "version": "1.9.4",
+                "dist": {
+                    "type": "zip",
+                    "url": "http://www.datatables.net/releases/DataTables-1.9.4.zip"
+                }
+            }
+        }
+    ],
     "require": {
         "php": ">=5.3.2",
-        "symfony/framework-bundle": "~2.1"
+        "symfony/framework-bundle": "~2.3",
+        "datatables/datatables": "1.9.4",
+        "twitter/bootstrap": "v2.3.2"
     },
-    "suggest": {
-        "twitter/bootstrap": "Add Bootstrap Css support, suggest  v2.3.2"
-    },
-    "target-dir": "Sg/DatatablesBundle",
     "autoload": {
-        "psr-0": {
-            "Sg\\DatatablesBundle": ""
-        }
-    }
+        "psr-0": { "Sg\\DatatablesBundle": "" }
+    },
+    "target-dir": "Sg/DatatablesBundle"
 }
 
