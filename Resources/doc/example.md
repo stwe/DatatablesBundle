@@ -269,4 +269,4 @@
 
     The result should looks like that:
 
-    <div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/screenshots/screenshot2.jpg"></div>
+    <div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/doc/screenshot2.jpg"></div>
