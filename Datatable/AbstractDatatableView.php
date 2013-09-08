@@ -2,7 +2,7 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
-use Twig_Environment as Twig;
+use Symfony\Bundle\TwigBundle\TwigEngine;
 
 /**
  * Class AbstractDatatableView
@@ -12,11 +12,11 @@ use Twig_Environment as Twig;
 abstract class AbstractDatatableView
 {
     /**
-     * A Twig instance.
+     * The templating service.
      *
-     * @var Twig
+     * @var TwigEngine
      */
-    private $twig;
+    private $templating;
 
     /**
      * The Twig template.
@@ -100,11 +100,11 @@ abstract class AbstractDatatableView
     /**
      * Ctor.
      *
-     * @param Twig $twig A Twig instance
+     * @param TwigEngine $templating
      */
-    public function __construct(Twig $twig)
+    public function __construct(TwigEngine $templating)
     {
-        $this->twig        = $twig;
+        $this->templating  = $templating;
         $this->template    = 'SgDatatablesBundle::default.html.twig';
         $this->sDomOptions = array(
             'sDomLength'     => 'span4',
@@ -153,7 +153,7 @@ abstract class AbstractDatatableView
         $options['deletePath']       = $this->getDeletePath();
         $options['customizeOptions'] = $this->getCustomizeOptions();
 
-        return $this->twig->render($this->getTemplate(), $options);
+        return $this->templating->render($this->getTemplate(), $options);
     }
 
 

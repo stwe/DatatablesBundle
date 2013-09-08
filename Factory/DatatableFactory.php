@@ -2,7 +2,7 @@
 
 namespace Sg\DatatablesBundle\Factory;
 
-use Twig_Environment as Twig;
+use Symfony\Bundle\TwigBundle\TwigEngine;
 
 /**
  * Class DatatableFactory
@@ -12,22 +12,23 @@ use Twig_Environment as Twig;
 class DatatableFactory
 {
     /**
-     * @var Twig
+     * @var TwigEngine
      */
-    protected $twig;
+    protected $templating;
+
 
     /**
      * Ctor.
      *
-     * @param Twig $twig A Twig instance
+     * @param TwigEngine $templating
      */
-    public function __construct(Twig $twig)
+    public function __construct(TwigEngine $templating)
     {
-        $this->twig = $twig;
+        $this->templating = $templating;
     }
 
     /**
-     * Returns a instance of the datatableViewClass.
+     * Returns an instance of the datatableViewClass.
      *
      * @param string $datatableViewClass The class name
      *
@@ -40,6 +41,6 @@ class DatatableFactory
             throw new \Exception("Class {$datatableViewClass} not found.");
         }
 
-        return new $datatableViewClass($this->twig);
+        return new $datatableViewClass($this->templating);
     }
 }

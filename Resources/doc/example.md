@@ -157,7 +157,7 @@
         /**
          * @var \Sg\DatatablesBundle\Datatable\DatatableData $datatable
          */
-        $datatable = $this->get('sg_datatables')->getDatatable('SgUserBundle:User');
+        $datatable = $this->get('sg_datatables.datatable')->getDatatable('SgUserBundle:User');
 
         /**
          * @var \Doctrine\ORM\QueryBuilder $qb
