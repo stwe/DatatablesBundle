@@ -3,6 +3,7 @@
 namespace Sg\DatatablesBundle\Datatable;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
+use Sg\DatatablesBundle\Column\Column;
 
 /**
  * Class AbstractDatatableView
@@ -51,11 +52,11 @@ abstract class AbstractDatatableView
     protected $tableHeaders;
 
     /**
-     * The aoColumns fields.
+     * The aoColumns.
      *
      * @var array
      */
-    protected $fields;
+    protected $columns;
 
     /**
      * The sAjaxSource path.
@@ -114,7 +115,7 @@ abstract class AbstractDatatableView
         );
         $this->tableId          = 'sg_datatable';
         $this->tableHeaders     = array();
-        $this->fields           = array();
+        $this->columns          = array();
         $this->sAjaxSource      = '';
         $this->showPath         = '';
         $this->editPath         = '';
@@ -145,7 +146,7 @@ abstract class AbstractDatatableView
         $options['sDomOptions']      = $this->getSDomOptions();
         $options['tableId']          = $this->getTableId();
         $options['tableHeaders']     = $this->getTableHeaders();
-        $options['fields']           = $this->getFieldsOptions();
+        $options['columns']          = $this->getColumnsOptions();
         $options['sAjaxSource']      = $this->getSAjaxSource();
         $options['showPath']         = $this->getShowPath();
         $options['editPath']         = $this->getEditPath();
@@ -157,17 +158,17 @@ abstract class AbstractDatatableView
 
 
     //-------------------------------------------------
-    // Field functions
+    // Columns functions
     //-------------------------------------------------
 
     /**
-     * @param Field $field
+     * @param Column $column
      *
      * @return AbstractDatatableView
      */
-    public function addField($field)
+    public function addColumn($column)
     {
-        $this->fields[] = $field;
+        $this->columns[] = $column;
 
         return $this;
     }
@@ -175,35 +176,35 @@ abstract class AbstractDatatableView
     /**
      * @return array
      */
-    public function getFields()
+    public function getColumns()
     {
-        return $this->fields;
+        return $this->columns;
     }
 
     /**
-     * Get fields options.
+     * Get columns options.
      *
      * @return array
      */
-    private function getFieldsOptions()
+    private function getColumnsOptions()
     {
         $mData = array();
 
         /**
-         * @var \Sg\DatatablesBundle\Datatable\Field $field
+         * @var \Sg\DatatablesBundle\Column\Column $column
          */
-        foreach ($this->fields as $field) {
+        foreach ($this->columns as $column) {
 
             $property = array(
-                'mData'                => $field->getMData(),
-                'sName'                => $field->getSName(),
-                'sClass'               => $field->getSClass(),
-                'mRender'              => $field->getMRender(),
-                'renderArray'          => $field->getRenderArray(),
-                'renderArrayFieldName' => $field->getRenderArrayFieldName(),
-                'sWidth'               => $field->getSWidth(),
-                'bSearchable'          => $field->getBSearchable(),
-                'bSortable'            => $field->getBSortable()
+                'mData'                => $column->getMData(),
+                'sName'                => $column->getSName(),
+                'sClass'               => $column->getSClass(),
+                'mRender'              => $column->getMRender(),
+                'renderArray'          => $column->getRenderArray(),
+                'renderArrayFieldName' => $column->getRenderArrayFieldName(),
+                'sWidth'               => $column->getSWidth(),
+                'bSearchable'          => $column->getBSearchable(),
+                'bSortable'            => $column->getBSortable()
             );
 
             array_push($mData, $property);

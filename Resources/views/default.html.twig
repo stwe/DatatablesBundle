@@ -53,46 +53,46 @@
 
                 $.extend(defaults, {
                     "aoColumns": [
-                        {% for field in fields %}
+                        {% for column in columns %}
                             {
-                                {% if field.mData != null %}
-                                    "mData": "{{ field.mData }}",
+                                {% if column.mData != null %}
+                                    "mData": "{{ column.mData }}",
                                 {% else %}
                                     "mData": null,
                                 {% endif %}
 
-                                {% if field.sName != '' %}
-                                    "sName": "{{ field.sName }}",
+                                {% if column.sName != '' %}
+                                    "sName": "{{ column.sName }}",
                                 {% endif %}
 
-                                {% if field.sClass != '' %}
-                                    "sClass": "{{ field.sClass }}",
+                                {% if column.sClass != '' %}
+                                    "sClass": "{{ column.sClass }}",
                                 {% endif %}
 
-                                {% if field.renderArray == true %}
-                                    "mRender": "[, ].{{ field.renderArrayFieldName }}",
+                                {% if column.renderArray == true %}
+                                    "mRender": "[, ].{{ column.renderArrayFieldName }}",
                                 {% endif %}
 
-                                {% if field.mRender != null %}
+                                {% if column.mRender != null %}
                                     "mRender": function(data, type, full) {
-                                        return {{ field.mRender }};
+                                        return {{ column.mRender }};
                                     },
                                 {% endif %}
 
-                                {% if field.bSortable == false %}
+                                {% if column.bSortable == false %}
                                     "bSortable": false,
                                 {% else %}
                                     "bSortable": true,
                                 {% endif %}
 
-                                {% if field.bSearchable == false %}
+                                {% if column.bSearchable == false %}
                                     "bSearchable": false,
                                 {% else %}
                                     "bSearchable": true,
                                 {% endif %}
 
-                                {% if field.sWidth != '' %}
-                                    "sWidth": "{{ field.sWidth }}"
+                                {% if column.sWidth != null %}
+                                    "sWidth": "{{ column.sWidth }}"
                                 {% endif %}
                             },
                         {% endfor %}
