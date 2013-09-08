@@ -16,14 +16,14 @@ abstract class AbstractDatatableView
      *
      * @var TwigEngine
      */
-    private $templating;
+    protected $templating;
 
     /**
-     * The Twig template.
+     * The name of the twig template.
      *
      * @var string
      */
-    private $template;
+    protected $template;
 
     /**
      * The css sDom parameter for:
@@ -34,63 +34,63 @@ abstract class AbstractDatatableView
      *
      * @var array
      */
-    private $sDomOptions;
+    protected $sDomOptions;
 
     /**
-     * The table id selector.
+     * The jQuery table id selector.
      *
      * @var string
      */
-    private $tableId;
+    protected $tableId;
 
     /**
      * Content for the table header cells.
      *
      * @var array
      */
-    private $tableHeaders;
+    protected $tableHeaders;
 
     /**
      * The aoColumns fields.
      *
      * @var array
      */
-    private $fields;
+    protected $fields;
 
     /**
      * The sAjaxSource path.
      *
      * @var string
      */
-    private $sAjaxSource;
+    protected $sAjaxSource;
 
     /**
      * The show Path for the entity.
      *
      * @var string
      */
-    private $showPath;
+    protected $showPath;
 
     /**
      * The edit Path for the entity.
      *
      * @var string
      */
-    private $editPath;
+    protected $editPath;
 
     /**
      * The delete Path for the entity.
      *
      * @var string
      */
-    private $deletePath;
+    protected $deletePath;
 
     /**
      * Array for custom options.
      *
      * @var array
      */
-    private $customizeOptions;
+    protected $customizeOptions;
 
 
     //-------------------------------------------------
@@ -112,7 +112,6 @@ abstract class AbstractDatatableView
             'sDomInfo'       => 'span3',
             'sDomPagination' => 'span9'
         );
-
         $this->tableId          = 'sg_datatable';
         $this->tableHeaders     = array();
         $this->fields           = array();
@@ -143,11 +142,11 @@ abstract class AbstractDatatableView
     public function createView()
     {
         $options = array();
-        $options['id']               = $this->getTableId();
-        $options['sAjaxSource']      = $this->getSAjaxSource();
-        $options['tableHeaders']     = $this->getTableHeaders();
         $options['sDomOptions']      = $this->getSDomOptions();
+        $options['tableId']          = $this->getTableId();
+        $options['tableHeaders']     = $this->getTableHeaders();
         $options['fields']           = $this->getFieldsOptions();
+        $options['sAjaxSource']      = $this->getSAjaxSource();
         $options['showPath']         = $this->getShowPath();
         $options['editPath']         = $this->getEditPath();
         $options['deletePath']       = $this->getDeletePath();
