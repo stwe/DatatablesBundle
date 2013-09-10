@@ -1,9 +1,19 @@
 <?php
 
+/*
+* This file is part of the SgDatatablesBundle package.
+*
+* (c) stwe <https://github.com/stwe/DatatablesBundle>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+
 namespace Sg\DatatablesBundle\Datatable;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Sg\DatatablesBundle\Column\Column;
+use Sg\DatatablesBundle\Column\ActionColumn;
 
 /**
  * Class AbstractDatatableView
@@ -59,32 +69,18 @@ abstract class AbstractDatatableView
     protected $columns;
 
     /**
+     * The action aoColumns.
+     *
+     * @var array
+     */
+    protected $actionColumns;
+
+    /**
      * The sAjaxSource path.
      *
      * @var string
      */
     protected $sAjaxSource;
-
-    /**
-     * The show Path for the entity.
-     *
-     * @var string
-     */
-    protected $showPath;
-
-    /**
-     * The edit Path for the entity.
-     *
-     * @var string
-     */
-    protected $editPath;
-
-    /**
-     * The delete Path for the entity.
-     *
-     * @var string
-     */
-    protected $deletePath;
 
     /**
      * Array for custom options.
@@ -95,7 +91,7 @@ abstract class AbstractDatatableView
 
 
     //-------------------------------------------------
-    // Ctor
+    // Ctor.
     //-------------------------------------------------
 
     /**
@@ -116,10 +112,8 @@ abstract class AbstractDatatableView
         $this->tableId          = 'sg_datatable';
         $this->tableHeaders     = array();
         $this->columns          = array();
+        $this->actionColumns    = array();
         $this->sAjaxSource      = '';
-        $this->showPath         = '';
-        $this->editPath         = '';
-        $this->deletePath       = '';
         $this->customizeOptions = array();
 
         $this->build();
@@ -146,11 +140,9 @@ abstract class AbstractDatatableView
         $options['sDomOptions']      = $this->getSDomOptions();
         $options['tableId']          = $this->getTableId();
         $options['tableHeaders']     = $this->getTableHeaders();
-        $options['columns']          = $this->getColumnsOptions();
+        $options['columns']          = $this->getColumns();
+        $options['actionColumns']    = $this->getActionColumns();
         $options['sAjaxSource']      = $this->getSAjaxSource();
-        $options['showPath']         = $this->getShowPath();
-        $options['editPath']         = $this->getEditPath();
-        $options['deletePath']       = $this->getDeletePath();
         $options['customizeOptions'] = $this->getCustomizeOptions();
 
         return $this->templating->render($this->getTemplate(), $options);
@@ -158,10 +150,12 @@ abstract class AbstractDatatableView
 
 
     //-------------------------------------------------
-    // Columns functions
+    // Columns
     //-------------------------------------------------
 
     /**
+     * Add a column.
+     *
      * @param Column $column
      *
      * @return AbstractDatatableView
@@ -174,19 +168,11 @@ abstract class AbstractDatatableView
     }
 
     /**
-     * @return array
-     */
-    public function getColumns()
-    {
-        return $this->columns;
-    }
-
-    /**
-     * Get columns options.
+     * Get columns.
      *
      * @return array
      */
-    private function getColumnsOptions()
+    private function getColumns()
     {
         $mData = array();
 
@@ -215,10 +201,41 @@ abstract class AbstractDatatableView
 
 
     //-------------------------------------------------
-    // sDom functions
+    // Action columns
     //-------------------------------------------------
 
     /**
+     * Add a action column.
+     *
+     * @param ActionColumn $actionColumn
+     *
+     * @return $this
+     */
+    public function addActionColumn($actionColumn)
+    {
+        $this->actionColumns[] = $actionColumn;
+
+        return $this;
+    }
+
+    /**
+     * Get action columns.
+     *
+     * @return array
+     */
+    public function getActionColumns()
+    {
+        return $this->actionColumns;
+    }
+
+
+    //-------------------------------------------------
+    // sDom
+    //-------------------------------------------------
+
+    /**
+     * Set sDomOptions.
+     *
      * @param array $sDomOptions
      *
      * @throws \Exception
@@ -245,6 +262,8 @@ abstract class AbstractDatatableView
     }
 
     /**
+     * Get sDomOptions.
+     *
      * @return array
      */
     public function getSDomOptions()
@@ -303,54 +322,6 @@ abstract class AbstractDatatableView
     public function getTableId()
     {
         return $this->tableId;
-    }
-
-    /**
-     * @param string $deletePath
-     */
-    public function setDeletePath($deletePath)
-    {
-        $this->deletePath = $deletePath;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDeletePath()
-    {
-        return $this->deletePath;
-    }
-
-    /**
-     * @param string $editPath
-     */
-    public function setEditPath($editPath)
-    {
-        $this->editPath = $editPath;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEditPath()
-    {
-        return $this->editPath;
-    }
-
-    /**
-     * @param string $showPath
-     */
-    public function setShowPath($showPath)
-    {
-        $this->showPath = $showPath;
-    }
-
-    /**
-     * @return string
-     */
-    public function getShowPath()
-    {
-        return $this->showPath;
     }
 
     /**
