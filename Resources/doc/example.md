@@ -23,12 +23,15 @@
         {% block scripts %}
 
             {% javascripts
-            '@jquery_js'
-            '@bootstrap_js'
-            '@datatables_js'
-            'bundles/sgdatatables/js/dataTables_bootstrap.js' %}
-            <script type="text/javascript" src="{{ asset_url }}"></script>
+                '@jquery_js'
+                '@bootstrap_js'
+                '@datatables_js'
+                'bundles/sgdatatables/js/dataTables_bootstrap.js'
+                'bundles/fosjsrouting/js/router.js' %}
+                <script type="text/javascript" src="{{ asset_url }}"></script>
             {% endjavascripts %}
+
+            <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 
         {% endblock %}
 
@@ -48,7 +51,8 @@
     namespace Sg\UserBundle\Datatables;
 
     use Sg\DatatablesBundle\Datatable\AbstractDatatableView;
-    use Sg\DatatablesBundle\Datatable\Field;
+    use Sg\DatatablesBundle\Column\Column;
+    use Sg\DatatablesBundle\Column\ActionColumn;
 
     /**
      * Class UserDatatable
@@ -69,32 +73,53 @@
                 'Username',
                 'Email',
                 'Enabled',
+                'Posts',
                 ''
             ));
 
-            $nameField = new Field('username');
+            $nameField = new Column('username');
 
-            $emailField = new Field('email');
+            $emailField = new Column('email');
 
-            $enabledField = new Field('enabled');
+            $enabledField = new Column('enabled');
             $enabledField->setBSearchable('false');
             $enabledField->setSWidth('90');
             $enabledField->setMRender("render_boolean_icons(data, type, full)");
 
-            $idField = new Field('id');
-            $idField->setBSearchable('false');
-            $idField->setBSortable('false');
-            $idField->setMRender("render_action_icons(data, type, full)");
-            $idField->setSWidth('92');
+            $postsField = new Column('posts');
+            $postsField->setRenderArray(true);
+            $postsField->setRenderArrayFieldName('title');
+            $postsField->setSName('posts.title');
 
-            $this->addField($nameField);
-            $this->addField($emailField);
-            $this->addField($enabledField);
-            $this->addField($idField);
 
-            $this->setShowPath('user_show');
-            $this->setEditPath('user_edit');
-            $this->setDeletePath('user_delete');
+            $actionField = new ActionColumn('id');
+            // the edit route: @Route("/{id}/show", name="user_edit", options={"expose"=true})
+            // important here is the section: options={"expose"=true}
+            $actionField->setRoute('user_edit');
+            $actionField->addRouteParameter('id', 'id');
+
+            // you can set multiple parameters:
+            //$actionField->addRouteParameter('param1', 'email');
+            //$actionField->addRouteParameter('param2', 'username');
+
+            // a Bootstrap2 tooltip
+            $actionField->addAttribute('rel', 'tooltip');
+            $actionField->addAttribute('title', 'Test Tooltip');
+
+            // set a label
+            $actionField->setLabel('TestLabel');
+
+            // ... or an icon
+            //$actionField->setIcon(ActionColumn::DEFAULT_EDIT_ICON);
+
+            // set the action field width
+            $actionField->setSWidth('92');
+
+            $this->addColumn($nameField);
+            $this->addColumn($emailField);
+            $this->addColumn($enabledField);
+            $this->addColumn($postsField);
+            $this->addActionColumn($actionField);
         }
     }
     ```
