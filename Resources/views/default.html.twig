@@ -53,49 +53,11 @@
 
                 $.extend(defaults, {
                     "aoColumns": [
-                        {% for column in columns %}
-                            {
-                                {% if column.mData != null %}
-                                    "mData": "{{ column.mData }}",
-                                {% else %}
-                                    "mData": null,
-                                {% endif %}
+                        {# normal columns #}
+                        {% include "SgDatatablesBundle:Column:columns.html.twig" %}
 
-                                {% if column.sName != '' %}
-                                    "sName": "{{ column.sName }}",
-                                {% endif %}
-
-                                {% if column.sClass != '' %}
-                                    "sClass": "{{ column.sClass }}",
-                                {% endif %}
-
-                                {% if column.renderArray == true %}
-                                    "mRender": "[, ].{{ column.renderArrayFieldName }}",
-                                {% endif %}
-
-                                {% if column.mRender != null %}
-                                    "mRender": function(data, type, full) {
-                                        return {{ column.mRender }};
-                                    },
-                                {% endif %}
-
-                                {% if column.bSortable == false %}
-                                    "bSortable": false,
-                                {% else %}
-                                    "bSortable": true,
-                                {% endif %}
-
-                                {% if column.bSearchable == false %}
-                                    "bSearchable": false,
-                                {% else %}
-                                    "bSearchable": true,
-                                {% endif %}
-
-                                {% if column.sWidth != null %}
-                                    "sWidth": "{{ column.sWidth }}"
-                                {% endif %}
-                            },
-                        {% endfor %}
+                        {# action (crud) columns #}
+                        {% include "SgDatatablesBundle:Column:action_columns.html.twig" %}
                     ]
                 });
 
@@ -131,40 +93,6 @@
     {% block sg_datatable_render_functions %}
 
         <script>
-
-            function render_action_icons(data, type, full) {
-                if (type != "display")
-                    return data;
-
-                {% if showPath != '' %}
-                    var show_url = "{{ path(showPath, {'id': 'placeholder_id'}) }}";
-                    show_url = show_url.replace("placeholder_id", data);
-                {% endif %}
-
-                {% if editPath != '' %}
-                    var edit_url = "{{ path(editPath, {'id': 'placeholder_id'}) }}";
-                    edit_url = edit_url.replace("placeholder_id", data);
-                {% endif %}
-
-                {% if deletePath != '' %}
-                    var delete_url = "{{ path(deletePath, {'id': 'placeholder_id'}) }}";
-                    delete_url = delete_url.replace("placeholder", data);
-                {% endif %}
-
-                var show = "<a class='btn btn-mini' rel='tooltip' title='Anzeigen' href='" +
-                           show_url +
-                           "'><i class='icon-eye-open'></i></a>";
-
-                var edit = "<a class='btn btn-mini' rel='tooltip' title='Ändern' href='" +
-                           edit_url +
-                           "'><i class='icon-edit'></i></a>";
-
-                var del = "<a class='btn btn-mini' rel='tooltip' title='Löschen' href='" +
-                          delete_url +
-                          "'><i class='icon-trash'></i></a>";
-
-                return show + " " + edit + " " + del;
-            }
 
             function render_boolean_icons(data, type, full) {
                 if (type != "display")
