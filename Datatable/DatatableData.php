@@ -1,10 +1,13 @@
 <?php
 
-/**
- * A thanks goes to the authors of the original implementation:
- *     Félix-Antoine Paradis (https://gist.github.com/reel/1638094) and
- *     Chad Sikorra (https://github.com/LanKit/DatatablesBundle)
- */
+/*
+* This file is part of the SgDatatablesBundle package.
+*
+* (c) stwe <https://github.com/stwe/DatatablesBundle>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
 
 namespace Sg\DatatablesBundle\Datatable;
 
@@ -18,6 +21,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class DatatableData
+ *
+ * A thanks goes to the authors of the original implementation:
+ *     Félix-Antoine Paradis (https://gist.github.com/reel/1638094) and
+ *     Chad Sikorra (https://github.com/LanKit/DatatablesBundle)
  *
  * @package Sg\DatatablesBundle\Datatable
  */
