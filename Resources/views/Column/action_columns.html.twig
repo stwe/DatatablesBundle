@@ -8,7 +8,7 @@
 
         "sName": "",
 
-        {% if column.sClass != '' %}
+        {% if column.sClass != "" %}
             "sClass": "{{ column.sClass }}",
         {% endif %}
 
@@ -20,8 +20,8 @@
             var attributes = "";
 
             {% for key, value in column.routeParameters %}
-                var parameter = '{{ key }}';
-                var columnValue = '{{ value }}';
+                var parameter = "{{ key }}";
+                var columnValue = "{{ value }}";
                 routeParameters[parameter] = full[columnValue];
             {% endfor %}
 
@@ -29,13 +29,22 @@
                 attributes += '{{ key }} = "{{ value }}"';
             {% endfor %}
 
-            var route  = Routing.generate('{{ column.route }}', routeParameters);
+            var route  = Routing.generate("{{ column.route }}", routeParameters);
 
-            var url  = "<a class = '{{ column.class }}' ";
-                url += "href='" + route + "'";
-                url += attributes + " >";
-                url += "<i class='icon-eye-open'></i>";
-                url += "</a>";
+            {% if column.class != null %}
+                var url  = "<a class = '{{ column.class }}' ";
+            {% else %}
+                var url  = "<a ";
+            {% endif %}
+
+            url += "href='" + route + "'";
+            url += attributes + " >";
+            {% if column.icon != null %}
+                url += "<i class='{{ column.icon }}'></i>";
+            {% else %}
+                url += "{{ column.label }}";
+            {% endif %}
+            url += "</a>";
 
             return url;
         },
