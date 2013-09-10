@@ -1,0 +1,43 @@
+{% for column in columns %}
+    {
+        {% if column.mData != null %}
+            "mData": "{{ column.mData }}",
+        {% else %}
+            "mData": null,
+        {% endif %}
+
+        {% if column.sName != '' %}
+            "sName": "{{ column.sName }}",
+        {% endif %}
+
+        {% if column.sClass != '' %}
+            "sClass": "{{ column.sClass }}",
+        {% endif %}
+
+        {% if column.renderArray == true %}
+            "mRender": "[, ].{{ column.renderArrayFieldName }}",
+        {% endif %}
+
+        {% if column.mRender != null %}
+            "mRender": function(data, type, full) {
+                return {{ column.mRender }};
+            },
+        {% endif %}
+
+        {% if column.bSortable == false %}
+            "bSortable": false,
+        {% else %}
+            "bSortable": true,
+        {% endif %}
+
+        {% if column.bSearchable == false %}
+            "bSearchable": false,
+        {% else %}
+            "bSearchable": true,
+        {% endif %}
+
+        {% if column.sWidth != null %}
+            "sWidth": "{{ column.sWidth }}"
+        {% endif %}
+    },
+{% endfor %}

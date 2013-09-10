@@ -1,0 +1,50 @@
+{% for column in actionColumns %}
+    {
+        {% if column.mData != null %}
+            "mData": "{{ column.mData }}",
+        {% else %}
+            "mData": null,
+        {% endif %}
+
+        "sName": "",
+
+        {% if column.sClass != '' %}
+            "sClass": "{{ column.sClass }}",
+        {% endif %}
+
+        "mRender": function(data, type, full) {
+            if (type != "display")
+                return data;
+
+            var routeParameters  = {};
+            var attributes = "";
+
+            {% for key, value in column.routeParameters %}
+                var parameter = '{{ key }}';
+                var columnValue = '{{ value }}';
+                routeParameters[parameter] = full[columnValue];
+            {% endfor %}
+
+            {% for key, value in column.attributes %}
+                attributes += '{{ key }} = "{{ value }}"';
+            {% endfor %}
+
+            var route  = Routing.generate('{{ column.route }}', routeParameters);
+
+            var url  = "<a class = '{{ column.class }}' ";
+                url += "href='" + route + "'";
+                url += attributes + " >";
+                url += "<i class='icon-eye-open'></i>";
+                url += "</a>";
+
+            return url;
+        },
+
+        "bSortable": false,
+        "bSearchable": false,
+
+        {% if column.sWidth != null %}
+            "sWidth": "{{ column.sWidth }}"
+        {% endif %}
+    },
+{% endfor %}
