@@ -10,6 +10,7 @@ This Bundle integrates the jQuery DataTables plugin into your Symfony2 applicati
 
 * This version of the bundle requires Symfony 2.3.x.
 * Bootstrap 2.3 and DataTables 1.9 should be installed.
+* Finally, FOSJsRoutingBundle needs to be installed and configured beforehand. Please follow all steps described [here](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/README.markdown).
 
 Your composer.json should look like this:
 
@@ -30,7 +31,8 @@ Your composer.json should look like this:
     ],
     "require": {
         "datatables/datatables": "1.9.4",
-        "twitter/bootstrap": "v2.3.2"
+        "twitter/bootstrap": "v2.3.2",
+        "friendsofsymfony/jsrouting-bundle": "1.2.0"
 }
 ```
 
