@@ -150,15 +150,116 @@ abstract class AbstractDatatableView
 
 
     //-------------------------------------------------
-    // Columns
+    // Public
     //-------------------------------------------------
+
+    /**
+     * @param string $template
+     *
+     * @return $this
+     */
+    public function setTemplate($template)
+    {
+        $this->template = $template;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+
+    /**
+     * Set sDomOptions.
+     *
+     * @param array $sDomOptions
+     *
+     * @return $this
+     * @throws \Exception
+     */
+    public function setSDomOptions($sDomOptions)
+    {
+        if (!array_key_exists('sDomLength', $sDomOptions)) {
+            throw new \Exception('The option "sDomLength" must be set.');
+        };
+
+        if (!array_key_exists('sDomFilter', $sDomOptions)) {
+            throw new \Exception('The option "sDomFilter" must be set.');
+        };
+
+        if (!array_key_exists('sDomInfo', $sDomOptions)) {
+            throw new \Exception('The option "sDomInfo" must be set.');
+        };
+
+        if (!array_key_exists('sDomPagination', $sDomOptions)) {
+            throw new \Exception('The option "sDomPagination" must be set.');
+        };
+
+        $this->sDomOptions = $sDomOptions;
+
+        return $this;
+    }
+
+    /**
+     * Get sDomOptions.
+     *
+     * @return array
+     */
+    public function getSDomOptions()
+    {
+        return $this->sDomOptions;
+    }
+
+    /**
+     * @param string $tableId
+     *
+     * @return $this
+     */
+    public function setTableId($tableId)
+    {
+        $this->tableId = $tableId;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTableId()
+    {
+        return $this->tableId;
+    }
+
+    /**
+     * @param array $tableHeaders
+     *
+     * @return $this
+     */
+    public function setTableHeaders($tableHeaders)
+    {
+        $this->tableHeaders = $tableHeaders;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTableHeaders()
+    {
+        return $this->tableHeaders;
+    }
 
     /**
      * Add a column.
      *
      * @param Column $column
      *
-     * @return AbstractDatatableView
+     * @return $this
      */
     public function addColumn($column)
     {
@@ -174,35 +275,8 @@ abstract class AbstractDatatableView
      */
     private function getColumns()
     {
-        $mData = array();
-
-        /**
-         * @var \Sg\DatatablesBundle\Column\Column $column
-         */
-        foreach ($this->columns as $column) {
-
-            $property = array(
-                'mData'                => $column->getMData(),
-                'sName'                => $column->getSName(),
-                'sClass'               => $column->getSClass(),
-                'mRender'              => $column->getMRender(),
-                'renderArray'          => $column->getRenderArray(),
-                'renderArrayFieldName' => $column->getRenderArrayFieldName(),
-                'sWidth'               => $column->getSWidth(),
-                'bSearchable'          => $column->getBSearchable(),
-                'bSortable'            => $column->getBSortable()
-            );
-
-            array_push($mData, $property);
-        }
-
-        return $mData;
+        return $this->columns;
     }
-
-
-    //-------------------------------------------------
-    // Action columns
-    //-------------------------------------------------
 
     /**
      * Add a action column.
@@ -228,60 +302,16 @@ abstract class AbstractDatatableView
         return $this->actionColumns;
     }
 
-
-    //-------------------------------------------------
-    // sDom
-    //-------------------------------------------------
-
-    /**
-     * Set sDomOptions.
-     *
-     * @param array $sDomOptions
-     *
-     * @throws \Exception
-     */
-    public function setSDomOptions($sDomOptions)
-    {
-        if (!array_key_exists('sDomLength', $sDomOptions)) {
-            throw new \Exception('The option "sDomLength" must be set.');
-        };
-
-        if (!array_key_exists('sDomFilter', $sDomOptions)) {
-            throw new \Exception('The option "sDomFilter" must be set.');
-        };
-
-        if (!array_key_exists('sDomInfo', $sDomOptions)) {
-            throw new \Exception('The option "sDomInfo" must be set.');
-        };
-
-        if (!array_key_exists('sDomPagination', $sDomOptions)) {
-            throw new \Exception('The option "sDomPagination" must be set.');
-        };
-
-        $this->sDomOptions = $sDomOptions;
-    }
-
-    /**
-     * Get sDomOptions.
-     *
-     * @return array
-     */
-    public function getSDomOptions()
-    {
-        return $this->sDomOptions;
-    }
-
-
-    //-------------------------------------------------
-    // Getters && Setters
-    //-------------------------------------------------
-
     /**
      * @param string $sAjaxSource
+     *
+     * @return $this
      */
     public function setSAjaxSource($sAjaxSource)
     {
         $this->sAjaxSource = $sAjaxSource;
+
+        return $this;
     }
 
     /**
@@ -293,43 +323,15 @@ abstract class AbstractDatatableView
     }
 
     /**
-     * @param array $tableHeaders
-     */
-    public function setTableHeaders($tableHeaders)
-    {
-        $this->tableHeaders = $tableHeaders;
-    }
-
-    /**
-     * @return array
-     */
-    public function getTableHeaders()
-    {
-        return $this->tableHeaders;
-    }
-
-    /**
-     * @param string $tableId
-     */
-    public function setTableId($tableId)
-    {
-        $this->tableId = $tableId;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTableId()
-    {
-        return $this->tableId;
-    }
-
-    /**
      * @param array $customizeOptions
+     *
+     * @return $this
      */
     public function setCustomizeOptions($customizeOptions)
     {
         $this->customizeOptions = $customizeOptions;
+
+        return $this;
     }
 
     /**
@@ -338,22 +340,6 @@ abstract class AbstractDatatableView
     public function getCustomizeOptions()
     {
         return $this->customizeOptions;
-    }
-
-    /**
-     * @param string $template
-     */
-    public function setTemplate($template)
-    {
-        $this->template = $template;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTemplate()
-    {
-        return $this->template;
     }
 }
 

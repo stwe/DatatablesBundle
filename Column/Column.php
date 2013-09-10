@@ -63,7 +63,7 @@ class Column extends BaseColumn
     /**
      * @param boolean $renderArray
      *
-     * @return self
+     * @return $this
      */
     public function setRenderArray($renderArray)
     {
@@ -83,7 +83,7 @@ class Column extends BaseColumn
     /**
      * @param string $renderArrayFieldName
      *
-     * @return self
+     * @return $this
      */
     public function setRenderArrayFieldName($renderArrayFieldName)
     {

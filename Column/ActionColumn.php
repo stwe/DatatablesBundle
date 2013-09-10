@@ -114,7 +114,7 @@ class ActionColumn extends BaseColumn
     /**
      * @param null|string $route
      *
-     * @return self
+     * @return $this
      */
     public function setRoute($route)
     {
@@ -135,7 +135,7 @@ class ActionColumn extends BaseColumn
      * @param string $parameter  The route parameter
      * @param string $columnName The name of the column
      *
-     * @return self
+     * @return $this
      */
     public function addRouteParameter($parameter, $columnName)
     {
@@ -155,7 +155,7 @@ class ActionColumn extends BaseColumn
     /**
      * @param null|string $icon
      *
-     * @return self
+     * @return $this
      */
     public function setIcon($icon)
     {
@@ -179,7 +179,7 @@ class ActionColumn extends BaseColumn
     /**
      * @param null|string $label
      *
-     * @return self
+     * @return $this
      */
     public function setLabel($label)
     {
@@ -198,10 +198,14 @@ class ActionColumn extends BaseColumn
 
     /**
      * @param null|string $class
+     *
+     * @return $this
      */
     public function setClass($class)
     {
         $this->class = $class;
+
+        return $this;
     }
 
     /**
@@ -216,7 +220,7 @@ class ActionColumn extends BaseColumn
      * @param string $attribute The attribute
      * @param string $value     The value of the attribute
      *
-     * @return self
+     * @return $this
      */
     public function addAttribute($attribute, $value)
     {
