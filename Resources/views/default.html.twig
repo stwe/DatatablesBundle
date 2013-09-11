@@ -2,17 +2,29 @@
 
     {% block sg_datatable_html %}
 
+        {% if multiselect %}
+            <form id="sg_datatable_form">
+        {% endif %}
+
         <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="{{ tableId }}">
             <thead>
                 <tr>
                     {% for th in tableHeaders %}
                         <th>{{ th }}</th>
                     {% endfor %}
+                    {% if multiselect %}
+                        <th></th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
             </tbody>
         </table>
+
+        {% if multiselect %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        {% endif %}
 
     {% endblock %}
 
@@ -58,6 +70,24 @@
 
                         {# action (crud) columns #}
                         {% include "SgDatatablesBundle:Column:action_columns.html.twig" %}
+
+                        {# multiselect column #}
+                        {% if multiselect %}
+                            {
+                                "mData": null,
+                                "mRender": function(data, type, full) {
+                                    if (type != "display")
+                                        return data;
+
+                                    var form  = "<input type='checkbox' value='" + full.id + "' name='" + full.id + "' />";
+
+                                    return form;
+                                },
+
+                                "bSortable": false,
+                                "bSearchable": false
+                            }
+                        {% endif %}
                     ]
                 });
 
@@ -84,6 +114,13 @@
                 function getDetails(oTable, nTr) {
                     return "Test";
                 }
+
+                $('#sg_datatable_form').submit( function() {
+                    var sData = $('input', oTable.fnGetNodes()).serialize();
+                    alert( "The following data would have been submitted to the server: \n\n"+sData );
+                    return false;
+                } );
+
             });
 
         </script>

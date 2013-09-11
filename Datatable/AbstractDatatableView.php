@@ -89,6 +89,13 @@ abstract class AbstractDatatableView
      */
     protected $customizeOptions;
 
+    /**
+     * Enable or disable multiselect.
+     *
+     * @var boolean
+     */
+    protected $multiselect;
+
 
     //-------------------------------------------------
     // Ctor.
@@ -115,6 +122,7 @@ abstract class AbstractDatatableView
         $this->actionColumns    = array();
         $this->sAjaxSource      = '';
         $this->customizeOptions = array();
+        $this->multiselect      = false;
 
         $this->build();
     }
@@ -144,6 +152,7 @@ abstract class AbstractDatatableView
         $options['actionColumns']    = $this->getActionColumns();
         $options['sAjaxSource']      = $this->getSAjaxSource();
         $options['customizeOptions'] = $this->getCustomizeOptions();
+        $options['multiselect']      = $this->getMultiselect();
 
         return $this->templating->render($this->getTemplate(), $options);
     }
@@ -340,6 +349,26 @@ abstract class AbstractDatatableView
     public function getCustomizeOptions()
     {
         return $this->customizeOptions;
+    }
+
+    /**
+     * @param boolean $multiselect
+     *
+     * @return $this
+     */
+    public function setMultiselect($multiselect)
+    {
+        $this->multiselect = $multiselect;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getMultiselect()
+    {
+        return $this->multiselect;
     }
 }
 
