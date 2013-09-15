@@ -1,6 +1,6 @@
 # An example
 
-1. Create your layout.html.twig
+## Step 1: Create your layout.html.twig
 
     ``` html
     {% extends '::base.html.twig' %}
@@ -43,7 +43,7 @@
     {% endblock %}
     ```
 
-2. Create your Datatables class
+## Step 2: Create your Datatables class
 
     ``` php
     <?php
@@ -74,8 +74,13 @@
                 'Email',
                 'Enabled',
                 'Posts',
-                ''
+                '', // or 'Edit'
+                ''  // or 'Show'
             ));
+
+            $this->setMultiselect(true);
+            $this->addBulkAction('Disable', 'user_bulk_disable');
+            $this->addBulkAction('Delete', 'user_bulk_delete');
 
             $nameField = new Column('username');
 
@@ -92,39 +97,52 @@
             $postsField->setSName('posts.title');
 
 
-            $actionField = new ActionColumn('id');
-            // the edit route: @Route("/{id}/show", name="user_edit", options={"expose"=true})
+            // edit entity
+
+            $editField = new ActionColumn();
+            // example edit route: @Route("/{id}/edit", name="user_edit", options={"expose"=true})
             // important here is the section: options={"expose"=true}
-            $actionField->setRoute('user_edit');
-            $actionField->addRouteParameter('id', 'id');
+            $editField->setRoute('user_edit');
+            $editField->addRouteParameter('id', 'id');
 
             // you can set multiple parameters:
-            //$actionField->addRouteParameter('param1', 'email');
-            //$actionField->addRouteParameter('param2', 'username');
+            //$editField->addRouteParameter('param1', 'email');
+            //$editField->addRouteParameter('param2', 'username');
 
-            // a Bootstrap2 tooltip
-            $actionField->addAttribute('rel', 'tooltip');
-            $actionField->addAttribute('title', 'Test Tooltip');
+            // and add a Bootstrap2 tooltip
+            $editField->addAttribute('rel', 'tooltip');
+            $editField->addAttribute('title', 'Edit User');
 
             // set a label
-            $actionField->setLabel('TestLabel');
+            //$editField->setLabel('TestLabel');
 
             // ... or an icon
-            //$actionField->setIcon(ActionColumn::DEFAULT_EDIT_ICON);
+            $editField->setIcon(ActionColumn::DEFAULT_EDIT_ICON);
 
-            // set the action field width
-            $actionField->setSWidth('92');
+
+            // show entity
+
+            $showField = new ActionColumn();
+            $showField->setRoute('sg_calendar_edit_calendar');
+            $showField->addRouteParameter('id', 'id');
+            $showField->addAttribute('rel', 'tooltip');
+            $showField->addAttribute('title', 'Show User');
+            $showField->setIcon(ActionColumn::DEFAULT_SHOW_ICON);
+
+
+            // add columns
 
             $this->addColumn($nameField);
             $this->addColumn($emailField);
             $this->addColumn($enabledField);
             $this->addColumn($postsField);
-            $this->addActionColumn($actionField);
+            $this->addActionColumn($editField);
+            $this->addActionColumn($showField);
         }
     }
     ```
 
-3. Create your index.html.twig
+## Step 3: Create your index.html.twig
 
     ``` html
     {% extends 'SgUserBundle::layout.html.twig' %}
@@ -140,7 +158,7 @@
     {% endblock %}
     ```
 
-4. Add controller actions
+## Step 4: Add controller actions
 
     ``` php
     /**
@@ -200,9 +218,70 @@
 
         return $datatable->getSearchResults();
     }
+
+    /**
+     * @Route("/bulk/delete", name="user_bulk_delete")
+     * @Method("POST")
+     *
+     * @return Response
+     */
+    public function deleteAction()
+    {
+        $request = $this->getRequest();
+        $isAjax = $request->isXmlHttpRequest();
+
+        if ($isAjax) {
+            $choices = $request->request->get('data');
+
+            $em = $this->getDoctrine()->getManager();
+            $repository = $em->getRepository('SgUserBundle:User');
+
+            foreach ($choices as $choice) {
+                $entity = $repository->find($choice['value']);
+                $em->remove($entity);
+            }
+
+            $em->flush();
+
+            return new Response('This is ajax response.');
+        }
+
+        return new Response('This is not ajax.', 400);
+    }
+
+    /**
+     * @Route("/bulk/disable", name="user_bulk_disable")
+     * @Method("POST")
+     *
+     * @return Response
+     */
+    public function disableAction()
+    {
+        $request = $this->getRequest();
+        $isAjax = $request->isXmlHttpRequest();
+
+        if ($isAjax) {
+            $choices = $request->request->get('data');
+
+            $em = $this->getDoctrine()->getManager();
+            $repository = $em->getRepository('SgUserBundle:User');
+
+            foreach ($choices as $choice) {
+                $entity = $repository->find($choice['value']);
+                $entity->setEnabled(false);
+                $em->persist($entity);
+            }
+
+            $em->flush();
+
+            return new Response('This is ajax response.');
+        }
+
+        return new Response('This is not ajax.', 400);
+    }
     ```
 
-5. Working with Associations
+## Working with Associations
 
     We extend the user entity to multiple OneToMany associations (Post and Comment).
 
@@ -272,26 +351,16 @@
     For a comma-separated view of all blog titles we add the following to the UserDatatable class.
 
     ``` php
-    $this->setTableHeaders(array(
-        'Username',
-        'Email',
-        'Enabled',
-        'Posts',
-        ''
-    ));
-
     $postsField = new Field('posts');
     $postsField->setRenderArray(true);
     $postsField->setRenderArrayFieldName('title');
     $postsField->setSName('posts.title');
 
-    $this->addField($nameField);
-    $this->addField($emailField);
-    $this->addField($enabledField);
     $this->addField($postsField);
-    $this->addField($idField);
     ```
 
-    The result should looks like that:
+## Result
 
-    <div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/doc/screenshot2.jpg"></div>
+    The final result should looks like that:
+
+    <div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/doc/sc1.jpg"></div>
