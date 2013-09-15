@@ -20,7 +20,7 @@
 
         {% if column.mRender != null %}
             "mRender": function(data, type, full) {
-                return {{ column.mRender }};
+                return {{ column.mRender }}(data, type, full);
             },
         {% endif %}
 

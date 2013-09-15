@@ -89,7 +89,7 @@ class UserDatatable extends AbstractDatatableView
         $enabledField = new Column('enabled');
         $enabledField->setBSearchable('false');
         $enabledField->setSWidth('90');
-        $enabledField->setMRender("render_boolean_icons(data, type, full)");
+        $enabledField->setMRender("render_boolean_icons");
 
         $postsField = new Column('posts');
         $postsField->setRenderArray(true);
