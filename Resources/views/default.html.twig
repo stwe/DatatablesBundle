@@ -9,7 +9,7 @@
                         <th>{{ th }}</th>
                     {% endfor %}
                     {% if multiselect %}
-                        <th><input type="checkbox" name="select_all" /></th>
+                        <th><input type="checkbox" name="select_all" id="select_all" /></th>
                     {% endif %}
                 </tr>
             </thead>
@@ -115,6 +115,18 @@
                         </p>";
 
                     $(".pagination").append(multiple_html);
+
+                    $("#select_all").click(function(event) {
+                        if(this.checked) {
+                            $(":checkbox").each(function() {
+                                this.checked = true;
+                            });
+                        } else {
+                            $(":checkbox").each(function() {
+                                this.checked = false;
+                            });
+                        }
+                    });
 
                     $("#bulk_action_routes_button").click(function() {
                         $.ajax({
