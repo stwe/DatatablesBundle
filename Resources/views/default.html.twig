@@ -2,10 +2,6 @@
 
     {% block sg_datatable_html %}
 
-        {% if multiselect %}
-            <form id="sg_datatable_form">
-        {% endif %}
-
         <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="{{ tableId }}">
             <thead>
                 <tr>
@@ -13,18 +9,13 @@
                         <th>{{ th }}</th>
                     {% endfor %}
                     {% if multiselect %}
-                        <th></th>
+                        <th><input type="checkbox" name="select_all" /></th>
                     {% endif %}
                 </tr>
             </thead>
             <tbody>
             </tbody>
         </table>
-
-        {% if multiselect %}
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        {% endif %}
 
     {% endblock %}
 
@@ -79,11 +70,8 @@
                                     if (type != "display")
                                         return data;
 
-                                    var form  = "<input type='checkbox' value='" + full.id + "' name='" + full.id + "' />";
-
-                                    return form;
+                                    return "<input type='checkbox' value='" + full.id + "' name='select_column' />";
                                 },
-
                                 "bSortable": false,
                                 "bSearchable": false
                             }
@@ -115,11 +103,36 @@
                     return "Test";
                 }
 
-                $('#sg_datatable_form').submit( function() {
-                    var sData = $('input', oTable.fnGetNodes()).serialize();
-                    alert( "The following data would have been submitted to the server: \n\n"+sData );
-                    return false;
-                } );
+                {% if multiselect %}
+                    var multiple_html = "\
+                        <p>\
+                            <select name='bulk_action_routes[select]'>\
+                                {% for key, value in bulkActions %}\
+                                    <option value='{{ path(value) }}'>{{ key }}</option>\
+                                {% endfor %}\
+                            </select>\
+                            <button id='bulk_action_routes_button' type='button' class='btn'>OK</button>\
+                        </p>";
+
+                    $(".pagination").append(multiple_html);
+
+                    $("#bulk_action_routes_button").click(function() {
+                        $.ajax({
+                            url: $("select[name='bulk_action_routes[select]']").val(),
+                            type: "POST",
+                            cache: false,
+                            data: {
+                                'data': $('input', oTable.fnGetNodes()).serializeArray()
+                            },
+                            success: function(msg) {
+                                oTable.fnDraw();
+                            },
+                            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                console.log(XMLHttpRequest + ' ' + textStatus + ' ' +errorThrown);
+                            }
+                        })
+                    });
+                {% endif %}
 
             });
 

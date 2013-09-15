@@ -96,6 +96,13 @@ abstract class AbstractDatatableView
      */
     protected $multiselect;
 
+    /**
+     * Contains all bulk actions.
+     *
+     * @var array
+     */
+    protected $bulkActions;
+
 
     //-------------------------------------------------
     // Ctor.
@@ -123,6 +130,7 @@ abstract class AbstractDatatableView
         $this->sAjaxSource      = '';
         $this->customizeOptions = array();
         $this->multiselect      = false;
+        $this->bulkActions      = array();
 
         $this->build();
     }
@@ -153,6 +161,7 @@ abstract class AbstractDatatableView
         $options['sAjaxSource']      = $this->getSAjaxSource();
         $options['customizeOptions'] = $this->getCustomizeOptions();
         $options['multiselect']      = $this->getMultiselect();
+        $options['bulkActions']      = $this->getBulkActions();
 
         return $this->templating->render($this->getTemplate(), $options);
     }
@@ -369,6 +378,31 @@ abstract class AbstractDatatableView
     public function getMultiselect()
     {
         return $this->multiselect;
+    }
+
+    /**
+     * Add bulkAction.
+     *
+     * @param string $title The title for the form select field
+     * @param string $route The route of the bulk action
+     *
+     * @return $this
+     */
+    public function addBulkAction($title, $route)
+    {
+        $this->bulkActions[$title] = $route;
+
+        return $this;
+    }
+
+    /**
+     * Set bulkAction.
+     *
+     * @return array
+     */
+    public function getBulkActions()
+    {
+        return $this->bulkActions;
     }
 }
 
