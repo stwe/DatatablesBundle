@@ -1,11 +1,6 @@
 {% for column in actionColumns %}
     {
-        {% if column.mData != null %}
-            "mData": "{{ column.mData }}",
-        {% else %}
-            "mData": null,
-        {% endif %}
-
+        "mData": null,
         "sName": "",
 
         {% if column.sClass != "" %}

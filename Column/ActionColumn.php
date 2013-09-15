@@ -94,7 +94,7 @@ class ActionColumn extends BaseColumn
      */
     public function __construct($mData = null, $sName = '')
     {
-        parent::__construct($mData, $sName);
+        parent::__construct(null, $sName);
 
         // your own logic
 
