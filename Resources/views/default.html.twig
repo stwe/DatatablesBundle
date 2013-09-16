@@ -9,7 +9,7 @@
                         <th>{{ th }}</th>
                     {% endfor %}
                     {% if multiselect %}
-                        <th><input type="checkbox" name="select_all" id="select_all" /></th>
+                        <th><input type="checkbox" name="select_all_checkbox" id="select_all_checkbox" /></th>
                     {% endif %}
                 </tr>
             </thead>
@@ -70,7 +70,7 @@
                                     if (type != "display")
                                         return data;
 
-                                    return "<input type='checkbox' value='" + full.id + "' name='select_column' />";
+                                    return "<input type='checkbox' name='select_column_checkbox' value='" + full.id + "' class='select_column_checkbox' />";
                                 },
                                 "bSortable": false,
                                 "bSearchable": false
@@ -116,33 +116,46 @@
 
                     $(".pagination").append(multiple_html);
 
-                    $("#select_all").click(function(event) {
+                    $("#select_all_checkbox").click(function(event) {
                         if(this.checked) {
-                            $(":checkbox").each(function() {
+                            $("input:checkbox.select_column_checkbox").each(function() {
                                 this.checked = true;
                             });
                         } else {
-                            $(":checkbox").each(function() {
+                            $("input:checkbox.select_column_checkbox").each(function() {
                                 this.checked = false;
                             });
                         }
                     });
 
                     $("#bulk_action_routes_button").click(function() {
-                        $.ajax({
-                            url: $("select[name='bulk_action_routes[select]']").val(),
-                            type: "POST",
-                            cache: false,
-                            data: {
-                                'data': $('input', oTable.fnGetNodes()).serializeArray()
-                            },
-                            success: function(msg) {
-                                oTable.fnDraw();
-                            },
-                            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                                console.log(XMLHttpRequest + ' ' + textStatus + ' ' +errorThrown);
+                        var length = $("input:checkbox:checked.select_column_checkbox").length;
+
+                        alert(length);
+
+                        if (length > 0) {
+                            if (!confirm('Are you sure ?')) {
+                                return;
                             }
-                        })
+
+                            $.ajax({
+                                url: $("select[name='bulk_action_routes[select]']").val(),
+                                type: "POST",
+                                cache: false,
+                                data: {
+                                    'data': $("input:checkbox:checked.select_column_checkbox", oTable.fnGetNodes()).serializeArray()
+                                },
+                                success: function(msg) {
+                                    oTable.fnDraw();
+                                },
+                                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                    console.log(XMLHttpRequest + ' ' + textStatus + ' ' +errorThrown);
+                                }
+                            })
+                        } else {
+                            alert('You need to select at least one element.');
+                        }
+
                     });
                 {% endif %}
 
