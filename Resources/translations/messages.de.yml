@@ -1,5 +1,5 @@
-sg:
-    datatables:
+datatables: # the bundle name
+    datatable: # jQuery plugin
         sProcessing: "Bitte warten..."
         sLengthMenu: "_MENU_ Einträge anzeigen"
         sZeroRecords: "Keine Einträge vorhanden."
@@ -12,3 +12,6 @@ sg:
         sPrevious: "Zurück"
         sNext: "Nächster"
         sLast: "Letzter"
+    bulk:
+        confirmMsg: "Sind sie sicher?"
+        selectError: "Sie müssen mindestens ein Element auswählen."

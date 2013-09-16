@@ -1,5 +1,5 @@
-sg:
-    datatables:
+datatables: # the bundle name
+    datatable: # jQuery plugin
         sProcessing: "Processing..."
         sLengthMenu: "Show _MENU_ entries"
         sZeroRecords: "No matching records found"
@@ -12,3 +12,6 @@ sg:
         sPrevious: "Previous"
         sNext: "Next"
         sLast: "Last"
+    bulk:
+        confirmMsg: "Are you sure?"
+        selectError: "You need to select at least one element."

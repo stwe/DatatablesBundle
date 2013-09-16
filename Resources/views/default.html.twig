@@ -36,20 +36,20 @@
                     "aLengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "All"]],
                     "iDisplayLength": 5,
                     "oLanguage": {
-                        "sProcessing": "<img src='{{ asset('bundles/sgdatatables/img/loader.gif') }}' style='margin-left: 20px; margin-bottom: 5px;' />" + " {{ 'sg.datatables.sProcessing'|trans({}, 'DatatablesBundle') }}",
-                        "sLengthMenu": "{{ 'sg.datatables.sLengthMenu'|trans({}, 'DatatablesBundle') }}",
-                        "sZeroRecords": "{{ 'sg.datatables.sZeroRecords'|trans({}, 'DatatablesBundle') }}",
-                        "sInfo": "{{ 'sg.datatables.sInfo'|trans({}, 'DatatablesBundle') }}",
-                        "sInfoEmpty": "{{ 'sg.datatables.sInfoEmpty'|trans({}, 'DatatablesBundle') }}",
-                        "sInfoFiltered": "{{ 'sg.datatables.sInfoFiltered'|trans({}, 'DatatablesBundle') }}",
-                        "sInfoPostFix": "{{ 'sg.datatables.sInfoPostFix'|trans({}, 'DatatablesBundle') }}",
-                        "sSearch": "{{ 'sg.datatables.sSearch'|trans({}, 'DatatablesBundle') }}",
+                        "sProcessing": "<img src='{{ asset('bundles/sgdatatables/img/loader.gif') }}' style='margin-left: 20px; margin-bottom: 5px;' />" + " {{ 'datatables.datatable.sProcessing'|trans({}, 'messages') }}",
+                        "sLengthMenu": "{{ 'datatables.datatable.sLengthMenu'|trans({}, 'messages') }}",
+                        "sZeroRecords": "{{ 'datatables.datatable.sZeroRecords'|trans({}, 'messages') }}",
+                        "sInfo": "{{ 'datatables.datatable.sInfo'|trans({}, 'messages') }}",
+                        "sInfoEmpty": "{{ 'datatables.datatable.sInfoEmpty'|trans({}, 'messages') }}",
+                        "sInfoFiltered": "{{ 'datatables.datatable.sInfoFiltered'|trans({}, 'messages') }}",
+                        "sInfoPostFix": "{{ 'datatables.datatable.sInfoPostFix'|trans({}, 'messages') }}",
+                        "sSearch": "{{ 'datatables.datatable.sSearch'|trans({}, 'messages') }}",
                         "sUrl": "",
                         "oPaginate": {
-                            "sFirst": "{{ 'sg.datatables.sFirst'|trans({}, 'DatatablesBundle') }}",
-                            "sPrevious": "{{ 'sg.datatables.sPrevious'|trans({}, 'DatatablesBundle') }}",
-                            "sNext": "{{ 'sg.datatables.sNext'|trans({}, 'DatatablesBundle') }}",
-                            "sLast": "{{ 'sg.datatables.sLast'|trans({}, 'DatatablesBundle') }}"
+                            "sFirst": "{{ 'datatables.datatable.sFirst'|trans({}, 'messages') }}",
+                            "sPrevious": "{{ 'datatables.datatable.sPrevious'|trans({}, 'messages') }}",
+                            "sNext": "{{ 'datatables.datatable.sNext'|trans({}, 'messages') }}",
+                            "sLast": "{{ 'datatables.datatable.sLast'|trans({}, 'messages') }}"
                         }
                     }
                 };
@@ -131,10 +131,8 @@
                     $("#bulk_action_routes_button").click(function() {
                         var length = $("input:checkbox:checked.select_column_checkbox").length;
 
-                        alert(length);
-
                         if (length > 0) {
-                            if (!confirm('Are you sure ?')) {
+                            if (!confirm( "{{ 'datatables.bulk.confirmMsg'|trans({}, 'messages') }}" )) {
                                 return;
                             }
 
@@ -153,7 +151,7 @@
                                 }
                             })
                         } else {
-                            alert('You need to select at least one element.');
+                            alert("{{ 'datatables.bulk.selectError'|trans({}, 'messages') }}");
                         }
 
                     });
