@@ -12,6 +12,7 @@ datatables: # the bundle name
         sPrevious: "Previous"
         sNext: "Next"
         sLast: "Last"
+        all: "all"
     bulk:
         confirmMsg: "Are you sure?"
         selectError: "You need to select at least one element."

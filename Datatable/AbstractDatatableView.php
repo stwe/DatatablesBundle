@@ -48,6 +48,13 @@ abstract class AbstractDatatableView
     protected $sDomOptions;
 
     /**
+     * Number of rows to display on a single page when using pagination.
+     *
+     * @var integer
+     */
+    protected $iDisplayLength;
+
+    /**
      * The jQuery table id selector.
      *
      * @var string
@@ -123,6 +130,7 @@ abstract class AbstractDatatableView
             'sDomInfo'       => 'span3',
             'sDomPagination' => 'span9'
         );
+        $this->iDisplayLength   = 10;
         $this->tableId          = 'sg_datatable';
         $this->tableHeaders     = array();
         $this->columns          = array();
@@ -154,6 +162,7 @@ abstract class AbstractDatatableView
     {
         $options = array();
         $options['sDomOptions']      = $this->getSDomOptions();
+        $options['iDisplayLength']   = $this->getIDisplayLength();
         $options['tableId']          = $this->getTableId();
         $options['tableHeaders']     = $this->getTableHeaders();
         $options['columns']          = $this->getColumns();
@@ -230,6 +239,26 @@ abstract class AbstractDatatableView
     public function getSDomOptions()
     {
         return $this->sDomOptions;
+    }
+
+    /**
+     * @param int $iDisplayLength
+     *
+     * @return $this
+     */
+    public function setIDisplayLength($iDisplayLength)
+    {
+        $this->iDisplayLength = $iDisplayLength;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getIDisplayLength()
+    {
+        return $this->iDisplayLength;
     }
 
     /**

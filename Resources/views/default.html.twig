@@ -33,8 +33,8 @@
                     "sAjaxSource": "{{ path(sAjaxSource) }}",
                     "sDom": "<'row'<'{{ sDomOptions.sDomLength }}'l><'{{ sDomOptions.sDomFilter }}'f>r>t<'row'<'{{ sDomOptions.sDomInfo }}'i><'{{ sDomOptions.sDomPagination }}'p>>",
                     "sPaginationType": "bootstrap",
-                    "aLengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "All"]],
-                    "iDisplayLength": 5,
+                    "aLengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "{{ 'datatables.datatable.all'|trans({}, 'messages') }}"]],
+                    "iDisplayLength": {{ iDisplayLength }},
                     "oLanguage": {
                         "sProcessing": "<img src='{{ asset('bundles/sgdatatables/img/loader.gif') }}' style='margin-left: 20px; margin-bottom: 5px;' />" + " {{ 'datatables.datatable.sProcessing'|trans({}, 'messages') }}",
                         "sLengthMenu": "{{ 'datatables.datatable.sLengthMenu'|trans({}, 'messages') }}",
