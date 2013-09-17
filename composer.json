@@ -2,7 +2,7 @@
     "name": "sg/datatablesbundle",
     "type": "symfony-bundle",
     "description": "This Bundle integrates the jQuery DataTables plugin into your Symfony2 application. Compatible with Doctrine ORM.",
-    "keywords": ["Symfony2", "Datatable", "Grid", "Table"],
+    "keywords": ["symfony2", "datatable", "grid", "table", "datagrid", "pagination"],
     "homepage": "https://github.com/stwe/DatatablesBundle",
     "license": "MIT",
     "authors": [
