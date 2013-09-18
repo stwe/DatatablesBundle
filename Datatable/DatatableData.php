@@ -420,22 +420,35 @@ class DatatableData
      */
     private function setWhere(QueryBuilder $qb)
     {
-        // global search
-        if (isset($this->requestParams['sSearch']) && $this->sSearch != '') {
+        // global filtering
+        if ($this->sSearch != '') {
 
             $orExpr = $qb->expr()->orX();
 
             for ($i = 0; $i < $this->iColumns; $i++) {
-
                 if (isset($this->requestParams['bSearchable_' . $i]) && $this->requestParams['bSearchable_' . $i] === 'true') {
                     $searchField = $this->allFields[$i];
                     $orExpr->add($qb->expr()->like($searchField, "?$i"));
                     $qb->setParameter($i, "%" . $this->sSearch . "%");
                 }
-
             }
 
             $qb->where($orExpr);
+        }
+
+        // individual filtering
+        $andExpr = $qb->expr()->andX();
+
+        for ($i = 0; $i < $this->iColumns; $i++) {
+            if (isset($this->requestParams['bSearchable_' . $i]) && $this->requestParams['bSearchable_' . $i] === 'true' && $this->requestParams['sSearch_' . $i] != '') {
+                $searchField = $this->allFields[$i];
+                $andExpr->add($qb->expr()->like($searchField, "?$i"));
+                $qb->setParameter($i, "%" . $this->requestParams['sSearch_' . $i] . "%");
+            }
+        }
+
+        if ($andExpr->count() > 0) {
+            $qb->andWhere($andExpr);
         }
 
         return $this;
