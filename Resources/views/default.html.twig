@@ -5,13 +5,15 @@
         <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="{{ tableId }}">
             <thead>
                 <tr>
-                    {% for column in columns %}
-                        {% if column.bSearchable == true %}
-                            <th><input type="text" class="search_init" /></th>
-                        {% else %}
-                            <th><input type="hidden" class="search_init" /></th>
-                        {% endif %}
-                    {% endfor %}
+                    {% if individualFiltering == true %}
+                        {% for column in columns %}
+                            {% if column.bSearchable == true %}
+                                <th><input type="text" class="search_init" /></th>
+                            {% else %}
+                                <th><input type="hidden" class="search_init" /></th>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                 </tr>
                 <tr>
                     {% for th in tableHeaders %}
@@ -166,9 +168,11 @@
                     });
                 {% endif %}
 
-                $("input.search_init").keyup(function() {
-                    oTable.fnFilter(this.value, $("input.search_init").index(this));
-                });
+                {% if individualFiltering == true %}
+                    $("input.search_init").keyup(function() {
+                        oTable.fnFilter(this.value, $("input.search_init").index(this));
+                    });
+                {% endif %}
 
             });
 

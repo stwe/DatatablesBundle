@@ -104,6 +104,13 @@ abstract class AbstractDatatableView
     protected $multiselect;
 
     /**
+     * Enable or disable individual filtering.
+     *
+     * @var boolean
+     */
+    protected $individualFiltering;
+
+    /**
      * Contains all bulk actions.
      *
      * @var array
@@ -138,7 +145,8 @@ abstract class AbstractDatatableView
         $this->sAjaxSource      = '';
         $this->customizeOptions = array();
         $this->multiselect      = false;
-        $this->bulkActions      = array();
+        $this->individualFiltering = false;
+        $this->bulkActions         = array();
 
         $this->build();
     }
@@ -161,16 +169,17 @@ abstract class AbstractDatatableView
     public function createView()
     {
         $options = array();
-        $options['sDomOptions']      = $this->getSDomOptions();
-        $options['iDisplayLength']   = $this->getIDisplayLength();
-        $options['tableId']          = $this->getTableId();
-        $options['tableHeaders']     = $this->getTableHeaders();
-        $options['columns']          = $this->getColumns();
-        $options['actionColumns']    = $this->getActionColumns();
-        $options['sAjaxSource']      = $this->getSAjaxSource();
-        $options['customizeOptions'] = $this->getCustomizeOptions();
-        $options['multiselect']      = $this->getMultiselect();
-        $options['bulkActions']      = $this->getBulkActions();
+        $options['sDomOptions']         = $this->getSDomOptions();
+        $options['iDisplayLength']      = $this->getIDisplayLength();
+        $options['tableId']             = $this->getTableId();
+        $options['tableHeaders']        = $this->getTableHeaders();
+        $options['columns']             = $this->getColumns();
+        $options['actionColumns']       = $this->getActionColumns();
+        $options['sAjaxSource']         = $this->getSAjaxSource();
+        $options['customizeOptions']    = $this->getCustomizeOptions();
+        $options['multiselect']         = $this->getMultiselect();
+        $options['individualFiltering'] = $this->getIndividualFiltering();
+        $options['bulkActions']         = $this->getBulkActions();
 
         return $this->templating->render($this->getTemplate(), $options);
     }
@@ -407,6 +416,26 @@ abstract class AbstractDatatableView
     public function getMultiselect()
     {
         return $this->multiselect;
+    }
+
+    /**
+     * @param boolean $individualFiltering
+     *
+     * @return $this
+     */
+    public function setIndividualFiltering($individualFiltering)
+    {
+        $this->individualFiltering = $individualFiltering;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIndividualFiltering()
+    {
+        return $this->individualFiltering;
     }
 
     /**
