@@ -5,6 +5,11 @@
         <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="{{ tableId }}">
             <thead>
             </thead>
+            <tfoot>
+            {% for column in columns %}
+                <th></th>
+            {% endfor %}
+            </tfoot>
             <tbody>
             </tbody>
         </table>
@@ -72,7 +77,26 @@
                     ]
                 });
 
-                var oTable = $(selector).dataTable(defaults);
+                var oTable;
+                {% if individualFiltering == true %}
+                    oTable = $(selector).dataTable(defaults).columnFilter(
+                        {
+                            aoColumns: [
+                                {% for column in columns %}
+                                    {% if column.bSearchable == true %}
+                                        {
+                                            type: "text"
+                                        },
+                                    {% else %}
+                                        null,
+                                    {% endif %}
+                                {% endfor %}
+                            ]
+                        }
+                    );
+                {% else %}
+                    oTable = $(selector).dataTable(defaults);
+                {% endif %}
 
                 var anOpen = [];
 
@@ -147,12 +171,6 @@
                             alert("{{ 'datatables.bulk.selectError'|trans({}, 'messages') }}");
                         }
 
-                    });
-                {% endif %}
-
-                {% if individualFiltering == true %}
-                    $("input.search_init").keyup(function() {
-                        oTable.fnFilter(this.value, $("input.search_init").index(this));
                     });
                 {% endif %}
 
