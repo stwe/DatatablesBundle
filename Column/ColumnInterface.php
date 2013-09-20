@@ -55,6 +55,18 @@ interface ColumnInterface
     public function getBVisible();
 
     /**
+     * @param string $sTitle
+     *
+     * @return self
+     */
+    public function setSTitle($sTitle);
+
+    /**
+     * @return string
+     */
+    public function getSTitle();
+
+    /**
      * @param string $mData
      *
      * @return self

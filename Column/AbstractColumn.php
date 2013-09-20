@@ -40,6 +40,13 @@ abstract class AbstractColumn implements ColumnInterface
     protected $bVisible;
 
     /**
+     * The title of this column.
+     *
+     * @var string
+     */
+    protected $sTitle;
+
+    /**
      * Used to read data from any JSON data source property.
      *
      * @var mixed
@@ -101,6 +108,8 @@ abstract class AbstractColumn implements ColumnInterface
         $this->bSearchable = true;
         $this->bSortable = true;
         $this->bVisible = true;
+
+        $this->sTitle = '';
 
         $this->mData = $mData;
         $this->mRender = null;
@@ -174,6 +183,24 @@ abstract class AbstractColumn implements ColumnInterface
     public function getBVisible()
     {
         return $this->bVisible;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSTitle($sTitle)
+    {
+        $this->sTitle = $sTitle;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSTitle()
+    {
+        return $this->sTitle;
     }
 
     /**
