@@ -62,13 +62,6 @@ abstract class AbstractDatatableView
     protected $tableId;
 
     /**
-     * Content for the table header cells.
-     *
-     * @var array
-     */
-    protected $tableHeaders;
-
-    /**
      * The aoColumns.
      *
      * @var array
@@ -137,14 +130,13 @@ abstract class AbstractDatatableView
             'sDomInfo'       => 'span3',
             'sDomPagination' => 'span9'
         );
-        $this->iDisplayLength   = 10;
-        $this->tableId          = 'sg_datatable';
-        $this->tableHeaders     = array();
-        $this->columns          = array();
-        $this->actionColumns    = array();
-        $this->sAjaxSource      = '';
-        $this->customizeOptions = array();
-        $this->multiselect      = false;
+        $this->iDisplayLength      = 10;
+        $this->tableId             = 'sg_datatable';
+        $this->columns             = array();
+        $this->actionColumns       = array();
+        $this->sAjaxSource         = '';
+        $this->customizeOptions    = array();
+        $this->multiselect         = false;
         $this->individualFiltering = false;
         $this->bulkActions         = array();
 
@@ -172,7 +164,6 @@ abstract class AbstractDatatableView
         $options['sDomOptions']         = $this->getSDomOptions();
         $options['iDisplayLength']      = $this->getIDisplayLength();
         $options['tableId']             = $this->getTableId();
-        $options['tableHeaders']        = $this->getTableHeaders();
         $options['columns']             = $this->getColumns();
         $options['actionColumns']       = $this->getActionColumns();
         $options['sAjaxSource']         = $this->getSAjaxSource();
@@ -288,26 +279,6 @@ abstract class AbstractDatatableView
     public function getTableId()
     {
         return $this->tableId;
-    }
-
-    /**
-     * @param array $tableHeaders
-     *
-     * @return $this
-     */
-    public function setTableHeaders($tableHeaders)
-    {
-        $this->tableHeaders = $tableHeaders;
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getTableHeaders()
-    {
-        return $this->tableHeaders;
     }
 
     /**
