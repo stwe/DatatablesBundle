@@ -27,6 +27,7 @@
             '@bootstrap_js'
             '@datatables_js'
             'bundles/sgdatatables/js/dataTables_bootstrap.js'
+            'bundles/sgdatatables/js/jquery.dataTables.columnFilter.js'
             'bundles/fosjsrouting/js/router.js' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
@@ -66,43 +67,56 @@ class UserDatatable extends AbstractDatatableView
      */
     public function build()
     {
+        //-------------------------------------------------
+        // Datatable config
+        //-------------------------------------------------
+
         $this->setTableId('user_datatable');
         $this->setSAjaxSource('user_results');
-
-        $this->setTableHeaders(array(
-            'Username',
-            'Email',
-            'Enabled',
-            'Posts',
-            '', // or 'Edit'
-            ''  // or 'Show'
-        ));
 
         $this->setMultiselect(true);
         $this->addBulkAction('Disable', 'user_bulk_disable');
         $this->addBulkAction('Delete', 'user_bulk_delete');
 
+        $this->setIndividualFiltering(true);
+
+
+        //-------------------------------------------------
+        // Columns config
+        //-------------------------------------------------
+
         $nameField = new Column('username');
+        $nameField->setSTitle('Username');
+        $nameField->setBSearchable(false);
 
         $emailField = new Column('email');
+        $emailField->setSTitle('Email');
 
         $enabledField = new Column('enabled');
-        $enabledField->setBSearchable('false');
+        $enabledField->setSTitle('Enabled');
+        $enabledField->setBSearchable(false);
         $enabledField->setSWidth('90');
         $enabledField->setMRender("render_boolean_icons");
 
         $postsField = new Column('posts');
+        $postsField->setSTitle('Posts');
         $postsField->setRenderArray(true);
         $postsField->setRenderArrayFieldName('title');
         $postsField->setSName('posts.title');
 
 
-        // edit entity
+        //-------------------------------------------------
+        // ActionColumns config
+        //-------------------------------------------------
 
         $editField = new ActionColumn();
+
+        // set a title
+        //$editField->setSTitle('Edit');
+
         // example edit route: @Route("/{id}/edit", name="user_edit", options={"expose"=true})
         // important here is the section: options={"expose"=true}
-        $editField->setRoute('user_edit');
+        $editField->setRoute('sg_calendar_edit_calendar');
         $editField->addRouteParameter('id', 'id');
 
         // you can set multiple parameters:
@@ -119,9 +133,6 @@ class UserDatatable extends AbstractDatatableView
         // ... or an icon
         $editField->setIcon(ActionColumn::DEFAULT_EDIT_ICON);
 
-
-        // show entity
-
         $showField = new ActionColumn();
         $showField->setRoute('sg_calendar_edit_calendar');
         $showField->addRouteParameter('id', 'id');
@@ -130,7 +141,9 @@ class UserDatatable extends AbstractDatatableView
         $showField->setIcon(ActionColumn::DEFAULT_SHOW_ICON);
 
 
-        // add columns
+        //-------------------------------------------------
+        // All columns added
+        //-------------------------------------------------
 
         $this->addColumn($nameField);
         $this->addColumn($emailField);
@@ -351,7 +364,8 @@ class User extends BaseUser
 For a comma-separated view of all blog titles we add the following to the UserDatatable class.
 
 ```php
-$postsField = new Field('posts');
+$postsField = new Column('posts');
+$postsField->setSTitle('Posts');
 $postsField->setRenderArray(true);
 $postsField->setRenderArrayFieldName('title');
 $postsField->setSName('posts.title');
