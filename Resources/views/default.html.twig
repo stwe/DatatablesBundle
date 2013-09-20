@@ -87,7 +87,9 @@
                                 {% for column in columns %}
                                     {% if column.bSearchable == true %}
                                         {
-                                            type: "text"
+                                            type: "text",
+                                            bRegex: true,
+                                            bSmart: true
                                         },
                                     {% else %}
                                         null,
