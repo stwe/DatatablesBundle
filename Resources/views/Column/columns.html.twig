@@ -1,5 +1,7 @@
 {% for column in columns %}
     {
+        "sTitle": "{{ column.sTitle }}",
+
         {% if column.mData != null %}
             "mData": "{{ column.mData }}",
         {% else %}
