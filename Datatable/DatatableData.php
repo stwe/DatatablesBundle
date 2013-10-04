@@ -18,6 +18,7 @@ use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * Class DatatableData
@@ -531,7 +532,11 @@ class DatatableData
      */
     private function executeQuery()
     {
-        $fresults = $this->qb->getQuery()->getResult(Query::HYDRATE_ARRAY);
+        $query = $this->qb->getQuery();
+        $query->setHydrationMode(Query::HYDRATE_ARRAY);
+        $fresults = new Paginator($query, true);
+        $output = array("aaData" => array());
+
 
         $output = array("aaData" => array());
 
