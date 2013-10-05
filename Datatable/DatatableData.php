@@ -15,10 +15,10 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Response;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * Class DatatableData
@@ -535,8 +535,6 @@ class DatatableData
         $query = $this->qb->getQuery();
         $query->setHydrationMode(Query::HYDRATE_ARRAY);
         $fresults = new Paginator($query, true);
-        $output = array("aaData" => array());
-
 
         $output = array("aaData" => array());
 
