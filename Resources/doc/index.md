@@ -129,6 +129,26 @@ assetic:
             inputs:
                 - %kernel.root_dir%/../vendor/datatables/datatables/media/js/jquery.dataTables.min.js
             output: js/datatables.js
+        img_sort_both:
+            inputs:
+                - %kernel.root_dir%/../vendor/datatables/datatables/media/images/sort_both.png
+            output: bundles/sgdatatables/images/sort_both.png
+        img_sort_asc:
+            inputs:
+                - %kernel.root_dir%/../vendor/datatables/datatables/media/images/sort_asc.png
+            output: bundles/sgdatatables/images/sort_asc.png
+        img_sort_desc:
+            inputs:
+                - %kernel.root_dir%/../vendor/datatables/datatables/media/images/sort_desc.png
+            output: bundles/sgdatatables/images/sort_desc.png
+        img_sort_asc_dis:
+            inputs:
+                - %kernel.root_dir%/../vendor/datatables/datatables/media/images/sort_asc_disabled.png
+            output: bundles/sgdatatables/images/sort_asc_disabled.png
+        img_sort_desc_dis:
+            inputs:
+                - %kernel.root_dir%/../vendor/datatables/datatables/media/images/sort_desc_disabled.png
+            output: bundles/sgdatatables/images/sort_desc_disabled.png
 ```
 
 ## Example
