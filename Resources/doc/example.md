@@ -372,9 +372,3 @@ $postsField->setSName('posts.title');
 
 $this->addField($postsField);
 ```
-
-## Result
-
-The final result should looks like that:
-
-<div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/doc/sc1.JPG"></div>
