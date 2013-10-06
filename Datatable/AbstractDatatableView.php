@@ -11,9 +11,10 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
-use Symfony\Bundle\TwigBundle\TwigEngine;
 use Sg\DatatablesBundle\Column\Column;
 use Sg\DatatablesBundle\Column\ActionColumn;
+
+use Symfony\Bundle\TwigBundle\TwigEngine;
 
 /**
  * Class AbstractDatatableView

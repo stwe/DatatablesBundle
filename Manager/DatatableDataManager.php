@@ -11,11 +11,12 @@
 
 namespace Sg\DatatablesBundle\Manager;
 
+use Sg\DatatablesBundle\Datatable\DatatableData;
+
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Serializer;
-use Sg\DatatablesBundle\Datatable\DatatableData;
 
 /**
  * Class DatatableDataManager
@@ -44,10 +45,11 @@ class DatatableDataManager
      */
     private $logger;
 
+
     /**
      * Ctor.
      *
-     * @param RegistryInterface $doctrine   A RegistryInterface instance
+     * @param RegistryInterface $doctrine   A RegistryInterface
      * @param Request           $request    A Request instance
      * @param Serializer        $serializer A Serializer instance
      * @param Logger            $logger     A Logger instance
@@ -61,6 +63,8 @@ class DatatableDataManager
     }
 
     /**
+     * Get datatable.
+     *
      * @param string $entity
      *
      * @return DatatableData A DatatableData instance
@@ -68,7 +72,7 @@ class DatatableDataManager
     public function getDatatable($entity)
     {
         /**
-         * Get all GET params
+         * Get all GET params.
          *
          * @var \Symfony\Component\HttpFoundation\ParameterBag $parameterBag
          */

@@ -11,9 +11,10 @@
 
 namespace Sg\DatatablesBundle\Twig;
 
+use Sg\DatatablesBundle\Datatable\AbstractDatatableView;
+
 use Twig_Extension;
 use Twig_SimpleFunction;
-use Sg\DatatablesBundle\Datatable\AbstractDatatableView;
 
 /**
  * Class DatatableTwigExtension
