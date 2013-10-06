@@ -10,6 +10,12 @@
                 {% for column in columns %}
                     <th></th>
                 {% endfor %}
+                {% for actionColumn in actionColumns %}
+                    <th></th>
+                {% endfor %}
+                {% if multiselect %}
+                    <th></th>
+                {% endif %}
                 </tfoot>
             {% endif %}
             <tbody>
