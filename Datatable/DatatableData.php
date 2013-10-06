@@ -29,7 +29,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @package Sg\DatatablesBundle\Datatable
  */
-class DatatableData
+class DatatableData implements DatatableDataInterface
 {
     /**
      * @var array
@@ -555,13 +555,11 @@ class DatatableData
 
 
     //-------------------------------------------------
-    // Public
+    // DatatableDataInterface
     //-------------------------------------------------
 
     /**
-     * Get results.
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * {@inheritdoc}
      */
     public function getSearchResults()
     {
@@ -574,6 +572,11 @@ class DatatableData
 
         return $response;
     }
+
+
+    //-------------------------------------------------
+    // Public
+    //-------------------------------------------------
 
     /**
      * Add callback function.

@@ -21,7 +21,7 @@ use Symfony\Bundle\TwigBundle\TwigEngine;
  *
  * @package Sg\DatatablesBundle\Datatable
  */
-abstract class AbstractDatatableView
+abstract class AbstractDatatableView implements DatatableViewInterface
 {
     /**
      * The templating service.
@@ -154,10 +154,13 @@ abstract class AbstractDatatableView
      */
     abstract public function build();
 
+
+    //-------------------------------------------------
+    // DatatableViewInterface
+    //-------------------------------------------------
+
     /**
-     * Set all options for the twig template.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function createView()
     {
