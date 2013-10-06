@@ -34,130 +34,130 @@ class DatatableData implements DatatableDataInterface
     /**
      * @var array
      */
-    private $requestParams;
+    protected $requestParams;
 
     /**
      * @var ClassMetadata
      */
-    private $metadata;
+    protected $metadata;
 
     /**
      * @var EntityManager
      */
-    private $em;
+    protected $em;
 
     /**
      * @var Serializer
      */
-    private $serializer;
+    protected $serializer;
 
     /**
      * @var Logger
      */
-    private $logger;
+    protected $logger;
 
     /**
      * Information for DataTables to use for rendering.
      *
      * @var int
      */
-    private $sEcho;
+    protected $sEcho;
 
     /**
      * Global search field
      *
      * @var string
      */
-    private $sSearch;
+    protected $sSearch;
 
     /**
      * Display start point in the current data set.
      *
      * @var int
      */
-    private $iDisplayStart;
+    protected $iDisplayStart;
 
     /**
      * Number of records that the table can display in the current draw.
      *
      * @var int
      */
-    private $iDisplayLength;
+    protected $iDisplayLength;
 
     /**
      * True if the global filter should be treated as a regular expression for advanced filtering, false if not.
      *
      * @var boolean
      */
-    private $bRegex;
+    protected $bRegex;
 
     /**
      * Number of columns being displayed.
      *
      * @var int
      */
-    private $iColumns;
+    protected $iColumns;
 
     /**
      * Number of columns to sort on.
      *
      * @var int
      */
-    private $iSortingCols;
+    protected $iSortingCols;
 
     /**
      * Column being sorted on.
      *
      * @var int
      */
-    private $iSortCol0;
+    protected $iSortCol0;
 
     /**
      * Direction to be sorted - "desc" or "asc".
      *
      * @var string
      */
-    private $sSortDir0;
+    protected $sSortDir0;
 
     /**
      * @var string
      */
-    private $tableName;
+    protected $tableName;
 
     /**
      * @var array
      */
-    private $selectFields;
+    protected $selectFields;
 
     /**
      * @var array
      */
-    private $allFields;
+    protected $allFields;
 
     /**
      * @var array
      */
-    private $joins;
+    protected $joins;
 
     /**
      * @var QueryBuilder
      */
-    private $qb;
+    protected $qb;
 
     /**
      * @var mixed
      */
-    private $rootEntityIdentifier;
+    protected $rootEntityIdentifier;
 
     /**
      * @var array
      */
-    private $callbacks;
+    protected $callbacks;
 
     /**
      * @var array
      */
-    private $response;
+    protected $response;
 
 
     //-------------------------------------------------
@@ -543,7 +543,7 @@ class DatatableData implements DatatableDataInterface
         }
 
         $outputHeader = array(
-            "sEcho" => $this->sEcho,
+            "sEcho" => (int) $this->sEcho,
             "iTotalRecords" => $this->getCountAllResults(),
             "iTotalDisplayRecords" => $this->getCountFilteredResults()
         );
