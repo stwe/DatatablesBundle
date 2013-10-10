@@ -79,13 +79,6 @@ abstract class AbstractColumn implements ColumnInterface
     protected $sDefaultContent;
 
     /**
-     * The real name of the database field.
-     *
-     * @var string
-     */
-    protected $sName;
-
-    /**
      * Defining the width of the column.
      *
      * @var string
@@ -100,29 +93,18 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Ctor.
      *
-     * @param mixed  $mData The column mData
-     * @param string $sName The column sName
+     * @param mixed $mData The column mData
      */
-    public function __construct($mData = null, $sName = '')
+    public function __construct($mData = null)
     {
         $this->bSearchable = true;
         $this->bSortable = true;
         $this->bVisible = true;
-
         $this->sTitle = '';
-
         $this->mData = $mData;
         $this->mRender = null;
-
         $this->sClass = '';
         $this->sDefaultContent = null;
-
-        if ($sName == '') {
-            $this->sName = $mData;
-        } else {
-            $this->sName = $sName;
-        }
-
         $this->sWidth = null;
     }
 
@@ -273,24 +255,6 @@ abstract class AbstractColumn implements ColumnInterface
     public function getSDefaultContent()
     {
         return $this->sDefaultContent;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setSName($sName)
-    {
-        $this->sName = $sName;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSName()
-    {
-        return $this->sName;
     }
 
     /**

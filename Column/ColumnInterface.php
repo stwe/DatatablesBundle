@@ -115,18 +115,6 @@ interface ColumnInterface
     public function getSDefaultContent();
 
     /**
-     * @param string $sName
-     *
-     * @return self
-     */
-    public function setSName($sName);
-
-    /**
-     * @return string
-     */
-    public function getSName();
-
-    /**
      * @param string $sWidth
      *
      * @return self
