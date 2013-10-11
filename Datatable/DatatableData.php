@@ -16,16 +16,11 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class DatatableData
- *
- * A thanks goes to the authors of the original implementation:
- *     Félix-Antoine Paradis (https://gist.github.com/reel/1638094) and
- *     Chad Sikorra (https://github.com/LanKit/DatatablesBundle)
  *
  * @package Sg\DatatablesBundle\Datatable
  */
@@ -52,99 +47,27 @@ class DatatableData implements DatatableDataInterface
     protected $serializer;
 
     /**
-     * @var Logger
+     * @var DatatableQuery
      */
-    protected $logger;
+    protected $datatableQuery;
 
     /**
-     * Information for DataTables to use for rendering.
+     * The name of the primary table.
      *
-     * @var int
-     */
-    protected $sEcho;
-
-    /**
-     * Global search field
-     *
-     * @var string
-     */
-    protected $sSearch;
-
-    /**
-     * Display start point in the current data set.
-     *
-     * @var int
-     */
-    protected $iDisplayStart;
-
-    /**
-     * Number of records that the table can display in the current draw.
-     *
-     * @var int
-     */
-    protected $iDisplayLength;
-
-    /**
-     * True if the global filter should be treated as a regular expression for advanced filtering, false if not.
-     *
-     * @var boolean
-     */
-    protected $bRegex;
-
-    /**
-     * Number of columns being displayed.
-     *
-     * @var int
-     */
-    protected $iColumns;
-
-    /**
-     * Number of columns to sort on.
-     *
-     * @var int
-     */
-    protected $iSortingCols;
-
-    /**
-     * Column being sorted on.
-     *
-     * @var int
-     */
-    protected $iSortCol0;
-
-    /**
-     * Direction to be sorted - "desc" or "asc".
-     *
-     * @var string
-     */
-    protected $sSortDir0;
-
-    /**
      * @var string
      */
     protected $tableName;
 
     /**
-     * @var array
+     * The name of the entity class.
+     *
+     * @var string
      */
-    protected $selectFields;
+    protected $entityName;
 
     /**
-     * @var array
-     */
-    protected $allFields;
-
-    /**
-     * @var array
-     */
-    protected $joins;
-
-    /**
-     * @var QueryBuilder
-     */
-    protected $qb;
-
-    /**
+     * The field name of the identifier/primary key.
+     *
      * @var mixed
      */
     protected $rootEntityIdentifier;
@@ -152,12 +75,22 @@ class DatatableData implements DatatableDataInterface
     /**
      * @var array
      */
-    protected $callbacks;
+    protected $response;
 
     /**
      * @var array
      */
-    protected $response;
+    protected $selectColumns;
+
+    /**
+     * @var array
+     */
+    protected $allColumns;
+
+    /**
+     * @var array
+     */
+    protected $joins;
 
 
     //-------------------------------------------------
@@ -171,42 +104,24 @@ class DatatableData implements DatatableDataInterface
      * @param ClassMetadata $metadata      A ClassMetadata instance
      * @param EntityManager $em            A EntityManager instance
      * @param Serializer    $serializer    A Serializer instance
-     * @param Logger        $logger        A Logger instance
      */
-    public function __construct($requestParams, ClassMetadata $metadata, EntityManager $em, Serializer $serializer, Logger $logger)
+    public function __construct(array $requestParams, ClassMetadata $metadata, EntityManager $em, Serializer $serializer)
     {
-        $this->requestParams  = $requestParams;
-        $this->metadata       = $metadata;
-        $this->em             = $em;
-        $this->serializer     = $serializer;
-        $this->logger         = $logger;
-
-        $this->sEcho          = (int) $this->requestParams['sEcho'];
-        $this->sSearch        = $this->requestParams['sSearch'];
-        $this->iDisplayStart  = $this->requestParams['iDisplayStart'];
-        $this->iDisplayLength = $this->requestParams['iDisplayLength'];
-        $this->bRegex         = $this->requestParams['bRegex'];
-        $this->iColumns       = $this->requestParams['iColumns'];
-        $this->iSortingCols   = $this->requestParams['iSortingCols'];
-        $this->iSortCol0      = $this->requestParams['iSortCol_0'];
-        $this->sSortDir0      = $this->requestParams['sSortDir_0'];
-
-        $this->tableName      = $metadata->getTableName();
-        $this->selectFields   = array();
-        $this->allFields      = array();
-        $this->joins          = array();
-        $this->qb             = $this->em->createQueryBuilder();
-
+        $this->requestParams        = $requestParams;
+        $this->metadata             = $metadata;
+        $this->em                   = $em;
+        $this->serializer           = $serializer;
+        $this->tableName            = $metadata->getTableName();
+        $this->entityName           = $metadata->getName();
+        $this->datatableQuery       = new DatatableQuery($em, $this->tableName, $this->entityName, $this->requestParams);
         $identifiers                = $this->metadata->getIdentifierFieldNames();
         $this->rootEntityIdentifier = array_shift($identifiers);
+        $this->response             = array();
+        $this->selectColumns        = array();
+        $this->allColumns           = array();
+        $this->joins                = array();
 
-        $this->callbacks = array(
-            'WhereBuilder' => array(),
-            );
-
-        $this->response = array();
-
-        $this->prepare();
+        $this->prepareColumns();
     }
 
 
@@ -215,27 +130,11 @@ class DatatableData implements DatatableDataInterface
     //-------------------------------------------------
 
     /**
-     * Show DQL in the Firebug / FirePHP console.
-     *
-     * @param string $msg
-     */
-    private function logDQL($msg)
-    {
-        $this->logger->info($msg . ' query:  ' . $this->qb->getQuery()->getDQL());
-
-        $params = $this->qb->getQuery()->getParameters();
-
-        foreach ($params as $param) {
-            $this->logger->info($msg . ' param name:  ' . $param->getName() . ' param value: ' . $param->getValue());
-        }
-    }
-
-    /**
-     * Add a entry to the joins[] array.
+     * Add an entry to the joins[] array.
      *
      * @param array $join
      *
-     * @return DatatableData
+     * @return $this
      */
     private function addJoin(array $join)
     {
@@ -245,310 +144,83 @@ class DatatableData implements DatatableDataInterface
     }
 
     /**
-     * Set selectFields[], joins[] and allFields[] for associations.
+     * Set associations in joins[].
      *
-     * @param array         $fields   Association field array
-     * @param int           $i        Numeric key
-     * @param ClassMetadata $metadata A ClassMetadata instance
+     * @param array         $associationParts An array of the association parts
+     * @param int           $i                Numeric key
+     * @param ClassMetadata $metadata         A ClassMetadata instance
      *
-     * @return DatatableData
+     * @return $this
      */
-    private function setAssociations($fields, $i, $metadata)
+    private function setAssociations($associationParts, $i, $metadata)
     {
-        $field = $fields[$i];
+        $column = $associationParts[$i];
 
-        if ($metadata->hasAssociation($field) === true) {
-            $targetClass          = $metadata->getAssociationTargetClass($field);
+        if ($metadata->hasAssociation($column) === true) {
+            $targetClass          = $metadata->getAssociationTargetClass($column);
             $targetMeta           = $this->em->getClassMetadata($targetClass);
             $targetTableName      = $targetMeta->getTableName();
             $targetIdentifiers    = $targetMeta->getIdentifierFieldNames();
             $targetRootIdentifier = array_shift($targetIdentifiers);
 
-            if (!array_key_exists($targetTableName, $this->selectFields)) {
-                $this->selectFields[$targetTableName][] = $targetRootIdentifier;
+            if (!array_key_exists($targetTableName, $this->selectColumns)) {
+                $this->selectColumns[$targetTableName][] = $targetRootIdentifier;
 
                 $this->addJoin(
                     array(
-                        'source' => $metadata->getTableName() . '.' . $field,
+                        'source' => $metadata->getTableName() . '.' . $column,
                         'target' => $targetTableName
                     )
                 );
             }
 
             $i++;
-            $this->setAssociations($fields, $i, $targetMeta);
+            $this->setAssociations($associationParts, $i, $targetMeta);
         } else {
             $targetTableName      = $metadata->getTableName();
             $targetIdentifiers    = $metadata->getIdentifierFieldNames();
             $targetRootIdentifier = array_shift($targetIdentifiers);
 
-            if ($field !== $targetRootIdentifier) {
-                array_push($this->selectFields[$targetTableName], $field);
+            if ($column !== $targetRootIdentifier) {
+                array_push($this->selectColumns[$targetTableName], $column);
             }
 
-            $this->allFields[] = $targetTableName . '.' . $field;
+            $this->allColumns[] = $targetTableName . '.' . $column;
         }
 
         return $this;
     }
 
     /**
-     * Prepare fields from mDataProp_ for createQueryBuilder.
-     * Set selectFields[], joins[] and allFields[] arrays.
+     * Prepare selectColumns[], allColumns[] and joins[].
      *
-     * @return DatatableData
+     * @return $this
      */
-    private function prepare()
+    private function prepareColumns()
     {
-        $this->selectFields[$this->tableName][] = $this->rootEntityIdentifier;
+        // start with the tableName and the primary key e.g. 'fos_user' and 'id'
+        $this->selectColumns[$this->tableName][] = $this->rootEntityIdentifier;
 
-        $sColumns = explode(',', $this->requestParams['sColumns']);
+        for ($i = 0; $i <= $this->requestParams['dql_counter']; $i++) {
 
-        for ($i = 0; $i < $this->iColumns; $i++) {
+            if ($this->requestParams['dql_' . $i] != null) {
+                $column = $this->requestParams['dql_' . $i];
 
-            if ($this->requestParams['mDataProp_' . $i] != null) {
-
-                $field = $this->requestParams['mDataProp_' . $i];
-
-                if ($sColumns[$i] != '') {
-                    if ($field != $sColumns[$i]) {
-                        $field = $sColumns[$i];
-                    }
-                }
-
-                // association delimiter found
-                if (strstr($field, '.') !== false) {
-
-                    // separate fields
-                    $fieldsArray = explode('.', $field);
-                    // set associations in selectFields[]
-                    $this->setAssociations($fieldsArray, 0, $this->metadata);
-
+                // association delimiter found (e.g. 'posts.comments.title')?
+                if (strstr($column, '.') !== false) {
+                    $array = explode('.', $column);
+                    $this->setAssociations($array, 0, $this->metadata);
                 } else {
-
                     // no association found
-                    if ($field !== $this->rootEntityIdentifier) {
-                        array_push($this->selectFields[$this->tableName], $field);
+                    if ($column !== $this->rootEntityIdentifier) {
+                        array_push($this->selectColumns[$this->tableName], $column);
                     }
 
-                    $this->allFields[] = $this->tableName . '.' . $field;
-
-                }
-
-            } else {
-
-                $this->allFields[] = '';
-
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Query results before filtering.
-     *
-     * @return int
-     */
-    private function getCountAllResults()
-    {
-        $qb = $this->em->createQueryBuilder();
-        $qb->select('count(' . $this->tableName . '.' . $this->rootEntityIdentifier . ')');
-        $qb->from($this->metadata->getName(), $this->tableName);
-
-        $this->setWhereCallbacks($qb);
-
-        return (int) $qb->getQuery()->getSingleScalarResult();
-    }
-
-    /**
-     * Query results after filtering.
-     *
-     * @return int
-     */
-    private function getCountFilteredResults()
-    {
-        $qb = $this->em->createQueryBuilder();
-        $qb->select('count(distinct ' . $this->tableName . '.' . $this->rootEntityIdentifier . ')');
-        $qb->from($this->metadata->getName(), $this->tableName);
-
-        $this->setLeftJoin($qb);
-        $this->setWhere($qb);
-        $this->setWhereCallbacks($qb);
-
-        return (int) $qb->getQuery()->getSingleScalarResult();
-    }
-
-    /**
-     * Set select statement.
-     *
-     * @return DatatableData
-     */
-    private function setSelect()
-    {
-        foreach ($this->selectFields as $key => $value) {
-            // example: $qb->select('partial comment.{id, title}, partial post.{id, title}');
-            $this->qb->addSelect('partial ' . $key . '.{' . implode(',', $this->selectFields[$key]) . '}');
-        }
-
-        $this->qb->from($this->metadata->getName(), $this->tableName);
-
-        return $this;
-    }
-
-    /**
-     * Set leftJoin statement.
-     *
-     * @param QueryBuilder $qb A QueryBuilder instance
-     *
-     * @return DatatableData
-     */
-    private function setLeftJoin(QueryBuilder $qb)
-    {
-        foreach ($this->joins as $join) {
-            $qb->leftJoin($join['source'], $join['target']);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set where statement.
-     *
-     * @param QueryBuilder $qb A QueryBuilder instance
-     *
-     * @return DatatableData
-     */
-    private function setWhere(QueryBuilder $qb)
-    {
-        // global filtering
-        if ($this->sSearch != '') {
-
-            $orExpr = $qb->expr()->orX();
-
-            for ($i = 0; $i < $this->iColumns; $i++) {
-                if (isset($this->requestParams['bSearchable_' . $i]) && $this->requestParams['bSearchable_' . $i] === 'true') {
-                    $searchField = $this->allFields[$i];
-                    $orExpr->add($qb->expr()->like($searchField, "?$i"));
-                    $qb->setParameter($i, "%" . $this->sSearch . "%");
+                    $this->allColumns[] = $this->tableName . '.' . $column;
                 }
             }
 
-            $qb->where($orExpr);
         }
-
-        // individual filtering
-        $andExpr = $qb->expr()->andX();
-
-        for ($i = 0; $i < $this->iColumns; $i++) {
-            if (isset($this->requestParams['bSearchable_' . $i]) && $this->requestParams['bSearchable_' . $i] === 'true' && $this->requestParams['sSearch_' . $i] != '') {
-                $searchField = $this->allFields[$i];
-                $andExpr->add($qb->expr()->like($searchField, "?$i"));
-                $qb->setParameter($i, "%" . $this->requestParams['sSearch_' . $i] . "%");
-            }
-        }
-
-        if ($andExpr->count() > 0) {
-            $qb->andWhere($andExpr);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set where callback functions.
-     *
-     * @param QueryBuilder $qb A QueryBuilder instance
-     *
-     * @return DatatableData
-     */
-    private function setWhereCallbacks(QueryBuilder $qb)
-    {
-        if (!empty($this->callbacks['WhereBuilder'])) {
-            foreach ($this->callbacks['WhereBuilder'] as $callback) {
-                $callback($qb);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set orderBy statement.
-     *
-     * @return DatatableData
-     */
-    private function setOrderBy()
-    {
-        if (isset($this->iSortCol0)) {
-            for ($i = 0; $i < intval($this->requestParams['iSortingCols']); $i++) {
-                if ($this->requestParams['bSortable_'.intval($this->requestParams['iSortCol_' . $i])] === 'true') {
-                    $this->qb->addOrderBy(
-                        $this->allFields[$this->requestParams['iSortCol_' . $i]],
-                        $this->requestParams['sSortDir_' . $i]
-                    );
-                }
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set the scope of the resultset (Paging).
-     *
-     * @return DatatableData
-     */
-    private function setLimit()
-    {
-        if (isset($this->iDisplayStart) && $this->iDisplayLength != '-1') {
-            $this->qb->setFirstResult($this->iDisplayStart)->setMaxResults($this->iDisplayLength);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set all statements.
-     *
-     * @return DatatableData
-     */
-    private function buildQuery()
-    {
-        $this->setSelect();
-        $this->setLeftJoin($this->qb);
-        $this->setWhere($this->qb);
-        $this->setWhereCallbacks($this->qb);
-        $this->setOrderBy();
-        $this->setLimit();
-
-        return $this;
-    }
-
-    /**
-     * Execute query and build output array.
-     *
-     * @return DatatableData
-     */
-    private function executeQuery()
-    {
-        $query = $this->qb->getQuery();
-        $query->setHydrationMode(Query::HYDRATE_ARRAY);
-        $fresults = new Paginator($query, true);
-
-        $output = array("aaData" => array());
-
-        foreach ($fresults as $item) {
-            $output['aaData'][] = $item;
-        }
-
-        $outputHeader = array(
-            "sEcho" => (int) $this->sEcho,
-            "iTotalRecords" => $this->getCountAllResults(),
-            "iTotalDisplayRecords" => $this->getCountFilteredResults()
-        );
-
-        $this->response = array_merge($outputHeader, $output);
 
         return $this;
     }
@@ -561,10 +233,33 @@ class DatatableData implements DatatableDataInterface
     /**
      * {@inheritdoc}
      */
-    public function getSearchResults()
+    public function getResults()
     {
-        $this->buildQuery();
-        $this->executeQuery();
+        $this->datatableQuery->setSelectColumns($this->selectColumns);
+        $this->datatableQuery->setAllColumns($this->allColumns);
+        $this->datatableQuery->setJoins($this->joins);
+
+        $this->datatableQuery->setSelectFrom();
+        $this->datatableQuery->setLeftJoins($this->datatableQuery->getQb());
+        $this->datatableQuery->setWhere($this->datatableQuery->getQb());
+        $this->datatableQuery->setWhereCallbacks($this->datatableQuery->getQb());
+        $this->datatableQuery->setOrderBy();
+        $this->datatableQuery->setLimit();
+
+        $fresults = new Paginator($this->datatableQuery->execute(), true);
+        $output = array("aaData" => array());
+
+        foreach ($fresults as $item) {
+            $output['aaData'][] = $item;
+        }
+
+        $outputHeader = array(
+            "sEcho" => (int) $this->requestParams['sEcho'],
+            "iTotalRecords" => $this->datatableQuery->getCountAllResults($this->rootEntityIdentifier),
+            "iTotalDisplayRecords" => $this->datatableQuery->getCountFilteredResults($this->rootEntityIdentifier)
+        );
+
+        $this->response = array_merge($outputHeader, $output);
 
         $json = $this->serializer->serialize($this->response, 'json');
         $response = new Response($json);
@@ -579,7 +274,7 @@ class DatatableData implements DatatableDataInterface
     //-------------------------------------------------
 
     /**
-     * Add callback function.
+     * Add a callback function.
      *
      * @param string $callback
      *
@@ -592,7 +287,7 @@ class DatatableData implements DatatableDataInterface
             throw new \Exception("The callback argument must be callable.");
         }
 
-        $this->callbacks['WhereBuilder'][] = $callback;
+        $this->datatableQuery->addCallback($callback);
 
         return $this;
     }
