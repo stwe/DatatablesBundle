@@ -56,7 +56,7 @@ If not already done: add SgDatatablesBundle in your composer.json:
 ```js
 {
     "require": {
-        "sg/datatablesbundle": "v0.1"
+        "sg/datatablesbundle": "dev-master"
     }
 }
 ```

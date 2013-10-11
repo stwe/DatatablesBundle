@@ -98,11 +98,9 @@ class UserDatatable extends AbstractDatatableView
         $enabledField->setSWidth('90');
         $enabledField->setMRender("render_boolean_icons");
 
-        $postsField = new Column('posts');
+        // simple one-to-many association
+        $postsField = new Column('posts.title');
         $postsField->setSTitle('Posts');
-        $postsField->setRenderArray(true);
-        $postsField->setRenderArrayFieldName('title');
-        $postsField->setSName('posts.title');
 
 
         //-------------------------------------------------
@@ -229,7 +227,7 @@ public function indexResultsAction()
 
     $datatable->addWhereBuilderCallback($callbackFunction);
 
-    return $datatable->getSearchResults();
+    return $datatable->getResults();
 }
 
 /**
@@ -292,83 +290,4 @@ public function disableAction()
 
     return new Response('This is not ajax.', 400);
 }
-```
-
-## Working with Associations
-
-We extend the user entity to multiple OneToMany associations (Post and Comment).
-
-```php
-<?php
-
-namespace Sg\UserBundle\Entity;
-
-use Doctrine\Common\Collections\ArrayCollection;
-use FOS\UserBundle\Model\User as BaseUser;
-use Doctrine\ORM\Mapping as ORM;
-use Sg\AppBundle\Entity\Comment;
-use Sg\AppBundle\Entity\Post;
-
-/**
- * Class User
- *
- * @ORM\Entity
- * @ORM\Table(name="fos_user")
- *
- * @package Sg\UserBundle\Entity
- */
-class User extends BaseUser
-{
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
-
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="Sg\AppBundle\Entity\Post",
-     *     mappedBy="createdBy"
-     * )
-     */
-    private $posts;
-
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="Sg\AppBundle\Entity\Comment",
-     *     mappedBy="createdBy"
-     * )
-     */
-    private $comments;
-
-
-    /**
-     * Ctor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        // your own logic
-
-        $this->posts = new ArrayCollection();
-        $this->comments = new ArrayCollection();
-    }
-
-    // ...
-
-}
-```
-
-For a comma-separated view of all blog titles we add the following to the UserDatatable class.
-
-```php
-$postsField = new Column('posts');
-$postsField->setSTitle('Posts');
-$postsField->setRenderArray(true);
-$postsField->setRenderArrayFieldName('title');
-$postsField->setSName('posts.title');
-
-$this->addField($postsField);
 ```
