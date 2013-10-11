@@ -18,6 +18,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Response;
+use Exception;
 
 /**
  * Class DatatableData
@@ -57,13 +58,6 @@ class DatatableData implements DatatableDataInterface
      * @var string
      */
     protected $tableName;
-
-    /**
-     * The name of the entity class.
-     *
-     * @var string
-     */
-    protected $entityName;
 
     /**
      * The field name of the identifier/primary key.
@@ -113,7 +107,6 @@ class DatatableData implements DatatableDataInterface
         $this->em                   = $em;
         $this->serializer           = $serializer;
         $this->tableName            = $metadata->getTableName();
-        $this->entityName           = $metadata->getName();
         $this->datatableQuery       = $datatableQuery;
         $identifiers                = $this->metadata->getIdentifierFieldNames();
         $this->rootEntityIdentifier = array_shift($identifiers);
@@ -145,6 +138,26 @@ class DatatableData implements DatatableDataInterface
     }
 
     /**
+     * Add an entry to the selectColumns[] array.
+     *
+     * @param ClassMetadata $metadata A ClassMetadata instance
+     * @param string        $column   The name of the column
+     *
+     * @throws \Exception
+     * @return $this
+     */
+    private function addSelectColumn(ClassMetadata $metadata, $column)
+    {
+        if (in_array($column, $metadata->getFieldNames())) {
+            $this->selectColumns[$metadata->getTableName()][] = $column;
+        } else {
+            throw new Exception('Exception when parsing the columns.');
+        }
+
+        return $this;
+    }
+
+    /**
      * Set associations in joins[].
      *
      * @param array         $associationParts An array of the association parts
@@ -153,19 +166,19 @@ class DatatableData implements DatatableDataInterface
      *
      * @return $this
      */
-    private function setAssociations($associationParts, $i, $metadata)
+    private function setAssociations(array $associationParts, $i, ClassMetadata $metadata)
     {
         $column = $associationParts[$i];
 
         if ($metadata->hasAssociation($column) === true) {
-            $targetClass          = $metadata->getAssociationTargetClass($column);
-            $targetMeta           = $this->em->getClassMetadata($targetClass);
-            $targetTableName      = $targetMeta->getTableName();
-            $targetIdentifiers    = $targetMeta->getIdentifierFieldNames();
+            $targetClass = $metadata->getAssociationTargetClass($column);
+            $targetMeta = $this->em->getClassMetadata($targetClass);
+            $targetTableName = $targetMeta->getTableName();
+            $targetIdentifiers = $targetMeta->getIdentifierFieldNames();
             $targetRootIdentifier = array_shift($targetIdentifiers);
 
             if (!array_key_exists($targetTableName, $this->selectColumns)) {
-                $this->selectColumns[$targetTableName][] = $targetRootIdentifier;
+                $this->addSelectColumn($targetMeta, $targetRootIdentifier);
 
                 $this->addJoin(
                     array(
@@ -178,12 +191,12 @@ class DatatableData implements DatatableDataInterface
             $i++;
             $this->setAssociations($associationParts, $i, $targetMeta);
         } else {
-            $targetTableName      = $metadata->getTableName();
-            $targetIdentifiers    = $metadata->getIdentifierFieldNames();
+            $targetTableName = $metadata->getTableName();
+            $targetIdentifiers = $metadata->getIdentifierFieldNames();
             $targetRootIdentifier = array_shift($targetIdentifiers);
 
             if ($column !== $targetRootIdentifier) {
-                array_push($this->selectColumns[$targetTableName], $column);
+                $this->addSelectColumn($metadata, $column);
             }
 
             $this->allColumns[] = $targetTableName . '.' . $column;
@@ -200,7 +213,7 @@ class DatatableData implements DatatableDataInterface
     private function prepareColumns()
     {
         // start with the tableName and the primary key e.g. 'fos_user' and 'id'
-        $this->selectColumns[$this->tableName][] = $this->rootEntityIdentifier;
+        $this->addSelectColumn($this->metadata, $this->rootEntityIdentifier);
 
         for ($i = 0; $i <= $this->requestParams['dql_counter']; $i++) {
 
@@ -214,7 +227,7 @@ class DatatableData implements DatatableDataInterface
                 } else {
                     // no association found
                     if ($column !== $this->rootEntityIdentifier) {
-                        array_push($this->selectColumns[$this->tableName], $column);
+                        $this->addSelectColumn($this->metadata, $column);
                     }
 
                     $this->allColumns[] = $this->tableName . '.' . $column;
