@@ -12,6 +12,7 @@
 namespace Sg\DatatablesBundle\Manager;
 
 use Sg\DatatablesBundle\Datatable\DatatableData;
+use Sg\DatatablesBundle\Datatable\DatatableQuery;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -81,11 +82,14 @@ class DatatableDataManager
          */
         $em = $this->doctrine->getManager();
 
+        $datatableQuery = new DatatableQuery($params, $metadata, $em);
+
         return new DatatableData(
             $params,
             $metadata,
             $em,
-            $this->serializer
+            $this->serializer,
+            $datatableQuery
         );
     }
 }

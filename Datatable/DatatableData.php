@@ -100,12 +100,13 @@ class DatatableData implements DatatableDataInterface
     /**
      * Ctor.
      *
-     * @param array         $requestParams All GET params
-     * @param ClassMetadata $metadata      A ClassMetadata instance
-     * @param EntityManager $em            A EntityManager instance
-     * @param Serializer    $serializer    A Serializer instance
+     * @param array          $requestParams  All GET params
+     * @param ClassMetadata  $metadata       A ClassMetadata instance
+     * @param EntityManager  $em             A EntityManager instance
+     * @param Serializer     $serializer     A Serializer instance
+     * @param DatatableQuery $datatableQuery A DatatableQuery instance
      */
-    public function __construct(array $requestParams, ClassMetadata $metadata, EntityManager $em, Serializer $serializer)
+    public function __construct(array $requestParams, ClassMetadata $metadata, EntityManager $em, Serializer $serializer, DatatableQuery $datatableQuery)
     {
         $this->requestParams        = $requestParams;
         $this->metadata             = $metadata;
@@ -113,7 +114,7 @@ class DatatableData implements DatatableDataInterface
         $this->serializer           = $serializer;
         $this->tableName            = $metadata->getTableName();
         $this->entityName           = $metadata->getName();
-        $this->datatableQuery       = new DatatableQuery($em, $this->tableName, $this->entityName, $this->requestParams);
+        $this->datatableQuery       = $datatableQuery;
         $identifiers                = $this->metadata->getIdentifierFieldNames();
         $this->rootEntityIdentifier = array_shift($identifiers);
         $this->response             = array();
@@ -225,6 +226,37 @@ class DatatableData implements DatatableDataInterface
         return $this;
     }
 
+    /**
+     * Set columns.
+     *
+     * @return $this
+     */
+    private function setColumns()
+    {
+        $this->datatableQuery->setSelectColumns($this->selectColumns);
+        $this->datatableQuery->setAllColumns($this->allColumns);
+        $this->datatableQuery->setJoins($this->joins);
+
+        return $this;
+    }
+
+    /**
+     * Build query.
+     *
+     * @return $this
+     */
+    private function buildQuery()
+    {
+        $this->datatableQuery->setSelectFrom();
+        $this->datatableQuery->setLeftJoins($this->datatableQuery->getQb());
+        $this->datatableQuery->setWhere($this->datatableQuery->getQb());
+        $this->datatableQuery->setWhereCallbacks($this->datatableQuery->getQb());
+        $this->datatableQuery->setOrderBy();
+        $this->datatableQuery->setLimit();
+
+        return $this;
+    }
+
 
     //-------------------------------------------------
     // DatatableDataInterface
@@ -235,16 +267,8 @@ class DatatableData implements DatatableDataInterface
      */
     public function getResults()
     {
-        $this->datatableQuery->setSelectColumns($this->selectColumns);
-        $this->datatableQuery->setAllColumns($this->allColumns);
-        $this->datatableQuery->setJoins($this->joins);
-
-        $this->datatableQuery->setSelectFrom();
-        $this->datatableQuery->setLeftJoins($this->datatableQuery->getQb());
-        $this->datatableQuery->setWhere($this->datatableQuery->getQb());
-        $this->datatableQuery->setWhereCallbacks($this->datatableQuery->getQb());
-        $this->datatableQuery->setOrderBy();
-        $this->datatableQuery->setLimit();
+        $this->setColumns();
+        $this->buildQuery();
 
         $fresults = new Paginator($this->datatableQuery->execute(), true);
         $output = array("aaData" => array());

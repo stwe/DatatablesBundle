@@ -12,6 +12,7 @@
 namespace Sg\DatatablesBundle\Datatable;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query;
 
@@ -26,6 +27,11 @@ use Doctrine\ORM\Query;
  */
 class DatatableQuery
 {
+    /**
+     * @var array
+     */
+    protected $requestParams;
+
     /**
      * @var EntityManager
      */
@@ -68,11 +74,6 @@ class DatatableQuery
     /**
      * @var array
      */
-    protected $requestParams;
-
-    /**
-     * @var array
-     */
     protected $callbacks;
 
 
@@ -83,21 +84,20 @@ class DatatableQuery
     /**
      * Ctor.
      *
-     * @param EntityManager $em            A EntityManager instance
-     * @param string        $tableName     The name of the primary table
-     * @param string        $entityName    The name of the entity class
      * @param array         $requestParams All GET params
+     * @param ClassMetadata $metadata      A ClassMetadata instance
+     * @param EntityManager $em            A EntityManager instance
      */
-    public function __construct(EntityManager $em, $tableName, $entityName, array $requestParams)
+    public function __construct(array $requestParams, ClassMetadata $metadata, EntityManager $em)
     {
+        $this->requestParams = $requestParams;
         $this->em            = $em;
-        $this->tableName     = $tableName;
-        $this->entityName    = $entityName;
+        $this->tableName     = $metadata->getTableName();
+        $this->entityName    = $metadata->getName();
         $this->qb            = $this->em->createQueryBuilder();
         $this->selectColumns = array();
         $this->allColumns    = array();
         $this->joins         = array();
-        $this->requestParams = $requestParams;
         $this->callbacks     = array(
             'WhereBuilder' => array(),
         );
