@@ -19,9 +19,9 @@ namespace Sg\DatatablesBundle\Datatable;
 interface DatatableDataInterface
 {
     /**
-     * Get search results.
+     * Get results.
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getSearchResults();
+    public function getResults();
 }
