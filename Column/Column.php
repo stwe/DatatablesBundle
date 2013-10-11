@@ -42,11 +42,11 @@ class Column extends BaseColumn
     /**
      * Ctor.
      *
-     * @param mixed $mData The column mData
+     * @param string $name
      */
-    public function __construct($mData = null)
+    public function __construct($name = null)
     {
-        parent::__construct($mData);
+        parent::__construct($name);
 
         // your own logic
 

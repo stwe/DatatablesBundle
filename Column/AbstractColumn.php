@@ -19,6 +19,20 @@ namespace Sg\DatatablesBundle\Column;
 abstract class AbstractColumn implements ColumnInterface
 {
     /**
+     * The name of the column in the entity.
+     *
+     * @var null|string
+     */
+    protected $name;
+
+    /**
+     * Used to read data from any JSON data source property.
+     *
+     * @var mixed
+     */
+    protected $mData;
+
+    /**
      * Enable or disable filtering on the data in this column.
      *
      * @var boolean
@@ -42,22 +56,15 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * The title of this column.
      *
-     * @var string
+     * @var null|string
      */
     protected $sTitle;
-
-    /**
-     * Used to read data from any JSON data source property.
-     *
-     * @var mixed
-     */
-    protected $mData;
 
     /**
      * This property is the rendering partner to mData
      * and it is suggested that when you want to manipulate data for display.
      *
-     * @var mixed
+     * @var null|mixed
      */
     protected $mRender;
 
@@ -74,14 +81,15 @@ abstract class AbstractColumn implements ColumnInterface
      * This can be because mData is set to null, or because the data
      * source itself is null.
      *
-     * @var string
+     * @var null|string
      */
     protected $sDefaultContent;
 
     /**
      * Defining the width of the column.
+     * This parameter may take any CSS value (em, px etc).
      *
-     * @var string
+     * @var null|string
      */
     protected $sWidth;
 
@@ -93,15 +101,26 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Ctor.
      *
-     * @param mixed $mData The column mData
+     * @param string $name
      */
-    public function __construct($mData = null)
+    public function __construct($name = null)
     {
+        $this->name = $name;
+
+        // association delimiter found?
+        if (strstr($name, '.') !== false) {
+            $fieldsArray = explode('.', $name);
+            $element = array_slice($fieldsArray, count($fieldsArray) - 2, 1);
+            $this->mData = $element[0];
+        } else {
+            // no association found
+            $this->mData = $name;
+        }
+
         $this->bSearchable = true;
         $this->bSortable = true;
         $this->bVisible = true;
-        $this->sTitle = '';
-        $this->mData = $mData;
+        $this->sTitle = null;
         $this->mRender = null;
         $this->sClass = '';
         $this->sDefaultContent = null;
@@ -112,6 +131,42 @@ abstract class AbstractColumn implements ColumnInterface
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setMData($mData)
+    {
+        $this->mData = $mData;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMData()
+    {
+        return $this->mData;
+    }
 
     /**
      * {@inheritdoc}
@@ -183,24 +238,6 @@ abstract class AbstractColumn implements ColumnInterface
     public function getSTitle()
     {
         return $this->sTitle;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setMData($mData)
-    {
-        $this->mData = $mData;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMData()
-    {
-        return $this->mData;
     }
 
     /**

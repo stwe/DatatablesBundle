@@ -19,54 +19,24 @@ namespace Sg\DatatablesBundle\Column;
 interface ColumnInterface
 {
     /**
-     * @param boolean $bSearchable
+     * Set name.
+     *
+     * @param null|string $name
      *
      * @return self
      */
-    public function setBSearchable($bSearchable);
+    public function setName($name);
 
     /**
-     * @return boolean
-     */
-    public function getBSearchable();
-
-    /**
-     * @param boolean $bSortable
+     * Get name.
      *
-     * @return self
+     * @return null|string
      */
-    public function setBSortable($bSortable);
+    public function getName();
 
     /**
-     * @return boolean
-     */
-    public function getBSortable();
-
-    /**
-     * @param boolean $bVisible
+     * Set mData.
      *
-     * @return self
-     */
-    public function setBVisible($bVisible);
-
-    /**
-     * @return boolean
-     */
-    public function getBVisible();
-
-    /**
-     * @param string $sTitle
-     *
-     * @return self
-     */
-    public function setSTitle($sTitle);
-
-    /**
-     * @return string
-     */
-    public function getSTitle();
-
-    /**
      * @param string $mData
      *
      * @return self
@@ -74,23 +44,95 @@ interface ColumnInterface
     public function setMData($mData);
 
     /**
+     * Get mData.
+     *
      * @return string
      */
     public function getMData();
 
     /**
-     * @param string $mRender
+     * Set bSearchable.
+     *
+     * @param boolean $bSearchable
+     *
+     * @return self
+     */
+    public function setBSearchable($bSearchable);
+
+    /**
+     * Get bSearchable.
+     *
+     * @return boolean
+     */
+    public function getBSearchable();
+
+    /**
+     * Set bSortable.
+     *
+     * @param boolean $bSortable
+     *
+     * @return self
+     */
+    public function setBSortable($bSortable);
+
+    /**
+     * Get bSortable.
+     *
+     * @return boolean
+     */
+    public function getBSortable();
+
+    /**
+     * Set bVisible.
+     *
+     * @param boolean $bVisible
+     *
+     * @return self
+     */
+    public function setBVisible($bVisible);
+
+    /**
+     * Get bVisible.
+     *
+     * @return boolean
+     */
+    public function getBVisible();
+
+    /**
+     * Set sTitle.
+     *
+     * @param null|string $sTitle
+     *
+     * @return self
+     */
+    public function setSTitle($sTitle);
+
+    /**
+     * Get sTitle.
+     *
+     * @return null|string
+     */
+    public function getSTitle();
+
+    /**
+     * Set mRender.
+     *
+     * @param null|string $mRender
      *
      * @return self
      */
     public function setMRender($mRender);
 
     /**
-     * @return string
+     * Get mRender.
+     *
+     * @return null|string
      */
     public function getMRender();
 
     /**
+     * Set sClass.
+     *
      * @param string $sClass
      *
      * @return self
@@ -98,31 +140,41 @@ interface ColumnInterface
     public function setSClass($sClass);
 
     /**
+     * Get sClass.
+     *
      * @return string
      */
     public function getSClass();
 
     /**
-     * @param string $sDefaultContent
+     * Set sDefaultContent.
+     *
+     * @param null|string $sDefaultContent
      *
      * @return self
      */
     public function setSDefaultContent($sDefaultContent);
 
     /**
-     * @return string
+     * Get sDefaultContent.
+     *
+     * @return null|string
      */
     public function getSDefaultContent();
 
     /**
-     * @param string $sWidth
+     * Set sWidth.
+     *
+     * @param null|string $sWidth
      *
      * @return self
      */
     public function setSWidth($sWidth);
 
     /**
-     * @return string
+     * Get sWidth.
+     *
+     * @return null|string
      */
     public function getSWidth();
 }

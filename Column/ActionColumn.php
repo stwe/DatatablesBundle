@@ -89,9 +89,9 @@ class ActionColumn extends BaseColumn
     /**
      * Ctor.
      *
-     * @param mixed $mData The column mData
+     * @param string $name
      */
-    public function __construct($mData = null)
+    public function __construct($name = null)
     {
         parent::__construct(null);
 
@@ -111,6 +111,8 @@ class ActionColumn extends BaseColumn
     //-------------------------------------------------
 
     /**
+     * Set route.
+     *
      * @param null|string $route
      *
      * @return $this
@@ -123,6 +125,8 @@ class ActionColumn extends BaseColumn
     }
 
     /**
+     * Get route.
+     *
      * @return null|string
      */
     public function getRoute()
@@ -131,6 +135,8 @@ class ActionColumn extends BaseColumn
     }
 
     /**
+     * Add route parameter.
+     *
      * @param string $parameter  The route parameter
      * @param string $columnName The name of the column
      *
@@ -144,6 +150,8 @@ class ActionColumn extends BaseColumn
     }
 
     /**
+     * Get route parameters.
+     *
      * @return array
      */
     public function getRouteParameters()
@@ -152,6 +160,8 @@ class ActionColumn extends BaseColumn
     }
 
     /**
+     * Set icon.
+     *
      * @param null|string $icon
      *
      * @return $this
@@ -168,6 +178,8 @@ class ActionColumn extends BaseColumn
     }
 
     /**
+     * Get icon.
+     *
      * @return null|string
      */
     public function getIcon()
@@ -176,6 +188,8 @@ class ActionColumn extends BaseColumn
     }
 
     /**
+     * Set label.
+     *
      * @param null|string $label
      *
      * @return $this
@@ -188,6 +202,8 @@ class ActionColumn extends BaseColumn
     }
 
     /**
+     * Get label.
+     *
      * @return null|string
      */
     public function getLabel()
@@ -196,6 +212,8 @@ class ActionColumn extends BaseColumn
     }
 
     /**
+     * Set class.
+     *
      * @param null|string $class
      *
      * @return $this
@@ -208,6 +226,8 @@ class ActionColumn extends BaseColumn
     }
 
     /**
+     * Get class.
+     *
      * @return null|string
      */
     public function getClass()
@@ -216,6 +236,8 @@ class ActionColumn extends BaseColumn
     }
 
     /**
+     * Add attribute.
+     *
      * @param string $attribute The attribute
      * @param string $value     The value of the attribute
      *
@@ -229,6 +251,8 @@ class ActionColumn extends BaseColumn
     }
 
     /**
+     * Get attributes.
+     *
      * @return array
      */
     public function getAttributes()
