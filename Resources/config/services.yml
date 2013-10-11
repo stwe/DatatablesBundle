@@ -24,4 +24,4 @@ services:
     sg_datatables.datatable:
         class: Sg\DatatablesBundle\Manager\DatatableDataManager
         scope: request
-        arguments: [@doctrine, @request, @sg_datatables.serializer, @logger]
+        arguments: [@doctrine, @request, @sg_datatables.serializer]

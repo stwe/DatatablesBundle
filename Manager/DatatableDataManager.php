@@ -14,7 +14,6 @@ namespace Sg\DatatablesBundle\Manager;
 use Sg\DatatablesBundle\Datatable\DatatableData;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Serializer;
 
@@ -40,11 +39,6 @@ class DatatableDataManager
      */
     private $serializer;
 
-    /**
-     * @var Logger
-     */
-    private $logger;
-
 
     /**
      * Ctor.
@@ -52,14 +46,12 @@ class DatatableDataManager
      * @param RegistryInterface $doctrine   A RegistryInterface
      * @param Request           $request    A Request instance
      * @param Serializer        $serializer A Serializer instance
-     * @param Logger            $logger     A Logger instance
      */
-    public function __construct(RegistryInterface $doctrine, Request $request, Serializer $serializer, Logger $logger)
+    public function __construct(RegistryInterface $doctrine, Request $request, Serializer $serializer)
     {
         $this->doctrine = $doctrine;
         $this->request = $request;
         $this->serializer = $serializer;
-        $this->logger = $logger;
     }
 
     /**
@@ -93,8 +85,7 @@ class DatatableDataManager
             $params,
             $metadata,
             $em,
-            $this->serializer,
-            $this->logger
+            $this->serializer
         );
     }
 }
