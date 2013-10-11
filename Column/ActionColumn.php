@@ -95,8 +95,6 @@ class ActionColumn extends BaseColumn
     {
         parent::__construct(null);
 
-        // your own logic
-
         $this->route = null;
         $this->routeParameters = array();
         $this->icon = null;

@@ -21,18 +21,11 @@ use Sg\DatatablesBundle\Column\AbstractColumn as BaseColumn;
 class Column extends BaseColumn
 {
     /**
-     * Read data from an array.
+     * Association flag.
      *
      * @var boolean
      */
-    protected $renderArray;
-
-    /**
-     * Array field name.
-     *
-     * @var string
-     */
-    protected $renderArrayFieldName;
+    protected $isAssociation;
 
 
     //-------------------------------------------------
@@ -48,10 +41,20 @@ class Column extends BaseColumn
     {
         parent::__construct($name);
 
-        // your own logic
-
-        $this->renderArray = false;
-        $this->renderArrayFieldName = 'id';
+        // association delimiter found?
+        if (strstr($name, '.') !== false) {
+            $this->isAssociation = true;
+            $fieldsArray = explode('.', $name);
+            $prev = array_slice($fieldsArray, count($fieldsArray) - 2, 1);
+            $last = array_slice($fieldsArray, count($fieldsArray) - 1, 1);
+            $this->mData = $prev[0];
+            $this->mRender = '[, ].' . $last[0];
+        } else {
+            // no association found
+            $this->isAssociation = false;
+            $this->mData = $name;
+            $this->mRender = null;
+        }
     }
 
 
@@ -60,42 +63,10 @@ class Column extends BaseColumn
     //-------------------------------------------------
 
     /**
-     * @param boolean $renderArray
-     *
-     * @return $this
-     */
-    public function setRenderArray($renderArray)
-    {
-        $this->renderArray = $renderArray;
-
-        return $this;
-    }
-
-    /**
      * @return boolean
      */
-    public function getRenderArray()
+    public function getIsAssociation()
     {
-        return $this->renderArray;
-    }
-
-    /**
-     * @param string $renderArrayFieldName
-     *
-     * @return $this
-     */
-    public function setRenderArrayFieldName($renderArrayFieldName)
-    {
-        $this->renderArrayFieldName = $renderArrayFieldName;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRenderArrayFieldName()
-    {
-        return $this->renderArrayFieldName;
+        return $this->isAssociation;
     }
 }

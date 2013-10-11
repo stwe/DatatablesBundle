@@ -106,17 +106,6 @@ abstract class AbstractColumn implements ColumnInterface
     public function __construct($name = null)
     {
         $this->name = $name;
-
-        // association delimiter found?
-        if (strstr($name, '.') !== false) {
-            $fieldsArray = explode('.', $name);
-            $element = array_slice($fieldsArray, count($fieldsArray) - 2, 1);
-            $this->mData = $element[0];
-        } else {
-            // no association found
-            $this->mData = $name;
-        }
-
         $this->bSearchable = true;
         $this->bSortable = true;
         $this->bVisible = true;
