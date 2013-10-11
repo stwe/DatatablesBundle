@@ -102,18 +102,18 @@ class DatatableData implements DatatableDataInterface
      */
     public function __construct(array $requestParams, ClassMetadata $metadata, EntityManager $em, Serializer $serializer, DatatableQuery $datatableQuery)
     {
-        $this->requestParams        = $requestParams;
-        $this->metadata             = $metadata;
-        $this->em                   = $em;
-        $this->serializer           = $serializer;
-        $this->tableName            = $metadata->getTableName();
-        $this->datatableQuery       = $datatableQuery;
-        $identifiers                = $this->metadata->getIdentifierFieldNames();
+        $this->requestParams = $requestParams;
+        $this->metadata = $metadata;
+        $this->em = $em;
+        $this->serializer = $serializer;
+        $this->tableName = $metadata->getTableName();
+        $this->datatableQuery = $datatableQuery;
+        $identifiers = $this->metadata->getIdentifierFieldNames();
         $this->rootEntityIdentifier = array_shift($identifiers);
-        $this->response             = array();
-        $this->selectColumns        = array();
-        $this->allColumns           = array();
-        $this->joins                = array();
+        $this->response = array();
+        $this->selectColumns = array();
+        $this->allColumns = array();
+        $this->joins = array();
 
         $this->prepareColumns();
     }
@@ -143,7 +143,7 @@ class DatatableData implements DatatableDataInterface
      * @param ClassMetadata $metadata A ClassMetadata instance
      * @param string        $column   The name of the column
      *
-     * @throws \Exception
+     * @throws Exception
      * @return $this
      */
     private function addSelectColumn(ClassMetadata $metadata, $column)
@@ -315,13 +315,13 @@ class DatatableData implements DatatableDataInterface
      *
      * @param string $callback
      *
+     * @throws Exception
      * @return DatatableData
-     * @throws \Exception
      */
     public function addWhereBuilderCallback($callback)
     {
         if (!is_callable($callback)) {
-            throw new \Exception("The callback argument must be callable.");
+            throw new Exception('The callback argument must be callable.');
         }
 
         $this->datatableQuery->addCallback($callback);

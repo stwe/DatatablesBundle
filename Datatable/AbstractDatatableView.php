@@ -15,6 +15,7 @@ use Sg\DatatablesBundle\Column\Column;
 use Sg\DatatablesBundle\Column\ActionColumn;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
+use Exception;
 
 /**
  * Class AbstractDatatableView
@@ -123,23 +124,23 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      */
     public function __construct(TwigEngine $templating)
     {
-        $this->templating  = $templating;
-        $this->template    = 'SgDatatablesBundle::default.html.twig';
+        $this->templating = $templating;
+        $this->template = 'SgDatatablesBundle::default.html.twig';
         $this->sDomOptions = array(
             'sDomLength'     => 'span4',
             'sDomFilter'     => 'span8',
             'sDomInfo'       => 'span3',
             'sDomPagination' => 'span9'
         );
-        $this->iDisplayLength      = 10;
-        $this->tableId             = 'sg_datatable';
-        $this->columns             = array();
-        $this->actionColumns       = array();
-        $this->sAjaxSource         = '';
-        $this->customizeOptions    = array();
-        $this->multiselect         = false;
+        $this->iDisplayLength = 10;
+        $this->tableId = 'sg_datatable';
+        $this->columns = array();
+        $this->actionColumns = array();
+        $this->sAjaxSource = '';
+        $this->customizeOptions = array();
+        $this->multiselect = false;
         $this->individualFiltering = false;
-        $this->bulkActions         = array();
+        $this->bulkActions = array();
 
         $this->build();
     }
@@ -165,16 +166,16 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function createView()
     {
         $options = array();
-        $options['sDomOptions']         = $this->getSDomOptions();
-        $options['iDisplayLength']      = $this->getIDisplayLength();
-        $options['tableId']             = $this->getTableId();
-        $options['columns']             = $this->getColumns();
-        $options['actionColumns']       = $this->getActionColumns();
-        $options['sAjaxSource']         = $this->getSAjaxSource();
-        $options['customizeOptions']    = $this->getCustomizeOptions();
-        $options['multiselect']         = $this->getMultiselect();
+        $options['sDomOptions'] = $this->getSDomOptions();
+        $options['iDisplayLength'] = $this->getIDisplayLength();
+        $options['tableId'] = $this->getTableId();
+        $options['columns'] = $this->getColumns();
+        $options['actionColumns'] = $this->getActionColumns();
+        $options['sAjaxSource'] = $this->getSAjaxSource();
+        $options['customizeOptions'] = $this->getCustomizeOptions();
+        $options['multiselect'] = $this->getMultiselect();
         $options['individualFiltering'] = $this->getIndividualFiltering();
-        $options['bulkActions']         = $this->getBulkActions();
+        $options['bulkActions'] = $this->getBulkActions();
 
         return $this->templating->render($this->getTemplate(), $options);
     }
@@ -209,25 +210,25 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      *
      * @param array $sDomOptions
      *
+     * @throws Exception
      * @return $this
-     * @throws \Exception
      */
     public function setSDomOptions($sDomOptions)
     {
         if (!array_key_exists('sDomLength', $sDomOptions)) {
-            throw new \Exception('The option "sDomLength" must be set.');
+            throw new Exception('The option "sDomLength" must be set.');
         };
 
         if (!array_key_exists('sDomFilter', $sDomOptions)) {
-            throw new \Exception('The option "sDomFilter" must be set.');
+            throw new Exception('The option "sDomFilter" must be set.');
         };
 
         if (!array_key_exists('sDomInfo', $sDomOptions)) {
-            throw new \Exception('The option "sDomInfo" must be set.');
+            throw new Exception('The option "sDomInfo" must be set.');
         };
 
         if (!array_key_exists('sDomPagination', $sDomOptions)) {
-            throw new \Exception('The option "sDomPagination" must be set.');
+            throw new Exception('The option "sDomPagination" must be set.');
         };
 
         $this->sDomOptions = $sDomOptions;

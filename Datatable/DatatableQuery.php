@@ -91,14 +91,14 @@ class DatatableQuery
     public function __construct(array $requestParams, ClassMetadata $metadata, EntityManager $em)
     {
         $this->requestParams = $requestParams;
-        $this->em            = $em;
-        $this->tableName     = $metadata->getTableName();
-        $this->entityName    = $metadata->getName();
-        $this->qb            = $this->em->createQueryBuilder();
+        $this->em = $em;
+        $this->tableName = $metadata->getTableName();
+        $this->entityName = $metadata->getName();
+        $this->qb = $this->em->createQueryBuilder();
         $this->selectColumns = array();
-        $this->allColumns    = array();
-        $this->joins         = array();
-        $this->callbacks     = array(
+        $this->allColumns = array();
+        $this->joins = array();
+        $this->callbacks = array(
             'WhereBuilder' => array(),
         );
     }
