@@ -177,4 +177,11 @@ interface ColumnInterface
      * @return null|string
      */
     public function getSWidth();
+
+    /**
+     * Returns the id of this column type.
+     *
+     * @return string
+     */
+    public function getClassId();
 }

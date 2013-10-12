@@ -15,11 +15,11 @@ use Sg\DatatablesBundle\Column\AbstractColumn as BaseColumn;
 use Exception;
 
 /**
- * Class ToManyColumn
+ * Class ArrayColumn
  *
  * @package Sg\DatatablesBundle\Column
  */
-class ToManyColumn extends BaseColumn
+class ArrayColumn extends BaseColumn
 {
     /**
      * @var boolean
@@ -55,6 +55,19 @@ class ToManyColumn extends BaseColumn
         } else {
             throw new Exception('No association found.');
         }
+    }
+
+
+    //-------------------------------------------------
+    // ColumnInterface
+    //-------------------------------------------------
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getClassId()
+    {
+        return 'array';
     }
 
 
