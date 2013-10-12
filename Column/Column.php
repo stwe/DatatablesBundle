@@ -20,14 +20,6 @@ use Sg\DatatablesBundle\Column\AbstractColumn as BaseColumn;
  */
 class Column extends BaseColumn
 {
-    /**
-     * Association flag.
-     *
-     * @var boolean
-     */
-    protected $isAssociation;
-
-
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -40,33 +32,10 @@ class Column extends BaseColumn
     public function __construct($name = null)
     {
         parent::__construct($name);
-
-        // association delimiter found?
-        if (strstr($name, '.') !== false) {
-            $this->isAssociation = true;
-            $fieldsArray = explode('.', $name);
-            $prev = array_slice($fieldsArray, count($fieldsArray) - 2, 1);
-            $last = array_slice($fieldsArray, count($fieldsArray) - 1, 1);
-            $this->mData = $prev[0];
-            $this->mRender = '[, ].' . $last[0];
-        } else {
-            // no association found
-            $this->isAssociation = false;
-            $this->mData = $name;
-            $this->mRender = null;
-        }
     }
 
 
     //-------------------------------------------------
     // Public
     //-------------------------------------------------
-
-    /**
-     * @return boolean
-     */
-    public function getIsAssociation()
-    {
-        return $this->isAssociation;
-    }
 }

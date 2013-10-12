@@ -106,6 +106,7 @@ abstract class AbstractColumn implements ColumnInterface
     public function __construct($name = null)
     {
         $this->name = $name;
+        $this->mData = $name;
         $this->bSearchable = true;
         $this->bSortable = true;
         $this->bVisible = true;

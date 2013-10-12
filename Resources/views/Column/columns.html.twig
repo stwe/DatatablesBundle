@@ -25,8 +25,14 @@
         {% endif %}
 
         {% if column.mRender != null %}
-            {% if column.isAssociation == true %}
-                "mRender": "{{ column.mRender }}",
+            {% if column.isAssociation is defined %}
+                {% if column.isAssociation == true %}
+                    "mRender": "{{ column.mRender }}",
+                {% else %}
+                    "mRender": function(data, type, full) {
+                        return {{ column.mRender }}(data, type, full);
+                    },
+                {% endif %}
             {% else %}
                 "mRender": function(data, type, full) {
                     return {{ column.mRender }}(data, type, full);
