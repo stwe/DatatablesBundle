@@ -109,7 +109,7 @@ class UserDatatable extends AbstractDatatableView
                     'title' => 'Comments'
                 ))
             ->add('edit', 'action', array(
-                    'route' => 'sg_calendar_edit_calendar',
+                    'route' => 'sg_user_edit',
                     'parameters' => array(
                         'id' => 'id'
                     ),
@@ -120,7 +120,7 @@ class UserDatatable extends AbstractDatatableView
                     'icon' => ActionColumn::DEFAULT_EDIT_ICON
                 ))
             ->add('show', 'action', array(
-                    'route' => 'sg_calendar_edit_calendar',
+                    'route' => 'sg_user_show',
                     'parameters' => array(
                         'id' => 'id'
                     ),

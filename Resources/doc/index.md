@@ -154,3 +154,9 @@ assetic:
 ## Example
 
 - [An example](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
+
+## List of column types
+
+- [column](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/column.md)
+- [action](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/action.md)
+- [array](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/array.md)
