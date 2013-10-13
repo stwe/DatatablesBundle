@@ -52,7 +52,6 @@
 namespace Sg\UserBundle\Datatables;
 
 use Sg\DatatablesBundle\Datatable\AbstractDatatableView;
-use Sg\DatatablesBundle\Column\Column;
 use Sg\DatatablesBundle\Column\ActionColumn;
 
 /**
@@ -85,70 +84,52 @@ class UserDatatable extends AbstractDatatableView
         // Columns config
         //-------------------------------------------------
 
-        $nameField = new Column('username');
-        $nameField->setSTitle('Username');
-        $nameField->setBSearchable(false);
-
-        $emailField = new Column('email');
-        $emailField->setSTitle('Email');
-
-        $enabledField = new Column('enabled');
-        $enabledField->setSTitle('Enabled');
-        $enabledField->setBSearchable(false);
-        $enabledField->setSWidth('90');
-        $enabledField->setMRender("render_boolean_icons");
-
-        // simple one-to-many association
-        $postsField = new Column('posts.title');
-        $postsField->setSTitle('Posts');
-
-
-        //-------------------------------------------------
-        // ActionColumns config
-        //-------------------------------------------------
-
-        $editField = new ActionColumn();
-
-        // set a title
-        //$editField->setSTitle('Edit');
-
-        // example edit route: @Route("/{id}/edit", name="user_edit", options={"expose"=true})
-        // important here is the section: options={"expose"=true}
-        $editField->setRoute('sg_calendar_edit_calendar');
-        $editField->addRouteParameter('id', 'id');
-
-        // you can set multiple parameters:
-        //$editField->addRouteParameter('param1', 'email');
-        //$editField->addRouteParameter('param2', 'username');
-
-        // and add a Bootstrap2 tooltip
-        $editField->addAttribute('rel', 'tooltip');
-        $editField->addAttribute('title', 'Edit User');
-
-        // set a label
-        //$editField->setLabel('TestLabel');
-
-        // ... or an icon
-        $editField->setIcon(ActionColumn::DEFAULT_EDIT_ICON);
-
-        $showField = new ActionColumn();
-        $showField->setRoute('sg_calendar_edit_calendar');
-        $showField->addRouteParameter('id', 'id');
-        $showField->addAttribute('rel', 'tooltip');
-        $showField->addAttribute('title', 'Show User');
-        $showField->setIcon(ActionColumn::DEFAULT_SHOW_ICON);
-
-
-        //-------------------------------------------------
-        // All columns added
-        //-------------------------------------------------
-
-        $this->addColumn($nameField);
-        $this->addColumn($emailField);
-        $this->addColumn($enabledField);
-        $this->addColumn($postsField);
-        $this->addActionColumn($editField);
-        $this->addActionColumn($showField);
+        $this->columnBuilder
+            ->add('id', 'column', array(
+                    'title' => 'Id',
+                    'searchable' => false
+                ))
+            ->add('username', 'column', array(
+                    'title' => 'Username',
+                    'searchable' => false
+                ))
+            ->add('email', 'column', array(
+                    'title' => 'Email'
+                ))
+            ->add('enabled', 'column', array(
+                    'title' => 'Enabled',
+                    'searchable' => false,
+                    'width' => '90',
+                    'render' => 'render_boolean_icons'
+                ))
+            ->add('posts.title', 'array', array(
+                    'title' => 'Posts'
+                ))
+            ->add('comments.title', 'array', array(
+                    'title' => 'Comments'
+                ))
+            ->add('edit', 'action', array(
+                    'route' => 'sg_calendar_edit_calendar',
+                    'parameters' => array(
+                        'id' => 'id'
+                    ),
+                    'attributes' => array(
+                        'rel' => 'tooltip',
+                        'title' => 'Edit User'
+                    ),
+                    'icon' => ActionColumn::DEFAULT_EDIT_ICON
+                ))
+            ->add('show', 'action', array(
+                    'route' => 'sg_calendar_edit_calendar',
+                    'parameters' => array(
+                        'id' => 'id'
+                    ),
+                    'attributes' => array(
+                        'rel' => 'tooltip',
+                        'title' => 'Show User'
+                    ),
+                    'icon' => ActionColumn::DEFAULT_SHOW_ICON
+                ));
     }
 }
 ```
