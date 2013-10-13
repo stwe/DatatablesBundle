@@ -179,7 +179,16 @@ interface ColumnInterface
     public function getSWidth();
 
     /**
-     * Returns the id of this column type.
+     * Set options.
+     *
+     * @param array $options
+     *
+     * @return self
+     */
+    public function setOptions(array $options);
+
+    /**
+     * Returns the id of the column class.
      *
      * @return string
      */

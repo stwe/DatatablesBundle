@@ -11,8 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
-use Sg\DatatablesBundle\Column\Column;
-use Sg\DatatablesBundle\Column\ActionColumn;
+use Sg\DatatablesBundle\Column\ColumnBuilder;
+use Sg\DatatablesBundle\Column\ColumnFactory;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Exception;
@@ -64,18 +64,11 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     protected $tableId;
 
     /**
-     * The aoColumns.
+     * A ColumnBuilder instance.
      *
      * @var array
      */
-    protected $columns;
-
-    /**
-     * The action aoColumns.
-     *
-     * @var array
-     */
-    protected $actionColumns;
+    protected $columnBuilder;
 
     /**
      * The sAjaxSource path.
@@ -134,8 +127,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         );
         $this->iDisplayLength = 10;
         $this->tableId = 'sg_datatable';
-        $this->columns = array();
-        $this->actionColumns = array();
+        $this->columnBuilder = new ColumnBuilder(new ColumnFactory());
         $this->sAjaxSource = '';
         $this->customizeOptions = array();
         $this->multiselect = false;
@@ -169,8 +161,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $options['sDomOptions'] = $this->getSDomOptions();
         $options['iDisplayLength'] = $this->getIDisplayLength();
         $options['tableId'] = $this->getTableId();
-        $options['columns'] = $this->getColumns();
-        $options['actionColumns'] = $this->getActionColumns();
+        $options['columns'] = $this->columnBuilder->getColumns();
         $options['sAjaxSource'] = $this->getSAjaxSource();
         $options['customizeOptions'] = $this->getCustomizeOptions();
         $options['multiselect'] = $this->getMultiselect();
@@ -284,54 +275,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getTableId()
     {
         return $this->tableId;
-    }
-
-    /**
-     * Add a column.
-     *
-     * @param Column $column
-     *
-     * @return $this
-     */
-    public function addColumn($column)
-    {
-        $this->columns[] = $column;
-
-        return $this;
-    }
-
-    /**
-     * Get columns.
-     *
-     * @return array
-     */
-    private function getColumns()
-    {
-        return $this->columns;
-    }
-
-    /**
-     * Add a action column.
-     *
-     * @param ActionColumn $actionColumn
-     *
-     * @return $this
-     */
-    public function addActionColumn($actionColumn)
-    {
-        $this->actionColumns[] = $actionColumn;
-
-        return $this;
-    }
-
-    /**
-     * Get action columns.
-     *
-     * @return array
-     */
-    public function getActionColumns()
-    {
-        return $this->actionColumns;
     }
 
     /**

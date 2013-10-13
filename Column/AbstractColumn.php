@@ -301,4 +301,37 @@ abstract class AbstractColumn implements ColumnInterface
     {
         return $this->sWidth;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setOptions(array $options)
+    {
+        if (isset($options['searchable'])) {
+            $this->setBSearchable($options['searchable']);
+        }
+        if (isset($options['sortable'])) {
+            $this->setBSortable($options['sortable']);
+        }
+        if (isset($options['visible'])) {
+            $this->setBVisible($options['visible']);
+        }
+        if (isset($options['title'])) {
+            $this->setSTitle($options['title']);
+        }
+        if (isset($options['render'])) {
+            $this->setMRender($options['render']);
+        }
+        if (isset($options['class'])) {
+            $this->setSClass($options['class']);
+        }
+        if (isset($options['default'])) {
+            $this->setSDefaultContent($options['default']);
+        }
+        if (isset($options['width'])) {
+            $this->setSWidth($options['width']);
+        }
+
+        return $this;
+    }
 }

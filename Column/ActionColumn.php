@@ -95,6 +95,10 @@ class ActionColumn extends BaseColumn
     {
         parent::__construct(null);
 
+        $this->mData = null;
+        $this->bSearchable = false;
+        $this->bSortable = false;
+
         $this->route = null;
         $this->routeParameters = array();
         $this->icon = null;
@@ -114,6 +118,30 @@ class ActionColumn extends BaseColumn
     public function getClassId()
     {
         return 'action';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setOptions(array $options)
+    {
+        parent::setOptions($options);
+
+        if (isset($options['route'])) {
+            $this->setRoute($options['route']);
+        }
+        if (isset($options['parameters'])) {
+            $this->setRouteParameters($options['parameters']);
+        }
+        if (isset($options['icon'])) {
+            $this->setIcon($options['icon']);
+        }
+        if (isset($options['label'])) {
+            $this->setLabel($options['label']);
+        }
+        if (isset($options['attributes'])) {
+            $this->setAttributes($options['attributes']);
+        }
     }
 
 
@@ -146,16 +174,17 @@ class ActionColumn extends BaseColumn
     }
 
     /**
-     * Add route parameter.
+     * Set route parameters.
      *
-     * @param string $parameter  The route parameter
-     * @param string $columnName The name of the column
+     * @param array $parameters
      *
      * @return $this
      */
-    public function addRouteParameter($parameter, $columnName)
+    public function setRouteParameters(array $parameters)
     {
-        $this->routeParameters[$parameter] = $columnName;
+        foreach ($parameters as $key => $value) {
+            $this->routeParameters[$key] = $value;
+        }
 
         return $this;
     }
@@ -247,16 +276,17 @@ class ActionColumn extends BaseColumn
     }
 
     /**
-     * Add attribute.
+     * Set attributes.
      *
-     * @param string $attribute The attribute
-     * @param string $value     The value of the attribute
+     * @param array $attributes
      *
      * @return $this
      */
-    public function addAttribute($attribute, $value)
+    public function setAttributes(array $attributes)
     {
-        $this->attributes[$attribute] = $value;
+        foreach ($attributes as $key => $value) {
+            $this->attributes[$key] = $value;
+        }
 
         return $this;
     }

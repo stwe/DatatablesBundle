@@ -22,6 +22,8 @@ use Exception;
 class ArrayColumn extends BaseColumn
 {
     /**
+     * Association flag.
+     *
      * @var boolean
      */
     protected $isAssociation;
@@ -53,7 +55,7 @@ class ArrayColumn extends BaseColumn
             $this->mData = $prev[0];
             $this->mRender = '[, ].' . $last[0];
         } else {
-            throw new Exception('No association found.');
+            throw new Exception('Association expected.');
         }
     }
 
@@ -68,6 +70,14 @@ class ArrayColumn extends BaseColumn
     public function getClassId()
     {
         return 'array';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setOptions(array $options)
+    {
+        parent::setOptions($options);
     }
 
 

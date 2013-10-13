@@ -47,8 +47,18 @@ class Column extends BaseColumn
         return 'column';
     }
 
+    /**
+     * @param array $options
+     *
+     * @return $this
+     */
+    public function setOptions(array $options)
+    {
+        parent::setOptions($options);
+    }
+
 
     //-------------------------------------------------
-    // ColumnInterface
+    // Public
     //-------------------------------------------------
 }
