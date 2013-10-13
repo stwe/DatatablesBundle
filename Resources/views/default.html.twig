@@ -10,9 +10,6 @@
                 {% for column in columns %}
                     <th></th>
                 {% endfor %}
-                {% for actionColumn in actionColumns %}
-                    <th></th>
-                {% endfor %}
                 {% if multiselect %}
                     <th></th>
                 {% endif %}
@@ -73,11 +70,18 @@
 
                 $.extend(defaults, {
                     "aoColumns": [
-                        {# normal columns #}
-                        {% include "SgDatatablesBundle:Column:columns.html.twig" %}
-
-                        {# action (crud) columns #}
-                        {% include "SgDatatablesBundle:Column:action_columns.html.twig" %}
+                        {# columns #}
+                        {% for column in columns %}
+                            {% if column.getClassId == 'column' %}
+                                {% include "SgDatatablesBundle:Column:column.html.twig" %}
+                            {% endif %}
+                            {% if column.getClassId == 'array' %}
+                                {% include "SgDatatablesBundle:Column:column.html.twig" %}
+                            {% endif %}
+                            {% if column.getClassId == 'action' %}
+                                {% include "SgDatatablesBundle:Column:action.html.twig" %}
+                            {% endif %}
+                        {% endfor %}
 
                         {# multiselect column #}
                         {% if multiselect %}

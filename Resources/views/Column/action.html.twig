@@ -1,0 +1,64 @@
+{
+    "bSearchable": false,
+
+    "bSortable": false,
+
+    {% if column.bVisible == false %}
+        "bVisible": false,
+    {% else %}
+        "bVisible": true,
+    {% endif %}
+
+    "mData": null,
+
+    "mRender": function(data, type, full) {
+        if (type != "display")
+            return data;
+
+        var routeParameters  = {};
+        var attributes = "";
+
+        {% for key, value in column.routeParameters %}
+            var parameter = "{{ key }}";
+            var columnValue = "{{ value }}";
+            routeParameters[parameter] = full[columnValue];
+        {% endfor %}
+
+        {% for key, value in column.attributes %}
+            attributes += '{{ key }} = "{{ value }}"';
+        {% endfor %}
+
+        var route  = Routing.generate("{{ column.route }}", routeParameters);
+
+        {% if column.class != null %}
+            var url  = "<a class = '{{ column.class }}' ";
+        {% else %}
+            var url  = "<a ";
+        {% endif %}
+
+        url += "href='" + route + "'";
+        url += attributes + " >";
+        {% if column.icon != null %}
+            url += "<i class='{{ column.icon }}'></i>";
+        {% else %}
+            url += "{{ column.label }}";
+        {% endif %}
+        url += "</a>";
+
+        return url;
+    },
+
+    {% if column.sClass != "" %}
+        "sClass": "{{ column.sClass }}",
+    {% endif %}
+
+    {% if column.sDefaultContent != null %}
+        "sDefaultContent": "{{ column.sDefaultContent }}",
+    {% endif %}
+
+    "sTitle": "{{ column.sTitle }}",
+
+    {% if column.sWidth != null %}
+        "sWidth": "{{ column.sWidth }}",
+    {% endif %}
+},
