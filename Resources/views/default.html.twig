@@ -78,6 +78,9 @@
                             {% if column.getClassId == 'array' %}
                                 {% include "SgDatatablesBundle:Column:column.html.twig" %}
                             {% endif %}
+                            {% if column.getClassId == 'datetime' %}
+                                {% include "SgDatatablesBundle:Column:datetime.html.twig" %}
+                            {% endif %}
                             {% if column.getClassId == 'action' %}
                                 {% include "SgDatatablesBundle:Column:action.html.twig" %}
                             {% endif %}

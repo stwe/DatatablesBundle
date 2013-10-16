@@ -1,0 +1,44 @@
+{
+    {% if column.bSearchable == false %}
+        "bSearchable": false,
+    {% else %}
+        "bSearchable": true,
+    {% endif %}
+
+    {% if column.bSortable == false %}
+        "bSortable": false,
+    {% else %}
+        "bSortable": true,
+    {% endif %}
+
+    {% if column.bVisible == false %}
+        "bVisible": false,
+    {% else %}
+        "bVisible": true,
+    {% endif %}
+
+    {% if column.mData != null %}
+        "mData": "{{ column.mData }}",
+    {% else %}
+        "mData": null,
+    {% endif %}
+
+    "mRender": function(data, type, full) {
+        moment.lang("{{ app.request.locale }}");
+        return moment.unix(data).format('lll');
+    },
+
+    {% if column.sClass != "" %}
+        "sClass": "{{ column.sClass }}",
+    {% endif %}
+
+    {% if column.sDefaultContent != null %}
+        "sDefaultContent": "{{ column.sDefaultContent }}",
+    {% endif %}
+
+    "sTitle": "{{ column.sTitle }}",
+
+    {% if column.sWidth != null %}
+        "sWidth": "{{ column.sWidth }}",
+    {% endif %}
+},

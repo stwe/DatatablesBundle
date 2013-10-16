@@ -41,8 +41,11 @@ class ColumnFactory
             case 'action':
                 $column = new ActionColumn($name);
                 break;
+            case 'datetime':
+                $column = new DateTimeColumn($name);
+                break;
             default:
-                throw new Exception('Incorrect id value');
+                throw new Exception('Incorrect id value.');
         }
 
         return $column;
