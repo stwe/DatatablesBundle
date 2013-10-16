@@ -1,0 +1,36 @@
+{
+    {% if column.bSearchable == false %}
+        "bSearchable": false,
+    {% else %}
+        "bSearchable": true,
+    {% endif %}
+
+    {% if column.bSortable == false %}
+        "bSortable": false,
+    {% else %}
+        "bSortable": true,
+    {% endif %}
+
+    {% if column.bVisible == false %}
+        "bVisible": false,
+    {% else %}
+        "bVisible": true,
+    {% endif %}
+
+    "mData": "{{ column.mData }}",
+    "mRender": "{{ column.mRender }}",
+
+    {% if column.sClass != "" %}
+        "sClass": "{{ column.sClass }}",
+    {% endif %}
+
+    {% if column.sDefaultContent != null %}
+        "sDefaultContent": "{{ column.sDefaultContent }}",
+    {% endif %}
+
+    "sTitle": "{{ column.sTitle }}",
+
+    {% if column.sWidth != null %}
+        "sWidth": "{{ column.sWidth }}",
+    {% endif %}
+},

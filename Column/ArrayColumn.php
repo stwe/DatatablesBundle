@@ -21,14 +21,6 @@ use Exception;
  */
 class ArrayColumn extends BaseColumn
 {
-    /**
-     * Association flag.
-     *
-     * @var boolean
-     */
-    protected $isAssociation;
-
-
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -44,11 +36,8 @@ class ArrayColumn extends BaseColumn
     {
         parent::__construct($name);
 
-        $this->isAssociation = false;
-
         // association delimiter found?
         if (strstr($name, '.') !== false) {
-            $this->isAssociation = true;
             $fieldsArray = explode('.', $name);
             $prev = array_slice($fieldsArray, count($fieldsArray) - 2, 1);
             $last = array_slice($fieldsArray, count($fieldsArray) - 1, 1);
@@ -84,12 +73,4 @@ class ArrayColumn extends BaseColumn
     //-------------------------------------------------
     // Public
     //-------------------------------------------------
-
-    /**
-     * @return boolean
-     */
-    public function getIsAssociation()
-    {
-        return $this->isAssociation;
-    }
 }
