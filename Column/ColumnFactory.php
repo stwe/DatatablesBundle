@@ -32,20 +32,23 @@ class ColumnFactory
         $column = null;
 
         switch ($id) {
-            case 'column':
-                $column = new Column($name);
+            case 'action':
+                $column = new ActionColumn($name);
                 break;
             case 'array':
                 $column = new ArrayColumn($name);
                 break;
-            case 'action':
-                $column = new ActionColumn($name);
+            case 'boolean':
+                $column = new BooleanColumn($name);
+                break;
+            case 'column':
+                $column = new Column($name);
                 break;
             case 'datetime':
                 $column = new DateTimeColumn($name);
                 break;
             default:
-                throw new Exception('Incorrect id value.');
+                throw new Exception('Incorrect column class id.');
         }
 
         return $column;
