@@ -17,15 +17,18 @@
         "bVisible": true,
     {% endif %}
 
-    {% if column.mData != null %}
-        "mData": "{{ column.mData }}",
-    {% else %}
-        "mData": null,
-    {% endif %}
-
+    "mData": null,
     "mRender": function(data, type, full) {
-        moment.lang("{{ app.request.locale }}");
-        return moment.unix(data).format('lll');
+        if (full.{{ column.name }} == null) {
+            return null;
+        }
+
+        if (typeof full.{{ column.name }}.timestamp != 'undefined') {
+            moment.lang("{{ app.request.locale }}");
+            return moment.unix(full.{{ column.name }}.timestamp).format('lll');
+        } else {
+            return null;
+        }
     },
 
     {% if column.sClass != "" %}

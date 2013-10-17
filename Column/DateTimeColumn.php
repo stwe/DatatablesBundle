@@ -33,7 +33,7 @@ class DateTimeColumn extends BaseColumn
     {
         parent::__construct($name);
 
-        $this->mData = $name . '.timestamp';
+        $this->mData = null;
     }
 
 
