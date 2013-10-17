@@ -56,7 +56,7 @@ If not already done: add SgDatatablesBundle in your composer.json:
 ```js
 {
     "require": {
-        "sg/datatablesbundle": "v0.2"
+        "sg/datatablesbundle": "dev-master"
     }
 }
 ```
@@ -155,8 +155,6 @@ assetic:
 
 - [An example](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
 
-## List of column types
+## List of available column types
 
-- [column](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/column.md)
-- [action](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/action.md)
-- [array](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/array.md)
+- [columns](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/columns.md)

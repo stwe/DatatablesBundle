@@ -28,6 +28,7 @@
             '@datatables_js'
             'bundles/sgdatatables/js/dataTables_bootstrap.js'
             'bundles/sgdatatables/js/jquery.dataTables.columnFilter.js'
+            'bundles/sgdatatables/js/moment-with-langs.min.js'
             'bundles/fosjsrouting/js/router.js' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
@@ -93,14 +94,13 @@ class UserDatatable extends AbstractDatatableView
                     'title' => 'Username',
                     'searchable' => false
                 ))
-            ->add('email', 'column', array(
-                    'title' => 'Email'
+            ->add('lastLogin', 'datetime', array(
+                    'title' => 'Last Login'
                 ))
-            ->add('enabled', 'column', array(
+            ->add('enabled', 'boolean', array(
                     'title' => 'Enabled',
                     'searchable' => false,
-                    'width' => '90',
-                    'render' => 'render_boolean_icons'
+                    'width' => '90'
                 ))
             ->add('posts.title', 'array', array(
                     'title' => 'Posts'
