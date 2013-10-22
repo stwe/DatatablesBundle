@@ -1,0 +1,13 @@
+{
+    "bSearchable": false,
+    "bSortable": false,
+    "bVisible": true,
+    "mData": null,
+    "mRender": function(data, type, full) {
+        if (type != "display")
+            return data;
+
+        return "<input type='checkbox' name='select_column_checkbox' value='" + full.id + "' class='select_column_checkbox' />";
+    },
+    "sTitle": "<input type='checkbox' name='select_all_checkbox' id='select_all_checkbox' />",
+},
