@@ -2,38 +2,31 @@
 
 This Bundle integrates the jQuery DataTables plugin into your Symfony2 application. Compatible with Doctrine ORM.
 
-*WARNING*: This is not a final/stable bundle.
-
 ## Installation
 
 ### Prerequisites
 
-* This version of the bundle requires Symfony 2.3.x.
-* Bootstrap 2.3.2 and DataTables 1.9 should be installed.
-* Finally, FOSJsRoutingBundle needs to be installed and configured beforehand. Please follow all steps described [here](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/README.markdown).
+This bundle requires the following additional packages:
 
-Your composer.json should look like this:
+* Symfony 2.3.x
+* jQuery 1.10.x
+* DataTables 1.10
+* Bootstrap 3.0.x. ***It is recommended to install the MopaBootstrapBundle [here](https://github.com/phiamo/MopaBootstrapBundle).***
+* Moment.js 2.5.0
+* FOSJsRoutingBundle 1.5.0. ***Please follow all steps described [here](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/README.markdown).***
+
+The 'require' part of your composer.json should look like this:
 
 ```js
-{
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "datatables/datatables",
-                "version": "1.9.4",
-                "dist": {
-                    "type": "zip",
-                    "url": "http://www.datatables.net/releases/DataTables-1.9.4.zip"
-                }
-            }
-        }
-    ],
     "require": {
-        "datatables/datatables": "1.9.4",
-        "twitter/bootstrap": "v2.3.2",
-        "friendsofsymfony/jsrouting-bundle": "1.2.0"
-}
+        "symfony/framework-bundle": "~2.3",
+        "components/jquery": "1.10.2",
+        "datatables/datatables": "dev-master",
+        "mopa/bootstrap-bundle": "dev-master",
+        "twbs/bootstrap": "dev-master",
+        "moment/moment": "2.5.0",
+        "friendsofsymfony/jsrouting-bundle": "@stable"
+    },
 ```
 
 ### Translations
@@ -92,63 +85,92 @@ public function registerBundles()
 
 ### Step 3: Assetic Configuration
 
-This bundle provides a layout that uses the Bootstrap2 framework.
+This bundle provides a layout that uses the Bootstrap 3.0.x framework.
+
+***It is recommended to install the MopaBootstrapBundle [here](https://github.com/phiamo/MopaBootstrapBundle).***
 
 ``` yaml
 # app/config/config.yml
 
 assetic:
-    debug:          %kernel.debug%
+    debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [ XyYourBundle ]
-    #java: /usr/bin/java
+    java: /usr/bin/java
     filters:
+        less:
+            node: /usr/bin/node
+            node_paths: [/usr/lib/nodejs, /usr/local/lib/node_modules]
+            apply_to: "\.less$"
         cssrewrite: ~
-    assets:
-        jquery_js:
-            inputs:
-                - %kernel.root_dir%/../vendor/datatables/datatables/media/js/jquery.js
-            output: js/jquery.js
-        img_bootstrap_glyphicons_black:
-            inputs:
-                - %kernel.root_dir%/../vendor/twitter/bootstrap/img/glyphicons-halflings.png
-            output: img/glyphicons-halflings.png
-        img_bootstrap_glyphicons_white:
-            inputs:
-                - %kernel.root_dir%/../vendor/twitter/bootstrap/img/glyphicons-halflings-white.png
-            output: img/glyphicons-halflings-white.png
-        bootstrap_css:
-            inputs:
-                - %kernel.root_dir%/../vendor/twitter/bootstrap/docs/assets/css/bootstrap.css
-            output: css/bootstrap.css
-        bootstrap_js:
-            inputs:
-                - %kernel.root_dir%/../vendor/twitter/bootstrap/docs/assets/js/bootstrap.js
-            output: js/bootstrap.js
-        datatables_js:
-            inputs:
-                - %kernel.root_dir%/../vendor/datatables/datatables/media/js/jquery.dataTables.min.js
-            output: js/datatables.js
-        img_sort_both:
-            inputs:
-                - %kernel.root_dir%/../vendor/datatables/datatables/media/images/sort_both.png
-            output: bundles/sgdatatables/images/sort_both.png
-        img_sort_asc:
-            inputs:
-                - %kernel.root_dir%/../vendor/datatables/datatables/media/images/sort_asc.png
-            output: bundles/sgdatatables/images/sort_asc.png
-        img_sort_desc:
-            inputs:
-                - %kernel.root_dir%/../vendor/datatables/datatables/media/images/sort_desc.png
-            output: bundles/sgdatatables/images/sort_desc.png
-        img_sort_asc_dis:
-            inputs:
-                - %kernel.root_dir%/../vendor/datatables/datatables/media/images/sort_asc_disabled.png
-            output: bundles/sgdatatables/images/sort_asc_disabled.png
-        img_sort_desc_dis:
-            inputs:
-                - %kernel.root_dir%/../vendor/datatables/datatables/media/images/sort_desc_disabled.png
-            output: bundles/sgdatatables/images/sort_desc_disabled.png
+        yui_css:
+            jar: "/your/path/to/yui-compressor.jar"
+        yui_js:
+            jar: "/your/path/to/yui-compressor.jar"
+```
+
+``` twig
+{# layout.html.twig #}
+
+{% extends 'MopaBootstrapBundle::base.html.twig' %}
+
+{% block title %}ExampleBundle{% endblock %}
+
+{% block head_style %}
+
+    {% stylesheets
+        '@MopaBootstrapBundle/Resources/public/less/mopabootstrapbundle.less'
+        '%kernel.root_dir%/../vendor/datatables/datatables/examples/resources/bootstrap/3/dataTables.bootstrap.css'
+        output = 'compiled/css/styles.min.css'
+        filter = 'yui_css'
+    %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
+    {% endstylesheets %}
+
+{% endblock head_style %}
+
+{% block head_script %}
+
+    {% javascripts
+        '%kernel.root_dir%/../vendor/components/jquery/jquery.js'
+        output = 'compiled/js/jquery.min.js'
+        filter = 'yui_js'
+    %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+{% endblock head_script %}
+
+{% block foot_script_assetic %}
+
+    {% javascripts
+        '@MopaBootstrapBundle/Resources/public/bootstrap/js/tooltip.js'
+        '@MopaBootstrapBundle/Resources/public/bootstrap/js/affix.js'
+        '@MopaBootstrapBundle/Resources/public/bootstrap/js/alert.js'
+        '@MopaBootstrapBundle/Resources/public/bootstrap/js/button.js'
+        '@MopaBootstrapBundle/Resources/public/bootstrap/js/carousel.js'
+        '@MopaBootstrapBundle/Resources/public/bootstrap/js/collapse.js'
+        '@MopaBootstrapBundle/Resources/public/bootstrap/js/dropdown.js'
+        '@MopaBootstrapBundle/Resources/public/bootstrap/js/modal.js'
+        '@MopaBootstrapBundle/Resources/public/bootstrap/js/popover.js'
+        '@MopaBootstrapBundle/Resources/public/bootstrap/js/scrollspy.js'
+        '@MopaBootstrapBundle/Resources/public/bootstrap/js/tab.js'
+        '@MopaBootstrapBundle/Resources/public/bootstrap/js/transition.js'
+        '@MopaBootstrapBundle/Resources/public/js/mopabootstrap-collection.js'
+        '@MopaBootstrapBundle/Resources/public/js/mopabootstrap-subnav.js'
+        '@FOSJsRoutingBundle/Resources/public/js/router.js'
+        '%kernel.root_dir%/../vendor/datatables/datatables/media/js/jquery.dataTables.js'
+        '%kernel.root_dir%/../vendor/datatables/datatables/examples/resources/bootstrap/3/dataTables.bootstrap.js'
+        '%kernel.root_dir%/../vendor/moment/moment/moment.js'
+        '%kernel.root_dir%/../vendor/moment/moment/lang/de.js'
+        output = 'compiled/js/scripts.min.js'
+        filter = 'yui_js'
+    %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
+{% endblock foot_script_assetic %}
 ```
 
 ## Example
