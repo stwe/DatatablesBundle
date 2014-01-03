@@ -120,10 +120,10 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->templating = $templating;
         $this->template = 'SgDatatablesBundle::default.html.twig';
         $this->sDomOptions = array(
-            'sDomLength'     => 'span4',
-            'sDomFilter'     => 'span8',
-            'sDomInfo'       => 'span3',
-            'sDomPagination' => 'span9'
+            'sDomLength'     => 'col-sm-4',
+            'sDomFilter'     => 'col-sm-8',
+            'sDomInfo'       => 'col-sm-3',
+            'sDomPagination' => 'col-sm-9'
         );
         $this->iDisplayLength = 10;
         $this->tableId = 'sg_datatable';

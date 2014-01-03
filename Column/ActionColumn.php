@@ -28,28 +28,28 @@ class ActionColumn extends BaseColumn
      *
      * @var string
      */
-    const DEFAULT_ICON = 'icon-th';
+    const DEFAULT_ICON = 'glyphicon glyphicon-th';
 
     /**
      * Default show icon.
      *
      * @var string
      */
-    const DEFAULT_SHOW_ICON = 'icon-eye-open';
+    const DEFAULT_SHOW_ICON = 'glyphicon glyphicon-eye-open';
 
     /**
      * Default edit icon.
      *
      * @var string
      */
-    const DEFAULT_EDIT_ICON = 'icon-edit';
+    const DEFAULT_EDIT_ICON = 'glyphicon glyphicon-edit';
 
     /**
      * Default delete icon.
      *
      * @var string
      */
-    const DEFAULT_DELETE_ICON = 'icon-trash';
+    const DEFAULT_DELETE_ICON = 'glyphicon glyphicon-trash';
 
     /**
      * @var null|string
@@ -211,7 +211,7 @@ class ActionColumn extends BaseColumn
         $this->icon = $icon;
 
         if (null === $this->class) {
-            $this->class = 'btn btn-mini';
+            $this->class = 'btn btn-default btn-xs';
         }
 
         return $this;

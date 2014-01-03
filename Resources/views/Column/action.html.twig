@@ -39,7 +39,7 @@
         url += "href='" + route + "'";
         url += attributes + " >";
         {% if column.icon != null %}
-            url += "<i class='{{ column.icon }}'></i>";
+            url += "<span class='{{ column.icon }}'></span>";
         {% else %}
             url += "{{ column.label }}";
         {% endif %}

@@ -2,7 +2,7 @@
 
     {% block sg_datatable_html %}
 
-        <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="{{ tableId }}">
+        <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="{{ tableId }}" width="100%">
             <thead>
             </thead>
             {% if individualFiltering == true %}
@@ -33,24 +33,21 @@
                     "bProcessing": true,
                     "bServerSide": true,
                     "sAjaxSource": "{{ path(sAjaxSource) }}",
-                    "fnServerData": function (sSource, aoData, fnCallback) {
+                    "fnServerParams": function (aoData) {
                         {% set counter = 0 %}
                         {% for column in columns %}
                             aoData.push( { "name": "dql_{{ counter }}", "value": "{{ column.name }}" } );
-                        {% set counter = counter + 1 %}
+                            {% set counter = counter + 1 %}
                         {% endfor %}
                         {% set counter = counter - 1 %}
                         aoData.push( { "name": "dql_counter", "value": "{{ counter }}" } );
-                        $.getJSON( sSource, aoData, function (json) {
-                            fnCallback(json)
-                        } );
                     },
                     "sDom": "<'row'<'{{ sDomOptions.sDomLength }}'l><'{{ sDomOptions.sDomFilter }}'f>r>t<'row'<'{{ sDomOptions.sDomInfo }}'i><'{{ sDomOptions.sDomPagination }}'p>>",
                     "sPaginationType": "bootstrap",
                     "aLengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "{{ 'datatables.datatable.all'|trans({}, 'messages') }}"]],
                     "iDisplayLength": {{ iDisplayLength }},
                     "oLanguage": {
-                        "sProcessing": "<img src='{{ asset('bundles/sgdatatables/img/loader.gif') }}' style='margin-left: 20px; margin-bottom: 5px;' />" + " {{ 'datatables.datatable.sProcessing'|trans({}, 'messages') }}",
+                        "sProcessing": "{{ 'datatables.datatable.sProcessing'|trans({}, 'messages') }}",
                         "sLengthMenu": "{{ 'datatables.datatable.sLengthMenu'|trans({}, 'messages') }}",
                         "sZeroRecords": "{{ 'datatables.datatable.sZeroRecords'|trans({}, 'messages') }}",
                         "sInfo": "{{ 'datatables.datatable.sInfo'|trans({}, 'messages') }}",
@@ -210,9 +207,9 @@
                     return data;
 
                 if (data == true) {
-                    return "<i class='icon-ok'></i>";
+                    return "<span class='glyphicon glyphicon-ok'></span>";
                 } else {
-                    return "<i class='icon-remove'></i>";
+                    return "<span class='glyphicon glyphicon-remove'></span>";
                 }
             }
 
@@ -220,7 +217,7 @@
                 if (type != "display")
                     return data;
 
-                return "<i class='icon-plus'></i>";
+                return "<span class='glyphicon glyphicon-plus'></span>";
             }
 
         </script>
