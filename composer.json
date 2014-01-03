@@ -13,25 +13,17 @@
     "support": {
         "issues": "https://github.com/stwe/DatatablesBundle/issues"
     },
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "datatables/datatables",
-                "version": "1.9.4",
-                "dist": {
-                    "type": "zip",
-                    "url": "http://www.datatables.net/releases/DataTables-1.9.4.zip"
-                }
-            }
-        }
-    ],
     "require": {
         "php": ">=5.3.2",
         "symfony/framework-bundle": "~2.3",
-        "datatables/datatables": "1.9.4",
-        "twitter/bootstrap": "v2.3.2",
-        "friendsofsymfony/jsrouting-bundle": "1.2.0"
+        "components/jquery": "1.10.2",
+        "datatables/datatables": "dev-master",
+        "moment/moment": "2.5.0",
+        "friendsofsymfony/jsrouting-bundle": "@stable"
+    },
+    "suggest": {
+        "twbs/bootstrap": "dev-master",
+        "mopa/bootstrap-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Sg\\DatatablesBundle": "" }
