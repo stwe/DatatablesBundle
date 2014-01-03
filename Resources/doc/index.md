@@ -11,11 +11,11 @@ This bundle requires the following additional packages:
 * Symfony 2.3.x
 * jQuery 1.10.x
 * DataTables 1.10
-* Bootstrap 3.0.x. ***It is recommended to install the MopaBootstrapBundle [here](https://github.com/phiamo/MopaBootstrapBundle).***
+* Bootstrap 3.0.x. ***It is recommended to install the [MopaBootstrapBundle](https://github.com/phiamo/MopaBootstrapBundle).***
 * Moment.js 2.5.0
 * FOSJsRoutingBundle 1.5.0. ***Please follow all steps described [here](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/README.markdown).***
 
-The 'require' part of your composer.json should look like this:
+The `require` part of your composer.json should look like this:
 
 ```js
     "require": {
@@ -87,7 +87,9 @@ public function registerBundles()
 
 This bundle provides a layout that uses the Bootstrap 3.0.x framework.
 
-***It is recommended to install the MopaBootstrapBundle [here](https://github.com/phiamo/MopaBootstrapBundle).***
+***It is recommended to install the [MopaBootstrapBundle](https://github.com/phiamo/MopaBootstrapBundle).***
+
+#### Config example (config.yml):
 
 ``` yaml
 # app/config/config.yml
@@ -108,9 +110,9 @@ assetic:
             jar: "/your/path/to/yui-compressor.jar"
 ```
 
-``` twig
-{# layout.html.twig #}
+#### Layout example (layout.html.twig):
 
+``` html
 {% extends 'MopaBootstrapBundle::base.html.twig' %}
 
 {% block title %}ExampleBundle{% endblock %}
