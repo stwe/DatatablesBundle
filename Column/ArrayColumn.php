@@ -68,9 +68,4 @@ class ArrayColumn extends BaseColumn
     {
         parent::setOptions($options);
     }
-
-
-    //-------------------------------------------------
-    // Public
-    //-------------------------------------------------
 }

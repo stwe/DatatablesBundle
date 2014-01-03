@@ -56,9 +56,4 @@ class DateTimeColumn extends BaseColumn
     {
         parent::setOptions($options);
     }
-
-
-    //-------------------------------------------------
-    // Public
-    //-------------------------------------------------
 }

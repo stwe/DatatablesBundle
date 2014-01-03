@@ -56,9 +56,4 @@ class BooleanColumn extends BaseColumn
     {
         parent::setOptions($options);
     }
-
-
-    //-------------------------------------------------
-    // Public
-    //-------------------------------------------------
 }
