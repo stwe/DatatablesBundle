@@ -18,11 +18,11 @@
         "symfony/framework-bundle": "~2.3",
         "components/jquery": "1.10.2",
         "datatables/datatables": "dev-master",
+        "twbs/bootstrap": "dev-master",
         "moment/moment": "2.5.0",
         "friendsofsymfony/jsrouting-bundle": "@stable"
     },
     "suggest": {
-        "twbs/bootstrap": "dev-master",
         "mopa/bootstrap-bundle": "dev-master"
     },
     "autoload": {
