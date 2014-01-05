@@ -5,16 +5,22 @@
         <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="{{ tableId }}" width="100%">
             <thead>
             </thead>
-            {% if individualFiltering == true %}
-                <tfoot>
-                {% for column in columns %}
-                    <th></th>
-                {% endfor %}
-                {% if multiselect %}
-                    <th></th>
+                {% if individualFiltering %}
+                    <tfoot>
+                        {% for column in columns %}
+                            <th>
+                                {% if column.bSearchable %}
+                                    <input type="text" class="form-control input-sm" placeholder="{{ column.sTitle }}" />
+                                {% else %}
+                                    <input type="hidden" />
+                                {% endif %}
+                            </th>
+                        {% endfor %}
+                        {% if multiselect %}
+                            <th></th>
+                        {% endif %}
+                    </tfoot>
                 {% endif %}
-                </tfoot>
-            {% endif %}
             <tbody>
             </tbody>
         </table>
@@ -30,10 +36,14 @@
                 var selector = "#{{ tableId }}";
 
                 var defaults = {
-                    "bProcessing": true,
+                    {% if bProcessing %}
+                        "bProcessing": true,
+                    {% else %}
+                        "bProcessing": false,
+                    {% endif %}
                     "bServerSide": true,
                     "sAjaxSource": "{{ path(sAjaxSource) }}",
-                    "fnServerParams": function (aoData) {
+                    "fnServerParams": function(aoData) {
                         {% set counter = 0 %}
                         {% for column in columns %}
                             aoData.push( { "name": "dql_{{ counter }}", "value": "{{ column.name }}" } );
@@ -93,50 +103,13 @@
                     ]
                 });
 
-                var oTable;
-                {% if individualFiltering == true %}
-                    oTable = $(selector).dataTable(defaults).columnFilter(
-                        {
-                            aoColumns: [
-                                {% for column in columns %}
-                                    {% if column.bSearchable == true %}
-                                        {
-                                            type: "text",
-                                            bRegex: true,
-                                            bSmart: true
-                                        },
-                                    {% else %}
-                                        null,
-                                    {% endif %}
-                                {% endfor %}
-                            ]
-                        }
-                    );
-                {% else %}
-                    oTable = $(selector).dataTable(defaults);
+                var oTable = $(selector).dataTable(defaults);
+
+                {% if individualFiltering %}
+                    $("tfoot input").keyup(function() {
+                        oTable.fnFilter(this.value, $("tfoot input").index(this));
+                    });
                 {% endif %}
-
-                var anOpen = [];
-
-                $(selector).on("click", "td.details_control", function () {
-                    var nTr = this.parentNode;
-                    var i = $.inArray(nTr, anOpen);
-
-                    if (i === -1) {
-                        $("i", this).attr("class", "icon-minus");
-                        oTable.fnOpen(nTr, getDetails(oTable, nTr), "details");
-                        anOpen.push(nTr);
-                    }
-                    else {
-                        $("i", this).attr("class", "icon-plus");
-                        oTable.fnClose(nTr);
-                        anOpen.splice(i, 1);
-                    }
-                });
-
-                function getDetails(oTable, nTr) {
-                    return "Test";
-                }
 
                 {% if multiselect %}
                     var multiple_html = "\

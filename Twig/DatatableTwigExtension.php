@@ -11,7 +11,7 @@
 
 namespace Sg\DatatablesBundle\Twig;
 
-use Sg\DatatablesBundle\Datatable\AbstractDatatableView;
+use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
 
 use Twig_Extension;
 use Twig_SimpleFunction;
@@ -50,6 +50,6 @@ class DatatableTwigExtension extends Twig_Extension
      */
     public function datatableRender(AbstractDatatableView $datatable)
     {
-        return $datatable->createView();
+        return $datatable->renderDatatableView();
     }
 }

@@ -33,5 +33,7 @@ class SgDatatablesExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+
+        $container->setParameter('sg_datatables.default.layout.options', $config['default_layout']);
     }
 }
