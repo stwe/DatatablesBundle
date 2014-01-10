@@ -24,7 +24,7 @@ interface DatatableViewFactoryInterface
      * @param string $datatableViewClass The name of the datatable view class
      *
      * @throws \Exception
-     * @return AbstractDatatableView
+     * @return DatatableViewInterface
      */
     public function createDatatableView($datatableViewClass);
 } 

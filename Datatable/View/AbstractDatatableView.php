@@ -11,8 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable\View;
 
-use Sg\DatatablesBundle\Column\ColumnBuilder;
-use Sg\DatatablesBundle\Column\ColumnFactory;
+use Sg\DatatablesBundle\Column\ColumnBuilderInterface;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Exception;
@@ -71,9 +70,9 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     protected $tableId;
 
     /**
-     * A ColumnBuilder instance.
+     * A ColumnBuilderInterface.
      *
-     * @var ColumnBuilder
+     * @var ColumnBuilderInterface
      */
     protected $columnBuilder;
 
@@ -120,10 +119,11 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * Ctor.
      *
-     * @param TwigEngine $templating
-     * @param array      $layoutOptions
+     * @param TwigEngine             $templating    The templating service
+     * @param array                  $layoutOptions The default layout options
+     * @param ColumnBuilderInterface $columnBuilder A ColumnBuilderInterface
      */
-    public function __construct(TwigEngine $templating, array $layoutOptions)
+    public function __construct(TwigEngine $templating, array $layoutOptions, ColumnBuilderInterface $columnBuilder)
     {
         $this->templating = $templating;
         $this->template = $layoutOptions['template'];
@@ -136,7 +136,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         );
         $this->iDisplayLength = (int) $layoutOptions['display_length'];
         $this->tableId = $layoutOptions['table_id'];
-        $this->columnBuilder = new ColumnBuilder(new ColumnFactory());
+        $this->columnBuilder = $columnBuilder;
         $this->sAjaxSource = '';
         $this->customizeOptions = array();
         $this->multiselect = $layoutOptions['multiselect'];
@@ -320,6 +320,30 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     }
 
     /**
+     * Set columnBuilder.
+     *
+     * @param ColumnBuilderInterface $columnBuilder
+     *
+     * @return $this
+     */
+    public function setColumnBuilder(ColumnBuilderInterface $columnBuilder)
+    {
+        $this->columnBuilder = $columnBuilder;
+
+        return $this;
+    }
+
+    /**
+     * Get columnBuilder.
+     *
+     * @return ColumnBuilderInterface
+     */
+    public function getColumnBuilder()
+    {
+        return $this->columnBuilder;
+    }
+
+    /**
      * Set sAjaxSource.
      *
      * @param string $sAjaxSource
@@ -350,7 +374,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      *
      * @return $this
      */
-    public function setCustomizeOptions($customizeOptions)
+    public function setCustomizeOptions(array $customizeOptions)
     {
         $this->customizeOptions = $customizeOptions;
 
