@@ -13,7 +13,7 @@ This bundle requires the following additional packages:
 * DataTables 1.10
 * Bootstrap 3.0.x. ***It is recommended to install the [MopaBootstrapBundle](https://github.com/phiamo/MopaBootstrapBundle).***
 * Moment.js 2.5.0
-* FOSJsRoutingBundle 1.5.0. ***Please follow all steps described [here](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/README.markdown).***
+* FOSJsRoutingBundle 1.5.0. ***Please follow all steps described [here](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/index.md).***
 
 The `require` part of your composer.json should look like this:
 
@@ -104,10 +104,12 @@ assetic:
             node_paths: [/usr/lib/nodejs, /usr/local/lib/node_modules]
             apply_to: "\.less$"
         cssrewrite: ~
+        cssembed:
+            jar: %kernel.root_dir%/Resources/java/cssembed-0.4.5.jar
         yui_css:
-            jar: "/your/path/to/yui-compressor.jar"
+            jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.8.jar
         yui_js:
-            jar: "/your/path/to/yui-compressor.jar"
+            jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.8.jar
 ```
 
 #### Layout example (layout.html.twig):
@@ -122,8 +124,8 @@ assetic:
     {% stylesheets
         '@MopaBootstrapBundle/Resources/public/less/mopabootstrapbundle.less'
         '%kernel.root_dir%/../vendor/datatables/datatables/examples/resources/bootstrap/3/dataTables.bootstrap.css'
-        output = 'compiled/css/styles.min.css'
-        filter = 'yui_css'
+        output = 'css/styles.css'
+        filter = 'cssembed, ?yui_css'
     %}
         <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
     {% endstylesheets %}
@@ -134,8 +136,8 @@ assetic:
 
     {% javascripts
         '%kernel.root_dir%/../vendor/components/jquery/jquery.js'
-        output = 'compiled/js/jquery.min.js'
-        filter = 'yui_js'
+        output = 'js/jquery.js'
+        filter = '?yui_js'
     %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
@@ -164,8 +166,8 @@ assetic:
         '%kernel.root_dir%/../vendor/datatables/datatables/examples/resources/bootstrap/3/dataTables.bootstrap.js'
         '%kernel.root_dir%/../vendor/moment/moment/moment.js'
         '%kernel.root_dir%/../vendor/moment/moment/lang/de.js'
-        output = 'compiled/js/scripts.min.js'
-        filter = 'yui_js'
+        output = 'js/scripts.js'
+        filter = '?yui_js'
     %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
