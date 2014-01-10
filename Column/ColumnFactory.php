@@ -12,24 +12,33 @@
 namespace Sg\DatatablesBundle\Column;
 
 use Exception;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 /**
  * Class ColumnFactory
  *
  * @package Sg\DatatablesBundle\Column
  */
-class ColumnFactory
+class ColumnFactory implements ColumnFactoryInterface
 {
+    //-------------------------------------------------
+    // ColumnFactoryInterface
+    //-------------------------------------------------
+
     /**
-     * @param string $name The name of the column in the entity
-     * @param string $id   The id of the column class
-     *
-     * @throws Exception
-     * @return null|ColumnInterface
+     * {@inheritdoc}
      */
-    public function createbyId($name, $id)
+    public function createColumnById($name, $id)
     {
         $column = null;
+
+        if (!is_string($name)) {
+            throw new UnexpectedTypeException($name, 'string expected');
+        }
+
+        if (!is_string($id)) {
+            throw new UnexpectedTypeException($id, 'string expected');
+        }
 
         switch ($id) {
             case 'action':
@@ -48,7 +57,7 @@ class ColumnFactory
                 $column = new DateTimeColumn($name);
                 break;
             default:
-                throw new Exception('Incorrect column class id.');
+                throw new Exception('Incorrect class id.');
         }
 
         return $column;

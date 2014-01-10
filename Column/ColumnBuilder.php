@@ -16,45 +16,50 @@ namespace Sg\DatatablesBundle\Column;
  *
  * @package Sg\DatatablesBundle\Column
  */
-class ColumnBuilder
+class ColumnBuilder implements ColumnBuilderInterface
 {
     /**
+     * A ColumnFactoryInterface.
+     *
      * @var ColumnFactory
      */
     private $columnFactory;
 
     /**
+     * All generated columns.
+     *
      * @var array
      */
     private $columns;
 
 
+    //-------------------------------------------------
+    // Ctor.
+    //-------------------------------------------------
+
     /**
      * Ctor.
-     *
-     * @param ColumnFactory $columnFactory
      */
-    public function __construct(ColumnFactory $columnFactory)
+    public function __construct()
     {
-        $this->columnFactory = $columnFactory;
+        $this->columnFactory = new ColumnFactory();
         $this->columns = array();
     }
 
+
+    //-------------------------------------------------
+    // ColumnBuilderInterface
+    //-------------------------------------------------
+
     /**
-     * Add a ColumnInterface.
-     *
-     * @param string $name    The name of the column in the entity
-     * @param string $id      The id of the column class
-     * @param array  $options The column options
-     *
-     * @return $this
+     * {@inheritdoc}
      */
     public function add($name, $id, array $options = array())
     {
         /**
          * @var ColumnInterface $column
          */
-        $column = $this->columnFactory->createbyId($name, $id);
+        $column = $this->columnFactory->createColumnById($name, $id);
         $column->setOptions($options);
 
         $this->columns[] = $column;
@@ -63,9 +68,7 @@ class ColumnBuilder
     }
 
     /**
-     * Get columns.
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getColumns()
     {
