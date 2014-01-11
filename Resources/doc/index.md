@@ -177,9 +177,9 @@ assetic:
 {% endblock foot_script_assetic %}
 ```
 
-## Example
+## Examples
 
-- [An example](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
+- [Examples](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
 
 ## List of available column types
 

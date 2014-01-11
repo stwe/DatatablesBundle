@@ -1,6 +1,8 @@
-# An example
+# Examples
 
-## Step 1: Create your Datatables class
+## Server side example
+
+### Step 1: Create your Datatables class
 
 ```php
 <?php
@@ -80,7 +82,7 @@ class PostDatatable extends AbstractDatatableView
 }
 ```
 
-## Step 2: Create your index.html.twig
+### Step 2: Create your index.html.twig
 
 ```html
 {% extends 'SgBlogBundle::layout.html.twig' %}
@@ -90,7 +92,7 @@ class PostDatatable extends AbstractDatatableView
 {% endblock %}
 ```
 
-## Step 3: Add controller actions
+### Step 3: Add controller actions
 
 ```php
 /**
@@ -133,5 +135,97 @@ public function indexResultsAction()
     $datatable = $this->get('sg_datatables.datatable')->getDatatable('SgBlogBundle:Post');
 
     return $datatable->getResults();
+}
+```
+
+## Non server side example
+
+### Step 1: Create your Datatables class
+
+```php
+<?php
+
+namespace Sg\BlogBundle\Datatables;
+
+use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
+use Sg\DatatablesBundle\Column\ActionColumn;
+
+/**
+ * Class PostDatatable
+ *
+ * @package Sg\BlogBundle\Datatables
+ */
+class PostDatatable extends AbstractDatatableView
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function buildDatatableView()
+    {
+        $this->setBServerSide(false);
+
+        // ...
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'post_datatable';
+    }
+}
+```
+
+### Step 2: Create your index.html.twig
+
+```html
+{% extends 'SgBlogBundle::layout.html.twig' %}
+
+{% block content_content %}
+    {{ datatable_render(datatable) }}
+{% endblock %}
+```
+
+### Step 3: Add controller actions
+
+```php
+/**
+ * Post datatable.
+ *
+ * @Route("/", name="post")
+ * @Method("GET")
+ * @Template()
+ *
+ * @return array
+ */
+public function indexAction()
+{
+    $repository = $this->getDoctrine()->getRepository('SgBlogBundle:Post');
+
+    $query = $repository->createQueryBuilder('p')
+        ->select('p')
+        ->getQuery();
+
+    $results = $query->getArrayResult();
+
+    $encoders = array(new JsonEncoder());
+    $normalizers = array(new GetSetMethodNormalizer());
+    $serializer = new Serializer($normalizers, $encoders);
+
+    /**
+     * @var \Sg\DatatablesBundle\Datatable\View\DatatableViewFactory $factory
+     */
+    $factory = $this->get('sg_datatables.datatable.view.factory');
+
+    /**
+     * @var \Sg\DatatablesBundle\Datatable\View\AbstractDatatableView $datatableView
+     */
+    $datatableView = $factory->createDatatableView('Sg\BlogBundle\Datatables\PostDatatable');
+    $datatableView->setAaData($serializer->serialize($results, 'json'));
+
+    return array(
+        'datatable' => $datatableView,
+    );
 }
 ```
