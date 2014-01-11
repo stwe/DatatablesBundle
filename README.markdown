@@ -2,13 +2,12 @@
 
 This Bundle integrates the jQuery DataTables plugin into your Symfony2 application. Compatible with Doctrine ORM.
 
-<div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/doc/sc1.JPG"></div>
-
 ## Documentation
 
 ### develop
 
-The next version will support Bootstrap3 and DataTables 1.10.
+* The next version (0.3) will support Bootstrap3 and DataTables 1.10.
+* The server-side processing is optional.
 
 ### master
 

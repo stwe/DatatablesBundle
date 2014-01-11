@@ -38,6 +38,20 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     protected $template;
 
     /**
+     * Configure DataTables to use server-side processing.
+     *
+     * @var boolean
+     */
+    protected $bServerSide;
+
+    /**
+     * An array of data to use for the table.
+     *
+     * @var array
+     */
+    protected $aaData;
+
+    /**
      * Enable or disable the display of a 'processing' indicator.
      *
      * @var boolean
@@ -127,6 +141,8 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     {
         $this->templating = $templating;
         $this->template = $layoutOptions['template'];
+        $this->bServerSide = $layoutOptions['server_side'];
+        $this->aaData = array();
         $this->bProcessing = $layoutOptions['processing'];
         $this->sDomOptions = array(
             'sDomLength'     => $layoutOptions['dom_options']['dom_length'],
@@ -160,12 +176,24 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function renderDatatableView()
     {
         $options = array();
+
+        $options['bServerSide'] = $this->getBServerSide();
+        $options['sAjaxSource'] = $this->getSAjaxSource();
+
+        if (true === $options['bServerSide']) {
+            if ('' === $options['sAjaxSource']) {
+                throw new Exception('The sAjaxSource parameter must be given!');
+            }
+        } else {
+            $options['sAjaxSource'] = '';
+            $options['aaData'] = $this->getAaData();
+        }
+
         $options['bProcessing'] = $this->getBProcessing();
         $options['sDomOptions'] = $this->getSDomOptions();
         $options['iDisplayLength'] = $this->getIDisplayLength();
         $options['tableId'] = $this->getTableId();
         $options['columns'] = $this->columnBuilder->getColumns();
-        $options['sAjaxSource'] = $this->getSAjaxSource();
         $options['customizeOptions'] = $this->getCustomizeOptions();
         $options['multiselect'] = $this->getMultiselect();
         $options['individualFiltering'] = $this->getIndividualFiltering();
@@ -208,6 +236,54 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getTemplate()
     {
         return $this->template;
+    }
+
+    /**
+     * Set bServerSide.
+     *
+     * @param boolean $bServerSide
+     *
+     * @return $this
+     */
+    public function setBServerSide($bServerSide)
+    {
+        $this->bServerSide = (boolean) $bServerSide;
+
+        return $this;
+    }
+
+    /**
+     * Get bServerSide.
+     *
+     * @return boolean
+     */
+    public function getBServerSide()
+    {
+        return (boolean) $this->bServerSide;
+    }
+
+    /**
+     * Set aaData.
+     *
+     * @param array $aaData
+     *
+     * @return $this
+     */
+    public function setAaData($aaData)
+    {
+        $this->aaData = $aaData;
+
+        return $this;
+    }
+
+    /**
+     * Get aaData.
+     *
+     * @return array
+     */
+    public function getAaData()
+    {
+        return $this->aaData;
     }
 
     /**

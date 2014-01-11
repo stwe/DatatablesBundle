@@ -41,17 +41,21 @@
                     {% else %}
                         "bProcessing": false,
                     {% endif %}
-                    "bServerSide": true,
-                    "sAjaxSource": "{{ path(sAjaxSource) }}",
-                    "fnServerParams": function(aoData) {
-                        {% set counter = 0 %}
-                        {% for column in columns %}
-                            aoData.push( { "name": "dql_{{ counter }}", "value": "{{ column.name }}" } );
-                            {% set counter = counter + 1 %}
-                        {% endfor %}
-                        {% set counter = counter - 1 %}
-                        aoData.push( { "name": "dql_counter", "value": "{{ counter }}" } );
-                    },
+                    {% if bServerSide %}
+                        "bServerSide": true,
+                        "sAjaxSource": "{{ path(sAjaxSource) }}",
+                        "fnServerParams": function(aoData) {
+                            {% set counter = 0 %}
+                            {% for column in columns %}
+                                aoData.push( { "name": "dql_{{ counter }}", "value": "{{ column.name }}" } );
+                                {% set counter = counter + 1 %}
+                            {% endfor %}
+                            {% set counter = counter - 1 %}
+                            aoData.push( { "name": "dql_counter", "value": "{{ counter }}" } );
+                        },
+                    {% else %}
+                        "aaData": {{ aaData|raw }},
+                    {% endif %}
                     "sDom": "<'row'<'{{ sDomOptions.sDomLength }}'l><'{{ sDomOptions.sDomFilter }}'f>r>t<'row'<'{{ sDomOptions.sDomInfo }}'i><'{{ sDomOptions.sDomPagination }}'p>>",
                     "sPaginationType": "bootstrap",
                     "aLengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "{{ 'datatables.datatable.all'|trans({}, 'messages') }}"]],
