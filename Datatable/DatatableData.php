@@ -14,7 +14,6 @@ namespace Sg\DatatablesBundle\Datatable;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Response;
@@ -86,7 +85,6 @@ class DatatableData implements DatatableDataInterface
      */
     protected $joins;
 
-
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -118,7 +116,6 @@ class DatatableData implements DatatableDataInterface
         $this->prepareColumns();
     }
 
-
     //-------------------------------------------------
     // Private
     //-------------------------------------------------
@@ -146,10 +143,10 @@ class DatatableData implements DatatableDataInterface
      * @throws Exception
      * @return $this
      */
-    private function addSelectColumn(ClassMetadata $metadata, $column)
+    private function addSelectColumn(ClassMetadata $metadata, $column, $columnTableName = null)
     {
         if (in_array($column, $metadata->getFieldNames())) {
-            $this->selectColumns[$metadata->getTableName()][] = $column;
+            $this->selectColumns[($columnTableName?:$metadata->getTableName())][] = $column;
         } else {
             throw new Exception('Exception when parsing the columns.');
         }
@@ -166,7 +163,7 @@ class DatatableData implements DatatableDataInterface
      *
      * @return $this
      */
-    private function setAssociations(array $associationParts, $i, ClassMetadata $metadata)
+    private function setAssociations(array $associationParts, $i, ClassMetadata $metadata, $columnTableName = null)
     {
         $column = $associationParts[$i];
 
@@ -176,30 +173,30 @@ class DatatableData implements DatatableDataInterface
             $targetTableName = $targetMeta->getTableName();
             $targetIdentifiers = $targetMeta->getIdentifierFieldNames();
             $targetRootIdentifier = array_shift($targetIdentifiers);
-
-            if (!array_key_exists($targetTableName, $this->selectColumns)) {
-                $this->addSelectColumn($targetMeta, $targetRootIdentifier);
+            $columnTableName = $targetTableName . '_' . $column;
+            if (!array_key_exists($targetTableName . '_' . $column, $this->selectColumns)) {
+                $this->addSelectColumn($targetMeta, $targetRootIdentifier, $columnTableName);
 
                 $this->addJoin(
                     array(
                         'source' => $metadata->getTableName() . '.' . $column,
-                        'target' => $targetTableName
+                        'target' => $columnTableName
                     )
                 );
             }
 
             $i++;
-            $this->setAssociations($associationParts, $i, $targetMeta);
+            $this->setAssociations($associationParts, $i, $targetMeta, $columnTableName);
         } else {
             $targetTableName = $metadata->getTableName();
             $targetIdentifiers = $metadata->getIdentifierFieldNames();
             $targetRootIdentifier = array_shift($targetIdentifiers);
 
             if ($column !== $targetRootIdentifier) {
-                $this->addSelectColumn($metadata, $column);
+                $this->addSelectColumn($metadata, $column, $columnTableName);
             }
 
-            $this->allColumns[] = $targetTableName . '.' . $column;
+            $this->allColumns[] = $columnTableName . '.' . $column;
         }
 
         return $this;
@@ -270,7 +267,6 @@ class DatatableData implements DatatableDataInterface
         return $this;
     }
 
-
     //-------------------------------------------------
     // DatatableDataInterface
     //-------------------------------------------------
@@ -304,7 +300,6 @@ class DatatableData implements DatatableDataInterface
 
         return $response;
     }
-
 
     //-------------------------------------------------
     // Public
