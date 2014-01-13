@@ -6,8 +6,8 @@ This Bundle integrates the jQuery DataTables plugin into your Symfony2 applicati
 
 ### develop
 
-* The next version (0.3) will support Bootstrap3 and DataTables 1.10.
-* The server-side processing is optional.
+* The next version (0.3) will support Bootstrap3, jQuery-ui themes and DataTables 1.10,
+* an optional server-side processing.
 
 ### master
 
