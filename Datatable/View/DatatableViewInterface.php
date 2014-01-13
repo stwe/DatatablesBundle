@@ -31,13 +31,6 @@ interface DatatableViewInterface
     public function renderDatatableView();
 
     /**
-     * Set the options for this datatable view.
-     *
-     * @param array $options
-     */
-    public function setOptions(array $options);
-
-    /**
      * Returns the name of this datatable view.
      *
      * @return string
