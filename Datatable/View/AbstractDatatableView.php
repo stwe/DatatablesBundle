@@ -31,11 +31,11 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     protected $templating;
 
     /**
-     * The name of the twig template.
+     * The datatable theme.
      *
-     * @var string
+     * @var DatatableThemeInterface
      */
-    protected $template;
+    protected $theme;
 
     /**
      * Configure DataTables to use server-side processing.
@@ -140,7 +140,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function __construct(TwigEngine $templating, array $layoutOptions, ColumnBuilderInterface $columnBuilder)
     {
         $this->templating = $templating;
-        $this->template = $layoutOptions['template'];
+        $this->theme = null;
         $this->bServerSide = $layoutOptions['server_side'];
         $this->aaData = array();
         $this->bProcessing = $layoutOptions['processing'];
@@ -199,44 +199,22 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $options['individualFiltering'] = $this->getIndividualFiltering();
         $options['bulkActions'] = $this->getBulkActions();
 
-        return $this->templating->render($this->getTemplate(), $options);
+        if (null === $this->theme) {
+            throw new Exception('The datatable needs a theme!');
+        }
+
+        return $this->templating->render($this->theme->getTemplate(), $options);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setOptions(array $options)
-    {
-    }
+    abstract public function getName();
 
 
     //-------------------------------------------------
     // Public
     //-------------------------------------------------
-
-    /**
-     * Set template.
-     *
-     * @param string $template
-     *
-     * @return $this
-     */
-    public function setTemplate($template)
-    {
-        $this->template = $template;
-
-        return $this;
-    }
-
-    /**
-     * Get template.
-     *
-     * @return string
-     */
-    public function getTemplate()
-    {
-        return $this->template;
-    }
 
     /**
      * Set bServerSide.

@@ -33,7 +33,6 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode('default_layout')->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('template')->defaultValue('SgDatatablesBundle::default.html.twig')->end()
                         ->scalarNode('table_id')->defaultValue('sg_datatable')->end()
                         ->integerNode('display_length')
                             ->defaultValue(10)
