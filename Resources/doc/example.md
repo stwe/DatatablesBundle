@@ -10,6 +10,7 @@
 namespace Sg\BlogBundle\Datatables;
 
 use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
+use Sg\DatatablesBundle\Datatable\View\JqueryUiDatatableTheme;
 use Sg\DatatablesBundle\Column\ActionColumn;
 
 /**
@@ -33,6 +34,10 @@ class PostDatatable extends AbstractDatatableView
 
         $this->setMultiselect(false);
         $this->setIndividualFiltering(true);
+
+        $this->theme = JqueryUiDatatableTheme::getTheme();
+        //$this->theme = BootstrapDatatableTheme::getTheme();
+        //$this->theme = BaseDatatableTheme::getTheme();
 
 
         //-------------------------------------------------

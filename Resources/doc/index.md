@@ -1,6 +1,7 @@
 # Getting Started With SgDatatablesBundle
 
-This Bundle integrates the jQuery DataTables plugin into your Symfony2 application. Compatible with Doctrine ORM.
+This Bundle integrates the jQuery DataTables plugin into your Symfony2 application.
+Compatible with Doctrine2 entities.
 
 ## Installation
 
@@ -11,19 +12,48 @@ This bundle requires the following additional packages:
 * Symfony 2.3.x
 * jQuery 1.10.x
 * DataTables 1.10
-* Bootstrap 3.0.x. ***It is recommended to install the [MopaBootstrapBundle](https://github.com/phiamo/MopaBootstrapBundle).***
 * Moment.js 2.5.0
 * FOSJsRoutingBundle 1.5.0. ***Please follow all steps described [here](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/index.md).***
 
-The `require` part of your composer.json should look like this:
+This bundle suggest the installation of the following packages for a bootstrap layout:
+
+* Bootstrap 3.0.x
+* MopaBootstrapBundle 3.0 ***Please follow all steps described [here](https://github.com/phiamo/MopaBootstrapBundle).***
+
+For Bootstrap 3.0.x the `require` part of your composer.json might look like this:
 
 ```js
     "require": {
         "symfony/framework-bundle": "~2.3",
         "components/jquery": "1.10.2",
         "datatables/datatables": "dev-master",
-        "mopa/bootstrap-bundle": "dev-master",
-        "twbs/bootstrap": "dev-master",
+        "mopa/bootstrap-bundle": "v3.0.0-beta3",
+        "twbs/bootstrap": "v3.0.0",
+        "moment/moment": "2.5.0",
+        "friendsofsymfony/jsrouting-bundle": "@stable"
+    },
+```
+
+Or use the jQuery-ui themes:
+
+```js
+    "require": {
+        "symfony/framework-bundle": "~2.3",
+        "components/jquery": "1.10.2",
+        "datatables/datatables": "dev-master",
+        "components/jqueryui": "1.10.3",
+        "moment/moment": "2.5.0",
+        "friendsofsymfony/jsrouting-bundle": "@stable"
+    },
+```
+
+Or the base layout:
+
+```js
+    "require": {
+        "symfony/framework-bundle": "~2.3",
+        "components/jquery": "1.10.2",
+        "datatables/datatables": "dev-master",
         "moment/moment": "2.5.0",
         "friendsofsymfony/jsrouting-bundle": "@stable"
     },
@@ -85,11 +115,7 @@ public function registerBundles()
 
 ### Step 3: Assetic Configuration
 
-This bundle provides a layout that uses the Bootstrap 3.0.x framework.
-
-***It is recommended to install the [MopaBootstrapBundle](https://github.com/phiamo/MopaBootstrapBundle).***
-
-#### Config example (config.yml):
+A config example:
 
 ``` yaml
 # app/config/config.yml
@@ -112,7 +138,11 @@ assetic:
             jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.8.jar
 ```
 
-#### Layout example (layout.html.twig):
+#### Bootstrap 3.0.x
+
+***For Bootstrap 3.0.x it is recommended to install the [MopaBootstrapBundle](https://github.com/phiamo/MopaBootstrapBundle).***
+
+A layout.html.twig example:
 
 ``` html
 {% extends 'MopaBootstrapBundle::base.html.twig' %}
@@ -175,6 +205,20 @@ assetic:
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 
 {% endblock foot_script_assetic %}
+```
+
+#### jQuery-ui themes
+
+A layout.html.twig example:
+
+``` html
+```
+
+#### DataTables base layout
+
+A layout.html.twig example:
+
+``` html
 ```
 
 ## Examples
