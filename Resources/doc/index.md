@@ -219,6 +219,55 @@ A layout.html.twig example:
 A layout.html.twig example:
 
 ``` html
+{% extends '::base.html.twig' %}
+
+{% block title %}BlogBundle{% endblock %}
+
+{% block stylesheets %}
+
+    {% stylesheets
+        '%kernel.root_dir%/../vendor/datatables/datatables/media/css/jquery.dataTables.css'
+        output = 'css/styles.css'
+        filter = 'cssembed, ?yui_css'
+    %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
+    {% endstylesheets %}
+
+{% endblock %}
+
+{% block body %}
+    {% block head_script %}
+
+        {% javascripts
+            '%kernel.root_dir%/../vendor/components/jquery/jquery.js'
+            output = 'js/jquery.js'
+            filter = '?yui_js'
+        %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
+    {% endblock head_script %}
+
+    {% block content %}
+    {% endblock %}
+
+    {% block foot_script %}
+
+        {% javascripts
+            '@FOSJsRoutingBundle/Resources/public/js/router.js'
+            '%kernel.root_dir%/../vendor/datatables/datatables/media/js/jquery.dataTables.js'
+            '%kernel.root_dir%/../vendor/moment/moment/moment.js'
+            '%kernel.root_dir%/../vendor/moment/moment/lang/de.js'
+            output = 'js/scripts.js'
+            filter = '?yui_js'
+        %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
+        <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
+    {% endblock %}
+{% endblock %}
 ```
 
 ## Examples
