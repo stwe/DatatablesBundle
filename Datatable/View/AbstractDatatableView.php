@@ -96,6 +96,13 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @var string
      */
     protected $sAjaxSource;
+    
+    /**
+     * The sAjaxSource parameters.
+     *
+     * @var string
+     */
+    protected $sAjaxSourceParameters;
 
     /**
      * Array for custom options.
@@ -419,6 +426,44 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getSAjaxSource()
     {
         return $this->sAjaxSource;
+    }
+    
+    /**
+     * Gets the value of sAjaxSourceParameters.
+     *
+     * @return mixed
+     */
+    public function getSAjaxSourceParameters()
+    {
+        return $this->sAjaxSourceParameters;
+    }
+
+    /**
+     * Sets the value of sAjaxSourceParameters.
+     *
+     * @param mixed $sAjaxSourceParameters the route parameters
+     *
+     * @return self
+     */
+    public function setSAjaxSourceParameters($sAjaxSourceParameters)
+    {
+        $this->sAjaxSourceParameters = $sAjaxSourceParameters;
+
+        return $this;
+    }
+
+    /**
+     * Sets the value of sAjaxSourceParameters.
+     *
+     * @param mixed $sAjaxSourceParameters the route parameters
+     *
+     * @return self
+     */
+    public function setSAjaxSourceParameter($key, $value)
+    {
+        $this->sAjaxSourceParameters[$key] = $value;
+
+        return $this;
     }
 
     /**
