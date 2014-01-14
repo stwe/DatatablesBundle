@@ -20,8 +20,7 @@
 
         {% for key, value in column.routeParameters %}
             var parameter = "{{ key }}";
-            var columnValue = "{{ value }}";
-            routeParameters[parameter] = full[columnValue];
+            routeParameters[parameter] = full.{{ value }};
         {% endfor %}
 
         {% for key, value in column.attributes %}
