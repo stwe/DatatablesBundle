@@ -144,12 +144,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->bServerSide = $layoutOptions['server_side'];
         $this->aaData = array();
         $this->bProcessing = $layoutOptions['processing'];
-        $this->sDomOptions = array(
-            'sDomLength'     => $layoutOptions['dom_options']['dom_length'],
-            'sDomFilter'     => $layoutOptions['dom_options']['dom_filter'],
-            'sDomInfo'       => $layoutOptions['dom_options']['dom_info'],
-            'sDomPagination' => $layoutOptions['dom_options']['dom_pagination']
-        );
+        $this->sDomOptions = null;
         $this->iDisplayLength = (int) $layoutOptions['display_length'];
         $this->tableId = $layoutOptions['table_id'];
         $this->columnBuilder = $columnBuilder;
@@ -191,6 +186,11 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         $options['bProcessing'] = $this->getBProcessing();
         $options['sDomOptions'] = $this->getSDomOptions();
+
+        if (null === $options['sDomOptions']) {
+            $options['sDomOptions'] = $this->theme->getSDomDefaultValues();
+        }
+
         $options['iDisplayLength'] = $this->getIDisplayLength();
         $options['tableId'] = $this->getTableId();
         $options['columns'] = $this->columnBuilder->getColumns();

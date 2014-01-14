@@ -56,7 +56,6 @@
                     {% else %}
                         "aaData": {{ aaData|raw }},
                     {% endif %}
-                    "sDom": "<'row'<'{{ sDomOptions.sDomLength }}'l><'{{ sDomOptions.sDomFilter }}'f>r>t<'row'<'{{ sDomOptions.sDomInfo }}'i><'{{ sDomOptions.sDomPagination }}'p>>",
                     "aLengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "{{ 'datatables.datatable.all'|trans({}, 'messages') }}"]],
                     "iDisplayLength": {{ iDisplayLength }},
                     "oLanguage": {

@@ -18,6 +18,14 @@ namespace Sg\DatatablesBundle\Datatable\View;
  */
 class BootstrapDatatableTheme extends AbstractDatatableTheme
 {
+    protected $sDomDefaultValues = array(
+        'sDomLength'     => 'col-sm-4',
+        'sDomFilter'     => 'col-sm-8',
+        'sDomInfo'       => 'col-sm-3',
+        'sDomPagination' => 'col-sm-9'
+    );
+
+
     /**
      * {@inheritdoc}
      */

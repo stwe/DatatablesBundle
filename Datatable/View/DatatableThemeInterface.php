@@ -31,4 +31,11 @@ interface DatatableThemeInterface
      * @return string
      */
     public function getTemplate();
+
+    /**
+     * Get the sDom default values for the theme.
+     *
+     * @return array
+     */
+    public function getSDomDefaultValues();
 } 

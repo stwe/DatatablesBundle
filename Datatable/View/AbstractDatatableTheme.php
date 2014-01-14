@@ -18,6 +18,13 @@ namespace Sg\DatatablesBundle\Datatable\View;
  */
 abstract class AbstractDatatableTheme implements DatatableThemeInterface
 {
+    protected $sDomDefaultValues = null;
+
+
+    //-------------------------------------------------
+    // Singleton
+    //-------------------------------------------------
+
     /**
      * @var DatatableThemeInterface
      */
@@ -54,6 +61,11 @@ abstract class AbstractDatatableTheme implements DatatableThemeInterface
         return self::$instance;
     }
 
+
+    //-------------------------------------------------
+    // DatatableThemeInterface
+    //-------------------------------------------------
+
     /**
      * {@inheritdoc}
      */
@@ -63,4 +75,12 @@ abstract class AbstractDatatableTheme implements DatatableThemeInterface
      * {@inheritdoc}
      */
     abstract public function getTemplate();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSDomDefaultValues()
+    {
+        return $this->sDomDefaultValues;
+    }
 }
