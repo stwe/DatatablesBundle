@@ -186,6 +186,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         $options['bServerSide'] = $this->getBServerSide();
         $options['sAjaxSource'] = $this->getSAjaxSource();
+        $options['sAjaxSourceParameters'] = $this->getSAjaxSourceParameters();
 
         if (true === $options['bServerSide']) {
             if ('' === $options['sAjaxSource']) {
