@@ -10,7 +10,7 @@
                         {% for column in columns %}
                             <th>
                                 {% if column.bSearchable %}
-                                    <input type="text" class="form-control input-sm" placeholder="{{ column.sTitle }}" />
+                                    <input type="text" placeholder="{{ column.sTitle }}" />
                                 {% else %}
                                     <input type="hidden" />
                                 {% endif %}
@@ -57,7 +57,6 @@
                         "aaData": {{ aaData|raw }},
                     {% endif %}
                     "sDom": "<'row'<'{{ sDomOptions.sDomLength }}'l><'{{ sDomOptions.sDomFilter }}'f>r>t<'row'<'{{ sDomOptions.sDomInfo }}'i><'{{ sDomOptions.sDomPagination }}'p>>",
-                    //"sPaginationType": "bootstrap",
                     "aLengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "{{ 'datatables.datatable.all'|trans({}, 'messages') }}"]],
                     "iDisplayLength": {{ iDisplayLength }},
                     "oLanguage": {
@@ -184,9 +183,9 @@
                     return data;
 
                 if (data == true) {
-                    return "<span class='glyphicon glyphicon-ok'></span>";
+                    return "true";
                 } else {
-                    return "<span class='glyphicon glyphicon-remove'></span>";
+                    return "false";
                 }
             }
 
@@ -194,7 +193,7 @@
                 if (type != "display")
                     return data;
 
-                return "<span class='glyphicon glyphicon-plus'></span>";
+                return "+";
             }
 
         </script>
