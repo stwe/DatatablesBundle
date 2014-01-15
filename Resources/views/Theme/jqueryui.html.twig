@@ -43,7 +43,11 @@
                     {% endif %}
                     {% if bServerSide %}
                         "bServerSide": true,
-                        "sAjaxSource": "{{ path(sAjaxSource) }}",
+                        {% if sAjaxSourceParameters %}
+                            "sAjaxSource": "{{ path(sAjaxSource, sAjaxSourceParameters) }}",
+                        {% else %}
+                            "sAjaxSource": "{{ path(sAjaxSource) }}",
+                        {% endif %}
                         "fnServerParams": function(aoData) {
                             {% set counter = 0 %}
                             {% for column in columns %}

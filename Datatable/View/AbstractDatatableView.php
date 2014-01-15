@@ -96,7 +96,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @var string
      */
     protected $sAjaxSource;
-    
+
     /**
      * The sAjaxSource parameters.
      *
@@ -156,6 +156,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->tableId = $layoutOptions['table_id'];
         $this->columnBuilder = $columnBuilder;
         $this->sAjaxSource = '';
+        $this->sAjaxSourceParameters = '';
         $this->customizeOptions = array();
         $this->multiselect = $layoutOptions['multiselect'];
         $this->individualFiltering = $layoutOptions['individual_filtering'];
@@ -428,7 +429,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     {
         return $this->sAjaxSource;
     }
-    
+
     /**
      * Gets the value of sAjaxSourceParameters.
      *
@@ -444,7 +445,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      *
      * @param mixed $sAjaxSourceParameters the route parameters
      *
-     * @return self
+     * @return $this
      */
     public function setSAjaxSourceParameters($sAjaxSourceParameters)
     {
@@ -456,9 +457,10 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * Sets the value of sAjaxSourceParameters.
      *
-     * @param mixed $sAjaxSourceParameters the route parameters
+     * @param string $key   The route parameter key
+     * @param mixed  $value The route parameter value
      *
-     * @return self
+     * @return $this
      */
     public function setSAjaxSourceParameter($key, $value)
     {
