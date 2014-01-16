@@ -95,21 +95,7 @@
                     "aoColumns": [
                         {# columns #}
                         {% for column in dt_columns %}
-                            {% if column.getClassId == 'action' %}
-                                {% include "SgDatatablesBundle:Column:action.html.twig" %}
-                            {% endif %}
-                            {% if column.getClassId == 'array' %}
-                                {% include "SgDatatablesBundle:Column:array.html.twig" %}
-                            {% endif %}
-                            {% if column.getClassId == 'boolean' %}
-                                {% include "SgDatatablesBundle:Column:boolean.html.twig" %}
-                            {% endif %}
-                            {% if column.getClassId == 'column' %}
-                                {% include "SgDatatablesBundle:Column:column.html.twig" %}
-                            {% endif %}
-                            {% if column.getClassId == 'datetime' %}
-                                {% include "SgDatatablesBundle:Column:datetime.html.twig" %}
-                            {% endif %}
+                            {% include "SgDatatablesBundle:Column:" ~ column.getClassId ~ ".html.twig" %}
                         {% endfor %}
 
                         {# multiselect column #}
