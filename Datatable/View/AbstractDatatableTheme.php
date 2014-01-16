@@ -18,7 +18,35 @@ namespace Sg\DatatablesBundle\Datatable\View;
  */
 abstract class AbstractDatatableTheme implements DatatableThemeInterface
 {
-    protected $sDomDefaultValues = null;
+    /**
+     * @var mixed
+     */
+    protected $sDomValues = null;
+
+    /**
+     * @var string
+     */
+    protected $tableClasses;
+
+    /**
+     * @var string
+     */
+    protected $formClasses;
+
+    /**
+     * @var null|string
+     */
+    protected $pagination = null;
+
+    /**
+     * @var string
+     */
+    protected $iconOk;
+
+    /**
+     * @var string
+     */
+    protected $iconRemove;
 
 
     //-------------------------------------------------
@@ -79,8 +107,58 @@ abstract class AbstractDatatableTheme implements DatatableThemeInterface
     /**
      * {@inheritdoc}
      */
-    public function getSDomDefaultValues()
+    public function getSDomValues()
     {
-        return $this->sDomDefaultValues;
+        return $this->sDomValues;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSDomValues($sDomValues)
+    {
+        $this->sDomValues = $sDomValues;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTableClasses()
+    {
+        return $this->tableClasses;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFormClasses()
+    {
+        return $this->formClasses;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPagination()
+    {
+        return $this->pagination;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIconOk()
+    {
+        return $this->iconOk;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIconRemove()
+    {
+        return $this->iconRemove;
     }
 }

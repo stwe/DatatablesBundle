@@ -18,12 +18,22 @@ namespace Sg\DatatablesBundle\Datatable\View;
  */
 class BootstrapDatatableTheme extends AbstractDatatableTheme
 {
-    protected $sDomDefaultValues = array(
+    protected $sDomValues = array(
         'sDomLength'     => 'col-sm-4',
         'sDomFilter'     => 'col-sm-8',
         'sDomInfo'       => 'col-sm-3',
         'sDomPagination' => 'col-sm-9'
     );
+
+    protected $tableClasses = 'table table-striped table-bordered';
+
+    protected $formClasses = 'form-control input-sm';
+
+    protected $pagination = 'bootstrap';
+
+    protected $iconOk = 'glyphicon glyphicon-ok';
+
+    protected $iconRemove = 'glyphicon glyphicon-remove';
 
 
     /**
@@ -39,6 +49,6 @@ class BootstrapDatatableTheme extends AbstractDatatableTheme
      */
     public function getTemplate()
     {
-        return 'SgDatatablesBundle:Theme:bootstrap3.html.twig';
+        return 'SgDatatablesBundle:Theme:base.html.twig';
     }
 }

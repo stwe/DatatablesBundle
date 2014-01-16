@@ -18,6 +18,15 @@ namespace Sg\DatatablesBundle\Datatable\View;
  */
 class JqueryUiDatatableTheme extends AbstractDatatableTheme
 {
+    protected $tableClasses = '';
+
+    protected $formClasses = '';
+
+    protected $iconOk = 'ui-icon ui-icon-circle-check';
+
+    protected $iconRemove = 'ui-icon ui-icon-circle-close';
+
+
     /**
      * {@inheritdoc}
      */
@@ -31,6 +40,6 @@ class JqueryUiDatatableTheme extends AbstractDatatableTheme
      */
     public function getTemplate()
     {
-        return 'SgDatatablesBundle:Theme:jqueryui.html.twig';
+        return 'SgDatatablesBundle:Theme:base.html.twig';
     }
 }

@@ -59,17 +59,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     protected $bProcessing;
 
     /**
-     * The css sDom parameter for:
-     *  - dataTables_length,
-     *  - dataTables_filter,
-     *  - dataTables_info,
-     *  - pagination
-     *
-     * @var array
-     */
-    protected $sDomOptions;
-
-    /**
      * Number of rows to display on a single page when using pagination.
      *
      * @var integer
@@ -140,26 +129,25 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * Ctor.
      *
-     * @param TwigEngine             $templating    The templating service
-     * @param array                  $layoutOptions The default layout options
-     * @param ColumnBuilderInterface $columnBuilder A ColumnBuilderInterface
+     * @param TwigEngine             $templating           The templating service
+     * @param array                  $defaultLayoutOptions The default layout options
+     * @param ColumnBuilderInterface $columnBuilder        A ColumnBuilderInterface
      */
-    public function __construct(TwigEngine $templating, array $layoutOptions, ColumnBuilderInterface $columnBuilder)
+    public function __construct(TwigEngine $templating, array $defaultLayoutOptions, ColumnBuilderInterface $columnBuilder)
     {
         $this->templating = $templating;
         $this->theme = null;
-        $this->bServerSide = $layoutOptions['server_side'];
+        $this->bServerSide = $defaultLayoutOptions['server_side'];
         $this->aaData = array();
-        $this->bProcessing = $layoutOptions['processing'];
-        $this->sDomOptions = null;
-        $this->iDisplayLength = (int) $layoutOptions['display_length'];
-        $this->tableId = $layoutOptions['table_id'];
+        $this->bProcessing = $defaultLayoutOptions['processing'];
+        $this->iDisplayLength = (int) $defaultLayoutOptions['display_length'];
+        $this->tableId = $defaultLayoutOptions['table_id'];
         $this->columnBuilder = $columnBuilder;
         $this->sAjaxSource = '';
         $this->sAjaxSourceParameters = '';
         $this->customizeOptions = array();
-        $this->multiselect = $layoutOptions['multiselect'];
-        $this->individualFiltering = $layoutOptions['individual_filtering'];
+        $this->multiselect = $defaultLayoutOptions['multiselect'];
+        $this->individualFiltering = $defaultLayoutOptions['individual_filtering'];
         $this->bulkActions = array();
     }
 
@@ -180,37 +168,43 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     {
         $options = array();
 
-        $options['bServerSide'] = $this->getBServerSide();
-        $options['sAjaxSource'] = $this->getSAjaxSource();
-        $options['sAjaxSourceParameters'] = $this->getSAjaxSourceParameters();
+        // DatatableViewInterface Twig variables
 
-        if (true === $options['bServerSide']) {
-            if ('' === $options['sAjaxSource']) {
+        $options['dt_bServerSide'] = $this->getBServerSide();
+        $options['dt_sAjaxSource'] = $this->getSAjaxSource();
+        $options['dt_sAjaxSourceParameters'] = $this->getSAjaxSourceParameters();
+
+        if (true === $options['dt_bServerSide']) {
+            if ('' === $options['dt_sAjaxSource']) {
                 throw new Exception('The sAjaxSource parameter must be given!');
             }
         } else {
-            $options['sAjaxSource'] = '';
-            $options['aaData'] = $this->getAaData();
+            $options['dt_sAjaxSource'] = '';
+            $options['dt_aaData'] = $this->getAaData();
         }
 
-        $options['bProcessing'] = $this->getBProcessing();
-        $options['sDomOptions'] = $this->getSDomOptions();
+        $options['dt_bProcessing'] = $this->getBProcessing();
+        $options['dt_iDisplayLength'] = $this->getIDisplayLength();
+        $options['dt_tableId'] = $this->getTableId();
+        $options['dt_columns'] = $this->columnBuilder->getColumns();
+        $options['dt_customizeOptions'] = $this->getCustomizeOptions();
+        $options['dt_multiselect'] = $this->getMultiselect();
+        $options['dt_individualFiltering'] = $this->getIndividualFiltering();
+        $options['dt_bulkActions'] = $this->getBulkActions();
 
-        if (null === $options['sDomOptions']) {
-            $options['sDomOptions'] = $this->theme->getSDomDefaultValues();
-        }
-
-        $options['iDisplayLength'] = $this->getIDisplayLength();
-        $options['tableId'] = $this->getTableId();
-        $options['columns'] = $this->columnBuilder->getColumns();
-        $options['customizeOptions'] = $this->getCustomizeOptions();
-        $options['multiselect'] = $this->getMultiselect();
-        $options['individualFiltering'] = $this->getIndividualFiltering();
-        $options['bulkActions'] = $this->getBulkActions();
+        // DatatableThemeInterface Twig variables
 
         if (null === $this->theme) {
             throw new Exception('The datatable needs a theme!');
         }
+
+        $options['theme_name'] = $this->theme->getName();
+        $options['theme_sDomValues'] = $this->theme->getSDomValues();
+        $options['theme_tableClasses'] = $this->theme->getTableClasses();
+        $options['theme_formClasses'] = $this->theme->getFormClasses();
+        $options['theme_pagination'] = $this->theme->getPagination();
+        $options['theme_iconOk'] = $this->theme->getIconOk();
+        $options['theme_iconRemove'] = $this->theme->getIconRemove();
 
         return $this->templating->render($this->theme->getTemplate(), $options);
     }
@@ -291,47 +285,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getBProcessing()
     {
         return (boolean) $this->bProcessing;
-    }
-
-    /**
-     * Set sDomOptions.
-     *
-     * @param array $sDomOptions
-     *
-     * @return $this
-     * @throws Exception
-     */
-    public function setSDomOptions(array $sDomOptions)
-    {
-        if (!array_key_exists('sDomLength', $sDomOptions)) {
-            throw new Exception('The option "sDomLength" must be set.');
-        };
-
-        if (!array_key_exists('sDomFilter', $sDomOptions)) {
-            throw new Exception('The option "sDomFilter" must be set.');
-        };
-
-        if (!array_key_exists('sDomInfo', $sDomOptions)) {
-            throw new Exception('The option "sDomInfo" must be set.');
-        };
-
-        if (!array_key_exists('sDomPagination', $sDomOptions)) {
-            throw new Exception('The option "sDomPagination" must be set.');
-        };
-
-        $this->sDomOptions = $sDomOptions;
-
-        return $this;
-    }
-
-    /**
-     * Get sDomOptions.
-     *
-     * @return array
-     */
-    public function getSDomOptions()
-    {
-        return $this->sDomOptions;
     }
 
     /**

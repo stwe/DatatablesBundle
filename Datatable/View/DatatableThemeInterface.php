@@ -33,9 +33,45 @@ interface DatatableThemeInterface
     public function getTemplate();
 
     /**
-     * Get the sDom default values for the theme.
+     * Get the sDom values for the theme.
      *
-     * @return array
+     * @return mixed
      */
-    public function getSDomDefaultValues();
+    public function getSDomValues();
+
+    /**
+     * @param mixed $values
+     *
+     * @return self
+     */
+    public function setSDomValues($values);
+
+    /**
+     * Get the table classes.
+     *
+     * @return string
+     */
+    public function getTableClasses();
+
+    /**
+     * Get the form classes.
+     *
+     * @return string
+     */
+    public function getFormClasses();
+
+    /**
+     * @return null|string
+     */
+    public function getPagination();
+
+    /**
+     * @return string
+     */
+    public function getIconOk();
+
+    /**
+     * @return string
+     */
+    public function getIconRemove();
 } 
