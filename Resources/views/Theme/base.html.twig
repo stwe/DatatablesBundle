@@ -10,7 +10,11 @@
                         {% for column in dt_columns %}
                             <th>
                                 {% if column.bSearchable %}
-                                    <input type="text" class="{{ theme_formClasses }}" placeholder="{{ column.sTitle }}" />
+                                    {% if column.sTitle.label is defined %}
+                                        <input type="text" class="{{ theme_formClasses }}" placeholder="{{ column.sTitle.label|trans({}, column.sTitle.translation_domain) }}" />
+                                    {% else %}
+                                        <input type="text" class="{{ theme_formClasses }}" placeholder="{{ column.sTitle }}" />
+                                    {% endif %}
                                 {% else %}
                                     <input type="hidden" />
                                 {% endif %}

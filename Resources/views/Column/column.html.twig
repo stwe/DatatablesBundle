@@ -47,7 +47,11 @@
         "sDefaultContent": "{{ column.sDefaultContent }}",
     {% endif %}
 
-    "sTitle": "{{ column.sTitle }}",
+    {% if column.sTitle.label is defined %}
+        "sTitle": "{{ column.sTitle.label|trans({}, column.sTitle.translation_domain) }}",
+    {% else %}
+        "sTitle": "{{ column.sTitle }}",
+    {% endif %}
 
     {% if column.sWidth != null %}
         "sWidth": "{{ column.sWidth }}",

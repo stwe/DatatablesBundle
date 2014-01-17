@@ -51,6 +51,7 @@ class PostDatatable extends AbstractDatatableView
                 ))
             ->add('title', 'column', array(
                     'title' => 'Title',
+                    //'title' => array('label' => 'test.title', 'translation_domain' => 'msg'),
                     'searchable' => true
                 ))
             ->add('edit', 'action', array(

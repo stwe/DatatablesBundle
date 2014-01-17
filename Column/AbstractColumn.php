@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Column;
 
+use Exception;
+
 /**
  * Class AbstractColumn
  *
@@ -217,6 +219,12 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function setSTitle($sTitle)
     {
+        if (true === is_array($sTitle)) {
+            if ( !(array_key_exists('label', $sTitle) && array_key_exists('translation_domain', $sTitle)) ) {
+                throw new Exception('A label and a translation_domain expected.');
+            }
+        }
+
         $this->sTitle = $sTitle;
 
         return $this;

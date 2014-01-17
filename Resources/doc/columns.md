@@ -47,6 +47,16 @@ $this->columnBuilder
         ));
 ```
 
+The tables headers can be translated:
+
+``` php
+$this->columnBuilder
+    ->add('title', 'column', array(
+            'title' => array('label' => 'translated.title', 'translation_domain' => 'your_translation_domain'),
+            'searchable' => true
+        ))
+```
+
 ## Action column
 
 Represents an action column.
