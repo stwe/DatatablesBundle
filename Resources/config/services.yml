@@ -12,9 +12,12 @@ services:
             - [@sg_datatables.serializer.method]
             - [@sg_datatables.serializer.encoder.json]
 
+    sg_datatables.column.builder:
+        class: Sg\DatatablesBundle\Column\ColumnBuilder
+
     sg_datatables.datatable.view.factory:
         class: Sg\DatatablesBundle\Datatable\View\DatatableViewFactory
-        arguments: [@templating, %sg_datatables.default.layout.options%]
+        arguments: [@templating, %sg_datatables.default.layout.options%, @sg_datatables.column.builder]
 
     sg_datatables.twig.extension:
         class: Sg\DatatablesBundle\Twig\DatatableTwigExtension
