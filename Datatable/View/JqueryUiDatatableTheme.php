@@ -18,6 +18,34 @@ namespace Sg\DatatablesBundle\Datatable\View;
  */
 class JqueryUiDatatableTheme extends AbstractDatatableTheme
 {
+    /**
+     * Default icon.
+     *
+     * @var string
+     */
+    const DEFAULT_ICON = 'ui-icon ui-icon-folder-collapsed';
+
+    /**
+     * Default show icon.
+     *
+     * @var string
+     */
+    const DEFAULT_SHOW_ICON = 'ui-icon ui-icon-zoomin';
+
+    /**
+     * Default edit icon.
+     *
+     * @var string
+     */
+    const DEFAULT_EDIT_ICON = 'ui-icon ui-icon-pencil';
+
+    /**
+     * Default delete icon.
+     *
+     * @var string
+     */
+    const DEFAULT_DELETE_ICON = 'ui-icon ui-icon-trash';
+
     protected $tableClasses = '';
 
     protected $formClasses = '';

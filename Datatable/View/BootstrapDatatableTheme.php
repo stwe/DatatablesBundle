@@ -18,6 +18,34 @@ namespace Sg\DatatablesBundle\Datatable\View;
  */
 class BootstrapDatatableTheme extends AbstractDatatableTheme
 {
+    /**
+     * Default icon.
+     *
+     * @var string
+     */
+    const DEFAULT_ICON = 'glyphicon glyphicon-th';
+
+    /**
+     * Default show icon.
+     *
+     * @var string
+     */
+    const DEFAULT_SHOW_ICON = 'glyphicon glyphicon-eye-open';
+
+    /**
+     * Default edit icon.
+     *
+     * @var string
+     */
+    const DEFAULT_EDIT_ICON = 'glyphicon glyphicon-edit';
+
+    /**
+     * Default delete icon.
+     *
+     * @var string
+     */
+    const DEFAULT_DELETE_ICON = 'glyphicon glyphicon-trash';
+
     protected $sDomValues = array(
         'sDomLength'     => 'col-sm-4',
         'sDomFilter'     => 'col-sm-8',
