@@ -44,11 +44,6 @@ class ActionColumn extends BaseColumn
     protected $label;
 
     /**
-     * @var null|string
-     */
-    protected $class;
-
-    /**
      * @var array
      */
     protected $attributes;
@@ -75,7 +70,6 @@ class ActionColumn extends BaseColumn
         $this->routeParameters = array();
         $this->icon = null;
         $this->label = null;
-        $this->class = null;
         $this->attributes = array();
     }
 
@@ -182,10 +176,6 @@ class ActionColumn extends BaseColumn
     {
         $this->icon = $icon;
 
-        if (null === $this->class) {
-            $this->class = 'btn btn-default btn-xs';
-        }
-
         return $this;
     }
 
@@ -221,30 +211,6 @@ class ActionColumn extends BaseColumn
     public function getLabel()
     {
         return $this->label;
-    }
-
-    /**
-     * Set class.
-     *
-     * @param null|string $class
-     *
-     * @return $this
-     */
-    public function setClass($class)
-    {
-        $this->class = $class;
-
-        return $this;
-    }
-
-    /**
-     * Get class.
-     *
-     * @return null|string
-     */
-    public function getClass()
-    {
-        return $this->class;
     }
 
     /**

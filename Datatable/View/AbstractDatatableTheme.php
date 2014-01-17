@@ -48,6 +48,11 @@ abstract class AbstractDatatableTheme implements DatatableThemeInterface
      */
     protected $iconRemove;
 
+    /**
+     * @var string
+     */
+    protected $actionButtonClasses = null;
+
 
     //-------------------------------------------------
     // Singleton
@@ -160,5 +165,13 @@ abstract class AbstractDatatableTheme implements DatatableThemeInterface
     public function getIconRemove()
     {
         return $this->iconRemove;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getActionButtonClasses()
+    {
+        return $this->actionButtonClasses;
     }
 }

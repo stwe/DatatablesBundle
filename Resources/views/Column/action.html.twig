@@ -29,12 +29,7 @@
         {% endfor %}
 
         var route  = Routing.generate("{{ column.route }}", routeParameters);
-
-        {% if column.class != null %}
-            var url  = "<a class = '{{ column.class }}' ";
-        {% else %}
-            var url  = "<a ";
-        {% endif %}
+        var url  = "<a class = '{{ theme_actionButtonClasses }}' ";
 
         url += "href='" + route + "'";
         url += attributes + " >";

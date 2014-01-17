@@ -205,6 +205,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $options['theme_pagination'] = $this->theme->getPagination();
         $options['theme_iconOk'] = $this->theme->getIconOk();
         $options['theme_iconRemove'] = $this->theme->getIconRemove();
+        $options['theme_actionButtonClasses'] = $this->theme->getActionButtonClasses();
 
         return $this->templating->render($this->theme->getTemplate(), $options);
     }

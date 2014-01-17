@@ -74,4 +74,9 @@ interface DatatableThemeInterface
      * @return string
      */
     public function getIconRemove();
+
+    /**
+     * @return string
+     */
+    public function getActionButtonClasses();
 } 
