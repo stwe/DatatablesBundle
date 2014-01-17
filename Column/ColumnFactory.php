@@ -21,6 +21,9 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
  */
 class ColumnFactory implements ColumnFactoryInterface
 {
+    private $column = null;
+
+
     //-------------------------------------------------
     // ColumnFactoryInterface
     //-------------------------------------------------
@@ -28,38 +31,38 @@ class ColumnFactory implements ColumnFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createColumnById($name, $id)
+    public function createColumnByName($property, $name)
     {
-        $column = null;
+        if (!is_string($property)) {
+            throw new UnexpectedTypeException($property, 'A string is expected.');
+        }
 
         if (!is_string($name)) {
-            throw new UnexpectedTypeException($name, 'string expected');
+            throw new UnexpectedTypeException($name, 'A string is expected.');
         }
 
-        if (!is_string($id)) {
-            throw new UnexpectedTypeException($id, 'string expected');
-        }
+        $name = strtolower($name);
 
-        switch ($id) {
+        switch ($name) {
             case 'action':
-                $column = new ActionColumn($name);
+                $this->column = new ActionColumn($property);
                 break;
             case 'array':
-                $column = new ArrayColumn($name);
+                $this->column = new ArrayColumn($property);
                 break;
             case 'boolean':
-                $column = new BooleanColumn($name);
+                $this->column = new BooleanColumn($property);
                 break;
             case 'column':
-                $column = new Column($name);
+                $this->column = new Column($property);
                 break;
             case 'datetime':
-                $column = new DateTimeColumn($name);
+                $this->column = new DateTimeColumn($property);
                 break;
             default:
-                throw new Exception('Incorrect class id.');
+                throw new Exception('There was no column class to be created.');
         }
 
-        return $column;
+        return $this->column;
     }
 }

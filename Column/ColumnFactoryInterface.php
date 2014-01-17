@@ -21,11 +21,11 @@ interface ColumnFactoryInterface
     /**
      * Returns a column.
      *
-     * @param string $name The name of the column in the entity
-     * @param string $id   The id of the column class
+     * @param string $property An entity's property
+     * @param string $name     The name of the column class
      *
      * @throws \Exception
-     * @return null|ColumnInterface
+     * @return ColumnInterface
      */
-    public function createColumnById($name, $id);
+    public function createColumnByName($property, $name);
 }
