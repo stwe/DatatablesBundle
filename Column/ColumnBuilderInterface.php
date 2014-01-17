@@ -21,13 +21,13 @@ interface ColumnBuilderInterface
     /**
      * Add a Column.
      *
-     * @param string $name    The name of the column in the entity
-     * @param string $id      The id of the column class
-     * @param array  $options The column options
+     * @param string $property An entity's property
+     * @param string $name     The name of the column class
+     * @param array  $options  The column options
      *
      * @return $this
      */
-    public function add($name, $id, array $options = array());
+    public function add($property, $name, array $options = array());
 
     /**
      * Get all columns.

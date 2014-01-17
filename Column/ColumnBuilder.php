@@ -54,12 +54,12 @@ class ColumnBuilder implements ColumnBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function add($name, $id, array $options = array())
+    public function add($property, $name, array $options = array())
     {
         /**
          * @var ColumnInterface $column
          */
-        $column = $this->columnFactory->createColumnById($name, $id);
+        $column = $this->columnFactory->createColumnByName($property, $name);
         $column->setOptions($options);
 
         $this->columns[] = $column;
