@@ -56,7 +56,7 @@ class ArrayColumn extends BaseColumn
     /**
      * {@inheritdoc}
      */
-    public function getClassId()
+    public function getClassName()
     {
         return 'array';
     }

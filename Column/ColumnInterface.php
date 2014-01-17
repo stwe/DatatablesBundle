@@ -188,9 +188,9 @@ interface ColumnInterface
     public function setOptions(array $options);
 
     /**
-     * Returns the id of the column class.
+     * Returns the name of the column class.
      *
      * @return string
      */
-    public function getClassId();
+    public function getClassName();
 }

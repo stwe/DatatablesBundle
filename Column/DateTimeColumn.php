@@ -44,7 +44,7 @@ class DateTimeColumn extends BaseColumn
     /**
      * {@inheritdoc}
      */
-    public function getClassId()
+    public function getClassName()
     {
         return 'datetime';
     }

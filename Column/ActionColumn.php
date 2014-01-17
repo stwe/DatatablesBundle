@@ -24,34 +24,6 @@ use Sg\DatatablesBundle\Column\AbstractColumn as BaseColumn;
 class ActionColumn extends BaseColumn
 {
     /**
-     * Default icon
-     *
-     * @var string
-     */
-    const DEFAULT_ICON = 'glyphicon glyphicon-th';
-
-    /**
-     * Default show icon.
-     *
-     * @var string
-     */
-    const DEFAULT_SHOW_ICON = 'glyphicon glyphicon-eye-open';
-
-    /**
-     * Default edit icon.
-     *
-     * @var string
-     */
-    const DEFAULT_EDIT_ICON = 'glyphicon glyphicon-edit';
-
-    /**
-     * Default delete icon.
-     *
-     * @var string
-     */
-    const DEFAULT_DELETE_ICON = 'glyphicon glyphicon-trash';
-
-    /**
      * @var null|string
      */
     protected $route;
@@ -115,7 +87,7 @@ class ActionColumn extends BaseColumn
     /**
      * {@inheritdoc}
      */
-    public function getClassId()
+    public function getClassName()
     {
         return 'action';
     }

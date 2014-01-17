@@ -44,7 +44,7 @@ class BooleanColumn extends BaseColumn
     /**
      * {@inheritdoc}
      */
-    public function getClassId()
+    public function getClassName()
     {
         return 'boolean';
     }

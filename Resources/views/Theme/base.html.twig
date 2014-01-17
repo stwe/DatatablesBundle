@@ -99,7 +99,7 @@
                     "aoColumns": [
                         {# columns #}
                         {% for column in dt_columns %}
-                            {% include "SgDatatablesBundle:Column:" ~ column.getClassId ~ ".html.twig" %}
+                            {% include "SgDatatablesBundle:Column:" ~ column.getClassName ~ ".html.twig" %}
                         {% endfor %}
 
                         {# multiselect column #}
