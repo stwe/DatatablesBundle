@@ -63,7 +63,7 @@ class PostDatatable extends AbstractDatatableView
                         'rel' => 'tooltip',
                         'title' => 'Edit User'
                     ),
-                    'icon' => ActionColumn::DEFAULT_EDIT_ICON
+                    'icon' => BootstrapDatatableTheme::DEFAULT_EDIT_ICON
                 ))
             ->add('show', 'action', array(
                     'route' => 'post_show',
@@ -74,7 +74,7 @@ class PostDatatable extends AbstractDatatableView
                         'rel' => 'tooltip',
                         'title' => 'Show User'
                     ),
-                    'icon' => ActionColumn::DEFAULT_SHOW_ICON
+                    'icon' => BootstrapDatatableTheme::DEFAULT_SHOW_ICON
                 ));
     }
 
