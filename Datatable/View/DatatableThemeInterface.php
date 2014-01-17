@@ -40,6 +40,8 @@ interface DatatableThemeInterface
     public function getSDomValues();
 
     /**
+     * Set the sDom values for the theme.
+     *
      * @param mixed $values
      *
      * @return self
@@ -61,6 +63,8 @@ interface DatatableThemeInterface
     public function getFormClasses();
 
     /**
+     * Get the pagination type of the theme.
+     *
      * @return null|string
      */
     public function getPagination();
@@ -76,6 +80,8 @@ interface DatatableThemeInterface
     public function getIconRemove();
 
     /**
+     * Get the classes for the action buttons.
+     *
      * @return string
      */
     public function getActionButtonClasses();

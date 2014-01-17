@@ -11,7 +11,6 @@ namespace Sg\BlogBundle\Datatables;
 
 use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
 use Sg\DatatablesBundle\Datatable\View\JqueryUiDatatableTheme;
-use Sg\DatatablesBundle\Column\ActionColumn;
 
 /**
  * Class PostDatatable

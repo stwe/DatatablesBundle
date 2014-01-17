@@ -46,10 +46,6 @@ class JqueryUiDatatableTheme extends AbstractDatatableTheme
      */
     const DEFAULT_DELETE_ICON = 'ui-icon ui-icon-trash';
 
-    protected $tableClasses = '';
-
-    protected $formClasses = '';
-
     protected $iconOk = 'ui-icon ui-icon-circle-check';
 
     protected $iconRemove = 'ui-icon ui-icon-circle-close';

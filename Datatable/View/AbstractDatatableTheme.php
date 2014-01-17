@@ -26,12 +26,12 @@ abstract class AbstractDatatableTheme implements DatatableThemeInterface
     /**
      * @var string
      */
-    protected $tableClasses;
+    protected $tableClasses = null;
 
     /**
      * @var string
      */
-    protected $formClasses;
+    protected $formClasses = null;
 
     /**
      * @var null|string

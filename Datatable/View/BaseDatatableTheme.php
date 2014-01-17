@@ -20,8 +20,6 @@ class BaseDatatableTheme extends AbstractDatatableTheme
 {
     protected $tableClasses = 'display';
 
-    protected $formClasses = '';
-
     protected $iconOk = 'true';
 
     protected $iconRemove = 'false';

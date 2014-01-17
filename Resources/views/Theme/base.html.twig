@@ -76,6 +76,9 @@
                     {% endif %}
                     "aLengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "{{ 'datatables.datatable.all'|trans({}, 'messages') }}"]],
                     "iDisplayLength": {{ dt_iDisplayLength }},
+                    {% if 'jqueryui_datatable_theme' == theme_name %}
+                        "bJQueryUI": true,
+                    {% endif %}
                     "oLanguage": {
                         "sProcessing": "{{ 'datatables.datatable.sProcessing'|trans({}, 'messages') }}",
                         "sLengthMenu": "{{ 'datatables.datatable.sLengthMenu'|trans({}, 'messages') }}",
