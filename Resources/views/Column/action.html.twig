@@ -36,7 +36,11 @@
         {% if column.icon != null %}
             url += "<span class='{{ column.icon }}'></span>";
         {% else %}
-            url += "{{ column.label }}";
+            {% if column.label.label is defined %}
+                url += "{{ column.label.label|trans({}, column.label.translation_domain) }}";
+            {% else %}
+                url += "{{ column.label }}";
+            {% endif %}
         {% endif %}
         url += "</a>";
 

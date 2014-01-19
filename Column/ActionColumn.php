@@ -13,6 +13,8 @@ namespace Sg\DatatablesBundle\Column;
 
 use Sg\DatatablesBundle\Column\AbstractColumn as BaseColumn;
 
+use Exception;
+
 /**
  * Class ActionColumn
  *
@@ -148,9 +150,7 @@ class ActionColumn extends BaseColumn
      */
     public function setRouteParameters(array $parameters)
     {
-        foreach ($parameters as $key => $value) {
-            $this->routeParameters[$key] = $value;
-        }
+        $this->routeParameters = $parameters;
 
         return $this;
     }
@@ -195,9 +195,16 @@ class ActionColumn extends BaseColumn
      * @param null|string $label
      *
      * @return $this
+     * @throws Exception
      */
     public function setLabel($label)
     {
+        if (true === is_array($label)) {
+            if ( !(array_key_exists('label', $label) && array_key_exists('translation_domain', $label)) ) {
+                throw new Exception('A label and a translation_domain expected.');
+            }
+        }
+
         $this->label = $label;
 
         return $this;
@@ -222,9 +229,7 @@ class ActionColumn extends BaseColumn
      */
     public function setAttributes(array $attributes)
     {
-        foreach ($attributes as $key => $value) {
-            $this->attributes[$key] = $value;
-        }
+        $this->attributes = $attributes;
 
         return $this;
     }

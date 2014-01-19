@@ -10,7 +10,7 @@
 namespace Sg\BlogBundle\Datatables;
 
 use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
-use Sg\DatatablesBundle\Datatable\View\JqueryUiDatatableTheme;
+use Sg\DatatablesBundle\Datatable\View\BootstrapDatatableTheme;
 
 /**
  * Class PostDatatable
@@ -32,10 +32,10 @@ class PostDatatable extends AbstractDatatableView
         $this->setSAjaxSource('post_results');
 
         $this->setMultiselect(false);
-        $this->setIndividualFiltering(true);
+        $this->setIndividualFiltering(false);
 
-        $this->theme = JqueryUiDatatableTheme::getTheme();
-        //$this->theme = BootstrapDatatableTheme::getTheme();
+        $this->theme = BootstrapDatatableTheme::getTheme();
+        //$this->theme = JqueryUiDatatableTheme::getTheme();
         //$this->theme = BaseDatatableTheme::getTheme();
 
 
@@ -49,9 +49,15 @@ class PostDatatable extends AbstractDatatableView
                     'searchable' => false
                 ))
             ->add('title', 'column', array(
-                    'title' => 'Title',
-                    //'title' => array('label' => 'test.title', 'translation_domain' => 'msg'),
+                    //'title' => 'Title',
+                    'title' => array('label' => 'test.title', 'translation_domain' => 'msg'),
                     'searchable' => true
+                ))
+            ->add('visible', 'boolean', array(
+                    'title' => 'Visible'
+                ))
+            ->add('createdAt', 'datetime', array(
+                    'title' => 'Created'
                 ))
             ->add('edit', 'action', array(
                     'route' => 'post_edit',
@@ -73,7 +79,8 @@ class PostDatatable extends AbstractDatatableView
                         'rel' => 'tooltip',
                         'title' => 'Show User'
                     ),
-                    'icon' => BootstrapDatatableTheme::DEFAULT_SHOW_ICON
+                    //'label' => 'Show',
+                    'label' => array('label' => 'test.show', 'translation_domain' => 'msg')
                 ));
     }
 

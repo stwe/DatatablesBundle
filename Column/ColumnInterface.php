@@ -104,6 +104,7 @@ interface ColumnInterface
      * @param null|string $sTitle
      *
      * @return self
+     * @throws \Exception
      */
     public function setSTitle($sTitle);
 

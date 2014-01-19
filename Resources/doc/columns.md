@@ -76,7 +76,7 @@ all options of `column` and additionally:
 ``` php
 $this->columnBuilder
     ->add('edit', 'action', array(
-            'route' => 'sg_user_edit',
+            'route' => 'post_edit',
             'parameters' => array(
                 'id' => 'id'
             ),
@@ -84,10 +84,10 @@ $this->columnBuilder
                 'rel' => 'tooltip',
                 'title' => 'Edit User'
             ),
-            'icon' => ActionColumn::DEFAULT_EDIT_ICON
+            'icon' => BootstrapDatatableTheme::DEFAULT_EDIT_ICON
         ))
     ->add('show', 'action', array(
-            'route' => 'sg_user_show',
+            'route' => 'post_show',
             'parameters' => array(
                 'id' => 'id'
             ),
@@ -95,8 +95,10 @@ $this->columnBuilder
                 'rel' => 'tooltip',
                 'title' => 'Show User'
             ),
-            'icon' => ActionColumn::DEFAULT_SHOW_ICON
+            //'label' => 'Show',
+            'label' => array('label' => 'test.show', 'translation_domain' => 'msg')
         ));
+
 ```
 
 ## Array column
