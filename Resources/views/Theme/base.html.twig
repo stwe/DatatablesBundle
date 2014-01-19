@@ -188,11 +188,19 @@
                 if (type != "display")
                     return data;
 
-                if (data == true) {
-                    return "{{ theme_iconOk }}";
-                } else {
-                    return "{{ theme_iconRemove }}";
-                }
+                {% if 'base_datatable_theme' == theme_name %}
+                    if (data == true) {
+                        return "{{ theme_iconOk }}";
+                    } else {
+                        return "{{ theme_iconRemove }}";
+                    }
+                {%  else %}
+                    if (data == true) {
+                        return "<span class='{{ theme_iconOk }}'></span>";
+                    } else {
+                        return "<span class='{{ theme_iconRemove }}'></span>";
+                    }
+                {% endif %}
             }
 
         </script>
