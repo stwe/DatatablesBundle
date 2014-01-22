@@ -85,6 +85,7 @@ class DatatableData implements DatatableDataInterface
      */
     protected $joins;
 
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -116,6 +117,7 @@ class DatatableData implements DatatableDataInterface
         $this->prepareColumns();
     }
 
+
     //-------------------------------------------------
     // Private
     //-------------------------------------------------
@@ -137,8 +139,9 @@ class DatatableData implements DatatableDataInterface
     /**
      * Add an entry to the selectColumns[] array.
      *
-     * @param ClassMetadata $metadata A ClassMetadata instance
-     * @param string        $column   The name of the column
+     * @param ClassMetadata $metadata        A ClassMetadata instance
+     * @param string        $column          The name of the column
+     * @param null|string   $columnTableName The name of the column table
      *
      * @throws Exception
      * @return $this
@@ -160,6 +163,7 @@ class DatatableData implements DatatableDataInterface
      * @param array         $associationParts An array of the association parts
      * @param int           $i                Numeric key
      * @param ClassMetadata $metadata         A ClassMetadata instance
+     * @param null|string   $columnTableName  The name of the column table
      *
      * @return $this
      */
@@ -188,7 +192,6 @@ class DatatableData implements DatatableDataInterface
             $i++;
             $this->setAssociations($associationParts, $i, $targetMeta, $columnTableName);
         } else {
-            $targetTableName = $metadata->getTableName();
             $targetIdentifiers = $metadata->getIdentifierFieldNames();
             $targetRootIdentifier = array_shift($targetIdentifiers);
 
@@ -267,6 +270,7 @@ class DatatableData implements DatatableDataInterface
         return $this;
     }
 
+
     //-------------------------------------------------
     // DatatableDataInterface
     //-------------------------------------------------
@@ -300,6 +304,7 @@ class DatatableData implements DatatableDataInterface
 
         return $response;
     }
+
 
     //-------------------------------------------------
     // Public
