@@ -29,28 +29,28 @@ class DatatableViewFactory implements DatatableViewFactoryInterface
      *
      * @var TwigEngine
      */
-    protected $templating;
+    private $templating;
 
     /**
-     * The translation service.
+     * The translator service.
      *
      * @var Translator
      */
-    protected $translator;
+    private $translator;
 
     /**
      * The default layout options.
      *
      * @var array
      */
-    protected $layoutOptions;
+    private $layoutOptions;
 
     /**
      * A ColumnBuilderInterface.
      *
      * @var ColumnBuilderInterface
      */
-    protected $columnBuilder;
+    private $columnBuilder;
 
 
     //-------------------------------------------------
@@ -61,7 +61,7 @@ class DatatableViewFactory implements DatatableViewFactoryInterface
      * Ctor.
      *
      * @param TwigEngine             $templating    The templating service
-     * @param Translator             $translator    The translation service
+     * @param Translator             $translator    The translator service
      * @param array                  $layoutOptions The default layout options
      * @param ColumnBuilderInterface $columnBuilder A column builder
      */

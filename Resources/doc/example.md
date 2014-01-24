@@ -28,14 +28,16 @@ class PostDatatable extends AbstractDatatableView
         // Datatable
         //-------------------------------------------------
 
+        $this->setBServerSide(true);           // default
         $this->setSAjaxSource('post_results');
+        $this->setBProcessing(true);           // default
+        $this->setIDisplayLength(10);          // default
+        $this->setMultiselect(false);          // default
+        $this->setIndividualFiltering(false);  // default
 
-        $this->setMultiselect(false);
-        $this->setIndividualFiltering(false);
-
-        $this->theme = BootstrapDatatableTheme::getTheme();
-        //$this->theme = JqueryUiDatatableTheme::getTheme();
-        //$this->theme = BaseDatatableTheme::getTheme();
+        $this->setTheme(BootstrapDatatableTheme::getTheme());
+        //$this->setTheme(JqueryUiDatatableTheme::getTheme());
+        //$this->setTheme(BaseDatatableTheme::getTheme());
 
 
         //-------------------------------------------------
@@ -49,7 +51,7 @@ class PostDatatable extends AbstractDatatableView
                 ))
             ->add('title', 'column', array(
                     //'title' => 'Title',
-                    'title' => array('label' => 'test.title', 'translation_domain' => 'msg'),
+                    'title' => $this->getTranslator()->trans('test.title', array(), 'msg'), //array('label' => 'test.title', 'translation_domain' => 'msg'),
                     'searchable' => true
                 ))
             ->add('visible', 'boolean', array(
@@ -58,10 +60,16 @@ class PostDatatable extends AbstractDatatableView
             ->add('createdAt', 'datetime', array(
                     'title' => 'Created'
                 ))
+            ->add('createdBy.username', 'column', array(
+                    'title' => 'CreatedBy'
+                ))
+            ->add('updatedBy.username', 'column', array(
+                    'title' => 'UpdatedBy'
+                ))
             ->add('edit', 'action', array(
                     'route' => 'post_edit',
                     'parameters' => array(
-                        'id' => 'id'
+                        'id' => 'createdBy.username'
                     ),
                     'attributes' => array(
                         'rel' => 'tooltip',

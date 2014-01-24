@@ -29,49 +29,49 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      *
      * @var TwigEngine
      */
-    protected $templating;
+    private $templating;
 
     /**
-     * The translation service.
+     * The translator service.
      *
      * @var Translator
      */
-    protected $translator;
+    private $translator;
 
     /**
      * The datatable theme.
      *
      * @var DatatableThemeInterface
      */
-    protected $theme;
+    private $theme;
 
     /**
      * Configure DataTables to use server-side processing.
      *
      * @var boolean
      */
-    protected $bServerSide;
+    private $bServerSide;
 
     /**
      * An array of data to use for the table.
      *
      * @var array
      */
-    protected $aaData;
+    private $aaData;
 
     /**
      * Enable or disable the display of a 'processing' indicator.
      *
      * @var boolean
      */
-    protected $bProcessing;
+    private $bProcessing;
 
     /**
      * Number of rows to display on a single page when using pagination.
      *
      * @var integer
      */
-    protected $iDisplayLength;
+    private $iDisplayLength;
 
     /**
      * A ColumnBuilderInterface.
@@ -85,42 +85,42 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      *
      * @var string
      */
-    protected $sAjaxSource;
+    private $sAjaxSource;
 
     /**
      * The sAjaxSource parameters.
      *
      * @var string
      */
-    protected $sAjaxSourceParameters;
+    private $sAjaxSourceParameters;
 
     /**
      * Array for custom options.
      *
      * @var array
      */
-    protected $customizeOptions;
+    private $customizeOptions;
 
     /**
      * Enable or disable multiselect.
      *
      * @var boolean
      */
-    protected $multiselect;
+    private $multiselect;
 
     /**
      * Enable or disable individual filtering.
      *
      * @var boolean
      */
-    protected $individualFiltering;
+    private $individualFiltering;
 
     /**
      * Contains all bulk actions.
      *
      * @var array
      */
-    protected $bulkActions;
+    private $bulkActions;
 
 
     //-------------------------------------------------
@@ -131,7 +131,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * Ctor.
      *
      * @param TwigEngine             $templating           The templating service
-     * @param Translator             $translator           The translation service
+     * @param Translator             $translator           The translator service
      * @param array                  $defaultLayoutOptions The default layout options
      * @param ColumnBuilderInterface $columnBuilder        A ColumnBuilderInterface
      */
@@ -233,6 +233,30 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     }
 
     /**
+     * Set theme.
+     *
+     * @param DatatableThemeInterface $theme
+     *
+     * @return $this
+     */
+    public function setTheme(DatatableThemeInterface $theme)
+    {
+        $this->theme = $theme;
+
+        return $this;
+    }
+
+    /**
+     * Get theme.
+     *
+     * @return DatatableThemeInterface
+     */
+    public function getTheme()
+    {
+        return $this->theme;
+    }
+
+    /**
      * Set bServerSide.
      *
      * @param boolean $bServerSide
@@ -263,7 +287,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      *
      * @return $this
      */
-    public function setAaData($aaData)
+    public function setAaData(array $aaData)
     {
         $this->aaData = $aaData;
 
@@ -284,10 +308,14 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * Set bProcessing.
      *
      * @param boolean $bProcessing
+     *
+     * @return $this
      */
     public function setBProcessing($bProcessing)
     {
         $this->bProcessing = (boolean) $bProcessing;
+
+        return $this;
     }
 
     /**
@@ -322,30 +350,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getIDisplayLength()
     {
         return (int) $this->iDisplayLength;
-    }
-
-    /**
-     * Set columnBuilder.
-     *
-     * @param ColumnBuilderInterface $columnBuilder
-     *
-     * @return $this
-     */
-    public function setColumnBuilder(ColumnBuilderInterface $columnBuilder)
-    {
-        $this->columnBuilder = $columnBuilder;
-
-        return $this;
-    }
-
-    /**
-     * Get columnBuilder.
-     *
-     * @return ColumnBuilderInterface
-     */
-    public function getColumnBuilder()
-    {
-        return $this->columnBuilder;
     }
 
     /**
@@ -385,7 +389,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * Sets the value of sAjaxSourceParameters.
      *
-     * @param mixed $sAjaxSourceParameters the route parameters
+     * @param mixed $sAjaxSourceParameters
      *
      * @return $this
      */
