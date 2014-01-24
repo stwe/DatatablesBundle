@@ -1,29 +1,34 @@
 {
-    {% if column.bSearchable == false %}
-        "bSearchable": false,
-    {% else %}
+    {% if column.bSearchable %}
         "bSearchable": true,
+    {% else %}
+        "bSearchable": false,
     {% endif %}
 
-    {% if column.bSortable == false %}
-        "bSortable": false,
-    {% else %}
+    {% if column.bSortable %}
         "bSortable": true,
-    {% endif %}
-
-    {% if column.bVisible == false %}
-        "bVisible": false,
     {% else %}
-        "bVisible": true,
+        "bSortable": false,
     {% endif %}
 
-    {% if column.mData != null %}
+    {% if column.bVisible %}
+        "bVisible": true,
+    {% else %}
+        "bVisible": false,
+    {% endif %}
+
+    "sTitle": "{{ column.sTitle }}",
+    "sClass": "{{ column.sClass }}",
+    "sDefaultContent": "{{ column.sDefaultContent }}",
+    "sWidth": "{{ column.sWidth }}",
+
+    {% if column.mData %}
         "mData": "{{ column.mData }}",
     {% else %}
         "mData": null,
     {% endif %}
 
-    {% if column.mRender != null %}
+    {% if column.mRender %}
         {% if column.isAssociation is defined %}
             {% if column.isAssociation == true %}
                 "mRender": "{{ column.mRender }}",
@@ -37,19 +42,5 @@
                 return {{ column.mRender }}(data, type, full);
             },
         {% endif %}
-    {% endif %}
-
-    {% if column.sClass != "" %}
-        "sClass": "{{ column.sClass }}",
-    {% endif %}
-
-    {% if column.sDefaultContent != null %}
-        "sDefaultContent": "{{ column.sDefaultContent }}",
-    {% endif %}
-
-    "sTitle": "{{ column.sTitle }}",
-
-    {% if column.sWidth != null %}
-        "sWidth": "{{ column.sWidth }}",
     {% endif %}
 },
