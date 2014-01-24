@@ -28,7 +28,6 @@ class PostDatatable extends AbstractDatatableView
         // Datatable
         //-------------------------------------------------
 
-        $this->setTableId('post_datatable');
         $this->setSAjaxSource('post_results');
 
         $this->setMultiselect(false);

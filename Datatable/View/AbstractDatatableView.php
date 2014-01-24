@@ -74,13 +74,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     protected $iDisplayLength;
 
     /**
-     * The jQuery table id selector.
-     *
-     * @var string
-     */
-    protected $tableId;
-
-    /**
      * A ColumnBuilderInterface.
      *
      * @var ColumnBuilderInterface
@@ -151,7 +144,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->aaData = array();
         $this->bProcessing = $defaultLayoutOptions['processing'];
         $this->iDisplayLength = (int) $defaultLayoutOptions['display_length'];
-        $this->tableId = $defaultLayoutOptions['table_id'];
         $this->columnBuilder = $columnBuilder;
         $this->sAjaxSource = '';
         $this->sAjaxSourceParameters = '';
@@ -195,7 +187,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         $options['dt_bProcessing'] = $this->getBProcessing();
         $options['dt_iDisplayLength'] = $this->getIDisplayLength();
-        $options['dt_tableId'] = $this->getTableId();
+        $options['dt_tableId'] = $this->getName();
         $options['dt_columns'] = $this->columnBuilder->getColumns();
         $options['dt_customizeOptions'] = $this->getCustomizeOptions();
         $options['dt_multiselect'] = $this->getMultiselect();
@@ -330,30 +322,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getIDisplayLength()
     {
         return (int) $this->iDisplayLength;
-    }
-
-    /**
-     * Set tableId.
-     *
-     * @param string $tableId
-     *
-     * @return $this
-     */
-    public function setTableId($tableId)
-    {
-        $this->tableId = $tableId;
-
-        return $this;
-    }
-
-    /**
-     * Get tableId.
-     *
-     * @return string
-     */
-    public function getTableId()
-    {
-        return $this->tableId;
     }
 
     /**

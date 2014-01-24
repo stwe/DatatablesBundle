@@ -32,6 +32,7 @@ interface DatatableViewInterface
 
     /**
      * Returns the name of this datatable view.
+     * Is used as jQuery datatable id selector.
      *
      * @return string
      */
