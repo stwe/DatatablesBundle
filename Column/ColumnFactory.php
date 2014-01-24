@@ -34,7 +34,9 @@ class ColumnFactory implements ColumnFactoryInterface
     public function createColumnByName($property, $name)
     {
         if (!is_string($property)) {
-            throw new UnexpectedTypeException($property, 'A string is expected.');
+            if (!is_null($property)) {
+                throw new UnexpectedTypeException($property, 'A string or null expected.');
+            }
         }
 
         if (!is_string($name)) {
