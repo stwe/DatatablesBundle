@@ -1,22 +1,6 @@
-{
-    {% if column.bSearchable == false %}
-        "bSearchable": false,
-    {% else %}
-        "bSearchable": true,
-    {% endif %}
+{% extends 'SgDatatablesBundle:Column:column.html.twig' %}
 
-    {% if column.bSortable == false %}
-        "bSortable": false,
-    {% else %}
-        "bSortable": true,
-    {% endif %}
-
-    {% if column.bVisible == false %}
-        "bVisible": false,
-    {% else %}
-        "bVisible": true,
-    {% endif %}
-
+{% block data %}
     "mData": null,
     "mRender": function(data, type, full) {
         if (full.{{ column.property }} == null) {
@@ -30,18 +14,4 @@
             return null;
         }
     },
-
-    {% if column.sClass != "" %}
-        "sClass": "{{ column.sClass }}",
-    {% endif %}
-
-    {% if column.sDefaultContent != null %}
-        "sDefaultContent": "{{ column.sDefaultContent }}",
-    {% endif %}
-
-    "sTitle": "{{ column.sTitle }}",
-
-    {% if column.sWidth != null %}
-        "sWidth": "{{ column.sWidth }}",
-    {% endif %}
-},
+{% endblock %}

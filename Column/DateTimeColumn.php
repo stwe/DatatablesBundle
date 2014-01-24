@@ -13,6 +13,8 @@ namespace Sg\DatatablesBundle\Column;
 
 use Sg\DatatablesBundle\Column\AbstractColumn as BaseColumn;
 
+use Exception;
+
 /**
  * Class DateTimeColumn
  *
@@ -28,12 +30,16 @@ class DateTimeColumn extends BaseColumn
      * Ctor.
      *
      * @param null|string $property An entity's property
+     *
+     * @throws Exception
      */
     public function __construct($property = null)
     {
-        parent::__construct($property);
+        if (null == $property) {
+            throw new Exception("The entity's property can not be null.");
+        }
 
-        $this->setMData(null);
+        parent::__construct($property);
     }
 
 
@@ -47,13 +53,5 @@ class DateTimeColumn extends BaseColumn
     public function getClassName()
     {
         return 'datetime';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOptions(array $options)
-    {
-        parent::setOptions($options);
     }
 }
