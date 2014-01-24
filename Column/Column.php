@@ -21,21 +21,6 @@ use Sg\DatatablesBundle\Column\AbstractColumn as BaseColumn;
 class Column extends BaseColumn
 {
     //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Ctor.
-     *
-     * @param null|string $property An entity's property
-     */
-    public function __construct($property = null)
-    {
-        parent::__construct($property);
-    }
-
-
-    //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
 
@@ -45,13 +30,5 @@ class Column extends BaseColumn
     public function getClassName()
     {
         return 'column';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOptions(array $options)
-    {
-        parent::setOptions($options);
     }
 }

@@ -1,46 +1,40 @@
 {
-    {% if column.bSearchable %}
-        "bSearchable": true,
-    {% else %}
-        "bSearchable": false,
-    {% endif %}
-
-    {% if column.bSortable %}
-        "bSortable": true,
-    {% else %}
-        "bSortable": false,
-    {% endif %}
-
-    {% if column.bVisible %}
-        "bVisible": true,
-    {% else %}
-        "bVisible": false,
-    {% endif %}
-
-    "sTitle": "{{ column.sTitle }}",
-    "sClass": "{{ column.sClass }}",
-    "sDefaultContent": "{{ column.sDefaultContent }}",
-    "sWidth": "{{ column.sWidth }}",
-
-    {% if column.mData %}
-        "mData": "{{ column.mData }}",
-    {% else %}
-        "mData": null,
-    {% endif %}
-
-    {% if column.mRender %}
-        {% if column.isAssociation is defined %}
-            {% if column.isAssociation == true %}
-                "mRender": "{{ column.mRender }}",
-            {% else %}
-                "mRender": function(data, type, full) {
-                    return {{ column.mRender }}(data, type, full);
-                },
-            {% endif %}
+    {% block common %}
+        {% if column.bSearchable %}
+            "bSearchable": true,
         {% else %}
+            "bSearchable": false,
+        {% endif %}
+
+        {% if column.bSortable %}
+            "bSortable": true,
+        {% else %}
+            "bSortable": false,
+        {% endif %}
+
+        {% if column.bVisible %}
+            "bVisible": true,
+        {% else %}
+            "bVisible": false,
+        {% endif %}
+
+        "sTitle": "{{ column.sTitle }}",
+        "sClass": "{{ column.sClass }}",
+        "sDefaultContent": "{{ column.sDefaultContent }}",
+        "sWidth": "{{ column.sWidth }}",
+    {% endblock %}
+
+    {% block data %}
+        {% if column.mData %}
+            "mData": "{{ column.mData }}",
+        {% else %}
+            "mData": null,
+        {% endif %}
+
+        {% if column.mRender %}
             "mRender": function(data, type, full) {
                 return {{ column.mRender }}(data, type, full);
             },
         {% endif %}
-    {% endif %}
+    {% endblock %}
 },
