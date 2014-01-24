@@ -14,6 +14,7 @@ namespace Sg\DatatablesBundle\Datatable\View;
 use Sg\DatatablesBundle\Column\ColumnBuilderInterface;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
+use Symfony\Component\Translation\Translator;
 use Exception;
 
 /**
@@ -29,6 +30,13 @@ class DatatableViewFactory implements DatatableViewFactoryInterface
      * @var TwigEngine
      */
     protected $templating;
+
+    /**
+     * The translation service.
+     *
+     * @var Translator
+     */
+    protected $translator;
 
     /**
      * The default layout options.
@@ -53,12 +61,14 @@ class DatatableViewFactory implements DatatableViewFactoryInterface
      * Ctor.
      *
      * @param TwigEngine             $templating    The templating service
+     * @param Translator             $translator    The translation service
      * @param array                  $layoutOptions The default layout options
      * @param ColumnBuilderInterface $columnBuilder A column builder
      */
-    public function __construct(TwigEngine $templating, array $layoutOptions, ColumnBuilderInterface $columnBuilder)
+    public function __construct(TwigEngine $templating, Translator $translator, array $layoutOptions, ColumnBuilderInterface $columnBuilder)
     {
         $this->templating = $templating;
+        $this->translator = $translator;
         $this->layoutOptions = $layoutOptions;
         $this->columnBuilder = $columnBuilder;
     }
@@ -84,7 +94,7 @@ class DatatableViewFactory implements DatatableViewFactoryInterface
         /**
          * @var DatatableViewInterface $datatableView
          */
-        $datatableView = new $datatableViewClass($this->templating, $this->layoutOptions, $this->columnBuilder);
+        $datatableView = new $datatableViewClass($this->templating, $this->translator, $this->layoutOptions, $this->columnBuilder);
         $datatableView->buildDatatableView();
 
         return $datatableView;

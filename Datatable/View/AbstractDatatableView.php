@@ -14,6 +14,7 @@ namespace Sg\DatatablesBundle\Datatable\View;
 use Sg\DatatablesBundle\Column\ColumnBuilderInterface;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
+use Symfony\Component\Translation\Translator;
 use Exception;
 
 /**
@@ -29,6 +30,13 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @var TwigEngine
      */
     protected $templating;
+
+    /**
+     * The translation service.
+     *
+     * @var Translator
+     */
+    protected $translator;
 
     /**
      * The datatable theme.
@@ -130,12 +138,14 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * Ctor.
      *
      * @param TwigEngine             $templating           The templating service
+     * @param Translator             $translator           The translation service
      * @param array                  $defaultLayoutOptions The default layout options
      * @param ColumnBuilderInterface $columnBuilder        A ColumnBuilderInterface
      */
-    public function __construct(TwigEngine $templating, array $defaultLayoutOptions, ColumnBuilderInterface $columnBuilder)
+    public function __construct(TwigEngine $templating, Translator $translator, array $defaultLayoutOptions, ColumnBuilderInterface $columnBuilder)
     {
         $this->templating = $templating;
+        $this->translator = $translator;
         $this->theme = null;
         $this->bServerSide = $defaultLayoutOptions['server_side'];
         $this->aaData = array();
@@ -219,6 +229,16 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     //-------------------------------------------------
     // Public
     //-------------------------------------------------
+
+    /**
+     * Get translator.
+     *
+     * @return Translator
+     */
+    public function getTranslator()
+    {
+        return $this->translator;
+    }
 
     /**
      * Set bServerSide.
