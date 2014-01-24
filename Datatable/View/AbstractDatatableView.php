@@ -41,7 +41,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * The datatable theme.
      *
-     * @var DatatableThemeInterface
+     * @var null|DatatableThemeInterface
      */
     private $theme;
 
@@ -178,7 +178,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         if (true === $options['dt_bServerSide']) {
             if ('' === $options['dt_sAjaxSource']) {
-                throw new Exception('The sAjaxSource parameter must be given!');
+                throw new Exception('The sAjaxSource parameter must be given.');
             }
         } else {
             $options['dt_sAjaxSource'] = '';
@@ -197,7 +197,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         // DatatableThemeInterface Twig variables
 
         if (null === $this->theme) {
-            throw new Exception('The datatable needs a theme!');
+            throw new Exception('The datatable needs a theme.');
         }
 
         $options['theme_name'] = $this->theme->getName();
@@ -249,7 +249,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * Get theme.
      *
-     * @return DatatableThemeInterface
+     * @return null|DatatableThemeInterface
      */
     public function getTheme()
     {

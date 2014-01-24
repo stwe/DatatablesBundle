@@ -38,6 +38,6 @@ class BaseDatatableTheme extends AbstractDatatableTheme
      */
     public function getTemplate()
     {
-        return 'SgDatatablesBundle:Theme:base.html.twig';
+        return 'SgDatatablesBundle:Datatable:datatable.html.twig';
     }
 }

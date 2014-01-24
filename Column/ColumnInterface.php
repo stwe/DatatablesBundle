@@ -19,20 +19,20 @@ namespace Sg\DatatablesBundle\Column;
 interface ColumnInterface
 {
     /**
-     * Set name.
+     * Set property.
      *
-     * @param null|string $name
+     * @param null|string $property
      *
      * @return self
      */
-    public function setName($name);
+    public function setProperty($property);
 
     /**
-     * Get name.
+     * Get property.
      *
      * @return null|string
      */
-    public function getName();
+    public function getProperty();
 
     /**
      * Set mData.
@@ -104,7 +104,6 @@ interface ColumnInterface
      * @param null|string $sTitle
      *
      * @return self
-     * @throws \Exception
      */
     public function setSTitle($sTitle);
 

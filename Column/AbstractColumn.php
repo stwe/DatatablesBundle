@@ -11,8 +11,6 @@
 
 namespace Sg\DatatablesBundle\Column;
 
-use Exception;
-
 /**
  * Class AbstractColumn
  *
@@ -21,46 +19,46 @@ use Exception;
 abstract class AbstractColumn implements ColumnInterface
 {
     /**
-     * The name of the column in the entity.
+     * An entity's property.
      *
      * @var null|string
      */
-    protected $name;
+    private $property;
 
     /**
      * Used to read data from any JSON data source property.
      *
      * @var mixed
      */
-    protected $mData;
+    private $mData;
 
     /**
      * Enable or disable filtering on the data in this column.
      *
      * @var boolean
      */
-    protected $bSearchable;
+    private $bSearchable;
 
     /**
      * Enable or disable sorting on this column.
      *
      * @var boolean
      */
-    protected $bSortable;
+    private $bSortable;
 
     /**
      * Enable or disable the display of this column.
      *
      * @var boolean
      */
-    protected $bVisible;
+    private $bVisible;
 
     /**
      * The title of this column.
      *
      * @var null|string
      */
-    protected $sTitle;
+    private $sTitle;
 
     /**
      * This property is the rendering partner to mData
@@ -68,14 +66,14 @@ abstract class AbstractColumn implements ColumnInterface
      *
      * @var null|mixed
      */
-    protected $mRender;
+    private $mRender;
 
     /**
      * Class to give to each cell in this column.
      *
      * @var string
      */
-    protected $sClass;
+    private $sClass;
 
     /**
      * Allows a default value to be given for a column's data,
@@ -85,7 +83,7 @@ abstract class AbstractColumn implements ColumnInterface
      *
      * @var null|string
      */
-    protected $sDefaultContent;
+    private $sDefaultContent;
 
     /**
      * Defining the width of the column.
@@ -93,7 +91,7 @@ abstract class AbstractColumn implements ColumnInterface
      *
      * @var null|string
      */
-    protected $sWidth;
+    private $sWidth;
 
 
     //-------------------------------------------------
@@ -103,12 +101,12 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Ctor.
      *
-     * @param string $name
+     * @param null|string $property An entity's property
      */
-    public function __construct($name = null)
+    public function __construct($property = null)
     {
-        $this->name = $name;
-        $this->mData = $name;
+        $this->property = $property;
+        $this->mData = $property;
         $this->bSearchable = true;
         $this->bSortable = true;
         $this->bVisible = true;
@@ -127,9 +125,9 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function setName($name)
+    public function setProperty($property)
     {
-        $this->name = $name;
+        $this->property = $property;
 
         return $this;
     }
@@ -137,9 +135,9 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getProperty()
     {
-        return $this->name;
+        return $this->property;
     }
 
     /**
@@ -219,12 +217,6 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function setSTitle($sTitle)
     {
-        if (true === is_array($sTitle)) {
-            if ( !(array_key_exists('label', $sTitle) && array_key_exists('translation_domain', $sTitle)) ) {
-                throw new Exception('A label and a translation_domain expected.');
-            }
-        }
-
         $this->sTitle = $sTitle;
 
         return $this;

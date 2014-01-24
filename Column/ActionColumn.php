@@ -13,13 +13,8 @@ namespace Sg\DatatablesBundle\Column;
 
 use Sg\DatatablesBundle\Column\AbstractColumn as BaseColumn;
 
-use Exception;
-
 /**
  * Class ActionColumn
- *
- * A thanks goes to Alexander Janssen (dutchbridge) for the inspiration:
- *     https://github.com/dutchbridge/DatatableBundle/blob/master/Datatable/Action.php
  *
  * @package Sg\DatatablesBundle\Column
  */
@@ -28,27 +23,27 @@ class ActionColumn extends BaseColumn
     /**
      * @var null|string
      */
-    protected $route;
+    private $route;
 
     /**
      * @var array
      */
-    protected $routeParameters;
+    private $routeParameters;
 
     /**
      * @var null|string
      */
-    protected $icon;
+    private $icon;
 
     /**
      * @var null|string
      */
-    protected $label;
+    private $label;
 
     /**
      * @var array
      */
-    protected $attributes;
+    private $attributes;
 
 
     //-------------------------------------------------
@@ -58,15 +53,15 @@ class ActionColumn extends BaseColumn
     /**
      * Ctor.
      *
-     * @param string $name
+     * @param null|string $property An entity's property
      */
-    public function __construct($name = null)
+    public function __construct($property = null)
     {
         parent::__construct(null);
 
-        $this->mData = null;
-        $this->bSearchable = false;
-        $this->bSortable = false;
+        $this->setMData(null);
+        $this->setBSearchable(false);
+        $this->setBSortable(false);
 
         $this->route = null;
         $this->routeParameters = array();
@@ -195,16 +190,9 @@ class ActionColumn extends BaseColumn
      * @param null|string $label
      *
      * @return $this
-     * @throws Exception
      */
     public function setLabel($label)
     {
-        if (true === is_array($label)) {
-            if ( !(array_key_exists('label', $label) && array_key_exists('translation_domain', $label)) ) {
-                throw new Exception('A label and a translation_domain expected.');
-            }
-        }
-
         $this->label = $label;
 
         return $this;

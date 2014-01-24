@@ -10,11 +10,7 @@
                         {% for column in dt_columns %}
                             <th>
                                 {% if column.bSearchable %}
-                                    {% if column.sTitle.label is defined %}
-                                        <input type="text" class="{{ theme_formClasses }}" placeholder="{{ column.sTitle.label|trans({}, column.sTitle.translation_domain) }}" />
-                                    {% else %}
-                                        <input type="text" class="{{ theme_formClasses }}" placeholder="{{ column.sTitle }}" />
-                                    {% endif %}
+                                    <input type="text" class="{{ theme_formClasses }}" placeholder="{{ column.sTitle }}" />
                                 {% else %}
                                     <input type="hidden" />
                                 {% endif %}
@@ -55,7 +51,7 @@
                         "fnServerParams": function(aoData) {
                             {% set counter = 0 %}
                             {% for column in dt_columns %}
-                                aoData.push( { "name": "dql_{{ counter }}", "value": "{{ column.name }}" } );
+                                aoData.push( { "name": "dql_{{ counter }}", "value": "{{ column.property }}" } );
                                 {% set counter = counter + 1 %}
                             {% endfor %}
                             {% set counter = counter - 1 %}

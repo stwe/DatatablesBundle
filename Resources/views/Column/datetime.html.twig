@@ -19,13 +19,13 @@
 
     "mData": null,
     "mRender": function(data, type, full) {
-        if (full.{{ column.name }} == null) {
+        if (full.{{ column.property }} == null) {
             return null;
         }
 
-        if (typeof full.{{ column.name }}.timestamp != 'undefined') {
+        if (typeof full.{{ column.property }}.timestamp != 'undefined') {
             moment.lang("{{ app.request.locale }}");
-            return moment.unix(full.{{ column.name }}.timestamp).format('lll');
+            return moment.unix(full.{{ column.property }}.timestamp).format('lll');
         } else {
             return null;
         }
@@ -39,11 +39,7 @@
         "sDefaultContent": "{{ column.sDefaultContent }}",
     {% endif %}
 
-    {% if column.sTitle.label is defined %}
-        "sTitle": "{{ column.sTitle.label|trans({}, column.sTitle.translation_domain) }}",
-    {% else %}
-        "sTitle": "{{ column.sTitle }}",
-    {% endif %}
+    "sTitle": "{{ column.sTitle }}",
 
     {% if column.sWidth != null %}
         "sWidth": "{{ column.sWidth }}",

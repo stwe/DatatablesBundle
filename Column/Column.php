@@ -27,11 +27,11 @@ class Column extends BaseColumn
     /**
      * Ctor.
      *
-     * @param string $name
+     * @param null|string $property An entity's property
      */
-    public function __construct($name = null)
+    public function __construct($property = null)
     {
-        parent::__construct($name);
+        parent::__construct($property);
     }
 
 
@@ -48,9 +48,7 @@ class Column extends BaseColumn
     }
 
     /**
-     * @param array $options
-     *
-     * @return $this
+     * {@inheritdoc}
      */
     public function setOptions(array $options)
     {
