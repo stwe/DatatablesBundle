@@ -19,15 +19,6 @@ namespace Sg\DatatablesBundle\Column;
 interface ColumnInterface
 {
     /**
-     * Set property.
-     *
-     * @param null|string $property
-     *
-     * @return self
-     */
-    public function setProperty($property);
-
-    /**
      * Get property.
      *
      * @return null|string
@@ -186,6 +177,13 @@ interface ColumnInterface
      * @return self
      */
     public function setOptions(array $options);
+
+    /**
+     * Set default values.
+     *
+     * @return self
+     */
+    public function setDefaults();
 
     /**
      * Returns the name of the column class.

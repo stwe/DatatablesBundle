@@ -106,31 +106,12 @@ abstract class AbstractColumn implements ColumnInterface
     public function __construct($property = null)
     {
         $this->property = $property;
-        $this->mData = $property;
-        $this->bSearchable = true;
-        $this->bSortable = true;
-        $this->bVisible = true;
-        $this->sTitle = null;
-        $this->mRender = null;
-        $this->sClass = '';
-        $this->sDefaultContent = null;
-        $this->sWidth = null;
     }
 
 
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setProperty($property)
-    {
-        $this->property = $property;
-
-        return $this;
-    }
 
     /**
      * {@inheritdoc}
@@ -307,32 +288,48 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function setOptions(array $options)
     {
-        if (isset($options['searchable'])) {
+        if (array_key_exists('searchable', $options)) {
             $this->setBSearchable($options['searchable']);
         }
-        if (isset($options['sortable'])) {
+        if (array_key_exists('sortable', $options)) {
             $this->setBSortable($options['sortable']);
         }
-        if (isset($options['visible'])) {
+        if (array_key_exists('visible', $options)) {
             $this->setBVisible($options['visible']);
         }
-        if (isset($options['title'])) {
+        if (array_key_exists('title', $options)) {
             $this->setSTitle($options['title']);
         }
-        if (isset($options['render'])) {
+        if (array_key_exists('render', $options)) {
             $this->setMRender($options['render']);
         }
-        if (isset($options['class'])) {
+        if (array_key_exists('class', $options)) {
             $this->setSClass($options['class']);
         }
-        if (isset($options['default'])) {
+        if (array_key_exists('default', $options)) {
             $this->setSDefaultContent($options['default']);
         }
-        if (isset($options['width'])) {
+        if (array_key_exists('width', $options)) {
             $this->setSWidth($options['width']);
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaults()
+    {
+        $this->setMData($this->property);
+        $this->setBSearchable(true);
+        $this->setBSortable(true);
+        $this->setBVisible(true);
+        $this->setSTitle(null);
+        $this->setMRender(null);
+        $this->setSClass('');
+        $this->setSDefaultContent(null);
+        $this->setSWidth(null);
     }
 
     /**

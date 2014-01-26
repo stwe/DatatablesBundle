@@ -61,9 +61,14 @@ class ColumnFactory implements ColumnFactoryInterface
             case 'datetime':
                 $this->column = new DateTimeColumn($property);
                 break;
+            case 'timeago':
+                $this->column = new TimeagoColumn($property);
+                break;
             default:
-                throw new Exception('There was no column class to be created.');
+                throw new Exception("The {$name} column is not supported.");
         }
+
+        $this->column->setDefaults();
 
         return $this->column;
     }

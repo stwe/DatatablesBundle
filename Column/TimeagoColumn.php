@@ -16,11 +16,11 @@ use Sg\DatatablesBundle\Column\AbstractColumn as BaseColumn;
 use Exception;
 
 /**
- * Class ArrayColumn
+ * Class TimeagoColumn
  *
  * @package Sg\DatatablesBundle\Column
  */
-class ArrayColumn extends BaseColumn
+class TimeagoColumn extends BaseColumn
 {
     //-------------------------------------------------
     // Ctor.
@@ -52,7 +52,21 @@ class ArrayColumn extends BaseColumn
      */
     public function getClassName()
     {
-        return 'array';
+        return 'timeago';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setOptions(array $options)
+    {
+        if (array_key_exists('render', $options)) {
+            if (null == $options['render']) {
+                throw new Exception('The render option can not be null.');
+            }
+        }
+
+        parent::setOptions($options);
     }
 
     /**
@@ -62,17 +76,6 @@ class ArrayColumn extends BaseColumn
     {
         parent::setDefaults();
 
-        $property = $this->getProperty();
-
-        // association delimiter found?
-        if (strstr($property, '.') !== false) {
-            $fieldsArray = explode('.', $property);
-            $prev = array_slice($fieldsArray, count($fieldsArray) - 2, 1);
-            $last = array_slice($fieldsArray, count($fieldsArray) - 1, 1);
-            $this->setMData($prev[0]);
-            $this->setMRender('[, ].' . $last[0]);
-        } else {
-            throw new Exception('An association is expected.');
-        }
+        $this->setMRender('render_timeago');
     }
 }

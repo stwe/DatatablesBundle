@@ -181,9 +181,6 @@
         <script>
 
             function render_boolean_icons(data, type, full) {
-                if (type != "display")
-                    return data;
-
                 {% if 'base_datatable_theme' == theme_name %}
                     if (data == true) {
                         return "{{ theme_iconOk }}";
@@ -197,6 +194,24 @@
                         return "<span class='{{ theme_iconRemove }}'></span>";
                     }
                 {% endif %}
+            }
+
+            function render_datetime(data, type, full, localizedFormat) {
+                if (typeof data.timestamp != 'undefined') {
+                    moment.lang("{{ app.request.locale }}");
+                    return moment.unix(data.timestamp).format(localizedFormat);
+                } else {
+                    return null;
+                }
+            }
+
+            function render_timeago(data, type, full) {
+                if (typeof data.timestamp != 'undefined') {
+                    moment.lang("{{ app.request.locale }}");
+                    return moment.unix(data.timestamp).fromNow();
+                } else {
+                    return null;
+                }
             }
 
         </script>

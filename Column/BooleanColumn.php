@@ -63,13 +63,19 @@ class BooleanColumn extends BaseColumn
         if (array_key_exists('render', $options)) {
             if (null == $options['render']) {
                 throw new Exception('The render option can not be null.');
-            } else {
-                $this->setMRender($options['render']);
             }
         }
 
-        $this->setMRender('render_boolean_icons');
-
         parent::setOptions($options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaults()
+    {
+        parent::setDefaults();
+
+        $this->setMRender('render_boolean_icons');
     }
 }
