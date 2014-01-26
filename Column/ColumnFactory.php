@@ -21,6 +21,11 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
  */
 class ColumnFactory implements ColumnFactoryInterface
 {
+    /**
+     * A column.
+     *
+     * @var ColumnInterface
+     */
     private $column = null;
 
 
