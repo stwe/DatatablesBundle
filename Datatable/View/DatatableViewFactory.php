@@ -14,6 +14,7 @@ namespace Sg\DatatablesBundle\Datatable\View;
 use Sg\DatatablesBundle\Column\ColumnBuilderInterface;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Translation\Translator;
 use Exception;
 
@@ -39,6 +40,13 @@ class DatatableViewFactory implements DatatableViewFactoryInterface
     private $translator;
 
     /**
+     * The router service.
+     *
+     * @var Router
+     */
+    private $router;
+
+    /**
      * The default layout options.
      *
      * @var array
@@ -62,13 +70,15 @@ class DatatableViewFactory implements DatatableViewFactoryInterface
      *
      * @param TwigEngine             $templating    The templating service
      * @param Translator             $translator    The translator service
+     * @param Router                 $router        The router service
      * @param array                  $layoutOptions The default layout options
      * @param ColumnBuilderInterface $columnBuilder A column builder
      */
-    public function __construct(TwigEngine $templating, Translator $translator, array $layoutOptions, ColumnBuilderInterface $columnBuilder)
+    public function __construct(TwigEngine $templating, Translator $translator, Router $router, array $layoutOptions, ColumnBuilderInterface $columnBuilder)
     {
         $this->templating = $templating;
         $this->translator = $translator;
+        $this->router = $router;
         $this->layoutOptions = $layoutOptions;
         $this->columnBuilder = $columnBuilder;
     }
@@ -94,7 +104,7 @@ class DatatableViewFactory implements DatatableViewFactoryInterface
         /**
          * @var DatatableViewInterface $datatableView
          */
-        $datatableView = new $datatableViewClass($this->templating, $this->translator, $this->layoutOptions, $this->columnBuilder);
+        $datatableView = new $datatableViewClass($this->templating, $this->translator, $this->router, $this->layoutOptions, $this->columnBuilder);
         $datatableView->buildDatatableView();
 
         return $datatableView;

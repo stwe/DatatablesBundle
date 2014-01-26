@@ -29,15 +29,15 @@ class PostDatatable extends AbstractDatatableView
         //-------------------------------------------------
 
         $this->setBServerSide(true);           // default
-        $this->setSAjaxSource('post_results');
+        $this->setSAjaxSource($this->getRouter()->generate('post_results'));
         $this->setBProcessing(true);           // default
         $this->setIDisplayLength(10);          // default
         $this->setMultiselect(false);          // default
         $this->setIndividualFiltering(false);  // default
 
         $this->setTheme(BootstrapDatatableTheme::getTheme());
-        //$this->setTheme(JqueryUiDatatableTheme::getTheme());
-        //$this->setTheme(BaseDatatableTheme::getTheme());
+//        $this->setTheme(JqueryUiDatatableTheme::getTheme());
+//        $this->setTheme(BaseDatatableTheme::getTheme());
 
 
         //-------------------------------------------------
@@ -50,44 +50,56 @@ class PostDatatable extends AbstractDatatableView
                     'searchable' => false
                 ))
             ->add('title', 'column', array(
-                    //'title' => 'Title',
-                    'title' => $this->getTranslator()->trans('test.title', array(), 'msg'), //array('label' => 'test.title', 'translation_domain' => 'msg'),
-                    'searchable' => true
+                    'searchable' => true,     // default
+                    'sortable' => true,       // default
+                    'visible' => true,        // default
+//                    'title' => 'Title',     // default = null
+                    'title' => $this->getTranslator()->trans('test.title', array(), 'msg'),
+                    'render' => null,         // default
+                    'class' => 'text-center', // default = ''
+                    'default' => null,        // default
+                    'width' => null           // default
                 ))
             ->add('visible', 'boolean', array(
                     'title' => 'Visible'
                 ))
-            ->add('createdAt', 'datetime', array(
+            ->add('createdAt', 'timeago', array(
                     'title' => 'Created'
                 ))
+//            ->add('createdAt', 'datetime', array(
+//                    'title' => 'Created'
+//                ))
             ->add('createdBy.username', 'column', array(
                     'title' => 'CreatedBy'
                 ))
             ->add('updatedBy.username', 'column', array(
                     'title' => 'UpdatedBy'
                 ))
+            ->add('tags.name', 'array', array(
+                    'title' => 'Tags'
+                ))
             ->add('edit', 'action', array(
                     'route' => 'post_edit',
                     'parameters' => array(
                         'id' => 'createdBy.username'
                     ),
+                    'icon' => BootstrapDatatableTheme::DEFAULT_EDIT_ICON,
                     'attributes' => array(
                         'rel' => 'tooltip',
                         'title' => 'Edit User'
                     ),
-                    'icon' => BootstrapDatatableTheme::DEFAULT_EDIT_ICON
                 ))
             ->add('show', 'action', array(
                     'route' => 'post_show',
                     'parameters' => array(
                         'id' => 'id'
                     ),
+//                    'label' => 'Show',
+                    'label' => $this->getTranslator()->trans('test.show', array(), 'msg'),
                     'attributes' => array(
                         'rel' => 'tooltip',
                         'title' => 'Show User'
-                    ),
-                    //'label' => 'Show',
-                    'label' => array('label' => 'test.show', 'translation_domain' => 'msg')
+                    )
                 ));
     }
 

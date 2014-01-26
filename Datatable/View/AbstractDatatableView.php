@@ -14,6 +14,7 @@ namespace Sg\DatatablesBundle\Datatable\View;
 use Sg\DatatablesBundle\Column\ColumnBuilderInterface;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Translation\Translator;
 use Exception;
 
@@ -37,6 +38,13 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @var Translator
      */
     private $translator;
+
+    /**
+     * The router service.
+     *
+     * @var Router
+     */
+    private $router;
 
     /**
      * The datatable theme.
@@ -88,13 +96,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     private $sAjaxSource;
 
     /**
-     * The sAjaxSource parameters.
-     *
-     * @var string
-     */
-    private $sAjaxSourceParameters;
-
-    /**
      * Array for custom options.
      *
      * @var array
@@ -132,13 +133,15 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      *
      * @param TwigEngine             $templating           The templating service
      * @param Translator             $translator           The translator service
+     * @param Router                 $router               The router service
      * @param array                  $defaultLayoutOptions The default layout options
      * @param ColumnBuilderInterface $columnBuilder        A ColumnBuilderInterface
      */
-    public function __construct(TwigEngine $templating, Translator $translator, array $defaultLayoutOptions, ColumnBuilderInterface $columnBuilder)
+    public function __construct(TwigEngine $templating, Translator $translator, Router $router, array $defaultLayoutOptions, ColumnBuilderInterface $columnBuilder)
     {
         $this->templating = $templating;
         $this->translator = $translator;
+        $this->router = $router;
         $this->theme = null;
         $this->bServerSide = $defaultLayoutOptions['server_side'];
         $this->aaData = array();
@@ -146,7 +149,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->iDisplayLength = (int) $defaultLayoutOptions['display_length'];
         $this->columnBuilder = $columnBuilder;
         $this->sAjaxSource = '';
-        $this->sAjaxSourceParameters = '';
         $this->customizeOptions = array();
         $this->multiselect = $defaultLayoutOptions['multiselect'];
         $this->individualFiltering = $defaultLayoutOptions['individual_filtering'];
@@ -174,7 +176,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         $options['dt_bServerSide'] = $this->getBServerSide();
         $options['dt_sAjaxSource'] = $this->getSAjaxSource();
-        $options['dt_sAjaxSourceParameters'] = $this->getSAjaxSourceParameters();
 
         if (true === $options['dt_bServerSide']) {
             if ('' === $options['dt_sAjaxSource']) {
@@ -230,6 +231,16 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getTranslator()
     {
         return $this->translator;
+    }
+
+    /**
+     * Get router.
+     *
+     * @return Router
+     */
+    public function getRouter()
+    {
+        return $this->router;
     }
 
     /**
@@ -374,45 +385,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getSAjaxSource()
     {
         return $this->sAjaxSource;
-    }
-
-    /**
-     * Gets the value of sAjaxSourceParameters.
-     *
-     * @return mixed
-     */
-    public function getSAjaxSourceParameters()
-    {
-        return $this->sAjaxSourceParameters;
-    }
-
-    /**
-     * Sets the value of sAjaxSourceParameters.
-     *
-     * @param mixed $sAjaxSourceParameters
-     *
-     * @return $this
-     */
-    public function setSAjaxSourceParameters($sAjaxSourceParameters)
-    {
-        $this->sAjaxSourceParameters = $sAjaxSourceParameters;
-
-        return $this;
-    }
-
-    /**
-     * Sets the value of sAjaxSourceParameters.
-     *
-     * @param string $key   The route parameter key
-     * @param mixed  $value The route parameter value
-     *
-     * @return $this
-     */
-    public function setSAjaxSourceParameter($key, $value)
-    {
-        $this->sAjaxSourceParameters[$key] = $value;
-
-        return $this;
     }
 
     /**

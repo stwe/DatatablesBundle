@@ -17,7 +17,7 @@ services:
 
     sg_datatables.datatable.view.factory:
         class: Sg\DatatablesBundle\Datatable\View\DatatableViewFactory
-        arguments: [@templating, @translator, %sg_datatables.default.layout.options%, @sg_datatables.column.builder]
+        arguments: [@templating, @translator, @router, %sg_datatables.default.layout.options%, @sg_datatables.column.builder]
 
     sg_datatables.twig.extension:
         class: Sg\DatatablesBundle\Twig\DatatableTwigExtension
