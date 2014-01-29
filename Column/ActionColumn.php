@@ -13,6 +13,8 @@ namespace Sg\DatatablesBundle\Column;
 
 use Sg\DatatablesBundle\Column\AbstractColumn as BaseColumn;
 
+use Exception;
+
 /**
  * Class ActionColumn
  *
@@ -21,26 +23,36 @@ use Sg\DatatablesBundle\Column\AbstractColumn as BaseColumn;
 class ActionColumn extends BaseColumn
 {
     /**
+     * The action route.
+     *
      * @var null|string
      */
     private $route;
 
     /**
+     * The action route parameters.
+     *
      * @var array
      */
     private $routeParameters;
 
     /**
+     * An action icon.
+     *
      * @var null|string
      */
     private $icon;
 
     /**
+     * An action label.
+     *
      * @var null|string
      */
     private $label;
 
     /**
+     * HTML attributes.
+     *
      * @var array
      */
     private $attributes;
@@ -54,20 +66,16 @@ class ActionColumn extends BaseColumn
      * Ctor.
      *
      * @param null|string $property An entity's property
+     *
+     * @throws Exception
      */
     public function __construct($property = null)
     {
-        parent::__construct(null);
+        if (null != $property) {
+            throw new Exception("The entity's property should be null.");
+        }
 
-        $this->setMData(null);
-        $this->setBSearchable(false);
-        $this->setBSortable(false);
-
-        $this->route = null;
-        $this->routeParameters = array();
-        $this->icon = null;
-        $this->label = null;
-        $this->attributes = array();
+        parent::__construct($property);
     }
 
 
@@ -90,26 +98,48 @@ class ActionColumn extends BaseColumn
     {
         parent::setOptions($options);
 
-        if (isset($options['route'])) {
+        if (array_key_exists('route', $options)) {
             $this->setRoute($options['route']);
         }
-        if (isset($options['parameters'])) {
+        if (array_key_exists('parameters', $options)) {
             $this->setRouteParameters($options['parameters']);
         }
-        if (isset($options['icon'])) {
+        if (array_key_exists('icon', $options)) {
             $this->setIcon($options['icon']);
         }
-        if (isset($options['label'])) {
+        if (array_key_exists('label', $options)) {
             $this->setLabel($options['label']);
         }
-        if (isset($options['attributes'])) {
+        if (array_key_exists('attributes', $options)) {
             $this->setAttributes($options['attributes']);
         }
+        /*
+        if (array_key_exists('intention', $options)) {
+            $this->setIntention($options['intention']);
+        }
+        */
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaults()
+    {
+        parent::setDefaults();
+
+        $this->setBSearchable(false);
+        $this->setBSortable(false);
+
+        $this->setRoute(null);
+        $this->setRouteParameters(array());
+        $this->setIcon(null);
+        $this->setLabel(null);
+        $this->setAttributes(array());
     }
 
 
     //-------------------------------------------------
-    // Public
+    // Getters && Setters
     //-------------------------------------------------
 
     /**

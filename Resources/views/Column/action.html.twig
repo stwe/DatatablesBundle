@@ -1,20 +1,8 @@
-{
-    "bSearchable": false,
+{% extends 'SgDatatablesBundle:Column:column.html.twig' %}
 
-    "bSortable": false,
-
-    {% if column.bVisible == false %}
-        "bVisible": false,
-    {% else %}
-        "bVisible": true,
-    {% endif %}
-
-    "mData": null,
-
+{% block data %}
+    "mData": "{{ column.mData }}",
     "mRender": function(data, type, full) {
-        if (type != "display")
-            return data;
-
         var routeParameters  = {};
         var attributes = "";
 
@@ -33,7 +21,7 @@
         url += "href='" + route + "'";
         url += attributes + " >";
         {% if column.icon != null %}
-            url += "<span class='{{ column.icon }}'></span>";
+            url += "<span class='{{ column.icon }}'></span> {{ column.label }}";
         {% else %}
             url += "{{ column.label }}";
         {% endif %}
@@ -41,18 +29,4 @@
 
         return url;
     },
-
-    {% if column.sClass != "" %}
-        "sClass": "{{ column.sClass }}",
-    {% endif %}
-
-    {% if column.sDefaultContent != null %}
-        "sDefaultContent": "{{ column.sDefaultContent }}",
-    {% endif %}
-
-    "sTitle": "{{ column.sTitle }}",
-
-    {% if column.sWidth != null %}
-        "sWidth": "{{ column.sWidth }}",
-    {% endif %}
-},
+{% endblock %}

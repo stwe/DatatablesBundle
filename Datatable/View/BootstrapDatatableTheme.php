@@ -63,7 +63,7 @@ class BootstrapDatatableTheme extends AbstractDatatableTheme
 
     protected $iconRemove = 'glyphicon glyphicon-remove';
 
-    protected $actionButtonClasses = 'btn btn-default btn-xs';
+    protected $actionButtonClasses = 'btn btn-primary btn-xs';
 
 
     /**
