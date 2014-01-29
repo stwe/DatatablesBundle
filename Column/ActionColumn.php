@@ -113,11 +113,6 @@ class ActionColumn extends BaseColumn
         if (array_key_exists('attributes', $options)) {
             $this->setAttributes($options['attributes']);
         }
-        /*
-        if (array_key_exists('intention', $options)) {
-            $this->setIntention($options['intention']);
-        }
-        */
     }
 
     /**

@@ -3,25 +3,24 @@
 {% block data %}
     "mData": "{{ column.mData }}",
     "mRender": function(data, type, full) {
-        var routeParameters  = {};
+        var routeParameters  = new Array();
         var attributes = "";
 
         {% for key, value in column.routeParameters %}
-            var parameter = "{{ key }}";
-            routeParameters[parameter] = full.{{ value }};
-        {% endfor %}
-
-        {% for key, value in column.attributes %}
-            attributes += '{{ key }} = "{{ value }}"';
+            routeParameters["{{ key }}"] = full.{{ value }};
         {% endfor %}
 
         var route  = Routing.generate("{{ column.route }}", routeParameters);
-        var url  = "<a class = '{{ theme_actionButtonClasses }}' ";
 
-        url += "href='" + route + "'";
-        url += attributes + " >";
+        {% for key, value in column.attributes %}
+            attributes += '{{ key }}="{{ value }}" ';
+        {% endfor %}
+
+        var url  = "<a ";
+        url += 'href="' + route + '" ';
+        url += attributes + ">";
         {% if column.icon != null %}
-            url += "<span class='{{ column.icon }}'></span> {{ column.label }}";
+            url += '<span class="{{ column.icon }}"></span> {{ column.label }}';
         {% else %}
             url += "{{ column.label }}";
         {% endif %}
