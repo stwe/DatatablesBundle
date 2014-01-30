@@ -19,7 +19,7 @@
         var url  = "<a ";
         url += 'href="' + route + '" ';
         url += attributes + ">";
-        {% if column.icon != null %}
+        {% if column.icon %}
             url += '<span class="{{ column.icon }}"></span> {{ column.label }}';
         {% else %}
             url += "{{ column.label }}";
