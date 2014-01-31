@@ -18,11 +18,10 @@ namespace Sg\DatatablesBundle\Datatable\View;
  */
 class BaseDatatableTheme extends AbstractDatatableTheme
 {
+    /**
+     * @var string
+     */
     protected $tableClasses = 'display';
-
-    protected $iconOk = 'true';
-
-    protected $iconRemove = 'false';
 
 
     /**

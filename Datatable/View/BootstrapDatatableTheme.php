@@ -46,24 +46,54 @@ class BootstrapDatatableTheme extends AbstractDatatableTheme
      */
     const DEFAULT_DELETE_ICON = 'glyphicon glyphicon-trash';
 
-    protected $sDomValues = array(
-        'sDomLength'     => 'col-sm-4',
-        'sDomFilter'     => 'col-sm-8',
-        'sDomInfo'       => 'col-sm-3',
-        'sDomPagination' => 'col-sm-9'
-    );
+    /**
+     * Default true icon.
+     *
+     * @var string
+     */
+    const DEFAULT_TRUE_ICON = 'glyphicon glyphicon-ok';
 
+    /**
+     * Default false icon.
+     *
+     * @var string
+     */
+    const DEFAULT_FALSE_ICON = 'glyphicon glyphicon-remove';
+
+    /**
+     * Bootstrap3 table style.
+     *
+     * .table:          basic styling
+     * .table-striped:  zebra-striping
+     * .table-bordered: borders on all sides of the table and cells
+     *
+     * @var string
+     */
     protected $tableClasses = 'table table-striped table-bordered';
 
+    /**
+     * Bootstrap3 form styling.
+     *
+     * .form-control: default form styling
+     * .input-sm:     height sizing
+     *
+     * @var string
+     */
     protected $formClasses = 'form-control input-sm';
 
+    /**
+     * The pagination type.
+     *
+     * @var string
+     */
     protected $pagination = 'bootstrap';
 
-    protected $iconOk = 'glyphicon glyphicon-ok';
-
-    protected $iconRemove = 'glyphicon glyphicon-remove';
-
-    protected $actionButtonClasses = 'btn btn-primary btn-xs';
+    /**
+     * Position of the feature elements (filter input etc).
+     *
+     * @var string
+     */
+    protected $sDom = "<'row'<'col-sm-4'l><'col-sm-8'f>r>t<'row'<'col-sm-3'i><'col-sm-9'p>>";
 
 
     /**

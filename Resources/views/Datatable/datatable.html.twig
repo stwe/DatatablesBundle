@@ -59,12 +59,8 @@
                     {% if theme_pagination %}
                         "sPaginationType": "{{ theme_pagination }}",
                     {% endif %}
-                    {% if theme_sDomValues %}
-                        {% if 'bootstrap3_datatable_theme' == theme_name %}
-                            "sDom": "<'row'<'{{ theme_sDomValues.sDomLength }}'l><'{{ theme_sDomValues.sDomFilter }}'f>r>t<'row'<'{{ theme_sDomValues.sDomInfo }}'i><'{{ theme_sDomValues.sDomPagination }}'p>>",
-                        {% else %}
-                            "sDom": {{ theme_sDomValues }},
-                        {% endif %}
+                    {% if theme_sDom %}
+                        "sDom": "{{ theme_sDom|raw }}",
                     {% endif %}
                     "aLengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "{{ 'datatables.datatable.all'|trans({}, 'messages') }}"]],
                     "iDisplayLength": {{ dt_iDisplayLength }},
@@ -176,20 +172,20 @@
 
         <script>
 
-            function render_boolean_icons(data, type, full) {
-                {% if 'base_datatable_theme' == theme_name %}
-                    if (data == true) {
-                        return "{{ theme_iconOk }}";
-                    } else {
-                        return "{{ theme_iconRemove }}";
-                    }
-                {%  else %}
-                    if (data == true) {
-                        return "<span class='{{ theme_iconOk }}'></span>";
-                    } else {
-                        return "<span class='{{ theme_iconRemove }}'></span>";
-                    }
-                {% endif %}
+            function render_boolean_icons(data, type, full, trueIcon, falseIcon, trueLabel, falseLabel) {
+                if ('' == trueIcon && '' == trueLabel) {
+                    trueLabel = 'true';
+                }
+
+                if ('' == falseIcon && '' == falseLabel) {
+                    falseLabel = 'false';
+                }
+
+                if (data == true) {
+                    return "<span class='" + trueIcon + "'></span> " + trueLabel;
+                } else {
+                    return "<span class='" + falseIcon + "'></span> " + falseLabel;
+                }
             }
 
             function render_datetime(data, type, full, localizedFormat) {

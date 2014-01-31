@@ -3,6 +3,6 @@
 {% block data %}
     "mData": "{{ column.mData }}",
     "mRender": function(data, type, full) {
-        return {{ column.mRender }}(data, type, full);
+        return {{ column.mRender }}(data, type, full, "{{ column.trueIcon }}", "{{ column.falseIcon }}", "{{ column.trueLabel }}", "{{ column.falseLabel }}");
     },
 {% endblock %}

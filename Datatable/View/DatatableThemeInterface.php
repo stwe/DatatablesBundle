@@ -26,34 +26,27 @@ interface DatatableThemeInterface
     public function getName();
 
     /**
-     * Get the name of the twig template.
+     * Get name of the twig template.
      *
      * @return string
      */
     public function getTemplate();
 
     /**
-     * Get the sDom values for the theme.
-     *
-     * @return mixed
-     */
-    public function getSDomValues();
-
-    /**
-     * Set the sDom values for the theme.
-     *
-     * @param mixed $values
-     *
-     * @return self
-     */
-    public function setSDomValues($values);
-
-    /**
-     * Get the table classes.
+     * Get table classes.
      *
      * @return string
      */
     public function getTableClasses();
+
+    /**
+     * Set table classes.
+     *
+     * @param string $tableClasses
+     *
+     * @return self
+     */
+    public function setTableClasses($tableClasses);
 
     /**
      * Get the form classes.
@@ -63,26 +56,43 @@ interface DatatableThemeInterface
     public function getFormClasses();
 
     /**
-     * Get the pagination type of the theme.
+     * Set form classes.
+     *
+     * @param string $formClasses
+     *
+     * @return self
+     */
+    public function setFormClasses($formClasses);
+
+    /**
+     * Get pagination type.
      *
      * @return null|string
      */
     public function getPagination();
 
     /**
-     * @return string
-     */
-    public function getIconOk();
-
-    /**
-     * @return string
-     */
-    public function getIconRemove();
-
-    /**
-     * Get the classes for the action buttons.
+     * Set pagination type.
      *
-     * @return string
+     * @param null|string $pagination
+     *
+     * @return self
      */
-    public function getActionButtonClasses();
-} 
+    public function setPagination($pagination);
+
+    /**
+     * Get sDom.
+     *
+     * @return mixed
+     */
+    public function getSDom();
+
+    /**
+     * Set sDom.
+     *
+     * @param mixed $sDom
+     *
+     * @return self
+     */
+    public function setSDom($sDom);
+}

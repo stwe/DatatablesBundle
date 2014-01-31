@@ -19,39 +19,32 @@ namespace Sg\DatatablesBundle\Datatable\View;
 abstract class AbstractDatatableTheme implements DatatableThemeInterface
 {
     /**
-     * @var mixed
-     */
-    protected $sDomValues = null;
-
-    /**
+     * Table styling.
+     *
      * @var string
      */
     protected $tableClasses = null;
 
     /**
+     * Form styling.
+     *
      * @var string
      */
     protected $formClasses = null;
 
     /**
+     * The pagination type.
+     *
      * @var null|string
      */
     protected $pagination = null;
 
     /**
-     * @var string
+     * Position of the feature elements (filter input etc).
+     *
+     * @var mixed
      */
-    protected $iconOk;
-
-    /**
-     * @var string
-     */
-    protected $iconRemove;
-
-    /**
-     * @var string
-     */
-    protected $actionButtonClasses = null;
+    protected $sDom = null;
 
 
     //-------------------------------------------------
@@ -112,27 +105,19 @@ abstract class AbstractDatatableTheme implements DatatableThemeInterface
     /**
      * {@inheritdoc}
      */
-    public function getSDomValues()
-    {
-        return $this->sDomValues;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setSDomValues($sDomValues)
-    {
-        $this->sDomValues = $sDomValues;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getTableClasses()
     {
         return $this->tableClasses;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTableClasses($tableClasses)
+    {
+        $this->tableClasses = $tableClasses;
+
+        return $this;
     }
 
     /**
@@ -146,6 +131,16 @@ abstract class AbstractDatatableTheme implements DatatableThemeInterface
     /**
      * {@inheritdoc}
      */
+    public function setFormClasses($formClasses)
+    {
+        $this->formClasses = $formClasses;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPagination()
     {
         return $this->pagination;
@@ -154,24 +149,28 @@ abstract class AbstractDatatableTheme implements DatatableThemeInterface
     /**
      * {@inheritdoc}
      */
-    public function getIconOk()
+    public function setPagination($pagination)
     {
-        return $this->iconOk;
+        $this->pagination = $pagination;
+
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getIconRemove()
+    public function getSDom()
     {
-        return $this->iconRemove;
+        return $this->sDom;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getActionButtonClasses()
+    public function setSDom($sDom)
     {
-        return $this->actionButtonClasses;
+        $this->sDom = $sDom;
+
+        return $this;
     }
 }
