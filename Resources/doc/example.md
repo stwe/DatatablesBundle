@@ -28,16 +28,19 @@ class PostDatatable extends AbstractDatatableView
         // Datatable
         //-------------------------------------------------
 
-        $this->setBServerSide(true);           // default
+        $this->setBServerSide(true);                        // default
         $this->setSAjaxSource($this->getRouter()->generate('post_results'));
-        $this->setBProcessing(true);           // default
-        $this->setIDisplayLength(10);          // default
-        $this->setMultiselect(false);          // default
-        $this->setIndividualFiltering(false);  // default
+        $this->setBProcessing(true);                        // default
+        $this->setIDisplayLength(10);                       // default
+        $this->setIndividualFiltering(true);                // default = false
 
         $this->setTheme(BootstrapDatatableTheme::getTheme());
 //        $this->setTheme(JqueryUiDatatableTheme::getTheme());
 //        $this->setTheme(BaseDatatableTheme::getTheme());
+
+        $this->setMultiselect(true);                        // default = false
+        $this->addBulkAction('Hide', 'post_bulk_disable');
+        $this->addBulkAction('Delete', 'post_bulk_delete');
 
 
         //-------------------------------------------------
@@ -61,7 +64,11 @@ class PostDatatable extends AbstractDatatableView
                     'width' => null           // default
                 ))
             ->add('visible', 'boolean', array(
-                    'title' => 'Visible'
+                    'title' => 'Visible',
+                    'true_icon' => BootstrapDatatableTheme::DEFAULT_TRUE_ICON,
+                    'false_icon' => BootstrapDatatableTheme::DEFAULT_FALSE_ICON,
+                    'true_label' => 'yes',
+                    'false_label' => 'no'
                 ))
             ->add('createdAt', 'timeago', array(
                     'title' => 'Created'
@@ -78,18 +85,19 @@ class PostDatatable extends AbstractDatatableView
             ->add('tags.name', 'array', array(
                     'title' => 'Tags'
                 ))
-            ->add('edit', 'action', array(
+            ->add(null, 'action', array(
                     'route' => 'post_edit',
                     'parameters' => array(
-                        'id' => 'createdBy.username'
+                        'id' => 'id'
                     ),
                     'icon' => BootstrapDatatableTheme::DEFAULT_EDIT_ICON,
                     'attributes' => array(
                         'rel' => 'tooltip',
-                        'title' => 'Edit User'
+                        'title' => 'Edit User',
+                        'class' => 'btn btn-danger btn-xs'
                     ),
                 ))
-            ->add('show', 'action', array(
+            ->add(null, 'action', array(
                     'route' => 'post_show',
                     'parameters' => array(
                         'id' => 'id'
@@ -98,7 +106,8 @@ class PostDatatable extends AbstractDatatableView
                     'label' => $this->getTranslator()->trans('test.show', array(), 'msg'),
                     'attributes' => array(
                         'rel' => 'tooltip',
-                        'title' => 'Show User'
+                        'title' => 'Show User',
+                        'class' => 'btn btn-primary btn-xs'
                     )
                 ));
     }
@@ -127,11 +136,13 @@ class PostDatatable extends AbstractDatatableView
 
 ```php
 /**
- * Lists all Post entities.
+ * Post datatable.
  *
  * @Route("/", name="post")
  * @Method("GET")
  * @Template()
+ *
+ * @return array
  */
 public function indexAction()
 {
@@ -146,7 +157,6 @@ public function indexAction()
     $datatableView = $factory->createDatatableView('Sg\BlogBundle\Datatables\PostDatatable');
 
     return array(
-        'title' => 'Enabled Users',
         'datatable' => $datatableView,
     );
 }
@@ -160,12 +170,70 @@ public function indexAction()
  */
 public function indexResultsAction()
 {
-    /**
-     * @var \Sg\DatatablesBundle\Datatable\DatatableData $datatable
-     */
     $datatable = $this->get('sg_datatables.datatable')->getDatatable('SgBlogBundle:Post');
 
     return $datatable->getResults();
+}
+
+/**
+ * @Route("/bulk/delete", name="post_bulk_delete")
+ * @Method("POST")
+ *
+ * @return Response
+ */
+public function bulkDeleteAction()
+{
+    $request = $this->getRequest();
+    $isAjax = $request->isXmlHttpRequest();
+
+    if ($isAjax) {
+        $choices = $request->request->get('data');
+
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('SgBlogBundle:Post');
+
+        foreach ($choices as $choice) {
+            $entity = $repository->find($choice['value']);
+            $em->remove($entity);
+        }
+
+        $em->flush();
+
+        return new Response('This is ajax response.');
+    }
+
+    return new Response('This is not ajax.', 400);
+}
+
+/**
+ * @Route("/bulk/disable", name="post_bulk_disable")
+ * @Method("POST")
+ *
+ * @return Response
+ */
+public function bulkDisableAction()
+{
+    $request = $this->getRequest();
+    $isAjax = $request->isXmlHttpRequest();
+
+    if ($isAjax) {
+        $choices = $request->request->get('data');
+
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('SgBlogBundle:Post');
+
+        foreach ($choices as $choice) {
+            $entity = $repository->find($choice['value']);
+            $entity->setVisible(false);
+            $em->persist($entity);
+        }
+
+        $em->flush();
+
+        return new Response('This is ajax response.');
+    }
+
+    return new Response('This is not ajax.', 400);
 }
 ```
 
