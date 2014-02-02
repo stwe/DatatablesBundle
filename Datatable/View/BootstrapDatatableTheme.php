@@ -124,4 +124,39 @@ class BootstrapDatatableTheme extends AbstractDatatableTheme
     {
         return 'SgDatatablesBundle:Datatable:datatable.html.twig';
     }
+
+    /**
+     * Put your datatable in a box.
+     *
+     * @return $this
+     */
+    public function setPanel()
+    {
+        $sDom =
+            "<'row'" .
+                "<'col-sm-12 col-md-12'" .
+                    "<'panel panel-default'" .
+                        "<'panel-heading'" .
+                            "<'row'" .
+                                "<'col-xs-6 col-md-6'l>" .
+                                "<'col-xs-6 col-md-6'f>" .
+                            ">" .
+                        ">" .
+                        "<'panel-body'" .
+                            "<'table-responsive't>" .
+                        ">" .
+                        "<'panel-footer'" .
+                            "<'row'" .
+                                "<'col-xs-6 col-md-6'i>" .
+                                "<'col-xs-6 col-md-6'p>" .
+                            ">" .
+                        ">" .
+                    ">" .
+                ">" .
+            ">";
+
+        $this->setSDom($sDom);
+
+        return $this;
+    }
 }

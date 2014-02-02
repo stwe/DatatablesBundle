@@ -1,5 +1,9 @@
 # Examples
 
+## Screenshot
+
+<div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/doc/bs3.jpg"></div>
+
 ## Server side example
 
 ### Step 1: Create your Datatables class
@@ -38,9 +42,13 @@ class PostDatatable extends AbstractDatatableView
 //        $this->setTheme(JqueryUiDatatableTheme::getTheme());
 //        $this->setTheme(BaseDatatableTheme::getTheme());
 
-        $this->setMultiselect(true);                        // default = false
-        $this->addBulkAction('Hide', 'post_bulk_disable');
-        $this->addBulkAction('Delete', 'post_bulk_delete');
+        // Bootstrap theme option: put your datatable in a box
+        $this->getTheme()->setPanel();
+
+        $this->multiselect->setEnabled(true);               // default = false
+        $this->multiselect->setPosition('last');
+        $this->multiselect->addAction('Hide', 'post_bulk_disable');
+        $this->multiselect->addAction('Delete', 'post_bulk_delete');
 
 
         //-------------------------------------------------

@@ -11,9 +11,9 @@ This bundle requires the following additional packages:
 
 * Symfony 2.3.x
 * jQuery 1.10.x
-* DataTables 1.10
-* Moment.js 2.5.0
-* FOSJsRoutingBundle 1.5.0. ***Please follow all steps described [here](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/index.md).***
+* DataTables 1.10 (dev-master)
+* Moment.js 2.5.1
+* FOSJsRoutingBundle 1.5.3. ***Please follow all steps described [here](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/index.md).***
 
 This bundle suggest the installation of the following packages for a bootstrap layout:
 
@@ -29,7 +29,7 @@ For Bootstrap 3.0.x the `require` part of your composer.json might look like thi
         "datatables/datatables": "dev-master",
         "mopa/bootstrap-bundle": "v3.0.0-beta3",
         "twbs/bootstrap": "v3.0.0",
-        "moment/moment": "2.5.0",
+        "moment/moment": "2.5.1",
         "friendsofsymfony/jsrouting-bundle": "@stable"
     },
 ```
@@ -42,7 +42,7 @@ Or use the jQuery-ui themes:
         "components/jquery": "1.10.2",
         "datatables/datatables": "dev-master",
         "components/jqueryui": "1.10.3",
-        "moment/moment": "2.5.0",
+        "moment/moment": "2.5.1",
         "friendsofsymfony/jsrouting-bundle": "@stable"
     },
 ```
@@ -54,7 +54,7 @@ Or the base layout:
         "symfony/framework-bundle": "~2.3",
         "components/jquery": "1.10.2",
         "datatables/datatables": "dev-master",
-        "moment/moment": "2.5.0",
+        "moment/moment": "2.5.1",
         "friendsofsymfony/jsrouting-bundle": "@stable"
     },
 ```
@@ -321,10 +321,10 @@ A layout.html.twig example:
 {% endblock %}
 ```
 
-## Examples
+## Example
 
-- [Examples](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
+- [Example](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
 
 ## List of available column types
 
-- [columns](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/columns.md)
+- [Columns](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/columns.md)

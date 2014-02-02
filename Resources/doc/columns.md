@@ -23,38 +23,29 @@ $this->columnBuilder
             'title' => 'Id',
             'searchable' => false
         ))
-    ->add('username', 'column', array(
-            'title' => 'Username',
-            'searchable' => false
-        ))
-    ->add('email', 'column', array(
-            'title' => 'Email'
-        ))
-    ->add('enabled', 'column', array(
-            'title' => 'Enabled',
-            'searchable' => false,
-            'width' => '90',
-            'render' => 'render_boolean_icons'
-        ));
-```
-
-For many-to-one associations (e.g. many events to one calendar):
-
-``` php
-$this->columnBuilder
-    ->add('calendar.id', 'column', array(
-            'title' => 'Calendar'
-        ));
-```
-
-The tables headers can be translated:
-
-``` php
-$this->columnBuilder
     ->add('title', 'column', array(
-            'title' => array('label' => 'translated.title', 'translation_domain' => 'your_translation_domain'),
-            'searchable' => true
+            'searchable' => true,     // default
+            'sortable' => true,       // default
+            'visible' => true,        // default
+//           'title' => 'Title',     // default = null
+            'title' => $this->getTranslator()->trans('test.title', array(), 'msg'),
+            'render' => null,         // default
+            'class' => 'text-center', // default = ''
+            'default' => null,        // default
+            'width' => null           // default
+        ));
+```
+
+For many-to-one associations:
+
+``` php
+$this->columnBuilder
+    ->add('createdBy.username', 'column', array(
+            'title' => 'CreatedBy'
         ))
+    ->add('updatedBy.username', 'column', array(
+            'title' => 'UpdatedBy'
+        ));
 ```
 
 ## Action column
@@ -75,30 +66,31 @@ all options of `column` and additionally:
 
 ``` php
 $this->columnBuilder
-    ->add('edit', 'action', array(
+    ->add(null, 'action', array(
             'route' => 'post_edit',
             'parameters' => array(
                 'id' => 'id'
             ),
+            'icon' => BootstrapDatatableTheme::DEFAULT_EDIT_ICON,
             'attributes' => array(
                 'rel' => 'tooltip',
-                'title' => 'Edit User'
+                'title' => 'Edit User',
+                'class' => 'btn btn-danger btn-xs'
             ),
-            'icon' => BootstrapDatatableTheme::DEFAULT_EDIT_ICON
         ))
-    ->add('show', 'action', array(
+    ->add(null, 'action', array(
             'route' => 'post_show',
             'parameters' => array(
                 'id' => 'id'
             ),
+//           'label' => 'Show',
+            'label' => $this->getTranslator()->trans('test.show', array(), 'msg'),
             'attributes' => array(
                 'rel' => 'tooltip',
-                'title' => 'Show User'
-            ),
-            //'label' => 'Show',
-            'label' => array('label' => 'test.show', 'translation_domain' => 'msg')
+                'title' => 'Show User',
+                'class' => 'btn btn-primary btn-xs'
+            )
         ));
-
 ```
 
 ## Array column
@@ -113,11 +105,8 @@ All options of `column`.
 
 ``` php
 $this->columnBuilder
-    ->add('posts.title', 'array', array(
-            'title' => 'Posts'
-        ))
-    ->add('comments.title', 'array', array(
-            'title' => 'Comments'
+    ->add('tags.name', 'array', array(
+            'title' => 'Tags'
         ));
 ```
 
@@ -127,16 +116,23 @@ Represents a boolean column.
 
 ### Options
 
-All options of `column`.
+All options of `column` and additionally:
+
+- true_icon
+- false_icon
+- true_label
+- false_label
 
 ### Example
 
 ``` php
 $this->columnBuilder
-    ->add('enabled', 'boolean', array(
-            'title' => 'Enabled',
-            'searchable' => false,
-            'width' => '90'
+    ->add('visible', 'boolean', array(
+            'title' => 'Visible',
+            'true_icon' => BootstrapDatatableTheme::DEFAULT_TRUE_ICON,
+            'false_icon' => BootstrapDatatableTheme::DEFAULT_FALSE_ICON,
+            'true_label' => 'yes',
+            'false_label' => 'no'
         ));
 ```
 
@@ -146,13 +142,33 @@ Represents a datetime column.
 
 ### Options
 
+All options of `column` and additionally:
+
+- format
+
+### Example
+
+``` php
+$this->columnBuilder
+    ->add('createdAt', 'datetime', array(
+            'title' => 'Created',
+            'format' => 'LLL'         // default = 'lll'
+        ));
+```
+
+## Timeago column
+
+Represents a timeago column.
+
+### Options
+
 All options of `column`.
 
 ### Example
 
 ``` php
 $this->columnBuilder
-    ->add('lastLogin', 'datetime', array(
-            'title' => 'Last Login'
-        ))
+    ->add('createdAt', 'timeago', array(
+            'title' => 'Created'
+        ));
 ```
