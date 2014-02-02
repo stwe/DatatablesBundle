@@ -34,6 +34,6 @@ services:
             - { name: twig.extension }
 
     sg_datatables.datatable:
-        class: Sg\DatatablesBundle\Manager\DatatableDataManager
+        class: Sg\DatatablesBundle\Datatable\DatatableDataManager
         scope: request
         arguments: [@doctrine, @request, @sg_datatables.serializer]

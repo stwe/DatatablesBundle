@@ -10,11 +10,11 @@ This Bundle integrates the jQuery DataTables plugin into your Symfony2 applicati
 
 [The example for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
 
-### v0.3
+### v0.4
 
-[Read the Documentation for v0.3](https://github.com/stwe/DatatablesBundle/blob/v0.3/Resources/doc/index.md).
+[Read the Documentation for v0.4](https://github.com/stwe/DatatablesBundle/blob/v0.4/Resources/doc/index.md).
 
-[The example for v0.3](https://github.com/stwe/DatatablesBundle/blob/v0.3/Resources/doc/example.md)
+[The example for v0.4](https://github.com/stwe/DatatablesBundle/blob/v0.4/Resources/doc/example.md)
 
 ## Installation
 

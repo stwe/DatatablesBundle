@@ -9,10 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Manager;
-
-use Sg\DatatablesBundle\Datatable\DatatableData;
-use Sg\DatatablesBundle\Datatable\DatatableQuery;
+namespace Sg\DatatablesBundle\Datatable;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,21 +18,27 @@ use Symfony\Component\Serializer\Serializer;
 /**
  * Class DatatableDataManager
  *
- * @package Sg\DatatablesBundle\Manager
+ * @package Sg\DatatablesBundle\Datatable
  */
 class DatatableDataManager
 {
     /**
+     * The doctrine service.
+     *
      * @var RegistryInterface
      */
     private $doctrine;
 
     /**
+     * The request service.
+     *
      * @var Request
      */
     private $request;
 
     /**
+     * The serializer service.
+     *
      * @var Serializer
      */
     private $serializer;
@@ -44,9 +47,9 @@ class DatatableDataManager
     /**
      * Ctor.
      *
-     * @param RegistryInterface $doctrine   A RegistryInterface
-     * @param Request           $request    A Request instance
-     * @param Serializer        $serializer A Serializer instance
+     * @param RegistryInterface $doctrine   The doctrine service
+     * @param Request           $request    The request service
+     * @param Serializer        $serializer The serializer service
      */
     public function __construct(RegistryInterface $doctrine, Request $request, Serializer $serializer)
     {
