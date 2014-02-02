@@ -1,13 +1,22 @@
-{
+{% extends 'SgDatatablesBundle:Column:column.html.twig' %}
+
+{% block common %}
     "bSearchable": false,
     "bSortable": false,
     "bVisible": true,
+    "sTitle": "<input type='checkbox' name='multiselect_checkall' class='multiselect_checkall' />",
+{% endblock %}
+
+{% block data %}
     "mData": null,
     "mRender": function(data, type, full) {
-        if (type != "display")
-            return data;
-
-        return "<input type='checkbox' name='select_column_checkbox' value='" + full.id + "' class='select_column_checkbox' />";
+        var first;
+        for (var i in full) {
+            if (full.hasOwnProperty(i) && typeof(i) !== 'function') {
+                first = full[i];
+                break;
+            }
+        }
+        return "<input type='checkbox' name='multiselect_checkbox' value='" + first + "' class='multiselect_checkbox' />";
     },
-    "sTitle": "<input type='checkbox' name='select_all_checkbox' id='select_all_checkbox' />",
-},
+{% endblock %}

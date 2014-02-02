@@ -54,11 +54,18 @@ class DatatableViewFactory implements DatatableViewFactoryInterface
     private $layoutOptions;
 
     /**
-     * A ColumnBuilderInterface.
+     * A ColumnBuilder instance.
      *
      * @var ColumnBuilderInterface
      */
     private $columnBuilder;
+
+    /**
+     * A Multiselect instance.
+     *
+     * @var MultiselectInterface
+     */
+    private $multiselect;
 
 
     //-------------------------------------------------
@@ -72,15 +79,18 @@ class DatatableViewFactory implements DatatableViewFactoryInterface
      * @param Translator             $translator    The translator service
      * @param Router                 $router        The router service
      * @param array                  $layoutOptions The default layout options
-     * @param ColumnBuilderInterface $columnBuilder A column builder
+     * @param ColumnBuilderInterface $columnBuilder A ColumnBuilder instance
+     * @param MultiselectInterface   $multiselect   A Multiselect instance.
      */
-    public function __construct(TwigEngine $templating, Translator $translator, Router $router, array $layoutOptions, ColumnBuilderInterface $columnBuilder)
+    public function __construct(TwigEngine $templating, Translator $translator, Router $router,
+        array $layoutOptions, ColumnBuilderInterface $columnBuilder, MultiselectInterface $multiselect)
     {
         $this->templating = $templating;
         $this->translator = $translator;
         $this->router = $router;
         $this->layoutOptions = $layoutOptions;
         $this->columnBuilder = $columnBuilder;
+        $this->multiselect = $multiselect;
     }
 
 
@@ -104,7 +114,8 @@ class DatatableViewFactory implements DatatableViewFactoryInterface
         /**
          * @var DatatableViewInterface $datatableView
          */
-        $datatableView = new $datatableViewClass($this->templating, $this->translator, $this->router, $this->layoutOptions, $this->columnBuilder);
+        $datatableView = new $datatableViewClass($this->templating, $this->translator, $this->router,
+            $this->layoutOptions, $this->columnBuilder, $this->multiselect);
         $datatableView->buildDatatableView();
 
         return $datatableView;

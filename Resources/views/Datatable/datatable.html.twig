@@ -16,7 +16,7 @@
                                 {% endif %}
                             </th>
                         {% endfor %}
-                        {% if dt_multiselect %}
+                        {% if dt_multiselect.enabled %}
                             <th></th>
                         {% endif %}
                     </tfoot>
@@ -88,14 +88,23 @@
 
                 $.extend(defaults, {
                     "aoColumns": [
+                        {# multiselect column #}
+                        {% if dt_multiselect.enabled %}
+                            {% if 'first' == dt_multiselect.position %}
+                                {% include "SgDatatablesBundle:Column:multiselect.html.twig" %}
+                            {% endif %}
+                        {% endif %}
+
                         {# columns #}
                         {% for column in dt_columns %}
                             {% include "SgDatatablesBundle:Column:" ~ column.getClassName ~ ".html.twig" %}
                         {% endfor %}
 
                         {# multiselect column #}
-                        {% if dt_multiselect %}
-                            {% include "SgDatatablesBundle:Column:multiselect.html.twig" %}
+                        {% if dt_multiselect.enabled %}
+                            {% if 'last' == dt_multiselect.position %}
+                                {% include "SgDatatablesBundle:Column:multiselect.html.twig" %}
+                            {% endif %}
                         {% endif %}
                     ]
                 });
@@ -108,33 +117,33 @@
                     });
                 {% endif %}
 
-                {% if dt_multiselect %}
+                {% if dt_multiselect.enabled %}
                     var multiple_html = "\
                         <p>\
                             <select name='bulk_action_routes[select]'>\
-                                {% for key, value in dt_bulkActions %}\
+                                {% for key, value in dt_multiselect.actions %}\
                                     <option value='{{ path(value) }}'>{{ key }}</option>\
                                 {% endfor %}\
                             </select>\
-                            <button id='bulk_action_routes_button' type='button' class='btn'>OK</button>\
+                            <button id='multiselect_submit' type='button' class='btn btn-primary'>OK</button>\
                         </p>";
 
                     $(".pagination").append(multiple_html);
 
-                    $("#select_all_checkbox").click(function(event) {
+                    $(".multiselect_checkall").click(function(event) {
                         if(this.checked) {
-                            $("input:checkbox.select_column_checkbox").each(function() {
+                            $("input:checkbox.multiselect_checkbox").each(function() {
                                 this.checked = true;
                             });
                         } else {
-                            $("input:checkbox.select_column_checkbox").each(function() {
+                            $("input:checkbox.multiselect_checkbox").each(function() {
                                 this.checked = false;
                             });
                         }
                     });
 
-                    $("#bulk_action_routes_button").click(function() {
-                        var length = $("input:checkbox:checked.select_column_checkbox").length;
+                    $("#multiselect_submit").click(function() {
+                        var length = $("input:checkbox:checked.multiselect_checkbox").length;
 
                         if (length > 0) {
                             if (!confirm( "{{ 'datatables.bulk.confirmMsg'|trans({}, 'messages') }}" )) {
@@ -146,7 +155,7 @@
                                 type: "POST",
                                 cache: false,
                                 data: {
-                                    'data': $("input:checkbox:checked.select_column_checkbox", oTable.fnGetNodes()).serializeArray()
+                                    'data': $("input:checkbox:checked.multiselect_checkbox", oTable.fnGetNodes()).serializeArray()
                                 },
                                 success: function(msg) {
                                     oTable.fnDraw();
@@ -158,7 +167,6 @@
                         } else {
                             alert("{{ 'datatables.bulk.selectError'|trans({}, 'messages') }}");
                         }
-
                     });
                 {% endif %}
 

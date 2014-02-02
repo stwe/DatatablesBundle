@@ -66,10 +66,12 @@ class BootstrapDatatableTheme extends AbstractDatatableTheme
      * .table:          basic styling
      * .table-striped:  zebra-striping
      * .table-bordered: borders on all sides of the table and cells
+     * .table-hover:    enable a hover state
+     * .table-condensed make tables more compact by cutting cell padding in half
      *
      * @var string
      */
-    protected $tableClasses = 'table table-striped table-bordered';
+    protected $tableClasses = 'table table-striped table-bordered table-hover table-condensed';
 
     /**
      * Bootstrap3 form styling.

@@ -47,9 +47,9 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     private $router;
 
     /**
-     * The datatable theme.
+     * A theme instance.
      *
-     * @var null|DatatableThemeInterface
+     * @var DatatableThemeInterface
      */
     private $theme;
 
@@ -82,7 +82,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     private $iDisplayLength;
 
     /**
-     * A ColumnBuilderInterface.
+     * A ColumnBuilder instance.
      *
      * @var ColumnBuilderInterface
      */
@@ -103,11 +103,11 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     private $customizeOptions;
 
     /**
-     * Enable or disable multiselect.
+     * A Multiselect instance.
      *
-     * @var boolean
+     * @var MultiselectInterface
      */
-    private $multiselect;
+    protected $multiselect;
 
     /**
      * Enable or disable individual filtering.
@@ -115,13 +115,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @var boolean
      */
     private $individualFiltering;
-
-    /**
-     * Contains all bulk actions.
-     *
-     * @var array
-     */
-    private $bulkActions;
 
 
     //-------------------------------------------------
@@ -135,9 +128,11 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @param Translator             $translator           The translator service
      * @param Router                 $router               The router service
      * @param array                  $defaultLayoutOptions The default layout options
-     * @param ColumnBuilderInterface $columnBuilder        A ColumnBuilderInterface
+     * @param ColumnBuilderInterface $columnBuilder        A ColumnBuilder instance
+     * @param MultiselectInterface   $multiselect          A Multiselect instance
      */
-    public function __construct(TwigEngine $templating, Translator $translator, Router $router, array $defaultLayoutOptions, ColumnBuilderInterface $columnBuilder)
+    public function __construct(TwigEngine $templating, Translator $translator, Router $router,
+        array $defaultLayoutOptions, ColumnBuilderInterface $columnBuilder, MultiselectInterface $multiselect)
     {
         $this->templating = $templating;
         $this->translator = $translator;
@@ -150,9 +145,9 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->columnBuilder = $columnBuilder;
         $this->sAjaxSource = '';
         $this->customizeOptions = array();
-        $this->multiselect = $defaultLayoutOptions['multiselect'];
+        $this->multiselect = $multiselect;
+        $this->multiselect->setEnabled($defaultLayoutOptions['multiselect']);
         $this->individualFiltering = $defaultLayoutOptions['individual_filtering'];
-        $this->bulkActions = array();
     }
 
 
@@ -191,9 +186,8 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $options['dt_tableId'] = $this->getName();
         $options['dt_columns'] = $this->columnBuilder->getColumns();
         $options['dt_customizeOptions'] = $this->getCustomizeOptions();
-        $options['dt_multiselect'] = $this->getMultiselect();
+        $options['dt_multiselect'] = $this->multiselect;
         $options['dt_individualFiltering'] = $this->getIndividualFiltering();
-        $options['dt_bulkActions'] = $this->getBulkActions();
 
         // DatatableThemeInterface Twig variables
 
@@ -409,30 +403,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     }
 
     /**
-     * Set multiselect.
-     *
-     * @param boolean $multiselect
-     *
-     * @return $this
-     */
-    public function setMultiselect($multiselect)
-    {
-        $this->multiselect = (boolean) $multiselect;
-
-        return $this;
-    }
-
-    /**
-     * Get multiselect.
-     *
-     * @return boolean
-     */
-    public function getMultiselect()
-    {
-        return (boolean) $this->multiselect;
-    }
-
-    /**
      * Set individualFiltering.
      *
      * @param boolean $individualFiltering
@@ -454,31 +424,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getIndividualFiltering()
     {
         return (boolean) $this->individualFiltering;
-    }
-
-    /**
-     * Add bulkAction.
-     *
-     * @param string $title The title for the form select field
-     * @param string $route The route of the bulk action
-     *
-     * @return $this
-     */
-    public function addBulkAction($title, $route)
-    {
-        $this->bulkActions[$title] = $route;
-
-        return $this;
-    }
-
-    /**
-     * Set bulkAction.
-     *
-     * @return array
-     */
-    public function getBulkActions()
-    {
-        return $this->bulkActions;
     }
 }
 
