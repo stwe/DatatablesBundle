@@ -33,9 +33,16 @@ abstract class AbstractDatatableTheme implements DatatableThemeInterface
     protected $formClasses = null;
 
     /**
+     * Form submit button styling.
+     *
+     * @var string
+     */
+    protected $formSubmitButtonClasses = null;
+
+    /**
      * The pagination type.
      *
-     * @var null|string
+     * @var string
      */
     protected $pagination = null;
 
@@ -136,6 +143,24 @@ abstract class AbstractDatatableTheme implements DatatableThemeInterface
         $this->formClasses = $formClasses;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFormSubmitButtonClasses($formSubmitButtonClasses)
+    {
+        $this->formSubmitButtonClasses = $formSubmitButtonClasses;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFormSubmitButtonClasses()
+    {
+        return $this->formSubmitButtonClasses;
     }
 
     /**

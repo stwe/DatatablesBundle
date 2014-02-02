@@ -84,6 +84,17 @@ class BootstrapDatatableTheme extends AbstractDatatableTheme
     protected $formClasses = 'form-control input-sm';
 
     /**
+     * Bootstrap3 form submit button styling.
+     *
+     * .btn:         base class
+     * .btn-primary: identifies the primary action
+     * .btn-sm:      small button
+     *
+     * @var string
+     */
+    protected $formSubmitButtonClasses = 'btn btn-primary btn-sm';
+
+    /**
      * The pagination type.
      *
      * @var string

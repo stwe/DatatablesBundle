@@ -49,7 +49,7 @@ interface DatatableThemeInterface
     public function setTableClasses($tableClasses);
 
     /**
-     * Get the form classes.
+     * Get form classes.
      *
      * @return string
      */
@@ -65,16 +65,32 @@ interface DatatableThemeInterface
     public function setFormClasses($formClasses);
 
     /**
+     * Set form submit button classes.
+     *
+     * @param string $formSubmitButtonClasses
+     *
+     * @return $this
+     */
+    public function setFormSubmitButtonClasses($formSubmitButtonClasses);
+
+    /**
+     * Get form submit button classes.
+     *
+     * @return string
+     */
+    public function getFormSubmitButtonClasses();
+
+    /**
      * Get pagination type.
      *
-     * @return null|string
+     * @return string
      */
     public function getPagination();
 
     /**
      * Set pagination type.
      *
-     * @param null|string $pagination
+     * @param string $pagination
      *
      * @return self
      */

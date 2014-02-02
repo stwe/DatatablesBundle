@@ -120,12 +120,12 @@
                 {% if dt_multiselect.enabled %}
                     var multiple_html = "\
                         <p>\
-                            <select name='bulk_action_routes[select]'>\
+                            <select class='{{ theme_formClasses }}' name='bulk_action_routes[select]'>\
                                 {% for key, value in dt_multiselect.actions %}\
                                     <option value='{{ path(value) }}'>{{ key }}</option>\
                                 {% endfor %}\
                             </select>\
-                            <button id='multiselect_submit' type='button' class='btn btn-primary'>OK</button>\
+                            <button id='multiselect_submit' type='button' class='{{ theme_formSubmitButtonClasses }}'>Ok</button>\
                         </p>";
 
                     $(".pagination").append(multiple_html);
