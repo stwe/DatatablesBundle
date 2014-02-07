@@ -11,8 +11,6 @@
 
 namespace Sg\DatatablesBundle\Datatable\View;
 
-use Sg\DatatablesBundle\Column\ColumnBuilderInterface;
-
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Translation\Translator;
@@ -53,20 +51,6 @@ class DatatableViewFactory implements DatatableViewFactoryInterface
      */
     private $layoutOptions;
 
-    /**
-     * A ColumnBuilder instance.
-     *
-     * @var ColumnBuilderInterface
-     */
-    private $columnBuilder;
-
-    /**
-     * A Multiselect instance.
-     *
-     * @var MultiselectInterface
-     */
-    private $multiselect;
-
 
     //-------------------------------------------------
     // Ctor.
@@ -75,22 +59,17 @@ class DatatableViewFactory implements DatatableViewFactoryInterface
     /**
      * Ctor.
      *
-     * @param TwigEngine             $templating    The templating service
-     * @param Translator             $translator    The translator service
-     * @param Router                 $router        The router service
-     * @param array                  $layoutOptions The default layout options
-     * @param ColumnBuilderInterface $columnBuilder A ColumnBuilder instance
-     * @param MultiselectInterface   $multiselect   A Multiselect instance.
+     * @param TwigEngine $templating    The templating service
+     * @param Translator $translator    The translator service
+     * @param Router     $router        The router service
+     * @param array      $layoutOptions The default layout options
      */
-    public function __construct(TwigEngine $templating, Translator $translator, Router $router,
-        array $layoutOptions, ColumnBuilderInterface $columnBuilder, MultiselectInterface $multiselect)
+    public function __construct(TwigEngine $templating, Translator $translator, Router $router, array $layoutOptions)
     {
         $this->templating = $templating;
         $this->translator = $translator;
         $this->router = $router;
         $this->layoutOptions = $layoutOptions;
-        $this->columnBuilder = $columnBuilder;
-        $this->multiselect = $multiselect;
     }
 
 
@@ -114,8 +93,7 @@ class DatatableViewFactory implements DatatableViewFactoryInterface
         /**
          * @var DatatableViewInterface $datatableView
          */
-        $datatableView = new $datatableViewClass($this->templating, $this->translator, $this->router,
-            $this->layoutOptions, $this->columnBuilder, $this->multiselect);
+        $datatableView = new $datatableViewClass($this->templating, $this->translator, $this->router, $this->layoutOptions);
         $datatableView->buildDatatableView();
 
         return $datatableView;

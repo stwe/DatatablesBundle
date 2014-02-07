@@ -11,7 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable\View;
 
-use Sg\DatatablesBundle\Column\ColumnBuilderInterface;
+use Sg\DatatablesBundle\Column\ColumnBuilder;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -84,7 +84,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * A ColumnBuilder instance.
      *
-     * @var ColumnBuilderInterface
+     * @var ColumnBuilder
      */
     protected $columnBuilder;
 
@@ -105,7 +105,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * A Multiselect instance.
      *
-     * @var MultiselectInterface
+     * @var Multiselect
      */
     protected $multiselect;
 
@@ -124,15 +124,12 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * Ctor.
      *
-     * @param TwigEngine             $templating           The templating service
-     * @param Translator             $translator           The translator service
-     * @param Router                 $router               The router service
-     * @param array                  $defaultLayoutOptions The default layout options
-     * @param ColumnBuilderInterface $columnBuilder        A ColumnBuilder instance
-     * @param MultiselectInterface   $multiselect          A Multiselect instance
+     * @param TwigEngine $templating           The templating service
+     * @param Translator $translator           The translator service
+     * @param Router     $router               The router service
+     * @param array      $defaultLayoutOptions The default layout options
      */
-    public function __construct(TwigEngine $templating, Translator $translator, Router $router,
-        array $defaultLayoutOptions, ColumnBuilderInterface $columnBuilder, MultiselectInterface $multiselect)
+    public function __construct(TwigEngine $templating, Translator $translator, Router $router, array $defaultLayoutOptions)
     {
         $this->templating = $templating;
         $this->translator = $translator;
@@ -142,11 +139,10 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->aaData = array();
         $this->bProcessing = $defaultLayoutOptions['processing'];
         $this->iDisplayLength = (int) $defaultLayoutOptions['display_length'];
-        $this->columnBuilder = $columnBuilder;
+        $this->columnBuilder = new ColumnBuilder();
         $this->sAjaxSource = '';
         $this->customizeOptions = array();
-        $this->multiselect = $multiselect;
-        $this->multiselect->setEnabled($defaultLayoutOptions['multiselect']);
+        $this->multiselect = new Multiselect($defaultLayoutOptions['multiselect']);
         $this->individualFiltering = $defaultLayoutOptions['individual_filtering'];
     }
 
