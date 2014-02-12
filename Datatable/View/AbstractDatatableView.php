@@ -286,7 +286,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      *
      * @return $this
      */
-    public function setAaData(array $aaData)
+    public function setAaData($aaData)
     {
         $this->aaData = $aaData;
 
