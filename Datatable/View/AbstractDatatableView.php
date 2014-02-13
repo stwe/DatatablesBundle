@@ -63,7 +63,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * An array of data to use for the table.
      *
-     * @var array
+     * @var mixed
      */
     private $aaData;
 
@@ -136,7 +136,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->router = $router;
         $this->theme = null;
         $this->bServerSide = $defaultLayoutOptions['server_side'];
-        $this->aaData = array();
+        $this->aaData = null;
         $this->bProcessing = $defaultLayoutOptions['processing'];
         $this->iDisplayLength = (int) $defaultLayoutOptions['display_length'];
         $this->columnBuilder = new ColumnBuilder();
@@ -282,7 +282,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * Set aaData.
      *
-     * @param array $aaData
+     * @param mixed $aaData
      *
      * @return $this
      */
@@ -296,7 +296,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * Get aaData.
      *
-     * @return array
+     * @return mixed
      */
     public function getAaData()
     {
