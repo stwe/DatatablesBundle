@@ -57,6 +57,12 @@ class ActionColumn extends BaseColumn
      */
     private $attributes;
 
+    /**
+     * Render only if parameter / conditions are TRUE
+     * 
+     * @var array
+     */
+    private $renderConditions;
 
     //-------------------------------------------------
     // Ctor.
@@ -113,6 +119,9 @@ class ActionColumn extends BaseColumn
         if (array_key_exists('attributes', $options)) {
             $this->setAttributes($options['attributes']);
         }
+        if (array_key_exists('renderif', $options)) {
+        	$this->setRenderConditions($options['renderif']);
+        }
     }
 
     /**
@@ -130,6 +139,7 @@ class ActionColumn extends BaseColumn
         $this->setIcon(null);
         $this->setLabel(null);
         $this->setAttributes(array());
+        $this->setRenderConditions(array());
     }
 
 
@@ -255,5 +265,25 @@ class ActionColumn extends BaseColumn
     public function getAttributes()
     {
         return $this->attributes;
+    }
+    
+    /**
+     * Set render conditions
+     * 
+     * @param array $renderConditions
+     */
+    public function setRenderConditions (array $renderConditions) {
+    	
+    	$this->renderConditions = $renderConditions;
+    }
+    
+    /**
+     * Get render conditions
+     * 
+     * @return array
+     */
+    public function getRenderConditions () {
+    	
+    	return $this->renderConditions;
     }
 }
