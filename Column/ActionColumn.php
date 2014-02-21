@@ -64,6 +64,7 @@ class ActionColumn extends BaseColumn
      */
     private $renderConditions;
 
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -120,7 +121,7 @@ class ActionColumn extends BaseColumn
             $this->setAttributes($options['attributes']);
         }
         if (array_key_exists('renderif', $options)) {
-        	$this->setRenderConditions($options['renderif']);
+            $this->setRenderConditions($options['renderif']);
         }
     }
 
@@ -266,24 +267,28 @@ class ActionColumn extends BaseColumn
     {
         return $this->attributes;
     }
-    
+
     /**
-     * Set render conditions
-     * 
+     * Set render conditions.
+     *
      * @param array $renderConditions
+     *
+     * @return $this
      */
-    public function setRenderConditions (array $renderConditions) {
-    	
-    	$this->renderConditions = $renderConditions;
+    public function setRenderConditions(array $renderConditions)
+    {
+        $this->renderConditions = $renderConditions;
+
+        return $this;
     }
-    
+
     /**
-     * Get render conditions
+     * Get render conditions.
      * 
      * @return array
      */
-    public function getRenderConditions () {
-    	
-    	return $this->renderConditions;
+    public function getRenderConditions()
+    {
+        return $this->renderConditions;
     }
 }
