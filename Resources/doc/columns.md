@@ -61,6 +61,7 @@ all options of `column` and additionally:
 - icon
 - label
 - attributes
+- renderif
 
 ### Example
 
@@ -70,6 +71,9 @@ $this->columnBuilder
             'route' => 'post_edit',
             'parameters' => array(
                 'id' => 'id'
+            ),
+            'renderif' => array(
+                'visible' // if this attribute is not NULL/FALSE
             ),
             'icon' => BootstrapDatatableTheme::DEFAULT_EDIT_ICON,
             'attributes' => array(
