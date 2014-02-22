@@ -19,7 +19,8 @@ use Exception;
 /**
  * Class DatatableViewFactory
  *
- * @package Sg\DatatablesBundle\Datatable\View
+ * @package    Sg\DatatablesBundle\Datatable\View
+ * @deprecated to be removed in 0.5
  */
 class DatatableViewFactory implements DatatableViewFactoryInterface
 {
@@ -78,7 +79,14 @@ class DatatableViewFactory implements DatatableViewFactoryInterface
     //-------------------------------------------------
 
     /**
-     * {@inheritdoc}
+     * Returns a datatable view.
+     *
+     * @param string $datatableViewClass The name of the datatable view class
+     *
+     * @deprecated to be removed in 0.5
+     *
+     * @throws Exception
+     * @return DatatableViewInterface
      */
     public function createDatatableView($datatableViewClass)
     {

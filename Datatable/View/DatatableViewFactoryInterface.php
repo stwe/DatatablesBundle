@@ -14,7 +14,8 @@ namespace Sg\DatatablesBundle\Datatable\View;
 /**
  * Interface DatatableViewFactoryInterface
  *
- * @package Sg\DatatablesBundle\Datatable\View
+ * @package    Sg\DatatablesBundle\Datatable\View
+ * @deprecated to be removed in 0.5
  */
 interface DatatableViewFactoryInterface
 {
@@ -22,6 +23,8 @@ interface DatatableViewFactoryInterface
      * Returns a datatable view.
      *
      * @param string $datatableViewClass The name of the datatable view class
+     *
+     * @deprecated to be removed in 0.5
      *
      * @throws \Exception
      * @return DatatableViewInterface

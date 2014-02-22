@@ -98,6 +98,9 @@ class PostDatatable extends AbstractDatatableView
                     'parameters' => array(
                         'id' => 'id'
                     ),
+                    'renderif' => array(
+                        'visible' // if this attribute is not NULL/FALSE
+                    ),
                     'icon' => BootstrapDatatableTheme::DEFAULT_EDIT_ICON,
                     'attributes' => array(
                         'rel' => 'tooltip',
@@ -140,7 +143,18 @@ class PostDatatable extends AbstractDatatableView
 {% endblock %}
 ```
 
-### Step 3: Add controller actions
+### Step 3: Registering your Datatables class as a Service
+
+```yaml
+services:
+
+    sg_datatables.post:
+        class: Sg\BlogBundle\Datatables\PostDatatable
+        tags:
+            - { name: sg.datatable.view }
+```
+
+### Step 4: Add controller actions
 
 ```php
 /**
@@ -154,18 +168,11 @@ class PostDatatable extends AbstractDatatableView
  */
 public function indexAction()
 {
-    /**
-     * @var \Sg\DatatablesBundle\Datatable\View\DatatableViewFactory $factory
-     */
-    $factory = $this->get('sg_datatables.datatable.view.factory');
-
-    /**
-     * @var \Sg\DatatablesBundle\Datatable\View\AbstractDatatableView $datatableView
-     */
-    $datatableView = $factory->createDatatableView('Sg\BlogBundle\Datatables\PostDatatable');
+    $postDatatable = $this->get('sg_datatables.post');
+    $postDatatable->buildDatatableView();
 
     return array(
-        'datatable' => $datatableView,
+        'datatable' => $postDatatable,
     );
 }
 
@@ -247,7 +254,9 @@ public function bulkDisableAction()
 
 ## Non server side example
 
-### Step 1: Create your Datatables class
+The differences to the above description:
+
+### Your Datatables class
 
 ```php
 <?php
@@ -284,17 +293,7 @@ class PostDatatable extends AbstractDatatableView
 }
 ```
 
-### Step 2: Create your index.html.twig
-
-```html
-{% extends 'SgBlogBundle::layout.html.twig' %}
-
-{% block content_content %}
-    {{ datatable_render(datatable) }}
-{% endblock %}
-```
-
-### Step 3: Add controller actions
+### The controller actions
 
 ```php
 /**
@@ -320,19 +319,12 @@ public function indexAction()
     $normalizers = array(new GetSetMethodNormalizer());
     $serializer = new Serializer($normalizers, $encoders);
 
-    /**
-     * @var \Sg\DatatablesBundle\Datatable\View\DatatableViewFactory $factory
-     */
-    $factory = $this->get('sg_datatables.datatable.view.factory');
-
-    /**
-     * @var \Sg\DatatablesBundle\Datatable\View\AbstractDatatableView $datatableView
-     */
-    $datatableView = $factory->createDatatableView('Sg\BlogBundle\Datatables\PostDatatable');
-    $datatableView->setAaData($serializer->serialize($results, 'json'));
+    $postDatatable = $this->get('sg_datatables.post');
+    $postDatatable->buildDatatableView();
+    $postDatatable->setAaData($serializer->serialize($results, 'json'));
 
     return array(
-        'datatable' => $datatableView,
+        'datatable' => $postDatatable,
     );
 }
 ```

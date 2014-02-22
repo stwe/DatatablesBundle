@@ -12,6 +12,8 @@
 namespace Sg\DatatablesBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Sg\DatatablesBundle\DependencyInjection\Compiler\DatatableViewPass;
 
 /**
  * Class SgDatatablesBundle
@@ -20,4 +22,13 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class SgDatatablesBundle extends Bundle
 {
+    /**
+     * @param ContainerBuilder $container
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new DatatableViewPass());
+    }
 }

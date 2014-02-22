@@ -9,7 +9,7 @@
         {% for key, value in column.renderConditions %}
             if (!full.{{ value }}) return '';
         {% endfor %}
-        
+
         {% for key, value in column.routeParameters %}
             routeParameters["{{ key }}"] = full.{{ value }};
         {% endfor %}
