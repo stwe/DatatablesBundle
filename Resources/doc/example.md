@@ -310,7 +310,10 @@ public function indexAction()
     $repository = $this->getDoctrine()->getRepository('SgBlogBundle:Post');
 
     $query = $repository->createQueryBuilder('p')
-        ->select('p')
+        ->select('p, t, cb, ub')
+        ->join('p.tags', 't')
+        ->join('p.createdBy', 'cb')
+        ->join('p.updatedBy', 'ub')
         ->getQuery();
 
     $results = $query->getArrayResult();
