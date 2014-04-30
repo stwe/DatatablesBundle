@@ -42,7 +42,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * The router service.
      *
-     * @var Router
+     * @var RouterInterface
      */
     private $router;
 
@@ -124,10 +124,10 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * Ctor.
      *
-     * @param TwigEngine $templating           The templating service
-     * @param Translator $translator           The translator service
-     * @param Router     $router               The router service
-     * @param array      $defaultLayoutOptions The default layout options
+     * @param TwigEngine      $templating           The templating service
+     * @param Translator      $translator           The translator service
+     * @param RouterInterface $router               The router service
+     * @param array           $defaultLayoutOptions The default layout options
      */
     public function __construct(TwigEngine $templating, Translator $translator, RouterInterface $router, array $defaultLayoutOptions)
     {
@@ -224,7 +224,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * Get router.
      *
-     * @return Router
+     * @return RouterInterface
      */
     public function getRouter()
     {

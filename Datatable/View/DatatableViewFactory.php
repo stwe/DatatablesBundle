@@ -41,7 +41,7 @@ class DatatableViewFactory implements DatatableViewFactoryInterface
     /**
      * The router service.
      *
-     * @var Router
+     * @var RouterInterface
      */
     private $router;
 
@@ -60,10 +60,10 @@ class DatatableViewFactory implements DatatableViewFactoryInterface
     /**
      * Ctor.
      *
-     * @param TwigEngine $templating    The templating service
-     * @param Translator $translator    The translator service
-     * @param Router     $router        The router service
-     * @param array      $layoutOptions The default layout options
+     * @param TwigEngine      $templating    The templating service
+     * @param Translator      $translator    The translator service
+     * @param RouterInterface $router        The router service
+     * @param array           $layoutOptions The default layout options
      */
     public function __construct(TwigEngine $templating, Translator $translator, RouterInterface $router, array $layoutOptions)
     {
