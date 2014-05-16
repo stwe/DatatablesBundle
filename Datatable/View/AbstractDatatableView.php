@@ -16,7 +16,6 @@ use Sg\DatatablesBundle\Column\ColumnBuilder;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\Translator;
-use Exception;
 
 /**
  * Class AbstractDatatableView
@@ -26,88 +25,64 @@ use Exception;
 abstract class AbstractDatatableView implements DatatableViewInterface
 {
     /**
-     * The templating service.
+     * The Templating service.
      *
      * @var TwigEngine
      */
     private $templating;
 
     /**
-     * The translator service.
+     * The Translator service.
      *
      * @var Translator
      */
     private $translator;
 
     /**
-     * The router service.
+     * The Router service.
      *
      * @var RouterInterface
      */
     private $router;
 
     /**
-     * A theme instance.
+     * A Features instance.
      *
-     * @var DatatableThemeInterface
+     * @var Features
      */
-    private $theme;
+    private $features;
 
     /**
-     * Configure DataTables to use server-side processing.
+     * A Options instance.
      *
-     * @var boolean
+     * @var Options
      */
-    private $bServerSide;
-
-    /**
-     * An array of data to use for the table.
-     *
-     * @var mixed
-     */
-    private $aaData;
-
-    /**
-     * Enable or disable the display of a 'processing' indicator.
-     *
-     * @var boolean
-     */
-    private $bProcessing;
-
-    /**
-     * Number of rows to display on a single page when using pagination.
-     *
-     * @var integer
-     */
-    private $iDisplayLength;
-
-    /**
-     * A ColumnBuilder instance.
-     *
-     * @var ColumnBuilder
-     */
-    protected $columnBuilder;
-
-    /**
-     * The sAjaxSource path.
-     *
-     * @var string
-     */
-    private $sAjaxSource;
-
-    /**
-     * Array for custom options.
-     *
-     * @var array
-     */
-    private $customizeOptions;
+    private $options;
 
     /**
      * A Multiselect instance.
      *
      * @var Multiselect
      */
-    protected $multiselect;
+    private $multiselect;
+
+    /**
+     * A ColumnBuilder instance.
+     *
+     * @var ColumnBuilder
+     */
+    private $columnBuilder;
+
+    /**
+     * A Ajax instance.
+     *
+     * @var Ajax
+     */
+    private $ajax;
+
+    // Columns
+
+    // Internationalisation
 
     /**
      * Enable or disable individual filtering.
@@ -115,6 +90,13 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @var boolean
      */
     private $individualFiltering;
+
+    /**
+     * The name of the Twig template.
+     *
+     * @var string
+     */
+    private $template;
 
 
     //-------------------------------------------------
@@ -134,16 +116,20 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->templating = $templating;
         $this->translator = $translator;
         $this->router = $router;
-        $this->theme = null;
-        $this->bServerSide = $defaultLayoutOptions['server_side'];
-        $this->aaData = null;
-        $this->bProcessing = $defaultLayoutOptions['processing'];
-        $this->iDisplayLength = (int) $defaultLayoutOptions['display_length'];
+
+        $this->features = new Features();
+        $this->features->setServerSide($defaultLayoutOptions["server_side"]);
+        $this->features->setProcessing($defaultLayoutOptions["processing"]);
+
+        $this->options = new Options();
+        $this->options->setPageLength($defaultLayoutOptions["page_length"]);
+
+        $this->multiselect = new Multiselect($defaultLayoutOptions["multiselect"]);
         $this->columnBuilder = new ColumnBuilder();
-        $this->sAjaxSource = '';
-        $this->customizeOptions = array();
-        $this->multiselect = new Multiselect($defaultLayoutOptions['multiselect']);
-        $this->individualFiltering = $defaultLayoutOptions['individual_filtering'];
+        $this->ajax = new Ajax();
+
+        $this->individualFiltering = $defaultLayoutOptions["individual_filtering"];
+        $this->template = "SgDatatablesBundle:Datatable:datatable.html.twig";
     }
 
 
@@ -163,42 +149,16 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     {
         $options = array();
 
-        // DatatableViewInterface Twig variables
+        $options['view_features'] = $this->features;
+        $options['view_options'] = $this->options;
+        $options['view_multiselect'] = $this->multiselect;
+        $options['view_columns'] = $this->columnBuilder->getColumns();
+        $options['view_ajax'] = $this->ajax;
 
-        $options['dt_bServerSide'] = $this->getBServerSide();
-        $options['dt_sAjaxSource'] = $this->getSAjaxSource();
+        $options['view_individual_filtering'] = $this->individualFiltering;
+        $options['view_table_id'] = $this->getName();
 
-        if (true === $options['dt_bServerSide']) {
-            if ('' === $options['dt_sAjaxSource']) {
-                throw new Exception('The sAjaxSource parameter must be given.');
-            }
-        } else {
-            $options['dt_sAjaxSource'] = '';
-            $options['dt_aaData'] = $this->getAaData();
-        }
-
-        $options['dt_bProcessing'] = $this->getBProcessing();
-        $options['dt_iDisplayLength'] = $this->getIDisplayLength();
-        $options['dt_tableId'] = $this->getName();
-        $options['dt_columns'] = $this->columnBuilder->getColumns();
-        $options['dt_customizeOptions'] = $this->getCustomizeOptions();
-        $options['dt_multiselect'] = $this->multiselect;
-        $options['dt_individualFiltering'] = $this->getIndividualFiltering();
-
-        // DatatableThemeInterface Twig variables
-
-        if (null === $this->theme) {
-            throw new Exception('The datatable needs a theme.');
-        }
-
-        $options['theme_name'] = $this->theme->getName();
-        $options['theme_sDom'] = $this->theme->getSDom();
-        $options['theme_tableClasses'] = $this->theme->getTableClasses();
-        $options['theme_formClasses'] = $this->theme->getFormClasses();
-        $options['theme_formSubmitButtonClasses'] = $this->theme->getFormSubmitButtonClasses();
-        $options['theme_pagination'] = $this->theme->getPagination();
-
-        return $this->templating->render($this->theme->getTemplate(), $options);
+        return $this->templating->render($this->template, $options);
     }
 
     /**
@@ -208,199 +168,83 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
 
     //-------------------------------------------------
-    // Public
+    // Getters && Setters
     //-------------------------------------------------
 
     /**
-     * Get translator.
+     * Set Ajax.
      *
-     * @return Translator
-     */
-    public function getTranslator()
-    {
-        return $this->translator;
-    }
-
-    /**
-     * Get router.
-     *
-     * @return RouterInterface
-     */
-    public function getRouter()
-    {
-        return $this->router;
-    }
-
-    /**
-     * Set theme.
-     *
-     * @param DatatableThemeInterface $theme
+     * @param Ajax $ajax
      *
      * @return $this
      */
-    public function setTheme(DatatableThemeInterface $theme)
+    public function setAjax($ajax)
     {
-        $this->theme = $theme;
+        $this->ajax = $ajax;
 
         return $this;
     }
 
     /**
-     * Get theme.
+     * Get Ajax.
      *
-     * @return null|DatatableThemeInterface
+     * @return Ajax
      */
-    public function getTheme()
+    public function getAjax()
     {
-        return $this->theme;
+        return $this->ajax;
     }
 
     /**
-     * Set bServerSide.
+     * Set ColumnBuilder.
      *
-     * @param boolean $bServerSide
+     * @param ColumnBuilder $columnBuilder
      *
      * @return $this
      */
-    public function setBServerSide($bServerSide)
+    public function setColumnBuilder($columnBuilder)
     {
-        $this->bServerSide = (boolean) $bServerSide;
+        $this->columnBuilder = $columnBuilder;
 
         return $this;
     }
 
     /**
-     * Get bServerSide.
+     * Get ColumnBuilder.
      *
-     * @return boolean
+     * @return ColumnBuilder
      */
-    public function getBServerSide()
+    public function getColumnBuilder()
     {
-        return (boolean) $this->bServerSide;
+        return $this->columnBuilder;
     }
 
     /**
-     * Set aaData.
+     * Set Features.
      *
-     * @param mixed $aaData
+     * @param Features $features
      *
      * @return $this
      */
-    public function setAaData($aaData)
+    public function setFeatures($features)
     {
-        $this->aaData = $aaData;
+        $this->features = $features;
 
         return $this;
     }
 
     /**
-     * Get aaData.
+     * Get Features.
      *
-     * @return mixed
+     * @return Features
      */
-    public function getAaData()
+    public function getFeatures()
     {
-        return $this->aaData;
+        return $this->features;
     }
 
     /**
-     * Set bProcessing.
-     *
-     * @param boolean $bProcessing
-     *
-     * @return $this
-     */
-    public function setBProcessing($bProcessing)
-    {
-        $this->bProcessing = (boolean) $bProcessing;
-
-        return $this;
-    }
-
-    /**
-     * Get bProcessing.
-     *
-     * @return boolean
-     */
-    public function getBProcessing()
-    {
-        return (boolean) $this->bProcessing;
-    }
-
-    /**
-     * Set iDisplayLength.
-     *
-     * @param int $iDisplayLength
-     *
-     * @return $this
-     */
-    public function setIDisplayLength($iDisplayLength)
-    {
-        $this->iDisplayLength = (int) $iDisplayLength;
-
-        return $this;
-    }
-
-    /**
-     * Get iDisplayLength.
-     *
-     * @return int
-     */
-    public function getIDisplayLength()
-    {
-        return (int) $this->iDisplayLength;
-    }
-
-    /**
-     * Set sAjaxSource.
-     *
-     * @param string $sAjaxSource
-     *
-     * @return $this
-     */
-    public function setSAjaxSource($sAjaxSource)
-    {
-        $this->sAjaxSource = $sAjaxSource;
-
-        return $this;
-    }
-
-    /**
-     * Get sAjaxSource.
-     *
-     * @return string
-     */
-    public function getSAjaxSource()
-    {
-        return $this->sAjaxSource;
-    }
-
-    /**
-     * Set customizeOptions.
-     *
-     * @param array $customizeOptions
-     *
-     * @return $this
-     */
-    public function setCustomizeOptions(array $customizeOptions)
-    {
-        $this->customizeOptions = $customizeOptions;
-
-        return $this;
-    }
-
-    /**
-     * Get customizeOptions.
-     *
-     * @return array
-     */
-    public function getCustomizeOptions()
-    {
-        return $this->customizeOptions;
-    }
-
-    /**
-     * Set individualFiltering.
+     * Set IndividualFiltering.
      *
      * @param boolean $individualFiltering
      *
@@ -408,19 +252,67 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      */
     public function setIndividualFiltering($individualFiltering)
     {
-        $this->individualFiltering = (boolean) $individualFiltering;
+        $this->individualFiltering = $individualFiltering;
 
         return $this;
     }
 
     /**
-     * Get individualFiltering.
+     * Get IndividualFiltering.
      *
      * @return boolean
      */
     public function getIndividualFiltering()
     {
-        return (boolean) $this->individualFiltering;
+        return $this->individualFiltering;
+    }
+
+    /**
+     * Set Multiselect.
+     *
+     * @param Multiselect $multiselect
+     *
+     * @return $this
+     */
+    public function setMultiselect($multiselect)
+    {
+        $this->multiselect = $multiselect;
+
+        return $this;
+    }
+
+    /**
+     * Get Multiselect.
+     *
+     * @return Multiselect
+     */
+    public function getMultiselect()
+    {
+        return $this->multiselect;
+    }
+
+    /**
+     * Set Options.
+     *
+     * @param Options $options
+     *
+     * @return $this
+     */
+    public function setOptions($options)
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
+    /**
+     * Get Options.
+     *
+     * @return Options
+     */
+    public function getOptions()
+    {
+        return $this->options;
     }
 }
 

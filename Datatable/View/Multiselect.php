@@ -18,7 +18,7 @@ use Exception;
  *
  * @package Sg\DatatablesBundle\Datatable\View
  */
-class Multiselect implements MultiselectInterface
+class Multiselect
 {
     /**
      * First column.
@@ -78,7 +78,12 @@ class Multiselect implements MultiselectInterface
     //-------------------------------------------------
 
     /**
-     * {@inheritdoc}
+     * Add action.
+     *
+     * @param string $title The title for the form select field
+     * @param string $route The actions route
+     *
+     * @return $this
      */
     public function addAction($title, $route)
     {
@@ -89,7 +94,9 @@ class Multiselect implements MultiselectInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get actions.
+     *
+     * @return array
      */
     public function getActions()
     {
@@ -97,7 +104,11 @@ class Multiselect implements MultiselectInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Set enabled.
+     *
+     * @param boolean $enabled
+     *
+     * @return $this
      */
     public function setEnabled($enabled)
     {
@@ -107,7 +118,9 @@ class Multiselect implements MultiselectInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get enabled.
+     *
+     * @return boolean
      */
     public function getEnabled()
     {
@@ -115,7 +128,12 @@ class Multiselect implements MultiselectInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Set position.
+     *
+     * @param string $position
+     *
+     * @return $this
+     * @throws \Exception
      */
     public function setPosition($position)
     {
@@ -125,12 +143,13 @@ class Multiselect implements MultiselectInterface
             throw new Exception("The position {$position} is not supported.");
         }
 
-
         return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * Get position.
+     *
+     * @return string
      */
     public function getPosition()
     {

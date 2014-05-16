@@ -33,7 +33,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode('default_layout')->addDefaultsIfNotSet()
                     ->children()
-                        ->integerNode('display_length')
+                        ->integerNode('page_length')
                             ->defaultValue(10)
                             ->min(1)
                         ->end()
