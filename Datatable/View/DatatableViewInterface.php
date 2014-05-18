@@ -31,6 +31,20 @@ interface DatatableViewInterface
     public function renderDatatableView();
 
     /**
+     * Returns Entity.
+     *
+     * @return string
+     */
+    public function getEntity();
+
+    /**
+     * Returns GET or POST.
+     *
+     * @return mixed
+     */
+    public function getRetrieveDataMethod();
+
+    /**
      * Returns the name of this datatable view.
      * Is used as jQuery datatable id selector.
      *

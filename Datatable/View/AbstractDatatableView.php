@@ -164,6 +164,19 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * {@inheritdoc}
      */
+    abstract public function getEntity();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRetrieveDataMethod()
+    {
+        return "GET";
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     abstract public function getName();
 
 
@@ -313,6 +326,102 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getOptions()
     {
         return $this->options;
+    }
+
+    /**
+     * Set Router.
+     *
+     * @param RouterInterface $router
+     *
+     * @return $this
+     */
+    public function setRouter($router)
+    {
+        $this->router = $router;
+
+        return $this;
+    }
+
+    /**
+     * Get Router.
+     *
+     * @return RouterInterface
+     */
+    public function getRouter()
+    {
+        return $this->router;
+    }
+
+    /**
+     * Set Template.
+     *
+     * @param string $template
+     *
+     * @return $this
+     */
+    public function setTemplate($template)
+    {
+        $this->template = $template;
+
+        return $this;
+    }
+
+    /**
+     * Get Template.
+     *
+     * @return string
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+
+    /**
+     * Set Templating.
+     *
+     * @param TwigEngine $templating
+     *
+     * @return $this
+     */
+    public function setTemplating($templating)
+    {
+        $this->templating = $templating;
+
+        return $this;
+    }
+
+    /**
+     * Get Templating.
+     *
+     * @return TwigEngine
+     */
+    public function getTemplating()
+    {
+        return $this->templating;
+    }
+
+    /**
+     * Set Translator.
+     *
+     * @param Translator $translator
+     *
+     * @return $this
+     */
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
+
+        return $this;
+    }
+
+    /**
+     * Get Translator.
+     *
+     * @return Translator
+     */
+    public function getTranslator()
+    {
+        return $this->translator;
     }
 }
 
