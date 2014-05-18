@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Datatable;
+namespace Sg\DatatablesBundle\Datatable\Data;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -19,11 +19,7 @@ use Doctrine\ORM\Query;
 /**
  * Class DatatableQuery
  *
- * A thanks goes to the authors of the original implementation:
- *     Félix-Antoine Paradis (https://gist.github.com/reel/1638094) and
- *     Chad Sikorra (https://github.com/LanKit/DatatablesBundle)
- *
- * @package Sg\DatatablesBundle\Datatable
+ * @package Sg\DatatablesBundle\Datatable\Data
  */
 class DatatableQuery
 {
@@ -38,15 +34,11 @@ class DatatableQuery
     protected $em;
 
     /**
-     * The name of the primary table.
-     *
      * @var string
      */
     protected $tableName;
 
     /**
-     * The name of the entity class.
-     *
      * @var string
      */
     protected $entityName;
@@ -84,7 +76,7 @@ class DatatableQuery
     /**
      * Ctor.
      *
-     * @param array         $requestParams All GET params
+     * @param array         $requestParams All request params
      * @param ClassMetadata $metadata      A ClassMetadata instance
      * @param EntityManager $em            A EntityManager instance
      */
@@ -99,7 +91,7 @@ class DatatableQuery
         $this->allColumns = array();
         $this->joins = array();
         $this->callbacks = array(
-            'WhereBuilder' => array(),
+            "WhereBuilder" => array(),
         );
     }
 
@@ -169,7 +161,7 @@ class DatatableQuery
      */
     public function addCallback($callback)
     {
-        $this->callbacks['WhereBuilder'][] = $callback;
+        $this->callbacks["WhereBuilder"][] = $callback;
 
         return $this;
     }
@@ -184,7 +176,7 @@ class DatatableQuery
     public function getCountAllResults($rootEntityIdentifier)
     {
         $qb = $this->em->createQueryBuilder();
-        $qb->select('count(' . $this->tableName . '.' . $rootEntityIdentifier . ')');
+        $qb->select("count(" . $this->tableName . "." . $rootEntityIdentifier . ")");
         $qb->from($this->entityName, $this->tableName);
 
         $this->setWhereCallbacks($qb);
@@ -202,7 +194,7 @@ class DatatableQuery
     public function getCountFilteredResults($rootEntityIdentifier)
     {
         $qb = $this->em->createQueryBuilder();
-        $qb->select('count(distinct ' . $this->tableName . '.' . $rootEntityIdentifier . ')');
+        $qb->select("count(distinct " . $this->tableName . "." . $rootEntityIdentifier . ")");
         $qb->from($this->entityName, $this->tableName);
 
         $this->setLeftJoins($qb);
@@ -221,7 +213,7 @@ class DatatableQuery
     {
         foreach ($this->selectColumns as $key => $value) {
             // $qb->select('partial comment.{id, title}, partial post.{id, title}');
-            $this->qb->addSelect('partial ' . $key . '.{' . implode(',', $this->selectColumns[$key]) . '}');
+            $this->qb->addSelect("partial " . $key . ".{" . implode(",", $this->selectColumns[$key]) . "}");
         }
 
         $this->qb->from($this->entityName, $this->tableName);
@@ -239,7 +231,7 @@ class DatatableQuery
     public function setLeftJoins(QueryBuilder $qb)
     {
         foreach ($this->joins as $join) {
-            $qb->leftJoin($join['source'], $join['target']);
+            $qb->leftJoin($join["source"], $join["target"]);
         }
 
         return $this;
@@ -255,29 +247,31 @@ class DatatableQuery
     public function setWhere(QueryBuilder $qb)
     {
         // global filtering
-        if ($this->requestParams['sSearch'] != '') {
+        if ($this->requestParams["search"]["value"] != "") {
 
             $orExpr = $qb->expr()->orX();
 
-            for ($i = 0; $i < $this->requestParams['iColumns']; $i++) {
-                if (isset($this->requestParams['bSearchable_' . $i]) && $this->requestParams['bSearchable_' . $i] === 'true') {
+            for ($i = 0; $i <= $this->requestParams["dql_counter"]; $i++) {
+                if (isset($this->requestParams["columns"][$i]["searchable"]) && $this->requestParams["columns"][$i]["searchable"] == "true") {
                     $searchField = $this->allColumns[$i];
                     $orExpr->add($qb->expr()->like($searchField, "?$i"));
-                    $qb->setParameter($i, "%" . $this->requestParams['sSearch'] . "%");
+                    $qb->setParameter($i, "%" . $this->requestParams["search"]["value"] . "%");
                 }
             }
 
             $qb->where($orExpr);
         }
 
+        //var_dump($qb->getDQL());die();
+
         // individual filtering
         $andExpr = $qb->expr()->andX();
 
-        for ($i = 0; $i < $this->requestParams['iColumns']; $i++) {
-            if (isset($this->requestParams['bSearchable_' . $i]) && $this->requestParams['bSearchable_' . $i] === 'true' && $this->requestParams['sSearch_' . $i] != '') {
+        for ($i = 0; $i <= $this->requestParams["dql_counter"]; $i++) {
+            if (isset($this->requestParams["columns"]["{$i}"]["searchable"]) && $this->requestParams["columns"]["{$i}"]["searchable"] === "true" && $this->requestParams["columns"]["{$i}"]["search"]["value"] != "") {
                 $searchField = $this->allColumns[$i];
                 $andExpr->add($qb->expr()->like($searchField, "?$i"));
-                $qb->setParameter($i, "%" . $this->requestParams['sSearch_' . $i] . "%");
+                $qb->setParameter($i, "%" . $this->requestParams["columns"]["{$i}"]["search"]["value"] . "%");
             }
         }
 
@@ -297,8 +291,8 @@ class DatatableQuery
      */
     public function setWhereCallbacks(QueryBuilder $qb)
     {
-        if (!empty($this->callbacks['WhereBuilder'])) {
-            foreach ($this->callbacks['WhereBuilder'] as $callback) {
+        if (!empty($this->callbacks["WhereBuilder"])) {
+            foreach ($this->callbacks["WhereBuilder"] as $callback) {
                 $callback($qb);
             }
         }
@@ -313,16 +307,10 @@ class DatatableQuery
      */
     public function setOrderBy()
     {
-        if (isset($this->requestParams['iSortCol_0'])) {
-            for ($i = 0; $i < intval($this->requestParams['iSortingCols']); $i++) {
-                if ($this->requestParams['bSortable_'.intval($this->requestParams['iSortCol_' . $i])] === 'true') {
-                    $this->qb->addOrderBy(
-                        $this->allColumns[$this->requestParams['iSortCol_' . $i]],
-                        $this->requestParams['sSortDir_' . $i]
-                    );
-                }
-            }
-        }
+        $this->qb->addOrderBy(
+            $this->allColumns[$this->requestParams["order"]["0"]["column"]],
+            $this->requestParams["order"]["0"]["dir"]
+        );
 
         return $this;
     }
@@ -334,8 +322,8 @@ class DatatableQuery
      */
     public function setLimit()
     {
-        if (isset($this->requestParams['iDisplayStart']) && $this->requestParams['iDisplayLength'] != '-1') {
-            $this->qb->setFirstResult($this->requestParams['iDisplayStart'])->setMaxResults($this->requestParams['iDisplayLength']);
+        if (isset($this->requestParams["start"]) && $this->requestParams["length"] != "-1") {
+            $this->qb->setFirstResult($this->requestParams["start"])->setMaxResults($this->requestParams["length"]);
         }
 
         return $this;
