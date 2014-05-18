@@ -9,11 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Datatable;
+namespace Sg\DatatablesBundle\Datatable\Data;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +21,7 @@ use Exception;
 /**
  * Class DatatableData
  *
- * @package Sg\DatatablesBundle\Datatable
+ * @package Sg\DatatablesBundle\Datatable\Data
  */
 class DatatableData implements DatatableDataInterface
 {
@@ -52,15 +51,11 @@ class DatatableData implements DatatableDataInterface
     protected $datatableQuery;
 
     /**
-     * The name of the primary table.
-     *
      * @var string
      */
     protected $tableName;
 
     /**
-     * The field name of the identifier/primary key.
-     *
      * @var mixed
      */
     protected $rootEntityIdentifier;
@@ -93,7 +88,7 @@ class DatatableData implements DatatableDataInterface
     /**
      * Ctor.
      *
-     * @param array          $requestParams  All GET params
+     * @param array          $requestParams  All request params
      * @param ClassMetadata  $metadata       A ClassMetadata instance
      * @param EntityManager  $em             A EntityManager instance
      * @param Serializer     $serializer     A Serializer instance
@@ -151,7 +146,7 @@ class DatatableData implements DatatableDataInterface
         if (in_array($column, $metadata->getFieldNames())) {
             $this->selectColumns[($columnTableName?:$metadata->getTableName())][] = $column;
         } else {
-            throw new Exception('Exception when parsing the columns.');
+            throw new Exception("Exception when parsing the columns.");
         }
 
         return $this;
@@ -183,8 +178,8 @@ class DatatableData implements DatatableDataInterface
 
                 $this->addJoin(
                     array(
-                        'source' => $metadata->getTableName() . '.' . $column,
-                        'target' => $columnTableName
+                        "source" => $metadata->getTableName() . '.' . $column,
+                        "target" => $columnTableName
                     )
                 );
             }
@@ -215,10 +210,10 @@ class DatatableData implements DatatableDataInterface
         // start with the tableName and the primary key e.g. 'fos_user' and 'id'
         $this->addSelectColumn($this->metadata, $this->rootEntityIdentifier);
 
-        for ($i = 0; $i <= $this->requestParams['dql_counter']; $i++) {
+        for ($i = 0; $i <= $this->requestParams["dql_counter"]; $i++) {
 
-            if ($this->requestParams['dql_' . $i] != null) {
-                $column = $this->requestParams['dql_' . $i];
+            if ($this->requestParams["dql_" . $i] != null) {
+                $column = $this->requestParams["dql_" . $i];
 
                 // association delimiter found (e.g. 'posts.comments.title')?
                 if (strstr($column, '.') !== false) {
@@ -278,29 +273,29 @@ class DatatableData implements DatatableDataInterface
     /**
      * {@inheritdoc}
      */
-    public function getResults()
+    public function getResponse()
     {
         $this->setColumns();
         $this->buildQuery();
 
         $fresults = new Paginator($this->datatableQuery->execute(), true);
-        $output = array("aaData" => array());
+        $output = array("data" => array());
 
         foreach ($fresults as $item) {
-            $output['aaData'][] = $item;
+            $output["data"][] = $item;
         }
 
         $outputHeader = array(
-            "sEcho" => (int) $this->requestParams['sEcho'],
-            "iTotalRecords" => $this->datatableQuery->getCountAllResults($this->rootEntityIdentifier),
-            "iTotalDisplayRecords" => $this->datatableQuery->getCountFilteredResults($this->rootEntityIdentifier)
+            "draw" => (int) $this->requestParams["draw"],
+            "recordsTotal" => $this->datatableQuery->getCountAllResults($this->rootEntityIdentifier),
+            "recordsFiltered" => $this->datatableQuery->getCountFilteredResults($this->rootEntityIdentifier)
         );
 
         $this->response = array_merge($outputHeader, $output);
 
-        $json = $this->serializer->serialize($this->response, 'json');
+        $json = $this->serializer->serialize($this->response, "json");
         $response = new Response($json);
-        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set("Content-Type", "application/json");
 
         return $response;
     }
@@ -321,7 +316,7 @@ class DatatableData implements DatatableDataInterface
     public function addWhereBuilderCallback($callback)
     {
         if (!is_callable($callback)) {
-            throw new Exception('The callback argument must be callable.');
+            throw new Exception("The callback argument must be callable.");
         }
 
         $this->datatableQuery->addCallback($callback);

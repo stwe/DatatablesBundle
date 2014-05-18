@@ -9,16 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Datatable;
+namespace Sg\DatatablesBundle\Datatable\Data;
+
+use Sg\DatatablesBundle\Datatable\View\DatatableViewInterface;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\Response;
+use Exception;
 
 /**
  * Class DatatableDataManager
  *
- * @package Sg\DatatablesBundle\Datatable
+ * @package Sg\DatatablesBundle\Datatable\Data
  */
 class DatatableDataManager
 {
@@ -43,6 +48,17 @@ class DatatableDataManager
      */
     private $serializer;
 
+    /**
+     * Holds request parameters.
+     *
+     * @var ParameterBag
+     */
+    private $parameterBag;
+
+
+    //-------------------------------------------------
+    // Ctor.
+    //-------------------------------------------------
 
     /**
      * Ctor.
@@ -56,24 +72,41 @@ class DatatableDataManager
         $this->doctrine = $doctrine;
         $this->request = $request;
         $this->serializer = $serializer;
+        $this->parameterBag = null;
     }
 
+
+    //-------------------------------------------------
+    // Public
+    //-------------------------------------------------
+
     /**
-     * Get datatable.
+     * Get Response.
      *
-     * @param string $entity
+     * @param DatatableViewInterface $datatableView
      *
-     * @return DatatableData A DatatableData instance
+     * @throws Exception
+     * @return Response
      */
-    public function getDatatable($entity)
+    public function getResponse(DatatableViewInterface $datatableView)
     {
-        /**
-         * Get all GET params.
-         *
-         * @var \Symfony\Component\HttpFoundation\ParameterBag $parameterBag
-         */
-        $parameterBag = $this->request->query;
-        $params = $parameterBag->all();
+        $method = $datatableView->getRetrieveDataMethod();
+        $entity = $datatableView->getEntity();
+
+        // Retrieve GET or POST variables
+        if ( !("GET" === strtoupper($method)) && !("POST" === strtoupper($method)) ) {
+            throw new Exception("Method {$method} is not supported.");
+        }
+
+        if ("GET" === strtoupper($method)) {
+            $this->parameterBag = $this->request->query;
+        }
+
+        if ("POST" === strtoupper($method)) {
+            $this->parameterBag = $this->request->request;
+        }
+
+        $params = $this->parameterBag->all();
 
         /**
          * @var \Doctrine\ORM\Mapping\ClassMetadata $metadata
@@ -86,14 +119,9 @@ class DatatableDataManager
         $em = $this->doctrine->getManager();
 
         $datatableQuery = new DatatableQuery($params, $metadata, $em);
+        $datatableData = new DatatableData($params, $metadata, $em, $this->serializer, $datatableQuery);
 
-        return new DatatableData(
-            $params,
-            $metadata,
-            $em,
-            $this->serializer,
-            $datatableQuery
-        );
+        return $datatableData->getResponse();
     }
 }
 

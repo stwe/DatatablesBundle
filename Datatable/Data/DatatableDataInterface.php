@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Datatable;
+namespace Sg\DatatablesBundle\Datatable\Data;
 
 /**
- * Class DatatableDataInterface
+ * Interface DatatableDataInterface
  *
- * @package Sg\DatatablesBundle\Datatable
+ * @package Sg\DatatablesBundle\Datatable\Data
  */
 interface DatatableDataInterface
 {
     /**
-     * Get results.
+     * Get Response.
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getResults();
+    public function getResponse();
 }
