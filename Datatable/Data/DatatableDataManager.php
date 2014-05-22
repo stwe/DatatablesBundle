@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Response;
-use Exception;
 
 /**
  * Class DatatableDataManager
@@ -85,24 +84,18 @@ class DatatableDataManager
      *
      * @param DatatableViewInterface $datatableView
      *
-     * @throws Exception
      * @return Response
      */
     public function getResponse(DatatableViewInterface $datatableView)
     {
-        $method = $datatableView->getRetrieveDataMethod();
+        $type = $datatableView->getAjax()->getType();
         $entity = $datatableView->getEntity();
 
-        // Retrieve GET or POST variables
-        if ( !("GET" === strtoupper($method)) && !("POST" === strtoupper($method)) ) {
-            throw new Exception("Method {$method} is not supported.");
-        }
-
-        if ("GET" === strtoupper($method)) {
+        if ("GET" === strtoupper($type)) {
             $this->parameterBag = $this->request->query;
         }
 
-        if ("POST" === strtoupper($method)) {
+        if ("POST" === strtoupper($type)) {
             $this->parameterBag = $this->request->request;
         }
 

@@ -38,11 +38,20 @@ interface DatatableViewInterface
     public function getEntity();
 
     /**
-     * Returns GET or POST.
+     * Set Ajax.
      *
-     * @return mixed
+     * @param Ajax $ajax
+     *
+     * @return $this
      */
-    public function getRetrieveDataMethod();
+    public function setAjax($ajax);
+
+    /**
+     * Get Ajax.
+     *
+     * @return Ajax
+     */
+    public function getAjax();
 
     /**
      * Returns the name of this datatable view.

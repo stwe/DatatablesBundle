@@ -2,21 +2,21 @@
 
     {% block sg_datatable_html %}
 
-        <table cellpadding="0" cellspacing="0" border="0" class="{{ theme_tableClasses }}" id="{{ dt_tableId }}" width="100%">
+        <table cellpadding="0" cellspacing="0" border="0" id="{{ view_table_id }}" width="100%">
             <thead>
             </thead>
-                {% if dt_individualFiltering %}
+                {% if view_individual_filtering %}
                     <tfoot>
-                        {% for column in dt_columns %}
+                        {% for column in view_columns %}
                             <th>
                                 {% if column.bSearchable %}
-                                    <input type="text" class="{{ theme_formClasses }}" placeholder="{{ column.sTitle }}" />
+                                    <input type="text" placeholder="{{ column.sTitle }}" />
                                 {% else %}
                                     <input type="hidden" />
                                 {% endif %}
                             </th>
                         {% endfor %}
-                        {% if dt_multiselect.enabled %}
+                        {% if view_multiselect.enabled %}
                             <th></th>
                         {% endif %}
                     </tfoot>
@@ -33,186 +33,203 @@
 
             $(document).ready(function () {
 
-                var selector = "#{{ dt_tableId }}";
+                var selector = "#{{ view_table_id }}";
 
-                var defaults = {
-                    {% if dt_bProcessing %}
-                        "bProcessing": true,
+                var features = {
+                    {% if view_features.autoWidth %}
+                        "autoWidth": true,
                     {% else %}
-                        "bProcessing": false,
+                        "autoWidth": false,
                     {% endif %}
-                    {% if dt_bServerSide %}
-                        "bServerSide": true,
-                        "sAjaxSource": "{{ dt_sAjaxSource }}",
-                        "fnServerParams": function(aoData) {
-                            {% set counter = 0 %}
-                            {% for column in dt_columns %}
-                                aoData.push( { "name": "dql_{{ counter }}", "value": "{{ column.property }}" } );
-                                {% set counter = counter + 1 %}
-                            {% endfor %}
-                            {% set counter = counter - 1 %}
-                            aoData.push( { "name": "dql_counter", "value": "{{ counter }}" } );
+
+                    {% if view_features.deferRender %}
+                        "deferRender": true,
+                    {% else %}
+                        "deferRender": false,
+                    {% endif %}
+
+                    {% if view_features.info %}
+                        "info": true,
+                    {% else %}
+                        "info": false,
+                    {% endif %}
+
+                    {% if view_features.jQueryUI %}
+                        "jQueryUI": true,
+                    {% else %}
+                        "jQueryUI": false,
+                    {% endif %}
+
+                    {% if view_features.lengthChange %}
+                        "lengthChange": true,
+                    {% else %}
+                        "lengthChange": false,
+                    {% endif %}
+
+                    {% if view_features.ordering %}
+                        "ordering": true,
+                    {% else %}
+                        "ordering": false,
+                    {% endif %}
+
+                    {% if view_features.paging %}
+                        "paging": true,
+                    {% else %}
+                        "paging": false,
+                    {% endif %}
+
+                    {% if view_features.processing %}
+                        "processing": true,
+                    {% else %}
+                        "processing": false,
+                    {% endif %}
+
+                    {% if view_features.scrollX %}
+                        "scrollX": true,
+                    {% else %}
+                        "scrollX": false,
+                    {% endif %}
+
+                    //"scrollY": "{# view_features.scrollY #}",
+
+                    {% if view_features.searching %}
+                        "searching": true,
+                    {% else %}
+                        "searching": false,
+                    {% endif %}
+
+                    // serverSide -> ajax var
+
+                    {% if view_features.stateSave %}
+                        "stateSave": true,
+                    {% else %}
+                        "stateSave": false,
+                    {% endif %}
+                }
+
+                var options = {
+                    //"deferLoading": 57,
+
+                    {% if view_options.destroy %}
+                        "destroy": true,
+                    {% else %}
+                        "destroy": false,
+                    {% endif %}
+
+                    "displayStart": {{ view_options.displayStart }},
+
+                    //"dom": "{# view_options.dom #}",
+
+                    "lengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "{{ 'datatables.datatable.all'|trans({}, 'messages') }}"]],
+
+                    {% if view_options.orderCellsTop %}
+                        "orderCellsTop": true,
+                    {% else %}
+                        "orderCellsTop": false,
+                    {% endif %}
+
+                    {% if view_options.orderClasses %}
+                        "orderClasses": true,
+                    {% else %}
+                        "orderClasses": false,
+                    {% endif %}
+
+                    "order": [[0, "asc"]],
+
+                    //"orderFixed": [ 0, 'asc' ],
+
+                    {% if view_options.orderMulti %}
+                        "orderMulti": true,
+                    {% else %}
+                        "orderMulti": false,
+                    {% endif %}
+
+                    "pageLength": {{ view_options.pageLength }},
+
+                    "pagingType": "{{ view_options.pagingType }}",
+
+                    //"renderer": "bootstrap",
+
+                    {% if view_options.retrieve %}
+                        "retrieve": true,
+                    {% else %}
+                        "retrieve": false,
+                    {% endif %}
+
+                    {% if view_options.scrollCollapse %}
+                        "scrollCollapse": true,
+                    {% else %}
+                        "scrollCollapse": false,
+                    {% endif %}
+
+                    // "searchCols": [],
+
+                    // "search": {},
+
+                    "stateDuration": {{ view_options.stateDuration }},
+
+                    //"stripeClasses": [],
+
+                    "tabIndex": {{ view_options.tabIndex }},
+                }
+
+                var ajax = {
+                    {% if view_features.serverSide %}
+                        "serverSide": true,
+                        "ajax": {
+                            "url": "{{ view_ajax.url }}",
+                            "data": function(d) {
+                                {% set counter = 0 %}
+                                {% for column in view_columns %}
+                                    d.dql_{{ counter }} = "{{ column.property }}";
+                                    {% set counter = counter + 1 %}
+                                {% endfor %}
+                                {% set counter = counter - 1 %}
+                                d.dql_counter = "{{ counter }}";
+                            },
+                            "type": "{{ view_ajax.type }}"
                         },
                     {% else %}
-                        "aaData": {{ dt_aaData|raw }},
+                        "serverSide": false,
+                        "data": {{ view_data|raw }},
                     {% endif %}
-                    {% if theme_pagination %}
-                        "sPaginationType": "{{ theme_pagination }}",
-                    {% endif %}
-                    {% if theme_sDom %}
-                        "sDom": "{{ theme_sDom|raw }}",
-                    {% endif %}
-                    "aLengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "{{ 'datatables.datatable.all'|trans({}, 'messages') }}"]],
-                    "iDisplayLength": {{ dt_iDisplayLength }},
-                    {% if 'jqueryui_datatable_theme' == theme_name %}
-                        "bJQueryUI": true,
-                    {% endif %}
-                    "oLanguage": {
-                        "sProcessing": "{{ 'datatables.datatable.sProcessing'|trans({}, 'messages') }}",
-                        "sLengthMenu": "{{ 'datatables.datatable.sLengthMenu'|trans({}, 'messages') }}",
-                        "sZeroRecords": "{{ 'datatables.datatable.sZeroRecords'|trans({}, 'messages') }}",
-                        "sInfo": "{{ 'datatables.datatable.sInfo'|trans({}, 'messages') }}",
-                        "sInfoEmpty": "{{ 'datatables.datatable.sInfoEmpty'|trans({}, 'messages') }}",
+                }
+
+                var defaults = {
+                    "language": {
+                        "processing": "{{ 'datatables.datatable.sProcessing'|trans({}, 'messages') }}",
+                        "lengthMenu": "{{ 'datatables.datatable.sLengthMenu'|trans({}, 'messages') }}",
+                        "zeroRecords": "{{ 'datatables.datatable.sZeroRecords'|trans({}, 'messages') }}",
+                        "info": "{{ 'datatables.datatable.sInfo'|trans({}, 'messages') }}",
+                        "infoEmpty": "{{ 'datatables.datatable.sInfoEmpty'|trans({}, 'messages') }}",
                         "sInfoFiltered": "{{ 'datatables.datatable.sInfoFiltered'|trans({}, 'messages') }}",
-                        "sInfoPostFix": "{{ 'datatables.datatable.sInfoPostFix'|trans({}, 'messages') }}",
-                        "sSearch": "{{ 'datatables.datatable.sSearch'|trans({}, 'messages') }}",
-                        "sUrl": "",
-                        "oPaginate": {
-                            "sFirst": "{{ 'datatables.datatable.sFirst'|trans({}, 'messages') }}",
-                            "sPrevious": "{{ 'datatables.datatable.sPrevious'|trans({}, 'messages') }}",
-                            "sNext": "{{ 'datatables.datatable.sNext'|trans({}, 'messages') }}",
-                            "sLast": "{{ 'datatables.datatable.sLast'|trans({}, 'messages') }}"
+                        "infoPostFix": "{{ 'datatables.datatable.sInfoPostFix'|trans({}, 'messages') }}",
+                        "search": "{{ 'datatables.datatable.sSearch'|trans({}, 'messages') }}",
+                        "url": "",
+                        "paginate": {
+                            "first": "{{ 'datatables.datatable.sFirst'|trans({}, 'messages') }}",
+                            "previous": "{{ 'datatables.datatable.sPrevious'|trans({}, 'messages') }}",
+                            "next": "{{ 'datatables.datatable.sNext'|trans({}, 'messages') }}",
+                            "last": "{{ 'datatables.datatable.sLast'|trans({}, 'messages') }}"
                         }
                     }
-                };
+                }
 
-                $.extend(defaults, {
-                    "aoColumns": [
-                        {# multiselect column #}
-                        {% if dt_multiselect.enabled %}
-                            {% if 'first' == dt_multiselect.position %}
-                                {% include "SgDatatablesBundle:Column:multiselect.html.twig" %}
-                            {% endif %}
-                        {% endif %}
-
-                        {# columns #}
-                        {% for column in dt_columns %}
+                var columns = {
+                    "columns": [
+                        {% for column in view_columns %}
                             {% include "SgDatatablesBundle:Column:" ~ column.getClassName ~ ".html.twig" %}
                         {% endfor %}
-
-                        {# multiselect column #}
-                        {% if dt_multiselect.enabled %}
-                            {% if 'last' == dt_multiselect.position %}
-                                {% include "SgDatatablesBundle:Column:multiselect.html.twig" %}
-                            {% endif %}
-                        {% endif %}
                     ]
-                });
+                }
 
-                var oTable = $(selector).dataTable(defaults);
+                $.extend(defaults, features);
+                $.extend(defaults, options);
+                $.extend(defaults, ajax);
+                $.extend(defaults, columns);
 
-                {% if dt_individualFiltering %}
-                    $("tfoot input").keyup(function() {
-                        oTable.fnFilter(this.value, $("tfoot input").index(this));
-                    });
-                {% endif %}
-
-                {% if dt_multiselect.enabled %}
-                    var multiple_html = "\
-                        <p>\
-                            <select class='{{ theme_formClasses }}' name='bulk_action_routes[select]'>\
-                                {% for key, value in dt_multiselect.actions %}\
-                                    <option value='{{ path(value) }}'>{{ key }}</option>\
-                                {% endfor %}\
-                            </select>\
-                            <button id='multiselect_submit' type='button' class='{{ theme_formSubmitButtonClasses }}'>Ok</button>\
-                        </p>";
-
-                    $(".pagination").append(multiple_html);
-
-                    $(".multiselect_checkall").click(function(event) {
-                        if(this.checked) {
-                            $("input:checkbox.multiselect_checkbox").each(function() {
-                                this.checked = true;
-                            });
-                        } else {
-                            $("input:checkbox.multiselect_checkbox").each(function() {
-                                this.checked = false;
-                            });
-                        }
-                    });
-
-                    $("#multiselect_submit").click(function() {
-                        var length = $("input:checkbox:checked.multiselect_checkbox").length;
-
-                        if (length > 0) {
-                            if (!confirm( "{{ 'datatables.bulk.confirmMsg'|trans({}, 'messages') }}" )) {
-                                return;
-                            }
-
-                            $.ajax({
-                                url: $("select[name='bulk_action_routes[select]']").val(),
-                                type: "POST",
-                                cache: false,
-                                data: {
-                                    'data': $("input:checkbox:checked.multiselect_checkbox", oTable.fnGetNodes()).serializeArray()
-                                },
-                                success: function(msg) {
-                                    oTable.fnDraw();
-                                },
-                                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                                    console.log(XMLHttpRequest + ' ' + textStatus + ' ' +errorThrown);
-                                }
-                            })
-                        } else {
-                            alert("{{ 'datatables.bulk.selectError'|trans({}, 'messages') }}");
-                        }
-                    });
-                {% endif %}
-
+                var oTable = $(selector).DataTable(defaults);
             });
-
-        </script>
-
-    {% endblock %}
-
-    {% block sg_datatable_render_functions %}
-
-        <script>
-
-            function render_boolean_icons(data, type, full, trueIcon, falseIcon, trueLabel, falseLabel) {
-                if ('' == trueIcon && '' == trueLabel) {
-                    trueLabel = 'true';
-                }
-
-                if ('' == falseIcon && '' == falseLabel) {
-                    falseLabel = 'false';
-                }
-
-                if (data == true) {
-                    return "<span class='" + trueIcon + "'></span> " + trueLabel;
-                } else {
-                    return "<span class='" + falseIcon + "'></span> " + falseLabel;
-                }
-            }
-
-            function render_datetime(data, type, full, localizedFormat) {
-                if (typeof data.timestamp != 'undefined') {
-                    moment.lang("{{ app.request.locale }}");
-                    return moment.unix(data.timestamp).format(localizedFormat);
-                } else {
-                    return null;
-                }
-            }
-
-            function render_timeago(data, type, full) {
-                if (typeof data.timestamp != 'undefined') {
-                    moment.lang("{{ app.request.locale }}");
-                    return moment.unix(data.timestamp).fromNow();
-                } else {
-                    return null;
-                }
-            }
 
         </script>
 

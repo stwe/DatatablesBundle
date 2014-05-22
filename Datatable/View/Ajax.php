@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\View;
 
+use Exception;
+
 /**
  * Class Ajax
  *
@@ -25,6 +27,13 @@ class Ajax
      */
     private $url;
 
+    /**
+     * Send request as POST or GET.
+     *
+     * @var string
+     */
+    private $type;
+
 
     //-------------------------------------------------
     // Ctor.
@@ -35,6 +44,8 @@ class Ajax
      */
     public function __construct()
     {
+        $this->url = "";
+        $this->type = "GET";
     }
 
 
@@ -64,5 +75,34 @@ class Ajax
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * Set Type.
+     *
+     * @param string $type
+     *
+     * @throws Exception
+     * @return $this
+     */
+    public function setType($type)
+    {
+        if ("GET" === strtoupper($type) || "POST" === strtoupper($type)) {
+            $this->type = $type;
+        } else {
+            throw new Exception("The type {$type} is not supported.");
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get Type.
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }

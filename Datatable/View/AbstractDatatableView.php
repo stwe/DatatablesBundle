@@ -16,6 +16,7 @@ use Sg\DatatablesBundle\Column\ColumnBuilder;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\Translator;
+use Exception;
 
 /**
  * Class AbstractDatatableView
@@ -53,7 +54,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     private $features;
 
     /**
-     * A Options instance.
+     * An Options instance.
      *
      * @var Options
      */
@@ -74,11 +75,18 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     private $columnBuilder;
 
     /**
-     * A Ajax instance.
+     * An Ajax instance.
      *
      * @var Ajax
      */
     private $ajax;
+
+    /**
+     * Data to use as the display data for the table.
+     *
+     * @var mixed
+     */
+    private $data;
 
     // Columns
 
@@ -128,8 +136,9 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->columnBuilder = new ColumnBuilder();
         $this->ajax = new Ajax();
 
+        $this->data = null;
         $this->individualFiltering = $defaultLayoutOptions["individual_filtering"];
-        $this->template = "SgDatatablesBundle:Datatable:datatable.html.twig";
+        $this->template = $defaultLayoutOptions["template"];
     }
 
 
@@ -149,14 +158,22 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     {
         $options = array();
 
-        $options['view_features'] = $this->features;
-        $options['view_options'] = $this->options;
-        $options['view_multiselect'] = $this->multiselect;
-        $options['view_columns'] = $this->columnBuilder->getColumns();
-        $options['view_ajax'] = $this->ajax;
+        if (true === $this->features->getServerSide()) {
+            if ("" === $this->ajax->getUrl()) {
+                throw new Exception("The ajax url parameter must be given.");
+            }
+        } else {
+            $options["view_data"] = $this->getData();
+        }
 
-        $options['view_individual_filtering'] = $this->individualFiltering;
-        $options['view_table_id'] = $this->getName();
+        $options["view_features"] = $this->features;
+        $options["view_options"] = $this->options;
+        $options["view_multiselect"] = $this->multiselect;
+        $options["view_columns"] = $this->columnBuilder->getColumns();
+        $options["view_ajax"] = $this->ajax;
+
+        $options["view_individual_filtering"] = $this->individualFiltering;
+        $options["view_table_id"] = $this->getName();
 
         return $this->templating->render($this->template, $options);
     }
@@ -169,9 +186,19 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * {@inheritdoc}
      */
-    public function getRetrieveDataMethod()
+    public function setAjax($ajax)
     {
-        return "GET";
+        $this->ajax = $ajax;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAjax()
+    {
+        return $this->ajax;
     }
 
     /**
@@ -183,198 +210,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     //-------------------------------------------------
     // Getters && Setters
     //-------------------------------------------------
-
-    /**
-     * Set Ajax.
-     *
-     * @param Ajax $ajax
-     *
-     * @return $this
-     */
-    public function setAjax($ajax)
-    {
-        $this->ajax = $ajax;
-
-        return $this;
-    }
-
-    /**
-     * Get Ajax.
-     *
-     * @return Ajax
-     */
-    public function getAjax()
-    {
-        return $this->ajax;
-    }
-
-    /**
-     * Set ColumnBuilder.
-     *
-     * @param ColumnBuilder $columnBuilder
-     *
-     * @return $this
-     */
-    public function setColumnBuilder($columnBuilder)
-    {
-        $this->columnBuilder = $columnBuilder;
-
-        return $this;
-    }
-
-    /**
-     * Get ColumnBuilder.
-     *
-     * @return ColumnBuilder
-     */
-    public function getColumnBuilder()
-    {
-        return $this->columnBuilder;
-    }
-
-    /**
-     * Set Features.
-     *
-     * @param Features $features
-     *
-     * @return $this
-     */
-    public function setFeatures($features)
-    {
-        $this->features = $features;
-
-        return $this;
-    }
-
-    /**
-     * Get Features.
-     *
-     * @return Features
-     */
-    public function getFeatures()
-    {
-        return $this->features;
-    }
-
-    /**
-     * Set IndividualFiltering.
-     *
-     * @param boolean $individualFiltering
-     *
-     * @return $this
-     */
-    public function setIndividualFiltering($individualFiltering)
-    {
-        $this->individualFiltering = $individualFiltering;
-
-        return $this;
-    }
-
-    /**
-     * Get IndividualFiltering.
-     *
-     * @return boolean
-     */
-    public function getIndividualFiltering()
-    {
-        return $this->individualFiltering;
-    }
-
-    /**
-     * Set Multiselect.
-     *
-     * @param Multiselect $multiselect
-     *
-     * @return $this
-     */
-    public function setMultiselect($multiselect)
-    {
-        $this->multiselect = $multiselect;
-
-        return $this;
-    }
-
-    /**
-     * Get Multiselect.
-     *
-     * @return Multiselect
-     */
-    public function getMultiselect()
-    {
-        return $this->multiselect;
-    }
-
-    /**
-     * Set Options.
-     *
-     * @param Options $options
-     *
-     * @return $this
-     */
-    public function setOptions($options)
-    {
-        $this->options = $options;
-
-        return $this;
-    }
-
-    /**
-     * Get Options.
-     *
-     * @return Options
-     */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
-    /**
-     * Set Router.
-     *
-     * @param RouterInterface $router
-     *
-     * @return $this
-     */
-    public function setRouter($router)
-    {
-        $this->router = $router;
-
-        return $this;
-    }
-
-    /**
-     * Get Router.
-     *
-     * @return RouterInterface
-     */
-    public function getRouter()
-    {
-        return $this->router;
-    }
-
-    /**
-     * Set Template.
-     *
-     * @param string $template
-     *
-     * @return $this
-     */
-    public function setTemplate($template)
-    {
-        $this->template = $template;
-
-        return $this;
-    }
-
-    /**
-     * Get Template.
-     *
-     * @return string
-     */
-    public function getTemplate()
-    {
-        return $this->template;
-    }
 
     /**
      * Set Templating.
@@ -422,6 +257,198 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getTranslator()
     {
         return $this->translator;
+    }
+
+    /**
+     * Set Router.
+     *
+     * @param RouterInterface $router
+     *
+     * @return $this
+     */
+    public function setRouter($router)
+    {
+        $this->router = $router;
+
+        return $this;
+    }
+
+    /**
+     * Get Router.
+     *
+     * @return RouterInterface
+     */
+    public function getRouter()
+    {
+        return $this->router;
+    }
+
+    /**
+     * Set Features.
+     *
+     * @param Features $features
+     *
+     * @return $this
+     */
+    public function setFeatures($features)
+    {
+        $this->features = $features;
+
+        return $this;
+    }
+
+    /**
+     * Get Features.
+     *
+     * @return Features
+     */
+    public function getFeatures()
+    {
+        return $this->features;
+    }
+
+    /**
+     * Set Options.
+     *
+     * @param Options $options
+     *
+     * @return $this
+     */
+    public function setOptions($options)
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
+    /**
+     * Get Options.
+     *
+     * @return Options
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * Set Multiselect.
+     *
+     * @param Multiselect $multiselect
+     *
+     * @return $this
+     */
+    public function setMultiselect($multiselect)
+    {
+        $this->multiselect = $multiselect;
+
+        return $this;
+    }
+
+    /**
+     * Get Multiselect.
+     *
+     * @return Multiselect
+     */
+    public function getMultiselect()
+    {
+        return $this->multiselect;
+    }
+
+    /**
+     * Set ColumnBuilder.
+     *
+     * @param ColumnBuilder $columnBuilder
+     *
+     * @return $this
+     */
+    public function setColumnBuilder($columnBuilder)
+    {
+        $this->columnBuilder = $columnBuilder;
+
+        return $this;
+    }
+
+    /**
+     * Get ColumnBuilder.
+     *
+     * @return ColumnBuilder
+     */
+    public function getColumnBuilder()
+    {
+        return $this->columnBuilder;
+    }
+
+    /**
+     * Set Data.
+     *
+     * @param mixed $data
+     *
+     * @return $this
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * Get Data.
+     *
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * Set IndividualFiltering.
+     *
+     * @param boolean $individualFiltering
+     *
+     * @return $this
+     */
+    public function setIndividualFiltering($individualFiltering)
+    {
+        $this->individualFiltering = $individualFiltering;
+
+        return $this;
+    }
+
+    /**
+     * Get IndividualFiltering.
+     *
+     * @return boolean
+     */
+    public function getIndividualFiltering()
+    {
+        return $this->individualFiltering;
+    }
+
+    /**
+     * Set Template.
+     *
+     * @param string $template
+     *
+     * @return $this
+     */
+    public function setTemplate($template)
+    {
+        $this->template = $template;
+
+        return $this;
+    }
+
+    /**
+     * Get Template.
+     *
+     * @return string
+     */
+    public function getTemplate()
+    {
+        return $this->template;
     }
 }
 
