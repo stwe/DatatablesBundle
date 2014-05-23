@@ -2,7 +2,7 @@
 
     {% block sg_datatable_html %}
 
-        <table cellpadding="0" cellspacing="0" border="0" id="{{ view_table_id }}" width="100%">
+        <table cellpadding="0" cellspacing="0" class="{{ view_style }}" border="0" id="{{ view_table_id }}" width="100%">
             <thead>
             </thead>
                 {% if view_individual_filtering %}
@@ -197,20 +197,20 @@
 
                 var defaults = {
                     "language": {
-                        "processing": "{{ 'datatables.datatable.sProcessing'|trans({}, 'messages') }}",
-                        "lengthMenu": "{{ 'datatables.datatable.sLengthMenu'|trans({}, 'messages') }}",
-                        "zeroRecords": "{{ 'datatables.datatable.sZeroRecords'|trans({}, 'messages') }}",
-                        "info": "{{ 'datatables.datatable.sInfo'|trans({}, 'messages') }}",
-                        "infoEmpty": "{{ 'datatables.datatable.sInfoEmpty'|trans({}, 'messages') }}",
-                        "sInfoFiltered": "{{ 'datatables.datatable.sInfoFiltered'|trans({}, 'messages') }}",
-                        "infoPostFix": "{{ 'datatables.datatable.sInfoPostFix'|trans({}, 'messages') }}",
-                        "search": "{{ 'datatables.datatable.sSearch'|trans({}, 'messages') }}",
+                        "processing": "{{ 'datatables.datatable.processing'|trans({}, 'messages') }}",
+                        "lengthMenu": "{{ 'datatables.datatable.lengthMenu'|trans({}, 'messages') }}",
+                        "zeroRecords": "{{ 'datatables.datatable.zeroRecords'|trans({}, 'messages') }}",
+                        "info": "{{ 'datatables.datatable.info'|trans({}, 'messages') }}",
+                        "infoEmpty": "{{ 'datatables.datatable.infoEmpty'|trans({}, 'messages') }}",
+                        "sInfoFiltered": "{{ 'datatables.datatable.infoFiltered'|trans({}, 'messages') }}",
+                        "infoPostFix": "{{ 'datatables.datatable.infoPostFix'|trans({}, 'messages') }}",
+                        "search": "{{ 'datatables.datatable.search'|trans({}, 'messages') }}",
                         "url": "",
                         "paginate": {
-                            "first": "{{ 'datatables.datatable.sFirst'|trans({}, 'messages') }}",
-                            "previous": "{{ 'datatables.datatable.sPrevious'|trans({}, 'messages') }}",
-                            "next": "{{ 'datatables.datatable.sNext'|trans({}, 'messages') }}",
-                            "last": "{{ 'datatables.datatable.sLast'|trans({}, 'messages') }}"
+                            "first": "{{ 'datatables.datatable.first'|trans({}, 'messages') }}",
+                            "previous": "{{ 'datatables.datatable.previous'|trans({}, 'messages') }}",
+                            "next": "{{ 'datatables.datatable.next'|trans({}, 'messages') }}",
+                            "last": "{{ 'datatables.datatable.last'|trans({}, 'messages') }}"
                         }
                     }
                 }

@@ -26,6 +26,77 @@ use Exception;
 abstract class AbstractDatatableView implements DatatableViewInterface
 {
     /**
+     * Default style.
+     *
+     * @var string
+     */
+    const BASE_STYLE = "display";
+
+    /**
+     * Default style with none of the additional feature style classes.
+     *
+     * @var string
+     */
+    const BASE_STYLE_NO_CLASSES = "";
+
+    /**
+     * Default style with row border.
+     *
+     * @var string
+     */
+    const BASE_STYLE_ROW_BORDERS = "row-border";
+
+    /**
+     * Default style with cell border.
+     *
+     * @var string
+     */
+    const BASE_STYLE_CELL_BORDERS = "cell-border";
+
+    /**
+     * Default style with hover class.
+     *
+     * @var string
+     */
+    const BASE_STYLE_HOVER = "hover";
+
+    /**
+     * Default style with order-column class.
+     *
+     * @var string
+     */
+    const BASE_STYLE_ORDER_COLUMN = "order-column";
+
+    /**
+     * Default style with stripe class.
+     *
+     * @var string
+     */
+    const BASE_STYLE_STRIPE = "stripe";
+
+    /**
+     * jQuery UI's ThemeRoller styles.
+     *
+     * @var string
+     */
+    const JQUERY_UI_STYLE = "display";
+
+    /**
+     * Bootstrap's table styling options.
+     *
+     * @var string
+     */
+    const BOOTSTRAP_3_STYLE = "table table-striped table-bordered";
+
+    /**
+     * Foundations's table styling options.
+     *
+     * @var string
+     */
+    const FOUNDATION_STYLE = "display";
+
+
+    /**
      * The Templating service.
      *
      * @var TwigEngine
@@ -88,6 +159,13 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      */
     private $data;
 
+    /**
+     * The name of style.
+     *
+     * @var string
+     */
+    private $style;
+
     // Columns
 
     // Internationalisation
@@ -137,6 +215,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->ajax = new Ajax();
 
         $this->data = null;
+        $this->style = self::BASE_STYLE;
         $this->individualFiltering = $defaultLayoutOptions["individual_filtering"];
         $this->template = $defaultLayoutOptions["template"];
     }
@@ -172,6 +251,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $options["view_columns"] = $this->columnBuilder->getColumns();
         $options["view_ajax"] = $this->ajax;
 
+        $options["view_style"] = $this->style;
         $options["view_individual_filtering"] = $this->individualFiltering;
         $options["view_table_id"] = $this->getName();
 
@@ -401,6 +481,30 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getData()
     {
         return $this->data;
+    }
+
+    /**
+     * Set Style.
+     *
+     * @param string $style
+     *
+     * @return $this
+     */
+    public function setStyle($style)
+    {
+        $this->style = $style;
+
+        return $this;
+    }
+
+    /**
+     * Get Style.
+     *
+     * @return string
+     */
+    public function getStyle()
+    {
+        return $this->style;
     }
 
     /**
