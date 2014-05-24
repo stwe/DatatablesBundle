@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Column;
+namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Exception;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -17,16 +17,29 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 /**
  * Class ColumnFactory
  *
- * @package Sg\DatatablesBundle\Column
+ * @package Sg\DatatablesBundle\Datatable\Column
  */
 class ColumnFactory implements ColumnFactoryInterface
 {
     /**
-     * A column.
+     * A ColumnInterface.
      *
      * @var ColumnInterface
      */
-    private $column = null;
+    private $column;
+
+
+    //-------------------------------------------------
+    // Ctor.
+    //-------------------------------------------------
+
+    /**
+     * Ctor.
+     */
+    public function __construct()
+    {
+        $this->column = null;
+    }
 
 
     //-------------------------------------------------
@@ -40,33 +53,35 @@ class ColumnFactory implements ColumnFactoryInterface
     {
         if (!is_string($property)) {
             if (!is_null($property)) {
-                throw new UnexpectedTypeException($property, 'A string or null expected.');
+                throw new UnexpectedTypeException($property, "A string or null expected.");
             }
         }
 
         if (!is_string($name)) {
-            throw new UnexpectedTypeException($name, 'A string is expected.');
+            throw new UnexpectedTypeException($name, "A string is expected.");
         }
 
         $name = strtolower($name);
 
+        $this->column = null;
+
         switch ($name) {
-            case 'action':
+            case "action":
                 $this->column = new ActionColumn($property);
                 break;
-            case 'array':
+            case "array":
                 $this->column = new ArrayColumn($property);
                 break;
-            case 'boolean':
+            case "boolean":
                 $this->column = new BooleanColumn($property);
                 break;
-            case 'column':
+            case "column":
                 $this->column = new Column($property);
                 break;
-            case 'datetime':
+            case "datetime":
                 $this->column = new DateTimeColumn($property);
                 break;
-            case 'timeago':
+            case "timeago":
                 $this->column = new TimeagoColumn($property);
                 break;
             default:

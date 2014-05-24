@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Column;
+namespace Sg\DatatablesBundle\Datatable\Column;
 
 /**
  * Interface ColumnFactoryInterface
  *
- * @package Sg\DatatablesBundle\Column
+ * @package Sg\DatatablesBundle\Datatable\Column
  */
 interface ColumnFactoryInterface
 {
     /**
-     * Returns a column.
+     * Returns a ColumnInterface.
      *
      * @param string $property An entity's property
      * @param string $name     The name of the column class

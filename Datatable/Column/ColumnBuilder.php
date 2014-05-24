@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Column;
+namespace Sg\DatatablesBundle\Datatable\Column;
 
 /**
  * Class ColumnBuilder
  *
- * @package Sg\DatatablesBundle\Column
+ * @package Sg\DatatablesBundle\Datatable\Column
  */
 class ColumnBuilder implements ColumnBuilderInterface
 {
