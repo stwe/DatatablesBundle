@@ -11,7 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable\View;
 
-use Sg\DatatablesBundle\Column\ColumnBuilder;
+use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\Routing\RouterInterface;
@@ -165,10 +165,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @var string
      */
     private $style;
-
-    // Columns
-
-    // Internationalisation
 
     /**
      * Enable or disable individual filtering.
