@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Column;
+namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Column\AbstractColumn as BaseColumn;
+use Sg\DatatablesBundle\Datatable\Column\AbstractColumn as BaseColumn;
 
 /**
  * Class Column
  *
- * @package Sg\DatatablesBundle\Column
+ * @package Sg\DatatablesBundle\Datatable\Column
  */
 class Column extends BaseColumn
 {
@@ -27,8 +27,8 @@ class Column extends BaseColumn
     /**
      * {@inheritdoc}
      */
-    public function getClassName()
+    public function getColumnClassName()
     {
-        return 'column';
+        return "column";
     }
 }
