@@ -1,15 +1,15 @@
 # SgDatatablesBundle
 
-This Bundle integrates the jQuery DataTables plugin into your Symfony2 application. Compatible with Doctrine ORM.
+This Bundle integrates the jQuery DataTables plugin into your Symfony2 application.
 
-The SgDatatablesBundle 0.4.2 using the DataTables 1.9 server-side processing parameters.
-It works with the new DataTables 1.10.
+Caution: This bundle is developed in sync with [DataTables repository](https://github.com/DataTables/DataTables).
 
-The next version 0.5 will no longer support DataTables 1.9.
+The stable release 0.4.2 works with DataTables 1.9.x.
+For DataTables 1.10.x, you need to use the next 0.5 release of the bundle.
 
 ## Documentation
 
-### master
+### master (unstable for next 0.5 release)
 
 [Read the Documentation for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/index.md).
 

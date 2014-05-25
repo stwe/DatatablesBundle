@@ -21,9 +21,9 @@
     "suggest": {
         "twbs/bootstrap": "v3.0.0",
         "mopa/bootstrap-bundle": "v3.0.0-beta3",
-        "components/jquery": "1.10.2",
+        "components/jquery": "1.11.0",
         "datatables/datatables": "1.10.0",
-        "moment/moment": "2.5.1"
+        "moment/moment": "2.6.0"
     },
     "autoload": {
         "psr-0": { "Sg\\DatatablesBundle": "" }

@@ -1,7 +1,6 @@
 # Getting Started With SgDatatablesBundle
 
-This Bundle integrates the jQuery DataTables plugin into your Symfony2 application.
-Compatible with Doctrine2 entities.
+This Bundle integrates the jQuery DataTables 1.10.x plugin into your Symfony2 application.
 
 ## Installation
 
@@ -10,51 +9,19 @@ Compatible with Doctrine2 entities.
 This bundle requires the following additional packages:
 
 * Symfony 2.3.x
-* jQuery 1.10.x
+* jQuery 1.x
 * DataTables 1.10.x
-* Moment.js 2.5.1
+* Moment.js 2.6.x
 * FOSJsRoutingBundle 1.5.3. ***Please follow all steps described [here](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/index.md).***
 
-This bundle suggest the installation of the following packages for a bootstrap layout:
-
-* Bootstrap 3.0.x
-* MopaBootstrapBundle 3.0 ***Please follow all steps described [here](https://github.com/phiamo/MopaBootstrapBundle).***
-
-For Bootstrap 3.0.x the `require` part of your composer.json might look like this:
+The `require` part of your composer.json might look like this:
 
 ```js
     "require": {
-        "symfony/framework-bundle": "~2.3",
-        "components/jquery": "1.10.2",
-        "datatables/datatables": "dev-master",
-        "mopa/bootstrap-bundle": "v3.0.0-beta3",
-        "twbs/bootstrap": "v3.0.0",
-        "moment/moment": "2.5.1",
-        "friendsofsymfony/jsrouting-bundle": "@stable"
-    },
-```
-
-Or use the jQuery-ui themes:
-
-```js
-    "require": {
-        "symfony/framework-bundle": "~2.3",
-        "components/jquery": "1.10.2",
-        "datatables/datatables": "dev-master",
-        "components/jqueryui": "1.10.3",
-        "moment/moment": "2.5.1",
-        "friendsofsymfony/jsrouting-bundle": "@stable"
-    },
-```
-
-Or the base layout:
-
-```js
-    "require": {
-        "symfony/framework-bundle": "~2.3",
-        "components/jquery": "1.10.2",
-        "datatables/datatables": "dev-master",
-        "moment/moment": "2.5.1",
+        "symfony/symfony": "2.3.*",
+        "components/jquery": "1.11.0",
+        "datatables/datatables": "1.10.0",
+        "moment/moment": "2.6.0",
         "friendsofsymfony/jsrouting-bundle": "@stable"
     },
 ```
@@ -90,7 +57,7 @@ Now tell composer to download the bundle by running the command:
 $ php composer.phar update sg/datatablesbundle
 ```
 
-Or get the latest versions of all bundles:
+Or get all bundles:
 
 ``` bash
 $ php composer.phar update
@@ -115,7 +82,11 @@ public function registerBundles()
 
 ### Step 3: Assetic Configuration
 
-A config example:
+***This is a config example from my Win7 system with Bootstrap3 and MopaBootstrapBundle:***
+
+For Bootstrap 3 it is recommended to install the [MopaBootstrapBundle](https://github.com/phiamo/MopaBootstrapBundle).
+
+#### config.yml
 
 ``` yaml
 # app/config/config.yml
@@ -123,11 +94,10 @@ A config example:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    java: /usr/bin/java
+    java: C:\Program Files\Java\jre7\bin\java.exe
     filters:
-        less:
-            node: /usr/bin/node
-            node_paths: [/usr/lib/nodejs, /usr/local/lib/node_modules]
+        lessphp:
+            file: %kernel.root_dir%/../vendor/leafo/lessphp/lessc.inc.php
             apply_to: "\.less$"
         cssrewrite: ~
         cssembed:
@@ -136,13 +106,26 @@ assetic:
             jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.8.jar
         yui_js:
             jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.8.jar
+    assets:
+        fonts_glyphicons_eot:
+            inputs:
+               - "%kernel.root_dir%/../vendor/twbs/bootstrap/fonts/glyphicons-halflings-regular.eot"
+            output: "fonts/glyphicons-halflings-regular.eot"
+        fonts_glyphicons_svg:
+            inputs:
+                - "%kernel.root_dir%/../vendor/twbs/bootstrap/fonts/glyphicons-halflings-regular.svg"
+            output: "fonts/glyphicons-halflings-regular.svg"
+        fonts_glyphicons_ttf:
+            inputs:
+                - "%kernel.root_dir%/../vendor/twbs/bootstrap/fonts/glyphicons-halflings-regular.ttf"
+            output: "fonts/glyphicons-halflings-regular.ttf"
+        fonts_glyphicons_woff:
+            inputs:
+                - "%kernel.root_dir%/../vendor/twbs/bootstrap/fonts/glyphicons-halflings-regular.woff"
+            output: "fonts/glyphicons-halflings-regular.woff"
 ```
 
-#### Bootstrap 3.0.x
-
-***For Bootstrap 3.0.x it is recommended to install the [MopaBootstrapBundle](https://github.com/phiamo/MopaBootstrapBundle).***
-
-A layout.html.twig example:
+#### layout.html.twig
 
 ``` html
 {% extends 'MopaBootstrapBundle::base.html.twig' %}
@@ -207,121 +190,7 @@ A layout.html.twig example:
 {% endblock foot_script_assetic %}
 ```
 
-#### jQuery-ui themes
-
-A layout.html.twig example:
-
-``` html
-{% extends '::base.html.twig' %}
-
-{% block title %}BlogBundle{% endblock %}
-
-{% block stylesheets %}
-
-    {% stylesheets
-        '%kernel.root_dir%/../vendor/components/jqueryui/themes/smoothness/jquery-ui.css'
-        '%kernel.root_dir%/../vendor/datatables/datatables/media/css/jquery.dataTables_themeroller.css'
-        output = 'css/styles.css'
-        filter = 'cssembed, ?yui_css'
-    %}
-        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
-    {% endstylesheets %}
-
-{% endblock %}
-
-{% block body %}
-    {% block head_script %}
-
-        {% javascripts
-            '%kernel.root_dir%/../vendor/components/jquery/jquery.js'
-            '%kernel.root_dir%/../vendor/components/jqueryui/ui/jquery-ui.js'
-            output = 'js/jquery.js'
-            filter = '?yui_js'
-        %}
-            <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-
-    {% endblock head_script %}
-
-    {% block content %}
-    {% endblock %}
-
-    {% block foot_script %}
-
-        {% javascripts
-            '@FOSJsRoutingBundle/Resources/public/js/router.js'
-            '%kernel.root_dir%/../vendor/datatables/datatables/media/js/jquery.dataTables.js'
-            '%kernel.root_dir%/../vendor/moment/moment/moment.js'
-            '%kernel.root_dir%/../vendor/moment/moment/lang/de.js'
-            output = 'js/scripts.js'
-            filter = '?yui_js'
-        %}
-            <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-
-        <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-
-    {% endblock %}
-{% endblock %}
-```
-
-#### DataTables base layout
-
-A layout.html.twig example:
-
-``` html
-{% extends '::base.html.twig' %}
-
-{% block title %}BlogBundle{% endblock %}
-
-{% block stylesheets %}
-
-    {% stylesheets
-        '%kernel.root_dir%/../vendor/datatables/datatables/media/css/jquery.dataTables.css'
-        output = 'css/styles.css'
-        filter = 'cssembed, ?yui_css'
-    %}
-        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
-    {% endstylesheets %}
-
-{% endblock %}
-
-{% block body %}
-    {% block head_script %}
-
-        {% javascripts
-            '%kernel.root_dir%/../vendor/components/jquery/jquery.js'
-            output = 'js/jquery.js'
-            filter = '?yui_js'
-        %}
-            <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-
-    {% endblock head_script %}
-
-    {% block content %}
-    {% endblock %}
-
-    {% block foot_script %}
-
-        {% javascripts
-            '@FOSJsRoutingBundle/Resources/public/js/router.js'
-            '%kernel.root_dir%/../vendor/datatables/datatables/media/js/jquery.dataTables.js'
-            '%kernel.root_dir%/../vendor/moment/moment/moment.js'
-            '%kernel.root_dir%/../vendor/moment/moment/lang/de.js'
-            output = 'js/scripts.js'
-            filter = '?yui_js'
-        %}
-            <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-
-        <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-
-    {% endblock %}
-{% endblock %}
-```
-
-## Example
+## A full example with the most used functions
 
 - [Example](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
 

@@ -7,32 +7,34 @@ Represents the most basic column, including many-to-one and one-to-one relations
 ### Options
 
 - searchable
-- sortable
+- orderable
 - visible
 - title
 - render
 - class
 - default
 - width
+- type
 
 ### Example
 
 ``` php
 $this->columnBuilder
-    ->add('id', 'column', array(
-            'title' => 'Id',
-            'searchable' => false
+    ->add("id", "column", array(
+            "title" => "Id",
+            "searchable" => false
         ))
-    ->add('title', 'column', array(
-            'searchable' => true,     // default
-            'sortable' => true,       // default
-            'visible' => true,        // default
-//           'title' => 'Title',     // default = null
-            'title' => $this->getTranslator()->trans('test.title', array(), 'msg'),
-            'render' => null,         // default
-            'class' => 'text-center', // default = ''
-            'default' => null,        // default
-            'width' => null           // default
+    ->add("title", "column", array(
+            "searchable" => true,     // default
+            "orderable" => true,      // default
+            "visible" => true,        // default
+//          "title" => "Title",       // default = ""
+            "title" => $this->getTranslator()->trans("test.title", array(), "msg"),
+            "render" => null,         // default
+            "class" => "text-center", // default = ""
+            "default" => "",          // default
+            "width" => ""             // default
+            "type" => ""              // default
         ));
 ```
 
@@ -40,11 +42,11 @@ For many-to-one associations:
 
 ``` php
 $this->columnBuilder
-    ->add('createdBy.username', 'column', array(
-            'title' => 'CreatedBy'
+    ->add("createdBy.username", "column", array(
+            "title" => "CreatedBy"
         ))
-    ->add('updatedBy.username', 'column', array(
-            'title' => 'UpdatedBy'
+    ->add("updatedBy.username", "column", array(
+            "title" => "UpdatedBy"
         ));
 ```
 
@@ -67,32 +69,32 @@ all options of `column` and additionally:
 
 ``` php
 $this->columnBuilder
-    ->add(null, 'action', array(
-            'route' => 'post_edit',
-            'parameters' => array(
-                'id' => 'id'
+    ->add(null, "action", array(
+            "route" => "post_edit",
+            "parameters" => array(
+                "id" => "id"
             ),
-            'renderif' => array(
-                'visible' // if this attribute is not NULL/FALSE
+            "renderif" => array(
+                "visible" // if this attribute is not NULL/FALSE
             ),
-            'icon' => BootstrapDatatableTheme::DEFAULT_EDIT_ICON,
-            'attributes' => array(
-                'rel' => 'tooltip',
-                'title' => 'Edit User',
-                'class' => 'btn btn-danger btn-xs'
+            "icon" => BootstrapDatatableTheme::DEFAULT_EDIT_ICON,
+            "attributes" => array(
+                "rel" => "tooltip",
+                "title" => "Edit User",
+                "class" => "btn btn-danger btn-xs"
             ),
         ))
-    ->add(null, 'action', array(
-            'route' => 'post_show',
-            'parameters' => array(
-                'id' => 'id'
+    ->add(null, "action", array(
+            "route" => "post_show",
+            "parameters" => array(
+                "id" => "id"
             ),
-//           'label' => 'Show',
-            'label' => $this->getTranslator()->trans('test.show', array(), 'msg'),
-            'attributes' => array(
-                'rel' => 'tooltip',
-                'title' => 'Show User',
-                'class' => 'btn btn-primary btn-xs'
+//          "label" => "Show",
+            "label" => $this->getTranslator()->trans("test.show", array(), "msg"),
+            "attributes" => array(
+                "rel" => "tooltip",
+                "title" => "Show User",
+                "class" => "btn btn-primary btn-xs"
             )
         ));
 ```
@@ -109,8 +111,8 @@ All options of `column`.
 
 ``` php
 $this->columnBuilder
-    ->add('tags.name', 'array', array(
-            'title' => 'Tags'
+    ->add("tags.name", "array", array(
+            "title" => "Tags"
         ));
 ```
 
@@ -131,12 +133,12 @@ All options of `column` and additionally:
 
 ``` php
 $this->columnBuilder
-    ->add('visible', 'boolean', array(
-            'title' => 'Visible',
-            'true_icon' => BootstrapDatatableTheme::DEFAULT_TRUE_ICON,
-            'false_icon' => BootstrapDatatableTheme::DEFAULT_FALSE_ICON,
-            'true_label' => 'yes',
-            'false_label' => 'no'
+    ->add("visible", "boolean", array(
+            "title" => "Visible",
+            "true_icon" => BootstrapDatatableTheme::DEFAULT_TRUE_ICON,
+            "false_icon" => BootstrapDatatableTheme::DEFAULT_FALSE_ICON,
+            "true_label" => "yes",
+            "false_label" => "no"
         ));
 ```
 
@@ -154,9 +156,9 @@ All options of `column` and additionally:
 
 ``` php
 $this->columnBuilder
-    ->add('createdAt', 'datetime', array(
-            'title' => 'Created',
-            'format' => 'LLL'         // default = 'lll'
+    ->add("createdAt", "datetime", array(
+            "title" => "Created",
+            "format" => "LLL"         // default = "lll"
         ));
 ```
 
@@ -172,7 +174,7 @@ All options of `column`.
 
 ``` php
 $this->columnBuilder
-    ->add('createdAt', 'timeago', array(
-            'title' => 'Created'
+    ->add("createdAt", "timeago", array(
+            "title" => "Created"
         ));
 ```

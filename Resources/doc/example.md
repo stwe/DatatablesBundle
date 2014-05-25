@@ -1,9 +1,5 @@
 # Examples
 
-## Screenshot
-
-<div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/doc/bs3.jpg"></div>
-
 ## Server side example
 
 ### Step 1: Create your Datatables class
@@ -14,7 +10,6 @@
 namespace Sg\BlogBundle\Datatables;
 
 use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
-use Sg\DatatablesBundle\Datatable\View\BootstrapDatatableTheme;
 
 /**
  * Class PostDatatable
@@ -32,95 +27,40 @@ class PostDatatable extends AbstractDatatableView
         // Datatable
         //-------------------------------------------------
 
-        $this->setBServerSide(true);                        // default
-        $this->setSAjaxSource($this->getRouter()->generate('post_results'));
-        $this->setBProcessing(true);                        // default
-        $this->setIDisplayLength(10);                       // default
-        $this->setIndividualFiltering(true);                // default = false
+        $this->getFeatures()->setServerSide(true);
+        $this->getFeatures()->setProcessing(true);
 
-        $this->setTheme(BootstrapDatatableTheme::getTheme());
-//        $this->setTheme(JqueryUiDatatableTheme::getTheme());
-//        $this->setTheme(BaseDatatableTheme::getTheme());
+        $this->getAjax()->setUrl($this->getRouter()->generate('post_results'));
 
-        // Bootstrap theme option: put your datatable in a box
-        $this->getTheme()->setPanel();
-
-        $this->multiselect->setEnabled(true);               // default = false
-        $this->multiselect->setPosition('last');
-        $this->multiselect->addAction('Hide', 'post_bulk_disable');
-        $this->multiselect->addAction('Delete', 'post_bulk_delete');
+        $this->setStyle(self::BOOTSTRAP_3_STYLE);
 
 
         //-------------------------------------------------
         // Columns
         //-------------------------------------------------
 
-        $this->columnBuilder
+        $this->getColumnBuilder()
             ->add('id', 'column', array(
                     'title' => 'Id',
                     'searchable' => false
                 ))
-            ->add('title', 'column', array(
-                    'searchable' => true,     // default
-                    'sortable' => true,       // default
-                    'visible' => true,        // default
-//                    'title' => 'Title',     // default = null
-                    'title' => $this->getTranslator()->trans('test.title', array(), 'msg'),
-                    'render' => null,         // default
-                    'class' => 'text-center', // default = ''
-                    'default' => null,        // default
-                    'width' => null           // default
-                ))
-            ->add('visible', 'boolean', array(
-                    'title' => 'Visible',
-                    'true_icon' => BootstrapDatatableTheme::DEFAULT_TRUE_ICON,
-                    'false_icon' => BootstrapDatatableTheme::DEFAULT_FALSE_ICON,
-                    'true_label' => 'yes',
-                    'false_label' => 'no'
-                ))
-            ->add('createdAt', 'timeago', array(
-                    'title' => 'Created'
-                ))
-//            ->add('createdAt', 'datetime', array(
-//                    'title' => 'Created'
-//                ))
             ->add('createdBy.username', 'column', array(
                     'title' => 'CreatedBy'
                 ))
             ->add('updatedBy.username', 'column', array(
                     'title' => 'UpdatedBy'
                 ))
-            ->add('tags.name', 'array', array(
-                    'title' => 'Tags'
-                ))
-            ->add(null, 'action', array(
-                    'route' => 'post_edit',
-                    'parameters' => array(
-                        'id' => 'id'
-                    ),
-                    'renderif' => array(
-                        'visible' // if this attribute is not NULL/FALSE
-                    ),
-                    'icon' => BootstrapDatatableTheme::DEFAULT_EDIT_ICON,
-                    'attributes' => array(
-                        'rel' => 'tooltip',
-                        'title' => 'Edit User',
-                        'class' => 'btn btn-danger btn-xs'
-                    ),
-                ))
-            ->add(null, 'action', array(
-                    'route' => 'post_show',
-                    'parameters' => array(
-                        'id' => 'id'
-                    ),
-//                    'label' => 'Show',
-                    'label' => $this->getTranslator()->trans('test.show', array(), 'msg'),
-                    'attributes' => array(
-                        'rel' => 'tooltip',
-                        'title' => 'Show User',
-                        'class' => 'btn btn-primary btn-xs'
-                    )
+            ->add('title', 'column', array(
+                    'title' => $this->getTranslator()->trans('test.title', array(), 'msg')
                 ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEntity()
+    {
+        return 'SgBlogBundle:Post';
     }
 
     /**
@@ -185,72 +125,8 @@ public function indexAction()
  */
 public function indexResultsAction()
 {
-    $datatable = $this->get('sg_datatables.datatable')->getDatatable('SgBlogBundle:Post');
-
-    return $datatable->getResults();
+    return $this->get("sg_datatables.datatable")->getResponse($this->get("sg_datatables.post"));
 }
-
-/**
- * @Route("/bulk/delete", name="post_bulk_delete")
- * @Method("POST")
- *
- * @return Response
- */
-public function bulkDeleteAction()
-{
-    $request = $this->getRequest();
-    $isAjax = $request->isXmlHttpRequest();
-
-    if ($isAjax) {
-        $choices = $request->request->get('data');
-
-        $em = $this->getDoctrine()->getManager();
-        $repository = $em->getRepository('SgBlogBundle:Post');
-
-        foreach ($choices as $choice) {
-            $entity = $repository->find($choice['value']);
-            $em->remove($entity);
-        }
-
-        $em->flush();
-
-        return new Response('This is ajax response.');
-    }
-
-    return new Response('This is not ajax.', 400);
-}
-
-/**
- * @Route("/bulk/disable", name="post_bulk_disable")
- * @Method("POST")
- *
- * @return Response
- */
-public function bulkDisableAction()
-{
-    $request = $this->getRequest();
-    $isAjax = $request->isXmlHttpRequest();
-
-    if ($isAjax) {
-        $choices = $request->request->get('data');
-
-        $em = $this->getDoctrine()->getManager();
-        $repository = $em->getRepository('SgBlogBundle:Post');
-
-        foreach ($choices as $choice) {
-            $entity = $repository->find($choice['value']);
-            $entity->setVisible(false);
-            $em->persist($entity);
-        }
-
-        $em->flush();
-
-        return new Response('This is ajax response.');
-    }
-
-    return new Response('This is not ajax.', 400);
-}
-```
 
 ## Non server side example
 
@@ -278,22 +154,14 @@ class PostDatatable extends AbstractDatatableView
      */
     public function buildDatatableView()
     {
-        $this->setBServerSide(false);
+        $this->getFeatures()->setServerSide(false);
 
         // ...
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'post_datatable';
     }
 }
 ```
 
-### The controller actions
+### The controller action
 
 ```php
 /**
@@ -324,7 +192,7 @@ public function indexAction()
 
     $postDatatable = $this->get('sg_datatables.post');
     $postDatatable->buildDatatableView();
-    $postDatatable->setAaData($serializer->serialize($results, 'json'));
+    $postDatatable->setData($serializer->serialize($results, 'json'));
 
     return array(
         'datatable' => $postDatatable,
