@@ -9,8 +9,8 @@
                     <tfoot>
                         {% for column in view_columns %}
                             <th>
-                                {% if column.bSearchable %}
-                                    <input type="text" placeholder="{{ column.sTitle }}" />
+                                {% if column.searchable %}
+                                    <input type="text" placeholder="{{ column.title }}" />
                                 {% else %}
                                     <input type="hidden" />
                                 {% endif %}
@@ -218,7 +218,7 @@
                 var columns = {
                     "columns": [
                         {% for column in view_columns %}
-                            {% include "SgDatatablesBundle:Column:" ~ column.getClassName ~ ".html.twig" %}
+                            {% include "SgDatatablesBundle:Column:" ~ column.getColumnClassName ~ ".html.twig" %}
                         {% endfor %}
                     ]
                 }

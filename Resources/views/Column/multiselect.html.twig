@@ -1,15 +1,15 @@
 {% extends 'SgDatatablesBundle:Column:column.html.twig' %}
 
 {% block common %}
-    "bSearchable": false,
-    "bSortable": false,
-    "bVisible": true,
-    "sTitle": "<input type='checkbox' name='multiselect_checkall' class='multiselect_checkall' />",
+    "searchable": false,
+    "orderable": false,
+    "visible": true,
+    "title": "<input type='checkbox' name='multiselect_checkall' class='multiselect_checkall' />",
 {% endblock %}
 
 {% block data %}
-    "mData": null,
-    "mRender": function(data, type, full) {
+    "data": null,
+    "render": function(data, type, full) {
         var first;
         for (var i in full) {
             if (full.hasOwnProperty(i) && typeof(i) !== 'function') {

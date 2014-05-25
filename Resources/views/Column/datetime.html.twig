@@ -1,8 +1,8 @@
 {% extends 'SgDatatablesBundle:Column:column.html.twig' %}
 
 {% block data %}
-    "mData": "{{ column.mData }}",
-    "mRender": function(data, type, full) {
-        return {{ column.mRender }}(data, type, full, "{{ column.localizedFormat }}");
+    "data": "{{ column.data }}",
+    "render": function(data, type, full) {
+        return {{ column.render }}(data, type, full, "{{ column.localizedFormat }}");
     },
 {% endblock %}

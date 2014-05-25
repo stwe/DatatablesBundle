@@ -9,44 +9,44 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Column;
+namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Column\AbstractColumn as BaseColumn;
+use Sg\DatatablesBundle\Datatable\Column\AbstractColumn as BaseColumn;
 
 use Exception;
 
 /**
  * Class BooleanColumn
  *
- * @package Sg\DatatablesBundle\Column
+ * @package Sg\DatatablesBundle\Datatable\Column
  */
 class BooleanColumn extends BaseColumn
 {
     /**
      * The icon for a value that is true.
      *
-     * @var null|string
+     * @var string
      */
     private $trueIcon;
 
     /**
      * The icon for a value that is false.
      *
-     * @var null|string
+     * @var string
      */
     private $falseIcon;
 
     /**
      * The label for a value that is true.
      *
-     * @var null|string
+     * @var string
      */
     private $trueLabel;
 
     /**
      * The label for a value that is false.
      *
-     * @var null|string
+     * @var string
      */
     private $falseLabel;
 
@@ -79,9 +79,9 @@ class BooleanColumn extends BaseColumn
     /**
      * {@inheritdoc}
      */
-    public function getClassName()
+    public function getColumnClassName()
     {
-        return 'boolean';
+        return "boolean";
     }
 
     /**
@@ -89,25 +89,25 @@ class BooleanColumn extends BaseColumn
      */
     public function setOptions(array $options)
     {
-        if (array_key_exists('render', $options)) {
-            if (null == $options['render']) {
-                throw new Exception('The render option can not be null.');
+        if (array_key_exists("render", $options)) {
+            if (null == $options["render"]) {
+                throw new Exception("The render option can not be null.");
             }
         }
 
         parent::setOptions($options);
 
-        if (array_key_exists('true_icon', $options)) {
-            $this->setTrueIcon($options['true_icon']);
+        if (array_key_exists("true_icon", $options)) {
+            $this->setTrueIcon($options["true_icon"]);
         }
-        if (array_key_exists('false_icon', $options)) {
-            $this->setFalseIcon($options['false_icon']);
+        if (array_key_exists("false_icon", $options)) {
+            $this->setFalseIcon($options["false_icon"]);
         }
-        if (array_key_exists('true_label', $options)) {
-            $this->setTrueLabel($options['true_label']);
+        if (array_key_exists("true_label", $options)) {
+            $this->setTrueLabel($options["true_label"]);
         }
-        if (array_key_exists('false_label', $options)) {
-            $this->setFalseLabel($options['false_label']);
+        if (array_key_exists("false_label", $options)) {
+            $this->setFalseLabel($options["false_label"]);
         }
     }
 
@@ -118,12 +118,12 @@ class BooleanColumn extends BaseColumn
     {
         parent::setDefaults();
 
-        $this->setMRender('render_boolean_icons');
+        $this->setRender("render_boolean_icons");
 
-        $this->setTrueIcon(null);
-        $this->setFalseIcon(null);
-        $this->setTrueLabel(null);
-        $this->setFalseLabel(null);
+        $this->setTrueIcon("");
+        $this->setFalseIcon("");
+        $this->setTrueLabel("");
+        $this->setFalseLabel("");
     }
 
 
@@ -134,7 +134,7 @@ class BooleanColumn extends BaseColumn
     /**
      * Set false icon.
      *
-     * @param null|string $falseIcon
+     * @param string $falseIcon
      *
      * @return $this
      */
@@ -148,7 +148,7 @@ class BooleanColumn extends BaseColumn
     /**
      * Get false icon.
      *
-     * @return null|string
+     * @return string
      */
     public function getFalseIcon()
     {
@@ -158,7 +158,7 @@ class BooleanColumn extends BaseColumn
     /**
      * Set true icon.
      *
-     * @param null|string $trueIcon
+     * @param string $trueIcon
      *
      * @return $this
      */
@@ -172,7 +172,7 @@ class BooleanColumn extends BaseColumn
     /**
      * Get true icon.
      *
-     * @return null|string
+     * @return string
      */
     public function getTrueIcon()
     {
@@ -182,7 +182,7 @@ class BooleanColumn extends BaseColumn
     /**
      * Set false label.
      *
-     * @param null|string $falseLabel
+     * @param string $falseLabel
      *
      * @return $this
      */
@@ -196,7 +196,7 @@ class BooleanColumn extends BaseColumn
     /**
      * Get false label.
      *
-     * @return null|string
+     * @return string
      */
     public function getFalseLabel()
     {
@@ -206,7 +206,7 @@ class BooleanColumn extends BaseColumn
     /**
      * Set true label.
      *
-     * @param null|string $trueLabel
+     * @param string $trueLabel
      *
      * @return $this
      */
@@ -220,7 +220,7 @@ class BooleanColumn extends BaseColumn
     /**
      * Get false label.
      *
-     * @return null|string
+     * @return string
      */
     public function getTrueLabel()
     {

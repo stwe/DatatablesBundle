@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Column;
+namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Column\AbstractColumn as BaseColumn;
+use Sg\DatatablesBundle\Datatable\Column\AbstractColumn as BaseColumn;
 
 use Exception;
 
 /**
  * Class ArrayColumn
  *
- * @package Sg\DatatablesBundle\Column
+ * @package Sg\DatatablesBundle\Datatable\Column
  */
 class ArrayColumn extends BaseColumn
 {
@@ -50,9 +50,9 @@ class ArrayColumn extends BaseColumn
     /**
      * {@inheritdoc}
      */
-    public function getClassName()
+    public function getColumnClassName()
     {
-        return 'array';
+        return "array";
     }
 
     /**
@@ -69,10 +69,10 @@ class ArrayColumn extends BaseColumn
             $fieldsArray = explode('.', $property);
             $prev = array_slice($fieldsArray, count($fieldsArray) - 2, 1);
             $last = array_slice($fieldsArray, count($fieldsArray) - 1, 1);
-            $this->setMData($prev[0]);
-            $this->setMRender('[, ].' . $last[0]);
+            $this->setData($prev[0]);
+            $this->setRender('[, ].' . $last[0]);
         } else {
-            throw new Exception('An association is expected.');
+            throw new Exception("An association is expected.");
         }
     }
 }

@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Column;
+namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Column\AbstractColumn as BaseColumn;
+use Sg\DatatablesBundle\Datatable\Column\AbstractColumn as BaseColumn;
 
 use Exception;
 
 /**
  * Class DateTimeColumn
  *
- * @package Sg\DatatablesBundle\Column
+ * @package Sg\DatatablesBundle\Datatable\Column
  */
 class DateTimeColumn extends BaseColumn
 {
@@ -61,9 +61,9 @@ class DateTimeColumn extends BaseColumn
     /**
      * {@inheritdoc}
      */
-    public function getClassName()
+    public function getColumnClassName()
     {
-        return 'datetime';
+        return "datetime";
     }
 
     /**
@@ -71,17 +71,17 @@ class DateTimeColumn extends BaseColumn
      */
     public function setOptions(array $options)
     {
-        if (array_key_exists('render', $options)) {
-            if (null == $options['render']) {
-                throw new Exception('The render option can not be null.');
+        if (array_key_exists("render", $options)) {
+            if (null == $options["render"]) {
+                throw new Exception("The render option can not be null.");
             }
         }
 
-        if (array_key_exists('format', $options)) {
-            if (null == $options['format']) {
-                throw new Exception('The format option can not be null.');
+        if (array_key_exists("format", $options)) {
+            if (null == $options["format"]) {
+                throw new Exception("The format option can not be null.");
             } else {
-                $this->setLocalizedFormat($options['format']);
+                $this->setLocalizedFormat($options["format"]);
             }
         }
 
@@ -95,8 +95,8 @@ class DateTimeColumn extends BaseColumn
     {
         parent::setDefaults();
 
-        $this->setMRender('render_datetime');
-        $this->setLocalizedFormat('lll');
+        $this->setRender("render_datetime");
+        $this->setLocalizedFormat("lll");
     }
 
 
@@ -114,7 +114,7 @@ class DateTimeColumn extends BaseColumn
      */
     public function setLocalizedFormat($localizedFormat)
     {
-        $localizedFormats = array('LT', 'L', 'l', 'LL', 'll', 'LLL', 'lll', 'LLLL', 'llll');
+        $localizedFormats = array("LT", "L", "l", "LL", "ll", "LLL", "lll", "LLLL", "llll");
 
         if (in_array($localizedFormat, $localizedFormats, true)) {
             $this->localizedFormat = $localizedFormat;

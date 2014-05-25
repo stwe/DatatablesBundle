@@ -9,23 +9,23 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Column;
+namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Column\AbstractColumn as BaseColumn;
+use Sg\DatatablesBundle\Datatable\Column\AbstractColumn as BaseColumn;
 
 use Exception;
 
 /**
  * Class ActionColumn
  *
- * @package Sg\DatatablesBundle\Column
+ * @package Sg\DatatablesBundle\Datatable\Column
  */
 class ActionColumn extends BaseColumn
 {
     /**
      * The action route.
      *
-     * @var null|string
+     * @var string
      */
     private $route;
 
@@ -39,14 +39,14 @@ class ActionColumn extends BaseColumn
     /**
      * An action icon.
      *
-     * @var null|string
+     * @var string
      */
     private $icon;
 
     /**
      * An action label.
      *
-     * @var null|string
+     * @var string
      */
     private $label;
 
@@ -93,9 +93,9 @@ class ActionColumn extends BaseColumn
     /**
      * {@inheritdoc}
      */
-    public function getClassName()
+    public function getColumnClassName()
     {
-        return 'action';
+        return "action";
     }
 
     /**
@@ -105,23 +105,23 @@ class ActionColumn extends BaseColumn
     {
         parent::setOptions($options);
 
-        if (array_key_exists('route', $options)) {
-            $this->setRoute($options['route']);
+        if (array_key_exists("route", $options)) {
+            $this->setRoute($options["route"]);
         }
-        if (array_key_exists('parameters', $options)) {
-            $this->setRouteParameters($options['parameters']);
+        if (array_key_exists("parameters", $options)) {
+            $this->setRouteParameters($options["parameters"]);
         }
-        if (array_key_exists('icon', $options)) {
-            $this->setIcon($options['icon']);
+        if (array_key_exists("icon", $options)) {
+            $this->setIcon($options["icon"]);
         }
-        if (array_key_exists('label', $options)) {
-            $this->setLabel($options['label']);
+        if (array_key_exists("label", $options)) {
+            $this->setLabel($options["label"]);
         }
-        if (array_key_exists('attributes', $options)) {
-            $this->setAttributes($options['attributes']);
+        if (array_key_exists("attributes", $options)) {
+            $this->setAttributes($options["attributes"]);
         }
-        if (array_key_exists('renderif', $options)) {
-            $this->setRenderConditions($options['renderif']);
+        if (array_key_exists("renderif", $options)) {
+            $this->setRenderConditions($options["renderif"]);
         }
     }
 
@@ -132,13 +132,13 @@ class ActionColumn extends BaseColumn
     {
         parent::setDefaults();
 
-        $this->setBSearchable(false);
-        $this->setBSortable(false);
+        $this->setSearchable(false);
+        $this->setOrderable(false);
 
-        $this->setRoute(null);
+        $this->setRoute("");
         $this->setRouteParameters(array());
-        $this->setIcon(null);
-        $this->setLabel(null);
+        $this->setIcon("");
+        $this->setLabel("");
         $this->setAttributes(array());
         $this->setRenderConditions(array());
     }
@@ -151,7 +151,7 @@ class ActionColumn extends BaseColumn
     /**
      * Set route.
      *
-     * @param null|string $route
+     * @param string $route
      *
      * @return $this
      */
@@ -165,7 +165,7 @@ class ActionColumn extends BaseColumn
     /**
      * Get route.
      *
-     * @return null|string
+     * @return string
      */
     public function getRoute()
     {
@@ -199,7 +199,7 @@ class ActionColumn extends BaseColumn
     /**
      * Set icon.
      *
-     * @param null|string $icon
+     * @param string $icon
      *
      * @return $this
      */
@@ -213,7 +213,7 @@ class ActionColumn extends BaseColumn
     /**
      * Get icon.
      *
-     * @return null|string
+     * @return string
      */
     public function getIcon()
     {
@@ -223,7 +223,7 @@ class ActionColumn extends BaseColumn
     /**
      * Set label.
      *
-     * @param null|string $label
+     * @param string $label
      *
      * @return $this
      */
@@ -237,7 +237,7 @@ class ActionColumn extends BaseColumn
     /**
      * Get label.
      *
-     * @return null|string
+     * @return string
      */
     public function getLabel()
     {

@@ -1,39 +1,39 @@
 {
     {% block common %}
-        {% if column.bSearchable %}
-            "bSearchable": true,
+        {% if column.searchable %}
+            "searchable": true,
         {% else %}
-            "bSearchable": false,
+            "searchable": false,
         {% endif %}
 
-        {% if column.bSortable %}
-            "bSortable": true,
+        {% if column.orderable %}
+            "orderable": true,
         {% else %}
-            "bSortable": false,
+            "orderable": false,
         {% endif %}
 
-        {% if column.bVisible %}
-            "bVisible": true,
+        {% if column.visible %}
+            "visible": true,
         {% else %}
-            "bVisible": false,
+            "visible": false,
         {% endif %}
 
-        "sTitle": "{{ column.sTitle }}",
-        "sClass": "{{ column.sClass }}",
-        "sDefaultContent": "{{ column.sDefaultContent }}",
-        "sWidth": "{{ column.sWidth }}",
+        "title": "{{ column.title }}",
+        "className": "{{ column.className }}",
+        "defaultContent": "{{ column.defaultContent }}",
+        "width": "{{ column.width }}",
     {% endblock %}
 
     {% block data %}
-        {% if column.mData %}
-            "mData": "{{ column.mData }}",
+        {% if column.data %}
+            "data": "{{ column.data }}",
         {% else %}
-            "mData": null,
+            "data": null,
         {% endif %}
 
-        {% if column.mRender %}
-            "mRender": function(data, type, full) {
-                return {{ column.mRender }}(data, type, full);
+        {% if column.render %}
+            "render": function(data, type, full) {
+                return {{ column.render }}(data, type, full);
             },
         {% endif %}
     {% endblock %}

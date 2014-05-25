@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Column;
+namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Column\AbstractColumn as BaseColumn;
+use Sg\DatatablesBundle\Datatable\Column\AbstractColumn as BaseColumn;
 
 use Exception;
 
 /**
  * Class TimeagoColumn
  *
- * @package Sg\DatatablesBundle\Column
+ * @package Sg\DatatablesBundle\Datatable\Column
  */
 class TimeagoColumn extends BaseColumn
 {
@@ -50,9 +50,9 @@ class TimeagoColumn extends BaseColumn
     /**
      * {@inheritdoc}
      */
-    public function getClassName()
+    public function getColumnClassName()
     {
-        return 'timeago';
+        return "timeago";
     }
 
     /**
@@ -60,9 +60,9 @@ class TimeagoColumn extends BaseColumn
      */
     public function setOptions(array $options)
     {
-        if (array_key_exists('render', $options)) {
-            if (null == $options['render']) {
-                throw new Exception('The render option can not be null.');
+        if (array_key_exists("render", $options)) {
+            if (null == $options["render"]) {
+                throw new Exception("The render option can not be null.");
             }
         }
 
@@ -76,6 +76,6 @@ class TimeagoColumn extends BaseColumn
     {
         parent::setDefaults();
 
-        $this->setMRender('render_timeago');
+        $this->setRender("render_timeago");
     }
 }
