@@ -9,7 +9,7 @@ For DataTables 1.10.x, you need to use the next 0.5 release of the bundle.
 
 ## Documentation
 
-### master (unstable for next 0.5 release)
+### master (unstable for the next release)
 
 [Read the Documentation for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/index.md).
 
