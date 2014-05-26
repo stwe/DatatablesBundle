@@ -27,10 +27,17 @@ class PostDatatable extends AbstractDatatableView
         // Datatable
         //-------------------------------------------------
 
-        $this->getFeatures()->setServerSide(true);
-        $this->getFeatures()->setProcessing(true);
+        $this->getFeatures()
+            ->setServerSide(true)
+            ->setProcessing(true);
 
-        $this->getAjax()->setUrl($this->getRouter()->generate('post_results'));
+        $this->getAjax()->setUrl($this->getRouter()->generate("post_results"));
+
+        $this->getMultiselect()
+            ->setEnabled(true)
+            ->setPosition("last")
+            ->addAction("Hide post", "post_bulk_disable")
+            ->addAction("Delete post", "post_bulk_delete");
 
         $this->setStyle(self::BOOTSTRAP_3_STYLE);
 
@@ -105,7 +112,7 @@ class PostDatatable extends AbstractDatatableView
      */
     public function getEntity()
     {
-        return 'SgBlogBundle:Post';
+        return "SgBlogBundle:Post";
     }
 
     /**
@@ -113,7 +120,7 @@ class PostDatatable extends AbstractDatatableView
      */
     public function getName()
     {
-        return 'post_datatable';
+        return "post_datatable";
     }
 }
 ```
@@ -153,11 +160,11 @@ services:
  */
 public function indexAction()
 {
-    $postDatatable = $this->get('sg_datatables.post');
+    $postDatatable = $this->get("sg_datatables.post");
     $postDatatable->buildDatatableView();
 
     return array(
-        'datatable' => $postDatatable,
+        "datatable" => $postDatatable,
     );
 }
 
@@ -172,6 +179,68 @@ public function indexResultsAction()
 {
     return $this->get("sg_datatables.datatable")->getResponse($this->get("sg_datatables.post"));
 }
+
+/**
+ * @Route("/bulk/delete", name="post_bulk_delete")
+ * @Method("POST")
+ *
+ * @return Response
+ */
+public function bulkDeleteAction()
+{
+    $request = $this->getRequest();
+    $isAjax = $request->isXmlHttpRequest();
+
+    if ($isAjax) {
+        $choices = $request->request->get("data");
+
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository("SgBlogBundle:Post");
+
+        foreach ($choices as $choice) {
+            $entity = $repository->find($choice["value"]);
+            $em->remove($entity);
+        }
+
+        $em->flush();
+
+        return new Response("This is ajax response.");
+    }
+
+    return new Response("This is not ajax.", 400);
+}
+
+/**
+ * @Route("/bulk/disable", name="post_bulk_disable")
+ * @Method("POST")
+ *
+ * @return Response
+ */
+public function bulkDisableAction()
+{
+    $request = $this->getRequest();
+    $isAjax = $request->isXmlHttpRequest();
+
+    if ($isAjax) {
+        $choices = $request->request->get("data");
+
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository("SgBlogBundle:Post");
+
+        foreach ($choices as $choice) {
+            $entity = $repository->find($choice["value"]);
+            $entity->setVisible(false);
+            $em->persist($entity);
+        }
+
+        $em->flush();
+
+        return new Response("This is ajax response.");
+    }
+
+    return new Response("This is not ajax.", 400);
+}
+```
 
 ## Non server side example
 

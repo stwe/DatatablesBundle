@@ -25,14 +25,15 @@ class Multiselect
      *
      * @var string
      */
-    const FIRST_COLUMN = 'first';
+    const FIRST_COLUMN = "first";
 
     /**
      * Last column.
      *
      * @var string
      */
-    const LAST_COLUMN = 'last';
+    const LAST_COLUMN = "last";
+
 
     /**
      * Enable or disable multiselect.
@@ -67,7 +68,7 @@ class Multiselect
      */
     public function __construct($enabled = false)
     {
-        $this->enabled = $enabled;
+        $this->enabled = (boolean) $enabled;
         $this->position = self::FIRST_COLUMN;
         $this->actions = array();
     }
@@ -133,7 +134,7 @@ class Multiselect
      * @param string $position
      *
      * @return $this
-     * @throws \Exception
+     * @throws Exception
      */
     public function setPosition($position)
     {

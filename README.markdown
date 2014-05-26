@@ -14,13 +14,13 @@ For DataTables 1.10.x, you need to use the next 0.5 release of the bundle.
 
 [Read the Documentation for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/index.md).
 
-[The example for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
+[The examples for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
 
 ### v0.4.2
 
 [Read the Documentation for v0.4.2](https://github.com/stwe/DatatablesBundle/blob/v0.4.2/Resources/doc/index.md).
 
-[The example for v0.4.2](https://github.com/stwe/DatatablesBundle/blob/v0.4.2/Resources/doc/example.md)
+[The examples for v0.4.2](https://github.com/stwe/DatatablesBundle/blob/v0.4.2/Resources/doc/example.md)
 
 ## Installation
 
