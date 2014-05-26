@@ -9,11 +9,11 @@
 
 {% block data %}
     "data": null,
-    "render": function(data, type, full) {
+    "render": function(data, type, row, meta) {
         var first;
-        for (var i in full) {
-            if (full.hasOwnProperty(i) && typeof(i) !== 'function') {
-                first = full[i];
+        for (var i in row) {
+            if (row.hasOwnProperty(i) && typeof(i) !== 'function') {
+                first = row[i];
                 break;
             }
         }

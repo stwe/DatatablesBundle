@@ -2,7 +2,7 @@
 
 {% block data %}
     "data": "{{ column.data }}",
-    "render": function(data, type, full) {
-        return {{ column.render }}(data, type, full, "{{ column.trueIcon }}", "{{ column.falseIcon }}", "{{ column.trueLabel }}", "{{ column.falseLabel }}");
+    "render": function(data, type, row, meta) {
+        return {{ column.render }}(data, type, row, meta, "{{ column.trueIcon }}", "{{ column.falseIcon }}", "{{ column.trueLabel }}", "{{ column.falseLabel }}");
     },
 {% endblock %}

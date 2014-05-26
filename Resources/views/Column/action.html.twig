@@ -2,16 +2,16 @@
 
 {% block data %}
     "data": "{{ column.data }}",
-    "render": function(data, type, full) {
+    "render": function(data, type, row, meta) {
         var routeParameters  = new Array();
         var attributes = "";
 
         {% for key, value in column.renderConditions %}
-            if (!full.{{ value }}) return '';
+            if (!row.{{ value }}) return '';
         {% endfor %}
 
         {% for key, value in column.routeParameters %}
-            routeParameters["{{ key }}"] = full.{{ value }};
+            routeParameters["{{ key }}"] = row.{{ value }};
         {% endfor %}
 
         var route  = Routing.generate("{{ column.route }}", routeParameters);
