@@ -190,7 +190,7 @@ assetic:
 {% endblock foot_script_assetic %}
 ```
 
-## A full example with the most used functions
+## Full examples with the most used functions
 
 - [Example](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
 

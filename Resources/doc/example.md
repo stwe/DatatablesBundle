@@ -40,18 +40,63 @@ class PostDatatable extends AbstractDatatableView
         //-------------------------------------------------
 
         $this->getColumnBuilder()
-            ->add('id', 'column', array(
-                    'title' => 'Id',
-                    'searchable' => false
+            ->add("id", "column", array(
+                    "title" => "Post-id",
+                    "searchable" => false,
+                    "orderable" => false,
+                    "visible" => true,
+                    "class" => "active",
+                    "width" => "100px"
                 ))
-            ->add('createdBy.username', 'column', array(
-                    'title' => 'CreatedBy'
+            ->add("createdBy.username", "column", array(
+                    "title" => "Created by"
                 ))
-            ->add('updatedBy.username', 'column', array(
-                    'title' => 'UpdatedBy'
+            ->add("updatedBy.username", "column", array(
+                    "title" => "Updated by"
                 ))
-            ->add('title', 'column', array(
-                    'title' => $this->getTranslator()->trans('test.title', array(), 'msg')
+            ->add("title", "column", array(
+                    "title" => $this->getTranslator()->trans("test.title", array(), "msg")
+                ))
+            ->add("visible", "boolean", array(
+                    "title" => "Visible",
+                    "true_label" => "yes",
+                    "false_label" => "no",
+                    "true_icon" => "glyphicon glyphicon-ok",
+                    "false_icon" => "glyphicon glyphicon-remove"
+                ))
+            ->add("createdAt", /*choose timeago or datetime*/ "datetime", array(
+                    "title" => "Created at"
+                ))
+            ->add("tags.name", "array", array(
+                    "title" => "Tags"
+                ))
+            ->add(null, "action", array(
+                    "route" => "post_edit",
+                    "parameters" => array(
+                        "id" => "id"
+                    ),
+                    "renderif" => array(
+                        "visible" // if this attribute is not NULL/FALSE
+                    ),
+                    "label" => $this->getTranslator()->trans("test.edit", array(), "msg"),
+                    "attributes" => array(
+                        "rel" => "tooltip",
+                        "title" => "Edit User",
+                        "class" => "btn btn-danger btn-xs"
+                    ),
+                ))
+            ->add(null, "action", array(
+                    "route" => "post_show",
+                    "parameters" => array(
+                        "id" => "id"
+                    ),
+                    "icon" => "glyphicon glyphicon-eye-open",
+                    "label" => $this->getTranslator()->trans("test.show", array(), "msg"),
+                    "attributes" => array(
+                        "rel" => "tooltip",
+                        "title" => "Show User",
+                        "class" => "btn btn-primary btn-xs"
+                    )
                 ));
     }
 

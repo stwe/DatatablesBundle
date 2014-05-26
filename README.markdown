@@ -2,9 +2,10 @@
 
 This Bundle integrates the jQuery DataTables plugin into your Symfony2 application.
 
-Caution: This bundle is developed in sync with [DataTables repository](https://github.com/DataTables/DataTables).
+**Caution:** This bundle is developed in sync with [DataTables repository](https://github.com/DataTables/DataTables).
 
 The stable release 0.4.2 works with DataTables 1.9.x.
+
 For DataTables 1.10.x, you need to use the next 0.5 release of the bundle.
 
 ## Documentation
