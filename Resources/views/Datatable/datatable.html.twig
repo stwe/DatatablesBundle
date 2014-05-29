@@ -7,16 +7,19 @@
             </thead>
                 {% if view_individual_filtering %}
                     <tfoot>
+                        {% if view_multiselect.enabled and "first" == view_multiselect.position %}
+                            <th></th>
+                        {% endif %}
                         {% for column in view_columns %}
                             <th>
                                 {% if column.searchable %}
-                                    <input type="text" placeholder="{{ column.title }}" />
+                                    <input type="text" class="individual_filtering" placeholder="{{ column.title }}" />
                                 {% else %}
                                     <input type="hidden" />
                                 {% endif %}
                             </th>
                         {% endfor %}
-                        {% if view_multiselect.enabled %}
+                        {% if view_multiselect.enabled and "last" == view_multiselect.position %}
                             <th></th>
                         {% endif %}
                     </tfoot>
@@ -241,6 +244,15 @@
                 $.extend(defaults, columns);
 
                 var oTable = $(selector).DataTable(defaults);
+
+                {% if view_individual_filtering %}
+                    $("tfoot input.individual_filtering").on("keyup change", function() {
+                        oTable
+                            .column( $(this).parent().index()+':visible' )
+                            .search( this.value )
+                            .draw();
+                    });
+                {% endif %}
 
                 {% if view_multiselect.enabled %}
                     var multiple_html = "\

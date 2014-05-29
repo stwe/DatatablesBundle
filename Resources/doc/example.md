@@ -41,6 +41,8 @@ class PostDatatable extends AbstractDatatableView
 
         $this->setStyle(self::BOOTSTRAP_3_STYLE);
 
+        $this->setIndividualFiltering(true);
+
 
         //-------------------------------------------------
         // Columns
