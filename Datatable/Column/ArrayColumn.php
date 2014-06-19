@@ -58,20 +58,25 @@ class ArrayColumn extends BaseColumn
     /**
      * {@inheritdoc}
      */
+    public function setOptions(array $options)
+    {
+        parent::setOptions($options);
+
+        if (array_key_exists("read_as", $options)) {
+            $this->setData($options["read_as"]);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setDefaults()
     {
         parent::setDefaults();
 
         $property = $this->getProperty();
 
-        // association delimiter found?
-        if (strstr($property, '.') !== false) {
-            $fieldsArray = explode('.', $property);
-            $prev = array_slice($fieldsArray, count($fieldsArray) - 2, 1);
-            $last = array_slice($fieldsArray, count($fieldsArray) - 1, 1);
-            $this->setData($prev[0]);
-            $this->setRender('[, ].' . $last[0]);
-        } else {
+        if (false === strstr($property, '.')) {
             throw new Exception("An association is expected.");
         }
     }

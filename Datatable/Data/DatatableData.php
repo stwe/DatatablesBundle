@@ -153,39 +153,65 @@ class DatatableData implements DatatableDataInterface
     }
 
     /**
-     * Set associations in joins[].
+     * Add an entry to the allColumns[] array.
+     *
+     * @param string $column The name of the column
+     *
+     * @return $this
+     */
+    private function addAllColumn($column)
+    {
+        $this->allColumns[] = $column;
+
+        return $this;
+    }
+
+    /**
+     * Set all associations.
      *
      * @param array         $associationParts An array of the association parts
      * @param int           $i                Numeric key
      * @param ClassMetadata $metadata         A ClassMetadata instance
      * @param null|string   $columnTableName  The name of the column table
+     * @param null|string   $joinSource       The name of the association source
      *
      * @return $this
      */
-    private function setAssociations(array $associationParts, $i, ClassMetadata $metadata, $columnTableName = null)
+    private function setAssociations(array $associationParts, $i, ClassMetadata $metadata, $columnTableName = null, $joinSource = null)
     {
         $column = $associationParts[$i];
 
-        if ($metadata->hasAssociation($column) === true) {
+        if (true === $metadata->hasAssociation($column)) {
             $targetClass = $metadata->getAssociationTargetClass($column);
             $targetMeta = $this->em->getClassMetadata($targetClass);
             $targetTableName = $targetMeta->getTableName();
             $targetIdentifiers = $targetMeta->getIdentifierFieldNames();
             $targetRootIdentifier = array_shift($targetIdentifiers);
+
             $columnTableName = $targetTableName . '_' . $column;
-            if (!array_key_exists($targetTableName . '_' . $column, $this->selectColumns)) {
+
+            if (!array_key_exists($columnTableName, $this->selectColumns)) {
                 $this->addSelectColumn($targetMeta, $targetRootIdentifier, $columnTableName);
 
-                $this->addJoin(
-                    array(
-                        "source" => $metadata->getTableName() . '.' . $column,
-                        "target" => $columnTableName
-                    )
-                );
+                if (null === $joinSource) {
+                    $this->addJoin(
+                        array(
+                            "source" => $metadata->getTableName() . '.' . $column,
+                            "target" => $columnTableName
+                        )
+                    );
+                } else {
+                    $this->addJoin(
+                        array(
+                            "source" => $joinSource . '.' . $column,
+                            "target" => $columnTableName
+                        )
+                    );
+                }
             }
 
             $i++;
-            $this->setAssociations($associationParts, $i, $targetMeta, $columnTableName);
+            $this->setAssociations($associationParts, $i, $targetMeta, $columnTableName, $columnTableName);
         } else {
             $targetIdentifiers = $metadata->getIdentifierFieldNames();
             $targetRootIdentifier = array_shift($targetIdentifiers);
@@ -207,25 +233,26 @@ class DatatableData implements DatatableDataInterface
      */
     private function prepareColumns()
     {
-        // start with the tableName and the primary key e.g. 'fos_user' and 'id'
+        // start with the tableName and the primary key e.g. 'Season' and 'id'
         $this->addSelectColumn($this->metadata, $this->rootEntityIdentifier);
+        $this->addAllColumn($this->tableName . '.' . $this->rootEntityIdentifier);
 
         for ($i = 0; $i <= $this->requestParams["dql_counter"]; $i++) {
 
             if ($this->requestParams["dql_" . $i] != null) {
+                // Get the name of the column
                 $column = $this->requestParams["dql_" . $i];
 
-                // association delimiter found (e.g. 'posts.comments.title')?
-                if (strstr($column, '.') !== false) {
-                    $array = explode('.', $column);
+                // Association delimiter found (e.g. 'plants.genus.name')?
+                if (false !== strstr($column, ".")) {
+                    $array = explode(".", $column);
                     $this->setAssociations($array, 0, $this->metadata);
                 } else {
-                    // no association found
+                    // No association found...add column
                     if ($column !== $this->rootEntityIdentifier) {
                         $this->addSelectColumn($this->metadata, $column);
+                        $this->allColumns[] = $this->tableName . '.' . $column;
                     }
-
-                    $this->allColumns[] = $this->tableName . '.' . $column;
                 }
             }
 
