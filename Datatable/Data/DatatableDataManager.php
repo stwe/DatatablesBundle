@@ -17,7 +17,6 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class DatatableDataManager
@@ -80,13 +79,13 @@ class DatatableDataManager
     //-------------------------------------------------
 
     /**
-     * Get Response.
+     * Get Datatable.
      *
      * @param DatatableViewInterface $datatableView
      *
-     * @return Response
+     * @return DatatableData
      */
-    public function getResponse(DatatableViewInterface $datatableView)
+    public function getDatatable(DatatableViewInterface $datatableView)
     {
         $type = $datatableView->getAjax()->getType();
         $entity = $datatableView->getEntity();
@@ -114,7 +113,7 @@ class DatatableDataManager
         $datatableQuery = new DatatableQuery($params, $metadata, $em);
         $datatableData = new DatatableData($params, $metadata, $em, $this->serializer, $datatableQuery);
 
-        return $datatableData->getResponse();
+        return $datatableData;
     }
 }
 
