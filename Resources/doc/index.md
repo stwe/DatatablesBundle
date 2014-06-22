@@ -197,3 +197,7 @@ assetic:
 ## List of available column types
 
 - [Columns](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/columns.md)
+
+## Used a line formatter
+
+- [Line formatter](./lineFormatter.md)
