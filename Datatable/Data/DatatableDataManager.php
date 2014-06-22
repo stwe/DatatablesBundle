@@ -113,6 +113,7 @@ class DatatableDataManager
 
         $datatableQuery = new DatatableQuery($params, $metadata, $em);
         $datatableData = new DatatableData($params, $metadata, $em, $this->serializer, $datatableQuery);
+        $datatableData->setLineFormatter($datatableView->getLineFormatter());
 
         return $datatableData->getResponse();
     }

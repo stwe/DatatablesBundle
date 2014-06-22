@@ -60,4 +60,11 @@ interface DatatableViewInterface
      * @return string
      */
     public function getName();
+
+    /**
+     * Returns a callable that could transform the data line
+     *
+     * @return callable
+     */
+    public function getLineFormatter();
 }
