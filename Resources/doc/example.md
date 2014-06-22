@@ -51,8 +51,8 @@ class PostDatatable extends AbstractDatatableView
         $this->getColumnBuilder()
             ->add("id", "column", array(
                     "title" => "Post-id",
-                    "searchable" => false,
-                    "orderable" => false,
+                    "searchable" => true,
+                    "orderable" => true,
                     "visible" => true,
                     "class" => "active",
                     "width" => "100px"
@@ -77,7 +77,8 @@ class PostDatatable extends AbstractDatatableView
                     "title" => "Created at"
                 ))
             ->add("tags.name", "array", array(
-                    "title" => "Tags"
+                    "title" => "Tags",
+                    "read_as" => "tags[, ].name"
                 ))
             ->add(null, "action", array(
                     "route" => "post_edit",
@@ -179,7 +180,21 @@ public function indexAction()
  */
 public function indexResultsAction()
 {
-    return $this->get("sg_datatables.datatable")->getResponse($this->get("sg_datatables.post"));
+    /**
+     * @var \Sg\DatatablesBundle\Datatable\Data\DatatableData $datatable
+     */
+    $datatable = $this->get("sg_datatables.datatable")->getDatatable($this->get("sg_datatables.post"));
+
+    // Callback example
+    $function = function($qb)
+    {
+        $qb->andWhere("Post.visible = true");
+    };
+
+    // Add callback
+    $datatable->addWhereBuilderCallback($function);
+
+    return $datatable->getResponse();
 }
 
 /**
