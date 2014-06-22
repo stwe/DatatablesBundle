@@ -212,7 +212,6 @@ class DatatableQuery
     public function setSelectFrom()
     {
         foreach ($this->selectColumns as $key => $value) {
-            // $qb->select('partial comment.{id, title}, partial post.{id, title}');
             $this->qb->addSelect("partial " . $key . ".{" . implode(",", $this->selectColumns[$key]) . "}");
         }
 
@@ -224,59 +223,61 @@ class DatatableQuery
     /**
      * Set leftJoins.
      *
-     * @param QueryBuilder $qb A QueryBuilder instance
-     *
      * @return $this
      */
-    public function setLeftJoins(QueryBuilder $qb)
+    public function setLeftJoins()
     {
         foreach ($this->joins as $join) {
-            $qb->leftJoin($join["source"], $join["target"]);
+            $this->qb->leftJoin($join["source"], $join["target"]);
         }
 
         return $this;
     }
 
     /**
-     * Set where statement.
-     *
-     * @param QueryBuilder $qb A QueryBuilder instance
+     * Searching / Filtering.
+     * Construct the WHERE clause for server-side processing SQL query.
      *
      * @return $this
      */
-    public function setWhere(QueryBuilder $qb)
+    public function setWhere()
     {
+        $counter = count($this->requestParams["columns"]);
+        $globalSearch = $this->requestParams["search"]["value"];
+
         // global filtering
-        if ($this->requestParams["search"]["value"] != "") {
+        if ("" != $globalSearch) {
 
-            $orExpr = $qb->expr()->orX();
+            $orExpr = $this->qb->expr()->orX();
 
-            for ($i = 0; $i <= $this->requestParams["dql_counter"]; $i++) {
-                if (isset($this->requestParams["columns"][$i]["searchable"]) && $this->requestParams["columns"][$i]["searchable"] == "true") {
+            for ($i = 0; $i < $counter; $i++) {
+                if ("true" == $this->requestParams["columns"][$i]["searchable"]) {
                     $searchField = $this->allColumns[$i];
-                    $orExpr->add($qb->expr()->like($searchField, "?$i"));
-                    $qb->setParameter($i, "%" . $this->requestParams["search"]["value"] . "%");
+                    $orExpr->add($this->qb->expr()->like($searchField, "?$i"));
+                    $this->qb->setParameter($i, "%" . $globalSearch . "%");
                 }
             }
 
-            $qb->where($orExpr);
+            $this->qb->where($orExpr);
         }
 
-        //var_dump($qb->getDQL());die();
+        // individual column filtering
+        $andExpr = $this->qb->expr()->andX();
 
-        // individual filtering
-        $andExpr = $qb->expr()->andX();
+        for ($i = 0; $i < $counter; $i++) {
 
-        for ($i = 0; $i <= $this->requestParams["dql_counter"]; $i++) {
-            if (isset($this->requestParams["columns"]["{$i}"]["searchable"]) && $this->requestParams["columns"]["{$i}"]["searchable"] === "true" && $this->requestParams["columns"]["{$i}"]["search"]["value"] != "") {
+            $individualSearch = $this->requestParams["columns"][$i]["search"]["value"];
+            $searchable = $this->requestParams["columns"][$i]["searchable"];
+
+            if ("true" == $searchable && "" != $individualSearch) {
                 $searchField = $this->allColumns[$i];
-                $andExpr->add($qb->expr()->like($searchField, "?$i"));
-                $qb->setParameter($i, "%" . $this->requestParams["columns"]["{$i}"]["search"]["value"] . "%");
+                $andExpr->add($this->qb->expr()->like($searchField, "?$i"));
+                $this->qb->setParameter($i, "%" . $individualSearch . "%");
             }
         }
 
         if ($andExpr->count() > 0) {
-            $qb->andWhere($andExpr);
+            $this->qb->andWhere($andExpr);
         }
 
         return $this;
@@ -285,15 +286,13 @@ class DatatableQuery
     /**
      * Set where callback functions.
      *
-     * @param QueryBuilder $qb A QueryBuilder instance
-     *
      * @return $this
      */
-    public function setWhereCallbacks(QueryBuilder $qb)
+    public function setWhereCallbacks()
     {
         if (!empty($this->callbacks["WhereBuilder"])) {
             foreach ($this->callbacks["WhereBuilder"] as $callback) {
-                $callback($qb);
+                $callback($this->qb);
             }
         }
 
@@ -301,28 +300,42 @@ class DatatableQuery
     }
 
     /**
-     * Set orderBy.
+     * Ordering.
+     * Construct the ORDER BY clause for server-side processing SQL query.
      *
      * @return $this
      */
     public function setOrderBy()
     {
-        $this->qb->addOrderBy(
-            $this->allColumns[$this->requestParams["order"]["0"]["column"]],
-            $this->requestParams["order"]["0"]["dir"]
-        );
+        if (isset($this->requestParams["order"]) && count($this->requestParams["order"])) {
+
+            $counter = count($this->requestParams["order"]);
+
+            for ($i = 0; $i < $counter; $i++) {
+                $columnIdx = (integer) $this->requestParams["order"][$i]["column"];
+                $requestColumn = $this->requestParams["columns"][$columnIdx];
+
+                if ("true" == $requestColumn["orderable"]) {
+                    $this->qb->addOrderBy(
+                        $this->allColumns[$columnIdx],
+                        $this->requestParams["order"][$i]["dir"]
+                    );
+                }
+            }
+        }
 
         return $this;
     }
 
     /**
-     * Set the scope of the resultset (Paging).
+     * Paging.
+     * Construct the LIMIT clause for server-side processing SQL query.
      *
      * @return $this
      */
     public function setLimit()
     {
-        if (isset($this->requestParams["start"]) && $this->requestParams["length"] != "-1") {
+        if (isset($this->requestParams["start"]) && -1 != $this->requestParams["length"]) {
             $this->qb->setFirstResult($this->requestParams["start"])->setMaxResults($this->requestParams["length"]);
         }
 

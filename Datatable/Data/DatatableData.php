@@ -237,7 +237,7 @@ class DatatableData implements DatatableDataInterface
         $this->addSelectColumn($this->metadata, $this->rootEntityIdentifier);
         $this->addAllColumn($this->tableName . '.' . $this->rootEntityIdentifier);
 
-        for ($i = 0; $i <= $this->requestParams["dql_counter"]; $i++) {
+        for ($i = 0; $i < count($this->requestParams["columns"]); $i++) {
 
             if ($this->requestParams["dql_" . $i] != null) {
                 // Get the name of the column
@@ -283,9 +283,9 @@ class DatatableData implements DatatableDataInterface
     private function buildQuery()
     {
         $this->datatableQuery->setSelectFrom();
-        $this->datatableQuery->setLeftJoins($this->datatableQuery->getQb());
-        $this->datatableQuery->setWhere($this->datatableQuery->getQb());
-        $this->datatableQuery->setWhereCallbacks($this->datatableQuery->getQb());
+        $this->datatableQuery->setLeftJoins();
+        $this->datatableQuery->setWhere();
+        $this->datatableQuery->setWhereCallbacks();
         $this->datatableQuery->setOrderBy();
         $this->datatableQuery->setLimit();
 
@@ -313,9 +313,9 @@ class DatatableData implements DatatableDataInterface
         }
 
         $outputHeader = array(
-            "draw" => (int) $this->requestParams["draw"],
-            "recordsTotal" => $this->datatableQuery->getCountAllResults($this->rootEntityIdentifier),
-            "recordsFiltered" => $this->datatableQuery->getCountFilteredResults($this->rootEntityIdentifier)
+            "draw" => (integer) $this->requestParams["draw"],
+            "recordsTotal" => (integer) $this->datatableQuery->getCountAllResults($this->rootEntityIdentifier),
+            "recordsFiltered" => (integer) $this->datatableQuery->getCountFilteredResults($this->rootEntityIdentifier)
         );
 
         $this->response = array_merge($outputHeader, $output);
@@ -327,23 +327,13 @@ class DatatableData implements DatatableDataInterface
         return $response;
     }
 
-
-    //-------------------------------------------------
-    // Public
-    //-------------------------------------------------
-
     /**
-     * Add a callback function.
-     *
-     * @param string $callback
-     *
-     * @throws Exception
-     * @return DatatableData
+     * {@inheritdoc}
      */
     public function addWhereBuilderCallback($callback)
     {
         if (!is_callable($callback)) {
-            throw new Exception("The callback argument must be callable.");
+            throw new Exception('The callback argument must be callable.');
         }
 
         $this->datatableQuery->addCallback($callback);

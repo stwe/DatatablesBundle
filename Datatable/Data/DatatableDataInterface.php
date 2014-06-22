@@ -24,4 +24,14 @@ interface DatatableDataInterface
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function getResponse();
+
+    /**
+     * Add a callback function.
+     *
+     * @param string $callback
+     *
+     * @throws \Exception
+     * @return self
+     */
+    public function addWhereBuilderCallback($callback);
 }
