@@ -187,8 +187,6 @@
                                     d.dql_{{ counter }} = "{{ column.property }}";
                                     {% set counter = counter + 1 %}
                                 {% endfor %}
-                                {% set counter = counter - 1 %}
-                                d.dql_counter = "{{ counter }}";
                             },
                             "type": "{{ view_ajax.type }}"
                         },
