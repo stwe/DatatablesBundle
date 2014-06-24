@@ -7,7 +7,7 @@ in thinking that to alter data couldn't change originals orders or filters.
 This function permit to centralize datatables operations and to securize 
 request by removing id and transform it in a slug.
 
-## Exemple
+## Example
 
 ```php
 <?php
@@ -31,13 +31,13 @@ class UserDatatable extends AbstractDatatableView
     public function getLineFormatter()
     {
         $formatter = function($line){
-            $line['lastName'] = $line['lastName'] . ", " . $line['firstName'];
+            $line["lastName"] = $line["lastName"] . ", " . $line["firstName"];
+
             return $line;
         };
 
-        return $formatter
+        return $formatter;
     }
-    
 
     /**
      * {@inheritdoc}
