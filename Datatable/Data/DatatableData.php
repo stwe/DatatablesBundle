@@ -80,6 +80,10 @@ class DatatableData implements DatatableDataInterface
      */
     protected $joins;
 
+    /**
+     * @var callable
+     */
+    protected $lineFormatter;
 
     //-------------------------------------------------
     // Ctor.
@@ -292,6 +296,19 @@ class DatatableData implements DatatableDataInterface
         return $this;
     }
 
+    /**
+     * Set the line formatter function
+     * 
+     * @var callable
+     * @return $this;
+     */
+    public function setLineFormatter(callable $lineFormatter = null)
+    {
+        $this->lineFormatter = $lineFormatter;
+
+        return $this;        
+    }
+
 
     //-------------------------------------------------
     // DatatableDataInterface
@@ -309,6 +326,10 @@ class DatatableData implements DatatableDataInterface
         $output = array("data" => array());
 
         foreach ($fresults as $item) {
+            if (is_callable($this->lineFormatter)) {
+                $callable = $this->lineFormatter;
+                $item = call_user_func($callable, $item);
+            }
             $output["data"][] = $item;
         }
 

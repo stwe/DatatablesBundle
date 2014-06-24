@@ -288,6 +288,16 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     //-------------------------------------------------
 
     /**
+     * Get Line transformer
+     *
+     * @return callable
+     */
+    public function getLineFormatter()
+    {
+        return null;
+    }
+
+    /**
      * Set Templating.
      *
      * @param TwigEngine $templating
