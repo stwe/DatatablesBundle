@@ -8,6 +8,10 @@
     "authors": [
         {
             "name": "stwe"
+        },
+        {
+            "name": "SgDatatablesBundle contributors",
+            "homepage": "https://github.com/stwe/DatatablesBundle/graphs/contributors"
         }
     ],
     "support": {
