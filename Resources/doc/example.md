@@ -4,6 +4,16 @@
 
 ### Step 1: Create your Datatables class
 
+There are two options: You write the class by hand (recommended) or use the command line (unstable).
+
+The new ´datatable:generate:class´ command generates a new datatable class.
+
+``` bash
+$ php app/console datatable:generate:class MyTestBundle:Entity
+```
+
+The generator is currently in an early development stage. Better you write the class by hand. Then it should look something like this:
+
 ```php
 <?php
 
