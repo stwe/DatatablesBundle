@@ -16,6 +16,7 @@ use Sg\DatatablesBundle\Generator\DatatableGenerator;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
 
@@ -35,7 +36,9 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
             ->setName("datatable:generate:class")
             ->setDescription("Generates a datatable class based on a Doctrine entity.")
             ->setDefinition(
-                array(new InputArgument("entity", InputArgument::REQUIRED, "The Doctrine entity class name (shortcut notation)."))
+                array(
+                    new InputArgument("entity", InputArgument::REQUIRED, "The Doctrine entity class name (shortcut notation).")
+                )
             );
     }
 
@@ -69,5 +72,23 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
     protected function createGenerator()
     {
         return new DatatableGenerator($this->getContainer()->get("filesystem"));
+    }
+
+    protected function getSkeletonDirs(BundleInterface $bundle = null)
+    {
+        $skeletonDirs = array();
+
+        if (isset($bundle) && is_dir($dir = $bundle->getPath() . "/Resources/SensioGeneratorBundle/skeleton")) {
+            $skeletonDirs[] = $dir;
+        }
+
+        if (is_dir($dir = $this->getContainer()->get("kernel")->getRootdir() . "/Resources/SensioGeneratorBundle/skeleton")) {
+            $skeletonDirs[] = $dir;
+        }
+
+        $skeletonDirs[] = __DIR__ . "/../Resources/views/skeleton";
+        $skeletonDirs[] = __DIR__ . "/../Resources";
+
+        return $skeletonDirs;
     }
 }

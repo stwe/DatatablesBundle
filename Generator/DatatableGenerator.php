@@ -131,16 +131,4 @@ class DatatableGenerator extends Generator
 
         return $fields;
     }
-
-    protected function render($template, $parameters)
-    {
-        $twig = new \Twig_Environment(new \Twig_Loader_Filesystem("%kernel.root_dir%/../src/Sg/DatatablesBundle/Resources/views/Skeleton/"), array(
-            'debug' => true,
-            'cache' => false,
-            'strict_variables' => true,
-            'autoescape' => false,
-        ));
-
-        return $twig->render($template, $parameters);
-    }
 }
