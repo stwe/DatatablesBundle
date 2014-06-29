@@ -1,5 +1,7 @@
 # SgDatatablesBundle
 
+### This bundle has been developed for Symfony 2.3 (the LTS version). There seems to be problems in version 2.4 and later.
+
 This Bundle integrates the jQuery DataTables plugin into your Symfony2 application.
 
 **Caution:** This bundle is developed in sync with [DataTables repository](https://github.com/DataTables/DataTables).
