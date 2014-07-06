@@ -18,6 +18,10 @@
             "visible": false,
         {% endif %}
 
+        {% if column.type %}
+            "type": "{{ column.type }}",
+        {% endif %}
+
         "title": "{{ column.title }}",
         "className": "{{ column.className }}",
         "defaultContent": "{{ column.defaultContent }}",

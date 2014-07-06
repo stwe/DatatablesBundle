@@ -96,6 +96,13 @@ abstract class AbstractColumn implements ColumnInterface
     private $title;
 
     /**
+     * Set the column type - used for filtering and sorting string processing.
+     *
+     * @var string
+     */
+    private $type;
+
+    /**
      * Enable or disable the display of this column.
      *
      * @var boolean
@@ -123,8 +130,9 @@ abstract class AbstractColumn implements ColumnInterface
     {
         $this->property = $property;
         $this->allowedOptions = array(
-            "class", "padding", "default", "name", "orderable",
-            "render", "searchable", "title", "visible", "width"
+            "class", "padding", "default", "name",
+            "orderable", "render", "searchable", "title",
+            "type", "visible", "width"
         );
     }
 
@@ -172,6 +180,9 @@ abstract class AbstractColumn implements ColumnInterface
         if (array_key_exists("title", $options)) {
             $this->setTitle($options["title"]);
         }
+        if (array_key_exists("type", $options)) {
+            $this->setType($options["type"]);
+        }
         if (array_key_exists("visible", $options)) {
             $this->setVisible($options["visible"]);
         }
@@ -196,6 +207,7 @@ abstract class AbstractColumn implements ColumnInterface
         $this->setRender(null);
         $this->setSearchable(true);
         $this->setTitle("");
+        $this->setType("");
         $this->setVisible(true);
         $this->setWidth("");
 
@@ -429,6 +441,8 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
+     * Set title.
+     *
      * @param string $title
      *
      * @return $this
@@ -441,11 +455,37 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
+     * Get title.
+     *
      * @return string
      */
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Set type.
+     *
+     * @param string $type
+     *
+     * @return $this
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type.
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**
