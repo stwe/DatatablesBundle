@@ -39,7 +39,13 @@ class ArrayColumn extends BaseColumn
             throw new Exception("The entity's property can not be null.");
         }
 
+        if (false === strstr($property, '.')) {
+            throw new Exception("An association is expected.");
+        }
+
         parent::__construct($property);
+
+        $this->addAllowedOption("read_as");
     }
 
 
@@ -62,22 +68,12 @@ class ArrayColumn extends BaseColumn
     {
         parent::setOptions($options);
 
+        $options = array_intersect_key($options, array_flip($this->getAllowedOptions()));
+
         if (array_key_exists("read_as", $options)) {
             $this->setData($options["read_as"]);
         }
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaults()
-    {
-        parent::setDefaults();
-
-        $property = $this->getProperty();
-
-        if (false === strstr($property, '.')) {
-            throw new Exception("An association is expected.");
-        }
+        return $this;
     }
 }

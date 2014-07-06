@@ -60,13 +60,17 @@ class TimeagoColumn extends BaseColumn
      */
     public function setOptions(array $options)
     {
+        parent::setOptions($options);
+
+        $options = array_intersect_key($options, array_flip($this->getAllowedOptions()));
+
         if (array_key_exists("render", $options)) {
             if (null == $options["render"]) {
                 throw new Exception("The render option can not be null.");
             }
         }
 
-        parent::setOptions($options);
+        return $this;
     }
 
     /**
@@ -77,5 +81,7 @@ class TimeagoColumn extends BaseColumn
         parent::setDefaults();
 
         $this->setRender("render_timeago");
+
+        return $this;
     }
 }

@@ -19,13 +19,14 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 interface ColumnFactoryInterface
 {
     /**
-     * Returns a ColumnInterface.
+     * Creates a Column by name.
      *
      * @param string $property An entity's property
-     * @param string $name     The name of the column class
+     * @param string $name     The name of the Column class
      *
+     * @throws \Symfony\Component\Form\Exception\UnexpectedTypeException
      * @throws \Exception
-     * @return ColumnInterface
+     * @return ActionColumn|ArrayColumn|BooleanColumn|Column|ColumnInterface|DateTimeColumn|TimeagoColumn
      */
     public function createColumnByName($property, $name);
 }

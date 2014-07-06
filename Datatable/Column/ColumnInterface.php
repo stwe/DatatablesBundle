@@ -42,7 +42,7 @@ interface ColumnInterface
     public function setDefaults();
 
     /**
-     * Returns the class name.
+     * Get ColumnClassName.
      *
      * @return string
      */

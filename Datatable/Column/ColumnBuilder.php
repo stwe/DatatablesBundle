@@ -60,6 +60,7 @@ class ColumnBuilder implements ColumnBuilderInterface
          * @var ColumnInterface $column
          */
         $column = $this->columnFactory->createColumnByName($property, $name);
+        $column->setDefaults();
         $column->setOptions($options);
 
         $this->columns[] = $column;

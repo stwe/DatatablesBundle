@@ -83,6 +83,13 @@ class ActionColumn extends BaseColumn
         }
 
         parent::__construct($property);
+
+        $this->addAllowedOption("route");
+        $this->addAllowedOption("parameters");
+        $this->addAllowedOption("icon");
+        $this->addAllowedOption("label");
+        $this->addAllowedOption("attributes");
+        $this->addAllowedOption("renderif");
     }
 
 
@@ -105,6 +112,8 @@ class ActionColumn extends BaseColumn
     {
         parent::setOptions($options);
 
+        $options = array_intersect_key($options, array_flip($this->getAllowedOptions()));
+
         if (array_key_exists("route", $options)) {
             $this->setRoute($options["route"]);
         }
@@ -123,6 +132,8 @@ class ActionColumn extends BaseColumn
         if (array_key_exists("renderif", $options)) {
             $this->setRenderConditions($options["renderif"]);
         }
+
+        return $this;
     }
 
     /**
@@ -141,6 +152,8 @@ class ActionColumn extends BaseColumn
         $this->setLabel("");
         $this->setAttributes(array());
         $this->setRenderConditions(array());
+
+        return $this;
     }
 
 

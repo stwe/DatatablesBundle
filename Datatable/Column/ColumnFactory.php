@@ -88,7 +88,9 @@ class ColumnFactory implements ColumnFactoryInterface
                 throw new Exception("The {$name} column is not supported.");
         }
 
-        $this->column->setDefaults();
+        if (null === $this->column) {
+            throw new Exception("The column could not be created.");
+        }
 
         return $this->column;
     }

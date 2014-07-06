@@ -51,6 +51,8 @@ class DateTimeColumn extends BaseColumn
         }
 
         parent::__construct($property);
+
+        $this->addAllowedOption("format");
     }
 
 
@@ -71,12 +73,15 @@ class DateTimeColumn extends BaseColumn
      */
     public function setOptions(array $options)
     {
+        parent::setOptions($options);
+
+        $options = array_intersect_key($options, array_flip($this->getAllowedOptions()));
+
         if (array_key_exists("render", $options)) {
             if (null == $options["render"]) {
                 throw new Exception("The render option can not be null.");
             }
         }
-
         if (array_key_exists("format", $options)) {
             if (null == $options["format"]) {
                 throw new Exception("The format option can not be null.");
@@ -85,7 +90,7 @@ class DateTimeColumn extends BaseColumn
             }
         }
 
-        parent::setOptions($options);
+        return $this;
     }
 
     /**
@@ -97,6 +102,8 @@ class DateTimeColumn extends BaseColumn
 
         $this->setRender("render_datetime");
         $this->setLocalizedFormat("lll");
+
+        return $this;
     }
 
 

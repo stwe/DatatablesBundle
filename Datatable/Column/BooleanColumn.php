@@ -69,6 +69,11 @@ class BooleanColumn extends BaseColumn
         }
 
         parent::__construct($property);
+
+        $this->addAllowedOption("true_icon");
+        $this->addAllowedOption("false_icon");
+        $this->addAllowedOption("true_label");
+        $this->addAllowedOption("false_label");
     }
 
 
@@ -89,13 +94,9 @@ class BooleanColumn extends BaseColumn
      */
     public function setOptions(array $options)
     {
-        if (array_key_exists("render", $options)) {
-            if (null == $options["render"]) {
-                throw new Exception("The render option can not be null.");
-            }
-        }
-
         parent::setOptions($options);
+
+        $options = array_intersect_key($options, array_flip($this->getAllowedOptions()));
 
         if (array_key_exists("true_icon", $options)) {
             $this->setTrueIcon($options["true_icon"]);
@@ -109,6 +110,13 @@ class BooleanColumn extends BaseColumn
         if (array_key_exists("false_label", $options)) {
             $this->setFalseLabel($options["false_label"]);
         }
+        if (array_key_exists("render", $options)) {
+            if (null == $options["render"]) {
+                throw new Exception("The render option can not be null.");
+            }
+        }
+
+        return $this;
     }
 
     /**
@@ -124,6 +132,8 @@ class BooleanColumn extends BaseColumn
         $this->setFalseIcon("");
         $this->setTrueLabel("");
         $this->setFalseLabel("");
+
+        return $this;
     }
 
 
