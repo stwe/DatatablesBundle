@@ -9,7 +9,7 @@ There are two options: You write the class by hand (recommended) or use the comm
 The new `datatable:generate:class` command generates a new datatable class.
 
 ``` bash
-$ php app/console datatable:generate:class MyTestBundle:Entity
+$ php app/console datatable:generate:class --entity=MyTestBundle:Entity
 ```
 
 The generator is currently in an early development stage. Better you write the class by hand. Then it should look something like this:
