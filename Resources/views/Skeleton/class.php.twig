@@ -22,12 +22,22 @@ class {{ datatable_class }} extends AbstractDatatableView
     public function buildDatatableView()
     {
         $this->getFeatures()
+            {% if false == client_side %}
             ->setServerSide(true)
+            {% else %}
+            ->setServerSide(false)
+            {% endif %}
             ->setProcessing(true);
 
+        {% if "" != ajax_url %}
         $this->getAjax()->setUrl($this->getRouter()->generate("{{ ajax_url }}"));
-        $this->setStyle(self::BOOTSTRAP_3_STYLE);
+        {% endif %}
+
+        $this->setStyle({{ style }});
+
+        {% if true == individual_filtering %}
         $this->setIndividualFiltering(true);
+        {% endif %}
 
         $this->getColumnBuilder()
         {% for field in fields %}
