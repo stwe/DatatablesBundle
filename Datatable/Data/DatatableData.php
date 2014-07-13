@@ -242,7 +242,9 @@ class DatatableData implements DatatableDataInterface
         $this->addSelectColumn($this->metadata, $this->rootEntityIdentifier);
         $this->addAllColumn($this->tableName . '.' . $this->rootEntityIdentifier);
 
-        for ($i = 0; $i < count($this->requestParams["columns"]); $i++) {
+        $counter = count($this->requestParams["columns"]);
+
+        for ($i = 0; $i < $counter; $i++) {
 
             if ($this->requestParams["dql_" . $i] != null) {
                 // Get the name of the column
