@@ -15,181 +15,19 @@
                 var selector = "#{{ view_table_id }}";
 
                 var features = {
-                    {% if view_features.autoWidth %}
-                        "autoWidth": true,
-                    {% else %}
-                        "autoWidth": false,
-                    {% endif %}
-
-                    {% if view_features.deferRender %}
-                        "deferRender": true,
-                    {% else %}
-                        "deferRender": false,
-                    {% endif %}
-
-                    {% if view_features.info %}
-                        "info": true,
-                    {% else %}
-                        "info": false,
-                    {% endif %}
-
-                    {% if view_features.jQueryUI %}
-                        "jQueryUI": true,
-                    {% else %}
-                        "jQueryUI": false,
-                    {% endif %}
-
-                    {% if view_features.lengthChange %}
-                        "lengthChange": true,
-                    {% else %}
-                        "lengthChange": false,
-                    {% endif %}
-
-                    {% if view_features.ordering %}
-                        "ordering": true,
-                    {% else %}
-                        "ordering": false,
-                    {% endif %}
-
-                    {% if view_features.paging %}
-                        "paging": true,
-                    {% else %}
-                        "paging": false,
-                    {% endif %}
-
-                    {% if view_features.processing %}
-                        "processing": true,
-                    {% else %}
-                        "processing": false,
-                    {% endif %}
-
-                    {% if view_features.scrollX %}
-                        "scrollX": true,
-                    {% else %}
-                        "scrollX": false,
-                    {% endif %}
-
-                    //"scrollY": "{# view_features.scrollY #}",
-
-                    {% if view_features.searching %}
-                        "searching": true,
-                    {% else %}
-                        "searching": false,
-                    {% endif %}
-
-                    // serverSide -> ajax var
-
-                    {% if view_features.stateSave %}
-                        "stateSave": true,
-                    {% else %}
-                        "stateSave": false,
-                    {% endif %}
+                    {% include "SgDatatablesBundle:Datatable:features.html.twig" %}
                 }
 
                 var options = {
-                    //"deferLoading": 57,
-
-                    {% if view_options.destroy %}
-                        "destroy": true,
-                    {% else %}
-                        "destroy": false,
-                    {% endif %}
-
-                    "displayStart": {{ view_options.displayStart }},
-
-                    //"dom": "{# view_options.dom #}",
-
-                    "lengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "{{ 'datatables.datatable.all'|trans({}, 'messages') }}"]],
-
-                    {% if view_options.orderCellsTop %}
-                        "orderCellsTop": true,
-                    {% else %}
-                        "orderCellsTop": false,
-                    {% endif %}
-
-                    {% if view_options.orderClasses %}
-                        "orderClasses": true,
-                    {% else %}
-                        "orderClasses": false,
-                    {% endif %}
-
-                    "order": [[0, "asc"]],
-
-                    //"orderFixed": [ 0, 'asc' ],
-
-                    {% if view_options.orderMulti %}
-                        "orderMulti": true,
-                    {% else %}
-                        "orderMulti": false,
-                    {% endif %}
-
-                    "pageLength": {{ view_options.pageLength }},
-
-                    "pagingType": "{{ view_options.pagingType }}",
-
-                    //"renderer": "bootstrap",
-
-                    {% if view_options.retrieve %}
-                        "retrieve": true,
-                    {% else %}
-                        "retrieve": false,
-                    {% endif %}
-
-                    {% if view_options.scrollCollapse %}
-                        "scrollCollapse": true,
-                    {% else %}
-                        "scrollCollapse": false,
-                    {% endif %}
-
-                    // "searchCols": [],
-
-                    // "search": {},
-
-                    "stateDuration": {{ view_options.stateDuration }},
-
-                    //"stripeClasses": [],
-
-                    "tabIndex": {{ view_options.tabIndex }},
+                    {% include "SgDatatablesBundle:Datatable:options.html.twig" %}
                 }
 
                 var ajax = {
-                    {% if view_features.serverSide %}
-                        "serverSide": true,
-                        "ajax": {
-                            "url": "{{ view_ajax.url }}",
-                            "data": function(d) {
-                                {% set counter = 0 %}
-                                {% for column in view_columns %}
-                                    d.dql_{{ counter }} = "{{ column.property }}";
-                                    {% set counter = counter + 1 %}
-                                {% endfor %}
-                            },
-                            "type": "{{ view_ajax.type }}"
-                        },
-                    {% else %}
-                        "serverSide": false,
-                        "data": {{ view_data|raw }},
-                    {% endif %}
+                    {% include "SgDatatablesBundle:Datatable:ajax.html.twig" %}
                 }
 
                 var defaults = {
-                    "language": {
-                        "processing": "{{ 'datatables.datatable.processing'|trans({}, 'messages') }}",
-                        "lengthMenu": "{{ 'datatables.datatable.lengthMenu'|trans({}, 'messages') }}",
-                        "zeroRecords": "{{ 'datatables.datatable.zeroRecords'|trans({}, 'messages') }}",
-                        "info": "{{ 'datatables.datatable.info'|trans({}, 'messages') }}",
-                        "infoEmpty": "{{ 'datatables.datatable.infoEmpty'|trans({}, 'messages') }}",
-                        "sInfoFiltered": "{{ 'datatables.datatable.infoFiltered'|trans({}, 'messages') }}",
-                        "infoPostFix": "{{ 'datatables.datatable.infoPostFix'|trans({}, 'messages') }}",
-                        "search": "{{ 'datatables.datatable.search'|trans({}, 'messages') }}",
-                        "url": "",
-                        "paginate": {
-                            "first": "{{ 'datatables.datatable.first'|trans({}, 'messages') }}",
-                            "previous": "{{ 'datatables.datatable.previous'|trans({}, 'messages') }}",
-                            "next": "{{ 'datatables.datatable.next'|trans({}, 'messages') }}",
-                            "last": "{{ 'datatables.datatable.last'|trans({}, 'messages') }}"
-                        }
-                    }
+                    {% include "SgDatatablesBundle:Datatable:language.html.twig" %}
                 }
 
                 var columns = {
