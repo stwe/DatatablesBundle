@@ -1,5 +1,7 @@
 # SgDatatablesBundle
 
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/61803d08-17ab-4a69-ad13-6ec448762332/small.png)](https://insight.sensiolabs.com/projects/61803d08-17ab-4a69-ad13-6ec448762332)
+
 This Bundle integrates the jQuery DataTables plugin into your Symfony2 application.
 
 **Caution:** This bundle is developed in sync with [DataTables repository](https://github.com/DataTables/DataTables).
