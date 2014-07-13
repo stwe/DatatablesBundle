@@ -40,7 +40,7 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
                     new InputOption("entity", "", InputOption::VALUE_REQUIRED, "The Doctrine entity class name (shortcut notation)."),
                     new InputOption("style", "", InputOption::VALUE_REQUIRED, "The datatable style (base, base-no-classes, base-row-borders,
                         base-cell-borders, base-hover, base-order, base-stripe, jquery-ui, bootstrap, foundation)", "bootstrap"),
-                    new InputOption("fields", "", InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, "The fields in the datatable"),
+                    new InputOption("fields", "", InputOption::VALUE_OPTIONAL, "The fields in the datatable"),
                     new InputOption("client-side", "", InputOption::VALUE_NONE, "The client-side flag"),
                     new InputOption("ajax-url", "", InputOption::VALUE_OPTIONAL, "The ajax url"),
                     new InputOption("filtering", "", InputOption::VALUE_OPTIONAL, "The individual filtering flag"),
@@ -62,7 +62,7 @@ EOT
         list($bundle, $entity) = $this->parseShortcutNotation($entity);
 
         $style = $input->getOption("style");
-        $fields = $input->getOption("fields");
+        $fields = Fields::parseFields($input->getOption("fields"));
         $clientSide = $input->getOption("client-side");
         $ajaxUrl = $input->getOption("ajax-url");
         $individualFiltering = $input->getOption("filtering");
@@ -72,11 +72,11 @@ EOT
         $bundle = $this->getApplication()->getKernel()->getBundle($bundle);
 
         $generator = $this->getGenerator($bundle);
-        $generator->generate($bundle, $entity, $metadata[0], $style, $fields, $clientSide, $ajaxUrl, $individualFiltering);
+        $generator->generate($bundle, $entity, $metadata[0], $style, array_values($fields), $clientSide, $ajaxUrl, $individualFiltering);
 
         $output->writeln(
             sprintf(
-                "The new %s.php class file has been created under %s.",
+                "The new datatable %s.php class file has been created under %s.",
                 $generator->getClassName(),
                 $generator->getClassPath()
             )

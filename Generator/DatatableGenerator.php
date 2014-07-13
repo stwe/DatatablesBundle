@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Generator;
 
+use Sg\DatatablesBundle\Command\Fields;
+
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
@@ -107,7 +109,7 @@ class DatatableGenerator extends Generator
      *
      * @throws RuntimeException
      */
-    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $style, $fields, $clientSide, $ajaxUrl, $individualFiltering)
+    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $style, array $fields, $clientSide, $ajaxUrl, $individualFiltering)
     {
         $parts = explode("\\", $entity);
         $entityClass = array_pop($parts);
@@ -132,7 +134,9 @@ class DatatableGenerator extends Generator
 
         // set fields
         if (null == count($fields)) {
-            $this->fields = $this->getFieldsFromMetadata($metadata);
+            $this->fields = Fields::parseFields(implode(" ", $this->getFieldsFromMetadata($metadata)));
+        } else {
+            $this->fields = $fields;
         }
 
         // set ajaxUrl

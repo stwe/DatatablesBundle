@@ -192,11 +192,11 @@ assetic:
 
 ## Full examples with the most used functions
 
-- [Example](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
+- [Example](./example.md)
 
 ## List of available column types
 
-- [Columns](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/columns.md)
+- [Columns](./columns.md)
 
 ## Used a line formatter
 

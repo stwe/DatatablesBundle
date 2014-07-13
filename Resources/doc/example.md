@@ -6,11 +6,14 @@
 
 There are two options: You write the class by hand (recommended) or use the command line (unstable).
 
-The new `datatable:generate:class` command generates a new datatable class.
+The `datatable:generate:class` command generates a new datatable class.
 
+The command is run in a non interactive mode. The `--entity` option is required.
 ``` bash
 $ php app/console datatable:generate:class --entity=MyTestBundle:Entity
 ```
+
+A description of all available options of the generator is located [hier](./generator.md).
 
 The generator is currently in an early development stage. Better you write the class by hand. Then it should look something like this:
 
