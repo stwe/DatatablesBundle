@@ -1,5 +1,4 @@
 services:
-
     sg_datatables.serializer.method:
         class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
 
