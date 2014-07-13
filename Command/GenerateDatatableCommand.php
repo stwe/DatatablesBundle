@@ -108,8 +108,8 @@ EOT
             $skeletonDirs[] = $dir;
         }
 
-        $skeletonDirs[] = __DIR__ . "/../Resources/views/skeleton";
-        $skeletonDirs[] = __DIR__ . "/../Resources";
+        $reflClass = new \ReflectionClass(get_class($this));
+        $skeletonDirs[] = dirname($reflClass->getFileName()) . "/../Resources/views/skeleton";
 
         return $skeletonDirs;
     }
