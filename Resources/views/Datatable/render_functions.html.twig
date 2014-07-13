@@ -1,0 +1,37 @@
+<script>
+
+    function render_boolean_icons(data, type, row, meta, trueIcon, falseIcon, trueLabel, falseLabel) {
+        if ("" == trueIcon && "" == trueLabel) {
+            trueLabel = "true";
+        }
+
+        if ("" == falseIcon && "" == falseLabel) {
+            falseLabel = "false";
+        }
+
+        if (data == true) {
+            return "<span class='" + trueIcon + "'></span> " + trueLabel;
+        } else {
+            return "<span class='" + falseIcon + "'></span> " + falseLabel;
+        }
+    }
+
+    function render_datetime(data, type, row, meta, localizedFormat) {
+        if (typeof data.timestamp != "undefined") {
+            moment.lang("{{ app.request.locale }}");
+            return moment.unix(data.timestamp).format(localizedFormat);
+        } else {
+            return null;
+        }
+    }
+
+    function render_timeago(data, type, row, meta) {
+        if (typeof data.timestamp != "undefined") {
+            moment.lang("{{ app.request.locale }}");
+            return moment.unix(data.timestamp).fromNow();
+        } else {
+            return null;
+        }
+    }
+
+</script>

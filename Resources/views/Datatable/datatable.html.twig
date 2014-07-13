@@ -2,31 +2,7 @@
 
     {% block sg_datatable_html %}
 
-        <table cellpadding="0" cellspacing="0" class="{{ view_style }}" border="0" id="{{ view_table_id }}" width="100%">
-            <thead>
-            </thead>
-                {% if view_individual_filtering %}
-                    <tfoot>
-                        {% if view_multiselect.enabled and "first" == view_multiselect.position %}
-                            <th></th>
-                        {% endif %}
-                        {% for column in view_columns %}
-                            <th>
-                                {% if column.searchable %}
-                                    <input type="text" class="individual_filtering" placeholder="{{ column.title }}" />
-                                {% else %}
-                                    <input type="hidden" />
-                                {% endif %}
-                            </th>
-                        {% endfor %}
-                        {% if view_multiselect.enabled and "last" == view_multiselect.position %}
-                            <th></th>
-                        {% endif %}
-                    </tfoot>
-                {% endif %}
-            <tbody>
-            </tbody>
-        </table>
+        {% include "SgDatatablesBundle:Datatable:datatable_html.html.twig" %}
 
     {% endblock %}
 
@@ -313,43 +289,7 @@
 
     {% block sg_datatable_render_functions %}
 
-        <script>
-
-            function render_boolean_icons(data, type, row, meta, trueIcon, falseIcon, trueLabel, falseLabel) {
-                if ("" == trueIcon && "" == trueLabel) {
-                    trueLabel = "true";
-                }
-
-                if ("" == falseIcon && "" == falseLabel) {
-                    falseLabel = "false";
-                }
-
-                if (data == true) {
-                    return "<span class='" + trueIcon + "'></span> " + trueLabel;
-                } else {
-                    return "<span class='" + falseIcon + "'></span> " + falseLabel;
-                }
-            }
-
-            function render_datetime(data, type, row, meta, localizedFormat) {
-                if (typeof data.timestamp != "undefined") {
-                    moment.lang("{{ app.request.locale }}");
-                    return moment.unix(data.timestamp).format(localizedFormat);
-                } else {
-                    return null;
-                }
-            }
-
-            function render_timeago(data, type, row, meta) {
-                if (typeof data.timestamp != "undefined") {
-                    moment.lang("{{ app.request.locale }}");
-                    return moment.unix(data.timestamp).fromNow();
-                } else {
-                    return null;
-                }
-            }
-
-        </script>
+        {% include "SgDatatablesBundle:Datatable:render_functions.html.twig" %}
 
     {% endblock %}
 
