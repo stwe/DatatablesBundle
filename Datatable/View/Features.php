@@ -43,6 +43,7 @@ class Features
      * Use markup and classes for the table to be themed by jQuery UI ThemeRoller.
      *
      * @var boolean
+     * @deprecated in DataTables 1.10 will be removed in 1.11
      */
     private $jQueryUI;
 
@@ -128,7 +129,7 @@ class Features
         $this->paging = true;
         $this->processing = false;
         $this->scrollX = false;
-        $this->scrollY = "200px";
+        $this->scrollY = "";
         $this->searching = true;
         $this->serverSide = false;
         $this->stateSave = false;
