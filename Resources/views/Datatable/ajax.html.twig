@@ -8,6 +8,9 @@
                 d.dql_{{ counter }} = "{{ column.property }}";
                 {% set counter = counter + 1 %}
             {% endfor %}
+            {% if view_multiselect.enabled %}
+                d.dql_{{ counter }} = "";
+            {% endif %}
         },
         "type": "{{ view_ajax.type }}"
     },
