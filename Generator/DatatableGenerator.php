@@ -11,12 +11,9 @@
 
 namespace Sg\DatatablesBundle\Generator;
 
-use Sg\DatatablesBundle\Command\Fields;
-
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use RuntimeException;
 
 /**
@@ -47,11 +44,6 @@ class DatatableGenerator extends Generator
     private $style;
 
     /**
-     * @var array
-     */
-    private $fields;
-
-    /**
      * @var string
      */
     private $ajaxUrl;
@@ -69,8 +61,9 @@ class DatatableGenerator extends Generator
     public function __construct(Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;
+        $this->className = "";
+        $this->classPath = "";
         $this->style = "";
-        $this->fields = array();
         $this->ajaxUrl = "";
     }
 
@@ -96,20 +89,19 @@ class DatatableGenerator extends Generator
     }
 
     /**
-     * Generates the entity form class if it does not exist.
+     * Generates the datatable class if it does not exist.
      *
-     * @param BundleInterface   $bundle              The bundle in which to create the class
-     * @param string            $entity              The entity relative class name
-     * @param ClassMetadataInfo $metadata            The entity metadata class
-     * @param string            $style               The style (base, jquery-ui, bootstrap, foundation)
-     * @param array             $fields              The datatable fields
-     * @param string            $clientSide          The client side flag
-     * @param string            $ajaxUrl             The ajax route name
-     * @param string            $individualFiltering The individual filtering flag
+     * @param BundleInterface $bundle              The bundle in which to create the class
+     * @param string          $entity              The entity relative class name
+     * @param string          $style               The style (base, jquery-ui, bootstrap, foundation)
+     * @param array           $fields              The datatable fields
+     * @param string          $clientSide          The client side flag
+     * @param string          $ajaxUrl             The ajax route name
+     * @param string          $individualFiltering The individual filtering flag
      *
      * @throws RuntimeException
      */
-    public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata, $style, array $fields, $clientSide, $ajaxUrl, $individualFiltering)
+    public function generate(BundleInterface $bundle, $entity, $style, array $fields, $clientSide, $ajaxUrl, $individualFiltering)
     {
         $parts = explode("\\", $entity);
         $entityClass = array_pop($parts);
@@ -122,22 +114,11 @@ class DatatableGenerator extends Generator
             throw new RuntimeException(sprintf("Unable to generate the %s datatable class as it already exists under the %s file", $this->className, $this->classPath));
         }
 
-        if (count($metadata->identifier) > 1) {
-            throw new RuntimeException("The datatable generator does not support entity classes with multiple primary keys.");
-        }
-
         $parts = explode("\\", $entity);
         array_pop($parts);
 
         // set style
         $this->setStyle($style);
-
-        // set fields
-        if (null == count($fields)) {
-            $this->fields = Fields::parseFields(implode(" ", $this->getFieldsFromMetadata($metadata)));
-        } else {
-            $this->fields = $fields;
-        }
 
         // set ajaxUrl
         if (false == $clientSide) {
@@ -160,7 +141,7 @@ class DatatableGenerator extends Generator
                 "datatable_class" => $this->className,
                 "datatable_name" => strtolower($entityClass) . "_datatable",
                 "style" => $this->style,
-                "fields" => $this->fields,
+                "fields" => $fields,
                 "client_side" => (boolean) $clientSide,
                 "ajax_url" => $this->ajaxUrl,
                 "individual_filtering" => (boolean) $individualFiltering
@@ -171,27 +152,6 @@ class DatatableGenerator extends Generator
     //-------------------------------------------------
     // Private
     //-------------------------------------------------
-
-    /**
-     * Returns an array of fields. Fields can be both column fields and
-     * association fields.
-     *
-     * @param ClassMetadataInfo $metadata
-     *
-     * @return array $fields
-     */
-    private function getFieldsFromMetadata(ClassMetadataInfo $metadata)
-    {
-        $fields = (array) $metadata->fieldNames;
-
-        foreach ($metadata->associationMappings as $fieldName => $relation) {
-            if ($relation['type'] !== ClassMetadataInfo::ONE_TO_MANY) {
-                $fields[] = $fieldName;
-            }
-        }
-
-        return $fields;
-    }
 
     /**
      * Sets the style format.

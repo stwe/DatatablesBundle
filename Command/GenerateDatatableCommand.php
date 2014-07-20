@@ -19,6 +19,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use RuntimeException;
 
 /**
  * Class GenerateDatatableCommand
@@ -45,11 +47,6 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
                     new InputOption("ajax-url", "", InputOption::VALUE_OPTIONAL, "The ajax url"),
                     new InputOption("filtering", "", InputOption::VALUE_OPTIONAL, "The individual filtering flag"),
                 )
-            )
-            ->setHelp(
-<<<EOT
-The <info>datatable:generate:class</info> command generates a datatable class based on a Doctrine entity.
-EOT
             );
     }
 
@@ -69,10 +66,19 @@ EOT
 
         $entityClass = $this->getContainer()->get("doctrine")->getAliasNamespace($bundle) . "\\" . $entity;
         $metadata = $this->getEntityMetadata($entityClass);
+
+        if (count($metadata[0]->identifier) > 1) {
+            throw new RuntimeException("The datatable class generator does not support entities with multiple primary keys.");
+        }
+
+        if (null == count($fields)) {
+            $fields = $this->getFieldsFromMetadata($metadata[0]);
+        }
+
         $bundle = $this->getApplication()->getKernel()->getBundle($bundle);
 
         $generator = $this->getGenerator($bundle);
-        $generator->generate($bundle, $entity, $metadata[0], $style, array_values($fields), $clientSide, $ajaxUrl, $individualFiltering);
+        $generator->generate($bundle, $entity, $style, $fields, $clientSide, $ajaxUrl, $individualFiltering);
 
         $output->writeln(
             sprintf(
@@ -112,5 +118,60 @@ EOT
         $skeletonDirs[] = dirname($reflClass->getFileName()) . "/../Resources/views/skeleton";
 
         return $skeletonDirs;
+    }
+
+
+    //-------------------------------------------------
+    // Private
+    //-------------------------------------------------
+
+    /**
+     * Returns an array of fields. Fields can be both column fields and
+     * association fields.
+     *
+     * @param ClassMetadataInfo $metadata
+     *
+     * @return array $fields
+     */
+    private function getFieldsFromMetadata(ClassMetadataInfo $metadata)
+    {
+        $fields = array();
+
+        foreach ($metadata->fieldMappings as $field) {
+            $row = array();
+            $row["property"] = $field["fieldName"];
+
+            switch($field["type"]) {
+                case "datetime":
+                    $row["column_name"] = "datetime";
+                    break;
+                case "boolean":
+                    $row["column_name"] = "boolean";
+                    break;
+                default:
+                    $row["column_name"] = "column";
+            }
+
+            $row["title"] = ucwords($field["fieldName"]);
+            $fields[] = $row;
+        }
+
+        foreach ($metadata->associationMappings as $relation) {
+            if ( ($relation["type"] !== ClassMetadataInfo::ONE_TO_MANY) && ($relation["type"] !== ClassMetadataInfo::MANY_TO_MANY) ) {
+
+                $targetClass = $relation["targetEntity"];
+                $targetMetadata = $this->getEntityMetadata($targetClass);
+
+                foreach ($targetMetadata[0]->fieldMappings as $field) {
+                    $row = array();
+                    $row["property"] = $relation["fieldName"] . "." . $field["fieldName"];
+                    $row["column_name"] = "column";
+                    $row["title"] = ucwords(str_replace(".", " ", $row["property"]));
+                    $fields[] = $row;
+                }
+            }
+        }
+
+        return $fields;
     }
 }
