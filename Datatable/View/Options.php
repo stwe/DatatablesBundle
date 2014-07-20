@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\View;
 
+use Exception;
+
 /**
  * Class Options
  *
@@ -56,20 +58,6 @@ class Options
     //-------------------------------------------------
 
     /**
-     * Delay the loading of server-side data until second draw.
-     *
-     * @var integer|array
-     */
-    private $deferLoading;
-
-    /**
-     * Destroy any existing table matching the selector and replace with the new options.
-     *
-     * @var boolean
-     */
-    private $destroy;
-
-    /**
      * Initial paging start point.
      *
      * @var integer
@@ -91,13 +79,6 @@ class Options
     private $lengthMenu;
 
     /**
-     * Control which cell the order event handler will be applied to in a column.
-     *
-     * @var boolean
-     */
-    private $orderCellsTop;
-
-    /**
      * Highlight the columns being ordered in the table's body.
      *
      * @var boolean
@@ -110,13 +91,6 @@ class Options
      * @var array
      */
     private $order;
-
-    /**
-     * Ordering to always be applied to the table.
-     *
-     * @var array|object
-     */
-    private $orderFixed;
 
     /**
      * Multiple column ordering ability control.
@@ -142,16 +116,9 @@ class Options
     /**
      * Display component renderer types.
      *
-     * @var string|object
+     * @var string
      */
     private $renderer;
-
-    /**
-     * Retrieve an existing DataTables instance.
-     *
-     * @var boolean
-     */
-    private $retrieve;
 
     /**
      * Allow the table to reduce in height when a limited number of rows are shown.
@@ -159,25 +126,6 @@ class Options
      * @var boolean
      */
     private $scrollCollapse;
-
-    // search.caseInsensitive
-    // search.regex
-    // search.search
-    // search.smart
-
-    /**
-     * Define an initial search for individual columns.
-     *
-     * @var array
-     */
-    private $searchCols;
-
-    /**
-     * Set an initial filter in DataTables and / or filtering options.
-     *
-     * @var object
-     */
-    private $search;
 
     /**
      * Saved state validity duration.
@@ -193,13 +141,6 @@ class Options
      */
     private $stripeClasses;
 
-    /**
-     * Tab index control for keyboard navigation.
-     *
-     * @var integer
-     */
-    private $tabIndex;
-
 
     //-------------------------------------------------
     // Ctor.
@@ -210,74 +151,24 @@ class Options
      */
     public function __construct()
     {
-        $this->destroy = false;
         $this->displayStart = 0;
         $this->dom = "lfrtip";
         $this->lengthMenu = array(10, 25, 50, 100);
-        $this->orderCellsTop = false;
         $this->orderClasses = true;
-        $this->order = array(0, "asc");
+        $this->order = array("column" => 0, "direction" => "asc");
         $this->orderMulti = true;
         $this->pageLength = 10;
-        $this->pagingType = self::SIMPLE_NUMBERS_PAGINATION;
-        $this->retrieve = false;
+        $this->pagingType = self::FULL_NUMBERS_PAGINATION;
+        $this->renderer = "";
         $this->scrollCollapse = false;
         $this->stateDuration = 7200;
-        $this->tabIndex = 0;
+        $this->stripeClasses = array();
     }
 
 
     //-------------------------------------------------
     // Getters && Setters
     //-------------------------------------------------
-
-    /**
-     * Set DeferLoading.
-     *
-     * @param array|int $deferLoading
-     *
-     * @return $this
-     */
-    public function setDeferLoading($deferLoading)
-    {
-        $this->deferLoading = $deferLoading;
-
-        return $this;
-    }
-
-    /**
-     * Get DeferLoading.
-     *
-     * @return array|int
-     */
-    public function getDeferLoading()
-    {
-        return $this->deferLoading;
-    }
-
-    /**
-     * Set Destroy.
-     *
-     * @param boolean $destroy
-     *
-     * @return $this
-     */
-    public function setDestroy($destroy)
-    {
-        $this->destroy = (boolean) $destroy;
-
-        return $this;
-    }
-
-    /**
-     * Get Destroy.
-     *
-     * @return boolean
-     */
-    public function getDestroy()
-    {
-        return (boolean) $this->destroy;
-    }
 
     /**
      * Set DisplayStart.
@@ -334,7 +225,7 @@ class Options
      *
      * @return $this
      */
-    public function setLengthMenu($lengthMenu)
+    public function setLengthMenu(array $lengthMenu)
     {
         $this->lengthMenu = $lengthMenu;
 
@@ -349,54 +240,6 @@ class Options
     public function getLengthMenu()
     {
         return $this->lengthMenu;
-    }
-
-    /**
-     * Set Order.
-     *
-     * @param array $order
-     *
-     * @return $this
-     */
-    public function setOrder($order)
-    {
-        $this->order = $order;
-
-        return $this;
-    }
-
-    /**
-     * Get Order.
-     *
-     * @return array
-     */
-    public function getOrder()
-    {
-        return $this->order;
-    }
-
-    /**
-     * Set OrderCellsTop.
-     *
-     * @param boolean $orderCellsTop
-     *
-     * @return $this
-     */
-    public function setOrderCellsTop($orderCellsTop)
-    {
-        $this->orderCellsTop = (boolean) $orderCellsTop;
-
-        return $this;
-    }
-
-    /**
-     * Get OrderCellsTop.
-     *
-     * @return boolean
-     */
-    public function getOrderCellsTop()
-    {
-        return (boolean) $this->orderCellsTop;
     }
 
     /**
@@ -424,27 +267,32 @@ class Options
     }
 
     /**
-     * Set OrderFixed.
+     * Set Order.
      *
-     * @param array|object $orderFixed
+     * @param array $order
      *
+     * @throws Exception
      * @return $this
      */
-    public function setOrderFixed($orderFixed)
+    public function setOrder(array $order)
     {
-        $this->orderFixed = $orderFixed;
+        if (true === array_key_exists("column", $order) && true === array_key_exists("direction", $order)) {
+            $this->order = $order;
+        } else {
+            throw new Exception("Invalid array format.");
+        }
 
         return $this;
     }
 
     /**
-     * Get OrderFixed.
+     * Get Order.
      *
-     * @return array|object
+     * @return array
      */
-    public function getOrderFixed()
+    public function getOrder()
     {
-        return $this->orderFixed;
+        return $this->order;
     }
 
     /**
@@ -522,7 +370,7 @@ class Options
     /**
      * Set Renderer.
      *
-     * @param object|string $renderer
+     * @param string $renderer
      *
      * @return $this
      */
@@ -536,35 +384,11 @@ class Options
     /**
      * Get Renderer.
      *
-     * @return object|string
+     * @return string
      */
     public function getRenderer()
     {
         return $this->renderer;
-    }
-
-    /**
-     * Set Retrieve.
-     *
-     * @param boolean $retrieve
-     *
-     * @return $this
-     */
-    public function setRetrieve($retrieve)
-    {
-        $this->retrieve = (boolean) $retrieve;
-
-        return $this;
-    }
-
-    /**
-     * Get Retrieve.
-     *
-     * @return boolean
-     */
-    public function getRetrieve()
-    {
-        return (boolean) $this->retrieve;
     }
 
     /**
@@ -589,54 +413,6 @@ class Options
     public function getScrollCollapse()
     {
         return (boolean) $this->scrollCollapse;
-    }
-
-    /**
-     * Set Search.
-     *
-     * @param object $search
-     *
-     * @return $this
-     */
-    public function setSearch($search)
-    {
-        $this->search = $search;
-
-        return $this;
-    }
-
-    /**
-     * Get Search.
-     *
-     * @return object
-     */
-    public function getSearch()
-    {
-        return $this->search;
-    }
-
-    /**
-     * Set SearchCols.
-     *
-     * @param array $searchCols
-     *
-     * @return $this
-     */
-    public function setSearchCols($searchCols)
-    {
-        $this->searchCols = $searchCols;
-
-        return $this;
-    }
-
-    /**
-     * Get SearchCols.
-     *
-     * @return array
-     */
-    public function getSearchCols()
-    {
-        return $this->searchCols;
     }
 
     /**
@@ -670,7 +446,7 @@ class Options
      *
      * @return $this
      */
-    public function setStripeClasses($stripeClasses)
+    public function setStripeClasses(array $stripeClasses)
     {
         $this->stripeClasses = $stripeClasses;
 
@@ -686,28 +462,4 @@ class Options
     {
         return $this->stripeClasses;
     }
-
-    /**
-     * Set TabIndex.
-     *
-     * @param int $tabIndex
-     *
-     * @return $this
-     */
-    public function setTabIndex($tabIndex)
-    {
-        $this->tabIndex = (integer) $tabIndex;
-
-        return $this;
-    }
-
-    /**
-     * Get TabIndex.
-     *
-     * @return int
-     */
-    public function getTabIndex()
-    {
-        return (integer) $this->tabIndex;
-    }
-} 
+}

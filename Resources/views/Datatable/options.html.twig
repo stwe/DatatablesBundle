@@ -1,22 +1,10 @@
-//"deferLoading": 57,
-
-{% if view_options.destroy %}
-    "destroy": true,
-{% else %}
-    "destroy": false,
-{% endif %}
-
 "displayStart": {{ view_options.displayStart }},
 
-//"dom": "{# view_options.dom #}",
-
-"lengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "{{ 'datatables.datatable.all'|trans({}, 'messages') }}"]],
-
-{% if view_options.orderCellsTop %}
-    "orderCellsTop": true,
-{% else %}
-    "orderCellsTop": false,
+{% if false == view_use_integration_options %}
+    "dom": "{{ view_options.dom }}",
 {% endif %}
+
+"lengthMenu": {{ view_options.lengthMenu|length_join|raw }},
 
 {% if view_options.orderClasses %}
     "orderClasses": true,
@@ -24,9 +12,7 @@
     "orderClasses": false,
 {% endif %}
 
-"order": [[0, "asc"]],
-
-//"orderFixed": [ 0, 'asc' ],
+"order": [{{ view_options.order.column }}, "{{ view_options.order.direction }}"],
 
 {% if view_options.orderMulti %}
     "orderMulti": true,
@@ -38,12 +24,8 @@
 
 "pagingType": "{{ view_options.pagingType }}",
 
-//"renderer": "bootstrap",
-
-{% if view_options.retrieve %}
-    "retrieve": true,
-{% else %}
-    "retrieve": false,
+{% if false == view_use_integration_options %}
+    "renderer": "{{ view_options.renderer }}",
 {% endif %}
 
 {% if view_options.scrollCollapse %}
@@ -52,12 +34,6 @@
     "scrollCollapse": false,
 {% endif %}
 
-// "searchCols": [],
-
-// "search": {},
-
 "stateDuration": {{ view_options.stateDuration }},
 
-//"stripeClasses": [],
-
-"tabIndex": {{ view_options.tabIndex }},
+"stripeClasses": [{{ view_options.stripeClasses|join(", ")|json_encode|raw }}],

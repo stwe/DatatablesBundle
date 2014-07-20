@@ -180,6 +180,18 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      */
     private $template;
 
+    /**
+     * DataTables provides direct integration support (https://github.com/DataTables/Plugins/tree/master/integration) for:
+     * - Bootstrap
+     * - Foundation
+     * - jQuery UI
+     *
+     * This flag is set in the layout, the "dom" and "renderer" options for the integration plugin (i.e. bootstrap).
+     *
+     * @var boolean
+     */
+    private $useIntegrationOptions;
+
 
     //-------------------------------------------------
     // Ctor.
@@ -214,6 +226,8 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->style = self::BASE_STYLE;
         $this->individualFiltering = $defaultLayoutOptions["individual_filtering"];
         $this->template = $defaultLayoutOptions["template"];
+
+        $this->useIntegrationOptions = false;
     }
 
 
@@ -251,6 +265,8 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $options["view_individual_filtering"] = $this->individualFiltering;
         $options["view_table_id"] = $this->getName();
 
+        $options["view_use_integration_options"] = $this->useIntegrationOptions;
+
         return $this->templating->render($this->template, $options);
     }
 
@@ -284,8 +300,9 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
 
     //-------------------------------------------------
-    // Getters && Setters
+    // Callable
     //-------------------------------------------------
+
 
     /**
      * Get Line Formatter.
@@ -296,6 +313,11 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     {
         return null;
     }
+
+
+    //-------------------------------------------------
+    // Getters && Setters
+    //-------------------------------------------------
 
     /**
      * Set Templating.
@@ -498,6 +520,18 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      */
     public function setStyle($style)
     {
+        switch ($style) {
+            case self::JQUERY_UI_STYLE:
+                $this->useIntegrationOptions = true;
+                break;
+            case self::BOOTSTRAP_3_STYLE:
+                $this->useIntegrationOptions = true;
+                break;
+            case self::FOUNDATION_STYLE:
+                $this->useIntegrationOptions = true;
+                break;
+        }
+
         $this->style = $style;
 
         return $this;
@@ -522,7 +556,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      */
     public function setIndividualFiltering($individualFiltering)
     {
-        $this->individualFiltering = $individualFiltering;
+        $this->individualFiltering = (boolean) $individualFiltering;
 
         return $this;
     }
@@ -534,7 +568,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      */
     public function getIndividualFiltering()
     {
-        return $this->individualFiltering;
+        return (boolean) $this->individualFiltering;
     }
 
     /**
@@ -559,6 +593,30 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getTemplate()
     {
         return $this->template;
+    }
+
+    /**
+     * Set useIntegrationsOptions.
+     *
+     * @param boolean $useIntegrationOptions
+     *
+     * @return $this
+     */
+    public function setUseIntegrationOptions($useIntegrationOptions)
+    {
+        $this->useIntegrationOptions = $useIntegrationOptions;
+
+        return $this;
+    }
+
+    /**
+     * Get useIntegrationsOptions.
+     *
+     * @return boolean
+     */
+    public function getUseIntegrationOptions()
+    {
+        return $this->useIntegrationOptions;
     }
 }
 
