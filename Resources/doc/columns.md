@@ -6,15 +6,17 @@ Represents the most basic column, including many-to-one and one-to-one relations
 
 ### Options
 
-- searchable
-- orderable
-- visible
-- title
-- render
 - class
+- padding
 - default
-- width
+- name
+- orderable
+- render
+- searchable
+- title
 - type
+- visible
+- width
 
 ### Example
 
@@ -105,14 +107,17 @@ Represents a column for many-to-many or one-to-many associations.
 
 ### Options
 
-All options of `column`.
+All options of `column` and additionally:
+
+- read_as
 
 ### Example
 
 ``` php
 $this->columnBuilder
     ->add("tags.name", "array", array(
-            "title" => "Tags"
+            "title" => "Tags",
+            "read_as" => "tags[, ].name"
         ));
 ```
 

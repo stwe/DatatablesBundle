@@ -20,7 +20,7 @@ The `require` part of your composer.json might look like this:
     "require": {
         "symfony/symfony": "2.3.*",
         "components/jquery": "1.11.0",
-        "datatables/datatables": "1.10.0",
+        "datatables/datatables": "1.10.1",
         "moment/moment": "2.6.0",
         "friendsofsymfony/jsrouting-bundle": "@stable"
     },
@@ -46,7 +46,7 @@ If not already done: add SgDatatablesBundle in your composer.json:
 ```js
 {
     "require": {
-        "sg/datatablesbundle": "dev-master"
+        "sg/datatablesbundle": "0.5"
     }
 }
 ```
@@ -84,7 +84,10 @@ public function registerBundles()
 
 ***This is a config example from my Win7 system with Bootstrap3 and MopaBootstrapBundle:***
 
-For Bootstrap 3 it is recommended to install the [MopaBootstrapBundle](https://github.com/phiamo/MopaBootstrapBundle).
+For Bootstrap 3 it is recommended to:
+
+- install the [MopaBootstrapBundle](https://github.com/phiamo/MopaBootstrapBundle) and
+- get the bootstrap3 integrations files from [here] (https://github.com/DataTables/Plugins/tree/master/integration/bootstrap/3)
 
 #### config.yml
 
@@ -136,12 +139,14 @@ assetic:
 
     {% stylesheets
         '@MopaBootstrapBundle/Resources/public/less/mopabootstrapbundle.less'
-        '%kernel.root_dir%/../vendor/datatables/datatables/examples/resources/bootstrap/3/dataTables.bootstrap.css'
         output = 'css/styles.css'
         filter = 'cssembed, ?yui_css'
     %}
         <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
     {% endstylesheets %}
+
+    {# include css file from: https://github.com/DataTables/Plugins/tree/master/integration/bootstrap/3 #}
+    <link href="{{ asset('bundles/sgblog/css/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
 
 {% endblock head_style %}
 
@@ -176,7 +181,6 @@ assetic:
         '@MopaBootstrapBundle/Resources/public/js/mopabootstrap-subnav.js'
         '@FOSJsRoutingBundle/Resources/public/js/router.js'
         '%kernel.root_dir%/../vendor/datatables/datatables/media/js/jquery.dataTables.js'
-        '%kernel.root_dir%/../vendor/datatables/datatables/examples/resources/bootstrap/3/dataTables.bootstrap.js'
         '%kernel.root_dir%/../vendor/moment/moment/moment.js'
         '%kernel.root_dir%/../vendor/moment/moment/lang/de.js'
         output = 'js/scripts.js'
@@ -186,6 +190,9 @@ assetic:
     {% endjavascripts %}
 
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
+    {# include js file from: https://github.com/DataTables/Plugins/tree/master/integration/bootstrap/3 #}
+    <script src="{{ asset('bundles/sgblog/js/dataTables.bootstrap.js') }}" type="text/javascript"></script>
 
 {% endblock foot_script_assetic %}
 ```

@@ -13,7 +13,7 @@ The command is run in a non interactive mode. The `--entity` option is required.
 $ php app/console datatable:generate:class --entity=MyTestBundle:Entity
 ```
 
-A description of all available options of the generator is located [hier](./generator.md).
+A description of all available options of the generator is located [here](./generator.md).
 
 The generator is currently in an early development stage. Better you write the class by hand. Then it should look something like this:
 
@@ -40,9 +40,27 @@ class PostDatatable extends AbstractDatatableView
         // Datatable
         //-------------------------------------------------
 
+        // Features (defaults)
         $this->getFeatures()
-            ->setServerSide(true)
-            ->setProcessing(true);
+            ->setAutoWidth(true)
+            ->setDeferRender(false)
+            ->setInfo(true)
+            ->setJQueryUI(false)
+            ->setLengthChange(true)
+            ->setOrdering(true)
+            ->setPaging(true)
+            ->setProcessing(true)  // default: false
+            ->setScrollX(true)     // default: false
+            ->setScrollY("")
+            ->setSearching(true)
+            ->setServerSide(true)  // default: false
+            ->setStateSave(false);
+
+        // Options (for more options see file: Sg\DatatablesBundle\Datatable\View\Options.php)
+        //$this->getOptions()->setLengthMenu(array(10, 25, 50));
+        $this->getOptions()
+            ->setLengthMenu(array(10, 25, 50, 100, -1))
+            ->setOrder(array("column" => 1, "direction" => "desc"));
 
         $this->getAjax()->setUrl($this->getRouter()->generate("post_results"));
 

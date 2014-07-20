@@ -1,4 +1,4 @@
-# Use datatable class generator
+# Use datatable class generator (since version 0.5)
 
 ## Default
 
