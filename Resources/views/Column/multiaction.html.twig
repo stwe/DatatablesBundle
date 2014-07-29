@@ -1,0 +1,40 @@
+{% extends 'SgDatatablesBundle:Column:column.html.twig' %}
+
+{% block data %}
+    "data": "{{ column.data }}",
+    "render": function(data, type, row, meta) {
+    var actionsString = "";
+
+    {% for action_column in action_column.actions %}
+        var routeParameters  = new Array();
+        var attributes = "";
+
+        {% for key, value in action_column.renderConditions %}
+            if (!row.{{ value }}) return '';
+        {% endfor %}
+
+        {% for key, value in action_column.routeParameters %}
+            routeParameters["{{ key }}"] = row.{{ value }};
+        {% endfor %}
+
+        var route  = Routing.generate("{{ action_column.route }}", routeParameters);
+
+        {% for key, value in action_column.attributes %}
+            attributes += '{{ key }}="{{ value }}" ';
+        {% endfor %}
+
+        var url  = "<a ";
+        url += 'href="' + route + '" ';
+        url += attributes + ">";
+        {% if action_column.icon %}
+            url += '<span class="{{ action_column.icon }}"></span> {{ action_column.label }}';
+        {% else %}
+            url += "{{ action_column.label }}";
+        {% endif %}
+        url += "</a>";
+
+        actionsString += url;
+    {% endfor %}
+    return actionsString;
+    },
+{% endblock %}
