@@ -5,6 +5,12 @@
         {% include "SgDatatablesBundle:Datatable:datatable_html.html.twig" %}
 
     {% endblock %}
+    
+    {% block sg_datatable_render_functions %}
+
+        {% include "SgDatatablesBundle:Datatable:render_functions.html.twig" %}
+
+    {% endblock %}
 
     {% block sg_datatable_js %}
 
@@ -122,12 +128,6 @@
             });
 
         </script>
-
-    {% endblock %}
-
-    {% block sg_datatable_render_functions %}
-
-        {% include "SgDatatablesBundle:Datatable:render_functions.html.twig" %}
 
     {% endblock %}
 
