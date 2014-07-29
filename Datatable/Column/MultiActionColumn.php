@@ -118,7 +118,8 @@ class MultiActionColumn extends BaseColumn
         }
 
         foreach ($actions as $action) {
-            $this->actions[] = new ActionColumn($action);
+            $actionColumn = new ActionColumn();
+            $this->actions[] = $actionColumn->setOptions($action);
         }
     }
 
