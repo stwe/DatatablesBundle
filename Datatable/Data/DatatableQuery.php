@@ -223,14 +223,18 @@ class DatatableQuery
     /**
      * Set leftJoins.
      *
+     * @param QueryBuilder|null $qb
+     *
      * @return $this
      */
     public function setLeftJoins($qb=null)
     {
-		$pivot = $this->qb;
-		if(null != $qb) {
-			$pivot = $qb;
-		}
+        $pivot = $this->qb;
+
+        if (null != $qb) {
+            $pivot = $qb;
+        }
+
         foreach ($this->joins as $join) {
             $pivot->leftJoin($join["source"], $join["target"]);
         }
@@ -242,15 +246,18 @@ class DatatableQuery
      * Searching / Filtering.
      * Construct the WHERE clause for server-side processing SQL query.
      *
+     * @param QueryBuilder|null $qb
+     *
      * @return $this
      */
     public function setWhere($qb=null)
     {
-		$pivot = $this->qb;
-		if(null != $qb) {
-			$pivot = $qb;
-		}
-		
+        $pivot = $this->qb;
+
+        if (null != $qb) {
+            $pivot = $qb;
+        }
+
         $counter = count($this->requestParams["columns"]);
         $globalSearch = $this->requestParams["search"]["value"];
 
@@ -295,15 +302,18 @@ class DatatableQuery
     /**
      * Set where callback functions.
      *
+     * @param QueryBuilder|null $qb
+     *
      * @return $this
      */
-    public function setWhereCallbacks($qb=null)
+    public function setWhereCallbacks($qb = null)
     {
-		$pivot = $this->qb;
-		if(null != $qb) {
-			$pivot = $qb;
-		}
-		
+        $pivot = $this->qb;
+
+        if (null != $qb) {
+            $pivot = $qb;
+        }
+
         if (!empty($this->callbacks["WhereBuilder"])) {
             foreach ($this->callbacks["WhereBuilder"] as $callback) {
                 $callback($pivot);
