@@ -69,7 +69,7 @@ class MultiActionColumn extends BaseColumn
      */
     public function getColumnClassName()
     {
-        return "action";
+        return "multiaction";
     }
 
     /**
