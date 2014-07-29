@@ -1,9 +1,20 @@
 <?php
 
+/**
+ * This file is part of the SgDatatablesBundle package.
+ *
+ * (c) stwe <https://github.com/stwe/DatatablesBundle>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @author Tomáš Polívka <draczris@gmail.com>
+ */
 namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Sg\DatatablesBundle\Datatable\Column\AbstractColumn as BaseColumn;
-use Sg\DatatablesBundle\Datatable\Column\ActionColumn;
+
+
 
 use Exception;
 
