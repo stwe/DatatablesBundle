@@ -225,10 +225,14 @@ class DatatableQuery
      *
      * @return $this
      */
-    public function setLeftJoins()
+    public function setLeftJoins($qb=null)
     {
+		$pivot = $this->qb;
+		if(null != $qb) {
+			$pivot = $qb;
+		}
         foreach ($this->joins as $join) {
-            $this->qb->leftJoin($join["source"], $join["target"]);
+            $pivot->leftJoin($join["source"], $join["target"]);
         }
 
         return $this;
@@ -240,29 +244,34 @@ class DatatableQuery
      *
      * @return $this
      */
-    public function setWhere()
+    public function setWhere($qb=null)
     {
+		$pivot = $this->qb;
+		if(null != $qb) {
+			$pivot = $qb;
+		}
+		
         $counter = count($this->requestParams["columns"]);
         $globalSearch = $this->requestParams["search"]["value"];
 
         // global filtering
         if ("" != $globalSearch) {
 
-            $orExpr = $this->qb->expr()->orX();
+            $orExpr = $pivot->expr()->orX();
 
             for ($i = 0; $i < $counter; $i++) {
                 if ("true" == $this->requestParams["columns"][$i]["searchable"]) {
                     $searchField = $this->allColumns[$i];
-                    $orExpr->add($this->qb->expr()->like($searchField, "?$i"));
-                    $this->qb->setParameter($i, "%" . $globalSearch . "%");
+                    $orExpr->add($pivot->expr()->like($searchField, "?$i"));
+                    $pivot->setParameter($i, "%" . $globalSearch . "%");
                 }
             }
 
-            $this->qb->where($orExpr);
+            $pivot->where($orExpr);
         }
 
         // individual column filtering
-        $andExpr = $this->qb->expr()->andX();
+        $andExpr = $pivot->expr()->andX();
 
         for ($i = 0; $i < $counter; $i++) {
 
@@ -271,13 +280,13 @@ class DatatableQuery
 
             if ("true" == $searchable && "" != $individualSearch) {
                 $searchField = $this->allColumns[$i];
-                $andExpr->add($this->qb->expr()->like($searchField, "?$i"));
-                $this->qb->setParameter($i, "%" . $individualSearch . "%");
+                $andExpr->add($pivot->expr()->like($searchField, "?$i"));
+                $pivot->setParameter($i, "%" . $individualSearch . "%");
             }
         }
 
         if ($andExpr->count() > 0) {
-            $this->qb->andWhere($andExpr);
+            $pivot->andWhere($andExpr);
         }
 
         return $this;
@@ -288,11 +297,16 @@ class DatatableQuery
      *
      * @return $this
      */
-    public function setWhereCallbacks()
+    public function setWhereCallbacks($qb=null)
     {
+		$pivot = $this->qb;
+		if(null != $qb) {
+			$pivot = $qb;
+		}
+		
         if (!empty($this->callbacks["WhereBuilder"])) {
             foreach ($this->callbacks["WhereBuilder"] as $callback) {
-                $callback($this->qb);
+                $callback($pivot);
             }
         }
 
