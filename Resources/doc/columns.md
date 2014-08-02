@@ -123,7 +123,7 @@ $this->columnBuilder
             	"renderif" => array(
                 	"visible" // if this attribute is not NULL/FALSE
             	),
-            	"icon" => BootstrapDatatableTheme::DEFAULT_EDIT_ICON,
+            	"icon" => "glyphicon glyphicon-edit",
             	"attributes" => array(
                	"rel" => "tooltip",
                 	"title" => "Edit User",
@@ -146,7 +146,6 @@ $this->columnBuilder
 		)
 	));
 ```
-
 
 ## Array column
 
