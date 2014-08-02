@@ -10,11 +10,10 @@
  *
  * @author Tomáš Polívka <draczris@gmail.com>
  */
+
 namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Sg\DatatablesBundle\Datatable\Column\AbstractColumn as BaseColumn;
-
-
 
 use Exception;
 
@@ -45,6 +44,7 @@ class MultiActionColumn extends BaseColumn
      * @var array
      */
     private $renderConditions;
+
 
     //-------------------------------------------------
     // Ctor.
@@ -133,6 +133,7 @@ class MultiActionColumn extends BaseColumn
             $this->actions[] = $actionColumn->setOptions($action);
         }
     }
+
 
     //-------------------------------------------------
     // Getters && Setters
