@@ -101,6 +101,53 @@ $this->columnBuilder
         ));
 ```
 
+## Multiaction column
+
+Represents an action column.
+
+### Options
+
+Same as for Action column only wrapped to array under `actions` key + renderif for whole column
+
+### Example
+
+``` php
+$this->columnBuilder
+    ->add(null, "multiaction", array(
+		"actions" => array(
+			array(
+            	"route" => "post_edit",
+            	"parameters" => array(
+                	"id" => "id"
+            	),
+            	"renderif" => array(
+                	"visible" // if this attribute is not NULL/FALSE
+            	),
+            	"icon" => BootstrapDatatableTheme::DEFAULT_EDIT_ICON,
+            	"attributes" => array(
+               	"rel" => "tooltip",
+                	"title" => "Edit User",
+                	"class" => "btn btn-danger btn-xs"
+            	),
+        	), 
+			array(
+            	"route" => "post_show",
+            	"parameters" => array(
+                	"id" => "id"
+            	),
+//          	"label" => "Show",
+            	"label" => $this->getTranslator()->trans("test.show", array(), "msg"),
+            	"attributes" => array(
+                	"rel" => "tooltip",
+                	"title" => "Show User",
+                	"class" => "btn btn-primary btn-xs"
+            	)
+        	)
+		)
+	));
+```
+
+
 ## Array column
 
 Represents a column for many-to-many or one-to-many associations.
