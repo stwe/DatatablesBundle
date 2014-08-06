@@ -7,6 +7,9 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * @author Tomáš Polívka <draczris@gmail.com>
+ * @author stwe
  */
 
 namespace Sg\DatatablesBundle\Datatable\Column;
@@ -23,46 +26,25 @@ use Exception;
 class ActionColumn extends BaseColumn
 {
     /**
-     * The action route.
+     * Start HTML.
      *
      * @var string
      */
-    private $route;
+    private $startWrapper;
 
     /**
-     * The action route parameters.
-     *
-     * @var array
-     */
-    private $routeParameters;
-
-    /**
-     * An action icon.
+     * End HTML.
      *
      * @var string
      */
-    private $icon;
+    private $endWrapper;
 
     /**
-     * An action label.
-     *
-     * @var string
-     */
-    private $label;
-
-    /**
-     * HTML attributes.
+     * The actions container.
      *
      * @var array
      */
-    private $attributes;
-
-    /**
-     * Render only if parameter / conditions are TRUE
-     * 
-     * @var array
-     */
-    private $renderConditions;
+    private $actions;
 
 
     //-------------------------------------------------
@@ -84,12 +66,9 @@ class ActionColumn extends BaseColumn
 
         parent::__construct($property);
 
-        $this->addAllowedOption("route");
-        $this->addAllowedOption("parameters");
-        $this->addAllowedOption("icon");
-        $this->addAllowedOption("label");
-        $this->addAllowedOption("attributes");
-        $this->addAllowedOption("renderif");
+        $this->addAllowedOption("start");
+        $this->addAllowedOption("end");
+        $this->addAllowedOption("actions");
     }
 
 
@@ -112,25 +91,17 @@ class ActionColumn extends BaseColumn
     {
         parent::setOptions($options);
 
+        $options = array_change_key_case($options, CASE_LOWER);
         $options = array_intersect_key($options, array_flip($this->getAllowedOptions()));
 
-        if (array_key_exists("route", $options)) {
-            $this->setRoute($options["route"]);
+        if (array_key_exists("start", $options)) {
+            $this->setStartWrapper($options["start"]);
         }
-        if (array_key_exists("parameters", $options)) {
-            $this->setRouteParameters($options["parameters"]);
+        if (array_key_exists("end", $options)) {
+            $this->setEndWrapper($options["end"]);
         }
-        if (array_key_exists("icon", $options)) {
-            $this->setIcon($options["icon"]);
-        }
-        if (array_key_exists("label", $options)) {
-            $this->setLabel($options["label"]);
-        }
-        if (array_key_exists("attributes", $options)) {
-            $this->setAttributes($options["attributes"]);
-        }
-        if (array_key_exists("renderif", $options)) {
-            $this->setRenderConditions($options["renderif"]);
+        if (array_key_exists("actions", $options)) {
+            $this->setActions($options["actions"]);
         }
 
         return $this;
@@ -146,12 +117,9 @@ class ActionColumn extends BaseColumn
         $this->setSearchable(false);
         $this->setOrderable(false);
 
-        $this->setRoute("");
-        $this->setRouteParameters(array());
-        $this->setIcon("");
-        $this->setLabel("");
-        $this->setAttributes(array());
-        $this->setRenderConditions(array());
+        $this->setStartWrapper("");
+        $this->setEndWrapper("");
+        $this->setActions(array());
 
         return $this;
     }
@@ -162,146 +130,77 @@ class ActionColumn extends BaseColumn
     //-------------------------------------------------
 
     /**
-     * Set route.
+     * Set start wrapper.
      *
-     * @param string $route
+     * @param string $startWrapper
      *
      * @return $this
      */
-    public function setRoute($route)
+    public function setStartWrapper($startWrapper)
     {
-        $this->route = $route;
+        $this->startWrapper = $startWrapper;
 
         return $this;
     }
 
     /**
-     * Get route.
+     * Get start wrapper.
      *
      * @return string
      */
-    public function getRoute()
+    public function getStartWrapper()
     {
-        return $this->route;
+        return $this->startWrapper;
     }
 
     /**
-     * Set route parameters.
+     * Set end wrapper.
      *
-     * @param array $parameters
+     * @param string $endWrapper
      *
      * @return $this
      */
-    public function setRouteParameters(array $parameters)
+    public function setEndWrapper($endWrapper)
     {
-        $this->routeParameters = $parameters;
+        $this->endWrapper = $endWrapper;
 
         return $this;
     }
 
     /**
-     * Get route parameters.
-     *
-     * @return array
-     */
-    public function getRouteParameters()
-    {
-        return $this->routeParameters;
-    }
-
-    /**
-     * Set icon.
-     *
-     * @param string $icon
-     *
-     * @return $this
-     */
-    public function setIcon($icon)
-    {
-        $this->icon = $icon;
-
-        return $this;
-    }
-
-    /**
-     * Get icon.
+     * Get end wrapper.
      *
      * @return string
      */
-    public function getIcon()
+    public function getEndWrapper()
     {
-        return $this->icon;
+        return $this->endWrapper;
     }
 
     /**
-     * Set label.
+     * Set actions.
      *
-     * @param string $label
+     * @param array $actions
      *
      * @return $this
      */
-    public function setLabel($label)
+    public function setActions(array $actions)
     {
-        $this->label = $label;
+        foreach ($actions as $action) {
+            $newAction = new Action();
+            $this->actions[] = $newAction->setOptions($action);
+        }
 
         return $this;
     }
 
     /**
-     * Get label.
-     *
-     * @return string
-     */
-    public function getLabel()
-    {
-        return $this->label;
-    }
-
-    /**
-     * Set attributes.
-     *
-     * @param array $attributes
-     *
-     * @return $this
-     */
-    public function setAttributes(array $attributes)
-    {
-        $this->attributes = $attributes;
-
-        return $this;
-    }
-
-    /**
-     * Get attributes.
+     * Get actions.
      *
      * @return array
      */
-    public function getAttributes()
+    public function getActions()
     {
-        return $this->attributes;
-    }
-
-    /**
-     * Set render conditions.
-     *
-     * @param array $renderConditions
-     *
-     * @return $this
-     */
-    public function setRenderConditions(array $renderConditions)
-    {
-        $this->renderConditions = $renderConditions;
-
-        return $this;
-    }
-
-    /**
-     * Get render conditions.
-     * 
-     * @return array
-     */
-    public function getRenderConditions()
-    {
-        return $this->renderConditions;
+        return $this->actions;
     }
 }

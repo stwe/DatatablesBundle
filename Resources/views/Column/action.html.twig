@@ -3,33 +3,74 @@
 {% block data %}
     "data": "{{ column.data }}",
     "render": function(data, type, row, meta) {
-        var routeParameters  = new Array();
-        var attributes = "";
+        var actionsString = "";
 
-        {% for key, value in column.renderConditions %}
-            if (!row.{{ value }}) return '';
-        {% endfor %}
-
-        {% for key, value in column.routeParameters %}
-            routeParameters["{{ key }}"] = row.{{ value }};
-        {% endfor %}
-
-        var route  = Routing.generate("{{ column.route }}", routeParameters);
-
-        {% for key, value in column.attributes %}
-            attributes += '{{ key }}="{{ value }}" ';
-        {% endfor %}
-
-        var url  = "<a ";
-        url += 'href="' + route + '" ';
-        url += attributes + ">";
-        {% if column.icon %}
-            url += '<span class="{{ column.icon }}"></span> {{ column.label }}';
-        {% else %}
-            url += "{{ column.label }}";
+        {# start wrapper #}
+        {% if column.startWrapper %}
+            actionsString += '{{ column.startWrapper|raw }}';
         {% endif %}
-        url += "</a>";
 
-        return url;
+        var routeParameters, attributes, visibleFlag, roleFlag;
+
+        {#
+           actions with:
+               route, routeParameters, icon, label, confirm,
+               confirmMessage, attributes, role, renderConditions
+         #}
+
+        {% for action in column.actions %}
+            routeParameters  = new Array();
+            attributes = "";
+            visibleFlag = true;
+            roleFlag = true;
+
+            {% for key, value in action.renderConditions %}
+                visibleFlag &= Boolean(row.{{ value }});
+            {% endfor %}
+
+            {% if action.role %}
+                roleFlag = false;
+                {% if app.user is not null and is_granted(action.role) %}
+                    roleFlag = true;
+                {% endif %}
+            {% endif %}
+
+            if (true == visibleFlag && true == roleFlag) {
+                {% for key, value in action.routeParameters %}
+                    routeParameters["{{ key }}"] = row.{{ value }};
+                {% endfor %}
+
+                var route  = Routing.generate("{{ action.route }}", routeParameters);
+
+                {% for key, value in action.attributes %}
+                    attributes += '{{ key }}="{{ value }}" ';
+                {% endfor %}
+
+                var url  = "<a ";
+                url += 'href="' + route + '" ';
+                url += attributes;
+                {% if action.confirm %}
+                    url += 'onclick="' + "return confirm('{{ action.ConfirmMessage }}')" + '" ';
+                {% endif %}
+                url += ">";
+
+                {% if action.icon %}
+                    url += '<span class="{{ action.icon }}"></span> {{ action.label }}';
+                {% else %}
+                    url += "{{ action.label }}";
+                {% endif %}
+
+                url += "</a>";
+
+                actionsString += url;
+            }
+        {% endfor %}
+
+        {# end wrapper #}
+        {% if column.endWrapper %}
+            actionsString += '{{ column.endWrapper|raw }}';
+        {% endif %}
+
+        return actionsString;
     },
 {% endblock %}

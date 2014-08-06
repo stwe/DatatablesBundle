@@ -69,9 +69,6 @@ class ColumnFactory implements ColumnFactoryInterface
             case "action":
                 $this->column = new ActionColumn($property);
                 break;
-            case "multiaction":
-                $this->column = new MultiActionColumn($property);
-                break;
             case "array":
                 $this->column = new ArrayColumn($property);
                 break;

@@ -6,17 +6,17 @@ Represents the most basic column, including many-to-one and one-to-one relations
 
 ### Options
 
-- class
-- padding
-- default
-- name
-- orderable
-- render
-- searchable
-- title
-- type
-- visible
-- width
+- class (string)
+- padding (string)
+- default (string)
+- name (string)
+- orderable (boolean)
+- render (string)
+- searchable (boolean)
+- title (string)
+- type (string)
+- visible (boolean)
+- width (string)
 
 ### Example
 
@@ -60,91 +60,66 @@ Represents an action column.
 
 all options of `column` and additionally:
 
-- route
-- parameters
-- icon
-- label
-- attributes
-- renderif
+- start (string)
+- end (string)
+- actions (array) with following options:
+    * route (string)
+    * route_parameters (array)
+    * icon (string)
+    * label (string)
+    * confirm (boolean)
+    * confirm_message (string)
+    * attributes (array)
+    * role (string)
+    * renderif (array)
 
 ### Example
 
 ``` php
 $this->columnBuilder
     ->add(null, "action", array(
-            "route" => "post_edit",
-            "parameters" => array(
-                "id" => "id"
+        "title" => "Actions",
+        "start" => '<div class="wrapper_example_class">',
+        "end" => '</div>',
+        "actions" => array(
+            array(
+                "route" => "post_edit",
+                "route_parameters" => array(
+                    "id" => "id"
+                ),
+                "icon" => "glyphicon glyphicon-edit",
+                "attributes" => array(
+                    "rel" => "tooltip",
+                    "title" => "Edit",
+                    "class" => "btn btn-primary btn-xs",
+                    "role" => "button"
+                ),
+                "confirm" => true,
+                "confirm_message" => "Are you sure?",
+                "role" => "ROLE_ADMIN",
+                "renderif" => array(
+                    "enabled"
+                )
             ),
-            "renderif" => array(
-                "visible" // if this attribute is not NULL/FALSE
-            ),
-            "icon" => BootstrapDatatableTheme::DEFAULT_EDIT_ICON,
-            "attributes" => array(
-                "rel" => "tooltip",
-                "title" => "Edit User",
-                "class" => "btn btn-danger btn-xs"
-            ),
-        ))
-    ->add(null, "action", array(
-            "route" => "post_show",
-            "parameters" => array(
-                "id" => "id"
-            ),
-//          "label" => "Show",
-            "label" => $this->getTranslator()->trans("test.show", array(), "msg"),
-            "attributes" => array(
-                "rel" => "tooltip",
-                "title" => "Show User",
-                "class" => "btn btn-primary btn-xs"
+            array(
+                "route" => "post_show",
+                "route_parameters" => array(
+                    "id" => "id"
+                ),
+                "label" => "Show",
+                "attributes" => array(
+                    "rel" => "tooltip",
+                    "title" => "Show",
+                    "class" => "btn btn-default btn-xs",
+                    "role" => "button"
+                ),
+                "role" => "ROLE_USER",
+                "renderif" => array(
+                    "enabled"
+                )
             )
-        ));
-```
-
-## Multiaction column
-
-Represents an action column.
-
-### Options
-
-Same as for Action column only wrapped to array under `actions` key + renderif for whole column
-
-### Example
-
-``` php
-$this->columnBuilder
-    ->add(null, "multiaction", array(
-		"actions" => array(
-			array(
-            	"route" => "post_edit",
-            	"parameters" => array(
-                	"id" => "id"
-            	),
-            	"renderif" => array(
-                	"visible" // if this attribute is not NULL/FALSE
-            	),
-            	"icon" => "glyphicon glyphicon-edit",
-            	"attributes" => array(
-               	"rel" => "tooltip",
-                	"title" => "Edit User",
-                	"class" => "btn btn-danger btn-xs"
-            	),
-        	), 
-			array(
-            	"route" => "post_show",
-            	"parameters" => array(
-                	"id" => "id"
-            	),
-//          	"label" => "Show",
-            	"label" => $this->getTranslator()->trans("test.show", array(), "msg"),
-            	"attributes" => array(
-                	"rel" => "tooltip",
-                	"title" => "Show User",
-                	"class" => "btn btn-primary btn-xs"
-            	)
-        	)
-		)
-	));
+        )
+    ));
 ```
 
 ## Array column
@@ -155,7 +130,7 @@ Represents a column for many-to-many or one-to-many associations.
 
 All options of `column` and additionally:
 
-- read_as
+- read_as (string)
 
 ### Example
 
@@ -175,10 +150,10 @@ Represents a boolean column.
 
 All options of `column` and additionally:
 
-- true_icon
-- false_icon
-- true_label
-- false_label
+- true_icon (string)
+- false_icon (string)
+- true_label (string)
+- false_label (string)
 
 ### Example
 
@@ -186,8 +161,8 @@ All options of `column` and additionally:
 $this->columnBuilder
     ->add("visible", "boolean", array(
             "title" => "Visible",
-            "true_icon" => BootstrapDatatableTheme::DEFAULT_TRUE_ICON,
-            "false_icon" => BootstrapDatatableTheme::DEFAULT_FALSE_ICON,
+            "true_icon" => "glyphicon glyphicon-ok",
+            "false_icon" => "glyphicon glyphicon-remove",
             "true_label" => "yes",
             "false_label" => "no"
         ));
@@ -201,7 +176,7 @@ Represents a datetime column.
 
 All options of `column` and additionally:
 
-- format
+- format (string)
 
 ### Example
 

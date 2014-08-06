@@ -112,33 +112,46 @@ class PostDatatable extends AbstractDatatableView
                     "read_as" => "tags[, ].name"
                 ))
             ->add(null, "action", array(
-                    "route" => "post_edit",
-                    "parameters" => array(
-                        "id" => "id"
+                "title" => "Actions",
+                "start" => '<div class="wrapper">',
+                "end" => '</div>',
+                "actions" => array(
+                    array(
+                        "route" => "post_edit",
+                        "route_parameters" => array(
+                            "id" => "id"
+                        ),
+                        "icon" => "glyphicon glyphicon-edit",
+                        "attributes" => array(
+                            "rel" => "tooltip",
+                            "title" => "Edit",
+                            "class" => "btn btn-primary btn-xs",
+                            "role" => "button"
+                        ),
+                        "confirm" => true,
+                        "confirm_message" => "Are you sure?",
+                        "role" => "ROLE_ADMIN",
+                        "renderif" => array(
+                            "visible"
+                        )
                     ),
-                    "renderif" => array(
-                        "visible" // if this attribute is not NULL/FALSE
-                    ),
-                    "label" => $this->getTranslator()->trans("test.edit", array(), "msg"),
-                    "attributes" => array(
-                        "rel" => "tooltip",
-                        "title" => "Edit User",
-                        "class" => "btn btn-danger btn-xs"
-                    ),
-                ))
-            ->add(null, "action", array(
-                    "route" => "post_show",
-                    "parameters" => array(
-                        "id" => "id"
-                    ),
-                    "icon" => "glyphicon glyphicon-eye-open",
-                    "label" => $this->getTranslator()->trans("test.show", array(), "msg"),
-                    "attributes" => array(
-                        "rel" => "tooltip",
-                        "title" => "Show User",
-                        "class" => "btn btn-primary btn-xs"
+                    array(
+                        "route" => "post_show",
+                        "route_parameters" => array(
+                            "id" => "id"
+                        ),
+                        "label" => "Show",
+                        "attributes" => array(
+                            "rel" => "tooltip",
+                            "title" => "Show",
+                            "class" => "btn btn-default btn-xs",
+                            "role" => "button"
+                        ),
+                        //"role" => "ROLE_USER",
+                        //"renderif" => array("visible")
                     )
-                ));
+                )
+            ));
     }
 
     /**
