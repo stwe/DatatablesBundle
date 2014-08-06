@@ -17,7 +17,7 @@
     }
 
     function render_datetime(data, type, row, meta, localizedFormat) {
-        if (typeof data.timestamp != "undefined") {
+        if (data != null && typeof data.timestamp != "undefined") {
             moment.lang("{{ app.request.locale }}");
             return moment.unix(data.timestamp).format(localizedFormat);
         } else {
@@ -26,7 +26,7 @@
     }
 
     function render_timeago(data, type, row, meta) {
-        if (typeof data.timestamp != "undefined") {
+        if (data != null && typeof data.timestamp != "undefined") {
             moment.lang("{{ app.request.locale }}");
             return moment.unix(data.timestamp).fromNow();
         } else {
