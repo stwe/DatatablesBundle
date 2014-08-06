@@ -23,14 +23,13 @@ use Exception;
 class DateTimeColumn extends BaseColumn
 {
     /**
-     * DateTime formatting token based on locale.
+     * DateTime format string.
      *
-     * There are a few tokens that can be used to format a moment based on its language:
      * @link http://momentjs.com/docs/
      *
      * @var string
      */
-    private $localizedFormat;
+    private $dateFormat;
 
 
     //-------------------------------------------------
@@ -87,7 +86,7 @@ class DateTimeColumn extends BaseColumn
             if (null == $options["format"]) {
                 throw new Exception("The format option can not be null.");
             } else {
-                $this->setLocalizedFormat($options["format"]);
+                $this->setDateFormat($options["format"]);
             }
         }
 
@@ -102,7 +101,7 @@ class DateTimeColumn extends BaseColumn
         parent::setDefaults();
 
         $this->setRender("render_datetime");
-        $this->setLocalizedFormat("lll");
+        $this->setDateFormat("lll");
 
         return $this;
     }
@@ -115,21 +114,14 @@ class DateTimeColumn extends BaseColumn
     /**
      * Set localized format.
      *
-     * @param string $localizedFormat
+     * @param string $dateFormat
      *
      * @return $this
      * @throws Exception
      */
-    public function setLocalizedFormat($localizedFormat)
+    public function setDateFormat($dateFormat)
     {
-        $localizedFormats = array("LT", "L", "l", "LL", "ll", "LLL", "lll", "LLLL", "llll");
-
-        if (in_array($localizedFormat, $localizedFormats, true)) {
-            $this->localizedFormat = $localizedFormat;
-        } else {
-            throw new Exception("The localized format {$localizedFormat} is not supported.");
-        }
-
+        $this->dateFormat = $dateFormat;
         return $this;
     }
 
@@ -138,8 +130,8 @@ class DateTimeColumn extends BaseColumn
      *
      * @return string
      */
-    public function getLocalizedFormat()
+    public function getDateFormat()
     {
-        return $this->localizedFormat;
+        return $this->dateFormat;
     }
 }
