@@ -154,6 +154,7 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function setOptions(array $options)
     {
+        $options = array_change_key_case($options, CASE_LOWER);
         $options = array_intersect_key($options, array_flip($this->allowedOptions));
 
         if (array_key_exists("class", $options)) {
