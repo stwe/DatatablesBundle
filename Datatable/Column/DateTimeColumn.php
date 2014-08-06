@@ -75,6 +75,7 @@ class DateTimeColumn extends BaseColumn
     {
         parent::setOptions($options);
 
+        $options = array_change_key_case($options, CASE_LOWER);
         $options = array_intersect_key($options, array_flip($this->getAllowedOptions()));
 
         if (array_key_exists("render", $options)) {
