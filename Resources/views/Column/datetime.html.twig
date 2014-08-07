@@ -3,6 +3,6 @@
 {% block data %}
     "data": "{{ column.data }}",
     "render": function(data, type, row, meta) {
-        return {{ column.render }}(data, type, row, meta, "{{ column.localizedFormat }}");
+        return {{ column.render }}(data, type, row, meta, "{{ column.column.dateFormat }}");
     },
 {% endblock %}

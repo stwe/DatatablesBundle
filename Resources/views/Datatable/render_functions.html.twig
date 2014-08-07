@@ -16,10 +16,10 @@
         }
     }
 
-    function render_datetime(data, type, row, meta, localizedFormat) {
+    function render_datetime(data, type, row, meta, dateFormat) {
         if (typeof data.timestamp != "undefined") {
             moment.lang("{{ app.request.locale }}");
-            return moment.unix(data.timestamp).format(localizedFormat);
+            return moment.unix(data.timestamp).format(dateFormat);
         } else {
             return null;
         }
