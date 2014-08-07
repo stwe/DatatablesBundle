@@ -12,7 +12,6 @@
 namespace Sg\DatatablesBundle\Generator;
 
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use RuntimeException;
 
@@ -23,11 +22,6 @@ use RuntimeException;
  */
 class DatatableGenerator extends Generator
 {
-    /**
-     * @var Filesystem
-     */
-    private $filesystem;
-
     /**
      * @var string
      */
@@ -55,12 +49,9 @@ class DatatableGenerator extends Generator
 
     /**
      * Ctor.
-     *
-     * @param Filesystem $filesystem A Filesystem instance
      */
-    public function __construct(Filesystem $filesystem)
+    public function __construct()
     {
-        $this->filesystem = $filesystem;
         $this->className = "";
         $this->classPath = "";
         $this->style = "";
