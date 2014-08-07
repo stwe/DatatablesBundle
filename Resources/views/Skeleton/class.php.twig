@@ -29,8 +29,8 @@ class {{ datatable_class }} extends AbstractDatatableView
             {% endif %}
             ->setProcessing(true);
 
-        {% if "" != ajax_url %}
-        $this->getAjax()->setUrl($this->getRouter()->generate("{{ ajax_url }}"));
+        {% if '' != ajax_url %}
+        $this->getAjax()->setUrl($this->getRouter()->generate('{{ ajax_url }}'));
         {% endif %}
 
         $this->setStyle({{ style }});
@@ -41,7 +41,7 @@ class {{ datatable_class }} extends AbstractDatatableView
 
         $this->getColumnBuilder()
         {% for field in fields %}
-        ->add("{{ field.property }}", "{{ field.column_name }}", array("title" => "{{ field.title }}",))
+        ->add('{{ field.property }}', '{{ field.column_name }}', array('title' => '{{ field.title }}',))
         {% endfor %}
         ;
     }
@@ -51,7 +51,7 @@ class {{ datatable_class }} extends AbstractDatatableView
      */
     public function getEntity()
     {
-        return "{{ namespace }}\Entity{{ entity_namespace ? '\\' ~ entity_namespace : '' }}\{{ entity_class }}";
+        return '{{ namespace }}\Entity{{ entity_namespace ? '\\' ~ entity_namespace : '' }}\{{ entity_class }}';
     }
 
     /**
@@ -59,7 +59,7 @@ class {{ datatable_class }} extends AbstractDatatableView
      */
     public function getName()
     {
-        return "{{ datatable_name }}";
+        return '{{ datatable_name }}';
     }
 {% endblock class_body %}
 }
