@@ -84,6 +84,9 @@ class ColumnFactory implements ColumnFactoryInterface
             case "timeago":
                 $this->column = new TimeagoColumn($property);
                 break;
+            case "virtual":
+                $this->column = new VirtualColumn($property);
+                break;            
             default:
                 throw new Exception("The {$name} column is not supported.");
         }

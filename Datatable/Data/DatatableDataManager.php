@@ -111,7 +111,8 @@ class DatatableDataManager
         $em = $this->doctrine->getManager();
 
         $datatableQuery = new DatatableQuery($params, $metadata, $em);
-        $datatableData = new DatatableData($params, $metadata, $em, $this->serializer, $datatableQuery);
+        $virtualColumns = $datatableView->getColumnBuilder()->getVirtualColumnsNames();
+        $datatableData = new DatatableData($params, $metadata, $em, $this->serializer, $datatableQuery, $virtualColumns);
         $datatableData->setLineFormatter($datatableView->getLineFormatter());
 
         return $datatableData;

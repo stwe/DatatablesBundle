@@ -1,0 +1,36 @@
+{
+    {% block common %}
+         "searchable": false,
+         "orderable": false,
+        {% if column.visible %}
+            "visible": true,
+        {% else %}
+            "visible": false,
+        {% endif %}
+
+        {% if column.type %}
+            "type": "{{ column.type }}",
+        {% endif %}
+
+        "title": "{{ column.title }}",
+        "className": "{{ column.className }}",
+        "defaultContent": "{{ column.defaultContent }}",
+        "width": "{{ column.width }}",
+        "contentPadding": "{{ column.contentPadding }}",
+        "name": "{{ column.name }}",
+    {% endblock %}
+
+    {% block data %}
+        {% if column.data %}
+            "data": "{{ column.data }}",
+        {% else %}
+            "data": null,
+        {% endif %}
+
+        {% if column.render %}
+            "render": function(data, type, row, meta) {
+                return {{ column.render }}(data, type, row, meta);
+            },
+        {% endif %}
+    {% endblock %}
+},

@@ -78,6 +78,11 @@ class DatatableData implements DatatableDataInterface
     /**
      * @var array
      */
+    protected $virtualColumns;
+
+    /**
+     * @var array
+     */
     protected $joins;
 
     /**
@@ -99,7 +104,8 @@ class DatatableData implements DatatableDataInterface
      * @param Serializer     $serializer     A Serializer instance
      * @param DatatableQuery $datatableQuery A DatatableQuery instance
      */
-    public function __construct(array $requestParams, ClassMetadata $metadata, EntityManager $em, Serializer $serializer, DatatableQuery $datatableQuery)
+    public function __construct(array $requestParams, ClassMetadata $metadata, 
+        EntityManager $em, Serializer $serializer, DatatableQuery $datatableQuery, $virtualColumnsNames = [])
     {
         $this->requestParams = $requestParams;
         $this->metadata = $metadata;
@@ -109,6 +115,7 @@ class DatatableData implements DatatableDataInterface
         $this->datatableQuery = $datatableQuery;
         $identifiers = $this->metadata->getIdentifierFieldNames();
         $this->rootEntityIdentifier = array_shift($identifiers);
+        $this->virtualColumns = $virtualColumnsNames;
         $this->response = array();
         $this->selectColumns = array();
         $this->allColumns = array();
@@ -150,7 +157,7 @@ class DatatableData implements DatatableDataInterface
     {
         if (in_array($column, $metadata->getFieldNames())) {
             $this->selectColumns[($columnTableName?:$metadata->getTableName())][] = $column;
-        } else {
+        } elseif(in_array($column, $this->getResponse())) {
             throw new Exception("Exception when parsing the columns.");
         }
 
@@ -246,20 +253,26 @@ class DatatableData implements DatatableDataInterface
 
         for ($i = 0; $i < $counter; $i++) {
 
-            if ($this->requestParams["dql_" . $i] != null) {
-                // Get the name of the column
-                $column = $this->requestParams["dql_" . $i];
+            if ($this->requestParams["dql_" . $i] == null){
+                continue;
+            }
+            
+            if (in_array($this->requestParams["dql_" . $i], $this->virtualColumns)){
+                continue;
+            }
+            
+            // Get the name of the column
+            $column = $this->requestParams["dql_" . $i];
 
-                // Association delimiter found (e.g. 'plants.genus.name')?
-                if (false !== strstr($column, ".")) {
-                    $array = explode(".", $column);
-                    $this->setAssociations($array, 0, $this->metadata);
-                } else {
-                    // No association found...add column
-                    if ($column !== $this->rootEntityIdentifier) {
-                        $this->addSelectColumn($this->metadata, $column);
-                        $this->allColumns[] = $this->tableName . '.' . $column;
-                    }
+            // Association delimiter found (e.g. 'plants.genus.name')?
+            if (false !== strstr($column, ".")) {
+                $array = explode(".", $column);
+                $this->setAssociations($array, 0, $this->metadata);
+            } else {
+                // No association found...add column
+                if ($column !== $this->rootEntityIdentifier) {
+                    $this->addSelectColumn($this->metadata, $column);
+                    $this->allColumns[] = $this->tableName . '.' . $column;
                 }
             }
 
@@ -312,7 +325,6 @@ class DatatableData implements DatatableDataInterface
 
         return $this;
     }
-
 
     //-------------------------------------------------
     // DatatableDataInterface
