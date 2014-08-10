@@ -75,4 +75,18 @@ class ColumnBuilder implements ColumnBuilderInterface
     {
         return $this->columns;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getVirtualColumnsNames()
+    {
+        $virtualColumns = [];
+        foreach($this->columns as $column){
+            if($column instanceof VirtualColumn){
+                $virtualColumns[] = $column->getProperty();
+            }            
+        }
+        return $virtualColumns;
+    }
 }
