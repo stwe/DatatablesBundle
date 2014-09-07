@@ -45,4 +45,3 @@ $ php app/console datatable:generate:class --entity=AcmeBlogBundle:Post --ajax-u
 ``` bash
 $ php app/console datatable:generate:class --entity=AcmeBlogBundle:Post --filtering
 ```
-

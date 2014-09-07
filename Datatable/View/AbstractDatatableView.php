@@ -619,4 +619,3 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         return $this->useIntegrationOptions;
     }
 }
-

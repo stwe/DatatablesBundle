@@ -41,4 +41,4 @@ class DatatableViewPass implements CompilerPassInterface
             $def->addArgument('%sg_datatables.default.layout.options%');
         }
     }
-} 
+}

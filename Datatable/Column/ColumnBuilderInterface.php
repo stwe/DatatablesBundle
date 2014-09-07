@@ -42,4 +42,4 @@ interface ColumnBuilderInterface
      * @return array
      */
     public function getVirtualColumnNames();
-} 
+}
