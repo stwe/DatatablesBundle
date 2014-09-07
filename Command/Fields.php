@@ -49,4 +49,4 @@ class Fields
 
         return $fields;
     }
-} 
+}
