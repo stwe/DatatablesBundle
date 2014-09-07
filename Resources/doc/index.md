@@ -205,6 +205,6 @@ assetic:
 
 - [Columns](./columns.md)
 
-## Used a line formatter
+## To use a line formatter
 
 - [Line formatter](./lineFormatter.md)

@@ -78,6 +78,11 @@ class DatatableData implements DatatableDataInterface
     /**
      * @var array
      */
+    protected $virtualColumns;
+
+    /**
+     * @var array
+     */
     protected $joins;
 
     /**
@@ -93,13 +98,14 @@ class DatatableData implements DatatableDataInterface
     /**
      * Ctor.
      *
-     * @param array          $requestParams  All request params
-     * @param ClassMetadata  $metadata       A ClassMetadata instance
-     * @param EntityManager  $em             A EntityManager instance
-     * @param Serializer     $serializer     A Serializer instance
-     * @param DatatableQuery $datatableQuery A DatatableQuery instance
+     * @param array          $requestParams      All request params
+     * @param ClassMetadata  $metadata           A ClassMetadata instance
+     * @param EntityManager  $em                 A EntityManager instance
+     * @param Serializer     $serializer         A Serializer instance
+     * @param DatatableQuery $datatableQuery     A DatatableQuery instance
+     * @param array          $virtualColumnNames Virtual columns array
      */
-    public function __construct(array $requestParams, ClassMetadata $metadata, EntityManager $em, Serializer $serializer, DatatableQuery $datatableQuery)
+    public function __construct(array $requestParams, ClassMetadata $metadata, EntityManager $em, Serializer $serializer, DatatableQuery $datatableQuery, $virtualColumnNames = array())
     {
         $this->requestParams = $requestParams;
         $this->metadata = $metadata;
@@ -107,6 +113,7 @@ class DatatableData implements DatatableDataInterface
         $this->serializer = $serializer;
         $this->tableName = $metadata->getTableName();
         $this->datatableQuery = $datatableQuery;
+        $this->virtualColumns = $virtualColumnNames;
         $identifiers = $this->metadata->getIdentifierFieldNames();
         $this->rootEntityIdentifier = array_shift($identifiers);
         $this->response = array();
@@ -150,7 +157,7 @@ class DatatableData implements DatatableDataInterface
     {
         if (in_array($column, $metadata->getFieldNames())) {
             $this->selectColumns[($columnTableName?:$metadata->getTableName())][] = $column;
-        } else {
+        } elseif (in_array($column, $this->getResponse())) {
             throw new Exception("Exception when parsing the columns.");
         }
 
@@ -245,24 +252,28 @@ class DatatableData implements DatatableDataInterface
         $counter = count($this->requestParams["columns"]);
 
         for ($i = 0; $i < $counter; $i++) {
+            // Get the column
+            $column = $this->requestParams["dql_" . $i];
 
-            if ($this->requestParams["dql_" . $i] != null) {
-                // Get the name of the column
-                $column = $this->requestParams["dql_" . $i];
-
-                // Association delimiter found (e.g. 'plants.genus.name')?
-                if (false !== strstr($column, ".")) {
-                    $array = explode(".", $column);
-                    $this->setAssociations($array, 0, $this->metadata);
-                } else {
-                    // No association found...add column
-                    if ($column !== $this->rootEntityIdentifier) {
-                        $this->addSelectColumn($this->metadata, $column);
-                        $this->allColumns[] = $this->tableName . '.' . $column;
-                    }
-                }
+            if (null == $column) {
+                continue;
             }
 
+            if (in_array($column, $this->virtualColumns)) {
+                continue;
+            }
+
+            // Association delimiter found (e.g. 'plants.genus.name')?
+            if (false !== strstr($column, ".")) {
+                $array = explode(".", $column);
+                $this->setAssociations($array, 0, $this->metadata);
+            } else {
+                // No association found...add column
+                if ($column !== $this->rootEntityIdentifier) {
+                    $this->addSelectColumn($this->metadata, $column);
+                    $this->allColumns[] = $this->tableName . '.' . $column;
+                }
+            }
         }
 
         return $this;

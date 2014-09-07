@@ -35,4 +35,11 @@ interface ColumnBuilderInterface
      * @return array
      */
     public function getColumns();
+
+    /**
+     * Get all virtual column names.
+     *
+     * @return array
+     */
+    public function getVirtualColumnNames();
 } 

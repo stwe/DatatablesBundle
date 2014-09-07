@@ -204,3 +204,21 @@ $this->columnBuilder
             "title" => "Created"
         ));
 ```
+
+## Virtual column
+
+Represents a virtual column.
+
+### Options
+
+all options of `column` except that orderable and filterable are always false.
+
+The virtual field could be used with the [Line formatter](./lineFormatter.md)
+method.
+
+### Example
+
+``` php
+$this->columnBuilder
+    ->add("a virtual field", "virtual");
+```
