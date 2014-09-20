@@ -14,7 +14,9 @@ For DataTables 1.10.x, you need to use the 0.5.x release of the bundle.
 
 ## Documentation
 
-### master (unstable)
+**At the moment, it is highly recommended to use the master version of this bundle with DataTables 1.10.**
+
+### master (recommended)
 
 [Read the Documentation for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/index.md).
 
