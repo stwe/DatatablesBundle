@@ -12,6 +12,10 @@ The stable release 0.4.2 works with DataTables 1.9.x.
 
 For DataTables 1.10.x, you need to use the 0.5.x release of the bundle.
 
+## Known Issues
+
+Global && Individual Filtering fails in some cases (#42)! Sorry.
+
 ## Documentation
 
 **At the moment, it is highly recommended to use the master version of this bundle with DataTables 1.10.**
