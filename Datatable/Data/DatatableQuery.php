@@ -227,7 +227,7 @@ class DatatableQuery
      *
      * @return $this
      */
-    public function setLeftJoins($qb=null)
+    public function setLeftJoins($qb = null)
     {
         $pivot = $this->qb;
 
@@ -250,7 +250,7 @@ class DatatableQuery
      *
      * @return $this
      */
-    public function setWhere($qb=null)
+    public function setWhere($qb = null)
     {
         $pivot = $this->qb;
 
@@ -258,43 +258,34 @@ class DatatableQuery
             $pivot = $qb;
         }
 
-        $counter = count($this->requestParams["columns"]);
+        $allCounter = count($this->requestParams["columns"]);
         $globalSearch = $this->requestParams["search"]["value"];
+
+        // @todo: issue #42
 
         // global filtering
         if ("" != $globalSearch) {
 
             $orExpr = $pivot->expr()->orX();
 
-            for ($i = 0; $i < $counter; $i++) {
-                if ("true" == $this->requestParams["columns"][$i]["searchable"]) {
-                    $searchField = $this->allColumns[$i];
-                    $orExpr->add($pivot->expr()->like($searchField, "?$i"));
-                    $pivot->setParameter($i, "%" . $globalSearch . "%");
+            $a = 0;
+            $c = 0;
+            while ($a < $allCounter) {
+                if ( ("true" == $this->requestParams["columns"][$a]["searchable"]) && (null != $this->requestParams["columns"][$a]["data"]) ) {
+                    $searchField = $this->allColumns[$c];
+                    $orExpr->add($pivot->expr()->like($searchField, "?$c"));
+                    $pivot->setParameter($c, "%" . $globalSearch . "%");
+                    $c++;
+                    $a++;
+                } else {
+                    $a++;
                 }
             }
 
             $pivot->where($orExpr);
         }
 
-        // individual column filtering
-        $andExpr = $pivot->expr()->andX();
-
-        for ($i = 0; $i < $counter; $i++) {
-
-            $individualSearch = $this->requestParams["columns"][$i]["search"]["value"];
-            $searchable = $this->requestParams["columns"][$i]["searchable"];
-
-            if ("true" == $searchable && "" != $individualSearch) {
-                $searchField = $this->allColumns[$i];
-                $andExpr->add($pivot->expr()->like($searchField, "?$i"));
-                $pivot->setParameter($i, "%" . $individualSearch . "%");
-            }
-        }
-
-        if ($andExpr->count() > 0) {
-            $pivot->andWhere($andExpr);
-        }
+        // @todo: individual column filtering
 
         return $this;
     }
