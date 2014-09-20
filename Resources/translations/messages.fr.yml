@@ -16,3 +16,4 @@ datatables: # the bundle name
     bulk:
         confirmMsg: "Êtes vous certain?"
         selectError: "Vous devez sélectionner au moins un élément."
+        ok: "Ok"
