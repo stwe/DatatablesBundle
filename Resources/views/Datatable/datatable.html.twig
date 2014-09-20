@@ -74,7 +74,7 @@
                                     <option value='{{ path(value) }}'>{{ key }}</option>\
                                 {% endfor %}\
                             </select>\
-                            <button id='multiselect_submit' type='button'>Ok</button>\
+                            <button id='multiselect_submit' type='button'>{{ 'datatables.bulk.ok'|trans({}, 'messages') }}</button>\
                         </p>";
 
                     $("#{{ view_table_id }}" + "_wrapper").append(multiple_html);
