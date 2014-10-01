@@ -57,7 +57,13 @@
                 $.extend(defaults, ajax);
                 $.extend(defaults, columns);
 
-                var oTable = $(selector).DataTable(defaults);
+                if ( $.fn.dataTable.isDataTable( selector ) ) {
+                {#
+                    to check if datatable already exists
+                #}
+                }else {
+                    var oTable = $(selector).DataTable(defaults);
+                }
 
                 {% if view_individual_filtering %}
                     $("tfoot input.individual_filtering").on("keyup change", function() {
