@@ -67,3 +67,9 @@
 {% else %}
     "stateSave": false,
 {% endif %}
+
+{% if view_features.delay %}
+    "delay": {{ view_features.delay }},
+{% else %}
+    "delay": 0,
+{% endif %}
