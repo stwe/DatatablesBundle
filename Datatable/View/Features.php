@@ -111,12 +111,13 @@ class Features
     private $stateSave;
 
     /**
-     * delay time to render.
+     * Delay time to render.
      *
-     * @var string
+     * @var integer
      */
     private $delay;
-    
+
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -458,27 +459,28 @@ class Features
     {
         return (boolean) $this->stateSave;
     }
-    
+
     /**
      * Set delay.
      *
-     * @param string $delay
+     * @param integer $delay
      *
      * @return $this
      */
-    public function setDelay($delay) {
+    public function setDelay($delay)
+    {
         $this->delay = $delay;
 
         return $this;
     }
 
     /**
-     * Get delay
+     * Get delay.
      *
-     * @return string
+     * @return integer
      */
-    public function getDelay() {
+    public function getDelay()
+    {
         return $this->delay;
     }
-    
 }

@@ -54,7 +54,8 @@ class PostDatatable extends AbstractDatatableView
             ->setScrollY("")
             ->setSearching(true)
             ->setServerSide(true)  // default: false
-            ->setStateSave(false);
+            ->setStateSave(false)
+            ->setDelay(500);       // default: 0
 
         // Options (for more options see file: Sg\DatatablesBundle\Datatable\View\Options.php)
         //$this->getOptions()->setLengthMenu(array(10, 25, 50));
