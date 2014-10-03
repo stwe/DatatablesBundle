@@ -8,7 +8,7 @@
 
     {% block sg_datatable_js %}
 
-        <script>
+        <script type="text/javascript">
 
             $(document).ready(function () {
 
@@ -29,7 +29,9 @@
                 var defaults = {
                     {% include "SgDatatablesBundle:Datatable:language.html.twig" %}
                 }
-
+                
+                setTimeout(function(){
+                
                 var columns = {
                     "columns": [
                         {% if view_multiselect.enabled %}
@@ -55,7 +57,13 @@
                 $.extend(defaults, ajax);
                 $.extend(defaults, columns);
 
-                var oTable = $(selector).DataTable(defaults);
+                if ( $.fn.dataTable.isDataTable( selector ) ) {
+                {#
+                    to check if datatable already exists
+                #}
+                }else {
+                    var oTable = $(selector).DataTable(defaults);
+                }
 
                 {% if view_individual_filtering %}
                     $("tfoot input.individual_filtering").on("keyup change", function() {
@@ -118,7 +126,7 @@
                         }
                     });
                 {% endif %}
-
+                }, features.delay);
             });
 
         </script>
