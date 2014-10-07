@@ -14,7 +14,6 @@ For DataTables 1.10.x, you need to use the 0.5.x release of the bundle.
 
 ## Known Issues
 
-Global && Individual Filtering fails in some cases (#42)! Sorry.
 
 ## Documentation
 

@@ -83,12 +83,22 @@ class DatatableData implements DatatableDataInterface
     /**
      * @var array
      */
+    protected $searchColumns;
+
+    /**
+     * @var array
+     */
     protected $joins;
 
     /**
      * @var callable
      */
     protected $lineFormatter;
+
+    /**
+     * @var integer
+     */
+    private $counter;
 
 
     //-------------------------------------------------
@@ -120,6 +130,7 @@ class DatatableData implements DatatableDataInterface
         $this->selectColumns = array();
         $this->allColumns = array();
         $this->joins = array();
+        $this->searchColumns = array();
 
         $this->prepareColumns();
     }
@@ -233,6 +244,12 @@ class DatatableData implements DatatableDataInterface
             }
 
             $this->allColumns[] = $columnTableName . '.' . $column;
+
+            if ("true" == $this->requestParams["columns"][$this->counter]["searchable"]) {
+                $this->searchColumns[] = $columnTableName . '.' . $column;
+            } else {
+                $this->searchColumns[] = null;
+            }
         }
 
         return $this;
@@ -256,22 +273,36 @@ class DatatableData implements DatatableDataInterface
             $column = $this->requestParams["dql_" . $i];
 
             if (null == $column) {
+                $this->searchColumns[] = null;
                 continue;
             }
 
             if (in_array($column, $this->virtualColumns)) {
+                $this->searchColumns[] = null;
                 continue;
             }
 
             // Association delimiter found (e.g. 'plants.genus.name')?
             if (false !== strstr($column, ".")) {
                 $array = explode(".", $column);
+                $this->counter = $i;
                 $this->setAssociations($array, 0, $this->metadata);
             } else {
                 // No association found...add column
                 if ($column !== $this->rootEntityIdentifier) {
                     $this->addSelectColumn($this->metadata, $column);
                     $this->allColumns[] = $this->tableName . '.' . $column;
+                    if ("true" == $this->requestParams["columns"][$i]["searchable"]) {
+                        $this->searchColumns[] = $this->tableName . '.' . $column;
+                    } else {
+                        $this->searchColumns[] = null;
+                    }
+                } else {
+                    if ("true" == $this->requestParams["columns"][$i]["searchable"]) {
+                        $this->searchColumns[] = $this->tableName . '.' . $column;
+                    } else {
+                        $this->searchColumns[] = null;
+                    }
                 }
             }
         }
@@ -289,6 +320,7 @@ class DatatableData implements DatatableDataInterface
         $this->datatableQuery->setSelectColumns($this->selectColumns);
         $this->datatableQuery->setAllColumns($this->allColumns);
         $this->datatableQuery->setJoins($this->joins);
+        $this->datatableQuery->setSearchColumns($this->searchColumns);
 
         return $this;
     }

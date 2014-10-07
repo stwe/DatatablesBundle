@@ -66,6 +66,11 @@ class DatatableQuery
     /**
      * @var array
      */
+    protected $searchColumns;
+
+    /**
+     * @var array
+     */
     protected $callbacks;
 
 
@@ -90,6 +95,7 @@ class DatatableQuery
         $this->selectColumns = array();
         $this->allColumns = array();
         $this->joins = array();
+        $this->searchColumns = array();
         $this->callbacks = array(
             "WhereBuilder" => array(),
         );
@@ -148,6 +154,20 @@ class DatatableQuery
     public function setJoins(array $joins)
     {
         $this->joins = $joins;
+
+        return $this;
+    }
+
+    /**
+     * Set search columns.
+     *
+     * @param array $searchColumns
+     *
+     * @return $this
+     */
+    public function setSearchColumns(array $searchColumns)
+    {
+        $this->searchColumns = $searchColumns;
 
         return $this;
     }
@@ -258,34 +278,44 @@ class DatatableQuery
             $pivot = $qb;
         }
 
-        $allCounter = count($this->requestParams["columns"]);
         $globalSearch = $this->requestParams["search"]["value"];
-
-        // @todo: issue #42
 
         // global filtering
         if ("" != $globalSearch) {
 
             $orExpr = $pivot->expr()->orX();
 
-            $a = 0;
-            $c = 0;
-            while ($a < $allCounter) {
-                if ( ("true" == $this->requestParams["columns"][$a]["searchable"]) && (null != $this->requestParams["columns"][$a]["data"]) ) {
-                    $searchField = $this->allColumns[$c];
-                    $orExpr->add($pivot->expr()->like($searchField, "?$c"));
-                    $pivot->setParameter($c, "%" . $globalSearch . "%");
-                    $c++;
-                    $a++;
-                } else {
-                    $a++;
+            foreach ($this->searchColumns as $key => $column) {
+                if (null != $this->searchColumns[$key]) {
+                    $searchField = $this->searchColumns[$key];
+                    $orExpr->add($pivot->expr()->like($searchField, "?$key"));
+                    $pivot->setParameter($key, "%" . $globalSearch . "%");
                 }
             }
 
             $pivot->where($orExpr);
         }
 
-        // @todo: individual column filtering
+        // individual filtering
+        $andExpr = $pivot->expr()->andX();
+
+        $i = 100;
+
+        foreach ($this->searchColumns as $key => $column) {
+            if (null != $this->searchColumns[$key]) {
+                $searchField = $this->searchColumns[$key];
+                $searchValue = $this->requestParams["columns"][$key]["search"]["value"];
+                if ("" != $searchValue) {
+                    $andExpr->add($pivot->expr()->like($searchField, "?$i"));
+                    $pivot->setParameter($i, "%" . $searchValue . "%");
+                    $i++;
+                }
+            }
+        }
+
+        if ($andExpr->count() > 0) {
+            $pivot->andWhere($andExpr);
+        }
 
         return $this;
     }
