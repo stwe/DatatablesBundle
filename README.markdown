@@ -14,6 +14,7 @@ For DataTables 1.10.x, you need to use the 0.5.x release of the bundle.
 
 ## Known Issues
 
+Order fails in some cases. Issue #48
 
 ## Documentation
 
