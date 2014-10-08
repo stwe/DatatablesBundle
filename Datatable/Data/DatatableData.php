@@ -88,6 +88,11 @@ class DatatableData implements DatatableDataInterface
     /**
      * @var array
      */
+    protected $orderColumns;
+
+    /**
+     * @var array
+     */
     protected $joins;
 
     /**
@@ -131,6 +136,7 @@ class DatatableData implements DatatableDataInterface
         $this->allColumns = array();
         $this->joins = array();
         $this->searchColumns = array();
+        $this->orderColumns = array();
 
         $this->prepareColumns();
     }
@@ -250,13 +256,19 @@ class DatatableData implements DatatableDataInterface
             } else {
                 $this->searchColumns[] = null;
             }
+
+            if ("true" == $this->requestParams["columns"][$this->counter]["orderable"]) {
+                $this->orderColumns[] = $columnTableName . '.' . $column;
+            } else {
+                $this->orderColumns[] = null;
+            }
         }
 
         return $this;
     }
 
     /**
-     * Prepare selectColumns[], allColumns[] and joins[].
+     * Prepare column arrays.
      *
      * @return $this
      */
@@ -274,11 +286,13 @@ class DatatableData implements DatatableDataInterface
 
             if (null == $column) {
                 $this->searchColumns[] = null;
+                $this->orderColumns[] = null;
                 continue;
             }
 
             if (in_array($column, $this->virtualColumns)) {
                 $this->searchColumns[] = null;
+                $this->orderColumns[] = null;
                 continue;
             }
 
@@ -290,18 +304,35 @@ class DatatableData implements DatatableDataInterface
             } else {
                 // No association found...add column
                 if ($column !== $this->rootEntityIdentifier) {
+                    // select columns
                     $this->addSelectColumn($this->metadata, $column);
+
+                    // all columns
                     $this->allColumns[] = $this->tableName . '.' . $column;
+
+                    // search columns
                     if ("true" == $this->requestParams["columns"][$i]["searchable"]) {
                         $this->searchColumns[] = $this->tableName . '.' . $column;
                     } else {
                         $this->searchColumns[] = null;
+                    }
+
+                    // order columns
+                    if ("true" == $this->requestParams["columns"][$i]["orderable"]) {
+                        $this->orderColumns[] = $this->tableName . '.' . $column;
+                    } else {
+                        $this->orderColumns[] = null;
                     }
                 } else {
                     if ("true" == $this->requestParams["columns"][$i]["searchable"]) {
                         $this->searchColumns[] = $this->tableName . '.' . $column;
                     } else {
                         $this->searchColumns[] = null;
+                    }
+                    if ("true" == $this->requestParams["columns"][$i]["orderable"]) {
+                        $this->orderColumns[] = $this->tableName . '.' . $column;
+                    } else {
+                        $this->orderColumns[] = null;
                     }
                 }
             }
@@ -321,6 +352,7 @@ class DatatableData implements DatatableDataInterface
         $this->datatableQuery->setAllColumns($this->allColumns);
         $this->datatableQuery->setJoins($this->joins);
         $this->datatableQuery->setSearchColumns($this->searchColumns);
+        $this->datatableQuery->setOrderColumns($this->orderColumns);
 
         return $this;
     }

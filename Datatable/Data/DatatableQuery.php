@@ -71,6 +71,11 @@ class DatatableQuery
     /**
      * @var array
      */
+    protected $orderColumns;
+
+    /**
+     * @var array
+     */
     protected $callbacks;
 
 
@@ -96,6 +101,7 @@ class DatatableQuery
         $this->allColumns = array();
         $this->joins = array();
         $this->searchColumns = array();
+        $this->orderColumns = array();
         $this->callbacks = array(
             "WhereBuilder" => array(),
         );
@@ -168,6 +174,20 @@ class DatatableQuery
     public function setSearchColumns(array $searchColumns)
     {
         $this->searchColumns = $searchColumns;
+
+        return $this;
+    }
+
+    /**
+     * Set order columns.
+     *
+     * @param array $orderColumns
+     *
+     * @return $this
+     */
+    public function setOrderColumns(array $orderColumns)
+    {
+        $this->orderColumns = $orderColumns;
 
         return $this;
     }
@@ -362,7 +382,7 @@ class DatatableQuery
 
                 if ("true" == $requestColumn["orderable"]) {
                     $this->qb->addOrderBy(
-                        $this->allColumns[$columnIdx],
+                        $this->orderColumns[$columnIdx],
                         $this->requestParams["order"][$i]["dir"]
                     );
                 }
