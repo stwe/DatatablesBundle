@@ -19,8 +19,8 @@ The `require` part of your composer.json might look like this:
 ```js
     "require": {
         "symfony/symfony": "2.3.*",
-        "components/jquery": "1.11.0",
-        "datatables/datatables": "1.10.1",
+        "components/jquery": "1.11.1",
+        "datatables/datatables": "1.10.2",
         "moment/moment": "2.6.0",
         "friendsofsymfony/jsrouting-bundle": "@stable"
     },
