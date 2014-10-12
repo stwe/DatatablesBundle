@@ -11,12 +11,31 @@
     "data": null,
     "render": function(data, type, row, meta) {
         var first;
+        var attributes = "";
+
+        {% for key, value in view_multiselect.attributes %}
+            attributes += '{{ key }}="{{ value }}" ';
+        {% endfor %}
+
         for (var i in row) {
             if (row.hasOwnProperty(i) && typeof(i) !== 'function') {
                 first = row[i];
                 break;
             }
         }
+
+        if ("" != attributes) {
+            var output = "";
+
+            output += "<input type='checkbox' value='";
+            output += first;
+            output += "'";
+            output += attributes;
+            output += "/>"
+
+            return output;
+        }
+
         return "<input type='checkbox' name='multiselect_checkbox' value='" + first + "' class='multiselect_checkbox' />";
     },
 {% endblock %}

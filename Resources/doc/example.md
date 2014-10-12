@@ -69,7 +69,10 @@ class PostDatatable extends AbstractDatatableView
             ->setEnabled(true)
             ->setPosition("last")
             ->addAction("Hide post", "post_bulk_disable")
-            ->addAction("Delete post", "post_bulk_delete");
+            ->addAction("Delete post", "post_bulk_delete")
+            ->setAttributes(array(
+                    "class" => "testclass123"
+                ));
 
         $this->setStyle(self::BOOTSTRAP_3_STYLE);
 

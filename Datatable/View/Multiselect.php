@@ -56,6 +56,13 @@ class Multiselect
      */
     private $actions;
 
+    /**
+     * HTML attributes.
+     *
+     * @var array
+     */
+    private $attributes;
+
 
     //-------------------------------------------------
     // Ctor.
@@ -71,6 +78,7 @@ class Multiselect
         $this->enabled = (boolean) $enabled;
         $this->position = self::FIRST_COLUMN;
         $this->actions = array();
+        $this->attributes = array();
     }
 
 
@@ -155,5 +163,50 @@ class Multiselect
     public function getPosition()
     {
         return $this->position;
+    }
+
+    /**
+     * Set attributes.
+     *
+     * @param array $attributes
+     *
+     * @throws Exception
+     * @return $this
+     */
+    public function setAttributes($attributes)
+    {
+        $this->attributes = $attributes;
+
+        if (array_key_exists("type", $this->attributes)) {
+            throw new Exception("The type attribute is not supported.");
+        }
+
+        if (array_key_exists("value", $this->attributes)) {
+            throw new Exception("The value attribute is not supported.");
+        }
+
+        if (array_key_exists("name", $this->attributes)) {
+            $this->attributes["name"] = "multiselect_checkbox " . $this->attributes["name"];
+        } else {
+            $this->attributes["name"] = "multiselect_checkbox";
+        }
+
+        if (array_key_exists("class", $this->attributes)) {
+            $this->attributes["class"] = "multiselect_checkbox " . $this->attributes["class"];
+        } else {
+            $this->attributes["class"] = "multiselect_checkbox";
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get attributes.
+     *
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
     }
 }
