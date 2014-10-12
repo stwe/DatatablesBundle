@@ -72,7 +72,9 @@ class PostDatatable extends AbstractDatatableView
             ->addAction("Delete post", "post_bulk_delete")
             ->setAttributes(array(
                     "class" => "testclass123"
-                ));
+                ))
+            ->setClassName("multi-test-class")
+            ->setWidth("90px");
 
         $this->setStyle(self::BOOTSTRAP_3_STYLE);
 

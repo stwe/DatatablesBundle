@@ -57,11 +57,25 @@ class Multiselect
     private $actions;
 
     /**
-     * HTML attributes.
+     * HTML attributes for the checkboxes.
      *
      * @var array
      */
     private $attributes;
+
+    /**
+     * Column width assignment.
+     *
+     * @var string
+     */
+    private $width;
+
+    /**
+     * Class to assign to each cell in the column.
+     *
+     * @var string
+     */
+    private $className;
 
 
     //-------------------------------------------------
@@ -79,6 +93,8 @@ class Multiselect
         $this->position = self::FIRST_COLUMN;
         $this->actions = array();
         $this->attributes = array();
+        $this->width = "";
+        $this->className = "";
     }
 
 
@@ -166,7 +182,7 @@ class Multiselect
     }
 
     /**
-     * Set attributes.
+     * Set checkbox attributes.
      *
      * @param array $attributes
      *
@@ -201,12 +217,60 @@ class Multiselect
     }
 
     /**
-     * Get attributes.
+     * Get checkbox attributes.
      *
      * @return array
      */
     public function getAttributes()
     {
         return $this->attributes;
+    }
+
+    /**
+     * Set width.
+     *
+     * @param string $width
+     *
+     * @return $this
+     */
+    public function setWidth($width)
+    {
+        $this->width = $width;
+
+        return $this;
+    }
+
+    /**
+     * Get width.
+     *
+     * @return string
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+    /**
+     * Set class name.
+     *
+     * @param string $className
+     *
+     * @return $this
+     */
+    public function setClassName($className)
+    {
+        $this->className = $className;
+
+        return $this;
+    }
+
+    /**
+     * Get class name.
+     *
+     * @return string
+     */
+    public function getClassName()
+    {
+        return $this->className;
     }
 }
