@@ -15,7 +15,7 @@ use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\TranslatorInterface;
 use Exception;
 
 /**
@@ -106,7 +106,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * The Translator service.
      *
-     * @var Translator
+     * @var TranslatorInterface
      */
     private $translator;
 
@@ -200,12 +200,12 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * Ctor.
      *
-     * @param TwigEngine      $templating           The templating service
-     * @param Translator      $translator           The translator service
-     * @param RouterInterface $router               The router service
-     * @param array           $defaultLayoutOptions The default layout options
+     * @param TwigEngine          $templating           The templating service
+     * @param TranslatorInterface $translator           The translator service
+     * @param RouterInterface     $router               The router service
+     * @param array               $defaultLayoutOptions The default layout options
      */
-    public function __construct(TwigEngine $templating, Translator $translator, RouterInterface $router, array $defaultLayoutOptions)
+    public function __construct(TwigEngine $templating, TranslatorInterface $translator, RouterInterface $router, array $defaultLayoutOptions)
     {
         $this->templating = $templating;
         $this->translator = $translator;
@@ -346,7 +346,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * Set Translator.
      *
-     * @param Translator $translator
+     * @param TranslatorInterface $translator
      *
      * @return $this
      */
@@ -360,7 +360,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * Get Translator.
      *
-     * @return Translator
+     * @return TranslatorInterface
      */
     public function getTranslator()
     {

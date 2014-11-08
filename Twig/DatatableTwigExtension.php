@@ -17,7 +17,7 @@ use Twig_Extension;
 use Twig_SimpleFunction;
 use Twig_SimpleFilter;
 use Exception;
-use Symfony\Bundle\FrameworkBundle\Translation\Translator;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class DatatableTwigExtension
@@ -27,7 +27,7 @@ use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 class DatatableTwigExtension extends Twig_Extension
 {
     /**
-     * @var
+     * @var TranslatorInterface
      */
     private $translator;
 
@@ -39,9 +39,9 @@ class DatatableTwigExtension extends Twig_Extension
     /**
      * Ctor.
      *
-     * @param Translator $translator
+     * @param TranslatorInterface $translator
      */
-    public function __construct(Translator $translator)
+    public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
