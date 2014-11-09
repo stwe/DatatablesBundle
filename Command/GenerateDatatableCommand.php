@@ -71,7 +71,7 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
             throw new RuntimeException("The datatable class generator does not support entities with multiple primary keys.");
         }
 
-        if (null == count($fields)) {
+        if (0 == count($fields)) {
             $fields = $this->getFieldsFromMetadata($metadata[0]);
         }
 

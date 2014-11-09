@@ -35,7 +35,7 @@ class ArrayColumn extends BaseColumn
      */
     public function __construct($property = null)
     {
-        if (null == $property) {
+        if (null === $property) {
             throw new Exception("The entity's property can not be null.");
         }
 

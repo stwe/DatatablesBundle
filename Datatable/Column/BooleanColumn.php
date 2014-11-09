@@ -64,7 +64,7 @@ class BooleanColumn extends BaseColumn
      */
     public function __construct($property = null)
     {
-        if (null == $property) {
+        if (null === $property) {
             throw new Exception("The entity's property can not be null.");
         }
 
@@ -112,7 +112,7 @@ class BooleanColumn extends BaseColumn
             $this->setFalseLabel($options["false_label"]);
         }
         if (array_key_exists("render", $options)) {
-            if (null == $options["render"]) {
+            if (null === $options["render"]) {
                 throw new Exception("The render option can not be null.");
             }
         }

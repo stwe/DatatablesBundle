@@ -60,7 +60,7 @@ class ActionColumn extends BaseColumn
      */
     public function __construct($property = null)
     {
-        if (null != $property) {
+        if (null !== $property) {
             throw new Exception("The entity's property should be null.");
         }
 

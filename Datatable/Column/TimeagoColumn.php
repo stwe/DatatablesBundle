@@ -35,7 +35,7 @@ class TimeagoColumn extends BaseColumn
      */
     public function __construct($property = null)
     {
-        if (null == $property) {
+        if (null === $property) {
             throw new Exception("The entity's property can not be null.");
         }
 
@@ -66,7 +66,7 @@ class TimeagoColumn extends BaseColumn
         $options = array_intersect_key($options, array_flip($this->getAllowedOptions()));
 
         if (array_key_exists("render", $options)) {
-            if (null == $options["render"]) {
+            if (null === $options["render"]) {
                 throw new Exception("The render option can not be null.");
             }
         }

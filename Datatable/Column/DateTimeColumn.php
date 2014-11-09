@@ -48,7 +48,7 @@ class DateTimeColumn extends BaseColumn
      */
     public function __construct($property = null)
     {
-        if (null == $property) {
+        if (null === $property) {
             throw new Exception("The entity's property can not be null.");
         }
 
@@ -81,12 +81,12 @@ class DateTimeColumn extends BaseColumn
         $options = array_intersect_key($options, array_flip($this->getAllowedOptions()));
 
         if (array_key_exists("render", $options)) {
-            if (null == $options["render"]) {
+            if (null === $options["render"]) {
                 throw new Exception("The render option can not be null.");
             }
         }
         if (array_key_exists("format", $options)) {
-            if (null == $options["format"]) {
+            if (null === $options["format"]) {
                 throw new Exception("The format option can not be null.");
             } else {
                 $this->setDateFormat($options["format"]);
