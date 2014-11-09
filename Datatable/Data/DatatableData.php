@@ -284,7 +284,7 @@ class DatatableData implements DatatableDataInterface
             // Get the column
             $column = $this->requestParams["dql_" . $i];
 
-            if (null == $column) {
+            if ("" == $column) {
                 $this->searchColumns[] = null;
                 $this->orderColumns[] = null;
                 continue;

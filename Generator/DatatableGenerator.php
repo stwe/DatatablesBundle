@@ -86,7 +86,7 @@ class DatatableGenerator extends Generator
      * @param string          $entity              The entity relative class name
      * @param string          $style               The style (base, jquery-ui, bootstrap, foundation)
      * @param array           $fields              The datatable fields
-     * @param string          $clientSide          The client side flag
+     * @param boolean         $clientSide          The client side flag
      * @param string          $ajaxUrl             The ajax route name
      * @param string          $individualFiltering The individual filtering flag
      *
@@ -112,7 +112,7 @@ class DatatableGenerator extends Generator
         $this->setStyle($style);
 
         // set ajaxUrl
-        if (false == $clientSide) {
+        if (false === $clientSide) {
             // server-side
             if (!$ajaxUrl) {
                 $this->ajaxUrl = strtolower($entityClass) . "_results";

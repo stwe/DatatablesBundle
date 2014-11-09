@@ -306,7 +306,7 @@ class DatatableQuery
             $orExpr = $pivot->expr()->orX();
 
             foreach ($this->searchColumns as $key => $column) {
-                if (null != $this->searchColumns[$key]) {
+                if (null !== $this->searchColumns[$key]) {
                     $searchField = $this->searchColumns[$key];
                     $orExpr->add($pivot->expr()->like($searchField, "?$key"));
                     $pivot->setParameter($key, "%" . $globalSearch . "%");
@@ -322,7 +322,7 @@ class DatatableQuery
         $i = 100;
 
         foreach ($this->searchColumns as $key => $column) {
-            if (null != $this->searchColumns[$key]) {
+            if (null !== $this->searchColumns[$key]) {
                 $searchField = $this->searchColumns[$key];
                 $searchValue = $this->requestParams["columns"][$key]["search"]["value"];
                 if ("" != $searchValue) {
