@@ -271,7 +271,7 @@ class DatatableQuery
     {
         $pivot = $this->qb;
 
-        if (null != $qb) {
+        if (null !== $qb) {
             $pivot = $qb;
         }
 
@@ -294,7 +294,7 @@ class DatatableQuery
     {
         $pivot = $this->qb;
 
-        if (null != $qb) {
+        if (null !== $qb) {
             $pivot = $qb;
         }
 
@@ -351,7 +351,7 @@ class DatatableQuery
     {
         $pivot = $this->qb;
 
-        if (null != $qb) {
+        if (null !== $qb) {
             $pivot = $qb;
         }
 
