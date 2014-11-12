@@ -238,11 +238,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * {@inheritdoc}
      */
-    abstract public function buildDatatableView();
-
-    /**
-     * {@inheritdoc}
-     */
     public function renderDatatableView()
     {
         $options = array();
@@ -273,11 +268,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * {@inheritdoc}
      */
-    abstract public function getEntity();
-
-    /**
-     * {@inheritdoc}
-     */
     public function setAjax($ajax)
     {
         $this->ajax = $ajax;
@@ -292,11 +282,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     {
         return $this->ajax;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function getName();
 
 
     //-------------------------------------------------
