@@ -288,7 +288,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     // Callable
     //-------------------------------------------------
 
-
     /**
      * Get Line Formatter.
      *

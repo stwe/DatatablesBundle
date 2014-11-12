@@ -215,11 +215,6 @@ abstract class AbstractColumn implements ColumnInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function getColumnClassName();
-
 
     //-------------------------------------------------
     // Getters && Setters
