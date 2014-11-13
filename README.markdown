@@ -4,6 +4,8 @@
 
 [![knpbundles.com](http://knpbundles.com/stwe/DatatablesBundle/badge)](http://knpbundles.com/stwe/DatatablesBundle)
 
+[![Latest Stable Version](https://poser.pugx.org/sg/datatablesbundle/v/stable.svg)](https://packagist.org/packages/sg/datatablesbundle) [![Total Downloads](https://poser.pugx.org/sg/datatablesbundle/downloads.svg)](https://packagist.org/packages/sg/datatablesbundle) [![Latest Unstable Version](https://poser.pugx.org/sg/datatablesbundle/v/unstable.svg)](https://packagist.org/packages/sg/datatablesbundle) [![License](https://poser.pugx.org/sg/datatablesbundle/license.svg)](https://packagist.org/packages/sg/datatablesbundle)
+
 ## Documentation
 
 ### master (recommended)
