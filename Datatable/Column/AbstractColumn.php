@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
+
 /**
  * Class AbstractColumn
  *
@@ -70,7 +72,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Render (process) the data for use in the table.
      *
-     * @var null|mixed
+     * @var null|string
      */
     protected $render;
 
@@ -115,11 +117,31 @@ abstract class AbstractColumn implements ColumnInterface
     //-------------------------------------------------
 
     /**
-     * Set dql.
-     *
-     * @param null|string $dql
-     *
-     * @return $this
+     * {@inheritdoc}
+     */
+    public function setData($data)
+    {
+        if (empty($data) || !is_string($data)) {
+            throw new InvalidArgumentException("setData(): String expected.");
+        }
+
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRender($render)
+    {
+        $this->render = $render;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function setDql($dql)
     {
@@ -274,23 +296,9 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set render.
-     *
-     * @param mixed|null $render
-     *
-     * @return $this
-     */
-    public function setRender($render)
-    {
-        $this->render = $render;
-
-        return $this;
-    }
-
-    /**
      * Get render.
      *
-     * @return mixed|null
+     * @return null|string
      */
     public function getRender()
     {

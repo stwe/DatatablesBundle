@@ -11,8 +11,6 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
-
 /**
  * Class AbstractDataColumn
  *
@@ -37,20 +35,6 @@ abstract class AbstractDataColumn extends AbstractColumn
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setData($data)
-    {
-        if (empty($data) || !is_string($data)) {
-            throw new InvalidArgumentException("setData(): String expected.");
-        }
-
-        $this->data = $data;
-
-        return $this;
-    }
 
     /**
      * {@inheritdoc}

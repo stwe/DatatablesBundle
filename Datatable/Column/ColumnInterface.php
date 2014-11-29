@@ -28,6 +28,15 @@ interface ColumnInterface
     public function setData($data);
 
     /**
+     * Set render.
+     *
+     * @param null|string $render
+     *
+     * @return self
+     */
+    public function setRender($render);
+
+    /**
      * Set dql.
      *
      * @param null|string $data
