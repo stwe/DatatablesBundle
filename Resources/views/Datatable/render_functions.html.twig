@@ -1,6 +1,6 @@
 <script>
 
-    function render_boolean_icons(data, type, row, meta, trueIcon, falseIcon, trueLabel, falseLabel) {
+    function render_boolean(data, type, row, meta, trueIcon, falseIcon, trueLabel, falseLabel) {
         if ("" == trueIcon && "" == trueLabel) {
             trueLabel = "true";
         }
@@ -18,7 +18,7 @@
 
     function render_datetime(data, type, row, meta, dateFormat) {
         if (data != null && typeof data.timestamp != "undefined") {
-            moment.lang("{{ app.request.locale }}");
+            moment.locale("{{ app.request.locale }}");
             return moment.unix(data.timestamp).format(dateFormat);
         } else {
             return null;
@@ -27,7 +27,7 @@
 
     function render_timeago(data, type, row, meta) {
         if (data != null && typeof data.timestamp != "undefined") {
-            moment.lang("{{ app.request.locale }}");
+            moment.locale("{{ app.request.locale }}");
             return moment.unix(data.timestamp).fromNow();
         } else {
             return null;
