@@ -20,8 +20,7 @@ use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
  * (1) data   = string
  * (2) render = string
  *
- * Examples: Boolean class (Boolean.php), DateTime class (DateTime.php) and
- *           Timeago class (Timeago.php)
+ * Examples: BooleanColumn class, DateTimeColumn class and TimeagoColumn class
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */

@@ -18,7 +18,7 @@ namespace Sg\DatatablesBundle\Datatable\Column;
  * (1) data   = string
  * (2) render = null
  *
- * Examples: Column class (Column.php) and ArrayColumn class (ArrayColumn.php)
+ * Examples: Column class and ArrayColumn class
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
