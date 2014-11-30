@@ -21,12 +21,11 @@ interface ColumnFactoryInterface
     /**
      * Creates a Column by name.
      *
-     * @param string $property An entity's property
-     * @param string $name     The name of the Column class
+     * @param string|ColumnInterface $name
      *
-     * @throws \Symfony\Component\Form\Exception\UnexpectedTypeException
+     * @throws \Symfony\Component\PropertyAccess\Exception\InvalidArgumentException
      * @throws \Exception
-     * @return ActionColumn|ArrayColumn|BooleanColumn|Column|ColumnInterface|DateTimeColumn|TimeagoColumn
+     * @return ColumnInterface
      */
-    public function createColumnByName($property, $name);
+    public function createColumnByName($name);
 }

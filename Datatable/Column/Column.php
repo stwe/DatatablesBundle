@@ -11,14 +11,12 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Datatable\Column\AbstractColumn as BaseColumn;
-
 /**
  * Class Column
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-class Column extends BaseColumn
+class Column extends AbstractDataColumn
 {
     //-------------------------------------------------
     // ColumnInterface
@@ -27,7 +25,15 @@ class Column extends BaseColumn
     /**
      * {@inheritdoc}
      */
-    public function getColumnClassName()
+    public function getTemplate()
+    {
+        return "SgDatatablesBundle:Column:column.html.twig";
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
     {
         return "column";
     }

@@ -19,15 +19,15 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 interface ColumnBuilderInterface
 {
     /**
-     * Add a Column.
+     * Add a ColumnInterface.
      *
-     * @param string $property An entity's property
-     * @param string $name     The name of the column class
-     * @param array  $options  The column options
+     * @param null|string            $data    The data source for the column
+     * @param string|ColumnInterface $name    Column class alias or instance of ColumnInterface
+     * @param array                  $options The column options
      *
      * @return $this
      */
-    public function add($property, $name, array $options = array());
+    public function add($data, $name, array $options = array());
 
     /**
      * Get all columns.
@@ -35,11 +35,4 @@ interface ColumnBuilderInterface
      * @return array
      */
     public function getColumns();
-
-    /**
-     * Get all virtual column names.
-     *
-     * @return array
-     */
-    public function getVirtualColumnNames();
 }

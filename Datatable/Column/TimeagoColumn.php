@@ -11,68 +11,16 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Datatable\Column\AbstractColumn as BaseColumn;
-
-use Exception;
-
 /**
  * Class TimeagoColumn
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-class TimeagoColumn extends BaseColumn
+class TimeagoColumn extends AbstractDataRenderColumn
 {
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Ctor.
-     *
-     * @param null|string $property An entity's property
-     *
-     * @throws Exception
-     */
-    public function __construct($property = null)
-    {
-        if (null === $property) {
-            throw new Exception("The entity's property can not be null.");
-        }
-
-        parent::__construct($property);
-    }
-
-
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getColumnClassName()
-    {
-        return "timeago";
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOptions(array $options)
-    {
-        parent::setOptions($options);
-
-        $options = array_change_key_case($options, CASE_LOWER);
-        $options = array_intersect_key($options, array_flip($this->getAllowedOptions()));
-
-        if (array_key_exists("render", $options)) {
-            if (null === $options["render"]) {
-                throw new Exception("The render option can not be null.");
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * {@inheritdoc}
@@ -84,5 +32,21 @@ class TimeagoColumn extends BaseColumn
         $this->setRender("render_timeago");
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTemplate()
+    {
+        return "SgDatatablesBundle:Column:timeago.html.twig";
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        return "timeago";
     }
 }

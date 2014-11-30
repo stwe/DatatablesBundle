@@ -1,45 +1,48 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
 {
     {% block common %}
-        {% if column.searchable %}
-            "searchable": true,
-        {% else %}
-            "searchable": false,
-        {% endif %}
-
+        "className": "{{ column.className }}",
+        "contentPadding": "{{ column.contentPadding }}",
+        "defaultContent": "{{ column.defaultContent }}",
+        "name": "{{ column.name }}",
         {% if column.orderable %}
             "orderable": true,
         {% else %}
             "orderable": false,
         {% endif %}
-
+        {% if column.searchable %}
+            "searchable": true,
+        {% else %}
+            "searchable": false,
+        {% endif %}
+        "title": "{{ column.title }}",
+        {% if column.type %}
+            "type": "{{ column.type }}",
+        {% endif %}
         {% if column.visible %}
             "visible": true,
         {% else %}
             "visible": false,
         {% endif %}
-
-        {% if column.type %}
-            "type": "{{ column.type }}",
-        {% endif %}
-
-        "title": "{{ column.title }}",
-        "className": "{{ column.className }}",
-        "defaultContent": "{{ column.defaultContent }}",
         "width": "{{ column.width }}",
-        "contentPadding": "{{ column.contentPadding }}",
-        "name": "{{ column.name }}",
     {% endblock %}
 
     {% block data %}
-        {% if column.data %}
-            "data": "{{ column.data }}",
-        {% else %}
-            "data": null,
-        {% endif %}
-
-        {% if column.render %}
-            "render": function(data, type, row, meta) {
-                return {{ column.render }}(data, type, row, meta);
+        "data": "{{ column.data }}",
+        {% if column.default %}
+            "render": function(data) {
+                if ("" == data) {
+                    return "{{ column.default }}";
+                } else {
+                    return data;
+                }
             },
         {% endif %}
     {% endblock %}

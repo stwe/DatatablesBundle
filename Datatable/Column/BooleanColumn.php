@@ -11,16 +11,12 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Datatable\Column\AbstractColumn as BaseColumn;
-
-use Exception;
-
 /**
  * Class BooleanColumn
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-class BooleanColumn extends BaseColumn
+class BooleanColumn extends AbstractDataRenderColumn
 {
     /**
      * The icon for a value that is true.
@@ -52,41 +48,24 @@ class BooleanColumn extends BaseColumn
 
 
     //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Ctor.
-     *
-     * @param null|string $property An entity's property
-     *
-     * @throws Exception
-     */
-    public function __construct($property = null)
-    {
-        if (null === $property) {
-            throw new Exception("The entity's property can not be null.");
-        }
-
-        parent::__construct($property);
-
-        $this->addAllowedOption("true_icon");
-        $this->addAllowedOption("false_icon");
-        $this->addAllowedOption("true_label");
-        $this->addAllowedOption("false_label");
-    }
-
-
-    //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
 
     /**
      * {@inheritdoc}
      */
-    public function getColumnClassName()
+    public function setDefaults()
     {
-        return "boolean";
+        parent::setDefaults();
+
+        $this->setRender("render_boolean");
+
+        $this->setTrueIcon("");
+        $this->setFalseIcon("");
+        $this->setTrueLabel("");
+        $this->setFalseLabel("");
+
+        return $this;
     }
 
     /**
@@ -95,9 +74,6 @@ class BooleanColumn extends BaseColumn
     public function setOptions(array $options)
     {
         parent::setOptions($options);
-
-        $options = array_change_key_case($options, CASE_LOWER);
-        $options = array_intersect_key($options, array_flip($this->getAllowedOptions()));
 
         if (array_key_exists("true_icon", $options)) {
             $this->setTrueIcon($options["true_icon"]);
@@ -111,11 +87,6 @@ class BooleanColumn extends BaseColumn
         if (array_key_exists("false_label", $options)) {
             $this->setFalseLabel($options["false_label"]);
         }
-        if (array_key_exists("render", $options)) {
-            if (null === $options["render"]) {
-                throw new Exception("The render option can not be null.");
-            }
-        }
 
         return $this;
     }
@@ -123,18 +94,17 @@ class BooleanColumn extends BaseColumn
     /**
      * {@inheritdoc}
      */
-    public function setDefaults()
+    public function getTemplate()
     {
-        parent::setDefaults();
+        return "SgDatatablesBundle:Column:boolean.html.twig";
+    }
 
-        $this->setRender("render_boolean_icons");
-
-        $this->setTrueIcon("");
-        $this->setFalseIcon("");
-        $this->setTrueLabel("");
-        $this->setFalseLabel("");
-
-        return $this;
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        return "boolean";
     }
 
 
