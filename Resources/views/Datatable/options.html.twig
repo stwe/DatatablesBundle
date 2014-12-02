@@ -1,7 +1,7 @@
 "displayStart": {{ view_options.displayStart }},
 
 {% if false == view_use_integration_options %}
-    "dom": "{{ view_options.dom }}",
+    "dom": "{{ view_options.dom|raw }}",
 {% endif %}
 
 "lengthMenu": {{ view_options.lengthMenu|length_join|raw }},
