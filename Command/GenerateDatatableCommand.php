@@ -15,6 +15,7 @@ use Sg\DatatablesBundle\Generator\DatatableGenerator;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCommand;
@@ -39,7 +40,7 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
             ->setDescription("Generates a datatable class based on a Doctrine entity.")
             ->setDefinition(
                 array(
-                    new InputOption("entity", "", InputOption::VALUE_REQUIRED, "The Doctrine entity class name (shortcut notation)."),
+                    new InputArgument("entity", InputArgument::REQUIRED, "The Doctrine entity class name (shortcut notation)."),
                     new InputOption("style", "", InputOption::VALUE_REQUIRED, "The datatable style (base, base-no-classes, base-row-borders,
                         base-cell-borders, base-hover, base-order, base-stripe, jquery-ui, bootstrap, foundation)", "bootstrap"),
                     new InputOption("fields", "", InputOption::VALUE_OPTIONAL, "The fields in the datatable"),
@@ -55,7 +56,7 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $entity = Validators::validateEntityName($input->getOption("entity"));
+        $entity = Validators::validateEntityName($input->getArgument("entity"));
         list($bundle, $entity) = $this->parseShortcutNotation($entity);
 
         $style = $input->getOption("style");
