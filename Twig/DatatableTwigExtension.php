@@ -122,6 +122,8 @@ class DatatableTwigExtension extends Twig_Extension
      */
     public function datatableRender(AbstractDatatableView $datatable)
     {
+        $datatable->buildDatatableView();
+
         return $datatable->renderDatatableView();
     }
 }
