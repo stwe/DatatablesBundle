@@ -41,7 +41,12 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('processing')->defaultTrue()->end()
                         ->booleanNode('multiselect')->defaultFalse()->end()
                         ->booleanNode('individual_filtering')->defaultFalse()->end()
-                        ->scalarNode('template')->defaultValue('SgDatatablesBundle:Datatable:datatable.html.twig')->end()
+                        ->arrayNode('templates')->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('base')->defaultValue('SgDatatablesBundle:Datatable:datatable.html.twig')->end()
+                            ->scalarNode('html')->defaultValue('SgDatatablesBundle:Datatable:datatable_html.html.twig')->end()
+                            ->scalarNode('js')->defaultValue('SgDatatablesBundle:Datatable:datatable_js.html.twig')->end()
+                        ->end()
                     ->end()
                 ->end()
             ->end();

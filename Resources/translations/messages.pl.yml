@@ -1,0 +1,19 @@
+datatables: # the bundle name
+    datatable: # jQuery plugin
+        processing: "Przetwarzanie"
+        lengthMenu: "Pokaż _MENU_ wpisy"
+        zeroRecords: "Nie znaleziono pasujących rekordów"
+        info: "Wyświetlam od _START_ do _END_ z _TOTAL_ rekordów"
+        infoEmpty: "Wyświetlam od 0 do 0 z 0 rekordów"
+        infoFiltered: "(filtrowane z _MAX_ wszystkich rekordów)"
+        infoPostFix: ""
+        search: "Szukaj"
+        first: "Pierwsza"
+        previous: "Poprzednia"
+        next: "Następna"
+        last: "Ostatnia"
+        all: "wszystkie"
+    bulk:
+        confirmMsg: "Jesteś pewien?"
+        selectError: "Musisz wybrać przynajmniej jeden element"
+        ok: "Ok"

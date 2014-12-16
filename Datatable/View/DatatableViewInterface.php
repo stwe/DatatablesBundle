@@ -28,7 +28,12 @@ interface DatatableViewInterface
      *
      * @return string
      */
-    public function renderDatatableView();
+    public function renderDatatableView($type='all');
+    /**
+     * Renders the datatable view.
+     *
+     * @return string
+     */
 
     /**
      * Returns Entity.
