@@ -180,12 +180,28 @@ class PostDatatable extends AbstractDatatableView
 
 ### Step 2: Create your index.html.twig
 
+#### Render entire datatable
 ```html
 {% extends 'SgBlogBundle::layout.html.twig' %}
 
 {% block content_content %}
     {{ datatable_render(datatable) }}
 {% endblock %}
+```
+
+#### Decouple html and js
+
+```html
+{% extends 'SgBlogBundle::layout.html.twig' %}
+
+{% block content_content %}
+    {{ datatable_render_html(datatable) }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ datatable_render_js(datatable) }}
+{% endblock %} 
+
 ```
 
 ### Step 3: Registering your Datatables class as a Service

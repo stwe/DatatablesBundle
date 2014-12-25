@@ -95,3 +95,7 @@ Include the jQuery, DataTables, Moment and FOSJsRoutingBundle javascript/css fil
 ## To use a line formatter
 
 - [Line formatter](./lineFormatter.md)
+
+## Reference configuration
+
+- [Reference configuration](./configuration.md)

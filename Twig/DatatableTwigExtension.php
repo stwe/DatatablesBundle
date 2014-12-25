@@ -65,7 +65,9 @@ class DatatableTwigExtension extends Twig_Extension
     public function getFunctions()
     {
         return array(
-            new Twig_SimpleFunction("datatable_render", array($this, "datatableRender"), array("is_safe" => array("all")))
+            new Twig_SimpleFunction("datatable_render", array($this, "datatableRender"), array("is_safe" => array("all"))),
+            new Twig_SimpleFunction("datatable_render_html", array($this, "datatableRenderHtml"), array("is_safe" => array("all"))),
+            new Twig_SimpleFunction("datatable_render_js", array($this, "datatableRenderJs"), array("is_safe" => array("all")))
         );
     }
 
@@ -123,5 +125,15 @@ class DatatableTwigExtension extends Twig_Extension
     public function datatableRender(AbstractDatatableView $datatable)
     {
         return $datatable->renderDatatableView();
+    }
+
+    public function datatableRenderHtml(AbstractDatatableView $datatable)
+    {
+        return $datatable->renderDatatableView('html');
+    }
+
+    public function datatableRenderJs(AbstractDatatableView $datatable)
+    {
+        return $datatable->renderDatatableView('js');
     }
 }

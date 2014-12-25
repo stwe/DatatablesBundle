@@ -176,9 +176,9 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * The name of the Twig template.
      *
-     * @var string
+     * @var array
      */
-    private $template;
+    private $templates;
 
     /**
      * DataTables provides direct integration support (https://github.com/DataTables/Plugins/tree/master/integration) for:
@@ -225,7 +225,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->data = null;
         $this->style = self::BASE_STYLE;
         $this->individualFiltering = $defaultLayoutOptions["individual_filtering"];
-        $this->template = $defaultLayoutOptions["template"];
+        $this->templates = $defaultLayoutOptions["templates"];
 
         $this->useIntegrationOptions = false;
     }
@@ -238,7 +238,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * {@inheritdoc}
      */
-    public function renderDatatableView()
+    public function renderDatatableView($type = 'all')
     {
         $options = array();
 
@@ -262,7 +262,18 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         $options["view_use_integration_options"] = $this->useIntegrationOptions;
 
-        return $this->templating->render($this->template, $options);
+        switch($type) {
+            case 'html':
+                return $this->templating->render($this->templates['html'], $options);
+                break;
+            case 'js':
+                return $this->templating->render($this->templates['js'], $options);
+                break;
+            default:
+                return $this->templating->render($this->templates['base'], $options);
+                break;
+        }
+
     }
 
     /**
