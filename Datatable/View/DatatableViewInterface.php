@@ -26,14 +26,11 @@ interface DatatableViewInterface
     /**
      * Renders the datatable view.
      *
-     * @return string
-     */
-    public function renderDatatableView($type='all');
-    /**
-     * Renders the datatable view.
+     * @param string $type
      *
-     * @return string
+     * @return mixed
      */
+    public function renderDatatableView($type = 'all');
 
     /**
      * Returns Entity.

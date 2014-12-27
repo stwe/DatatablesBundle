@@ -120,18 +120,35 @@ class DatatableTwigExtension extends Twig_Extension
      *
      * @param AbstractDatatableView $datatable
      *
-     * @return string
+     * @return mixed|string|void
+     * @throws Exception
      */
     public function datatableRender(AbstractDatatableView $datatable)
     {
         return $datatable->renderDatatableView();
     }
 
+    /**
+     * Renders the html template.
+     *
+     * @param AbstractDatatableView $datatable
+     *
+     * @return mixed|string|void
+     * @throws Exception
+     */
     public function datatableRenderHtml(AbstractDatatableView $datatable)
     {
         return $datatable->renderDatatableView('html');
     }
 
+    /**
+     * Renders the js template.
+     *
+     * @param AbstractDatatableView $datatable
+     *
+     * @return mixed|string|void
+     * @throws Exception
+     */
     public function datatableRenderJs(AbstractDatatableView $datatable)
     {
         return $datatable->renderDatatableView('js');

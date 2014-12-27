@@ -24,19 +24,19 @@
             var columns = {
                 "columns": [
                     {% if view_multiselect.enabled %}
-                    {% if "first" == view_multiselect.position %}
-                    {% include "SgDatatablesBundle:Column:multiselect.html.twig" %}
-                    {% endif %}
+                        {% if "first" == view_multiselect.position %}
+                            {% include "SgDatatablesBundle:Column:multiselect.html.twig" %}
+                        {% endif %}
                     {% endif %}
 
                     {% for column in view_columns %}
-                    {% include "SgDatatablesBundle:Column:" ~ column.getColumnClassName ~ ".html.twig" %}
+                        {% include "SgDatatablesBundle:Column:" ~ column.getColumnClassName ~ ".html.twig" %}
                     {% endfor %}
 
                     {% if view_multiselect.enabled %}
-                    {% if "last" == view_multiselect.position %}
-                    {% include "SgDatatablesBundle:Column:multiselect.html.twig" %}
-                    {% endif %}
+                        {% if "last" == view_multiselect.position %}
+                            {% include "SgDatatablesBundle:Column:multiselect.html.twig" %}
+                        {% endif %}
                     {% endif %}
                 ]
             }
@@ -55,12 +55,12 @@
             }
 
             {% if view_individual_filtering %}
-            $("tfoot input.individual_filtering").on("keyup change", function() {
-                oTable
+                $("tfoot input.individual_filtering").on("keyup change", function() {
+                    oTable
                         .column( $(this).parent().index()+':visible' )
                         .search( this.value )
                         .draw();
-            });
+                });
             {% endif %}
 
             {% if view_multiselect.enabled %}
