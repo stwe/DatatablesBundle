@@ -8,9 +8,9 @@ There are two options: You write the class by hand (recommended) or use the comm
 
 The `datatable:generate:class` command generates a new datatable class.
 
-The command is run in a non interactive mode. The `--entity` option is required.
+The command is run in a non interactive mode.
 ``` bash
-$ php app/console datatable:generate:class --entity=MyTestBundle:Entity
+$ php app/console datatable:generate:class MyTestBundle:Entity
 ```
 
 A description of all available options of the generator is located [here](./generator.md).
