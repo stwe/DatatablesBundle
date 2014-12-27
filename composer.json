@@ -22,6 +22,9 @@
         "symfony/framework-bundle": "~2.3",
         "friendsofsymfony/jsrouting-bundle": "@stable"
     },
+    "require-dev": {
+        "sensio/generator-bundle": "~2.3"
+    },
     "suggest": {
         "twbs/bootstrap": "v3.2.0",
         "mopa/bootstrap-bundle": "v3.0.0-beta4",
