@@ -11,7 +11,7 @@ This bundle requires the following additional packages:
 * Symfony 2.3.x
 * jQuery 1.x
 * DataTables 1.10.x
-* Moment.js 2.6.x
+* Moment.js 2.8.x
 * FOSJsRoutingBundle 1.5.3. ***Please follow all steps described [here](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/index.md).***
 
 The `require` part of your composer.json might look like this:
@@ -21,7 +21,7 @@ The `require` part of your composer.json might look like this:
         "symfony/symfony": "2.3.*",
         "components/jquery": "1.11.1",
         "datatables/datatables": "1.10.4",
-        "moment/moment": "2.6.0",
+        "moment/moment": "2.8.4",
         "friendsofsymfony/jsrouting-bundle": "@stable"
     },
 ```
