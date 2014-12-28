@@ -127,7 +127,7 @@ class BooleanColumn extends BaseColumn
     {
         parent::setDefaults();
 
-        $this->setRender("render_boolean_icons");
+        $this->setRender("render_boolean");
 
         $this->setTrueIcon("");
         $this->setFalseIcon("");
