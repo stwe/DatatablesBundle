@@ -10,6 +10,12 @@
 
 ### master
 
+[Read the Documentation for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/index.md).
+
+[The examples for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
+
+### v0.6
+
 Here is a list of the important changes:
 
 - [#61](https://github.com/stwe/DatatablesBundle/pull/61) Update for PHP 5.3 compatibility [dcarbone](https://github.com/dcarbone)
@@ -18,15 +24,9 @@ Here is a list of the important changes:
 - [#78](https://github.com/stwe/DatatablesBundle/pull/78) Split TwigExtension to HTML and JS functions [emgiezet](https://github.com/emgiezet)
 - [#78](https://github.com/stwe/DatatablesBundle/pull/78) Polish translations [emgiezet](https://github.com/emgiezet)
 
-[Read the Documentation for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/index.md).
+[Read the Documentation for v0.6](https://github.com/stwe/DatatablesBundle/blob/v0.6/Resources/doc/index.md).
 
-[The examples for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
-
-### v0.5.3
-
-[Read the Documentation for v0.5.3](https://github.com/stwe/DatatablesBundle/blob/v0.5.3/Resources/doc/index.md).
-
-[The examples for v0.5.3](https://github.com/stwe/DatatablesBundle/blob/v0.5.3/Resources/doc/example.md)
+[The examples for v0.6](https://github.com/stwe/DatatablesBundle/blob/v0.6/Resources/doc/example.md)
 
 ## Installation
 
