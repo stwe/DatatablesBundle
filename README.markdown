@@ -16,7 +16,7 @@
 
 ### v0.6.1
 
-- [#78](https://github.com/stwe/DatatablesBundle/issues/79) Decoupling JS from HTML - functions have been forgotten
+- [#79](https://github.com/stwe/DatatablesBundle/issues/79) Decoupling JS from HTML - functions have been forgotten
 
 [Read the Documentation for v0.6.1](https://github.com/stwe/DatatablesBundle/blob/v0.6.1/Resources/doc/index.md).
 
