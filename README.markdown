@@ -14,19 +14,13 @@
 
 [The examples for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
 
-### v0.6
+### v0.6.1
 
-Here is a list of the important changes:
+- [#78](https://github.com/stwe/DatatablesBundle/issues/79) Decoupling JS from HTML - functions have been forgotten
 
-- [#61](https://github.com/stwe/DatatablesBundle/pull/61) Update for PHP 5.3 compatibility [dcarbone](https://github.com/dcarbone)
-- [#72](https://github.com/stwe/DatatablesBundle/pull/72) Add raw filter to DOM rendering [spmasterman](https://github.com/spmasterman)
-- [#74](https://github.com/stwe/DatatablesBundle/pull/74) Change entity in command form option to argument [pierredup](https://github.com/pierredup)
-- [#78](https://github.com/stwe/DatatablesBundle/pull/78) Split TwigExtension to HTML and JS functions [emgiezet](https://github.com/emgiezet)
-- [#78](https://github.com/stwe/DatatablesBundle/pull/78) Polish translations [emgiezet](https://github.com/emgiezet)
+[Read the Documentation for v0.6.1](https://github.com/stwe/DatatablesBundle/blob/v0.6.1/Resources/doc/index.md).
 
-[Read the Documentation for v0.6](https://github.com/stwe/DatatablesBundle/blob/v0.6/Resources/doc/index.md).
-
-[The examples for v0.6](https://github.com/stwe/DatatablesBundle/blob/v0.6/Resources/doc/example.md)
+[The examples for v0.6.1](https://github.com/stwe/DatatablesBundle/blob/v0.6.1/Resources/doc/example.md)
 
 ## Installation
 
