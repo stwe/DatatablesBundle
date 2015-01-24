@@ -61,7 +61,9 @@ class PostDatatable extends AbstractDatatableView
         //$this->getOptions()->setLengthMenu(array(10, 25, 50));
         $this->getOptions()
             ->setLengthMenu(array(10, 25, 50, 100, -1))
-            ->setOrder(array("column" => 1, "direction" => "desc"));
+            ->setOrder(array("column" => 1, "direction" => "desc"))
+            ->setPagingType("simple_numbers");
+            //->setResponsive(true); // enable Responsive extension
 
         $this->getAjax()->setUrl($this->getRouter()->generate("post_results"));
 

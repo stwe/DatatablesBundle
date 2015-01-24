@@ -141,6 +141,13 @@ class Options
      */
     private $stripeClasses;
 
+    /**
+     * Enable the Responsive extension for DataTables.
+     *
+     * @var boolean
+     */
+    private $responsive;
+
 
     //-------------------------------------------------
     // Ctor.
@@ -163,6 +170,7 @@ class Options
         $this->scrollCollapse = false;
         $this->stateDuration = 7200;
         $this->stripeClasses = array();
+        $this->responsive = false;
     }
 
 
@@ -461,5 +469,29 @@ class Options
     public function getStripeClasses()
     {
         return $this->stripeClasses;
+    }
+
+    /**
+     * Set responsive.
+     *
+     * @param boolean $responsive
+     *
+     * @return $this
+     */
+    public function setResponsive($responsive)
+    {
+        $this->responsive = (boolean) $responsive;
+
+        return $this;
+    }
+
+    /**
+     * Get responsive.
+     *
+     * @return boolean
+     */
+    public function getResponsive()
+    {
+        return (boolean) $this->responsive;
     }
 }

@@ -37,3 +37,7 @@
 "stateDuration": {{ view_options.stateDuration }},
 
 "stripeClasses": [{{ view_options.stripeClasses|join(", ")|json_encode|raw }}],
+
+{% if view_options.responsive %}
+    "responsive": true,
+{% endif %}
