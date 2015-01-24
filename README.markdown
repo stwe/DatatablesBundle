@@ -10,6 +10,8 @@
 
 ### master
 
+- [#85](https://github.com/stwe/DatatablesBundle/issues/85) Use datatable with Responsive extension
+
 [Read the Documentation for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/index.md).
 
 [The examples for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
@@ -26,11 +28,13 @@
 
 All the installation instructions are located in the documentation.
 
-## License
+## Friendly License
 
-This bundle is under the MIT license. See the complete license in the bundle:
+This bundle is available under the MIT license. See the complete license in the bundle:
 
     Resources/meta/LICENSE
+
+You are free to use, modify and distribute this software, as long as the copyright header is left intact (specifically the comment block which starts with /*)!
 
 ## Reporting an issue or a feature request
 
