@@ -19,122 +19,95 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 abstract class AbstractColumn implements ColumnInterface
 {
     /**
-     * An entity's property.
+     * Set the data source for the column from the rows data object / array.
      *
      * @var null|string
      */
-    private $property;
+    protected $data;
 
     /**
-     * Contains all allowed options.
+     * Data source copy.
      *
-     * @var array
+     * @var null|string
      */
-    private $allowedOptions;
+    protected $dql;
 
     /**
      * Class to assign to each cell in the column.
      *
      * @var string
      */
-    private $className;
+    protected $className;
 
     /**
      * Add padding to the text content used when calculating the optimal with for a table.
      *
      * @var string
      */
-    private $contentPadding;
-
-    /**
-     * Set the data source for the column from the rows data object / array.
-     *
-     * @var mixed
-     */
-    private $data;
+    protected $contentPadding;
 
     /**
      * Set default, static, content for a column.
      *
      * @var string
      */
-    private $defaultContent;
+    protected $defaultContent;
 
     /**
      * Set a descriptive name for a column.
      *
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * Enable or disable ordering on this column.
      *
      * @var boolean
      */
-    private $orderable;
+    protected $orderable;
 
     /**
      * Render (process) the data for use in the table.
      *
-     * @var null|mixed
+     * @var null|string
      */
-    private $render;
+    protected $render;
 
     /**
      * Enable or disable filtering on the data in this column.
      *
      * @var boolean
      */
-    private $searchable;
+    protected $searchable;
 
     /**
      * Set the column title.
      *
      * @var string
      */
-    private $title;
+    protected $title;
 
     /**
      * Set the column type - used for filtering and sorting string processing.
      *
      * @var string
      */
-    private $type;
+    protected $type;
 
     /**
      * Enable or disable the display of this column.
      *
      * @var boolean
      */
-    private $visible;
+    protected $visible;
 
     /**
      * Column width assignment.
      *
      * @var string
      */
-    private $width;
-
-
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Ctor.
-     *
-     * @param null|string $property An entity's property
-     */
-    public function __construct($property = null)
-    {
-        $this->property = $property;
-        $this->allowedOptions = array(
-            "class", "padding", "default", "name",
-            "orderable", "render", "searchable", "title",
-            "type", "visible", "width"
-        );
-    }
+    protected $width;
 
 
     //-------------------------------------------------
@@ -144,73 +117,9 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function getProperty()
+    public function setDql($dql)
     {
-        return $this->property;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOptions(array $options)
-    {
-        $options = array_change_key_case($options, CASE_LOWER);
-        $options = array_intersect_key($options, array_flip($this->allowedOptions));
-
-        if (array_key_exists("class", $options)) {
-            $this->setClassName($options["class"]);
-        }
-        if (array_key_exists("padding", $options)) {
-            $this->setContentPadding($options["padding"]);
-        }
-        if (array_key_exists("default", $options)) {
-            $this->setDefaultContent($options["default"]);
-        }
-        if (array_key_exists("name", $options)) {
-            $this->setName($options["name"]);
-        }
-        if (array_key_exists("orderable", $options)) {
-            $this->setOrderable($options["orderable"]);
-        }
-        if (array_key_exists("render", $options)) {
-            $this->setRender($options["render"]);
-        }
-        if (array_key_exists("searchable", $options)) {
-            $this->setSearchable($options["searchable"]);
-        }
-        if (array_key_exists("title", $options)) {
-            $this->setTitle($options["title"]);
-        }
-        if (array_key_exists("type", $options)) {
-            $this->setType($options["type"]);
-        }
-        if (array_key_exists("visible", $options)) {
-            $this->setVisible($options["visible"]);
-        }
-        if (array_key_exists("width", $options)) {
-            $this->setWidth($options["width"]);
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaults()
-    {
-        $this->setClassName("");
-        $this->setContentPadding("");
-        $this->setData($this->property);
-        $this->setDefaultContent("");
-        $this->setName("");
-        $this->setOrderable(true);
-        $this->setRender(null);
-        $this->setSearchable(true);
-        $this->setTitle("");
-        $this->setType("");
-        $this->setVisible(true);
-        $this->setWidth("");
+        $this->dql = $dql;
 
         return $this;
     }
@@ -221,27 +130,23 @@ abstract class AbstractColumn implements ColumnInterface
     //-------------------------------------------------
 
     /**
-     * Add an allowed option.
+     * Get data.
      *
-     * @param string $option
-     *
-     * @return $this
+     * @return null|string
      */
-    public function addAllowedOption($option)
+    public function getData()
     {
-        $this->allowedOptions[] = $option;
-
-        return $this;
+        return $this->data;
     }
 
     /**
-     * Get allowed options.
+     * Get dql.
      *
-     * @return array
+     * @return null|string
      */
-    public function getAllowedOptions()
+    public function getDql()
     {
-        return $this->allowedOptions;
+        return $this->dql;
     }
 
     /**
@@ -290,30 +195,6 @@ abstract class AbstractColumn implements ColumnInterface
     public function getContentPadding()
     {
         return $this->contentPadding;
-    }
-
-    /**
-     * Set data.
-     *
-     * @param mixed $data
-     *
-     * @return $this
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-
-        return $this;
-    }
-
-    /**
-     * Get data.
-     *
-     * @return mixed
-     */
-    public function getData()
-    {
-        return $this->data;
     }
 
     /**
@@ -373,7 +254,7 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function setOrderable($orderable)
     {
-        $this->orderable = $orderable;
+        $this->orderable = (boolean) $orderable;
 
         return $this;
     }
@@ -389,23 +270,9 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set render.
-     *
-     * @param mixed|null $render
-     *
-     * @return $this
-     */
-    public function setRender($render)
-    {
-        $this->render = $render;
-
-        return $this;
-    }
-
-    /**
      * Get render.
      *
-     * @return mixed|null
+     * @return null|string
      */
     public function getRender()
     {
@@ -421,7 +288,7 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function setSearchable($searchable)
     {
-        $this->searchable = $searchable;
+        $this->searchable = (boolean) $searchable;
 
         return $this;
     }
@@ -493,7 +360,7 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function setVisible($visible)
     {
-        $this->visible = $visible;
+        $this->visible = (boolean) $visible;
 
         return $this;
     }

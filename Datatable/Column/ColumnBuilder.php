@@ -26,7 +26,7 @@ class ColumnBuilder implements ColumnBuilderInterface
     private $columnFactory;
 
     /**
-     * All generated columns.
+     * All columns.
      *
      * @var array
      */
@@ -54,12 +54,14 @@ class ColumnBuilder implements ColumnBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function add($property, $name, array $options = array())
+    public function add($data, $name, array $options = array())
     {
         /**
          * @var ColumnInterface $column
          */
-        $column = $this->columnFactory->createColumnByName($property, $name);
+        $column = $this->columnFactory->createColumnByName($name);
+        $column->setData($data);
+        $column->setDql($data);
         $column->setDefaults();
         $column->setOptions($options);
 
@@ -85,7 +87,7 @@ class ColumnBuilder implements ColumnBuilderInterface
 
         foreach ($this->columns as $column) {
             if ($column instanceof VirtualColumn) {
-                $virtualColumns[] = $column->getProperty();
+                $virtualColumns[] = $column->getData();
             }
         }
 

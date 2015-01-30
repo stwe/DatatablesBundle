@@ -11,8 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Exception;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 
 /**
  * Class ColumnFactory
@@ -49,16 +48,14 @@ class ColumnFactory implements ColumnFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createColumnByName($property, $name)
+    public function createColumnByName($name)
     {
-        if (!is_string($property)) {
-            if (!is_null($property)) {
-                throw new UnexpectedTypeException($property, "A string or null expected.");
-            }
+        if (empty($name) || !is_string($name) && !$name instanceof ColumnInterface) {
+            throw new InvalidArgumentException("createColumnByName(): String or ColumnInterface expected.");
         }
 
-        if (!is_string($name)) {
-            throw new UnexpectedTypeException($name, "A string is expected.");
+        if ($name instanceof ColumnInterface) {
+            return $name;
         }
 
         $name = strtolower($name);
@@ -67,32 +64,32 @@ class ColumnFactory implements ColumnFactoryInterface
 
         switch ($name) {
             case "action":
-                $this->column = new ActionColumn($property);
+                $this->column = new ActionColumn();
                 break;
             case "array":
-                $this->column = new ArrayColumn($property);
+                $this->column = new ArrayColumn();
                 break;
             case "boolean":
-                $this->column = new BooleanColumn($property);
+                $this->column = new BooleanColumn();
                 break;
             case "column":
-                $this->column = new Column($property);
+                $this->column = new Column();
                 break;
             case "datetime":
-                $this->column = new DateTimeColumn($property);
+                $this->column = new DateTimeColumn();
                 break;
             case "timeago":
-                $this->column = new TimeagoColumn($property);
+                $this->column = new TimeagoColumn();
                 break;
             case "virtual":
-                $this->column = new VirtualColumn($property);
+                $this->column = new VirtualColumn();
                 break;
             default:
-                throw new Exception("The {$name} column is not supported.");
+                throw new InvalidArgumentException("createColumnByName(): The column is not supported.");
         }
 
         if (null === $this->column) {
-            throw new Exception("The column could not be created.");
+            throw new InvalidArgumentException("createColumnByName(): The column could not be created.");
         }
 
         return $this->column;

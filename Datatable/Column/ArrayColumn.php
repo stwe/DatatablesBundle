@@ -11,42 +11,21 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Datatable\Column\AbstractColumn as BaseColumn;
-
-use Exception;
+use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 
 /**
  * Class ArrayColumn
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-class ArrayColumn extends BaseColumn
+class ArrayColumn extends Column
 {
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
     /**
-     * Ctor.
+     * Default content.
      *
-     * @param null|string $property An entity's property
-     *
-     * @throws Exception
+     * @var string
      */
-    public function __construct($property = null)
-    {
-        if (null === $property) {
-            throw new Exception("The entity's property can not be null.");
-        }
-
-        if (false === strstr($property, '.')) {
-            throw new Exception("An association is expected.");
-        }
-
-        parent::__construct($property);
-
-        $this->addAllowedOption("read_as");
-    }
+    protected $default;
 
 
     //-------------------------------------------------
@@ -56,9 +35,19 @@ class ArrayColumn extends BaseColumn
     /**
      * {@inheritdoc}
      */
-    public function getColumnClassName()
+    public function setData($data)
     {
-        return "array";
+        if (empty($data) || !is_string($data)) {
+            throw new InvalidArgumentException("setData(): Expecting non-empty string.");
+        }
+
+        if (false === strstr($data, '.')) {
+            throw new InvalidArgumentException("setData(): An association is expected.");
+        }
+
+        $this->data = $data;
+
+        return $this;
     }
 
     /**
@@ -68,13 +57,18 @@ class ArrayColumn extends BaseColumn
     {
         parent::setOptions($options);
 
-        $options = array_change_key_case($options, CASE_LOWER);
-        $options = array_intersect_key($options, array_flip($this->getAllowedOptions()));
-
         if (array_key_exists("read_as", $options)) {
             $this->setData($options["read_as"]);
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        return "array";
     }
 }

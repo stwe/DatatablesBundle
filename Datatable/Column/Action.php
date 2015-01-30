@@ -23,63 +23,63 @@ class Action
      *
      * @var string
      */
-    private $route;
+    protected $route;
 
     /**
      * The action route parameters.
      *
      * @var array
      */
-    private $routeParameters;
+    protected $routeParameters;
 
     /**
      * An action icon.
      *
      * @var string
      */
-    private $icon;
+    protected $icon;
 
     /**
      * An action label.
      *
      * @var string
      */
-    private $label;
+    protected $label;
 
     /**
      * Show confirm message if true.
      *
      * @var boolean
      */
-    private $confirm;
+    protected $confirm;
 
     /**
      * The confirm message.
      *
      * @var string
      */
-    private $confirmMessage;
+    protected $confirmMessage;
 
     /**
      * HTML attributes.
      *
      * @var array
      */
-    private $attributes;
+    protected $attributes;
 
     /**
      * Check the specified role.
      *
      * @var string
      */
-    private $role;
+    protected $role;
 
     /**
      * Render only if parameter / conditions are TRUE
      *
      * @var array
      */
-    private $renderConditions;
+    protected $renderConditions;
 
 
     //-------------------------------------------------
@@ -91,6 +91,15 @@ class Action
      */
     public function __construct()
     {
+        $this->route = "";
+        $this->routeParameters = array();
+        $this->icon = "";
+        $this->label = "";
+        $this->confirm = false;
+        $this->confirmMessage = "";
+        $this->attributes = array();
+        $this->role = "";
+        $this->renderConditions = array();
     }
 
 
@@ -107,14 +116,6 @@ class Action
      */
     public function setOptions(array $options)
     {
-        $allowedOptions = array(
-            "route", "route_parameters", "icon", "label", "confirm",
-            "confirm_message", "attributes", "role", "renderif"
-        );
-
-        $options = array_change_key_case($options, CASE_LOWER);
-        $options = array_intersect_key($options, array_flip($allowedOptions));
-
         if (array_key_exists("route", $options)) {
             $this->setRoute($options["route"]);
         }
@@ -177,7 +178,7 @@ class Action
      *
      * @return $this
      */
-    public function setRouteParameters($routeParameters)
+    public function setRouteParameters(array $routeParameters)
     {
         $this->routeParameters = $routeParameters;
 
@@ -297,7 +298,7 @@ class Action
      *
      * @return $this
      */
-    public function setAttributes($attributes)
+    public function setAttributes(array $attributes)
     {
         $this->attributes = $attributes;
 

@@ -14,48 +14,23 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Datatable\Column\AbstractColumn as BaseColumn;
-
-use Exception;
+use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 
 /**
  * Class DateTimeColumn
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-class DateTimeColumn extends BaseColumn
+class DateTimeColumn extends AbstractColumn
 {
     /**
      * DateTime format string.
      *
-     * @link http://momentjs.com/docs/
+     * @link http://momentjs.com/
      *
      * @var string
      */
-    private $dateFormat;
-
-
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Ctor.
-     *
-     * @param null|string $property An entity's property
-     *
-     * @throws Exception
-     */
-    public function __construct($property = null)
-    {
-        if (null === $property) {
-            throw new Exception("The entity's property can not be null.");
-        }
-
-        parent::__construct($property);
-
-        $this->addAllowedOption("format");
-    }
+    protected $dateFormat;
 
 
     //-------------------------------------------------
@@ -65,33 +40,27 @@ class DateTimeColumn extends BaseColumn
     /**
      * {@inheritdoc}
      */
-    public function getColumnClassName()
+    public function setData($data)
     {
-        return "datetime";
+        if (empty($data) || !is_string($data)) {
+            throw new InvalidArgumentException("setData(): Expecting non-empty string.");
+        }
+
+        $this->data = $data;
+
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setOptions(array $options)
+    public function setRender($render)
     {
-        parent::setOptions($options);
-
-        $options = array_change_key_case($options, CASE_LOWER);
-        $options = array_intersect_key($options, array_flip($this->getAllowedOptions()));
-
-        if (array_key_exists("render", $options)) {
-            if (null === $options["render"]) {
-                throw new Exception("The render option can not be null.");
-            }
+        if (empty($render) || !is_string($render)) {
+            throw new InvalidArgumentException("setRender(): Expecting non-empty string.");
         }
-        if (array_key_exists("format", $options)) {
-            if (null === $options["format"]) {
-                throw new Exception("The format option can not be null.");
-            } else {
-                $this->setDateFormat($options["format"]);
-            }
-        }
+
+        $this->render = $render;
 
         return $this;
     }
@@ -101,12 +70,78 @@ class DateTimeColumn extends BaseColumn
      */
     public function setDefaults()
     {
-        parent::setDefaults();
-
+        $this->setClassName("");
+        $this->setContentPadding("");
+        $this->setDefaultContent("");
+        $this->setName("");
+        $this->setOrderable(true);
         $this->setRender("render_datetime");
+        $this->setSearchable(true);
+        $this->setTitle("");
+        $this->setType("");
+        $this->setVisible(true);
+        $this->setWidth("");
         $this->setDateFormat("lll");
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setOptions(array $options)
+    {
+        if (array_key_exists("class", $options)) {
+            $this->setClassName($options["class"]);
+        }
+        if (array_key_exists("padding", $options)) {
+            $this->setContentPadding($options["padding"]);
+        }
+        if (array_key_exists("name", $options)) {
+            $this->setName($options["name"]);
+        }
+        if (array_key_exists("orderable", $options)) {
+            $this->setOrderable($options["orderable"]);
+        }
+        if (array_key_exists("render", $options)) {
+            $this->setRender($options["render"]);
+        }
+        if (array_key_exists("searchable", $options)) {
+            $this->setSearchable($options["searchable"]);
+        }
+        if (array_key_exists("title", $options)) {
+            $this->setTitle($options["title"]);
+        }
+        if (array_key_exists("type", $options)) {
+            $this->setType($options["type"]);
+        }
+        if (array_key_exists("visible", $options)) {
+            $this->setVisible($options["visible"]);
+        }
+        if (array_key_exists("width", $options)) {
+            $this->setWidth($options["width"]);
+        }
+        if (array_key_exists("format", $options)) {
+            $this->setDateFormat($options["format"]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTemplate()
+    {
+        return "SgDatatablesBundle:Column:datetime.html.twig";
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        return "datetime";
     }
 
 
@@ -123,6 +158,10 @@ class DateTimeColumn extends BaseColumn
      */
     public function setDateFormat($dateFormat)
     {
+        if (empty($dateFormat) || !is_string($dateFormat)) {
+            throw new InvalidArgumentException("setDateFormat(): Expecting non-empty string.");
+        }
+
         $this->dateFormat = $dateFormat;
 
         return $this;

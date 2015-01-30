@@ -8,15 +8,26 @@
 
 ## Documentation
 
-### master
+### master (unstable)
 
 - [#85](https://github.com/stwe/DatatablesBundle/issues/85) Use datatable with Responsive extension
+- [#56](https://github.com/stwe/DatatablesBundle/issues/56) Custom Column Types
+
+You can now use your custom column type, simply by creating a new instance of the type:
+
+``` php
+$this->columnBuilder
+    ->add("title", new CustomColumn(), array(
+            "example_string_option" => "title",
+            "example_boolean_option" => false
+        ));
+```
 
 [Read the Documentation for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/index.md).
 
 [The examples for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
 
-### v0.6.1
+### v0.6.1 (recommended)
 
 - [#79](https://github.com/stwe/DatatablesBundle/issues/79) Decoupling JS from HTML - functions have been forgotten
 

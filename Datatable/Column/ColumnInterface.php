@@ -19,32 +19,59 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 interface ColumnInterface
 {
     /**
-     * Get Property.
+     * Set data.
      *
-     * @return null|string
+     * @param null|string $data
+     *
+     * @return $this
      */
-    public function getProperty();
+    public function setData($data);
 
     /**
-     * Set Options.
+     * Set dql.
      *
-     * @param array $options
+     * @param null|string $data
      *
-     * @return self
+     * @return $this
      */
-    public function setOptions(array $options);
+    public function setDql($data);
 
     /**
-     * Set Defaults.
+     * Set render.
      *
-     * @return self
+     * @param null|string $render
+     *
+     * @return $this
+     */
+    public function setRender($render);
+
+    /**
+     * Set defaults.
+     *
+     * @return $this
      */
     public function setDefaults();
 
     /**
-     * Get ColumnClassName.
+     * Set options.
+     *
+     * @param array $options
+     *
+     * @return $this
+     */
+    public function setOptions(array $options);
+
+    /**
+     * Get template.
      *
      * @return string
      */
-    public function getColumnClassName();
+    public function getTemplate();
+
+    /**
+     * Get alias.
+     *
+     * @return string
+     */
+    public function getAlias();
 }

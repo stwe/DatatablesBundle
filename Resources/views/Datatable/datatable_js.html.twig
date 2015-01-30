@@ -30,7 +30,7 @@
                     {% endif %}
 
                     {% for column in view_columns %}
-                        {% include "SgDatatablesBundle:Column:" ~ column.getColumnClassName ~ ".html.twig" %}
+                        {% include column.getTemplate %}
                     {% endfor %}
 
                     {% if view_multiselect.enabled %}

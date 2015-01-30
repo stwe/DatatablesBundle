@@ -9,7 +9,7 @@
                 {% set counter = counter + 1 %}
             {% endif %}
             {% for column in view_columns %}
-                d.dql_{{ counter }} = "{{ column.property }}";
+                d.dql_{{ counter }} = "{{ column.dql }}";
                 {% set counter = counter + 1 %}
             {% endfor %}
             {% if view_multiselect.enabled and "last" == view_multiselect.position %}

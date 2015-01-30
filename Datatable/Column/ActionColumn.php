@@ -14,62 +14,35 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Datatable\Column\AbstractColumn as BaseColumn;
-
-use Exception;
+use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 
 /**
  * Class ActionColumn
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-class ActionColumn extends BaseColumn
+class ActionColumn extends AbstractColumn
 {
     /**
      * Start HTML.
      *
      * @var string
      */
-    private $startWrapper;
+    protected $startWrapper;
 
     /**
      * End HTML.
      *
      * @var string
      */
-    private $endWrapper;
+    protected $endWrapper;
 
     /**
      * The actions container.
      *
      * @var array
      */
-    private $actions;
-
-
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Ctor.
-     *
-     * @param null|string $property An entity's property
-     *
-     * @throws Exception
-     */
-    public function __construct($property = null)
-    {
-        if (null !== $property) {
-            throw new Exception("The entity's property should be null.");
-        }
-
-        parent::__construct($property);
-
-        $this->addAllowedOption("start");
-        $this->addAllowedOption("end");
-        $this->addAllowedOption("actions");
-    }
+    protected $actions;
 
 
     //-------------------------------------------------
@@ -79,9 +52,52 @@ class ActionColumn extends BaseColumn
     /**
      * {@inheritdoc}
      */
-    public function getColumnClassName()
+    public function setData($data)
     {
-        return "action";
+        if (null !== $data) {
+            throw new InvalidArgumentException("setData(): Null expected.");
+        }
+
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRender($render)
+    {
+        if (null !== $render) {
+            throw new InvalidArgumentException("setRender(): Null expected.");
+        }
+
+        $this->render = $render;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaults()
+    {
+        $this->setClassName("");
+        $this->setContentPadding("");
+        $this->setDefaultContent("");
+        $this->setName("");
+        $this->setOrderable(false);
+        $this->setRender(null);
+        $this->setSearchable(false);
+        $this->setTitle("");
+        $this->setType("");
+        $this->setVisible(true);
+        $this->setWidth("");
+        $this->setStartWrapper("");
+        $this->setEndWrapper("");
+        $this->setActions(array());
+
+        return $this;
     }
 
     /**
@@ -89,15 +105,37 @@ class ActionColumn extends BaseColumn
      */
     public function setOptions(array $options)
     {
-        parent::setOptions($options);
-
-        $options = array_change_key_case($options, CASE_LOWER);
-        $options = array_intersect_key($options, array_flip($this->getAllowedOptions()));
-
-        if (array_key_exists("start", $options)) {
+        if (array_key_exists("class", $options)) {
+            $this->setClassName($options["class"]);
+        }
+        if (array_key_exists("padding", $options)) {
+            $this->setContentPadding($options["padding"]);
+        }
+        if (array_key_exists("name", $options)) {
+            $this->setName($options["name"]);
+        }
+        if (array_key_exists("orderable", $options)) {
+            $this->setOrderable($options["orderable"]);
+        }
+        if (array_key_exists("searchable", $options)) {
+            $this->setSearchable($options["searchable"]);
+        }
+        if (array_key_exists("title", $options)) {
+            $this->setTitle($options["title"]);
+        }
+        if (array_key_exists("type", $options)) {
+            $this->setType($options["type"]);
+        }
+        if (array_key_exists("visible", $options)) {
+            $this->setVisible($options["visible"]);
+        }
+        if (array_key_exists("width", $options)) {
+            $this->setWidth($options["width"]);
+        }
+        if (array_key_exists("start_html", $options)) {
             $this->setStartWrapper($options["start"]);
         }
-        if (array_key_exists("end", $options)) {
+        if (array_key_exists("end_html", $options)) {
             $this->setEndWrapper($options["end"]);
         }
         if (array_key_exists("actions", $options)) {
@@ -110,18 +148,17 @@ class ActionColumn extends BaseColumn
     /**
      * {@inheritdoc}
      */
-    public function setDefaults()
+    public function getTemplate()
     {
-        parent::setDefaults();
+        return "SgDatatablesBundle:Column:action.html.twig";
+    }
 
-        $this->setSearchable(false);
-        $this->setOrderable(false);
-
-        $this->setStartWrapper("");
-        $this->setEndWrapper("");
-        $this->setActions(array());
-
-        return $this;
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        return "action";
     }
 
 

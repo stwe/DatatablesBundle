@@ -11,70 +11,42 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Datatable\Column\AbstractColumn as BaseColumn;
-
-use Exception;
+use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 
 /**
  * Class BooleanColumn
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-class BooleanColumn extends BaseColumn
+class BooleanColumn extends AbstractColumn
 {
     /**
      * The icon for a value that is true.
      *
      * @var string
      */
-    private $trueIcon;
+    protected $trueIcon;
 
     /**
      * The icon for a value that is false.
      *
      * @var string
      */
-    private $falseIcon;
+    protected $falseIcon;
 
     /**
      * The label for a value that is true.
      *
      * @var string
      */
-    private $trueLabel;
+    protected $trueLabel;
 
     /**
      * The label for a value that is false.
      *
      * @var string
      */
-    private $falseLabel;
-
-
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Ctor.
-     *
-     * @param null|string $property An entity's property
-     *
-     * @throws Exception
-     */
-    public function __construct($property = null)
-    {
-        if (null === $property) {
-            throw new Exception("The entity's property can not be null.");
-        }
-
-        parent::__construct($property);
-
-        $this->addAllowedOption("true_icon");
-        $this->addAllowedOption("false_icon");
-        $this->addAllowedOption("true_label");
-        $this->addAllowedOption("false_label");
-    }
+    protected $falseLabel;
 
 
     //-------------------------------------------------
@@ -84,9 +56,53 @@ class BooleanColumn extends BaseColumn
     /**
      * {@inheritdoc}
      */
-    public function getColumnClassName()
+    public function setData($data)
     {
-        return "boolean";
+        if (empty($data) || !is_string($data)) {
+            throw new InvalidArgumentException("setData(): Expecting non-empty string.");
+        }
+
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRender($render)
+    {
+        if (empty($render) || !is_string($render)) {
+            throw new InvalidArgumentException("setRender(): Expecting non-empty string.");
+        }
+
+        $this->render = $render;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaults()
+    {
+        $this->setClassName("");
+        $this->setContentPadding("");
+        $this->setDefaultContent("");
+        $this->setName("");
+        $this->setOrderable(true);
+        $this->setRender("render_boolean");
+        $this->setSearchable(true);
+        $this->setTitle("");
+        $this->setType("");
+        $this->setVisible(true);
+        $this->setWidth("");
+        $this->setTrueIcon("");
+        $this->setFalseIcon("");
+        $this->setTrueLabel("");
+        $this->setFalseLabel("");
+
+        return $this;
     }
 
     /**
@@ -94,11 +110,36 @@ class BooleanColumn extends BaseColumn
      */
     public function setOptions(array $options)
     {
-        parent::setOptions($options);
-
-        $options = array_change_key_case($options, CASE_LOWER);
-        $options = array_intersect_key($options, array_flip($this->getAllowedOptions()));
-
+        if (array_key_exists("class", $options)) {
+            $this->setClassName($options["class"]);
+        }
+        if (array_key_exists("padding", $options)) {
+            $this->setContentPadding($options["padding"]);
+        }
+        if (array_key_exists("name", $options)) {
+            $this->setName($options["name"]);
+        }
+        if (array_key_exists("orderable", $options)) {
+            $this->setOrderable($options["orderable"]);
+        }
+        if (array_key_exists("render", $options)) {
+            $this->setRender($options["render"]);
+        }
+        if (array_key_exists("searchable", $options)) {
+            $this->setSearchable($options["searchable"]);
+        }
+        if (array_key_exists("title", $options)) {
+            $this->setTitle($options["title"]);
+        }
+        if (array_key_exists("type", $options)) {
+            $this->setType($options["type"]);
+        }
+        if (array_key_exists("visible", $options)) {
+            $this->setVisible($options["visible"]);
+        }
+        if (array_key_exists("width", $options)) {
+            $this->setWidth($options["width"]);
+        }
         if (array_key_exists("true_icon", $options)) {
             $this->setTrueIcon($options["true_icon"]);
         }
@@ -111,11 +152,6 @@ class BooleanColumn extends BaseColumn
         if (array_key_exists("false_label", $options)) {
             $this->setFalseLabel($options["false_label"]);
         }
-        if (array_key_exists("render", $options)) {
-            if (null === $options["render"]) {
-                throw new Exception("The render option can not be null.");
-            }
-        }
 
         return $this;
     }
@@ -123,18 +159,17 @@ class BooleanColumn extends BaseColumn
     /**
      * {@inheritdoc}
      */
-    public function setDefaults()
+    public function getTemplate()
     {
-        parent::setDefaults();
+        return "SgDatatablesBundle:Column:boolean.html.twig";
+    }
 
-        $this->setRender("render_boolean");
-
-        $this->setTrueIcon("");
-        $this->setFalseIcon("");
-        $this->setTrueLabel("");
-        $this->setFalseLabel("");
-
-        return $this;
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        return "boolean";
     }
 
 

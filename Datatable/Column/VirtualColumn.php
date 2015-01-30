@@ -9,58 +9,38 @@
  * file that was distributed with this source code.
  *
  * @author nicodmf
+ * @author stwe
  */
 
 namespace Sg\DatatablesBundle\Datatable\Column;
-
-use Sg\DatatablesBundle\Datatable\Column\AbstractColumn as BaseColumn;
 
 /**
  * Class VirtualColumn
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-class VirtualColumn extends BaseColumn
+class VirtualColumn extends Column
 {
     /**
      * An action label.
      *
      * @var string
      */
-    private $label;
+    protected $label;
 
     /**
      * HTML attributes.
      *
      * @var array
      */
-    private $attributes;
+    protected $attributes;
 
     /**
      * Render only if parameter / conditions are TRUE
      *
      * @var array
      */
-    private $renderConditions;
-
-
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Ctor.
-     *
-     * @param null|string $property An entity's property
-     */
-    public function __construct($property = null)
-    {
-        parent::__construct($property);
-
-        $this->addAllowedOption("label");
-        $this->addAllowedOption("attributes");
-        $this->addAllowedOption("renderif");
-    }
+    protected $renderConditions;
 
 
     //-------------------------------------------------
@@ -70,9 +50,17 @@ class VirtualColumn extends BaseColumn
     /**
      * {@inheritdoc}
      */
-    public function getColumnClassName()
+    public function setDefaults()
     {
-        return "virtual";
+        parent::setDefaults();
+
+        $this->setOrderable(false);
+        $this->setSearchable(false);
+        $this->setLabel("");
+        $this->setAttributes(array());
+        $this->setRenderConditions(array());
+
+        return $this;
     }
 
     /**
@@ -80,10 +68,33 @@ class VirtualColumn extends BaseColumn
      */
     public function setOptions(array $options)
     {
-        parent::setOptions($options);
-
-        $options = array_intersect_key($options, array_flip($this->getAllowedOptions()));
-
+        if (array_key_exists("class", $options)) {
+            $this->setClassName($options["class"]);
+        }
+        if (array_key_exists("padding", $options)) {
+            $this->setContentPadding($options["padding"]);
+        }
+        if (array_key_exists("name", $options)) {
+            $this->setName($options["name"]);
+        }
+        if (array_key_exists("render", $options)) {
+            $this->setRender($options["render"]);
+        }
+        if (array_key_exists("title", $options)) {
+            $this->setTitle($options["title"]);
+        }
+        if (array_key_exists("type", $options)) {
+            $this->setType($options["type"]);
+        }
+        if (array_key_exists("visible", $options)) {
+            $this->setVisible($options["visible"]);
+        }
+        if (array_key_exists("width", $options)) {
+            $this->setWidth($options["width"]);
+        }
+        if (array_key_exists("default", $options)) {
+            $this->setDefault($options["default"]);
+        }
         if (array_key_exists("label", $options)) {
             $this->setLabel($options["label"]);
         }
@@ -100,18 +111,9 @@ class VirtualColumn extends BaseColumn
     /**
      * {@inheritdoc}
      */
-    public function setDefaults()
+    public function getAlias()
     {
-        parent::setDefaults();
-
-        $this->setSearchable(false);
-        $this->setOrderable(false);
-
-        $this->setLabel("");
-        $this->setAttributes(array());
-        $this->setRenderConditions(array());
-
-        return $this;
+        return "virtual";
     }
 
 

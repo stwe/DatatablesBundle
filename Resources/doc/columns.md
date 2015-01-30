@@ -4,39 +4,35 @@
 
 Represents the most basic column, including many-to-one and one-to-one relations.
 
+### Default Template
+
+SgDatatablesBundle:Column:column.html.twig
+
 ### Options
 
-- class (string)
-- padding (string)
-- default (string)
-- name (string)
-- orderable (boolean)
-- render (string)
-- searchable (boolean)
-- title (string)
-- type (string)
-- visible (boolean)
-- width (string)
+| Option     | Type        | Default |
+|------------|-------------|---------|
+| class      | string      | ""      |
+| padding    | string      | ""      |
+| name       | string      | ""      |
+| orderable  | boolean     | true    |
+| render     | null|string | null    |
+| searchable | boolean     | true    |
+| title      | string      | ""      |
+| type       | string      | ""      |
+| visible    | boolean     | true    |
+| width      | string      | ""      |
+| default    | string      | ""      |
 
 ### Example
 
 ``` php
 $this->columnBuilder
-    ->add("id", "column", array(
-            "title" => "Id",
-            "searchable" => false
-        ))
     ->add("title", "column", array(
-            "searchable" => true,     // default
-            "orderable" => true,      // default
-            "visible" => true,        // default
-//          "title" => "Title",       // default = ""
-            "title" => $this->getTranslator()->trans("test.title", array(), "msg"),
-            "render" => null,         // default
-            "class" => "text-center", // default = ""
-            "default" => "",          // default
-            "width" => ""             // default
-            "type" => ""              // default
+            "title" => "title",
+            "searchable" => false,
+            "orderable" => false,
+            "default" => "default title value"
         ));
 ```
 
@@ -56,22 +52,40 @@ $this->columnBuilder
 
 Represents an action column.
 
+### Default Template
+
+SgDatatablesBundle:Column:action.html.twig
+
 ### Options
 
-all options of `column` and additionally:
+| Option     | Type        | Default |
+|------------|-------------|---------|
+| class      | string      | ""      |
+| padding    | string      | ""      |
+| name       | string      | ""      |
+| orderable  | boolean     | false   |
+| searchable | boolean     | false   |
+| title      | string      | ""      |
+| type       | string      | ""      |
+| visible    | boolean     | true    |
+| width      | string      | ""      |
+| start_html | string      | ""      |
+| end_html   | string      | ""      |
+| actions    | array       | array() |
 
-- start (string)
-- end (string)
-- actions (array) with following options:
-    * route (string)
-    * route_parameters (array)
-    * icon (string)
-    * label (string)
-    * confirm (boolean)
-    * confirm_message (string)
-    * attributes (array)
-    * role (string)
-    * renderif (array)
+### Action options
+
+| Option           | Type        | Default |
+|------------------|-------------|---------|
+| route            | string      | ""      |
+| route_parameters | array       | array() |
+| icon             | string      | ""      |
+| label            | string      | ""      |
+| confirm          | boolean     | false   |
+| confirm_message  | string      | ""      |
+| attributes       | array       | array() |
+| role             | string      | ""      |
+| renderif         | array       | array() |
 
 ### Example
 
@@ -79,8 +93,8 @@ all options of `column` and additionally:
 $this->columnBuilder
     ->add(null, "action", array(
         "title" => "Actions",
-        "start" => '<div class="wrapper_example_class">',
-        "end" => '</div>',
+        "start_html" => '<div class="wrapper_example_class">',
+        "end_html" => '</div>',
         "actions" => array(
             array(
                 "route" => "post_edit",
@@ -126,11 +140,26 @@ $this->columnBuilder
 
 Represents a column for many-to-many or one-to-many associations.
 
+### Default Template
+
+SgDatatablesBundle:Column:column.html.twig
+
 ### Options
 
-All options of `column` and additionally:
-
-- read_as (string)
+| Option     | Type        | Default |
+|------------|-------------|---------|
+| class      | string      | ""      |
+| padding    | string      | ""      |
+| name       | string      | ""      |
+| orderable  | boolean     | true    |
+| render     | null|string | null    |
+| searchable | boolean     | true    |
+| title      | string      | ""      |
+| type       | string      | ""      |
+| visible    | boolean     | true    |
+| width      | string      | ""      |
+| default    | string      | ""      |
+| read_as    | string      |         |
 
 ### Example
 
@@ -146,14 +175,28 @@ $this->columnBuilder
 
 Represents a boolean column.
 
+### Default Template
+
+SgDatatablesBundle:Column:boolean.html.twig
+
 ### Options
 
-All options of `column` and additionally:
-
-- true_icon (string)
-- false_icon (string)
-- true_label (string)
-- false_label (string)
+| Option      | Type        | Default           |
+|-------------|-------------|-------------------|
+| class       | string      | ""                |
+| padding     | string      | ""                |
+| name        | string      | ""                |
+| orderable   | boolean     | true              |
+| render      | null|string | render_boolean    |
+| searchable  | boolean     | true              |
+| title       | string      | ""                |
+| type        | string      | ""                |
+| visible     | boolean     | true              |
+| width       | string      | ""                |
+| true_icon   | string      | ""                |
+| false_icon  | string      | ""                |
+| true_label  | string      | ""                |
+| false_label | string      | ""                |
 
 ### Example
 
@@ -172,11 +215,25 @@ $this->columnBuilder
 
 Represents a datetime column.
 
+### Default Template
+
+SgDatatablesBundle:Column:datetime.html.twig
+
 ### Options
 
-All options of `column` and additionally:
-
-- format (string)
+| Option      | Type        | Default           |
+|-------------|-------------|-------------------|
+| class       | string      | ""                |
+| padding     | string      | ""                |
+| name        | string      | ""                |
+| orderable   | boolean     | true              |
+| render      | null|string | render_datetime   |
+| searchable  | boolean     | true              |
+| title       | string      | ""                |
+| type        | string      | ""                |
+| visible     | boolean     | true              |
+| width       | string      | ""                |
+| format      | string      | "lll"             |
 
 ### Example
 
@@ -184,7 +241,7 @@ All options of `column` and additionally:
 $this->columnBuilder
     ->add("createdAt", "datetime", array(
             "title" => "Created",
-            "format" => "LLL"         // default = "lll"
+            "format" => "LLL" // default = "lll"
         ));
 ```
 
@@ -192,9 +249,24 @@ $this->columnBuilder
 
 Represents a timeago column.
 
+### Default Template
+
+SgDatatablesBundle:Column:timeago.html.twig
+
 ### Options
 
-All options of `column`.
+| Option      | Type        | Default           |
+|-------------|-------------|-------------------|
+| class       | string      | ""                |
+| padding     | string      | ""                |
+| name        | string      | ""                |
+| orderable   | boolean     | true              |
+| render      | null|string | render_timeago    |
+| searchable  | boolean     | true              |
+| title       | string      | ""                |
+| type        | string      | ""                |
+| visible     | boolean     | true              |
+| width       | string      | ""                |
 
 ### Example
 
@@ -209,12 +281,26 @@ $this->columnBuilder
 
 Represents a virtual column.
 
+### Default Template
+
+SgDatatablesBundle:Column:column.html.twig
+
 ### Options
 
-all options of `column` except that orderable and filterable are always false.
-
-The virtual field could be used with the [Line formatter](./lineFormatter.md)
-method.
+| Option     | Type        | Default |
+|------------|-------------|---------|
+| class      | string      | ""      |
+| padding    | string      | ""      |
+| name       | string      | ""      |
+| render     | null|string | null    |
+| title      | string      | ""      |
+| type       | string      | ""      |
+| visible    | boolean     | true    |
+| width      | string      | ""      |
+| default    | string      | ""      |
+| label      | string      | ""      |
+| attributes | array       | array() |
+| renderif   | array       | array() |
 
 ### Example
 
