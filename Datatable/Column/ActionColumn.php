@@ -114,12 +114,6 @@ class ActionColumn extends AbstractColumn
         if (array_key_exists("name", $options)) {
             $this->setName($options["name"]);
         }
-        if (array_key_exists("orderable", $options)) {
-            $this->setOrderable($options["orderable"]);
-        }
-        if (array_key_exists("searchable", $options)) {
-            $this->setSearchable($options["searchable"]);
-        }
         if (array_key_exists("title", $options)) {
             $this->setTitle($options["title"]);
         }

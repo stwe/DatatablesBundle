@@ -63,8 +63,6 @@ SgDatatablesBundle:Column:action.html.twig
 | class      | string      | ""      |
 | padding    | string      | ""      |
 | name       | string      | ""      |
-| orderable  | boolean     | false   |
-| searchable | boolean     | false   |
 | title      | string      | ""      |
 | type       | string      | ""      |
 | visible    | boolean     | true    |
