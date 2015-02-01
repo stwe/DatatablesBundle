@@ -127,10 +127,10 @@ class ActionColumn extends AbstractColumn
             $this->setWidth($options["width"]);
         }
         if (array_key_exists("start_html", $options)) {
-            $this->setStartWrapper($options["start"]);
+            $this->setStartWrapper($options["start_html"]);
         }
         if (array_key_exists("end_html", $options)) {
-            $this->setEndWrapper($options["end"]);
+            $this->setEndWrapper($options["end_html"]);
         }
         if (array_key_exists("actions", $options)) {
             $this->setActions($options["actions"]);

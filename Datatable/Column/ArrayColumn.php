@@ -20,14 +20,6 @@ use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
  */
 class ArrayColumn extends Column
 {
-    /**
-     * Default content.
-     *
-     * @var string
-     */
-    protected $default;
-
-
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
