@@ -121,8 +121,8 @@ class PostDatatable extends AbstractDatatableView
                 ))
             ->add(null, "action", array(
                 "title" => "Actions",
-                "start" => '<div class="wrapper">',
-                "end" => '</div>',
+                "start_html" => '<div class="wrapper">',
+                "end_html" => '</div>',
                 "actions" => array(
                     array(
                         "route" => "post_edit",
