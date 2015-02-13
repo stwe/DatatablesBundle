@@ -70,6 +70,7 @@ class Column extends AbstractColumn
         $this->setDefaultContent("");
         $this->setName("");
         $this->setOrderable(true);
+        $this->setOrderSequence(null);
         $this->setRender(null);
         $this->setSearchable(true);
         $this->setTitle("");
@@ -97,6 +98,9 @@ class Column extends AbstractColumn
         }
         if (array_key_exists("orderable", $options)) {
             $this->setOrderable($options["orderable"]);
+        }
+        if (array_key_exists("order_sequence", $options)) {
+            $this->setOrderSequence($options["order_sequence"]);
         }
         if (array_key_exists("render", $options)) {
             $this->setRender($options["render"]);

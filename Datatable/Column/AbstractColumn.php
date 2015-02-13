@@ -68,6 +68,13 @@ abstract class AbstractColumn implements ColumnInterface
     protected $orderable;
 
     /**
+     * Custom order sequencing for this column
+     *
+     * @var array
+     */
+    private $order_sequence;
+
+    /**
      * Render (process) the data for use in the table.
      *
      * @var null|string
@@ -267,6 +274,30 @@ abstract class AbstractColumn implements ColumnInterface
     public function getOrderable()
     {
         return $this->orderable;
+    }
+
+    /**
+     * Set order_sequence.
+     *
+     * @param array $order_sequence
+     *
+     * @return $this
+     */
+    public function setOrderSequence($order_sequence)
+    {
+        $this->order_sequence = $order_sequence;
+
+        return $this;
+    }
+
+    /**
+     * Get order_sequence.
+     *
+     * @return array
+     */
+    public function getOrderSequence()
+    {
+        return $this->order_sequence;
     }
 
     /**
