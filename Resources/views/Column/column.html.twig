@@ -13,6 +13,9 @@
         "name": "{{ column.name }}",
         {% if column.orderable %}
             "orderable": true,
+            {% if column.orderSequence is not empty %}
+                "orderSequence": {{ column.orderSequence|json_encode|raw }},
+            {% endif %}
         {% else %}
             "orderable": false,
         {% endif %}
