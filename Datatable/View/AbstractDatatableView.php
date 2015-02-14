@@ -95,97 +95,82 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      */
     const FOUNDATION_STYLE = "display";
 
-
     /**
      * The Templating service.
      *
      * @var TwigEngine
      */
-    private $templating;
+    protected $templating;
 
     /**
      * The Translator service.
      *
      * @var TranslatorInterface
      */
-    private $translator;
+    protected $translator;
 
     /**
      * The Router service.
      *
      * @var RouterInterface
      */
-    private $router;
+    protected $router;
 
     /**
      * A Features instance.
      *
      * @var Features
      */
-    private $features;
+    protected $features;
 
     /**
      * An Options instance.
      *
      * @var Options
      */
-    private $options;
+    protected $options;
 
     /**
      * A ColumnBuilder instance.
      *
      * @var ColumnBuilder
      */
-    private $columnBuilder;
+    protected $columnBuilder;
 
     /**
      * An Ajax instance.
      *
      * @var Ajax
      */
-    private $ajax;
+    protected $ajax;
 
     /**
      * Data to use as the display data for the table.
      *
      * @var mixed
      */
-    private $data;
+    protected $data;
 
     /**
      * The name of style.
      *
      * @var string
      */
-    private $style;
+    protected $style;
 
     /**
      * Enable or disable individual filtering.
      *
      * @var boolean
      */
-    private $individualFiltering;
+    protected $individualFiltering;
 
     /**
-     * Multiselect flag.
-     *
-     * @var boolean
-     */
-    private $multiselect;
-
-    /**
-     * Multiselect columns.
+     * The Twig templates.
      *
      * @var array
      */
-    private $multiselectColumns;
-
-    /**
-     * The name of the Twig template.
-     *
-     * @var array
-     */
-    private $templates;
+    protected $templates;
 
     /**
      * DataTables provides direct integration support (https://github.com/DataTables/Plugins/tree/master/integration) for:
@@ -197,7 +182,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      *
      * @var boolean
      */
-    private $useIntegrationOptions;
+    protected $useIntegrationOptions;
 
 
     //-------------------------------------------------
@@ -226,15 +211,13 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->options->setPageLength($defaultLayoutOptions["page_length"]);
 
         $this->columnBuilder = new ColumnBuilder();
+
         $this->ajax = new Ajax();
 
         $this->data = null;
         $this->style = self::BASE_STYLE;
         $this->individualFiltering = $defaultLayoutOptions["individual_filtering"];
-        $this->multiselect = false;
-        $this->multiselectColumns = array();
         $this->templates = $defaultLayoutOptions["templates"];
-
         $this->useIntegrationOptions = false;
     }
 
@@ -249,8 +232,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function renderDatatableView($type = 'all')
     {
         $options = array();
-        $columns = $this->columnBuilder->getColumns();
-        $columnsCount = count($columns);
 
         if (true === $this->features->getServerSide()) {
             if ("" === $this->ajax->getUrl()) {
@@ -262,26 +243,14 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         $options["view_features"] = $this->features;
         $options["view_options"] = $this->options;
-        $options["view_columns"] = $columns;
+        $options["view_columns"] = $this->columnBuilder->getColumns();
         $options["view_ajax"] = $this->ajax;
 
         $options["view_style"] = $this->style;
         $options["view_individual_filtering"] = $this->individualFiltering;
 
-        $i = 1;
-        foreach($columns as $column) {
-            if ("multiselect" === $column->getAlias()) {
-                if ($i === 1 || $i === $columnsCount) {
-                    $this->multiselect = true;
-                    $this->multiselectColumns[] = $column;
-                } else {
-                    throw new Exception("Multiselect column position error.");
-                }
-            }
-            $i++;
-        }
-        $options["view_multiselect"] = $this->multiselect;
-        $options["view_multiselect_columns"] = $this->multiselectColumns;
+        $options["view_multiselect"] = $this->columnBuilder->isMultiselect();
+        $options["view_multiselect_column"] = $this->columnBuilder->getMultiselectColumn();
 
         $options["view_table_id"] = $this->getName();
 
@@ -304,7 +273,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * {@inheritdoc}
      */
-    public function setAjax($ajax)
+    public function setAjax(Ajax $ajax)
     {
         $this->ajax = $ajax;
 
@@ -346,7 +315,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      *
      * @return $this
      */
-    public function setTemplating($templating)
+    public function setTemplating(TwigEngine $templating)
     {
         $this->templating = $templating;
 
@@ -370,7 +339,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      *
      * @return $this
      */
-    public function setTranslator($translator)
+    public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
 
@@ -394,7 +363,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      *
      * @return $this
      */
-    public function setRouter($router)
+    public function setRouter(RouterInterface $router)
     {
         $this->router = $router;
 
@@ -418,7 +387,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      *
      * @return $this
      */
-    public function setFeatures($features)
+    public function setFeatures(Features $features)
     {
         $this->features = $features;
 
@@ -442,7 +411,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      *
      * @return $this
      */
-    public function setOptions($options)
+    public function setOptions(Options $options)
     {
         $this->options = $options;
 
@@ -466,7 +435,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      *
      * @return $this
      */
-    public function setColumnBuilder($columnBuilder)
+    public function setColumnBuilder(ColumnBuilder $columnBuilder)
     {
         $this->columnBuilder = $columnBuilder;
 
@@ -565,6 +534,30 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getIndividualFiltering()
     {
         return (boolean) $this->individualFiltering;
+    }
+
+    /**
+     * Set templates.
+     *
+     * @param array $templates
+     *
+     * @return $this
+     */
+    public function setTemplates($templates)
+    {
+        $this->templates = $templates;
+
+        return $this;
+    }
+
+    /**
+     * Get templates.
+     *
+     * @return array
+     */
+    public function getTemplates()
+    {
+        return $this->templates;
     }
 
     /**

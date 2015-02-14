@@ -46,7 +46,7 @@ interface DatatableViewInterface
      *
      * @return $this
      */
-    public function setAjax($ajax);
+    public function setAjax(Ajax $ajax);
 
     /**
      * Get Ajax.

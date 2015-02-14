@@ -21,9 +21,7 @@ var multiple_actions_html = "\
     <button id='multiselect_submit' type='button'>{{ 'datatables.bulk.ok'|trans({}, 'messages') }}</button>\
 </p>";
 
-if ($('#bulk_action_routes').length < 1) {
-    $("#{{ view_table_id }}" + "_wrapper").append(multiple_actions_html);
-}
+$("#{{ view_table_id }}" + "_wrapper").append(multiple_actions_html);
 
 $(".multiselect_checkall").click(function(event) {
     if(this.checked) {

@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Exception;
+
 /**
  * Class ColumnBuilder
  *
@@ -32,6 +34,20 @@ class ColumnBuilder implements ColumnBuilderInterface
      */
     private $columns;
 
+    /**
+     * The multiselect column.
+     *
+     * @var ColumnInterface
+     */
+    private $multiselectColumn;
+
+    /**
+     * Multiselect column flag.
+     *
+     * @var boolean
+     */
+    private $multiselect;
+
 
     //-------------------------------------------------
     // Ctor.
@@ -44,6 +60,8 @@ class ColumnBuilder implements ColumnBuilderInterface
     {
         $this->columnFactory = new ColumnFactory();
         $this->columns = array();
+        $this->multiselectColumn = null;
+        $this->multiselect = false;
     }
 
 
@@ -66,6 +84,15 @@ class ColumnBuilder implements ColumnBuilderInterface
         $column->setOptions($options);
 
         $this->columns[] = $column;
+
+        if ("multiselect" === $column->getAlias()) {
+            if (false === $this->multiselect) {
+                $this->multiselect = true;
+                $this->multiselectColumn = $column;
+            } else {
+                throw new Exception("There is only one multiselect column allowed.");
+            }
+        }
 
         return $this;
     }
@@ -92,5 +119,30 @@ class ColumnBuilder implements ColumnBuilderInterface
         }
 
         return $virtualColumns;
+    }
+
+
+    //-------------------------------------------------
+    // Getters && Setters
+    //-------------------------------------------------
+
+    /**
+     * Get multiselect column.
+     *
+     * @return ColumnInterface
+     */
+    public function getMultiselectColumn()
+    {
+        return $this->multiselectColumn;
+    }
+
+    /**
+     * Is multiselect.
+     *
+     * @return boolean
+     */
+    public function isMultiselect()
+    {
+        return (boolean) $this->multiselect;
     }
 }

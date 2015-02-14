@@ -48,9 +48,7 @@
             {% endif %}
 
             {% if view_multiselect %}
-                {% for multiselect_column in view_multiselect_columns %}
-                    {% include "SgDatatablesBundle:Datatable:multiselect_actions.html.twig" with {'column': multiselect_column} %}
-                {% endfor %}
+                {% include "SgDatatablesBundle:Datatable:multiselect_actions.html.twig" with {'column': view_multiselect_column} %}
             {% endif %}
 
         }, features.delay);
