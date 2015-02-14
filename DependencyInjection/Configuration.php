@@ -39,7 +39,6 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->booleanNode('server_side')->defaultTrue()->end()
                         ->booleanNode('processing')->defaultTrue()->end()
-                        ->booleanNode('multiselect')->defaultFalse()->end()
                         ->booleanNode('individual_filtering')->defaultFalse()->end()
                         ->arrayNode('templates')->addDefaultsIfNotSet()
                         ->children()

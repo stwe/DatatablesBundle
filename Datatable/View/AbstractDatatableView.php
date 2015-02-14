@@ -132,13 +132,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     private $options;
 
     /**
-     * A Multiselect instance.
-     *
-     * @var Multiselect
-     */
-    private $multiselect;
-
-    /**
      * A ColumnBuilder instance.
      *
      * @var ColumnBuilder
@@ -172,6 +165,20 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @var boolean
      */
     private $individualFiltering;
+
+    /**
+     * Multiselect flag.
+     *
+     * @var boolean
+     */
+    private $multiselect;
+
+    /**
+     * Multiselect columns.
+     *
+     * @var array
+     */
+    private $multiselectColumns;
 
     /**
      * The name of the Twig template.
@@ -218,13 +225,14 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->options = new Options();
         $this->options->setPageLength($defaultLayoutOptions["page_length"]);
 
-        $this->multiselect = new Multiselect($defaultLayoutOptions["multiselect"]);
         $this->columnBuilder = new ColumnBuilder();
         $this->ajax = new Ajax();
 
         $this->data = null;
         $this->style = self::BASE_STYLE;
         $this->individualFiltering = $defaultLayoutOptions["individual_filtering"];
+        $this->multiselect = false;
+        $this->multiselectColumns = array();
         $this->templates = $defaultLayoutOptions["templates"];
 
         $this->useIntegrationOptions = false;
@@ -241,6 +249,8 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function renderDatatableView($type = 'all')
     {
         $options = array();
+        $columns = $this->columnBuilder->getColumns();
+        $columnsCount = count($columns);
 
         if (true === $this->features->getServerSide()) {
             if ("" === $this->ajax->getUrl()) {
@@ -252,12 +262,27 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         $options["view_features"] = $this->features;
         $options["view_options"] = $this->options;
-        $options["view_multiselect"] = $this->multiselect;
-        $options["view_columns"] = $this->columnBuilder->getColumns();
+        $options["view_columns"] = $columns;
         $options["view_ajax"] = $this->ajax;
 
         $options["view_style"] = $this->style;
         $options["view_individual_filtering"] = $this->individualFiltering;
+
+        $i = 1;
+        foreach($columns as $column) {
+            if ("multiselect" === $column->getAlias()) {
+                if ($i === 1 || $i === $columnsCount) {
+                    $this->multiselect = true;
+                    $this->multiselectColumns[] = $column;
+                } else {
+                    throw new Exception("Multiselect column position error.");
+                }
+            }
+            $i++;
+        }
+        $options["view_multiselect"] = $this->multiselect;
+        $options["view_multiselect_columns"] = $this->multiselectColumns;
+
         $options["view_table_id"] = $this->getName();
 
         $options["view_use_integration_options"] = $this->useIntegrationOptions;
@@ -435,30 +460,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     }
 
     /**
-     * Set Multiselect.
-     *
-     * @param Multiselect $multiselect
-     *
-     * @return $this
-     */
-    public function setMultiselect($multiselect)
-    {
-        $this->multiselect = $multiselect;
-
-        return $this;
-    }
-
-    /**
-     * Get Multiselect.
-     *
-     * @return Multiselect
-     */
-    public function getMultiselect()
-    {
-        return $this->multiselect;
-    }
-
-    /**
      * Set ColumnBuilder.
      *
      * @param ColumnBuilder $columnBuilder
@@ -564,30 +565,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getIndividualFiltering()
     {
         return (boolean) $this->individualFiltering;
-    }
-
-    /**
-     * Set Template.
-     *
-     * @param string $template
-     *
-     * @return $this
-     */
-    public function setTemplate($template)
-    {
-        $this->template = $template;
-
-        return $this;
-    }
-
-    /**
-     * Get Template.
-     *
-     * @return string
-     */
-    public function getTemplate()
-    {
-        return $this->template;
     }
 
     /**

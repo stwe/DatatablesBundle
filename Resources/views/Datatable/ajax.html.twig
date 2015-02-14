@@ -4,17 +4,10 @@
         "url": "{{ view_ajax.url }}",
         "data": function(d) {
             {% set counter = 0 %}
-            {% if view_multiselect.enabled and "first" == view_multiselect.position %}
-                d.dql_{{ counter }} = "";
-                {% set counter = counter + 1 %}
-            {% endif %}
             {% for column in view_columns %}
                 d.dql_{{ counter }} = "{{ column.dql }}";
                 {% set counter = counter + 1 %}
             {% endfor %}
-            {% if view_multiselect.enabled and "last" == view_multiselect.position %}
-                d.dql_{{ counter }} = "";
-            {% endif %}
         },
         "type": "{{ view_ajax.type }}"
     },

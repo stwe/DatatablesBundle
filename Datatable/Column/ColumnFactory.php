@@ -81,6 +81,9 @@ class ColumnFactory implements ColumnFactoryInterface
             case "timeago":
                 $this->column = new TimeagoColumn();
                 break;
+            case "multiselect":
+                $this->column = new MultiselectColumn();
+                break;
             case "virtual":
                 $this->column = new VirtualColumn();
                 break;

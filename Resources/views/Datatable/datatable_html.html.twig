@@ -3,9 +3,6 @@
     </thead>
     {% if view_individual_filtering %}
         <tfoot>
-            {% if view_multiselect.enabled and "first" == view_multiselect.position %}
-                <th></th>
-            {% endif %}
             {% for column in view_columns %}
                 <th>
                     {% if column.searchable %}
@@ -15,9 +12,6 @@
                     {% endif %}
                 </th>
             {% endfor %}
-            {% if view_multiselect.enabled and "last" == view_multiselect.position %}
-                <th></th>
-            {% endif %}
         </tfoot>
     {% endif %}
     <tbody>

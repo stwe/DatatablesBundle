@@ -4,42 +4,26 @@
 
         var selector = "#{{ view_table_id }}";
 
+        var defaults = {
+            {% include "SgDatatablesBundle:Datatable:language.html.twig" %}
+        };
+
         var features = {
             {% include "SgDatatablesBundle:Datatable:features.html.twig" %}
-        }
+        };
 
         var options = {
             {% include "SgDatatablesBundle:Datatable:options.html.twig" %}
-        }
+        };
 
         var ajax = {
             {% include "SgDatatablesBundle:Datatable:ajax.html.twig" %}
-        }
-
-        var defaults = {
-            {% include "SgDatatablesBundle:Datatable:language.html.twig" %}
-        }
+        };
 
         setTimeout(function() {
             var columns = {
-                "columns": [
-                    {% if view_multiselect.enabled %}
-                        {% if "first" == view_multiselect.position %}
-                            {% include "SgDatatablesBundle:Column:multiselect.html.twig" %}
-                        {% endif %}
-                    {% endif %}
-
-                    {% for column in view_columns %}
-                        {% include column.getTemplate %}
-                    {% endfor %}
-
-                    {% if view_multiselect.enabled %}
-                        {% if "last" == view_multiselect.position %}
-                            {% include "SgDatatablesBundle:Column:multiselect.html.twig" %}
-                        {% endif %}
-                    {% endif %}
-                ]
-            }
+                {% include "SgDatatablesBundle:Datatable:columns.html.twig" %}
+            };
 
             $.extend(defaults, features);
             $.extend(defaults, options);
@@ -63,58 +47,12 @@
                 });
             {% endif %}
 
-            {% if view_multiselect.enabled %}
-            var multiple_html = "\
-                            <p>\
-                                <select name='bulk_action_routes[select]'>\
-                                    {% for key, value in view_multiselect.actions %}\
-                                        <option value='{{ path(value) }}'>{{ key }}</option>\
-                                    {% endfor %}\
-                                </select>\
-                                <button id='multiselect_submit' type='button'>{{ 'datatables.bulk.ok'|trans({}, 'messages') }}</button>\
-                            </p>";
-
-            $("#{{ view_table_id }}" + "_wrapper").append(multiple_html);
-
-            $(".multiselect_checkall").click(function(event) {
-                if(this.checked) {
-                    $("input:checkbox.multiselect_checkbox").each(function() {
-                        this.checked = true;
-                    });
-                } else {
-                    $("input:checkbox.multiselect_checkbox").each(function() {
-                        this.checked = false;
-                    });
-                }
-            });
-
-            $("#multiselect_submit").click(function() {
-                var length = $("input:checkbox:checked.multiselect_checkbox").length;
-
-                if (length > 0) {
-                    if (!confirm( "{{ 'datatables.bulk.confirmMsg'|trans({}, 'messages') }}" )) {
-                        return;
-                    }
-
-                    $.ajax({
-                        url: $("select[name='bulk_action_routes[select]']").val(),
-                        type: "POST",
-                        cache: false,
-                        data: {
-                            'data': $("input:checkbox:checked.multiselect_checkbox", oTable.rows().nodes()).serializeArray()
-                        },
-                        success: function(msg) {
-                            oTable.draw();
-                        },
-                        error: function (XMLHttpRequest, textStatus, errorThrown) {
-                            console.log(XMLHttpRequest + ' ' + textStatus + ' ' +errorThrown);
-                        }
-                    })
-                } else {
-                    alert("{{ 'datatables.bulk.selectError'|trans({}, 'messages') }}");
-                }
-            });
+            {% if view_multiselect %}
+                {% for multiselect_column in view_multiselect_columns %}
+                    {% include "SgDatatablesBundle:Datatable:multiselect_actions.html.twig" with {'column': multiselect_column} %}
+                {% endfor %}
             {% endif %}
+
         }, features.delay);
     });
 

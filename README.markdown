@@ -23,6 +23,31 @@ $this->columnBuilder
         ));
 ```
 
+- New: Multiselect is a column type:
+
+``` php
+$this->getColumnBuilder()
+    ->add(null, "multiselect", array(
+        "start_html" => '<div class="wrapper" id="testwrapper">',
+        "end_html" => '</div>',
+        "attributes" => array(
+            "class" => "testclass",
+            "name" => "testname",
+        ),
+        "actions" => array(
+            array(
+                "route" => "post_bulk_delete",
+                "label" => "Delete",
+                "role" => "ROLE_ADMIN"
+            ),
+            array(
+                "route" => "post_bulk_disable",
+                "label" => "Disable"
+            )
+        )
+    ));
+```
+
 [Read the Documentation for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/index.md).
 
 [The examples for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)

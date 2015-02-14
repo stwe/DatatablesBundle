@@ -4,7 +4,7 @@
 
 Represents the most basic column, including many-to-one and one-to-one relations.
 
-### Default Template
+### Default template
 
 SgDatatablesBundle:Column:column.html.twig
 
@@ -52,7 +52,7 @@ $this->columnBuilder
 
 Represents an action column.
 
-### Default Template
+### Default template
 
 SgDatatablesBundle:Column:action.html.twig
 
@@ -134,11 +134,65 @@ $this->columnBuilder
     ));
 ```
 
+## Multiselect column
+
+### Default template
+
+SgDatatablesBundle:Column:multiselect.html.twig
+
+### Options
+
+| Option     | Type        | Default |
+|------------|-------------|---------|
+| class      | string      | ""      |
+| padding    | string      | ""      |
+| name       | string      | ""      |
+| type       | string      | ""      |
+| visible    | boolean     | true    |
+| width      | string      | ""      |
+| start_html | string      | ""      |
+| end_html   | string      | ""      |
+| actions    | array       | array() |
+| attributes | array       | array() |
+
+### Action options
+
+| Option           | Type        | Default |
+|------------------|-------------|---------|
+| route            | string      | ""      |
+| label            | string      | ""      |
+| role             | string      | ""      |
+
+### Example
+
+``` php
+$this->getColumnBuilder()
+    ->add(null, "multiselect", array(
+        "start_html" => '<div class="wrapper" id="testwrapper">',
+        "end_html" => '</div>',
+        "attributes" => array(
+            "class" => "testclass",
+            "name" => "testname",
+        ),
+        "actions" => array(
+            array(
+                "route" => "post_bulk_delete",
+                "label" => "Delete",
+                "role" => "ROLE_ADMIN"
+            ),
+            array(
+                "route" => "post_bulk_disable",
+                "label" => "Disable"
+            )
+        )
+    ));
+```
+
 ## Array column
 
 Represents a column for many-to-many or one-to-many associations.
 
-### Default Template
+### Default template
 
 SgDatatablesBundle:Column:column.html.twig
 
@@ -173,7 +227,7 @@ $this->columnBuilder
 
 Represents a boolean column.
 
-### Default Template
+### Default template
 
 SgDatatablesBundle:Column:boolean.html.twig
 
@@ -213,7 +267,7 @@ $this->columnBuilder
 
 Represents a datetime column.
 
-### Default Template
+### Default template
 
 SgDatatablesBundle:Column:datetime.html.twig
 
@@ -247,7 +301,7 @@ $this->columnBuilder
 
 Represents a timeago column.
 
-### Default Template
+### Default template
 
 SgDatatablesBundle:Column:timeago.html.twig
 
@@ -279,7 +333,7 @@ $this->columnBuilder
 
 Represents a virtual column.
 
-### Default Template
+### Default template
 
 SgDatatablesBundle:Column:column.html.twig
 

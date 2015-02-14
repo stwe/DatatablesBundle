@@ -6,7 +6,6 @@ sg_datatables:
         page_length:          10
         server_side:          true
         processing:           true
-        multiselect:          false
         individual_filtering: false
         templates:
             base: 'SgDatatablesBundle:Datatable:datatable.html.twig'
