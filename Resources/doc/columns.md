@@ -1,4 +1,5 @@
 # Columns
+___
 
 ## Column
 
@@ -47,6 +48,185 @@ $this->columnBuilder
             "title" => "UpdatedBy"
         ));
 ```
+___
+
+## Array column
+
+Represents a column for many-to-many or one-to-many associations.
+
+### Default template
+
+SgDatatablesBundle:Column:column.html.twig
+
+### Options
+
+| Option     | Type        | Default |          |
+|------------|-------------|---------|----------|
+| class      | string      | ""      |          |
+| padding    | string      | ""      |          |
+| name       | string      | ""      |          |
+| orderable  | boolean     | true    |          |
+| render     | null|string | null    |          |
+| searchable | boolean     | true    |          |
+| title      | string      | ""      |          |
+| type       | string      | ""      |          |
+| visible    | boolean     | true    |          |
+| width      | string      | ""      |          |
+| default    | string      | ""      |          |
+| data       | string      |         | required |
+
+### Example
+
+``` php
+$this->columnBuilder
+    ->add("tags.name", "array", array(
+            "title" => "Tags",
+            "data" => "tags[, ].name" // required option
+        ));
+```
+___
+
+## Virtual column
+
+Represents a virtual column.
+
+### Default template
+
+SgDatatablesBundle:Column:column.html.twig
+
+### Options
+
+| Option     | Type        | Default |
+|------------|-------------|---------|
+| class      | string      | ""      |
+| padding    | string      | ""      |
+| name       | string      | ""      |
+| render     | null|string | null    |
+| title      | string      | ""      |
+| type       | string      | ""      |
+| visible    | boolean     | true    |
+| width      | string      | ""      |
+| default    | string      | ""      |
+| label      | string      | ""      |
+| attributes | array       | array() |
+| render_if  | array       | array() |
+
+### Example
+
+``` php
+$this->columnBuilder
+    ->add("a virtual field", "virtual");
+```
+___
+
+## Boolean column
+
+Represents a boolean column.
+
+### Default template
+
+SgDatatablesBundle:Column:boolean.html.twig
+
+### Options
+
+| Option      | Type        | Default           |
+|-------------|-------------|-------------------|
+| class       | string      | ""                |
+| padding     | string      | ""                |
+| name        | string      | ""                |
+| orderable   | boolean     | true              |
+| render      | null|string | render_boolean    |
+| searchable  | boolean     | true              |
+| title       | string      | ""                |
+| type        | string      | ""                |
+| visible     | boolean     | true              |
+| width       | string      | ""                |
+| true_icon   | string      | ""                |
+| false_icon  | string      | ""                |
+| true_label  | string      | ""                |
+| false_label | string      | ""                |
+
+### Example
+
+``` php
+$this->columnBuilder
+    ->add("visible", "boolean", array(
+            "title" => "Visible",
+            "true_icon" => "glyphicon glyphicon-ok",
+            "false_icon" => "glyphicon glyphicon-remove",
+            "true_label" => "yes",
+            "false_label" => "no"
+        ));
+```
+___
+
+## DateTime column
+
+Represents a datetime column.
+
+### Default template
+
+SgDatatablesBundle:Column:datetime.html.twig
+
+### Options
+
+| Option      | Type        | Default           |
+|-------------|-------------|-------------------|
+| class       | string      | ""                |
+| padding     | string      | ""                |
+| name        | string      | ""                |
+| orderable   | boolean     | true              |
+| render      | null|string | render_datetime   |
+| searchable  | boolean     | true              |
+| title       | string      | ""                |
+| type        | string      | ""                |
+| visible     | boolean     | true              |
+| width       | string      | ""                |
+| date_format | string      | "lll"             |
+
+### Example
+
+``` php
+$this->columnBuilder
+    ->add("createdAt", "datetime", array(
+            "title" => "Created",
+            "format" => "LLL" // default = "lll"
+        ));
+```
+___
+
+## Timeago column
+
+Represents a timeago column.
+
+### Default template
+
+SgDatatablesBundle:Column:timeago.html.twig
+
+### Options
+
+| Option      | Type        | Default           |
+|-------------|-------------|-------------------|
+| class       | string      | ""                |
+| padding     | string      | ""                |
+| name        | string      | ""                |
+| orderable   | boolean     | true              |
+| render      | null|string | render_timeago    |
+| searchable  | boolean     | true              |
+| title       | string      | ""                |
+| type        | string      | ""                |
+| visible     | boolean     | true              |
+| width       | string      | ""                |
+
+### Example
+
+``` php
+$this->columnBuilder
+    ->add("createdAt", "timeago", array(
+            "title" => "Created"
+        ));
+```
+___
 
 ## Action column
 
@@ -58,18 +238,18 @@ SgDatatablesBundle:Column:action.html.twig
 
 ### Options
 
-| Option     | Type        | Default |
-|------------|-------------|---------|
-| class      | string      | ""      |
-| padding    | string      | ""      |
-| name       | string      | ""      |
-| title      | string      | ""      |
-| type       | string      | ""      |
-| visible    | boolean     | true    |
-| width      | string      | ""      |
-| start_html | string      | ""      |
-| end_html   | string      | ""      |
-| actions    | array       | array() |
+| Option     | Type        | Default |          |
+|------------|-------------|---------|----------|
+| class      | string      | ""      |          |
+| padding    | string      | ""      |          |
+| name       | string      | ""      |          |
+| title      | string      | ""      |          |
+| type       | string      | ""      |          |
+| visible    | boolean     | true    |          |
+| width      | string      | ""      |          |
+| start_html | string      | ""      |          |
+| end_html   | string      | ""      |          |
+| actions    | array       |         | required |
 
 ### Action options
 
@@ -93,7 +273,7 @@ $this->columnBuilder
         "title" => "Actions",
         "start_html" => '<div class="wrapper_example_class">',
         "end_html" => '</div>',
-        "actions" => array(
+        "actions" => array( // required option
             array(
                 "route" => "post_edit",
                 "route_parameters" => array(
@@ -133,6 +313,7 @@ $this->columnBuilder
         )
     ));
 ```
+___
 
 ## Multiselect column
 
@@ -186,177 +367,4 @@ $this->getColumnBuilder()
             )
         )
     ));
-```
-
-## Array column
-
-Represents a column for many-to-many or one-to-many associations.
-
-### Default template
-
-SgDatatablesBundle:Column:column.html.twig
-
-### Options
-
-| Option     | Type        | Default |
-|------------|-------------|---------|
-| class      | string      | ""      |
-| padding    | string      | ""      |
-| name       | string      | ""      |
-| orderable  | boolean     | true    |
-| render     | null|string | null    |
-| searchable | boolean     | true    |
-| title      | string      | ""      |
-| type       | string      | ""      |
-| visible    | boolean     | true    |
-| width      | string      | ""      |
-| default    | string      | ""      |
-| read_as    | string      |         |
-
-### Example
-
-``` php
-$this->columnBuilder
-    ->add("tags.name", "array", array(
-            "title" => "Tags",
-            "read_as" => "tags[, ].name"
-        ));
-```
-
-## Boolean column
-
-Represents a boolean column.
-
-### Default template
-
-SgDatatablesBundle:Column:boolean.html.twig
-
-### Options
-
-| Option      | Type        | Default           |
-|-------------|-------------|-------------------|
-| class       | string      | ""                |
-| padding     | string      | ""                |
-| name        | string      | ""                |
-| orderable   | boolean     | true              |
-| render      | null|string | render_boolean    |
-| searchable  | boolean     | true              |
-| title       | string      | ""                |
-| type        | string      | ""                |
-| visible     | boolean     | true              |
-| width       | string      | ""                |
-| true_icon   | string      | ""                |
-| false_icon  | string      | ""                |
-| true_label  | string      | ""                |
-| false_label | string      | ""                |
-
-### Example
-
-``` php
-$this->columnBuilder
-    ->add("visible", "boolean", array(
-            "title" => "Visible",
-            "true_icon" => "glyphicon glyphicon-ok",
-            "false_icon" => "glyphicon glyphicon-remove",
-            "true_label" => "yes",
-            "false_label" => "no"
-        ));
-```
-
-## DateTime column
-
-Represents a datetime column.
-
-### Default template
-
-SgDatatablesBundle:Column:datetime.html.twig
-
-### Options
-
-| Option      | Type        | Default           |
-|-------------|-------------|-------------------|
-| class       | string      | ""                |
-| padding     | string      | ""                |
-| name        | string      | ""                |
-| orderable   | boolean     | true              |
-| render      | null|string | render_datetime   |
-| searchable  | boolean     | true              |
-| title       | string      | ""                |
-| type        | string      | ""                |
-| visible     | boolean     | true              |
-| width       | string      | ""                |
-| format      | string      | "lll"             |
-
-### Example
-
-``` php
-$this->columnBuilder
-    ->add("createdAt", "datetime", array(
-            "title" => "Created",
-            "format" => "LLL" // default = "lll"
-        ));
-```
-
-## Timeago column
-
-Represents a timeago column.
-
-### Default template
-
-SgDatatablesBundle:Column:timeago.html.twig
-
-### Options
-
-| Option      | Type        | Default           |
-|-------------|-------------|-------------------|
-| class       | string      | ""                |
-| padding     | string      | ""                |
-| name        | string      | ""                |
-| orderable   | boolean     | true              |
-| render      | null|string | render_timeago    |
-| searchable  | boolean     | true              |
-| title       | string      | ""                |
-| type        | string      | ""                |
-| visible     | boolean     | true              |
-| width       | string      | ""                |
-
-### Example
-
-``` php
-$this->columnBuilder
-    ->add("createdAt", "timeago", array(
-            "title" => "Created"
-        ));
-```
-
-## Virtual column
-
-Represents a virtual column.
-
-### Default template
-
-SgDatatablesBundle:Column:column.html.twig
-
-### Options
-
-| Option     | Type        | Default |
-|------------|-------------|---------|
-| class      | string      | ""      |
-| padding    | string      | ""      |
-| name       | string      | ""      |
-| render     | null|string | null    |
-| title      | string      | ""      |
-| type       | string      | ""      |
-| visible    | boolean     | true    |
-| width      | string      | ""      |
-| default    | string      | ""      |
-| label      | string      | ""      |
-| attributes | array       | array() |
-| renderif   | array       | array() |
-
-### Example
-
-``` php
-$this->columnBuilder
-    ->add("a virtual field", "virtual");
 ```

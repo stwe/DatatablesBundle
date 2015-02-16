@@ -6,88 +6,81 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-{
-    {% block common %}
-        "contentPadding": "{{ column.contentPadding }}",
-        "defaultContent": "{{ column.defaultContent }}",
-        "name": "{{ column.name }}",
-        {% if column.orderable %}
-            "orderable": true,
-        {% else %}
-            "orderable": false,
+{% extends 'SgDatatablesBundle:Column:column.html.twig' %}
+
+{% block common %}
+    "contentPadding": "{{ column.padding }}",
+    "defaultContent": "{{ column.defaultContent }}",
+    "name": "{{ column.name }}",
+    "orderable": false,
+    "searchable": false,
+    "title": "<input type='checkbox' name='multiselect_checkall' class='multiselect_checkall' />",
+    {% if column.type %}
+        "type": "{{ column.type }}",
+    {% endif %}
+    {% if column.visible %}
+        "visible": true,
+        "className": "{{ column.class }}",
+    {% else %}
+        "visible": false,
+        "className": "never {{ column.class }}",
+    {% endif %}
+    "width": "{{ column.width }}",
+{% endblock %}
+
+{% block data %}
+    "data": null,
+    "render": function(data, type, row, meta) {
+        var checkbox = "<input type='checkbox' name='multiselect_checkbox' value='" + first + "' class='multiselect_checkbox' />";
+        var output = "";
+        var startHtml = "";
+        var endHtml = "";
+        var attributes = "";
+
+        {# start_html #}
+        {% if column.startHtml %}
+            startHtml = '{{ column.startHtml|raw }}';
         {% endif %}
-        {% if column.searchable %}
-            "searchable": true,
-        {% else %}
-            "searchable": false,
+
+        {# end_html #}
+        {% if column.endHtml %}
+            endHtml = '{{ column.endHtml|raw }}';
         {% endif %}
-        "title": "<input type='checkbox' name='multiselect_checkall' class='multiselect_checkall' />",
-        {% if column.type %}
-            "type": "{{ column.type }}",
-        {% endif %}
-        {% if column.visible %}
-            "visible": true,
-            "className": "{{ column.className }}",
-        {% else %}
-            "visible": false,
-            "className": "never {{ column.className }}",
-        {% endif %}
-        "width": "{{ column.width }}",
-    {% endblock %}
 
-    {% block data %}
-        "data": null,
-        "render": function(data, type, row, meta) {
-            var checkbox = "<input type='checkbox' name='multiselect_checkbox' value='" + first + "' class='multiselect_checkbox' />";
-            var output = "";
-            var startHtml = "";
-            var endHtml = "";
-            var attributes = "";
+        {# attributes #}
+        {% for key, value in column.attributes %}
+            attributes += '{{ key }}="{{ value }}" ';
+        {% endfor %}
 
-            {# start_html #}
-            {% if column.startWrapper %}
-                startHtml = '{{ column.startWrapper|raw }}';
-            {% endif %}
-
-            {# end_html #}
-            {% if column.endWrapper %}
-                endHtml = '{{ column.endWrapper|raw }}';
-            {% endif %}
-
-            {# attributes #}
-            {% for key, value in column.attributes %}
-                attributes += '{{ key }}="{{ value }}" ';
-            {% endfor %}
-
-            {# get id #}
-            var first;
-            for (var i in row) {
-                if (row.hasOwnProperty(i) && typeof(i) !== 'function') {
-                    first = row[i];
-                    break;
-                }
+        {# get id #}
+        var first;
+        for (var i in row) {
+            if (row.hasOwnProperty(i) && typeof(i) !== 'function') {
+                first = row[i];
+                break;
             }
+        }
 
-            {# return html #}
-            if ("" != attributes) {
-                var custom = "";
+        {# return html #}
+        if ("" != attributes) {
+            var custom = "";
 
-                custom += startHtml;
-                custom += "<input type='checkbox' value='";
-                custom += first;
-                custom += "'";
-                custom += attributes;
-                custom += "/>"
-                custom += endHtml;
+            custom += startHtml;
+            custom += "<input type='checkbox' value='";
+            custom += first;
+            custom += "'";
+            custom += attributes;
+            custom += "/>"
+            custom += endHtml;
 
-                return custom;
-            }
+            return custom;
+        }
 
-            output += startHtml;
-            output += checkbox;
-            output += endHtml;
+        output += startHtml;
+        output += checkbox;
+        output += endHtml;
 
-            return output;
-        },
-    {% endblock %}
-},
+        return output;
+    },
+{% endblock %}
+

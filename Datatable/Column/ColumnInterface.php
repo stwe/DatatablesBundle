@@ -11,6 +11,9 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Exception;
+
 /**
  * Interface ColumnInterface
  *
@@ -37,29 +40,32 @@ interface ColumnInterface
     public function setDql($data);
 
     /**
-     * Set render.
-     *
-     * @param null|string $render
-     *
-     * @return $this
-     */
-    public function setRender($render);
-
-    /**
-     * Set defaults.
-     *
-     * @return $this
-     */
-    public function setDefaults();
-
-    /**
      * Set options.
      *
      * @param array $options
      *
      * @return $this
+     * @throws Exception
      */
     public function setOptions(array $options);
+
+    /**
+     * Setup options resolver.
+     *
+     * @param array $options
+     *
+     * @return $this
+     */
+    public function setupOptionsResolver(array $options);
+
+    /**
+     * Configure otions.
+     *
+     * @param OptionsResolver $resolver
+     *
+     * @return $this
+     */
+    public function configureOptions(OptionsResolver $resolver);
 
     /**
      * Get template.

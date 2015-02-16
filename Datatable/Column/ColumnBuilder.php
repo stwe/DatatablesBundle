@@ -80,8 +80,7 @@ class ColumnBuilder implements ColumnBuilderInterface
         $column = $this->columnFactory->createColumnByName($name);
         $column->setData($data);
         $column->setDql($data);
-        $column->setDefaults();
-        $column->setOptions($options);
+        $column->setupOptionsResolver($options);
 
         $this->columns[] = $column;
 
@@ -106,7 +105,11 @@ class ColumnBuilder implements ColumnBuilderInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get all virtual column names.
+     *
+     * @deprecated
+     *
+     * @return array
      */
     public function getVirtualColumnNames()
     {

@@ -67,17 +67,6 @@ class PostDatatable extends AbstractDatatableView
 
         $this->getAjax()->setUrl($this->getRouter()->generate("post_results"));
 
-        $this->getMultiselect()
-            ->setEnabled(true)
-            ->setPosition("last")
-            ->addAction("Hide post", "post_bulk_disable")
-            ->addAction("Delete post", "post_bulk_delete")
-            ->setAttributes(array(
-                    "class" => "testclass123"
-                ))
-            ->setClassName("multi-test-class")
-            ->setWidth("90px");
-
         $this->setStyle(self::BOOTSTRAP_3_STYLE);
 
         $this->setIndividualFiltering(true);
@@ -88,6 +77,25 @@ class PostDatatable extends AbstractDatatableView
         //-------------------------------------------------
 
         $this->getColumnBuilder()
+            ->add(null, "multiselect", array(
+                    "start_html" => '<div class="wrapper" id="testwrapper">',
+                    "end_html" => '</div>',
+                    "attributes" => array(
+                        "class" => "testclass",
+                        "name" => "testname",
+                    ),
+                    "actions" => array(
+                        array(
+                            "route" => "post_bulk_delete",
+                            "label" => "Delete",
+                            "role" => "ROLE_ADMIN"
+                        ),
+                        array(
+                            "route" => "post_bulk_disable",
+                            "label" => "Disable"
+                        )
+                    )
+                ))
             ->add("id", "column", array(
                     "title" => "Post-id",
                     "searchable" => true,
@@ -117,7 +125,7 @@ class PostDatatable extends AbstractDatatableView
                 ))
             ->add("tags.name", "array", array(
                     "title" => "Tags",
-                    "read_as" => "tags[, ].name"
+                    "data" => "tags[, ].name"
                 ))
             ->add(null, "action", array(
                 "title" => "Actions",

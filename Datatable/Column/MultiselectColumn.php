@@ -11,6 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 
 /**
@@ -35,50 +36,15 @@ class MultiselectColumn extends ActionColumn
     /**
      * {@inheritdoc}
      */
-    public function setDefaults()
+    public function configureOptions(OptionsResolver $resolver)
     {
-        parent::setDefaults();
+        parent::configureOptions($resolver);
 
-        $this->setAttributes(array());
+        $resolver->setDefault("attributes", array());
 
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOptions(array $options)
-    {
-        if (array_key_exists("class", $options)) {
-            $this->setClassName($options["class"]);
-        }
-        if (array_key_exists("padding", $options)) {
-            $this->setContentPadding($options["padding"]);
-        }
-        if (array_key_exists("name", $options)) {
-            $this->setName($options["name"]);
-        }
-        if (array_key_exists("type", $options)) {
-            $this->setType($options["type"]);
-        }
-        if (array_key_exists("visible", $options)) {
-            $this->setVisible($options["visible"]);
-        }
-        if (array_key_exists("width", $options)) {
-            $this->setWidth($options["width"]);
-        }
-        if (array_key_exists("start_html", $options)) {
-            $this->setStartWrapper($options["start_html"]);
-        }
-        if (array_key_exists("end_html", $options)) {
-            $this->setEndWrapper($options["end_html"]);
-        }
-        if (array_key_exists("actions", $options)) {
-            $this->setActions($options["actions"]);
-        }
-        if (array_key_exists("attributes", $options)) {
-            $this->setAttributes($options["attributes"]);
-        }
+        $resolver->addAllowedTypes(array(
+            "attributes" => "array",
+        ));
 
         return $this;
     }

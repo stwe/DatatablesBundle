@@ -8,23 +8,37 @@
  #}
 {% extends 'SgDatatablesBundle:Column:column.html.twig' %}
 
+{% block common %}
+    "contentPadding": "{{ column.padding }}",
+    "defaultContent": "{{ column.defaultContent }}",
+    "name": "{{ column.name }}",
+    "orderable": false,
+    "searchable": false,
+    "title": "{{ column.title }}",
+    {% if column.type %}
+        "type": "{{ column.type }}",
+    {% endif %}
+    {% if column.visible %}
+        "visible": true,
+        "className": "{{ column.class }}",
+    {% else %}
+        "visible": false,
+        "className": "never {{ column.class }}",
+    {% endif %}
+    "width": "{{ column.width }}",
+{% endblock %}
+
 {% block data %}
     "data": "{{ column.data }}",
     "render": function(data, type, row, meta) {
         var actionsString = "";
 
-        {# start wrapper #}
-        {% if column.startWrapper %}
-            actionsString += '{{ column.startWrapper|raw }}';
+        {# start html #}
+        {% if column.startHtml %}
+            actionsString += '{{ column.startHtml|raw }}';
         {% endif %}
 
         var routeParameters, attributes, visibleFlag, roleFlag;
-
-        {#
-           actions with:
-               route, routeParameters, icon, label, confirm,
-               confirmMessage, attributes, role, renderConditions
-         #}
 
         {% for action in column.actions %}
             routeParameters  = new Array();
@@ -74,9 +88,9 @@
             }
         {% endfor %}
 
-        {# end wrapper #}
-        {% if column.endWrapper %}
-            actionsString += '{{ column.endWrapper|raw }}';
+        {# end html #}
+        {% if column.endHtml %}
+            actionsString += '{{ column.endHtml|raw }}';
         {% endif %}
 
         return actionsString;

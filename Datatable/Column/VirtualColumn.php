@@ -14,8 +14,12 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 /**
  * Class VirtualColumn
+ *
+ * @deprecated
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
@@ -40,7 +44,7 @@ class VirtualColumn extends Column
      *
      * @var array
      */
-    protected $renderConditions;
+    protected $renderIf;
 
 
     //-------------------------------------------------
@@ -50,60 +54,19 @@ class VirtualColumn extends Column
     /**
      * {@inheritdoc}
      */
-    public function setDefaults()
+    public function configureOptions(OptionsResolver $resolver)
     {
-        parent::setDefaults();
+        parent::configureOptions($resolver);
 
-        $this->setOrderable(false);
-        $this->setSearchable(false);
-        $this->setLabel("");
-        $this->setAttributes(array());
-        $this->setRenderConditions(array());
+        $resolver->setDefault("label", "");
+        $resolver->setDefault("attributes", array());
+        $resolver->setDefault("render_if", array());
 
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOptions(array $options)
-    {
-        if (array_key_exists("class", $options)) {
-            $this->setClassName($options["class"]);
-        }
-        if (array_key_exists("padding", $options)) {
-            $this->setContentPadding($options["padding"]);
-        }
-        if (array_key_exists("name", $options)) {
-            $this->setName($options["name"]);
-        }
-        if (array_key_exists("render", $options)) {
-            $this->setRender($options["render"]);
-        }
-        if (array_key_exists("title", $options)) {
-            $this->setTitle($options["title"]);
-        }
-        if (array_key_exists("type", $options)) {
-            $this->setType($options["type"]);
-        }
-        if (array_key_exists("visible", $options)) {
-            $this->setVisible($options["visible"]);
-        }
-        if (array_key_exists("width", $options)) {
-            $this->setWidth($options["width"]);
-        }
-        if (array_key_exists("default", $options)) {
-            $this->setDefault($options["default"]);
-        }
-        if (array_key_exists("label", $options)) {
-            $this->setLabel($options["label"]);
-        }
-        if (array_key_exists("attributes", $options)) {
-            $this->setAttributes($options["attributes"]);
-        }
-        if (array_key_exists("renderif", $options)) {
-            $this->setRenderConditions($options["renderif"]);
-        }
+        $resolver->addAllowedTypes(array(
+            "label" => "string",
+            "attributes" => "array",
+            "render_if" => "array",
+        ));
 
         return $this;
     }
@@ -176,9 +139,9 @@ class VirtualColumn extends Column
      *
      * @return $this
      */
-    public function setRenderConditions(array $renderConditions)
+    public function setRenderIf(array $renderConditions)
     {
-        $this->renderConditions = $renderConditions;
+        $this->renderIf = $renderConditions;
 
         return $this;
     }
@@ -188,8 +151,8 @@ class VirtualColumn extends Column
      *
      * @return array
      */
-    public function getRenderConditions()
+    public function getRenderIf()
     {
-        return $this->renderConditions;
+        return $this->renderIf;
     }
 }

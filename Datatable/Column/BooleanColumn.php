@@ -11,6 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 
 /**
@@ -70,88 +71,41 @@ class BooleanColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function setRender($render)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        if (empty($render) || !is_string($render)) {
-            throw new InvalidArgumentException("setRender(): Expecting non-empty string.");
-        }
+        $resolver->setDefaults(array(
+            "class" => "",
+            "padding" => "",
+            "name" => "",
+            "orderable" => true,
+            "render" => "render_boolean",
+            "searchable" => true,
+            "title" => "",
+            "type" => "",
+            "visible" => true,
+            "width" => "",
+            "true_icon" => "",
+            "false_icon" => "",
+            "true_label" => "",
+            "false_label" => ""
+        ));
 
-        $this->render = $render;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaults()
-    {
-        $this->setClassName("");
-        $this->setContentPadding("");
-        $this->setDefaultContent("");
-        $this->setName("");
-        $this->setOrderable(true);
-        $this->setRender("render_boolean");
-        $this->setSearchable(true);
-        $this->setTitle("");
-        $this->setType("");
-        $this->setVisible(true);
-        $this->setWidth("");
-        $this->setTrueIcon("");
-        $this->setFalseIcon("");
-        $this->setTrueLabel("");
-        $this->setFalseLabel("");
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOptions(array $options)
-    {
-        if (array_key_exists("class", $options)) {
-            $this->setClassName($options["class"]);
-        }
-        if (array_key_exists("padding", $options)) {
-            $this->setContentPadding($options["padding"]);
-        }
-        if (array_key_exists("name", $options)) {
-            $this->setName($options["name"]);
-        }
-        if (array_key_exists("orderable", $options)) {
-            $this->setOrderable($options["orderable"]);
-        }
-        if (array_key_exists("render", $options)) {
-            $this->setRender($options["render"]);
-        }
-        if (array_key_exists("searchable", $options)) {
-            $this->setSearchable($options["searchable"]);
-        }
-        if (array_key_exists("title", $options)) {
-            $this->setTitle($options["title"]);
-        }
-        if (array_key_exists("type", $options)) {
-            $this->setType($options["type"]);
-        }
-        if (array_key_exists("visible", $options)) {
-            $this->setVisible($options["visible"]);
-        }
-        if (array_key_exists("width", $options)) {
-            $this->setWidth($options["width"]);
-        }
-        if (array_key_exists("true_icon", $options)) {
-            $this->setTrueIcon($options["true_icon"]);
-        }
-        if (array_key_exists("false_icon", $options)) {
-            $this->setFalseIcon($options["false_icon"]);
-        }
-        if (array_key_exists("true_label", $options)) {
-            $this->setTrueLabel($options["true_label"]);
-        }
-        if (array_key_exists("false_label", $options)) {
-            $this->setFalseLabel($options["false_label"]);
-        }
+        $resolver->setAllowedTypes(array(
+            "class" => "string",
+            "padding" => "string",
+            "name" => "string",
+            "orderable" => "bool",
+            "render" => array("string"),
+            "searchable" => "bool",
+            "title" => "string",
+            "type" => "string",
+            "visible" => "bool",
+            "width" => "string",
+            "true_icon" => "string",
+            "false_icon" => "string",
+            "true_label" => "string",
+            "false_label" => "string"
+        ));
 
         return $this;
     }

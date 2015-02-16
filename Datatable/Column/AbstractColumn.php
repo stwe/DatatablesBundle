@@ -11,6 +11,10 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\DependencyInjection\Container;
+use Exception;
+
 /**
  * Class AbstractColumn
  *
@@ -18,6 +22,13 @@ namespace Sg\DatatablesBundle\Datatable\Column;
  */
 abstract class AbstractColumn implements ColumnInterface
 {
+    /**
+     * Column options.
+     *
+     * @var array
+     */
+    protected $options;
+
     /**
      * Set the data source for the column from the rows data object / array.
      *
@@ -34,27 +45,32 @@ abstract class AbstractColumn implements ColumnInterface
 
     /**
      * Class to assign to each cell in the column.
+     * Option: class
      *
      * @var string
      */
-    protected $className;
+    protected $class;
 
     /**
      * Add padding to the text content used when calculating the optimal with for a table.
+     * Option: padding
      *
      * @var string
      */
-    protected $contentPadding;
+    protected $padding;
 
     /**
      * Set default, static, content for a column.
+     * Option: not in use!
      *
      * @var string
+     * @deprecated
      */
     protected $defaultContent;
 
     /**
      * Set a descriptive name for a column.
+     * Option: name
      *
      * @var string
      */
@@ -62,6 +78,7 @@ abstract class AbstractColumn implements ColumnInterface
 
     /**
      * Enable or disable ordering on this column.
+     * Option: orderable
      *
      * @var boolean
      */
@@ -69,6 +86,7 @@ abstract class AbstractColumn implements ColumnInterface
 
     /**
      * Render (process) the data for use in the table.
+     * Option: render
      *
      * @var null|string
      */
@@ -76,6 +94,7 @@ abstract class AbstractColumn implements ColumnInterface
 
     /**
      * Enable or disable filtering on the data in this column.
+     * Option: searchable
      *
      * @var boolean
      */
@@ -83,6 +102,7 @@ abstract class AbstractColumn implements ColumnInterface
 
     /**
      * Set the column title.
+     * Option: title
      *
      * @var string
      */
@@ -90,6 +110,7 @@ abstract class AbstractColumn implements ColumnInterface
 
     /**
      * Set the column type - used for filtering and sorting string processing.
+     * Option: type
      *
      * @var string
      */
@@ -97,6 +118,7 @@ abstract class AbstractColumn implements ColumnInterface
 
     /**
      * Enable or disable the display of this column.
+     * Option: visible
      *
      * @var boolean
      */
@@ -104,10 +126,24 @@ abstract class AbstractColumn implements ColumnInterface
 
     /**
      * Column width assignment.
+     * Option: width
      *
      * @var string
      */
     protected $width;
+
+
+    //-------------------------------------------------
+    // Ctor.
+    //-------------------------------------------------
+
+    /**
+     * Ctor.
+     */
+    public function __construct()
+    {
+        $this->options = array();
+    }
 
 
     //-------------------------------------------------
@@ -120,6 +156,41 @@ abstract class AbstractColumn implements ColumnInterface
     public function setDql($dql)
     {
         $this->dql = $dql;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setOptions(array $options)
+    {
+        $methods = get_class_methods($this);
+
+        foreach ($options as $key => $value) {
+            $key = Container::camelize($key);
+            $method = "set" . ucfirst($key);
+            if (in_array($method, $methods)) {
+                $this->$method($value);
+            } else {
+                throw new \Exception("setOptions(): {$method} invalid method name");
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setupOptionsResolver(array $options)
+    {
+        $resolver = new OptionsResolver();
+        $this->configureOptions($resolver);
+
+        $this->options = $resolver->resolve($options);
+
+        $this->setOptions($this->options);
 
         return $this;
     }
@@ -150,55 +221,57 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set class name.
+     * Set class.
      *
-     * @param string $className
+     * @param string $class
      *
      * @return $this
      */
-    public function setClassName($className)
+    public function setClass($class)
     {
-        $this->className = $className;
+        $this->class = $class;
 
         return $this;
     }
 
     /**
-     * Get class name.
+     * Get class.
      *
      * @return string
      */
-    public function getClassName()
+    public function getClass()
     {
-        return $this->className;
+        return $this->class;
     }
 
     /**
-     * Set content padding.
+     * Set padding.
      *
-     * @param string $contentPadding
+     * @param string $padding
      *
      * @return $this
      */
-    public function setContentPadding($contentPadding)
+    public function setPadding($padding)
     {
-        $this->contentPadding = $contentPadding;
+        $this->padding = $padding;
 
         return $this;
     }
 
     /**
-     * Get content padding.
+     * Get padding.
      *
      * @return string
      */
-    public function getContentPadding()
+    public function getPadding()
     {
-        return $this->contentPadding;
+        return $this->padding;
     }
 
     /**
      * Set default content.
+     *
+     * @deprecated
      *
      * @param string $defaultContent
      *
@@ -213,6 +286,8 @@ abstract class AbstractColumn implements ColumnInterface
 
     /**
      * Get default content.
+     *
+     * @deprecated
      *
      * @return string
      */
@@ -267,6 +342,20 @@ abstract class AbstractColumn implements ColumnInterface
     public function getOrderable()
     {
         return $this->orderable;
+    }
+
+    /**
+     * Set render.
+     *
+     * @param string $render
+     *
+     * @return $this
+     */
+    public function setRender($render)
+    {
+        $this->render = $render;
+
+        return $this;
     }
 
     /**

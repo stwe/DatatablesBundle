@@ -11,6 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 
 /**
@@ -45,13 +46,12 @@ class ArrayColumn extends Column
     /**
      * {@inheritdoc}
      */
-    public function setOptions(array $options)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        parent::setOptions($options);
+        parent::configureOptions($resolver);
 
-        if (array_key_exists("read_as", $options)) {
-            $this->setData($options["read_as"]);
-        }
+        $resolver->setRequired(array("data"));
+        $resolver->addAllowedTypes("data", "string");
 
         return $this;
     }

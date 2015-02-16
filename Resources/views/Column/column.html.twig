@@ -8,7 +8,7 @@
  #}
 {
     {% block common %}
-        "contentPadding": "{{ column.contentPadding }}",
+        "contentPadding": "{{ column.padding }}",
         "defaultContent": "{{ column.defaultContent }}",
         "name": "{{ column.name }}",
         {% if column.orderable %}
@@ -27,10 +27,10 @@
         {% endif %}
         {% if column.visible %}
             "visible": true,
-            "className": "{{ column.className }}",
+            "className": "{{ column.class }}",
         {% else %}
             "visible": false,
-            "className": "never {{ column.className }}",
+            "className": "never {{ column.class }}",
         {% endif %}
         "width": "{{ column.width }}",
     {% endblock %}

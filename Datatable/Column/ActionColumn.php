@@ -14,6 +14,7 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 
 /**
@@ -28,14 +29,14 @@ class ActionColumn extends AbstractColumn
      *
      * @var string
      */
-    protected $startWrapper;
+    protected $startHtml;
 
     /**
      * End HTML.
      *
      * @var string
      */
-    protected $endWrapper;
+    protected $endHtml;
 
     /**
      * The actions container.
@@ -66,75 +67,34 @@ class ActionColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function setRender($render)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        if (null !== $render) {
-            throw new InvalidArgumentException("setRender(): Null expected.");
-        }
+        $resolver->setRequired(array("actions"));
 
-        $this->render = $render;
+        $resolver->setDefaults(array(
+            "class" => "",
+            "padding" => "",
+            "name" => "",
+            "title" => "",
+            "type" => "",
+            "visible" => true,
+            "width" => "",
+            "start_html" => "",
+            "end_html" => ""
+        ));
 
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaults()
-    {
-        $this->setClassName("");
-        $this->setContentPadding("");
-        $this->setDefaultContent("");
-        $this->setName("");
-        $this->setOrderable(false);
-        $this->setRender(null);
-        $this->setSearchable(false);
-        $this->setTitle("");
-        $this->setType("");
-        $this->setVisible(true);
-        $this->setWidth("");
-        $this->setStartWrapper("");
-        $this->setEndWrapper("");
-        $this->setActions(array());
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOptions(array $options)
-    {
-        if (array_key_exists("class", $options)) {
-            $this->setClassName($options["class"]);
-        }
-        if (array_key_exists("padding", $options)) {
-            $this->setContentPadding($options["padding"]);
-        }
-        if (array_key_exists("name", $options)) {
-            $this->setName($options["name"]);
-        }
-        if (array_key_exists("title", $options)) {
-            $this->setTitle($options["title"]);
-        }
-        if (array_key_exists("type", $options)) {
-            $this->setType($options["type"]);
-        }
-        if (array_key_exists("visible", $options)) {
-            $this->setVisible($options["visible"]);
-        }
-        if (array_key_exists("width", $options)) {
-            $this->setWidth($options["width"]);
-        }
-        if (array_key_exists("start_html", $options)) {
-            $this->setStartWrapper($options["start_html"]);
-        }
-        if (array_key_exists("end_html", $options)) {
-            $this->setEndWrapper($options["end_html"]);
-        }
-        if (array_key_exists("actions", $options)) {
-            $this->setActions($options["actions"]);
-        }
+        $resolver->setAllowedTypes(array(
+            "class" => "string",
+            "padding" => "string",
+            "name" => "string",
+            "title" => "string",
+            "type" => "string",
+            "visible" => "bool",
+            "width" => "string",
+            "start_html" => "string",
+            "end_html" => "string",
+            "actions" => "array"
+        ));
 
         return $this;
     }
@@ -161,51 +121,51 @@ class ActionColumn extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Set start wrapper.
+     * Set start HTML.
      *
-     * @param string $startWrapper
+     * @param string $startHtml
      *
      * @return $this
      */
-    public function setStartWrapper($startWrapper)
+    public function setStartHtml($startHtml)
     {
-        $this->startWrapper = $startWrapper;
+        $this->startHtml = $startHtml;
 
         return $this;
     }
 
     /**
-     * Get start wrapper.
+     * Get start HTML.
      *
      * @return string
      */
-    public function getStartWrapper()
+    public function getStartHtml()
     {
-        return $this->startWrapper;
+        return $this->startHtml;
     }
 
     /**
-     * Set end wrapper.
+     * Set end HTML.
      *
-     * @param string $endWrapper
+     * @param string $endHtml
      *
      * @return $this
      */
-    public function setEndWrapper($endWrapper)
+    public function setEndHtml($endHtml)
     {
-        $this->endWrapper = $endWrapper;
+        $this->endHtml = $endHtml;
 
         return $this;
     }
 
     /**
-     * Get end wrapper.
+     * Get end HTML.
      *
      * @return string
      */
-    public function getEndWrapper()
+    public function getEndHtml()
     {
-        return $this->endWrapper;
+        return $this->endHtml;
     }
 
     /**
