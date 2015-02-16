@@ -1,5 +1,4 @@
 # Columns
-___
 
 ## Column
 
@@ -11,19 +10,19 @@ SgDatatablesBundle:Column:column.html.twig
 
 ### Options
 
-| Option     | Type        | Default |
-|------------|-------------|---------|
-| class      | string      | ""      |
-| padding    | string      | ""      |
-| name       | string      | ""      |
-| orderable  | boolean     | true    |
-| render     | null|string | null    |
-| searchable | boolean     | true    |
-| title      | string      | ""      |
-| type       | string      | ""      |
-| visible    | boolean     | true    |
-| width      | string      | ""      |
-| default    | string      | ""      |
+| Option     | Type           | Default |
+|------------|----------------|---------|
+| class      | string         | ""      |
+| padding    | string         | ""      |
+| name       | string         | ""      |
+| orderable  | boolean        | true    |
+| render     | null or string | null    |
+| searchable | boolean        | true    |
+| title      | string         | ""      |
+| type       | string         | ""      |
+| visible    | boolean        | true    |
+| width      | string         | ""      |
+| default    | string         | ""      |
 
 ### Example
 
@@ -60,20 +59,20 @@ SgDatatablesBundle:Column:column.html.twig
 
 ### Options
 
-| Option     | Type        | Default |          |
-|------------|-------------|---------|----------|
-| class      | string      | ""      |          |
-| padding    | string      | ""      |          |
-| name       | string      | ""      |          |
-| orderable  | boolean     | true    |          |
-| render     | null|string | null    |          |
-| searchable | boolean     | true    |          |
-| title      | string      | ""      |          |
-| type       | string      | ""      |          |
-| visible    | boolean     | true    |          |
-| width      | string      | ""      |          |
-| default    | string      | ""      |          |
-| data       | string      |         | required |
+| Option     | Type           | Default |          |
+|------------|----------------|---------|----------|
+| class      | string         | ""      |          |
+| padding    | string         | ""      |          |
+| name       | string         | ""      |          |
+| orderable  | boolean        | true    |          |
+| render     | null or string | null    |          |
+| searchable | boolean        | true    |          |
+| title      | string         | ""      |          |
+| type       | string         | ""      |          |
+| visible    | boolean        | true    |          |
+| width      | string         | ""      |          |
+| default    | string         | ""      |          |
+| data       | string         |         | required |
 
 ### Example
 
@@ -96,20 +95,20 @@ SgDatatablesBundle:Column:column.html.twig
 
 ### Options
 
-| Option     | Type        | Default |
-|------------|-------------|---------|
-| class      | string      | ""      |
-| padding    | string      | ""      |
-| name       | string      | ""      |
-| render     | null|string | null    |
-| title      | string      | ""      |
-| type       | string      | ""      |
-| visible    | boolean     | true    |
-| width      | string      | ""      |
-| default    | string      | ""      |
-| label      | string      | ""      |
-| attributes | array       | array() |
-| render_if  | array       | array() |
+| Option     | Type           | Default |
+|------------|----------------|---------|
+| class      | string         | ""      |
+| padding    | string         | ""      |
+| name       | string         | ""      |
+| render     | null or string | null    |
+| title      | string         | ""      |
+| type       | string         | ""      |
+| visible    | boolean        | true    |
+| width      | string         | ""      |
+| default    | string         | ""      |
+| label      | string         | ""      |
+| attributes | array          | array() |
+| render_if  | array          | array() |
 
 ### Example
 
@@ -129,22 +128,22 @@ SgDatatablesBundle:Column:boolean.html.twig
 
 ### Options
 
-| Option      | Type        | Default           |
-|-------------|-------------|-------------------|
-| class       | string      | ""                |
-| padding     | string      | ""                |
-| name        | string      | ""                |
-| orderable   | boolean     | true              |
-| render      | null|string | render_boolean    |
-| searchable  | boolean     | true              |
-| title       | string      | ""                |
-| type        | string      | ""                |
-| visible     | boolean     | true              |
-| width       | string      | ""                |
-| true_icon   | string      | ""                |
-| false_icon  | string      | ""                |
-| true_label  | string      | ""                |
-| false_label | string      | ""                |
+| Option      | Type           | Default          |
+|-------------|----------------|------------------|
+| class       | string         | ""               |
+| padding     | string         | ""               |
+| name        | string         | ""               |
+| orderable   | boolean        | true             |
+| render      | null or string | render_boolean   |
+| searchable  | boolean        | true             |
+| title       | string         | ""               |
+| type        | string         | ""               |
+| visible     | boolean        | true             |
+| width       | string         | ""               |
+| true_icon   | string         | ""               |
+| false_icon  | string         | ""               |
+| true_label  | string         | ""               |
+| false_label | string         | ""               |
 
 ### Example
 
@@ -170,19 +169,19 @@ SgDatatablesBundle:Column:datetime.html.twig
 
 ### Options
 
-| Option      | Type        | Default           |
-|-------------|-------------|-------------------|
-| class       | string      | ""                |
-| padding     | string      | ""                |
-| name        | string      | ""                |
-| orderable   | boolean     | true              |
-| render      | null|string | render_datetime   |
-| searchable  | boolean     | true              |
-| title       | string      | ""                |
-| type        | string      | ""                |
-| visible     | boolean     | true              |
-| width       | string      | ""                |
-| date_format | string      | "lll"             |
+| Option      | Type           | Default           |
+|-------------|----------------|-------------------|
+| class       | string         | ""                |
+| padding     | string         | ""                |
+| name        | string         | ""                |
+| orderable   | boolean        | true              |
+| render      | null or string | render_datetime   |
+| searchable  | boolean        | true              |
+| title       | string         | ""                |
+| type        | string         | ""                |
+| visible     | boolean        | true              |
+| width       | string         | ""                |
+| date_format | string         | "lll"             |
 
 ### Example
 
@@ -205,18 +204,18 @@ SgDatatablesBundle:Column:timeago.html.twig
 
 ### Options
 
-| Option      | Type        | Default           |
-|-------------|-------------|-------------------|
-| class       | string      | ""                |
-| padding     | string      | ""                |
-| name        | string      | ""                |
-| orderable   | boolean     | true              |
-| render      | null|string | render_timeago    |
-| searchable  | boolean     | true              |
-| title       | string      | ""                |
-| type        | string      | ""                |
-| visible     | boolean     | true              |
-| width       | string      | ""                |
+| Option      | Type           | Default         |
+|-------------|----------------|-----------------|
+| class       | string         | ""              |
+| padding     | string         | ""              |
+| name        | string         | ""              |
+| orderable   | boolean        | true            |
+| render      | null or string | render_timeago  |
+| searchable  | boolean        | true            |
+| title       | string         | ""              |
+| type        | string         | ""              |
+| visible     | boolean        | true            |
+| width       | string         | ""              |
 
 ### Example
 
