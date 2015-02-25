@@ -2,17 +2,22 @@ datatables: # the bundle name
     datatable: # jQuery plugin
         processing: "Procesando..."
         lengthMenu: "Ver _MENU_ resultados"
+        sLengthMenu: "_MENU_"
         zeroRecords: "Ningún resultado encontrado"
         info: "Mostrando _START_ de _END_ de un total de _TOTAL_ resultados"
+        sInfo: "Mostrando <span class='txt-color-darken'>_START_</span> a <span class='txt-color-darken'>_END_</span> de <span class='text-primary'>_TOTAL_</span> registros"
         infoEmpty: "Mostrando 0 de 0 de un total de 0 resultados"
+        sInfoEmpty: "<span class='text-danger'>Mostrando 0 a 0 de 0 registros</span>"
         infoFiltered: "(filtrado de un total de _MAX_ resultados)"
         infoPostFix: ""
         search: "Buscar"
+        sSearch: "<span class='input-group-addon'><i class='glyphicon glyphicon-search'></i></span>"
+        
         first: "Primero"
         previous: "Anterior"
         next: "Siguiente"
         last: "Último"
-        all: "todos"
+        all: "Todos"
     bulk:
         confirmMsg: "¿Está seguro?"
         selectError: "Es necesario seleccionar al menos 1 elemento."

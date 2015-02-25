@@ -1,19 +1,24 @@
 <table cellpadding="0" cellspacing="0" class="{{ view_style }}" border="0" id="{{ view_table_id }}" width="100%">
-    <thead>
-    </thead>
+       
+   <thead>
+   </thead>
     {% if view_individual_filtering %}
-        <tfoot>
+    <tfoot>  
             {% for column in view_columns %}
                 <th>
                     {% if column.searchable %}
-                        <input type="text" class="individual_filtering" placeholder="{{ column.title }}" />
+                        <input type="text" class="individual_filtering" placeholder="{{column.title}}" />
                     {% else %}
                         <input type="hidden" />
                     {% endif %}
                 </th>
             {% endfor %}
-        </tfoot>
+    </tfoot>
     {% endif %}
+  
+
+
     <tbody>
     </tbody>
+
 </table>

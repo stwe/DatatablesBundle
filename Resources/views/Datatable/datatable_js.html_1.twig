@@ -1,0 +1,63 @@
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var selector = "#{{ view_table_id }}";
+
+        var defaults = {
+            {% include "SgDatatablesBundle:Datatable:language.html.twig" %}
+        };
+
+        var features = {
+            {% include "SgDatatablesBundle:Datatable:features.html.twig" %}
+        };
+
+        var options = {
+            {% include "SgDatatablesBundle:Datatable:options.html.twig" %}
+        };
+
+        var ajax = {
+            {% include "SgDatatablesBundle:Datatable:ajax.html.twig" %}
+        };
+
+        setTimeout(function() {
+            var columns = {
+                {% include "SgDatatablesBundle:Datatable:columns.html.twig" %}
+            };
+
+            $.extend(defaults, features);
+            $.extend(defaults, options);
+            $.extend(defaults, ajax);
+            $.extend(defaults, columns);
+
+            if ( $.fn.dataTable.isDataTable( selector ) ) {
+                {#
+                    to check if datatable already exists
+                #}
+            } else {
+                var oTable = $(selector).DataTable(defaults);
+            }
+
+            {% if view_individual_filtering %}
+                $("tfoot input.individual_filtering").on("keyup change", function() {
+                    oTable
+                        .column( $(this).parent().index()+':visible' )
+                        .search( this.value )
+                        .draw();
+                });
+            {% endif %}
+
+            {% if view_multiselect %}
+                {% include "SgDatatablesBundle:Datatable:multiselect_actions.html.twig" with {'column': view_multiselect_column} %}
+            {% endif %}
+
+        }, features.delay);
+    });
+
+</script>
+
+{% block sg_datatable_render_functions %}
+
+    {% include "SgDatatablesBundle:Datatable:render_functions.html.twig" %}
+
+{% endblock %}

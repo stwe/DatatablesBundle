@@ -183,6 +183,10 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @var boolean
      */
     protected $useIntegrationOptions;
+    /* 
+     * @var boolean
+     */
+    protected $detailsChildRows;
 
 
     //-------------------------------------------------
@@ -219,6 +223,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->individualFiltering = $defaultLayoutOptions["individual_filtering"];
         $this->templates = $defaultLayoutOptions["templates"];
         $this->useIntegrationOptions = false;
+        $this->detailsChildRows = false;
     }
 
 
@@ -251,10 +256,12 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         $options["view_multiselect"] = $this->columnBuilder->isMultiselect();
         $options["view_multiselect_column"] = $this->columnBuilder->getMultiselectColumn();
-
+        
         $options["view_table_id"] = $this->getName();
 
         $options["view_use_integration_options"] = $this->useIntegrationOptions;
+        
+        $options["view_details_child_rows"] = $this->detailsChildRows;
 
         switch($type) {
             case 'html':
@@ -262,6 +269,9 @@ abstract class AbstractDatatableView implements DatatableViewInterface
                 break;
             case 'js':
                 return $this->templating->render($this->templates['js'], $options);
+                break;
+            case 'jsns':
+                return $this->templating->render($this->templates['jsns'], $options);
                 break;
             default:
                 return $this->templating->render($this->templates['base'], $options);
@@ -574,6 +584,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         return $this;
     }
 
+   
     /**
      * Get useIntegrationsOptions.
      *
@@ -582,5 +593,29 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getUseIntegrationOptions()
     {
         return $this->useIntegrationOptions;
+    }
+     
+    
+    /**
+     * Set detailsChildRows
+     *
+     * @param boolean $detailsChildRows
+     *
+     * @return $this
+     */
+    public function setDetailsChildRows($detailsChildRows)
+    {
+        $this->detailsChildRows = (boolean) $detailsChildRows;
+
+        return $this;
+    }
+    /**
+     * Get detailsChildRows
+     *
+     * @return boolean
+     */
+    public function getDetailsChildRows()
+    {
+        return (boolean) $this->detailsChildRows;
     }
 }

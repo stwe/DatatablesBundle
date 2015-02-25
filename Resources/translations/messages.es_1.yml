@@ -1,0 +1,19 @@
+datatables: # the bundle name
+    datatable: # jQuery plugin
+        processing: "Procesando..."
+        lengthMenu: "Ver _MENU_ resultados"
+        zeroRecords: "Ningún resultado encontrado"
+        info: "Mostrando _START_ de _END_ de un total de _TOTAL_ resultados"
+        infoEmpty: "Mostrando 0 de 0 de un total de 0 resultados"
+        infoFiltered: "(filtrado de un total de _MAX_ resultados)"
+        infoPostFix: ""
+        search: "Buscar"
+        first: "Primero"
+        previous: "Anterior"
+        next: "Siguiente"
+        last: "Último"
+        all: "todos"
+    bulk:
+        confirmMsg: "¿Está seguro?"
+        selectError: "Es necesario seleccionar al menos 1 elemento."
+        ok: "Aplicar"

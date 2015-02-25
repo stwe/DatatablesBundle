@@ -1,0 +1,55 @@
+                function format (d) {
+                 {#{% for column in view_columns %}
+                            {% if column.getAlias()=='rowdetail' or column.getAlias()=='arrayrowdetail' %}
+                                {%if column.getAlias()=='arrayrowdetail'%}
+                                    var arrayData={{'d.'~column.arrayData}};
+                                    if (typeof arrayData !== 'undefined' && arrayData.length > 0) {
+                                    var recofuntion='Registra '+arrayData.length+' movimientos';
+                                    }else
+                                    {
+                                    var recofuntion='No Registra Movimientos';
+                                    };
+                                 {% endif %}
+                             {% endif %}   
+                   {% endfor %}#}
+                   console.log(d);
+                     
+		    var tabledetail= '<table cellpadding="5" cellspacing="0" border="0" class="table table-hover table-condensed">';
+                        {% set f=1 %}
+		        {% for column in view_columns %}
+                            {% if (column.getAlias()=='rowdetail' or column.getAlias()=='arrayrowdetail') and column.visibleonrow %}
+                                
+                            tabledetail+='<tr>';
+                            tabledetail+='<td {%if f %}style="width:100px"{%endif%}>{{ column.classicon|e('js') }}{{ column.title }}</td>';
+                                {% if column.getAlias()=='rowdetail'%}
+                                tabledetail+='<td>'+{{'d.'~column.dql}}+'</td>';
+                                {%elseif column.getAlias()=='arrayrowdetail'%}
+                                    
+                                    function perfom_{{column.arraydatafield|replace({'.':'_'})}}(a){
+                                       var ahtml="<ul>";
+                                        a.forEach(function (e,i,a){
+                                        {% if column.arraydatatype=='date'%}
+                                        if ({{'e.'~column.arraydatafield}} != null && typeof {{'e.'~column.arraydatafield}}.timestamp != "undefined") {
+                                                moment.locale("{{ app.request.locale }}");
+                                                edate= moment.unix({{'e.'~column.arraydatafield}}.timestamp).format();
+                                            }
+                                          ahtml+="<li>"+edate+"</li>";
+                                       
+                                        {%else%}
+                                            ahtml+="<li>"+{{'e.'~column.arraydatafield}}+"</li>";
+                                        {%endif%}
+                                        });
+                                        ahtml+="</ul>"
+                                        return ahtml;
+                                    };
+                                    
+                                tabledetail+='<td>'+perfom_{{column.arraydatafield|replace({'.':'_'})}}({{'d.'~column.arraydata}})+'</td>'
+                                
+                                {% endif %}
+                            tabledetail+='</tr>';
+                            {% set f=0 %}
+                            {% endif %}
+                         {% endfor %}
+		    tabledetail+='</table>';
+                    return tabledetail;
+		}

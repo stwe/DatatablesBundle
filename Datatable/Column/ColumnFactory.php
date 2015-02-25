@@ -78,6 +78,15 @@ class ColumnFactory implements ColumnFactoryInterface
             case "datetime":
                 $this->column = new DateTimeColumn();
                 break;
+            case "detailscontrol":
+                $this->column = new DetailsControl();
+                break;
+            case "rowdetail":
+                $this->column = new RowDetail();
+                break;
+            case "arrayrowdetail":
+                $this->column = new ArrayRowDetail();
+                break;
             case "timeago":
                 $this->column = new TimeagoColumn();
                 break;

@@ -45,6 +45,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('base')->defaultValue('SgDatatablesBundle:Datatable:datatable.html.twig')->end()
                             ->scalarNode('html')->defaultValue('SgDatatablesBundle:Datatable:datatable_html.html.twig')->end()
                             ->scalarNode('js')->defaultValue('SgDatatablesBundle:Datatable:datatable_js.html.twig')->end()
+                            ->scalarNode('jsns')->defaultValue('SgDatatablesBundle:Datatable:datatable_jsns.html.twig')->end()
                         ->end()
                     ->end()
                 ->end()

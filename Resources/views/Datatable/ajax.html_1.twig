@@ -1,0 +1,17 @@
+{% if view_features.serverSide %}
+    "serverSide": true,
+    "ajax": {
+        "url": "{{ view_ajax.url }}",
+        "data": function(d) {
+            {% set counter = 0 %}
+            {% for column in view_columns %}
+                d.dql_{{ counter }} = "{{ column.dql }}";
+                {% set counter = counter + 1 %}
+            {% endfor %}
+        },
+        "type": "{{ view_ajax.type }}"
+    },
+{% else %}
+    "serverSide": false,
+    "data": {{ view_data|raw }},
+{% endif %}

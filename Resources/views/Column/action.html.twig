@@ -69,7 +69,11 @@
                 {% endfor %}
 
                 var url  = "<a ";
+                {% if action.toajax %}
+                 url += 'href="#' + route + '" ';
+                {%else%}
                 url += 'href="' + route + '" ';
+                 {% endif %}   
                 url += attributes;
                 {% if action.confirm %}
                     url += 'onclick="' + "return confirm('{{ action.ConfirmMessage }}')" + '" ';

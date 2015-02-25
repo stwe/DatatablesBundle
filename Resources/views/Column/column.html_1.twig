@@ -1,0 +1,55 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{
+    {% block common %}
+        "contentPadding": "{{ column.padding }}",
+        "defaultContent": "{{ column.defaultContent }}",
+        "name": "{{ column.name }}",
+        {% if column.orderable %}
+            "orderable": true,
+        {% else %}
+            "orderable": false,
+        {% endif %}
+        {% if column.searchable %}
+            "searchable": true,
+        {% else %}
+            "searchable": false,
+        {% endif %}
+        "title": "{{ column.getTitleEncoded() }}",
+        {% if column.type %}
+            "type": "{{ column.type }}",
+        {% endif %}
+        {% if column.visible %}
+            "visible": true,
+            "className": "{{ column.class }}",
+        {% else %}
+            "visible": false,
+            "className": "never {{ column.class }}",
+        {% endif %}
+        "width": "{{ column.width }}",
+    {% endblock %}
+
+    {% block data %}
+        "data": "{{ column.data }}",
+        {% if column.default and column.render is null %}
+            "render": function(data) {
+                if ("" == data) {
+                    return "{{ column.default }}";
+                } else {
+                    return data;
+                }
+            },
+        {% endif %}
+        {% if column.render %}
+            "render": function(data, type, row, meta) {
+                return {{ column.render }}(data, type, row, meta);
+            },
+        {% endif %}
+    {% endblock %}
+},

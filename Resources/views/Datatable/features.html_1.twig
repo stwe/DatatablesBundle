@@ -1,0 +1,71 @@
+{% if view_features.autoWidth %}
+    "autoWidth": true,
+{% else %}
+    "autoWidth": false,
+{% endif %}
+
+{% if view_features.deferRender %}
+    "deferRender": true,
+{% else %}
+    "deferRender": false,
+{% endif %}
+
+{% if view_features.info %}
+    "info": true,
+{% else %}
+    "info": false,
+{% endif %}
+
+{% if view_features.jQueryUI %}
+    "jQueryUI": true,
+{% else %}
+    "jQueryUI": false,
+{% endif %}
+
+{% if view_features.lengthChange %}
+    "lengthChange": true,
+{% else %}
+    "lengthChange": false,
+{% endif %}
+
+{% if view_features.ordering %}
+    "ordering": true,
+{% else %}
+    "ordering": false,
+{% endif %}
+
+{% if view_features.paging %}
+    "paging": true,
+{% else %}
+    "paging": false,
+{% endif %}
+
+{% if view_features.processing %}
+    "processing": true,
+{% else %}
+    "processing": false,
+{% endif %}
+
+{% if view_features.scrollX %}
+    "scrollX": true,
+{% else %}
+    "scrollX": false,
+{% endif %}
+
+"scrollY": "{{ view_features.scrollY }}",
+
+{% if view_features.searching %}
+    "searching": true,
+{% else %}
+    "searching": false,
+{% endif %}
+
+{# serverSide feature -> Ajax.html.twig #}
+
+{% if view_features.stateSave %}
+    "stateSave": true,
+{% else %}
+    "stateSave": false,
+{% endif %}
+
+"delay": {{ view_features.delay }},

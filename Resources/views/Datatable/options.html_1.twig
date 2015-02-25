@@ -1,0 +1,43 @@
+"displayStart": {{ view_options.displayStart }},
+
+{% if false == view_use_integration_options %}
+    "dom": "{{ view_options.dom|raw }}",
+{% endif %}
+
+"lengthMenu": {{ view_options.lengthMenu|length_join|raw }},
+
+{% if view_options.orderClasses %}
+    "orderClasses": true,
+{% else %}
+    "orderClasses": false,
+{% endif %}
+
+"order": [{{ view_options.order.column }}, "{{ view_options.order.direction }}"],
+
+{% if view_options.orderMulti %}
+    "orderMulti": true,
+{% else %}
+    "orderMulti": false,
+{% endif %}
+
+"pageLength": {{ view_options.pageLength }},
+
+"pagingType": "{{ view_options.pagingType }}",
+
+{% if false == view_use_integration_options %}
+    "renderer": "{{ view_options.renderer }}",
+{% endif %}
+
+{% if view_options.scrollCollapse %}
+    "scrollCollapse": true,
+{% else %}
+    "scrollCollapse": false,
+{% endif %}
+
+"stateDuration": {{ view_options.stateDuration }},
+
+"stripeClasses": [{{ view_options.stripeClasses|join(", ")|json_encode|raw }}],
+
+{% if view_options.responsive %}
+    "responsive": true,
+{% endif %}

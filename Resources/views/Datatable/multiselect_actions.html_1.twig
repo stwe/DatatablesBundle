@@ -1,0 +1,63 @@
+{% set visible = false %}
+
+var multiple_actions_html = "\
+<p>\
+    <select name='bulk_action_routes[select]' id='bulk_action_routes'>\
+        {% for action in column.actions %}\
+            {% if action.role %}\
+                {% if app.user is not null and is_granted(action.role) %}\
+                    {% set visible = true %}\
+                {% endif %}\
+            {% else %}\
+                {% set visible = true %}\
+            {% endif %}\
+            {% if visible %}\
+                <option value='{{ path(action.route) }}'>\
+                    {{ action.label }}\
+                </option>\
+            {% endif %}\
+        {% endfor %}\
+    </select>\
+    <button id='multiselect_submit' type='button'>{{ 'datatables.bulk.ok'|trans({}, 'messages') }}</button>\
+</p>";
+
+$("#{{ view_table_id }}" + "_wrapper").append(multiple_actions_html);
+
+$(".multiselect_checkall").click(function(event) {
+    if(this.checked) {
+        $("input:checkbox.multiselect_checkbox").each(function() {
+            this.checked = true;
+        });
+    } else {
+        $("input:checkbox.multiselect_checkbox").each(function() {
+            this.checked = false;
+        });
+    }
+});
+
+$("#multiselect_submit").click(function() {
+    var length = $("input:checkbox:checked.multiselect_checkbox").length;
+
+    if (length > 0) {
+        if (!confirm( "{{ 'datatables.bulk.confirmMsg'|trans({}, 'messages') }}" )) {
+            return;
+        }
+
+        $.ajax({
+            url: $("select[name='bulk_action_routes[select]']").val(),
+            type: "POST",
+            cache: false,
+            data: {
+                'data': $("input:checkbox:checked.multiselect_checkbox", oTable.rows().nodes()).serializeArray()
+            },
+            success: function(msg) {
+                oTable.draw();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest + ' ' + textStatus + ' ' +errorThrown);
+            }
+        })
+    } else {
+        alert("{{ 'datatables.bulk.selectError'|trans({}, 'messages') }}");
+    }
+});

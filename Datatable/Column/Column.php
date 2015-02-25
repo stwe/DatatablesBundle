@@ -54,6 +54,7 @@ class Column extends AbstractColumn
     {
         $resolver->setDefaults(array(
             "class" => "",
+            "classicon" => "",
             "padding" => "",
             "name" => "",
             "orderable" => true,
@@ -62,6 +63,7 @@ class Column extends AbstractColumn
             "title" => "",
             "type" => "",
             "visible" => true,
+            "visibleonrow" => false,
             "width" => "",
             "default" => ""
         ));
@@ -76,6 +78,7 @@ class Column extends AbstractColumn
             "title" => "string",
             "type" => "string",
             "visible" => "bool",
+            "visibleonrow" => "bool",
             "width" => "string",
             "default" => "string"
         ));

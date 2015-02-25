@@ -31,6 +31,13 @@ class Action
      * @var array
      */
     protected $routeParameters;
+    
+    /**
+     * The action route to ajax
+     *
+     * @var boolean
+     */
+    protected $toajax;
 
     /**
      * An action icon.
@@ -93,6 +100,7 @@ class Action
     {
         $this->route = "";
         $this->routeParameters = array();
+        $this->toajax = false;
         $this->icon = "";
         $this->label = "";
         $this->confirm = false;
@@ -121,6 +129,9 @@ class Action
         }
         if (array_key_exists("route_parameters", $options)) {
             $this->setRouteParameters($options["route_parameters"]);
+        }
+        if (array_key_exists("toajax", $options)) {
+            $this->setToajax($options["toajax"]);
         }
         if (array_key_exists("icon", $options)) {
             $this->setIcon($options["icon"]);
@@ -171,6 +182,7 @@ class Action
         return $this->route;
     }
 
+
     /**
      * Set route parameters.
      *
@@ -193,6 +205,29 @@ class Action
     public function getRouteParameters()
     {
         return $this->routeParameters;
+    }
+    /**
+     * Set toajax
+     *
+     * @param array $toajax
+     *
+     * @return $this
+     */
+    public function setToajax($toajax)
+    {
+        $this->toajax = $toajax;
+
+        return $this;
+    }
+
+    /**
+     * Get toajax.
+     *
+     * @return boolean
+     */
+    public function getToajax()
+    {
+        return $this->toajax;
     }
 
     /**

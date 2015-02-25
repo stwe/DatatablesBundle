@@ -1,8 +1,10 @@
 "displayStart": {{ view_options.displayStart }},
 
+
 {% if false == view_use_integration_options %}
-    "dom": "{{ view_options.dom|raw }}",
+    "dom": "{{ view_options.dom|e('js')|raw }}",
 {% endif %}
+
 
 "lengthMenu": {{ view_options.lengthMenu|length_join|raw }},
 
@@ -41,3 +43,4 @@
 {% if view_options.responsive %}
     "responsive": true,
 {% endif %}
+

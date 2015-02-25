@@ -1,0 +1,6 @@
+"columns": [
+    {% for column in view_columns %}
+        {#{% include column.getTemplate %}#}
+         {% include "SgDatatablesBundle:Datatable:columns.html.twig" %}
+    {% endfor %}
+]

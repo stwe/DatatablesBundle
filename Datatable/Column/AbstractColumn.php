@@ -35,7 +35,7 @@ abstract class AbstractColumn implements ColumnInterface
      * @var null|string
      */
     protected $data;
-
+    
     /**
      * Data source copy.
      *
@@ -50,6 +50,14 @@ abstract class AbstractColumn implements ColumnInterface
      * @var string
      */
     protected $class;
+    
+    /**
+     * Class to assign to each cell in the column.
+     * Option: classicon
+     *
+     * @var string
+     */
+    protected $classicon;
 
     /**
      * Add padding to the text content used when calculating the optimal with for a table.
@@ -123,7 +131,13 @@ abstract class AbstractColumn implements ColumnInterface
      * @var boolean
      */
     protected $visible;
-
+    /**
+     * Enable or disable the display of this column on row detail.
+     * Option: visibleonrow
+     *
+     * @var boolean
+     */
+    protected $visibleonrow;
     /**
      * Column width assignment.
      * Option: width
@@ -243,7 +257,29 @@ abstract class AbstractColumn implements ColumnInterface
     {
         return $this->class;
     }
+    /**
+     * Set class.
+     *
+     * @param string $classicon
+     *
+     * @return $this
+     */
+    public function setClassicon($classicon)
+    {
+        $this->classicon = $classicon;
 
+        return $this;
+    }
+
+    /**
+     * Get class.
+     *
+     * @return string
+     */
+    public function getClassicon()
+    {
+        return $this->classicon;
+    }
     /**
      * Set padding.
      *
@@ -415,7 +451,7 @@ abstract class AbstractColumn implements ColumnInterface
     {
         return $this->title;
     }
-
+    
     /**
      * Set type.
      *
@@ -463,7 +499,29 @@ abstract class AbstractColumn implements ColumnInterface
     {
         return $this->visible;
     }
+    /**
+     * Set visibleonrow.
+     *
+     * @param boolean $visibleonrow
+     *
+     * @return $this
+     */
+    public function setVisibleonrow($visibleonrow)
+    {
+        $this->visibleonrow = (boolean) $visibleonrow;
 
+        return $this;
+    }
+
+    /**
+     * Get visibleonrow.
+     *
+     * @return boolean
+     */
+    public function getVisibleonrow()
+    {
+        return $this->visibleonrow;
+    }
     /**
      * Set width.
      *
