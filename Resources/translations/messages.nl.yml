@@ -1,0 +1,19 @@
+datatables: # the bundle name
+    datatable: # jQuery plugin
+        processing: "Verwerken..."
+        lengthMenu: "_MENU_ resultaten weergeven"
+        zeroRecords: "Geen resultaten gevonden."
+        info: "_START_ tot _END_ van _TOTAL_ resultaten weergegeven"
+        infoEmpty: "0 tot 0 van 0 resultaten weergegeven"
+        infoFiltered: "(gefilterd van in totaal _MAX_ resultaten)"
+        infoPostFix: ""
+        search: "Zoeken"
+        first: "Eerste"
+        previous: "Vorige"
+        next: "Volgende"
+        last: "Laatste"
+        all: "alle"
+    bulk:
+        confirmMsg: "Weet u het zeker?"
+        selectError: "U moet tenminste één element selecteren."
+        ok: "Ok"
