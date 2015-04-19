@@ -1,0 +1,19 @@
+datatables: # the bundle name
+    datatable: # jQuery plugin
+        processing: "در حال پردازش..."
+        lengthMenu: "نمایش _MENU_ سطر"
+        zeroRecords: "هیچ سطری با مشخصات داده شده یافت نشد"
+        info: "نمایش _START_ تا _END_ از در مجموع _TOTAL_ سطر"
+        infoEmpty: "نمایش صفر تا صفر از در مجموع صفر سطر"
+        infoFiltered: "(فیلتر شده از مجموع _MAX_ سطر)"
+        infoPostFix: ""
+        search: "جستجو"
+        first: "نخستین"
+        previous: "قبلی"
+        next: "بعدی"
+        last: "آخرین"
+        all: "همه"
+    bulk:
+        confirmMsg: "آیا مطمئن هستید؟"
+        selectError: "شما می‌بایست حداقل یک سطر را انتخاب کنید."
+        ok: "تایید"
