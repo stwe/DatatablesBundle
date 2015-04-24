@@ -1,4 +1,4 @@
-                function format (d) {
+function format (d) {
                  {#{% for column in view_columns %}
                             {% if column.getAlias()=='rowdetail' or column.getAlias()=='arrayrowdetail' %}
                                 {%if column.getAlias()=='arrayrowdetail'%}
@@ -12,7 +12,7 @@
                                  {% endif %}
                              {% endif %}   
                    {% endfor %}#}
-                   console.log(d);
+                   
                      
 		    var tabledetail= '<table cellpadding="5" cellspacing="0" border="0" class="table table-hover table-condensed">';
                         {% set f=1 %}
@@ -22,9 +22,16 @@
                             tabledetail+='<tr>';
                             tabledetail+='<td {%if f %}style="width:100px"{%endif%}>{{ column.classicon|e('js') }}{{ column.title }}</td>';
                                 {% if column.getAlias()=='rowdetail'%}
-                                tabledetail+='<td>'+{{'d.'~column.dql}}+'</td>';
+                                        if ({{'d.'~column.dql}} != null && typeof {{'d.'~column.dql}}.timestamp != "undefined") {
+                                                moment.locale("{{ app.request.locale }}");
+                                                edate= moment.unix({{'d.'~column.dql}}.timestamp).format();
+                                                tabledetail+='<td>'+edate+'</td>';
+                                            }else
+                                        {
+                                            tabledetail+='<td>'+{{'d.'~column.dql}}+'</td>';
+                                        }
+                                
                                 {%elseif column.getAlias()=='arrayrowdetail'%}
-                                    
                                     function perfom_{{column.arraydatafield|replace({'.':'_'})}}(a){
                                        var ahtml="<ul>";
                                         a.forEach(function (e,i,a){

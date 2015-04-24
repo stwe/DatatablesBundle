@@ -46,6 +46,7 @@ class TimeagoColumn extends AbstractColumn
     {
         $resolver->setDefaults(array(
             "class" => "",
+            "classicon" => "",
             "padding" => "",
             "name" => "",
             "orderable" => true,
