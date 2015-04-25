@@ -240,7 +240,6 @@ services:
 public function indexAction()
 {
     $postDatatable = $this->get("sg_datatables.post");
-    $postDatatable->buildDatatableView();
 
     return array(
         "datatable" => $postDatatable,

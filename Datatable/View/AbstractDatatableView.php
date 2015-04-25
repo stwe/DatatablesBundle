@@ -219,6 +219,8 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->individualFiltering = $defaultLayoutOptions["individual_filtering"];
         $this->templates = $defaultLayoutOptions["templates"];
         $this->useIntegrationOptions = false;
+
+        $this->buildDatatableView();
     }
 
 
@@ -288,15 +290,16 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         return $this->ajax;
     }
 
-
-    //-------------------------------------------------
-    // Callable
-    //-------------------------------------------------
+    /**
+     * {@inheritdoc}
+     */
+    public function getColumnBuilder()
+    {
+        return $this->columnBuilder;
+    }
 
     /**
-     * Get Line Formatter.
-     *
-     * @return callable
+     * {@inheritdoc}
      */
     public function getLineFormatter()
     {
@@ -426,30 +429,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getOptions()
     {
         return $this->options;
-    }
-
-    /**
-     * Set ColumnBuilder.
-     *
-     * @param ColumnBuilder $columnBuilder
-     *
-     * @return $this
-     */
-    public function setColumnBuilder(ColumnBuilder $columnBuilder)
-    {
-        $this->columnBuilder = $columnBuilder;
-
-        return $this;
-    }
-
-    /**
-     * Get ColumnBuilder.
-     *
-     * @return ColumnBuilder
-     */
-    public function getColumnBuilder()
-    {
-        return $this->columnBuilder;
     }
 
     /**

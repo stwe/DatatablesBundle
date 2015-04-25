@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\View;
 
+use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
+
 /**
  * Interface DatatableViewInterface
  *
@@ -54,6 +56,13 @@ interface DatatableViewInterface
      * @return Ajax
      */
     public function getAjax();
+
+    /**
+     * Get ColumnBuilder.
+     *
+     * @return ColumnBuilder
+     */
+    public function getColumnBuilder();
 
     /**
      * Returns the name of this datatable view.
