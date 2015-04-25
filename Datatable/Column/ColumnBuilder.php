@@ -84,12 +84,12 @@ class ColumnBuilder implements ColumnBuilderInterface
 
         $this->columns[] = $column;
 
-        if ("multiselect" === $column->getAlias()) {
+        if ($column instanceof MultiselectColumn) {
             if (false === $this->multiselect) {
                 $this->multiselect = true;
                 $this->multiselectColumn = $column;
             } else {
-                throw new Exception("There is only one multiselect column allowed.");
+                throw new Exception("add(): There is only one multiselect column allowed.");
             }
         }
 
@@ -105,13 +105,9 @@ class ColumnBuilder implements ColumnBuilderInterface
     }
 
     /**
-     * Get all virtual column names.
-     *
-     * @deprecated
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function getVirtualColumnNames()
+    public function getVirtualColumns()
     {
         $virtualColumns = array();
 

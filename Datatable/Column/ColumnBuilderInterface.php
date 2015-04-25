@@ -37,11 +37,9 @@ interface ColumnBuilderInterface
     public function getColumns();
 
     /**
-     * Get all virtual column names.
-     *
-     * @deprecated
+     * Get all virtual columns.
      *
      * @return array
      */
-    public function getVirtualColumnNames();
+    public function getVirtualColumns();
 }

@@ -118,9 +118,9 @@ class DatatableData implements DatatableDataInterface
      * @param EntityManager  $em                 A EntityManager instance
      * @param Serializer     $serializer         A Serializer instance
      * @param DatatableQuery $datatableQuery     A DatatableQuery instance
-     * @param array          $virtualColumnNames Virtual columns array
+     * @param array          $virtualColumns     Virtual columns
      */
-    public function __construct(array $requestParams, ClassMetadata $metadata, EntityManager $em, Serializer $serializer, DatatableQuery $datatableQuery, $virtualColumnNames = array())
+    public function __construct(array $requestParams, ClassMetadata $metadata, EntityManager $em, Serializer $serializer, DatatableQuery $datatableQuery, $virtualColumns = array())
     {
         $this->requestParams = $requestParams;
         $this->metadata = $metadata;
@@ -128,7 +128,7 @@ class DatatableData implements DatatableDataInterface
         $this->serializer = $serializer;
         $this->tableName = $metadata->getTableName();
         $this->datatableQuery = $datatableQuery;
-        $this->virtualColumns = $virtualColumnNames;
+        $this->virtualColumns = $virtualColumns;
         $identifiers = $this->metadata->getIdentifierFieldNames();
         $this->rootEntityIdentifier = array_shift($identifiers);
         $this->response = array();

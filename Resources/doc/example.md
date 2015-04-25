@@ -34,6 +34,20 @@ class PostDatatable extends AbstractDatatableView
     /**
      * {@inheritdoc}
      */
+    public function getLineFormatter()
+    {
+        $formatter = function($line){
+            $line["test"] = $line["title"] . " created at " . $line["createdAt"]->format('Y-m-d H:i:s');
+
+            return $line;
+        };
+
+        return $formatter;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function buildDatatableView()
     {
         //-------------------------------------------------
@@ -127,6 +141,9 @@ class PostDatatable extends AbstractDatatableView
                     "title" => "Tags",
                     "data" => "tags[, ].name"
                 ))
+            ->add('test', 'virtual', array(
+                'title' => "Virtual"
+            ))
             ->add(null, "action", array(
                 "title" => "Actions",
                 "start_html" => '<div class="wrapper">',

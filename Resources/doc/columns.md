@@ -95,20 +95,7 @@ SgDatatablesBundle:Column:column.html.twig
 
 ### Options
 
-| Option     | Type           | Default |
-|------------|----------------|---------|
-| class      | string         | ""      |
-| padding    | string         | ""      |
-| name       | string         | ""      |
-| render     | null or string | null    |
-| title      | string         | ""      |
-| type       | string         | ""      |
-| visible    | boolean        | true    |
-| width      | string         | ""      |
-| default    | string         | ""      |
-| label      | string         | ""      |
-| attributes | array          | array() |
-| render_if  | array          | array() |
+see: Column
 
 ### Example
 
