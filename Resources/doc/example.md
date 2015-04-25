@@ -397,7 +397,6 @@ public function indexAction()
     $serializer = new Serializer($normalizers, $encoders);
 
     $postDatatable = $this->get('sg_datatables.post');
-    $postDatatable->buildDatatableView();
     $postDatatable->setData($serializer->serialize($results, 'json'));
 
     return array(
