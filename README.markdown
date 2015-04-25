@@ -10,6 +10,32 @@
 
 ### master (unstable)
 
+- Automatically call buildDatatableView()
+
+Example:
+
+``` php
+/**
+ * Post datatable.
+ *
+ * @Route("/", name="post")
+ * @Method("GET")
+ * @Template()
+ *
+ * @return array
+ */
+public function indexAction()
+{
+    $postDatatable = $this->get("sg_datatables.post");
+
+    return array(
+        "datatable" => $postDatatable,
+    );
+}
+```
+
+- [#103](https://github.com/stwe/DatatablesBundle/pull/103) [mennowame](https://github.com/mennowame) Dutch translation
+- [#104](https://github.com/stwe/DatatablesBundle/pull/104) [mdhheydari](https://github.com/mdhheydari) Persian Translation
 - [#85](https://github.com/stwe/DatatablesBundle/issues/85) Use datatable with Responsive extension
 - [#56](https://github.com/stwe/DatatablesBundle/issues/56) Custom Column Types
 
