@@ -41,6 +41,27 @@ class DateTimeColumn extends TimeagoColumn
     /**
      * {@inheritdoc}
      */
+    public function getTemplate()
+    {
+        return "SgDatatablesBundle:Column:datetime.html.twig";
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        return "datetime";
+    }
+
+
+    //-------------------------------------------------
+    // OptionsInterface
+    //-------------------------------------------------
+
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
@@ -53,22 +74,6 @@ class DateTimeColumn extends TimeagoColumn
         ));
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTemplate()
-    {
-        return "SgDatatablesBundle:Column:datetime.html.twig";
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAlias()
-    {
-        return "datetime";
     }
 
 

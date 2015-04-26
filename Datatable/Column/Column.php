@@ -50,6 +50,27 @@ class Column extends AbstractColumn
     /**
      * {@inheritdoc}
      */
+    public function getTemplate()
+    {
+        return "SgDatatablesBundle:Column:column.html.twig";
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        return "column";
+    }
+
+
+    //-------------------------------------------------
+    // OptionsInterface
+    //-------------------------------------------------
+
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
@@ -81,22 +102,6 @@ class Column extends AbstractColumn
         ));
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTemplate()
-    {
-        return "SgDatatablesBundle:Column:column.html.twig";
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAlias()
-    {
-        return "column";
     }
 
 

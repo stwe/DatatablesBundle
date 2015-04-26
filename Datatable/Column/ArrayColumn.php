@@ -46,6 +46,19 @@ class ArrayColumn extends Column
     /**
      * {@inheritdoc}
      */
+    public function getAlias()
+    {
+        return "array";
+    }
+
+
+    //-------------------------------------------------
+    // OptionsInterface
+    //-------------------------------------------------
+
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
@@ -54,13 +67,5 @@ class ArrayColumn extends Column
         $resolver->addAllowedTypes("data", "string");
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAlias()
-    {
-        return "array";
     }
 }

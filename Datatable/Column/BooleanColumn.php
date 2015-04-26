@@ -71,6 +71,27 @@ class BooleanColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
+    public function getTemplate()
+    {
+        return "SgDatatablesBundle:Column:boolean.html.twig";
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        return "boolean";
+    }
+
+
+    //-------------------------------------------------
+    // OptionsInterface
+    //-------------------------------------------------
+
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
@@ -108,22 +129,6 @@ class BooleanColumn extends AbstractColumn
         ));
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTemplate()
-    {
-        return "SgDatatablesBundle:Column:boolean.html.twig";
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAlias()
-    {
-        return "boolean";
     }
 
 

@@ -36,22 +36,6 @@ class MultiselectColumn extends ActionColumn
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        parent::configureOptions($resolver);
-
-        $resolver->setDefault("attributes", array());
-
-        $resolver->addAllowedTypes(array(
-            "attributes" => "array",
-        ));
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getTemplate()
     {
         return "SgDatatablesBundle:Column:multiselect.html.twig";
@@ -63,6 +47,27 @@ class MultiselectColumn extends ActionColumn
     public function getAlias()
     {
         return "multiselect";
+    }
+
+
+    //-------------------------------------------------
+    // OptionsInterface
+    //-------------------------------------------------
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        parent::configureOptions($resolver);
+
+        $resolver->setDefault("attributes", array());
+
+        $resolver->addAllowedTypes(array(
+            "attributes" => "array",
+        ));
+
+        return $this;
     }
 
 

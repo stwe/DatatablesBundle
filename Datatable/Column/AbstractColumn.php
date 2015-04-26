@@ -20,7 +20,7 @@ use Exception;
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-abstract class AbstractColumn implements ColumnInterface
+abstract class AbstractColumn implements ColumnInterface, OptionsInterface
 {
     /**
      * Column options.
@@ -159,6 +159,11 @@ abstract class AbstractColumn implements ColumnInterface
 
         return $this;
     }
+
+
+    //-------------------------------------------------
+    // OptionsInterface
+    //-------------------------------------------------
 
     /**
      * {@inheritdoc}

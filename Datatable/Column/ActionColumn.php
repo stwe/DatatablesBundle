@@ -67,6 +67,27 @@ class ActionColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
+    public function getTemplate()
+    {
+        return "SgDatatablesBundle:Column:action.html.twig";
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        return "action";
+    }
+
+
+    //-------------------------------------------------
+    // OptionsInterface
+    //-------------------------------------------------
+
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(array("actions"));
@@ -97,22 +118,6 @@ class ActionColumn extends AbstractColumn
         ));
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTemplate()
-    {
-        return "SgDatatablesBundle:Column:action.html.twig";
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAlias()
-    {
-        return "action";
     }
 
 
