@@ -164,7 +164,7 @@ class PostDatatable extends AbstractDatatableView
                         "confirm" => true,
                         "confirm_message" => "Are you sure?",
                         "role" => "ROLE_ADMIN",
-                        "renderif" => array(
+                        "render_if" => array(
                             "visible"
                         )
                     ),
@@ -181,7 +181,7 @@ class PostDatatable extends AbstractDatatableView
                             "role" => "button"
                         ),
                         //"role" => "ROLE_USER",
-                        //"renderif" => array("visible")
+                        //"render_if" => array("visible")
                     )
                 )
             ));

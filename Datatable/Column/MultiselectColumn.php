@@ -71,6 +71,23 @@ class MultiselectColumn extends ActionColumn
     //-------------------------------------------------
 
     /**
+     * Set actions.
+     *
+     * @param array $actions
+     *
+     * @return $this
+     */
+    public function setActions(array $actions)
+    {
+        foreach ($actions as $action) {
+            $newAction = new MultiselectAction();
+            $this->actions[] = $newAction->setupOptionsResolver($action);
+        }
+
+        return $this;
+    }
+
+    /**
      * Set checkbox attributes.
      *
      * @param array $attributes

@@ -46,7 +46,7 @@
             visibleFlag = true;
             roleFlag = true;
 
-            {% for key, value in action.renderConditions %}
+            {% for key, value in action.renderIf %}
                 visibleFlag &= Boolean(row.{{ value }});
             {% endfor %}
 

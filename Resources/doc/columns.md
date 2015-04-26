@@ -239,17 +239,17 @@ SgDatatablesBundle:Column:action.html.twig
 
 ### Action options
 
-| Option           | Type        | Default |
-|------------------|-------------|---------|
-| route            | string      | ""      |
-| route_parameters | array       | array() |
-| icon             | string      | ""      |
-| label            | string      | ""      |
-| confirm          | boolean     | false   |
-| confirm_message  | string      | ""      |
-| attributes       | array       | array() |
-| role             | string      | ""      |
-| renderif         | array       | array() |
+| Option           | Type        | Default |          |
+|------------------|-------------|---------|----------|
+| route            | string      |         | required |
+| route_parameters | array       | array() |          |
+| icon             | string      | ""      |          |
+| label            | string      | ""      |          |
+| confirm          | boolean     | false   |          |
+| confirm_message  | string      | ""      |          |
+| attributes       | array       | array() |          |
+| role             | string      | ""      |          |
+| render_if        | array       | array() |          |
 
 ### Example
 
@@ -275,7 +275,7 @@ $this->columnBuilder
                 "confirm" => true,
                 "confirm_message" => "Are you sure?",
                 "role" => "ROLE_ADMIN",
-                "renderif" => array(
+                "render_if" => array(
                     "enabled"
                 )
             ),
@@ -292,7 +292,7 @@ $this->columnBuilder
                     "role" => "button"
                 ),
                 "role" => "ROLE_USER",
-                "renderif" => array(
+                "render_if" => array(
                     "enabled"
                 )
             )
@@ -309,26 +309,27 @@ SgDatatablesBundle:Column:multiselect.html.twig
 
 ### Options
 
-| Option     | Type        | Default |
-|------------|-------------|---------|
-| class      | string      | ""      |
-| padding    | string      | ""      |
-| name       | string      | ""      |
-| type       | string      | ""      |
-| visible    | boolean     | true    |
-| width      | string      | ""      |
-| start_html | string      | ""      |
-| end_html   | string      | ""      |
-| actions    | array       | array() |
-| attributes | array       | array() |
+| Option     | Type        | Default |          |
+|------------|-------------|---------|----------|
+| class      | string      | ""      |          |
+| padding    | string      | ""      |          |
+| name       | string      | ""      |          |
+| title      | string      | ""      |          |
+| type       | string      | ""      |          |
+| visible    | boolean     | true    |          |
+| width      | string      | ""      |          |
+| start_html | string      | ""      |          |
+| end_html   | string      | ""      |          |
+| actions    | array       |         | required |
+| attributes | array       | array() |          |
 
 ### Action options
 
-| Option           | Type        | Default |
-|------------------|-------------|---------|
-| route            | string      | ""      |
-| label            | string      | ""      |
-| role             | string      | ""      |
+| Option           | Type        | Default |          |
+|------------------|-------------|---------|----------|
+| route            | string      |         | required |
+| label            | string      | ""      |          |
+| role             | string      | ""      |          |
 
 ### Example
 

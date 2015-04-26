@@ -179,7 +179,7 @@ class ActionColumn extends AbstractColumn
     {
         foreach ($actions as $action) {
             $newAction = new Action();
-            $this->actions[] = $newAction->setOptions($action);
+            $this->actions[] = $newAction->setupOptionsResolver($action);
         }
 
         return $this;
