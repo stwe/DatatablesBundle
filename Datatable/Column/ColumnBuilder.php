@@ -75,7 +75,7 @@ class ColumnBuilder implements ColumnBuilderInterface
     public function add($data, $name, array $options = array())
     {
         /**
-         * @var ColumnInterface $column
+         * @var AbstractColumn $column
          */
         $column = $this->columnFactory->createColumnByName($name);
         $column->setData($data);
