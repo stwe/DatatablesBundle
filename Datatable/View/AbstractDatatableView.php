@@ -132,10 +132,14 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         if (true === $this->features->getServerSide()) {
             if ("" === $this->ajax->getUrl()) {
-                throw new Exception("The ajax url parameter must be given.");
+                throw new Exception("render(): The ajax url parameter must be given.");
             }
         } else {
-            $options["view_data"] = $this->data;
+            if (null === $this->data) {
+                throw new Exception("render(): Call setData() in your controller.");
+            } else {
+                $options["view_data"] = $this->data;
+            }
         }
 
         $options["view_features"] = $this->features;

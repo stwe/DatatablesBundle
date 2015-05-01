@@ -361,7 +361,9 @@ class PostDatatable extends AbstractDatatableView
      */
     public function buildDatatableView()
     {
-        $this->getFeatures()->setServerSide(false);
+        $this->features->setFeatures(array(
+            "server_side" => false
+        ));
 
         // ...
     }
@@ -398,7 +400,6 @@ public function indexAction()
     $serializer = new Serializer($normalizers, $encoders);
 
     $postDatatable = $this->get('sg_datatables.post');
-    $postDatatable->buildDatatableView();
     $postDatatable->setData($serializer->serialize($results, 'json'));
 
     return array(
