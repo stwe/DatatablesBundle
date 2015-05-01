@@ -1,9 +1,5 @@
 "displayStart": {{ view_options.displayStart }},
-
-{% if false == view_use_integration_options %}
-    "dom": "{{ view_options.dom|raw }}",
-{% endif %}
-
+"dom": "{{ view_options.dom|raw }}",
 "lengthMenu": {{ view_options.lengthMenu|length_join|raw }},
 
 {% if view_options.orderClasses %}
@@ -21,12 +17,8 @@
 {% endif %}
 
 "pageLength": {{ view_options.pageLength }},
-
 "pagingType": "{{ view_options.pagingType }}",
-
-{% if false == view_use_integration_options %}
-    "renderer": "{{ view_options.renderer }}",
-{% endif %}
+"renderer": "{{ view_options.renderer }}",
 
 {% if view_options.scrollCollapse %}
     "scrollCollapse": true,
@@ -34,10 +26,15 @@
     "scrollCollapse": false,
 {% endif %}
 
+"searchDelay": {{ view_options.searchDelay }},
 "stateDuration": {{ view_options.stateDuration }},
-
 "stripeClasses": [{{ view_options.stripeClasses|join(", ")|json_encode|raw }}],
 
 {% if view_options.responsive %}
     "responsive": true,
 {% endif %}
+
+{#
+"class"               -> datatable_html.html.twig
+"individualFiltering" -> datatable_js.html.twig
+#}

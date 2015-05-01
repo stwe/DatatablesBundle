@@ -38,7 +38,7 @@
                 var oTable = $(selector).DataTable(defaults);
             }
 
-            {% if view_individual_filtering %}
+            {% if view_options.individualFiltering %}
                 $("tfoot input.individual_filtering").on("keyup change", function() {
                     oTable
                         .column( $(this).parent().index()+':visible' )

@@ -10,6 +10,30 @@
 
 ### master (unstable)
 
+- New config style.
+
+``` php
+    public function buildDatatableView()
+    {
+        $this->features->setFeatures(array(
+            "processing" => true
+        ));
+
+        $this->ajax->setOptions(array(
+            "url" => $this->getRouter()->generate('post_results')
+        ));
+
+        $this->options->setOptions(array(
+            "paging_type" => Style::FULL_PAGINATION,
+            "responsive" => true,
+            "class" => Style::BASE_STYLE,
+            "individual_filtering" => false
+        ));
+
+        // ...
+    }
+```
+
 - Automatically call buildDatatableView()
 
 Example:

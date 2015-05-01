@@ -125,7 +125,7 @@ class DatatableTwigExtension extends Twig_Extension
      */
     public function datatableRender(AbstractDatatableView $datatable)
     {
-        return $datatable->renderDatatableView();
+        return $datatable->render();
     }
 
     /**
@@ -138,7 +138,7 @@ class DatatableTwigExtension extends Twig_Extension
      */
     public function datatableRenderHtml(AbstractDatatableView $datatable)
     {
-        return $datatable->renderDatatableView('html');
+        return $datatable->render("html");
     }
 
     /**
@@ -151,6 +151,6 @@ class DatatableTwigExtension extends Twig_Extension
      */
     public function datatableRenderJs(AbstractDatatableView $datatable)
     {
-        return $datatable->renderDatatableView('js');
+        return $datatable->render("js");
     }
 }

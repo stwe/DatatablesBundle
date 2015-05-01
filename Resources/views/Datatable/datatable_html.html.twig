@@ -1,7 +1,7 @@
-<table cellpadding="0" cellspacing="0" class="{{ view_style }}" border="0" id="{{ view_table_id }}" width="100%">
+<table cellpadding="0" cellspacing="0" class="{{ view_options.class }}" border="0" id="{{ view_table_id }}" width="100%">
     <thead>
     </thead>
-    {% if view_individual_filtering %}
+    {% if view_options.individualFiltering %}
         <tfoot>
             {% for column in view_columns %}
                 <th>

@@ -54,36 +54,20 @@ class PostDatatable extends AbstractDatatableView
         // Datatable
         //-------------------------------------------------
 
-        // Features (defaults)
-        $this->getFeatures()
-            ->setAutoWidth(true)
-            ->setDeferRender(false)
-            ->setInfo(true)
-            ->setJQueryUI(false)
-            ->setLengthChange(true)
-            ->setOrdering(true)
-            ->setPaging(true)
-            ->setProcessing(true)  // default: false
-            ->setScrollX(true)     // default: false
-            ->setScrollY("")
-            ->setSearching(true)
-            ->setServerSide(true)  // default: false
-            ->setStateSave(false)
-            ->setDelay(500);       // default: 0
+        $this->features->setFeatures(array(
+            "processing" => true
+        ));
 
-        // Options (for more options see file: Sg\DatatablesBundle\Datatable\View\Options.php)
-        //$this->getOptions()->setLengthMenu(array(10, 25, 50));
-        $this->getOptions()
-            ->setLengthMenu(array(10, 25, 50, 100, -1))
-            ->setOrder(array("column" => 1, "direction" => "desc"))
-            ->setPagingType("simple_numbers");
-            //->setResponsive(true); // enable Responsive extension
+        $this->ajax->setOptions(array(
+            "url" => $this->getRouter()->generate('post_results')
+        ));
 
-        $this->getAjax()->setUrl($this->getRouter()->generate("post_results"));
-
-        $this->setStyle(self::BOOTSTRAP_3_STYLE);
-
-        $this->setIndividualFiltering(true);
+        $this->options->setOptions(array(
+            "paging_type" => Style::FULL_PAGINATION,
+            "responsive" => true,
+            "class" => Style::BASE_STYLE,
+            "individual_filtering" => false
+        ));
 
 
         //-------------------------------------------------

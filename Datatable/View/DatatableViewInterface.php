@@ -31,24 +31,10 @@ interface DatatableViewInterface
      * @param string $type
      *
      * @return mixed
+     * @throws \Exception
+     * @throws \Twig_Error
      */
-    public function renderDatatableView($type = 'all');
-
-    /**
-     * Returns Entity.
-     *
-     * @return string
-     */
-    public function getEntity();
-
-    /**
-     * Set Ajax.
-     *
-     * @param Ajax $ajax
-     *
-     * @return $this
-     */
-    public function setAjax(Ajax $ajax);
+    public function render($type = "all");
 
     /**
      * Get Ajax.
@@ -65,17 +51,24 @@ interface DatatableViewInterface
     public function getColumnBuilder();
 
     /**
+     * Returns a callable that could transform the data line
+     *
+     * @return callable
+     */
+    public function getLineFormatter();
+
+    /**
+     * Returns Entity.
+     *
+     * @return string
+     */
+    public function getEntity();
+
+    /**
      * Returns the name of this datatable view.
      * Is used as jQuery datatable id selector.
      *
      * @return string
      */
     public function getName();
-
-    /**
-     * Returns a callable that could transform the data line
-     *
-     * @return callable
-     */
-    public function getLineFormatter();
 }

@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\View;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\DependencyInjection\Container;
 use Exception;
 
 /**
@@ -20,133 +22,131 @@ use Exception;
  */
 class Options
 {
-    //-------------------------------------------------
-    // Built-in paging button arrangements
-    //-------------------------------------------------
+    /**
+     * Options container.
+     *
+     * @var array
+     */
+    protected $options;
 
     /**
-     * "Previous" and "Next" buttons only.
+     * An OptionsResolver instance.
      *
-     * @var string
+     * @var OptionsResolver
      */
-    const SIMPLE_PAGINATION = "simple";
-
-    /**
-     * "Previous" and "Next" buttons, plus page numbers.
-     *
-     * @var string
-     */
-    const SIMPLE_NUMBERS_PAGINATION = "simple_numbers";
-
-    /**
-     * "First", "Previous", "Next" and "Last" buttons.
-     *
-     * @var string
-     */
-    const FULL_PAGINATION = "full";
-
-    /**
-     * "First", "Previous", "Next" and "Last" buttons, plus page numbers.
-     *
-     * @var string
-     */
-    const FULL_NUMBERS_PAGINATION = "full_numbers";
-
-
-    //-------------------------------------------------
-    // Options
-    //-------------------------------------------------
+    protected $resolver;
 
     /**
      * Initial paging start point.
      *
      * @var integer
      */
-    private $displayStart;
+    protected $displayStart;
 
     /**
      * Define the table control elements to appear on the page and in what order.
      *
      * @var string
      */
-    private $dom;
+    protected $dom;
 
     /**
      * Change the options in the page length select list.
      *
      * @var array
      */
-    private $lengthMenu;
+    protected $lengthMenu;
 
     /**
      * Highlight the columns being ordered in the table's body.
      *
      * @var boolean
      */
-    private $orderClasses;
+    protected $orderClasses;
 
     /**
      * Initial order (sort) to apply to the table.
      *
      * @var array
      */
-    private $order;
+    protected $order;
 
     /**
      * Multiple column ordering ability control.
      *
      * @var boolean
      */
-    private $orderMulti;
+    protected $orderMulti;
 
     /**
      * Change the initial page length (number of rows per page).
      *
      * @var integer
      */
-    private $pageLength;
+    protected $pageLength;
 
     /**
      * Pagination button display options.
      *
      * @var string
      */
-    private $pagingType;
+    protected $pagingType;
 
     /**
      * Display component renderer types.
      *
      * @var string
      */
-    private $renderer;
+    protected $renderer;
 
     /**
      * Allow the table to reduce in height when a limited number of rows are shown.
      *
      * @var boolean
      */
-    private $scrollCollapse;
+    protected $scrollCollapse;
+
+    /**
+     * Set a throttle frequency for searching.
+     *
+     * @var integer
+     */
+    protected $searchDelay;
 
     /**
      * Saved state validity duration.
      *
      * @var integer
      */
-    private $stateDuration;
+    protected $stateDuration;
 
     /**
      * Set the zebra stripe class names for the rows in the table.
      *
      * @var array
      */
-    private $stripeClasses;
+    protected $stripeClasses;
 
     /**
      * Enable the Responsive extension for DataTables.
      *
      * @var boolean
      */
-    private $responsive;
+    protected $responsive;
+
+    /**
+     * Table class names.
+     *
+     * @var string
+     */
+    protected $class;
+
+    /**
+     * Enable or disable individual filtering.
+     *
+     * @var boolean
+     */
+    protected $individualFiltering;
 
 
     //-------------------------------------------------
@@ -158,19 +158,105 @@ class Options
      */
     public function __construct()
     {
-        $this->displayStart = 0;
-        $this->dom = "lfrtip";
-        $this->lengthMenu = array(10, 25, 50, 100);
-        $this->orderClasses = true;
-        $this->order = array("column" => 0, "direction" => "asc");
-        $this->orderMulti = true;
-        $this->pageLength = 10;
-        $this->pagingType = self::FULL_NUMBERS_PAGINATION;
-        $this->renderer = "";
-        $this->scrollCollapse = false;
-        $this->stateDuration = 7200;
-        $this->stripeClasses = array();
-        $this->responsive = false;
+        $this->options = array();
+        $this->resolver = new OptionsResolver();
+        $this->configureOptions($this->resolver);
+        $this->setOptions($this->options);
+    }
+
+
+    //-------------------------------------------------
+    // Setup Options
+    //-------------------------------------------------
+
+    /**
+     * Set options.
+     *
+     * @param array $options
+     *
+     * @return $this
+     */
+    public function setOptions(array $options)
+    {
+        $this->options = $this->resolver->resolve($options);
+        $this->callingSettersWithOptions($this->options);
+
+        return $this;
+    }
+
+    /**
+     * Configure Options.
+     *
+     * @param OptionsResolver $resolver
+     *
+     * @return $this
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            "display_start" => 0,
+            "dom" => "lfrtip",
+            "length_menu" => array(10, 25, 50, 100),
+            "order_classes" => true,
+            "order" => array("column" => 0, "direction" => "asc"),
+            "order_multi" => true,
+            "page_length" => 10,
+            "paging_type" => Style::FULL_NUMBERS_PAGINATION,
+            "renderer" => "",
+            "scroll_collapse" => false,
+            "search_delay" => 0,
+            "state_duration" => 7200,
+            "stripe_classes" => array(),
+            "responsive" => false,
+            "class" => Style::BASE_STYLE,
+            "individual_filtering" => false
+        ));
+
+        $resolver->setAllowedTypes(array(
+            "display_start" => "int",
+            "dom" => "string",
+            "length_menu" => "array",
+            "order_classes" => "bool",
+            "order" => "array",
+            "order_multi" => "bool",
+            "page_length" => "int",
+            "paging_type" => "string",
+            "renderer" => "string",
+            "scroll_collapse" => "bool",
+            "search_delay" => "int",
+            "state_duration" => "int",
+            "stripe_classes" => "array",
+            "responsive" => "bool",
+            "class" => "string",
+            "individual_filtering" => "bool"
+        ));
+
+        return $this;
+    }
+
+    /**
+     * Calling setters with options.
+     *
+     * @param array $options
+     *
+     * @return $this
+     * @throws Exception
+     */
+    private function callingSettersWithOptions(array $options)
+    {
+        $methods = get_class_methods($this);
+
+        foreach ($options as $key => $value) {
+            $key = Container::camelize($key);
+            $method = "set" . ucfirst($key);
+            if (in_array($method, $methods)) {
+                $this->$method($value);
+            } else {
+                throw new Exception("callingSettersWithOptions(): {$method} invalid method name");
+            }
+        }
+
+        return $this;
     }
 
 
@@ -185,7 +271,7 @@ class Options
      *
      * @return $this
      */
-    public function setDisplayStart($displayStart)
+    protected function setDisplayStart($displayStart)
     {
         $this->displayStart = (integer) $displayStart;
 
@@ -209,7 +295,7 @@ class Options
      *
      * @return $this
      */
-    public function setDom($dom)
+    protected function setDom($dom)
     {
         $this->dom = $dom;
 
@@ -233,7 +319,7 @@ class Options
      *
      * @return $this
      */
-    public function setLengthMenu(array $lengthMenu)
+    protected function setLengthMenu(array $lengthMenu)
     {
         $this->lengthMenu = $lengthMenu;
 
@@ -257,7 +343,7 @@ class Options
      *
      * @return $this
      */
-    public function setOrderClasses($orderClasses)
+    protected function setOrderClasses($orderClasses)
     {
         $this->orderClasses = (boolean) $orderClasses;
 
@@ -282,12 +368,12 @@ class Options
      * @throws Exception
      * @return $this
      */
-    public function setOrder(array $order)
+    protected function setOrder(array $order)
     {
         if (true === array_key_exists("column", $order) && true === array_key_exists("direction", $order)) {
             $this->order = $order;
         } else {
-            throw new Exception("Invalid array format.");
+            throw new Exception("setOrder(): Invalid array format.");
         }
 
         return $this;
@@ -310,7 +396,7 @@ class Options
      *
      * @return $this
      */
-    public function setOrderMulti($orderMulti)
+    protected function setOrderMulti($orderMulti)
     {
         $this->orderMulti = (boolean) $orderMulti;
 
@@ -334,7 +420,7 @@ class Options
      *
      * @return $this
      */
-    public function setPageLength($pageLength)
+    protected function setPageLength($pageLength)
     {
         $this->pageLength = (integer) $pageLength;
 
@@ -358,7 +444,7 @@ class Options
      *
      * @return $this
      */
-    public function setPagingType($pagingType)
+    protected function setPagingType($pagingType)
     {
         $this->pagingType = $pagingType;
 
@@ -382,7 +468,7 @@ class Options
      *
      * @return $this
      */
-    public function setRenderer($renderer)
+    protected function setRenderer($renderer)
     {
         $this->renderer = $renderer;
 
@@ -406,7 +492,7 @@ class Options
      *
      * @return $this
      */
-    public function setScrollCollapse($scrollCollapse)
+    protected function setScrollCollapse($scrollCollapse)
     {
         $this->scrollCollapse = (boolean) $scrollCollapse;
 
@@ -424,13 +510,37 @@ class Options
     }
 
     /**
+     * Set searchDelay.
+     *
+     * @param int $searchDelay
+     *
+     * @return $this
+     */
+    protected function setSearchDelay($searchDelay)
+    {
+        $this->searchDelay = $searchDelay;
+
+        return $this;
+    }
+
+    /**
+     * Get searchDelay.
+     *
+     * @return int
+     */
+    public function getSearchDelay()
+    {
+        return $this->searchDelay;
+    }
+
+    /**
      * Set StateDuration.
      *
      * @param int $stateDuration
      *
      * @return $this
      */
-    public function setStateDuration($stateDuration)
+    protected function setStateDuration($stateDuration)
     {
         $this->stateDuration = (integer) $stateDuration;
 
@@ -454,7 +564,7 @@ class Options
      *
      * @return $this
      */
-    public function setStripeClasses(array $stripeClasses)
+    protected function setStripeClasses(array $stripeClasses)
     {
         $this->stripeClasses = $stripeClasses;
 
@@ -478,7 +588,7 @@ class Options
      *
      * @return $this
      */
-    public function setResponsive($responsive)
+    protected function setResponsive($responsive)
     {
         $this->responsive = (boolean) $responsive;
 
@@ -493,5 +603,53 @@ class Options
     public function getResponsive()
     {
         return (boolean) $this->responsive;
+    }
+
+    /**
+     * Set class.
+     *
+     * @param string $class
+     *
+     * @return $this
+     */
+    protected function setClass($class)
+    {
+        $this->class = $class;
+
+        return $this;
+    }
+
+    /**
+     * Get class.
+     *
+     * @return string
+     */
+    public function getClass()
+    {
+        return $this->class;
+    }
+
+    /**
+     * Set individual filtering.
+     *
+     * @param boolean $individualFiltering
+     *
+     * @return $this
+     */
+    protected function setIndividualFiltering($individualFiltering)
+    {
+        $this->individualFiltering = (boolean) $individualFiltering;
+
+        return $this;
+    }
+
+    /**
+     * Get individual filtering.
+     *
+     * @return boolean
+     */
+    public function getIndividualFiltering()
+    {
+        return (boolean) $this->individualFiltering;
     }
 }
