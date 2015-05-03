@@ -14,7 +14,7 @@
     "name": "{{ column.name }}",
     "orderable": false,
     "searchable": false,
-    "title": "{{ column.title }}",
+    "title": "{{ column.title|raw }}",
     {% if column.type %}
         "type": "{{ column.type }}",
     {% endif %}
