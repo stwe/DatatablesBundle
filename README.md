@@ -10,11 +10,11 @@
 
 ### master (unstable)
 
-[Demo Application](https://github.com/stwe/dtbundle-demo).
+[Demo Application](https://github.com/stwe/dtbundle-demo)
 
-[Read the Changelog for master](https://github.com/stwe/DatatablesBundle/blob/master/CHANGELOG.md).
+[Read the Changelog for master](https://github.com/stwe/DatatablesBundle/blob/master/CHANGELOG.md)
 
-[Read the Documentation for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/index.md).
+[Read the Documentation for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/index.md)
 
 [The examples for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
 
@@ -22,7 +22,7 @@
 
 - [#79](https://github.com/stwe/DatatablesBundle/issues/79) Decoupling JS from HTML - functions have been forgotten
 
-[Read the Documentation for v0.6.1](https://github.com/stwe/DatatablesBundle/blob/v0.6.1/Resources/doc/index.md).
+[Read the Documentation for v0.6.1](https://github.com/stwe/DatatablesBundle/blob/v0.6.1/Resources/doc/index.md)
 
 [The examples for v0.6.1](https://github.com/stwe/DatatablesBundle/blob/v0.6.1/Resources/doc/example.md)
 

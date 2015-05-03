@@ -20,14 +20,15 @@ The generator is currently in an early development stage. Better you write the c
 ```php
 <?php
 
-namespace Sg\BlogBundle\Datatables;
+namespace AppBundle\Datatables;
 
 use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
+use Sg\DatatablesBundle\Datatable\View\Style;
 
 /**
  * Class PostDatatable
  *
- * @package Sg\BlogBundle\Datatables
+ * @package AppBundle\Datatables
  */
 class PostDatatable extends AbstractDatatableView
 {
@@ -37,7 +38,7 @@ class PostDatatable extends AbstractDatatableView
     public function getLineFormatter()
     {
         $formatter = function($line){
-            $line["test"] = $line["title"] . " created at " . $line["createdAt"]->format('Y-m-d H:i:s');
+            $line["custom"] = $line["title"] . " published at " . $line["publishedAt"]->format("Y-m-d H:i:s");
 
             return $line;
         };
@@ -50,94 +51,149 @@ class PostDatatable extends AbstractDatatableView
      */
     public function buildDatatableView()
     {
-        //-------------------------------------------------
-        // Datatable
-        //-------------------------------------------------
-
+        // the default settings
         $this->features->setFeatures(array(
-            "processing" => true
+            "auto_width" => true,
+            "defer_render" => false,
+            "info" => true,
+            "jquery_ui" => false,
+            "length_change" => true,
+            "ordering" => true,
+            "paging" => true,
+            "processing" => true,
+            "scroll_x" => false,
+            "scroll_y" => "",
+            "searching" => true,
+            "server_side" => true,
+            "state_save" => false,
+            "delay" => 0
         ));
 
+        // the default settings, except "url"
         $this->ajax->setOptions(array(
-            "url" => $this->getRouter()->generate('post_results')
+            "url" => $this->getRouter()->generate('post_results'),
+            "type" => "GET"
         ));
 
+        // the default settings, except "class" and "use_integration_options"
         $this->options->setOptions(array(
-            "paging_type" => Style::FULL_PAGINATION,
-            "responsive" => true,
-            "class" => Style::BASE_STYLE,
-            "individual_filtering" => false
+            "display_start" => 0,
+            "dom" => "lfrtip", // default, but not used because "use_integration_options" = true
+            "length_menu" => array(10, 25, 50, 100),
+            "order_classes" => true,
+            "order" => array("column" => 0, "direction" => "asc"),
+            "order_multi" => true,
+            "page_length" => 10,
+            "paging_type" => Style::FULL_NUMBERS_PAGINATION,
+            "renderer" => "", // default, but not used because "use_integration_options" = true
+            "scroll_collapse" => false,
+            "search_delay" => 0,
+            "state_duration" => 7200,
+            "stripe_classes" => array(),
+            "responsive" => false,
+            "class" => Style::BOOTSTRAP_3_STYLE,
+            "individual_filtering" => false,
+            "use_integration_options" => true
         ));
 
-
-        //-------------------------------------------------
-        // Columns
-        //-------------------------------------------------
-
-        $this->getColumnBuilder()
-            ->add(null, "multiselect", array(
-                    "start_html" => '<div class="wrapper" id="testwrapper">',
-                    "end_html" => '</div>',
-                    "attributes" => array(
-                        "class" => "testclass",
-                        "name" => "testname",
-                    ),
-                    "actions" => array(
-                        array(
-                            "route" => "post_bulk_delete",
-                            "label" => "Delete",
-                            "role" => "ROLE_ADMIN"
-                        ),
-                        array(
-                            "route" => "post_bulk_disable",
-                            "label" => "Disable"
-                        )
-                    )
-                ))
+        $this->columnBuilder
             ->add("id", "column", array(
-                    "title" => "Post-id",
-                    "searchable" => true,
-                    "orderable" => true,
-                    "visible" => true,
-                    "class" => "active",
-                    "width" => "100px"
-                ))
-            ->add("createdBy.username", "column", array(
-                    "title" => "Created by"
-                ))
-            ->add("updatedBy.username", "column", array(
-                    "title" => "Updated by"
-                ))
-            ->add("title", "column", array(
-                    "title" => $this->getTranslator()->trans("test.title", array(), "msg")
-                ))
-            ->add("visible", "boolean", array(
-                    "title" => "Visible",
-                    "true_label" => "yes",
-                    "false_label" => "no",
-                    "true_icon" => "glyphicon glyphicon-ok",
-                    "false_icon" => "glyphicon glyphicon-remove"
-                ))
-            ->add("createdAt", /*choose timeago or datetime*/ "datetime", array(
-                    "title" => "Created at"
-                ))
-            ->add("tags.name", "array", array(
-                    "title" => "Tags",
-                    "data" => "tags[, ].name"
-                ))
-            ->add('test', 'virtual', array(
-                'title' => "Virtual"
+                "class" => "",
+                "padding" => "",
+                "name" => "",
+                "orderable" => true,
+                "render" => null,
+                "searchable" => true,
+                "title" => "Id",
+                "type" => "",
+                "visible" => true,
+                "width" => "",
+                "default" => ""
             ))
+            ->add("visible", "boolean", array(
+                "class" => "",
+                "padding" => "",
+                "name" => "",
+                "orderable" => true,
+                "render" => "render_boolean",
+                "searchable" => true,
+                "title" => "Visible",
+                "type" => "",
+                "visible" => true,
+                "width" => "",
+                "true_icon" => "glyphicon glyphicon-ok",
+                "false_icon" => "",
+                "true_label" => "yes",
+                "false_label" => "no"
+            ))
+            ->add("publishedAt", "timeago", array(
+                "class" => "",
+                "padding" => "",
+                "name" => "",
+                "orderable" => true,
+                "render" => "render_timeago",
+                "searchable" => true,
+                "title" => "<span class='glyphicon glyphicon-calendar' aria-hidden='true'></span> Published",
+                "type" => "",
+                "visible" => true,
+                "width" => ""
+            ))
+            ->add("title", "column", array(
+                "title" => "<span class='glyphicon glyphicon-book' aria-hidden='true'></span> Title",
+            ))
+            ->add('custom', 'virtual', array(
+                'title' => "Custom Title"
+            ))
+            ->add("authorEmail", "column", array(
+                "class" => "",
+                "padding" => "",
+                "name" => "",
+                "orderable" => true,
+                "render" => null,
+                "searchable" => true,
+                "title" => "<span class='glyphicon glyphicon-user' aria-hidden='true'></span> Author",
+                "type" => "",
+                "visible" => true,
+                "width" => "",
+                "default" => ""
+            ))
+            /*
+            ->add('comments.title', 'array', array(
+                'title' => "Kommentare",
+                //'visible' => true,
+                "searchable" => false,
+                "orderable" => false,
+                "default" => "default value",
+                "data" => "comments[, ].title",
+                ))
+            */
             ->add(null, "action", array(
                 "title" => "Actions",
                 "start_html" => '<div class="wrapper">',
                 "end_html" => '</div>',
                 "actions" => array(
                     array(
+                        "route" => "post_show",
+                        "route_parameters" => array(
+                            "id" => "id"
+                        ),
+                        "label" => "Show",
+                        "icon" => "glyphicon glyphicon-eye-open",
+                        "attributes" => array(
+                            "rel" => "tooltip",
+                            "title" => "Show",
+                            "class" => "btn btn-default btn-xs",
+                            "role" => "button"
+                        ),
+                        "role" => "ROLE_USER",
+                        "render_if" => array("visible")
+                    ),
+                    array(
                         "route" => "post_edit",
                         "route_parameters" => array(
                             "id" => "id"
                         ),
+                        "label" => "Edit",
                         "icon" => "glyphicon glyphicon-edit",
                         "attributes" => array(
                             "rel" => "tooltip",
@@ -148,24 +204,6 @@ class PostDatatable extends AbstractDatatableView
                         "confirm" => true,
                         "confirm_message" => "Are you sure?",
                         "role" => "ROLE_ADMIN",
-                        "render_if" => array(
-                            "visible"
-                        )
-                    ),
-                    array(
-                        "route" => "post_show",
-                        "route_parameters" => array(
-                            "id" => "id"
-                        ),
-                        "label" => "Show",
-                        "attributes" => array(
-                            "rel" => "tooltip",
-                            "title" => "Show",
-                            "class" => "btn btn-default btn-xs",
-                            "role" => "button"
-                        ),
-                        //"role" => "ROLE_USER",
-                        //"render_if" => array("visible")
                     )
                 )
             ));
@@ -176,7 +214,7 @@ class PostDatatable extends AbstractDatatableView
      */
     public function getEntity()
     {
-        return "SgBlogBundle:Post";
+        return "AppBundle\Entity\Post";
     }
 
     /**
@@ -193,9 +231,9 @@ class PostDatatable extends AbstractDatatableView
 
 #### Render entire datatable
 ```html
-{% extends 'SgBlogBundle::layout.html.twig' %}
+{% extends '::base.html.twig' %}
 
-{% block content_content %}
+{% block body %}
     {{ datatable_render(datatable) }}
 {% endblock %}
 ```
@@ -203,25 +241,23 @@ class PostDatatable extends AbstractDatatableView
 #### Decouple html and js
 
 ```html
-{% extends 'SgBlogBundle::layout.html.twig' %}
+{% extends '::base.html.twig' %}
 
-{% block content_content %}
+{% block body %}
     {{ datatable_render_html(datatable) }}
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     {{ datatable_render_js(datatable) }}
-{% endblock %} 
-
+{% endblock %}
 ```
 
 ### Step 3: Registering your Datatables class as a Service
 
 ```yaml
 services:
-
     sg_datatables.post:
-        class: Sg\BlogBundle\Datatables\PostDatatable
+        class: AppBundle\Datatables\PostDatatable
         tags:
             - { name: sg.datatable.view }
 ```
@@ -234,7 +270,7 @@ services:
  *
  * @Route("/", name="post")
  * @Method("GET")
- * @Template()
+ * @Template(":post:index.html.twig")
  *
  * @return array
  */
@@ -261,77 +297,7 @@ public function indexResultsAction()
      */
     $datatable = $this->get("sg_datatables.datatable")->getDatatable($this->get("sg_datatables.post"));
 
-    // Callback example
-    $function = function($qb)
-    {
-        $qb->andWhere("Post.visible = true");
-    };
-
-    // Add callback
-    $datatable->addWhereBuilderCallback($function);
-
     return $datatable->getResponse();
-}
-
-/**
- * @Route("/bulk/delete", name="post_bulk_delete")
- * @Method("POST")
- *
- * @return Response
- */
-public function bulkDeleteAction()
-{
-    $request = $this->getRequest();
-    $isAjax = $request->isXmlHttpRequest();
-
-    if ($isAjax) {
-        $choices = $request->request->get("data");
-
-        $em = $this->getDoctrine()->getManager();
-        $repository = $em->getRepository("SgBlogBundle:Post");
-
-        foreach ($choices as $choice) {
-            $entity = $repository->find($choice["value"]);
-            $em->remove($entity);
-        }
-
-        $em->flush();
-
-        return new Response("This is ajax response.");
-    }
-
-    return new Response("This is not ajax.", 400);
-}
-
-/**
- * @Route("/bulk/disable", name="post_bulk_disable")
- * @Method("POST")
- *
- * @return Response
- */
-public function bulkDisableAction()
-{
-    $request = $this->getRequest();
-    $isAjax = $request->isXmlHttpRequest();
-
-    if ($isAjax) {
-        $choices = $request->request->get("data");
-
-        $em = $this->getDoctrine()->getManager();
-        $repository = $em->getRepository("SgBlogBundle:Post");
-
-        foreach ($choices as $choice) {
-            $entity = $repository->find($choice["value"]);
-            $entity->setVisible(false);
-            $em->persist($entity);
-        }
-
-        $em->flush();
-
-        return new Response("This is ajax response.");
-    }
-
-    return new Response("This is not ajax.", 400);
 }
 ```
 
