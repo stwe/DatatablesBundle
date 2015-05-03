@@ -148,6 +148,18 @@ class Options
      */
     protected $individualFiltering;
 
+    /**
+     * DataTables provides direct integration support (https://github.com/DataTables/Plugins/tree/master/integration) for:
+     * - Bootstrap
+     * - Foundation
+     * - jQuery UI
+     *
+     * This flag is set in the layout, the "dom" and "renderer" options for the integration plugin (i.e. bootstrap).
+     *
+     * @var boolean
+     */
+    protected $useIntegrationOptions;
+
 
     //-------------------------------------------------
     // Ctor.
@@ -209,7 +221,8 @@ class Options
             "stripe_classes" => array(),
             "responsive" => false,
             "class" => Style::BASE_STYLE,
-            "individual_filtering" => false
+            "individual_filtering" => false,
+            "use_integration_options" => false
         ));
 
         $resolver->setAllowedTypes(array(
@@ -228,7 +241,8 @@ class Options
             "stripe_classes" => "array",
             "responsive" => "bool",
             "class" => "string",
-            "individual_filtering" => "bool"
+            "individual_filtering" => "bool",
+            "use_integration_options" => "bool"
         ));
 
         return $this;
@@ -651,5 +665,29 @@ class Options
     public function getIndividualFiltering()
     {
         return (boolean) $this->individualFiltering;
+    }
+
+    /**
+     * Set use integration options.
+     *
+     * @param boolean $useIntegrationOptions
+     *
+     * @return $this
+     */
+    public function setUseIntegrationOptions($useIntegrationOptions)
+    {
+        $this->useIntegrationOptions = $useIntegrationOptions;
+
+        return $this;
+    }
+
+    /**
+     * Set use integration options.
+     *
+     * @return boolean
+     */
+    public function getUseIntegrationOptions()
+    {
+        return $this->useIntegrationOptions;
     }
 }

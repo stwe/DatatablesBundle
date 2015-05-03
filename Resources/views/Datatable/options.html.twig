@@ -1,5 +1,9 @@
 "displayStart": {{ view_options.displayStart }},
-"dom": "{{ view_options.dom|raw }}",
+
+{% if false == view_options.useIntegrationOptions %}
+    "dom": "{{ view_options.dom|raw }}",
+{% endif %}
+
 "lengthMenu": {{ view_options.lengthMenu|length_join|raw }},
 
 {% if view_options.orderClasses %}
@@ -18,7 +22,10 @@
 
 "pageLength": {{ view_options.pageLength }},
 "pagingType": "{{ view_options.pagingType }}",
-"renderer": "{{ view_options.renderer }}",
+
+{% if false == view_options.useIntegrationOptions %}
+    "renderer": "{{ view_options.renderer }}",
+{% endif %}
 
 {% if view_options.scrollCollapse %}
     "scrollCollapse": true,
