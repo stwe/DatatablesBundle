@@ -15,7 +15,6 @@ securize request by removing id and transform it in a slug.
 namespace Sg\BlogBundle\Datatables;
 
 use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
-use Sg\DatatablesBundle\Column\ActionColumn;
 
 /**
  * Class UserDatatable
@@ -46,7 +45,7 @@ class UserDatatable extends AbstractDatatableView
     {
         //...
 
-        $this
+        $this->columnBuilder
             ->add("firstName", "column", array("visible" => false))
             ->add("lastName", "column", array("visible" => false))
             ->add("name", "virtual")
