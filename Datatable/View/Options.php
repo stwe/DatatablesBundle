@@ -210,7 +210,7 @@ class Options
             "dom" => "lfrtip",
             "length_menu" => array(10, 25, 50, 100),
             "order_classes" => true,
-            "order" => array("column" => 0, "direction" => "asc"),
+            "order" => [[0, "asc"]],
             "order_multi" => true,
             "page_length" => 10,
             "paging_type" => Style::FULL_NUMBERS_PAGINATION,
@@ -384,11 +384,17 @@ class Options
      */
     protected function setOrder(array $order)
     {
-        if (true === array_key_exists("column", $order) && true === array_key_exists("direction", $order)) {
-            $this->order = $order;
-        } else {
-            throw new Exception("setOrder(): Invalid array format.");
+        foreach($order as $o){
+            if( !is_array($o) ||
+                !array_key_exists(0, $o) ||
+                !is_numeric($o[0]) ||
+                !array_key_exists(1, $o) ||
+                !in_array($o[1], ['desc', 'asc'])){
+                throw new \Exception("setOrder(): Invalid array format.");
+            }
         }
+        
+        $this->order = $order;
 
         return $this;
     }
