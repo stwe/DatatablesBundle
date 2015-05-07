@@ -325,10 +325,24 @@ class DatatableQuery
             if (null !== $this->searchColumns[$key]) {
                 $searchField = $this->searchColumns[$key];
                 $searchValue = $this->requestParams["columns"][$key]["search"]["value"];
+                $searchRange = $this->requestParams["columns"][$key]["name"] === "daterange";
                 if ("" != $searchValue) {
-                    $andExpr->add($pivot->expr()->like($searchField, "?$i"));
-                    $pivot->setParameter($i, "%" . $searchValue . "%");
-                    $i++;
+                    if ($searchRange) {
+                        list($_dateStart, $_dateEnd) = explode(' - ', $searchValue);
+                        $dateStart = new \DateTime($_dateStart);
+                        $dateEnd = new \DateTime($_dateEnd);
+                        $dateEnd->setTime(23, 59, 59);
+                        
+                        $k = $i+1;
+                        $andExpr->add($pivot->expr()->between($searchField, "?$i", "?$k"));
+                        $pivot->setParameter($i, $dateStart->format('Y-m-d H:i:s'));
+                        $pivot->setParameter($k, $dateEnd->format('Y-m-d H:i:s'));
+                        $i+=2;
+                    } else {
+                        $andExpr->add($pivot->expr()->like($searchField, "?$i"));
+                        $pivot->setParameter($i, "%" . $searchValue . "%");
+                        $i++;
+                    }
                 }
             }
         }

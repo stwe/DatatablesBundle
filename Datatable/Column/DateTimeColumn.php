@@ -66,8 +66,10 @@ class DateTimeColumn extends TimeagoColumn
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefault("render", "render_datetime");
-        $resolver->setDefault("date_format", "lll");
+        $resolver->setDefaults(array(
+            "render" => "render_datetime",
+            "date_format" => "lll",
+        ));
 
         $resolver->addAllowedTypes(array(
             "date_format" => "string",

@@ -17,6 +17,7 @@ use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Exception;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Class AbstractDatatableView
@@ -25,6 +26,13 @@ use Exception;
  */
 abstract class AbstractDatatableView implements DatatableViewInterface
 {
+    /**
+     * The AuthorizationChecker service.
+     *
+     * @var AuthorizationCheckerInterface
+     */
+    protected $security;
+    
     /**
      * The Templating service.
      *
@@ -96,13 +104,15 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * Ctor.
      *
+     * @param AuthorizationCheckerInterface          $security             The security service
      * @param TwigEngine          $templating           The templating service
      * @param TranslatorInterface $translator           The translator service
      * @param RouterInterface     $router               The router service
      * @param array               $defaultLayoutOptions The default layout options
      */
-    public function __construct(TwigEngine $templating, TranslatorInterface $translator, RouterInterface $router, array $defaultLayoutOptions)
+    public function __construct(AuthorizationCheckerInterface $security, TwigEngine $templating, TranslatorInterface $translator, RouterInterface $router, array $defaultLayoutOptions)
     {
+        $this->security = $security;
         $this->templating = $templating;
         $this->translator = $translator;
         $this->router = $router;

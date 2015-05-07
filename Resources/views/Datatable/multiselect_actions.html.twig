@@ -1,38 +1,32 @@
 {% set visible = false %}
 
-var multiple_actions_html = "\
-<p>\
-    <select name='bulk_action_routes[select]' id='bulk_action_routes'>\
-        {% for action in column.actions %}\
-            {% if action.role %}\
-                {% if app.user is not null and is_granted(action.role) %}\
-                    {% set visible = true %}\
-                {% endif %}\
-            {% else %}\
-                {% set visible = true %}\
-            {% endif %}\
-            {% if visible %}\
-                <option value='{{ path(action.route) }}'>\
-                    {{ action.label }}\
-                </option>\
-            {% endif %}\
-        {% endfor %}\
-    </select>\
-    <button id='multiselect_submit' type='button'>{{ 'datatables.bulk.ok'|trans({}, 'messages') }}</button>\
-</p>";
+{% set multiple_actions_html %}
+    <p>
+        <select name='bulk_action_routes[select]' id='bulk_action_routes'>
+            {% for action in column.actions %}
+                {% set visible = (action.role and app.user is not null and is_granted(action.role) or not action.role) ? true : false %}
+                
+                {% if visible %}
+                    {% set route = action.route ? path(action.route, action.routeParameters) : '' %}
+                    <option {%- for key, value in action.attributes %} {{ key }}='{{ value }}'{% endfor %} value='{{ route }}'>
+                        {{ action.label }}
+                    </option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <button id='multiselect_submit' type='button'>{{ 'datatables.bulk.ok'|trans({}, 'messages') }}</button>
+    </p>
+{% endset %}
+
+var multiple_actions_html = '{{ multiple_actions_html|e('js') }}';
 
 $("#{{ view_table_id }}" + "_wrapper").append(multiple_actions_html);
 
 $(".multiselect_checkall").click(function(event) {
-    if(this.checked) {
-        $("input:checkbox.multiselect_checkbox").each(function() {
-            this.checked = true;
-        });
-    } else {
-        $("input:checkbox.multiselect_checkbox").each(function() {
-            this.checked = false;
-        });
-    }
+    var that = this;
+    $("input:checkbox.multiselect_checkbox").each(function() {
+        this.checked = that.checked;
+    });
 });
 
 $("#multiselect_submit").click(function() {
