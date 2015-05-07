@@ -26,11 +26,9 @@
         "sensio/generator-bundle": "~2.3"
     },
     "suggest": {
-        "twbs/bootstrap": "v3.2.0",
-        "mopa/bootstrap-bundle": "v3.0.0-beta4",
-        "components/jquery": "1.11.1",
-        "datatables/datatables": "1.10.4",
-        "moment/moment": "2.8.4"
+        "components/jquery": "1.11.2",
+        "datatables/datatables": "1.10.7",
+        "moment/moment": "2.10.2"
     },
     "autoload": {
         "psr-0": { "Sg\\DatatablesBundle": "" }
