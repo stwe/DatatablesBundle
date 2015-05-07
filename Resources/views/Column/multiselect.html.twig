@@ -52,7 +52,7 @@
             attributes += '{{ key }}="{{ value }}" ';
         {% endfor %}
 
-        {# get id #}
+        {# get value (e.g. the id) #}
         var first;
         if (row.hasOwnProperty('{{ column.value }}') && typeof('{{ column.value }}') !== 'function') {
             first = row['{{ column.value }}'];

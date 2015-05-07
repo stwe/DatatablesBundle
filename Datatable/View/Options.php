@@ -384,7 +384,7 @@ class Options
      */
     protected function setOrder(array $order)
     {
-        foreach($order as $o){
+        foreach($order as $o) {
             if( !is_array($o) ||
                 !array_key_exists(0, $o) ||
                 !is_numeric($o[0]) ||

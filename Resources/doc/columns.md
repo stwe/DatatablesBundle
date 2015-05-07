@@ -322,14 +322,17 @@ SgDatatablesBundle:Column:multiselect.html.twig
 | end_html   | string      | ""      |          |
 | actions    | array       |         | required |
 | attributes | array       | array() |          |
+| value      | string      | "id"    |          |
 
-### Action options
+### Multiselect-Action options
 
 | Option           | Type        | Default |          |
 |------------------|-------------|---------|----------|
 | route            | string      |         | required |
 | label            | string      | ""      |          |
 | role             | string      | ""      |          |
+| route_parameters | array       | array() |          |
+| attributes       | array       | array() |          |
 
 ### Example
 

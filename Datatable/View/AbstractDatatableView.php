@@ -16,8 +16,8 @@ use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Exception;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Exception;
 
 /**
  * Class AbstractDatatableView
@@ -104,11 +104,11 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * Ctor.
      *
-     * @param AuthorizationCheckerInterface          $security             The security service
-     * @param TwigEngine          $templating           The templating service
-     * @param TranslatorInterface $translator           The translator service
-     * @param RouterInterface     $router               The router service
-     * @param array               $defaultLayoutOptions The default layout options
+     * @param AuthorizationCheckerInterface $security             The security service
+     * @param TwigEngine                    $templating           The templating service
+     * @param TranslatorInterface           $translator           The translator service
+     * @param RouterInterface               $router               The router service
+     * @param array                         $defaultLayoutOptions The default layout options
      */
     public function __construct(AuthorizationCheckerInterface $security, TwigEngine $templating, TranslatorInterface $translator, RouterInterface $router, array $defaultLayoutOptions)
     {
