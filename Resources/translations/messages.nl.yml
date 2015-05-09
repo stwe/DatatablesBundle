@@ -15,5 +15,5 @@ datatables: # the bundle name
         all: "alle"
     bulk:
         confirmMsg: "Weet u het zeker?"
-        selectError: "U moet tenminste één element selecteren."
+        selectError: "U moet tenminste Ã©Ã©n element selecteren."
         ok: "Ok"
