@@ -13,10 +13,7 @@ namespace Sg\DatatablesBundle\Datatable\View;
 
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 
-use Symfony\Bundle\TwigBundle\TwigEngine;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Exception;
 
 /**
@@ -27,32 +24,11 @@ use Exception;
 abstract class AbstractDatatableView implements DatatableViewInterface
 {
     /**
-     * The AuthorizationChecker service.
+     * The service container.
      *
-     * @var AuthorizationCheckerInterface
+     * @var ContainerInterface
      */
-    protected $security;
-    
-    /**
-     * The Templating service.
-     *
-     * @var TwigEngine
-     */
-    protected $templating;
-
-    /**
-     * The Translator service.
-     *
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
-     * The Router service.
-     *
-     * @var RouterInterface
-     */
-    protected $router;
+    protected $container;
 
     /**
      * A Features instance.
@@ -104,18 +80,12 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * Ctor.
      *
-     * @param AuthorizationCheckerInterface $security             The security service
-     * @param TwigEngine                    $templating           The templating service
-     * @param TranslatorInterface           $translator           The translator service
-     * @param RouterInterface               $router               The router service
-     * @param array                         $defaultLayoutOptions The default layout options
+     * @param ContainerInterface $container            The service container
+     * @param array              $defaultLayoutOptions The default layout options
      */
-    public function __construct(AuthorizationCheckerInterface $security, TwigEngine $templating, TranslatorInterface $translator, RouterInterface $router, array $defaultLayoutOptions)
+    public function __construct(ContainerInterface $container, array $defaultLayoutOptions)
     {
-        $this->security = $security;
-        $this->templating = $templating;
-        $this->translator = $translator;
-        $this->router = $router;
+        $this->container = $container;
 
         $this->features = new Features();
         $this->options = new Options();
@@ -164,13 +134,13 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         switch($type) {
             case "html":
-                return $this->templating->render($this->templates["html"], $options);
+                return $this->container->get("templating")->render($this->templates["html"], $options);
                 break;
             case "js":
-                return $this->templating->render($this->templates["js"], $options);
+                return $this->container->get("templating")->render($this->templates["js"], $options);
                 break;
             default:
-                return $this->templating->render($this->templates["base"], $options);
+                return $this->container->get("templating")->render($this->templates["base"], $options);
                 break;
         }
 
@@ -204,36 +174,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     //-------------------------------------------------
     // Getters && Setters
     //-------------------------------------------------
-
-    /**
-     * Get Templating.
-     *
-     * @return TwigEngine
-     */
-    public function getTemplating()
-    {
-        return $this->templating;
-    }
-
-    /**
-     * Get Translator.
-     *
-     * @return TranslatorInterface
-     */
-    public function getTranslator()
-    {
-        return $this->translator;
-    }
-
-    /**
-     * Get Router.
-     *
-     * @return RouterInterface
-     */
-    public function getRouter()
-    {
-        return $this->router;
-    }
 
     /**
      * Set Data.
