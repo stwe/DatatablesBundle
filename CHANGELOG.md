@@ -4,6 +4,31 @@
 
 Here is a list of the most important changes:
 
+### Access to the entire service container
+
+``` php
+    public function getLineFormatter()
+    {
+        $formatter = function($line){
+            if ($this->container->get("security.authorization_checker")->isGranted("IS_AUTHENTICATED_FULLY")) {
+                $repository = $this->container->get("doctrine.orm.entity_manager")->getRepository("SgBlogBundle:Post");
+                $user = $this->container->get("security.token_storage")->getToken()->getUser();
+                $line["owner"] = $repository->find($line["id"])->isAuthor($user);
+            } else {
+                $line["owner"] = "Please Login";
+            }
+
+            return $line;
+        };
+
+        return $formatter;
+    }
+```
+
+### Date range individual filtering and others
+
+- [#111](https://github.com/stwe/DatatablesBundle/pull/111) [DarekTw](https://github.com/DarekTw)
+
 ### New config style
 
 ``` php
@@ -14,7 +39,7 @@ Here is a list of the most important changes:
         ));
 
         $this->ajax->setOptions(array(
-            "url" => $this->getRouter()->generate('post_results')
+            "url" => $this->container->get("router")->generate("post_results")
         ));
 
         $this->options->setOptions(array(

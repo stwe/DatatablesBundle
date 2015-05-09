@@ -38,7 +38,13 @@ class PostDatatable extends AbstractDatatableView
     public function getLineFormatter()
     {
         $formatter = function($line){
-            $line["custom"] = $line["title"] . " published at " . $line["publishedAt"]->format("Y-m-d H:i:s");
+            if ($this->container->get("security.authorization_checker")->isGranted("IS_AUTHENTICATED_FULLY")) {
+                $repository = $this->container->get("doctrine.orm.entity_manager")->getRepository("SgBlogBundle:Post");
+                $user = $this->container->get("security.token_storage")->getToken()->getUser();
+                $line["owner"] = $repository->find($line["id"])->isAuthor($user);
+            } else {
+                $line["owner"] = "Please Login";
+            }
 
             return $line;
         };
@@ -71,7 +77,7 @@ class PostDatatable extends AbstractDatatableView
 
         // the default settings, except "url"
         $this->ajax->setOptions(array(
-            "url" => $this->getRouter()->generate('post_results'),
+            "url" => $this->container->get("router")->generate("post_results")
             "type" => "GET"
         ));
 
@@ -141,8 +147,8 @@ class PostDatatable extends AbstractDatatableView
             ->add("title", "column", array(
                 "title" => "<span class='glyphicon glyphicon-book' aria-hidden='true'></span> Title",
             ))
-            ->add('custom', 'virtual', array(
-                'title' => "Custom Title"
+            ->add("owner", "virtual", array(
+                'title' => "Owner"
             ))
             ->add("authorEmail", "column", array(
                 "class" => "",
@@ -158,9 +164,9 @@ class PostDatatable extends AbstractDatatableView
                 "default" => ""
             ))
             /*
-            ->add('comments.title', 'array', array(
-                'title' => "Kommentare",
-                //'visible' => true,
+            ->add("comments.title", "array", array(
+                "title" => "Kommentare",
+                //"visible" => true,
                 "searchable" => false,
                 "orderable" => false,
                 "default" => "default value",
