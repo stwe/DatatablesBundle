@@ -37,13 +37,20 @@ class PostDatatable extends AbstractDatatableView
      */
     public function getLineFormatter()
     {
-        $formatter = function($line){
+        $formatter = function($line) {
+            $repository = $this->container->get("doctrine.orm.entity_manager")->getRepository("SgBlogBundle:Post");
+            $entity = $repository->find($line["id"]);
+
+            // see if a User is logged in
             if ($this->container->get("security.authorization_checker")->isGranted("IS_AUTHENTICATED_FULLY")) {
-                $repository = $this->container->get("doctrine.orm.entity_manager")->getRepository("SgBlogBundle:Post");
                 $user = $this->container->get("security.token_storage")->getToken()->getUser();
-                $line["owner"] = $repository->find($line["id"])->isAuthor($user);
+                // is the given User the author of this Post?
+                $line["owner"] = $entity->isAuthor($user); // render "true" or "false"
             } else {
-                $line["owner"] = "Please Login";
+                // render a twig template with login link
+                $line["owner"] = $this->container->get("templating")->render("SgBlogBundle:Post:owner.html.twig", array(
+                    "entity" => $repository->find($line["id"])
+                ));
             }
 
             return $line;

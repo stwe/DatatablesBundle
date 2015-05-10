@@ -143,7 +143,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
                 return $this->container->get("templating")->render($this->templates["base"], $options);
                 break;
         }
-
     }
 
     /**
