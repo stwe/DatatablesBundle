@@ -10,7 +10,7 @@
 
         $this->ajax->setOptions(array(
             "url" => $this->getRouter()->generate('post_results'),
-            "type => "GET" // default
+            "type" => "GET" // default
         ));
 
         $this->options->setOptions(array(
