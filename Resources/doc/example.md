@@ -84,7 +84,7 @@ class PostDatatable extends AbstractDatatableView
 
         // the default settings, except "url"
         $this->ajax->setOptions(array(
-            "url" => $this->container->get("router")->generate("post_results")
+            "url" => $this->container->get("router")->generate("post_results"),
             "type" => "GET"
         ));
 
