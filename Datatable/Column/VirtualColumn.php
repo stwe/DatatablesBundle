@@ -14,6 +14,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 /**
  * Class VirtualColumn
  *
@@ -31,5 +33,24 @@ class VirtualColumn extends Column
     public function getAlias()
     {
         return "virtual";
+    }
+
+    //-------------------------------------------------
+    // OptionsInterface
+    //-------------------------------------------------
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        parent::configureOptions($resolver);
+        
+        $resolver->setDefaults(array(
+            "orderable" => false,
+            "searchable" => false,
+        ));
+
+        return $this;
     }
 }

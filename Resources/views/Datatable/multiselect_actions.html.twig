@@ -18,19 +18,18 @@
     </p>
 {% endset %}
 
-var multiple_actions_html = '{{ multiple_actions_html|e('js') }}';
+var dt_wrapper = $("#{{ view_table_id }}" + "_wrapper");
+dt_wrapper.append("{{ multiple_actions_html|e('js') }}");
 
-$("#{{ view_table_id }}" + "_wrapper").append(multiple_actions_html);
-
-$(".multiselect_checkall").click(function(event) {
+dt_wrapper.find(".multiselect_checkall").click(function(event) {
     var that = this;
-    $("input:checkbox.multiselect_checkbox").each(function() {
+    dt_wrapper.find("input.multiselect_checkbox:checkbox").each(function() {
         this.checked = that.checked;
     });
 });
 
-$("#multiselect_submit").click(function() {
-    var length = $("input:checkbox:checked.multiselect_checkbox").length;
+dt_wrapper.find(".multiselect_submit").on('click', function() {
+    var length = dt_wrapper.find("input.multiselect_checkbox:checkbox:checked").length;
 
     if (length > 0) {
         if (!confirm( "{{ 'datatables.bulk.confirmMsg'|trans({}, 'messages') }}" )) {
@@ -38,7 +37,7 @@ $("#multiselect_submit").click(function() {
         }
 
         $.ajax({
-            url: $("select[name='bulk_action_routes[select]']").val(),
+            url: dt_wrapper.find("select[name='bulk_action_routes[select]']").val(),
             type: "POST",
             cache: false,
             data: {
