@@ -12,7 +12,6 @@
 namespace Sg\DatatablesBundle\Datatable\View;
 
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Exception;
 
@@ -72,7 +71,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      */
     protected $templates;
 
-
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -97,7 +95,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         $this->buildDatatableView();
     }
-
 
     //-------------------------------------------------
     // DatatableViewInterface
@@ -132,7 +129,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         $options["view_table_id"] = $this->getName();
 
-        switch($type) {
+        switch ($type) {
             case "html":
                 return $this->container->get("templating")->render($this->templates["html"], $options);
                 break;
@@ -168,7 +165,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     {
         return null;
     }
-
 
     //-------------------------------------------------
     // Getters && Setters
@@ -221,4 +217,22 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     {
         return $this->templates;
     }
+
+    /**
+     * Truncate text
+     * 
+     * @param string $text
+     * @param integer $chars
+     * 
+     * @return string
+     */
+    public function truncate($text, $chars = 25)
+    {
+        if (strlen($text) > $chars) {
+            $text = substr($text . " ", 0, $chars);
+            $text = substr($text, 0, strrpos($text, ' ')) . "...";
+        }
+        return $text;
+    }
+
 }
