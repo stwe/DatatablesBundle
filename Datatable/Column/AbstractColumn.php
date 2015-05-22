@@ -132,6 +132,15 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
      */
     protected $width;
 
+    /**
+     * Set the search type
+     * Option: title
+     *
+     * @var string
+     */
+    protected $searchtype;
+
+
 
     //-------------------------------------------------
     // Ctor.
@@ -492,4 +501,21 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     {
         return $this->width;
     }
+
+    /**
+     * @return string
+     */
+    public function getSearchtype()
+    {
+        return $this->searchtype;
+    }
+
+    /**
+     * @param string $searchtype
+     */
+    public function setSearchtype($searchtype)
+    {
+        $this->searchtype = $searchtype;
+    }
+
 }

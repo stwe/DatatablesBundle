@@ -108,7 +108,8 @@ class BooleanColumn extends AbstractColumn
             "true_icon" => "",
             "false_icon" => "",
             "true_label" => "",
-            "false_label" => ""
+            "false_label" => "",
+            "searchtype" => "like",
         ));
 
         $resolver->setAllowedTypes(array(
