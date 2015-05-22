@@ -219,7 +219,7 @@ class DatatableQuery
         $qb->select("count(" . $this->tableName . "." . $rootEntityIdentifier . ")");
         $qb->from($this->entityName, $this->tableName);
 
-        $this->setWhereCallbacks($qb);
+        //$this->setWhereCallbacks($qb);
 
         return (int) $qb->getQuery()->getSingleScalarResult();
     }

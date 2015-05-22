@@ -310,6 +310,15 @@ public function indexResultsAction()
      */
     $datatable = $this->get("sg_datatables.datatable")->getDatatable($this->get("sg_datatables.post"));
 
+    // Callback example
+    $function = function($qb)
+    {
+        $qb->andWhere("Comment_comments.id < 10");
+    };
+
+    // Add callback
+    $datatable->addWhereBuilderCallback($function);
+
     return $datatable->getResponse();
 }
 ```
