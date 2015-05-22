@@ -85,7 +85,10 @@ class Column extends AbstractColumn
             "visible" => true,
             "width" => "",
             "default" => "",
-            "searchtype" => "like",
+            "searchType" => "like",
+            "filterType" => "text",
+            "filterOptions" => [],
+            "filterProperty" => false,
         ));
 
         $resolver->setAllowedTypes(array(

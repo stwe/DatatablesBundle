@@ -129,12 +129,17 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         $options["view_table_id"] = $this->getName();
 
+        $options["datatable"] = $this;
+
         switch ($type) {
             case "html":
                 return $this->container->get("templating")->render($this->templates["html"], $options);
                 break;
             case "js":
                 return $this->container->get("templating")->render($this->templates["js"], $options);
+                break;
+            case "filter":
+                return $this->container->get("templating")->render($this->templates["filter"], $options);
                 break;
             default:
                 return $this->container->get("templating")->render($this->templates["base"], $options);
@@ -233,5 +238,22 @@ abstract class AbstractDatatableView implements DatatableViewInterface
             $text = substr($text, 0, strrpos($text, ' ')) . "...";
         }
         return $text;
+    }
+
+    /**
+     * Searches the column index by column name
+     * Returns the position of the column in datatable columns or false if column is not found
+     * @param string $name
+     * @return int|bool
+     */
+    public function getColumnIdByColumnName($name)
+    {
+        if (count($this->columnNames) == 0) {
+            foreach ($this->getColumnBuilder()->getColumns() as $key => $column) {
+                $this->columnNames[$column->getData()] = $key;
+            }
+        }
+
+        return array_key_exists($name, $this->columnNames) ? $this->columnNames[$name] : false;
     }
 }

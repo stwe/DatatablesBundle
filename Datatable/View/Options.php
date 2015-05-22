@@ -238,7 +238,7 @@ class Options
             "individual_filtering" => false,
             "individual_filtering_position" => "foot",
             "use_integration_options" => false,
-            "searchtype" => "like",
+            "searchType" => "like",
         ));
 
         $resolver->setAllowedTypes(array(
@@ -746,7 +746,7 @@ class Options
      * @param string $searchType
      * @return bool
      */
-    public function setSearchtype($searchType)
+    public function setSearchType($searchType)
     {
         $this->searchType = $searchType;
     }

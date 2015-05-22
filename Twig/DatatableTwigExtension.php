@@ -67,7 +67,8 @@ class DatatableTwigExtension extends Twig_Extension
         return array(
             new Twig_SimpleFunction("datatable_render", array($this, "datatableRender"), array("is_safe" => array("all"))),
             new Twig_SimpleFunction("datatable_render_html", array($this, "datatableRenderHtml"), array("is_safe" => array("all"))),
-            new Twig_SimpleFunction("datatable_render_js", array($this, "datatableRenderJs"), array("is_safe" => array("all")))
+            new Twig_SimpleFunction("datatable_render_js", array($this, "datatableRenderJs"), array("is_safe" => array("all"))),
+            new Twig_SimpleFunction("datatable_filter_render", array($this, "datatableFilterRender"), array("is_safe" => array("all"), 'needs_environment' => true)),
         );
     }
 
@@ -126,6 +127,25 @@ class DatatableTwigExtension extends Twig_Extension
     public function datatableRender(AbstractDatatableView $datatable)
     {
         return $datatable->render();
+    }
+
+    /**
+     * Renders the custom datatable filter.
+     *
+     * @param AbstractDatatableView $datatable
+     *
+     * @return mixed|string|void
+     * @throws Exception
+     */
+    public function datatableFilterRender(\Twig_Environment $twig, AbstractDatatableView $datatable, $column, $loopIndex)
+    {
+        $filterType = $column->getFilterType() ?: 'text';
+        if ($filterProperty = $column->getFilterProperty()) {
+            $filterColumnId = $datatable->getColumnIdByColumnName($filterProperty);
+        } else {
+            $filterColumnId = $loopIndex;
+        }
+        return $twig->render('SgDatatablesBundle:Filters:filter_' . $filterType . '.html.twig', ['column' => $column, 'filterColumnId' => $filterColumnId]);
     }
 
     /**

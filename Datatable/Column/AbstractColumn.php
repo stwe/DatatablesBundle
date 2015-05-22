@@ -138,8 +138,23 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
      *
      * @var string
      */
-    protected $searchtype;
+    protected $searchType;
 
+    /**
+     * filter type name (default - text)
+     */
+    protected $filterType;
+
+    /**
+     * Options for "select" filter type
+     */
+    protected $filterOptions;
+
+    /**
+     * Filter property: Column name, on which the filter is applied,
+     * based on options for this column
+     */
+    protected $filterProperty;
 
 
     //-------------------------------------------------
@@ -505,17 +520,64 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     /**
      * @return string
      */
-    public function getSearchtype()
+    public function getSearchType()
     {
-        return $this->searchtype;
+        return $this->searchType;
     }
 
     /**
-     * @param string $searchtype
+     * @param string $searchType
      */
-    public function setSearchtype($searchtype)
+    public function setSearchType($searchType)
     {
-        $this->searchtype = $searchtype;
+        $this->searchType = $searchType;
     }
 
+    /**
+     * @return string
+     */
+    public function getFilterType()
+    {
+        return $this->filterType;
+    }
+
+    /**
+     * @param string $filterType
+     */
+    public function setFilterType($filterType)
+    {
+        $this->filterType = $filterType;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFilterOptions()
+    {
+        return $this->filterOptions;
+    }
+
+    /**
+     * @param mixed $filterOptions
+     */
+    public function setFilterOptions($filterOptions)
+    {
+        $this->filterOptions = $filterOptions;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFilterProperty()
+    {
+        return $this->filterProperty;
+    }
+
+    /**
+     * @param mixed $filterProperty
+     */
+    public function setFilterProperty($filterProperty)
+    {
+        $this->filterProperty = $filterProperty;
+    }
 }

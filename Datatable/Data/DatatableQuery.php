@@ -328,7 +328,7 @@ class DatatableQuery
             if (null !== $this->searchColumns[$key]) {
                 $userConfiguredColumns = $this->datatableView->getColumnBuilder()->getColumns();
                 if (array_key_exists($key, $userConfiguredColumns)) {
-                    $searchType = $userConfiguredColumns[$key]->getSearchtype();
+                    $searchType = $userConfiguredColumns[$key]->getSearchType();
                 } else {
                     $searchType = 'like';
                 }
@@ -399,11 +399,11 @@ class DatatableQuery
                 break;
             case 'in':
                 $andExpr->add($pivot->expr()->in($searchField, "?$i"));
-                $pivot->setParameter($i, $searchValue);
+                $pivot->setParameter($i, explode(',', $searchValue));
                 break;
             case 'notIn':
                 $andExpr->add($pivot->expr()->notIn($searchField, "?$i"));
-                $pivot->setParameter($i, $searchValue);
+                $pivot->setParameter($i, explode(',', $searchValue));
                 break;
             case 'isNull':
                 $andExpr->add($pivot->expr()->isNull($searchField));
