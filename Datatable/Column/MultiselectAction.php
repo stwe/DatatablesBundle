@@ -32,6 +32,7 @@ class MultiselectAction extends Action
         $resolver->setRequired(array("route"));
 
         $resolver->setDefaults(array(
+            "icon" => "",
             "label" => "",
             "role" => "",
             "route_parameters" => array(),
@@ -39,6 +40,7 @@ class MultiselectAction extends Action
         ));
 
         $resolver->setAllowedTypes(array(
+            "icon" => "string",
             "route" => "string",
             "label" => "string",
             "role" => "string",

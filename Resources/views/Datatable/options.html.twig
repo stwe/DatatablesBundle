@@ -1,7 +1,7 @@
 "displayStart": {{ view_options.displayStart }},
 
 {% if false == view_options.useIntegrationOptions %}
-    "dom": "{{ view_options.dom|raw }}",
+    "dom": "{{ view_options.dom|e('js') }}",
 {% endif %}
 
 "lengthMenu": {{ view_options.lengthMenu|length_join|raw }},
