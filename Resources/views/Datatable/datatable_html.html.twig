@@ -2,21 +2,25 @@
     <thead>
     </thead>
     {% if view_options.individualFiltering %}
-        <tfoot>
-            {% for column in view_columns %}
-                <th>
-                    {% if column.searchable %}
-                        <input type="text"
-                           class="individual_filtering"
-                           style="{% if column.width %} width:{{ column.width }};{% endif %}"
-                           placeholder="{{ column.title|striptags|trim }}"
-                           {% if column.name %}name="{{ column.name }}"{% endif %} />
-                    {% else %}
-                        <input type="hidden" />
-                    {% endif %}
-                </th>
-            {% endfor %}
-        </tfoot>
+        {% if "foot" == view_options.individualFilteringPosition or "both" == view_options.individualFilteringPosition %}
+            <tfoot>
+                <tr>
+                    {% for column in view_columns %}
+                        <td>
+                            {% if column.searchable %}
+                                <input type="text"
+                                   class="individual_filtering"
+                                   style="{% if column.width %} width:{{ column.width }};{% endif %}"
+                                   placeholder="{{ column.title|striptags|trim }}"
+                                   {% if column.name %}name="{{ column.name }}"{% endif %} />
+                            {% else %}
+                                <input type="hidden" />
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            </tfoot>
+        {% endif %}
     {% endif %}
     <tbody>
     </tbody>

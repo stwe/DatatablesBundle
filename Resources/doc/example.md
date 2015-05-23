@@ -106,6 +106,7 @@ class PostDatatable extends AbstractDatatableView
             "responsive" => false,
             "class" => Style::BOOTSTRAP_3_STYLE,
             "individual_filtering" => false,
+            "individual_filtering_position" => "head",
             "use_integration_options" => true
         ));
 

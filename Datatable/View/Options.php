@@ -149,6 +149,13 @@ class Options
     protected $individualFiltering;
 
     /**
+     * Position of individual search filter ("head", "foot" or "both").
+     *
+     * @var string
+     */
+    protected $individualFilteringPosition;
+
+    /**
      * DataTables provides direct integration support (https://github.com/DataTables/Plugins/tree/master/integration) for:
      * - Bootstrap
      * - Foundation
@@ -222,6 +229,7 @@ class Options
             "responsive" => false,
             "class" => Style::BASE_STYLE,
             "individual_filtering" => false,
+            "individual_filtering_position" => "foot",
             "use_integration_options" => false
         ));
 
@@ -242,8 +250,11 @@ class Options
             "responsive" => "bool",
             "class" => "string",
             "individual_filtering" => "bool",
+            "individual_filtering_position" => "string",
             "use_integration_options" => "bool"
         ));
+
+        $resolver->setAllowedValues("individual_filtering_position", array("head", "foot", "both"));
 
         return $this;
     }
@@ -671,6 +682,30 @@ class Options
     public function getIndividualFiltering()
     {
         return (boolean) $this->individualFiltering;
+    }
+
+    /**
+     * Set individual filtering position.
+     *
+     * @param string $individualFilteringPosition
+     *
+     * @return $this
+     */
+    public function setIndividualFilteringPosition($individualFilteringPosition)
+    {
+        $this->individualFilteringPosition = $individualFilteringPosition;
+
+        return $this;
+    }
+
+    /**
+     * Set individual filtering position.
+     *
+     * @return string
+     */
+    public function getIndividualFilteringPosition()
+    {
+        return $this->individualFilteringPosition;
     }
 
     /**

@@ -39,7 +39,37 @@
             }
 
             {% if view_options.individualFiltering %}
-                $("tfoot input.individual_filtering").on("keyup change", function() {
+
+                var html = '';
+
+                {# "head" and "both" position #}
+                {% if "head" == view_options.individualFilteringPosition or "both" == view_options.individualFilteringPosition %}
+                    var head = $(selector + "_wrapper").find("div.dataTables_scrollHeadInner table thead");
+
+                    $(head).append('<tr class="individual_filter_row"></tr>');
+                    head = $(head).find('tr.individual_filter_row');
+
+                    {% for column in view_columns %}
+                        {% if column.searchable %}
+                            html =  '<th>';
+                            html += '<input type="text" class="individual_filtering"';
+                            html += 'style="{% if column.width %}width:{{ column.width }};{% endif %}"';
+                            html += 'placeholder="{{ column.title|striptags|trim }}"';
+                            html += 'name="{% if column.name %}{{ column.name }}{% endif %}"';
+                            html += "/>";
+                            html += '</th>';
+                        {% else %}
+                            html =  '<th>';
+                            html += '<input type="hidden" />';
+                            html += '</th>';
+                        {% endif %}
+                        $(head).append(html);
+                    {% endfor %}
+                {% endif %}
+
+                {# "foot" position -> datatable_html.html.twig #}
+
+                $(selector + "_wrapper").find("tr input.individual_filtering").on("keyup change", function() {
                     oTable
                         .column( $(this).parent().index()+':visible' )
                         .search( this.value )
