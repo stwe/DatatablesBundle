@@ -234,5 +234,4 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         }
         return $text;
     }
-
 }

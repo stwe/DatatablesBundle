@@ -1,25 +1,23 @@
 {% set visible = false %}
 
-{% set multiple_actions_html %}
-    <p>
-        <select name='bulk_action_routes[select]' id='bulk_action_routes'>
-            {% for action in column.actions %}
-                {% set visible = (action.role and app.user is not null and is_granted(action.role) or not action.role) ? true : false %}
-                
-                {% if visible %}
-                    {% set route = action.route ? path(action.route, action.routeParameters) : '' %}
-                    <option {%- for key, value in action.attributes %} {{ key }}='{{ value }}'{% endfor %} value='{{ route }}'>
-                        {{ action.label }}
-                    </option>
-                {% endif %}
-            {% endfor %}
-        </select>
-        <button id='multiselect_submit' type='button'>{{ 'datatables.bulk.ok'|trans({}, 'messages') }}</button>
-    </p>
+{% set multiple_actions %}
+    <div>
+        {% for action in column.actions %}
+            {% set visible = (action.role and app.user is not null and is_granted(action.role) or not action.role) ? true : false %}
+
+            {% if visible %}
+                {% set route = action.route ? path(action.route, action.routeParameters) : '' %}
+                {% set attributes %}
+                    {% for key, value in action.attributes %} {{ key }}='{{ value }}'{% endfor %}
+                {% endset %}
+                <a href="{{ route }}" class="multiselect_action_click" {{ attributes }}>{{ action.icon|raw }} {{ action.label }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
 {% endset %}
 
 var dt_wrapper = $("#{{ view_table_id }}" + "_wrapper");
-dt_wrapper.append("{{ multiple_actions_html|e('js') }}");
+dt_wrapper.find(".dataTables_scrollFootInner").append("{{ multiple_actions|e('js') }}");
 
 dt_wrapper.find(".multiselect_checkall").click(function(event) {
     var that = this;
@@ -28,8 +26,10 @@ dt_wrapper.find(".multiselect_checkall").click(function(event) {
     });
 });
 
-dt_wrapper.find(".multiselect_submit").on('click', function() {
+dt_wrapper.find(".multiselect_action_click").on('click', function(event) {
     var length = dt_wrapper.find("input.multiselect_checkbox:checkbox:checked").length;
+
+    event.preventDefault();
 
     if (length > 0) {
         if (!confirm( "{{ 'datatables.bulk.confirmMsg'|trans({}, 'messages') }}" )) {
@@ -37,7 +37,7 @@ dt_wrapper.find(".multiselect_submit").on('click', function() {
         }
 
         $.ajax({
-            url: dt_wrapper.find("select[name='bulk_action_routes[select]']").val(),
+            url: $(this).attr("href"),
             type: "POST",
             cache: false,
             data: {

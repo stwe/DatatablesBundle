@@ -328,6 +328,7 @@ SgDatatablesBundle:Column:multiselect.html.twig
 
 | Option           | Type        | Default |          |
 |------------------|-------------|---------|----------|
+| icon             | string      | ""      |          |
 | route            | string      |         | required |
 | label            | string      | ""      |          |
 | role             | string      | ""      |          |
@@ -349,11 +350,13 @@ $this->getColumnBuilder()
             array(
                 "route" => "post_bulk_delete",
                 "label" => "Delete",
-                "role" => "ROLE_ADMIN"
+                "role" => "ROLE_ADMIN",
+                "icon" => "<i class='fa fa-times'></i>"
             ),
             array(
                 "route" => "post_bulk_disable",
-                "label" => "Disable"
+                "label" => "Disable",
+                "icon" => "<i class='fa fa-lock'></i>"
             )
         )
     ));
