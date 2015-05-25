@@ -13,6 +13,7 @@ namespace Sg\DatatablesBundle\Datatable\View;
 
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Exception;
 
 /**
@@ -70,6 +71,12 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @var array
      */
     protected $templates;
+
+    /**
+     * This variable stores the array of column names as keys and column ids as values
+     * in order to perform search column id by name.
+     */
+    private $columnNames;
 
     //-------------------------------------------------
     // Ctor.
@@ -255,5 +262,27 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         }
 
         return array_key_exists($name, $this->columnNames) ? $this->columnNames[$name] : false;
+    }
+
+    /**
+     * Returns options array based on key/value pairs, where key and value are the object's properties.
+     *
+     * @param ArrayCollection $entitiesCollection
+     * @param string $keyPropertyName
+     * @param string $valuePropertyName
+     * @return array
+     */
+    public function getCollectionAsOptionsArray($entitiesCollection, $keyPropertyName = 'id', $valuePropertyName = 'name')
+    {
+        $options = [];
+        foreach ($entitiesCollection as $entity) {
+            $keyPropertyName = Container::camelize($keyPropertyName);
+            $keyGetter = 'get' . ucfirst($keyPropertyName);
+            $valuePropertyName = Container::camelize($valuePropertyName);
+            $valueGetter = 'get' . ucfirst($valuePropertyName);
+            $options[$entity->$keyGetter()] = $entity->$valueGetter();
+        }
+
+        return $options;
     }
 }

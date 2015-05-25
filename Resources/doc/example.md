@@ -131,7 +131,8 @@ class PostDatatable extends AbstractDatatableView
                 "orderable" => true,
                 "render" => "render_boolean",
                 "searchable" => true,
-                "searchType" => 'select', // use select dropdown with options: any/yes/no options are automatically associated with "boolean" columntype
+                "searchType" => 'eq', // will use eq operator in search query (for example "where visible = 1" etc.)
+                "filterType" => 'select', // use select dropdown with options: any/yes/no options are automatically associated with "boolean" columntype
                 "title" => "Visible",
                 "type" => "",
                 "visible" => true,
@@ -167,18 +168,13 @@ class PostDatatable extends AbstractDatatableView
                 "render" => null,
                 "searchable" => true,
                 'filterType' => 'select', //  render the search input as a dropdown
-                'filterOptions' => $this->getAllUsersAsOptionsArray(), // dropdown options list. This method should return all options as array [userId => userName]
-                'filterProperty' => 'author.id', // You can set up another property, different with the current column, to search on.
+                'filterOptions' => $this->getCollectionAsOptionsArray($users, 'email', 'username'), // dropdown options list. This method should return all options as array [email => username]
+                'filterProperty' => 'authorEmail', // You can set up another property, different with the current column, to search on.
                 "title" => "<span class='glyphicon glyphicon-user' aria-hidden='true'></span> Author",
                 "type" => "",
                 "visible" => true,
                 "width" => "",
                 "default" => ""
-            ))
-            ->add("author.id", "column", array(
-                    'visible' => false,  // we use hidden column, which provides the data for search in the previous column
-                    'searchable' => true,
-                    'searchType' => 'in', //using 'in' operator while building a search query (SELECT * FROM fos_users where id in (1,2,3, ...))
             ))
             /*
             ->add("comments.title", "array", array(
