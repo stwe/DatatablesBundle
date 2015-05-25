@@ -67,7 +67,11 @@
 
                         {# init 3rd party libs #}
                         var daterange = $('input[name="daterange"]');
-                        $(daterange).daterangepicker();
+                        try {
+                            $(daterange).daterangepicker();
+                        } catch (e) {
+                            console.log(e.message);
+                        }
 
                     {% endfor %}
                 {% endif %}
