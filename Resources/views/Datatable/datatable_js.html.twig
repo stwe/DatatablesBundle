@@ -64,6 +64,11 @@
                             html += '</th>';
                         {% endif %}
                         $(head).append(html);
+
+                        {# init 3rd party libs #}
+                        var daterange = $('input[name="daterange"]');
+                        $(daterange).daterangepicker();
+
                     {% endfor %}
                 {% endif %}
 
