@@ -10,19 +10,23 @@ SgDatatablesBundle:Column:column.html.twig
 
 ### Options
 
-| Option     | Type           | Default |
-|------------|----------------|---------|
-| class      | string         | ""      |
-| padding    | string         | ""      |
-| name       | string         | ""      |
-| orderable  | boolean        | true    |
-| render     | null or string | null    |
-| searchable | boolean        | true    |
-| title      | string         | ""      |
-| type       | string         | ""      |
-| visible    | boolean        | true    |
-| width      | string         | ""      |
-| default    | string         | ""      |
+| Option         | Type           | Default |
+|----------------|----------------|---------|
+| class          | string         | ""      |
+| padding        | string         | ""      |
+| name           | string         | ""      |
+| filterType     | string         | "text"  |
+| filterOptions  | array          | []      |
+| filterProperty | string         | ""      |
+| orderable      | boolean        | true    |
+| render         | null or string | null    |
+| searchable     | boolean        | true    |
+| searchType     | string         | "like"  |
+| title          | string         | ""      |
+| type           | string         | ""      |
+| visible        | boolean        | true    |
+| width          | string         | ""      |
+| default        | string         | ""      |
 
 ### Example
 
@@ -67,6 +71,7 @@ SgDatatablesBundle:Column:column.html.twig
 | orderable  | boolean        | true    |          |
 | render     | null or string | null    |          |
 | searchable | boolean        | true    |          |
+| searchType | string         | "like"  |          |
 | title      | string         | ""      |          |
 | type       | string         | ""      |          |
 | visible    | boolean        | true    |          |
@@ -123,6 +128,7 @@ SgDatatablesBundle:Column:boolean.html.twig
 | orderable   | boolean        | true             |
 | render      | null or string | render_boolean   |
 | searchable  | boolean        | true             |
+| searchType  | string         | "like"           |
 | title       | string         | ""               |
 | type        | string         | ""               |
 | visible     | boolean        | true             |
@@ -164,6 +170,7 @@ SgDatatablesBundle:Column:datetime.html.twig
 | orderable   | boolean        | true              |
 | render      | null or string | render_datetime   |
 | searchable  | boolean        | true              |
+| searchType  | string         | "like"            |
 | title       | string         | ""                |
 | type        | string         | ""                |
 | visible     | boolean        | true              |
@@ -199,6 +206,7 @@ SgDatatablesBundle:Column:timeago.html.twig
 | orderable   | boolean        | true            |
 | render      | null or string | render_timeago  |
 | searchable  | boolean        | true            |
+| searchType  | string         | "like"          |
 | title       | string         | ""              |
 | type        | string         | ""              |
 | visible     | boolean        | true            |
