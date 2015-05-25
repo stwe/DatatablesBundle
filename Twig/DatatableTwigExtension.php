@@ -31,7 +31,6 @@ class DatatableTwigExtension extends Twig_Extension
      */
     private $translator;
 
-
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -45,7 +44,6 @@ class DatatableTwigExtension extends Twig_Extension
     {
         $this->translator = $translator;
     }
-
 
     //-------------------------------------------------
     // Twig_ExtensionInterface
@@ -69,6 +67,7 @@ class DatatableTwigExtension extends Twig_Extension
             new Twig_SimpleFunction("datatable_render_html", array($this, "datatableRenderHtml"), array("is_safe" => array("all"))),
             new Twig_SimpleFunction("datatable_render_js", array($this, "datatableRenderJs"), array("is_safe" => array("all"))),
             new Twig_SimpleFunction("datatable_filter_render", array($this, "datatableFilterRender"), array("is_safe" => array("all"), 'needs_environment' => true)),
+            new Twig_SimpleFunction("icon", array($this, "icon"), array("is_safe" => array("all")))
         );
     }
 
@@ -81,7 +80,6 @@ class DatatableTwigExtension extends Twig_Extension
             new Twig_SimpleFilter("length_join", array($this, "lengthJoin"))
         );
     }
-
 
     //-------------------------------------------------
     // Functions && Filters
@@ -172,5 +170,21 @@ class DatatableTwigExtension extends Twig_Extension
     public function datatableRenderJs(AbstractDatatableView $datatable)
     {
         return $datatable->render("js");
+    }
+
+    /**
+     * Renders icon and label.
+     *
+     * @param string $icon
+     * @param string $label
+     *
+     * @return string
+     */
+    public function icon($icon, $label = "")
+    {
+        if ($icon)
+            return sprintf('<i class="%s"></i> %s', $icon, $label);
+        else
+            return $label;
     }
 }
