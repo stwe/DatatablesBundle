@@ -75,7 +75,8 @@ class TimeagoColumn extends AbstractColumn
             "title" => "",
             "type" => "",
             "visible" => true,
-            "width" => ""
+            "width" => "",
+            "searchType" => "like",
         ));
 
         $resolver->setAllowedTypes(array(

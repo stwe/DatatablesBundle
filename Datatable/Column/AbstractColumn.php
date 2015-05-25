@@ -132,6 +132,30 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
      */
     protected $width;
 
+    /**
+     * Set the search type
+     * Option: title
+     *
+     * @var string
+     */
+    protected $searchType;
+
+    /**
+     * filter type name (default - text)
+     */
+    protected $filterType;
+
+    /**
+     * Options for "select" filter type
+     */
+    protected $filterOptions;
+
+    /**
+     * Filter property: Column name, on which the filter is applied,
+     * based on options for this column
+     */
+    protected $filterProperty;
+
 
     //-------------------------------------------------
     // Ctor.
@@ -491,5 +515,69 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     public function getWidth()
     {
         return $this->width;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSearchType()
+    {
+        return $this->searchType;
+    }
+
+    /**
+     * @param string $searchType
+     */
+    public function setSearchType($searchType)
+    {
+        $this->searchType = $searchType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFilterType()
+    {
+        return $this->filterType;
+    }
+
+    /**
+     * @param string $filterType
+     */
+    public function setFilterType($filterType)
+    {
+        $this->filterType = $filterType;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFilterOptions()
+    {
+        return $this->filterOptions;
+    }
+
+    /**
+     * @param mixed $filterOptions
+     */
+    public function setFilterOptions($filterOptions)
+    {
+        $this->filterOptions = $filterOptions;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFilterProperty()
+    {
+        return $this->filterProperty;
+    }
+
+    /**
+     * @param mixed $filterProperty
+     */
+    public function setFilterProperty($filterProperty)
+    {
+        $this->filterProperty = $filterProperty;
     }
 }

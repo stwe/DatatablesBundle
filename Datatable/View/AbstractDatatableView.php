@@ -13,6 +13,7 @@ namespace Sg\DatatablesBundle\Datatable\View;
 
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Exception;
 
 /**
@@ -70,6 +71,12 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @var array
      */
     protected $templates;
+
+    /**
+     * This variable stores the array of column names as keys and column ids as values
+     * in order to perform search column id by name.
+     */
+    private $columnNames;
 
     //-------------------------------------------------
     // Ctor.
@@ -129,12 +136,17 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         $options["view_table_id"] = $this->getName();
 
+        $options["datatable"] = $this;
+
         switch ($type) {
             case "html":
                 return $this->container->get("templating")->render($this->templates["html"], $options);
                 break;
             case "js":
                 return $this->container->get("templating")->render($this->templates["js"], $options);
+                break;
+            case "filter":
+                return $this->container->get("templating")->render($this->templates["filter"], $options);
                 break;
             default:
                 return $this->container->get("templating")->render($this->templates["base"], $options);
@@ -233,5 +245,44 @@ abstract class AbstractDatatableView implements DatatableViewInterface
             $text = substr($text, 0, strrpos($text, ' ')) . "...";
         }
         return $text;
+    }
+
+    /**
+     * Searches the column index by column name
+     * Returns the position of the column in datatable columns or false if column is not found
+     * @param string $name
+     * @return int|bool
+     */
+    public function getColumnIdByColumnName($name)
+    {
+        if (count($this->columnNames) == 0) {
+            foreach ($this->getColumnBuilder()->getColumns() as $key => $column) {
+                $this->columnNames[$column->getData()] = $key;
+            }
+        }
+
+        return array_key_exists($name, $this->columnNames) ? $this->columnNames[$name] : false;
+    }
+
+    /**
+     * Returns options array based on key/value pairs, where key and value are the object's properties.
+     *
+     * @param ArrayCollection $entitiesCollection
+     * @param string $keyPropertyName
+     * @param string $valuePropertyName
+     * @return array
+     */
+    public function getCollectionAsOptionsArray($entitiesCollection, $keyPropertyName = 'id', $valuePropertyName = 'name')
+    {
+        $options = [];
+        foreach ($entitiesCollection as $entity) {
+            $keyPropertyName = Container::camelize($keyPropertyName);
+            $keyGetter = 'get' . ucfirst($keyPropertyName);
+            $valuePropertyName = Container::camelize($valuePropertyName);
+            $valueGetter = 'get' . ucfirst($valuePropertyName);
+            $options[$entity->$keyGetter()] = $entity->$valueGetter();
+        }
+
+        return $options;
     }
 }

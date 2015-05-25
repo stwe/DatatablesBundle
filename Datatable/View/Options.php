@@ -167,6 +167,13 @@ class Options
      */
     protected $useIntegrationOptions;
 
+    /**
+     * SearchType is the type of comparision operator, using in search query.
+     * The possible values are: 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'like', 'notLike', 'in', 'notIn', 'null', 'notNull'
+     * Default value is 'like'
+     */
+    protected $searchType;
+
 
     //-------------------------------------------------
     // Ctor.
@@ -230,7 +237,8 @@ class Options
             "class" => Style::BASE_STYLE,
             "individual_filtering" => false,
             "individual_filtering_position" => "foot",
-            "use_integration_options" => false
+            "use_integration_options" => false,
+            "searchType" => "like",
         ));
 
         $resolver->setAllowedTypes(array(
@@ -730,5 +738,16 @@ class Options
     public function getUseIntegrationOptions()
     {
         return $this->useIntegrationOptions;
+    }
+
+    /**
+     * Set search type
+     *
+     * @param string $searchType
+     * @return bool
+     */
+    public function setSearchType($searchType)
+    {
+        $this->searchType = $searchType;
     }
 }
