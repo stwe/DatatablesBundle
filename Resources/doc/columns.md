@@ -351,12 +351,18 @@ $this->getColumnBuilder()
                 "route" => "post_bulk_delete",
                 "label" => "Delete",
                 "role" => "ROLE_ADMIN",
-                "icon" => "<i class='fa fa-times'></i>"
+                "icon" => "fa fa-times",
+                "attributes" => array(
+                    "rel" => "tooltip",
+                    "title" => "Delete",
+                    "class" => "btn btn-primary btn-xs",
+                    "role" => "button"
+                ),
             ),
             array(
                 "route" => "post_bulk_disable",
                 "label" => "Disable",
-                "icon" => "<i class='fa fa-lock'></i>"
+                "icon" => "fa fa-lock"
             )
         )
     ));

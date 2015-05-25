@@ -48,6 +48,16 @@ class MultiselectAction extends Action
             "attributes" => "array",
         ));
 
+        $resolver->setNormalizer("attributes", function($options, $value) {
+            if (array_key_exists("class", $value)) {
+                $value["class"] = $value["class"] . " multiselect_action_click";
+            } else {
+                $value["class"] = "multiselect_action_click";
+            }
+
+            return $value;
+        });
+
         return $this;
     }
 }

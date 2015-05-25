@@ -75,13 +75,7 @@
                     url += 'onclick="' + "return confirm('{{ action.ConfirmMessage }}')" + '" ';
                 {% endif %}
                 url += ">";
-
-                {% if action.icon %}
-                    url += '<span class="{{ action.icon }}"></span> {{ action.label }}';
-                {% else %}
-                    url += "{{ action.label }}";
-                {% endif %}
-
+                url += '{{ icon(action.icon, action.label) }}';
                 url += "</a>";
 
                 actionsString += url;
