@@ -33,7 +33,6 @@ class DateTimeColumn extends TimeagoColumn
      */
     protected $dateFormat;
 
-
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -53,7 +52,6 @@ class DateTimeColumn extends TimeagoColumn
     {
         return "datetime";
     }
-
 
     //-------------------------------------------------
     // OptionsInterface
@@ -77,7 +75,6 @@ class DateTimeColumn extends TimeagoColumn
 
         return $this;
     }
-
 
     //-------------------------------------------------
     // Getters && Setters

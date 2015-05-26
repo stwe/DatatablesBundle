@@ -11,9 +11,13 @@
 
 namespace Sg\DatatablesBundle\Datatable\Data;
 
+use Sg\DatatablesBundle\Datatable\View\DatatableViewInterface;
+use Sg\DatatablesBundle\Datatable\Column\AbstractColumn;
+
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query;
 
 /**
@@ -78,8 +82,10 @@ class DatatableQuery
      */
     protected $callbacks;
 
-    protected $datatableView;
-
+    /**
+     * @var AbstractColumn[]
+     */
+    protected $userConfiguredColumns;
 
     //-------------------------------------------------
     // Ctor.
@@ -88,11 +94,12 @@ class DatatableQuery
     /**
      * Ctor.
      *
-     * @param array         $requestParams All request params
-     * @param ClassMetadata $metadata      A ClassMetadata instance
-     * @param EntityManager $em            A EntityManager instance
+     * @param array                  $requestParams All request params
+     * @param ClassMetadata          $metadata      A ClassMetadata instance
+     * @param EntityManager          $em            An EntityManager instance
+     * @param DatatableViewInterface $datatableView A DatatableView
      */
-    public function __construct(array $requestParams, ClassMetadata $metadata, EntityManager $em, $datatableView)
+    public function __construct(array $requestParams, ClassMetadata $metadata, EntityManager $em, DatatableViewInterface $datatableView)
     {
         $this->requestParams = $requestParams;
         $this->em = $em;
@@ -107,12 +114,11 @@ class DatatableQuery
         $this->callbacks = array(
             "WhereBuilder" => array(),
         );
-        $this->datatableView = $datatableView;
+        $this->userConfiguredColumns = $datatableView->getColumnBuilder()->getColumns();
     }
 
-
     //-------------------------------------------------
-    // Public
+    // Builds a query
     //-------------------------------------------------
 
     /**
@@ -326,12 +332,7 @@ class DatatableQuery
 
         foreach ($this->searchColumns as $key => $column) {
             if (null !== $this->searchColumns[$key]) {
-                $userConfiguredColumns = $this->datatableView->getColumnBuilder()->getColumns();
-                if (array_key_exists($key, $userConfiguredColumns)) {
-                    $searchType = $userConfiguredColumns[$key]->getSearchType();
-                } else {
-                    $searchType = 'like';
-                }
+                $searchType = $this->userConfiguredColumns[$key]->getSearchType();
                 $searchField = $this->searchColumns[$key];
                 $searchValue = $this->requestParams["columns"][$key]["search"]["value"];
                 $searchRange = $this->requestParams["columns"][$key]["name"] === "daterange";
@@ -362,53 +363,65 @@ class DatatableQuery
         return $this;
     }
 
-    private function addCondition($andExpr, $pivot, $searchType, $searchField, $searchValue, $i)
+    /**
+     * Add a condition.
+     *
+     * @param Andx         $andExpr
+     * @param QueryBuilder $pivot
+     * @param string       $searchType
+     * @param string       $searchField
+     * @param string       $searchValue
+     * @param integer      $i
+     *
+     * @return Andx
+     */
+    private function addCondition(Andx $andExpr, QueryBuilder $pivot, $searchType, $searchField, $searchValue, $i)
     {
         switch ($searchType) {
-            case 'like':
+            case "like":
                 $andExpr->add($pivot->expr()->like($searchField, "?$i"));
                 $pivot->setParameter($i, "%" . $searchValue . "%");
                 break;
-            case 'notLike':
+            case "notLike":
                 $andExpr->add($pivot->expr()->notLike($searchField, "?$i"));
                 $pivot->setParameter($i, "%" . $searchValue . "%");
                 break;
-            case 'eq':
+            case "eq":
                 $andExpr->add($pivot->expr()->eq($searchField, "?$i"));
                 $pivot->setParameter($i, $searchValue);
                 break;
-            case 'neq':
+            case "neq":
                 $andExpr->add($pivot->expr()->neq($searchField, "?$i"));
                 $pivot->setParameter($i, $searchValue);
                 break;
-            case 'lt':
+            case "lt":
                 $andExpr->add($pivot->expr()->lt($searchField, "?$i"));
                 $pivot->setParameter($i, $searchValue);
                 break;
-            case 'lte':
+            case "lte":
                 $andExpr->add($pivot->expr()->lte($searchField, "?$i"));
                 $pivot->setParameter($i, $searchValue);
                 break;
-            case 'gt':
+            case "gt":
                 $andExpr->add($pivot->expr()->gt($searchField, "?$i"));
                 $pivot->setParameter($i, $searchValue);
                 break;
-            case 'gte':
+            case "gte":
                 $andExpr->add($pivot->expr()->gte($searchField, "?$i"));
                 $pivot->setParameter($i, $searchValue);
                 break;
-            case 'in':
+            case "in":
                 $andExpr->add($pivot->expr()->in($searchField, "?$i"));
                 $pivot->setParameter($i, explode(',', $searchValue));
                 break;
-            case 'notIn':
+            case "notIn":
                 $andExpr->add($pivot->expr()->notIn($searchField, "?$i"));
-                $pivot->setParameter($i, explode(',', $searchValue));
+                $pivot->setParameter($i, explode(",", $searchValue));
                 break;
-            case 'isNull':
+            case "isNull":
                 $andExpr->add($pivot->expr()->isNull($searchField));
                 break;
-            case 'isNotNull':
+            case "isNotNull":
                 $andExpr->add($pivot->expr()->isNull($searchField));
                 break;
         }

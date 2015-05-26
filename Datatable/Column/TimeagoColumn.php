@@ -55,7 +55,6 @@ class TimeagoColumn extends AbstractColumn
         return "timeago";
     }
 
-
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -76,7 +75,10 @@ class TimeagoColumn extends AbstractColumn
             "type" => "",
             "visible" => true,
             "width" => "",
-            "searchType" => "like",
+            "search_type" => "like",
+            "filter_type" => "text",
+            "filter_options" => [],
+            "filter_property" => "",
         ));
 
         $resolver->setAllowedTypes(array(
@@ -89,8 +91,17 @@ class TimeagoColumn extends AbstractColumn
             "title" => "string",
             "type" => "string",
             "visible" => "bool",
-            "width" => "string"
+            "width" => "string",
+            "search_type" => "string",
+            "filter_type" => "string",
+            "filter_options" => "array",
+            "filter_property" => "string"
         ));
+
+        $resolver->setAllowedValues("search_type", array("like", "notLike", "eq", "neq", "lt", "lte", "gt", "gte",
+            "in", "notIn", "isNull", "isNotNull"));
+
+        $resolver->setAllowedValues("filter_type", array("text", "select"));
 
         return $this;
     }

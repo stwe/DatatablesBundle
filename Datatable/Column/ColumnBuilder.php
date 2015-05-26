@@ -48,7 +48,6 @@ class ColumnBuilder implements ColumnBuilderInterface
      */
     private $multiselect;
 
-
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -63,7 +62,6 @@ class ColumnBuilder implements ColumnBuilderInterface
         $this->multiselectColumn = null;
         $this->multiselect = false;
     }
-
 
     //-------------------------------------------------
     // ColumnBuilderInterface
@@ -119,7 +117,6 @@ class ColumnBuilder implements ColumnBuilderInterface
 
         return $virtualColumns;
     }
-
 
     //-------------------------------------------------
     // Getters && Setters

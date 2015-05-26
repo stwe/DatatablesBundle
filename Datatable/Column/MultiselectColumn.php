@@ -35,7 +35,6 @@ class MultiselectColumn extends ActionColumn
      */
     protected $value;
 
-
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -55,7 +54,6 @@ class MultiselectColumn extends ActionColumn
     {
         return "multiselect";
     }
-
 
     //-------------------------------------------------
     // OptionsInterface
@@ -80,7 +78,6 @@ class MultiselectColumn extends ActionColumn
 
         return $this;
     }
-
 
     //-------------------------------------------------
     // Getters && Setters

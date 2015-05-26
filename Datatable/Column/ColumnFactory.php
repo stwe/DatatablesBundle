@@ -27,7 +27,6 @@ class ColumnFactory implements ColumnFactoryInterface
      */
     private $column;
 
-
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -39,7 +38,6 @@ class ColumnFactory implements ColumnFactoryInterface
     {
         $this->column = null;
     }
-
 
     //-------------------------------------------------
     // ColumnFactoryInterface

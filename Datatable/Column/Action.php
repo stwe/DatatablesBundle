@@ -91,7 +91,6 @@ class Action implements OptionsInterface
      */
     protected $renderIf;
 
-
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -163,7 +162,6 @@ class Action implements OptionsInterface
 
         return $this;
     }
-
 
     //-------------------------------------------------
     // Getters && Setters

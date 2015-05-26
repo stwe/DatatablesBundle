@@ -12,7 +12,9 @@
 namespace Sg\DatatablesBundle\Twig;
 
 use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
+use Sg\DatatablesBundle\Datatable\Column\AbstractColumn;
 
+use Twig_Environment;
 use Twig_Extension;
 use Twig_SimpleFunction;
 use Twig_SimpleFilter;
@@ -66,7 +68,7 @@ class DatatableTwigExtension extends Twig_Extension
             new Twig_SimpleFunction("datatable_render", array($this, "datatableRender"), array("is_safe" => array("all"))),
             new Twig_SimpleFunction("datatable_render_html", array($this, "datatableRenderHtml"), array("is_safe" => array("all"))),
             new Twig_SimpleFunction("datatable_render_js", array($this, "datatableRenderJs"), array("is_safe" => array("all"))),
-            new Twig_SimpleFunction("datatable_filter_render", array($this, "datatableFilterRender"), array("is_safe" => array("all"), 'needs_environment' => true)),
+            new Twig_SimpleFunction("datatable_filter_render", array($this, "datatableFilterRender"), array("is_safe" => array("all"), "needs_environment" => true)),
             new Twig_SimpleFunction("icon", array($this, "icon"), array("is_safe" => array("all")))
         );
     }
@@ -130,19 +132,23 @@ class DatatableTwigExtension extends Twig_Extension
     /**
      * Renders the custom datatable filter.
      *
+     * @param Twig_Environment      $twig
      * @param AbstractDatatableView $datatable
+     * @param AbstractColumn        $column
+     * @param integer               $loopIndex
      *
      * @return mixed|string|void
-     * @throws Exception
      */
-    public function datatableFilterRender(\Twig_Environment $twig, AbstractDatatableView $datatable, $column, $loopIndex)
+    public function datatableFilterRender(Twig_Environment $twig, AbstractDatatableView $datatable, AbstractColumn $column, $loopIndex)
     {
-        $filterType = $column->getFilterType() ?: 'text';
+        $filterType = $column->getFilterType() ?: "text";
+
         if ($filterProperty = $column->getFilterProperty()) {
             $filterColumnId = $datatable->getColumnIdByColumnName($filterProperty);
         } else {
             $filterColumnId = $loopIndex;
         }
+
         return $twig->render('SgDatatablesBundle:Filters:filter_' . $filterType . '.html.twig', ['column' => $column, 'filterColumnId' => $filterColumnId]);
     }
 

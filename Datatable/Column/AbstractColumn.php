@@ -133,29 +133,37 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     protected $width;
 
     /**
-     * Set the search type
-     * Option: title
+     * The search type (e.g. "like").
+     * Option: search_type
      *
      * @var string
      */
     protected $searchType;
 
     /**
-     * filter type name (default - text)
+     * The filter type name ("text" or "select).
+     * Option: filter_type
+     *
+     * @var string
      */
     protected $filterType;
 
     /**
-     * Options for "select" filter type
+     * Options for "select" filter type (e.g. "1" => "Yes", "0" => "No").
+     * Option: filter_options
+     *
+     * @var array
      */
     protected $filterOptions;
 
     /**
      * Filter property: Column name, on which the filter is applied,
-     * based on options for this column
+     * based on options for this column.
+     * Option: filter_property
+     *
+     * @var string
      */
     protected $filterProperty;
-
 
     //-------------------------------------------------
     // Ctor.
@@ -168,7 +176,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     {
         $this->options = array();
     }
-
 
     //-------------------------------------------------
     // ColumnInterface
@@ -183,7 +190,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
 
         return $this;
     }
-
 
     //-------------------------------------------------
     // OptionsInterface
@@ -223,7 +229,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
 
         return $this;
     }
-
 
     //-------------------------------------------------
     // Getters && Setters
@@ -518,6 +523,22 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     }
 
     /**
+     * Set search type.
+     *
+     * @param string $searchType
+     *
+     * @return $this
+     */
+    public function setSearchType($searchType)
+    {
+        $this->searchType = $searchType;
+
+        return $this;
+    }
+
+    /**
+     * Get search type.
+     *
      * @return string
      */
     public function getSearchType()
@@ -526,14 +547,22 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     }
 
     /**
-     * @param string $searchType
+     * Set filter type.
+     *
+     * @param string $filterType
+     *
+     * @return $this
      */
-    public function setSearchType($searchType)
+    public function setFilterType($filterType)
     {
-        $this->searchType = $searchType;
+        $this->filterType = $filterType;
+
+        return $this;
     }
 
     /**
+     * Get filter type.
+     *
      * @return string
      */
     public function getFilterType()
@@ -542,15 +571,23 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     }
 
     /**
-     * @param string $filterType
+     * Set filter options.
+     *
+     * @param array $filterOptions
+     *
+     * @return $this
      */
-    public function setFilterType($filterType)
+    public function setFilterOptions(array $filterOptions)
     {
-        $this->filterType = $filterType;
+        $this->filterOptions = $filterOptions;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * Get filter options.
+     *
+     * @return array
      */
     public function getFilterOptions()
     {
@@ -558,26 +595,26 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     }
 
     /**
-     * @param mixed $filterOptions
-     */
-    public function setFilterOptions($filterOptions)
-    {
-        $this->filterOptions = $filterOptions;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFilterProperty()
-    {
-        return $this->filterProperty;
-    }
-
-    /**
-     * @param mixed $filterProperty
+     * Set filter property.
+     *
+     * @param string $filterProperty
+     *
+     * @return $this
      */
     public function setFilterProperty($filterProperty)
     {
         $this->filterProperty = $filterProperty;
+
+        return $this;
+    }
+
+    /**
+     * Get filter property.
+     *
+     * @return string
+     */
+    public function getFilterProperty()
+    {
+        return $this->filterProperty;
     }
 }

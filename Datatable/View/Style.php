@@ -92,7 +92,6 @@ class Style
      */
     const FOUNDATION_STYLE = "display";
 
-
     //-------------------------------------------------
     // Built-in paging button arrangements
     //-------------------------------------------------

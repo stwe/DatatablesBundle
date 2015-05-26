@@ -45,7 +45,6 @@ class ActionColumn extends AbstractColumn
      */
     protected $actions;
 
-
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -79,7 +78,6 @@ class ActionColumn extends AbstractColumn
     {
         return "action";
     }
-
 
     //-------------------------------------------------
     // OptionsInterface
@@ -119,7 +117,6 @@ class ActionColumn extends AbstractColumn
 
         return $this;
     }
-
 
     //-------------------------------------------------
     // Getters && Setters

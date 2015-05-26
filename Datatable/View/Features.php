@@ -135,7 +135,6 @@ class Features
      */
     protected $delay;
 
-
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -150,7 +149,6 @@ class Features
         $this->configureOptions($this->resolver);
         $this->setFeatures($this->features);
     }
-
 
     //-------------------------------------------------
     // Setup Features
@@ -241,7 +239,6 @@ class Features
 
         return $this;
     }
-
 
     //-------------------------------------------------
     // Getters && Setters

@@ -12,6 +12,8 @@
 namespace Sg\DatatablesBundle\Datatable\View;
 
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
+
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Exception;
@@ -145,9 +147,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
             case "js":
                 return $this->container->get("templating")->render($this->templates["js"], $options);
                 break;
-            case "filter":
-                return $this->container->get("templating")->render($this->templates["filter"], $options);
-                break;
             default:
                 return $this->container->get("templating")->render($this->templates["base"], $options);
                 break;
@@ -230,10 +229,14 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         return $this->templates;
     }
 
+    //-------------------------------------------------
+    // Helper
+    //-------------------------------------------------
+
     /**
-     * Truncate text
+     * Truncate text.
      * 
-     * @param string $text
+     * @param string  $text
      * @param integer $chars
      * 
      * @return string
@@ -244,18 +247,22 @@ abstract class AbstractDatatableView implements DatatableViewInterface
             $text = substr($text . " ", 0, $chars);
             $text = substr($text, 0, strrpos($text, ' ')) . "...";
         }
+
         return $text;
     }
 
     /**
-     * Searches the column index by column name
-     * Returns the position of the column in datatable columns or false if column is not found
+     * Searches the column index by column name.
+     * Returns the position of the column in datatable columns or false if column is not found.
+     *
      * @param string $name
+     *
      * @return int|bool
      */
     public function getColumnIdByColumnName($name)
     {
         if (count($this->columnNames) == 0) {
+            /** @var \Sg\DatatablesBundle\Datatable\Column\AbstractColumn $column */
             foreach ($this->getColumnBuilder()->getColumns() as $key => $column) {
                 $this->columnNames[$column->getData()] = $key;
             }
@@ -268,13 +275,15 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * Returns options array based on key/value pairs, where key and value are the object's properties.
      *
      * @param ArrayCollection $entitiesCollection
-     * @param string $keyPropertyName
-     * @param string $valuePropertyName
+     * @param string          $keyPropertyName
+     * @param string          $valuePropertyName
+     *
      * @return array
      */
     public function getCollectionAsOptionsArray($entitiesCollection, $keyPropertyName = 'id', $valuePropertyName = 'name')
     {
         $options = [];
+
         foreach ($entitiesCollection as $entity) {
             $keyPropertyName = Container::camelize($keyPropertyName);
             $keyGetter = 'get' . ucfirst($keyPropertyName);

@@ -49,7 +49,6 @@ class BooleanColumn extends AbstractColumn
      */
     protected $falseLabel;
 
-
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -84,7 +83,6 @@ class BooleanColumn extends AbstractColumn
         return "boolean";
     }
 
-
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -109,9 +107,10 @@ class BooleanColumn extends AbstractColumn
             "false_icon" => "",
             "true_label" => "",
             "false_label" => "",
-            "searchType" => "like",
-            "filterType" => "select",
-            "filterOptions" => ['1' => 'Yes', '0' => 'No'],
+            "search_type" => "like",
+            "filter_type" => "select",
+            "filter_options" => ["1" => "Yes", "0" => "No"],
+            "filter_property" => ""
         ));
 
         $resolver->setAllowedTypes(array(
@@ -119,7 +118,7 @@ class BooleanColumn extends AbstractColumn
             "padding" => "string",
             "name" => "string",
             "orderable" => "bool",
-            "render" => array("string"),
+            "render" => "string",
             "searchable" => "bool",
             "title" => "string",
             "type" => "string",
@@ -128,12 +127,20 @@ class BooleanColumn extends AbstractColumn
             "true_icon" => "string",
             "false_icon" => "string",
             "true_label" => "string",
-            "false_label" => "string"
+            "false_label" => "string",
+            "search_type" => "string",
+            "filter_type" => "string",
+            "filter_options" => "array",
+            "filter_property" => "string"
         ));
+
+        $resolver->setAllowedValues("search_type", array("like", "notLike", "eq", "neq", "lt", "lte", "gt", "gte",
+            "in", "notIn", "isNull", "isNotNull"));
+
+        $resolver->setAllowedValues("filter_type", array("text", "select"));
 
         return $this;
     }
-
 
     //-------------------------------------------------
     // Getters && Setters

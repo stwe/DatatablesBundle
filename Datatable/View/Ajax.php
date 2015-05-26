@@ -50,7 +50,6 @@ class Ajax
      */
     protected $type;
 
-
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -65,7 +64,6 @@ class Ajax
         $this->configureOptions($this->resolver);
         $this->setOptions($this->options);
     }
-
 
     //-------------------------------------------------
     // Setup Ajax
@@ -134,7 +132,6 @@ class Ajax
 
         return $this;
     }
-
 
     //-------------------------------------------------
     // Getters && Setters

@@ -51,7 +51,6 @@ class ArrayColumn extends Column
         return "array";
     }
 
-
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------

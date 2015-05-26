@@ -105,7 +105,6 @@ class DatatableData implements DatatableDataInterface
      */
     private $counter;
 
-
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -140,7 +139,6 @@ class DatatableData implements DatatableDataInterface
 
         $this->prepareColumns();
     }
-
 
     //-------------------------------------------------
     // Private
@@ -387,7 +385,6 @@ class DatatableData implements DatatableDataInterface
 
         return $this;
     }
-
 
     //-------------------------------------------------
     // DatatableDataInterface

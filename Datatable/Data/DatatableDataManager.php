@@ -53,7 +53,6 @@ class DatatableDataManager
      */
     private $parameterBag;
 
-
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -72,7 +71,6 @@ class DatatableDataManager
         $this->serializer = $serializer;
         $this->parameterBag = null;
     }
-
 
     //-------------------------------------------------
     // Public
