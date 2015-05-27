@@ -75,7 +75,7 @@
                     url += 'onclick="' + "return confirm('{{ action.ConfirmMessage }}')" + '" ';
                 {% endif %}
                 url += ">";
-                url += '{{ icon(action.icon, action.label) }}';
+                url += '{{ datatable_icon(action.icon, action.label) }}';
                 url += "</a>";
 
                 actionsString += url;

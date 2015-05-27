@@ -10,7 +10,7 @@
                 {% set attributes %}
                     {% for key, value in action.attributes %} {{ key }}='{{ value }}'{% endfor %}
                 {% endset %}
-                <a href="{{ route }}" {{ attributes }}>{{ icon(action.icon, action.label) }}</a>
+                <a href="{{ route }}" {{ attributes }}>{{ datatable_icon(action.icon, action.label) }}</a>
             {% endif %}
         {% endfor %}
     </div>

@@ -69,7 +69,7 @@ class DatatableTwigExtension extends Twig_Extension
             new Twig_SimpleFunction("datatable_render_html", array($this, "datatableRenderHtml"), array("is_safe" => array("all"))),
             new Twig_SimpleFunction("datatable_render_js", array($this, "datatableRenderJs"), array("is_safe" => array("all"))),
             new Twig_SimpleFunction("datatable_filter_render", array($this, "datatableFilterRender"), array("is_safe" => array("all"), "needs_environment" => true)),
-            new Twig_SimpleFunction("icon", array($this, "icon"), array("is_safe" => array("all")))
+            new Twig_SimpleFunction("datatable_icon", array($this, "datatableIcon"), array("is_safe" => array("all")))
         );
     }
 
@@ -186,7 +186,7 @@ class DatatableTwigExtension extends Twig_Extension
      *
      * @return string
      */
-    public function icon($icon, $label = "")
+    public function datatableIcon($icon, $label = "")
     {
         if ($icon)
             return sprintf('<i class="%s"></i> %s', $icon, $label);
