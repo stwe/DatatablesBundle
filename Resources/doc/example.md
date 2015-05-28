@@ -131,8 +131,10 @@ class PostDatatable extends AbstractDatatableView
                 "orderable" => true,
                 "render" => "render_boolean",
                 "searchable" => true,
-                "searchType" => 'eq', // will use eq operator in search query (for example "where visible = 1" etc.)
-                "filterType" => 'select', // use select dropdown with options: any/yes/no options are automatically associated with "boolean" columntype
+                "search_type" => 'eq', // will use eq operator in search query (for example "where visible = 1" etc.)
+                "filter_type" => 'select', // use select dropdown with options: any/yes/no options are automatically associated with "boolean" columntype
+                'filter_options' => ['' => 'Any', 'yes' => 'Yes', 'no' => 'No'], // For client-side mode options keys should be equal to the values actually showed on the table,
+                                                                                 //but for server-side mode these keys should be equal to the values in the database.
                 "title" => "Visible",
                 "type" => "",
                 "visible" => true,
@@ -167,9 +169,9 @@ class PostDatatable extends AbstractDatatableView
                 "orderable" => true,
                 "render" => null,
                 "searchable" => true,
-                'filterType' => 'select', //  render the search input as a dropdown
-                'filterOptions' => $this->getCollectionAsOptionsArray($users, 'email', 'username'), // dropdown options list. This method should return all options as array [email => username]
-                'filterProperty' => 'authorEmail', // You can set up another property, different with the current column, to search on.
+                'filter_type' => 'select', //  render the search input as a dropdown
+                'filter_options' => ['' => 'Any'] + $this->getCollectionAsOptionsArray($users, 'email', 'username'), // dropdown options list. This method should return all options as array [email => username]
+                'filter_property' => 'authorEmail', // You can set up another property, different with the current column, to search on.
                 "title" => "<span class='glyphicon glyphicon-user' aria-hidden='true'></span> Author",
                 "type" => "",
                 "visible" => true,
