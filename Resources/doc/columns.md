@@ -10,23 +10,23 @@ SgDatatablesBundle:Column:column.html.twig
 
 ### Options
 
-| Option         | Type           | Default |
-|----------------|----------------|---------|
-| class          | string         | ""      |
-| padding        | string         | ""      |
-| name           | string         | ""      |
-| filterType     | string         | "text"  |
-| filterOptions  | array          | []      |
-| filterProperty | string         | ""      |
-| orderable      | boolean        | true    |
-| render         | null or string | null    |
-| searchable     | boolean        | true    |
-| searchType     | string         | "like"  |
-| title          | string         | ""      |
-| type           | string         | ""      |
-| visible        | boolean        | true    |
-| width          | string         | ""      |
-| default        | string         | ""      |
+| Option          | Type           | Default |
+|-----------------|----------------|---------|
+| class           | string         | ""      |
+| padding         | string         | ""      |
+| name            | string         | ""      |
+| filter_type     | string         | "text"  |
+| filter_options  | array          | array() |
+| filter_property | string         | ""      |
+| orderable       | boolean        | true    |
+| render          | null or string | null    |
+| searchable      | boolean        | true    |
+| search_type     | string         | "like"  |
+| title           | string         | ""      |
+| type            | string         | ""      |
+| visible         | boolean        | true    |
+| width           | string         | ""      |
+| default         | string         | ""      |
 
 ### Example
 
@@ -63,21 +63,24 @@ SgDatatablesBundle:Column:column.html.twig
 
 ### Options
 
-| Option     | Type           | Default |          |
-|------------|----------------|---------|----------|
-| class      | string         | ""      |          |
-| padding    | string         | ""      |          |
-| name       | string         | ""      |          |
-| orderable  | boolean        | true    |          |
-| render     | null or string | null    |          |
-| searchable | boolean        | true    |          |
-| searchType | string         | "like"  |          |
-| title      | string         | ""      |          |
-| type       | string         | ""      |          |
-| visible    | boolean        | true    |          |
-| width      | string         | ""      |          |
-| default    | string         | ""      |          |
-| data       | string         |         | required |
+| Option          | Type           | Default |          |
+|-----------------|----------------|---------|----------|
+| class           | string         | ""      |          |
+| padding         | string         | ""      |          |
+| name            | string         | ""      |          |
+| filter_type     | string         | "text"  |          |
+| filter_options  | array          | array() |          |
+| filter_property | string         | ""      |          |
+| orderable       | boolean        | true    |          |
+| render          | null or string | null    |          |
+| searchable      | boolean        | true    |          |
+| search_type     | string         | "like"  |          |
+| title           | string         | ""      |          |
+| type            | string         | ""      |          |
+| visible         | boolean        | true    |          |
+| width           | string         | ""      |          |
+| default         | string         | ""      |          |
+| data            | string         |         | required |
 
 ### Example
 
@@ -120,23 +123,26 @@ SgDatatablesBundle:Column:boolean.html.twig
 
 ### Options
 
-| Option      | Type           | Default          |
-|-------------|----------------|------------------|
-| class       | string         | ""               |
-| padding     | string         | ""               |
-| name        | string         | ""               |
-| orderable   | boolean        | true             |
-| render      | null or string | render_boolean   |
-| searchable  | boolean        | true             |
-| searchType  | string         | "like"           |
-| title       | string         | ""               |
-| type        | string         | ""               |
-| visible     | boolean        | true             |
-| width       | string         | ""               |
-| true_icon   | string         | ""               |
-| false_icon  | string         | ""               |
-| true_label  | string         | ""               |
-| false_label | string         | ""               |
+| Option          | Type           | Default                                  |
+|-----------------|----------------|------------------------------------------|
+| class           | string         | ""                                       |
+| padding         | string         | ""                                       |
+| name            | string         | ""                                       |
+| orderable       | boolean        | true                                     |
+| render          | null or string | render_boolean                           |
+| searchable      | boolean        | true                                     |
+| search_type     | string         | "like"                                   |
+| title           | string         | ""                                       |
+| type            | string         | ""                                       |
+| visible         | boolean        | true                                     |
+| width           | string         | ""                                       |
+| true_icon       | string         | ""                                       |
+| false_icon      | string         | ""                                       |
+| true_label      | string         | ""                                       |
+| false_label     | string         | ""                                       |
+| filter_type     | string         | "select"                                 |
+| filter_options  | array          | ["" => "Any", "1" => "Yes", "0" => "No"] |
+| filter_property | string         | ""                                       |
 
 ### Example
 
@@ -162,20 +168,23 @@ SgDatatablesBundle:Column:datetime.html.twig
 
 ### Options
 
-| Option      | Type           | Default           |
-|-------------|----------------|-------------------|
-| class       | string         | ""                |
-| padding     | string         | ""                |
-| name        | string         | ""                |
-| orderable   | boolean        | true              |
-| render      | null or string | render_datetime   |
-| searchable  | boolean        | true              |
-| searchType  | string         | "like"            |
-| title       | string         | ""                |
-| type        | string         | ""                |
-| visible     | boolean        | true              |
-| width       | string         | ""                |
-| date_format | string         | "lll"             |
+| Option          | Type           | Default         |
+|-----------------|----------------|-----------------|
+| class           | string         | ""              |
+| padding         | string         | ""              |
+| name            | string         | ""              |
+| orderable       | boolean        | true            |
+| render          | null or string | render_datetime |
+| searchable      | boolean        | true            |
+| search_type     | string         | "like"          |
+| title           | string         | ""              |
+| type            | string         | ""              |
+| visible         | boolean        | true            |
+| width           | string         | ""              |
+| date_format     | string         | "lll"           |
+| filter_type     | string         | "text"          |
+| filter_options  | array          | array()         |
+| filter_property | string         | ""              |
 
 ### Example
 
@@ -198,19 +207,22 @@ SgDatatablesBundle:Column:timeago.html.twig
 
 ### Options
 
-| Option      | Type           | Default         |
-|-------------|----------------|-----------------|
-| class       | string         | ""              |
-| padding     | string         | ""              |
-| name        | string         | ""              |
-| orderable   | boolean        | true            |
-| render      | null or string | render_timeago  |
-| searchable  | boolean        | true            |
-| searchType  | string         | "like"          |
-| title       | string         | ""              |
-| type        | string         | ""              |
-| visible     | boolean        | true            |
-| width       | string         | ""              |
+| Option          | Type           | Default         |
+|-----------------|----------------|-----------------|
+| class           | string         | ""              |
+| padding         | string         | ""              |
+| name            | string         | ""              |
+| orderable       | boolean        | true            |
+| render          | null or string | render_timeago  |
+| searchable      | boolean        | true            |
+| search_type     | string         | "like"          |
+| title           | string         | ""              |
+| type            | string         | ""              |
+| visible         | boolean        | true            |
+| width           | string         | ""              |
+| filter_type     | string         | "text"          |
+| filter_options  | array          | array()         |
+| filter_property | string         | ""              |
 
 ### Example
 

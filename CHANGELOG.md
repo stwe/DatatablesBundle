@@ -4,25 +4,32 @@
 
 Here is a list of the most important changes:
 
-### Access to the entire service container
+### Custom filters
+
+- [#29](https://github.com/stwe/DatatablesBundle/issues/29) [dchabanenko](https://github.com/dchabanenko)
 
 ``` php
-    public function getLineFormatter()
-    {
-        $formatter = function($line){
-            if ($this->container->get("security.authorization_checker")->isGranted("IS_AUTHENTICATED_FULLY")) {
-                $repository = $this->container->get("doctrine.orm.entity_manager")->getRepository("SgBlogBundle:Post");
-                $user = $this->container->get("security.token_storage")->getToken()->getUser();
-                $line["owner"] = $repository->find($line["id"])->isAuthor($user);
-            } else {
-                $line["owner"] = "Please Login";
-            }
-
-            return $line;
-        };
-
-        return $formatter;
-    }
+$this->columnBuilder
+    ->add("visible", "boolean", array(
+        "class" => "",
+        "padding" => "",
+        "name" => "",
+        "orderable" => true,
+        "render" => "render_boolean",
+        "searchable" => true,
+        "search_type" => "eq", // will use eq operator in search query (for example "where visible = 1" etc.)
+        "filter_type" => "select", // use select dropdown with options: any/yes/no options are automatically associated with "boolean" columntype
+        "filter_options" => ["" => "Any", "1" => "Yes", "0" => "No"], // For client-side mode options keys should be equal to the values actually showed on the table,
+        //but for server-side mode these keys should be equal to the values in the database.
+        "title" => "Visible",
+        "type" => "",
+        "visible" => true,
+        "width" => "40px",
+        "true_icon" => "glyphicon glyphicon-ok",
+        "false_icon" => "",
+        "true_label" => "yes",
+        "false_label" => "no"
+    ))
 ```
 
 ### Date range individual filtering and others
@@ -32,30 +39,28 @@ Here is a list of the most important changes:
 ### New config style
 
 ``` php
-    public function buildDatatableView()
-    {
-        $this->features->setFeatures(array(
-            "processing" => true
-        ));
+public function buildDatatableView()
+{
+    $this->features->setFeatures(array(
+        "processing" => true
+    ));
 
-        $this->ajax->setOptions(array(
-            "url" => $this->container->get("router")->generate("post_results")
-        ));
+    $this->ajax->setOptions(array(
+        "url" => $this->container->get("router")->generate("post_results")
+    ));
 
-        $this->options->setOptions(array(
-            "paging_type" => Style::FULL_PAGINATION,
-            "responsive" => true,
-            "class" => Style::BASE_STYLE,
-            "individual_filtering" => false
-        ));
+    $this->options->setOptions(array(
+        "paging_type" => Style::FULL_PAGINATION,
+        "responsive" => true,
+        "class" => Style::BASE_STYLE,
+        "individual_filtering" => false
+    ));
 
-        // ...
-    }
+    // ...
+}
 ```
 
 ### Automatically call buildDatatableView()
-
-Example:
 
 ``` php
 /**

@@ -1,6 +1,6 @@
 # Examples
 
-## Server side example
+## Server-Side example
 
 ### Step 1: Create your Datatables class
 
@@ -64,7 +64,7 @@ class PostDatatable extends AbstractDatatableView
      */
     public function buildDatatableView()
     {
-        // the default settings
+        // the default settings, except "scroll_x"
         $this->features->setFeatures(array(
             "auto_width" => true,
             "defer_render" => false,
@@ -74,7 +74,7 @@ class PostDatatable extends AbstractDatatableView
             "ordering" => true,
             "paging" => true,
             "processing" => true,
-            "scroll_x" => false,
+            "scroll_x" => true,
             "scroll_y" => "",
             "searching" => true,
             "server_side" => true,
@@ -88,7 +88,7 @@ class PostDatatable extends AbstractDatatableView
             "type" => "GET"
         ));
 
-        // the default settings, except "class" and "use_integration_options"
+        // the default settings, except "class", "individual_filtering_position" and "use_integration_options"
         $this->options->setOptions(array(
             "display_start" => 0,
             "dom" => "lfrtip", // default, but not used because "use_integration_options" = true
@@ -106,9 +106,12 @@ class PostDatatable extends AbstractDatatableView
             "responsive" => false,
             "class" => Style::BOOTSTRAP_3_STYLE,
             "individual_filtering" => false,
-            "individual_filtering_position" => "head",
+            "individual_filtering_position" => "both",
             "use_integration_options" => true
         ));
+
+        $em = $this->container->get("doctrine")->getManager();
+        $users = $em->getRepository("AppBundle:User")->findAll();
 
         $this->columnBuilder
             ->add("id", "column", array(
@@ -131,10 +134,9 @@ class PostDatatable extends AbstractDatatableView
                 "orderable" => true,
                 "render" => "render_boolean",
                 "searchable" => true,
-                "search_type" => 'eq', // will use eq operator in search query (for example "where visible = 1" etc.)
-                "filter_type" => 'select', // use select dropdown with options: any/yes/no options are automatically associated with "boolean" columntype
-                'filter_options' => ['' => 'Any', 'yes' => 'Yes', 'no' => 'No'], // For client-side mode options keys should be equal to the values actually showed on the table,
-                                                                                 //but for server-side mode these keys should be equal to the values in the database.
+                "search_type" => "eq",     // will use eq operator in search query (for example "where visible = 1" etc.)
+                "filter_type" => "select", // use select dropdown with options: any/yes/no options are automatically associated with "boolean" columntype
+                "filter_options" => ["" => "Any", "1" => "Yes", "0" => "No"], // for server-side mode these keys should be equal to the values in the database
                 "title" => "Visible",
                 "type" => "",
                 "visible" => true,
@@ -169,25 +171,22 @@ class PostDatatable extends AbstractDatatableView
                 "orderable" => true,
                 "render" => null,
                 "searchable" => true,
-                'filter_type' => 'select', //  render the search input as a dropdown
-                'filter_options' => ['' => 'Any'] + $this->getCollectionAsOptionsArray($users, 'email', 'username'), // dropdown options list. This method should return all options as array [email => username]
-                'filter_property' => 'authorEmail', // You can set up another property, different with the current column, to search on.
+                "filter_type" => "select", //  render the search input as a dropdown
+                "filter_options" => ["" => "Any"] + $this->getCollectionAsOptionsArray($users, "email", "username"), // dropdown options list. This method should return all options as array [email => username]
+                "filter_property" => "authorEmail", // You can set up another property, different with the current column, to search on.
                 "title" => "<span class='glyphicon glyphicon-user' aria-hidden='true'></span> Author",
                 "type" => "",
                 "visible" => true,
                 "width" => "",
                 "default" => ""
             ))
-            /*
             ->add("comments.title", "array", array(
                 "title" => "Kommentare",
-                //"visible" => true,
                 "searchable" => false,
                 "orderable" => false,
                 "default" => "default value",
                 "data" => "comments[, ].title",
-                ))
-            */
+            ))
             ->add(null, "action", array(
                 "title" => "Actions",
                 "start_html" => '<div class="wrapper">',
@@ -331,7 +330,7 @@ public function indexResultsAction()
 }
 ```
 
-## Non server side example
+## Client-Side example
 
 The differences to the above description:
 
@@ -361,6 +360,29 @@ class PostDatatable extends AbstractDatatableView
             "server_side" => false
         ));
 
+        $this->columnBuilder
+            ->add("visible", "boolean", array(
+                "class" => "",
+                "padding" => "",
+                "name" => "",
+                "orderable" => true,
+                "render" => "render_boolean",
+                "searchable" => true,
+                "search_type" => "eq",     // will use eq operator in search query (for example "where visible = 1" etc.)
+                "filter_type" => "select", // use select dropdown with options: any/yes/no options are automatically associated with "boolean" columntype
+                "filter_options" => ["" => "Any", "yes" => "Yes", "no" => "No"], // for client-side mode options keys should be equal to the values actually showed on the table
+                "title" => "Visible",
+                "type" => "",
+                "visible" => true,
+                "width" => "",
+                "true_icon" => "glyphicon glyphicon-ok",
+                "false_icon" => "",
+                "true_label" => "yes",
+                "false_label" => "no"
+            ))
+            // ...
+        ));
+
         // ...
     }
 }
@@ -370,36 +392,39 @@ class PostDatatable extends AbstractDatatableView
 
 ```php
 /**
- * Post datatable.
+ * Client side Post datatable.
  *
- * @Route("/", name="post")
+ * @Route("/cs", name="cs_post")
  * @Method("GET")
- * @Template()
+ * @Template(":post:index.html.twig")
  *
  * @return array
  */
-public function indexAction()
+public function clientSideIndexAction()
 {
-    $repository = $this->getDoctrine()->getRepository('SgBlogBundle:Post');
+    $repository = $this->getDoctrine()->getRepository("AppBundle:Post");
 
-    $query = $repository->createQueryBuilder('p')
-        ->select('p, t, cb, ub')
-        ->join('p.tags', 't')
-        ->join('p.createdBy', 'cb')
-        ->join('p.updatedBy', 'ub')
+    $query = $repository->createQueryBuilder("p")
+        ->select("p, c")
+        ->join("p.comments", "c")
         ->getQuery();
 
     $results = $query->getArrayResult();
+
+    // the virtual field ...
+    foreach ($results as $key => $value) {
+        $results[$key]["owner"] = "test";
+    }
 
     $encoders = array(new JsonEncoder());
     $normalizers = array(new GetSetMethodNormalizer());
     $serializer = new Serializer($normalizers, $encoders);
 
-    $postDatatable = $this->get('sg_datatables.post');
-    $postDatatable->setData($serializer->serialize($results, 'json'));
+    $datatable = $this->get("app.datatable.client_side.post");
+    $datatable->setData($serializer->serialize($results, "json"));
 
     return array(
-        'datatable' => $postDatatable,
+        "datatable" => $datatable,
     );
 }
 ```
