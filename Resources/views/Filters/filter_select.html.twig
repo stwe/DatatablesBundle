@@ -4,7 +4,6 @@
         {% if column.name %}name="{{ column.name }}"{% endif %}
         data-filter-property-id="{{ filterColumnId }}"
         >
-            <option value="null">{{ 'Any'|trans }}</option>
        {% for key,name in column.filterOptions %}
             <option value="{{ key }}">{{ name }}</option>
        {% endfor %}

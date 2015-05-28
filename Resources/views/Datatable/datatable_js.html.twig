@@ -52,11 +52,7 @@
                     {% for column in view_columns %}
                         {% if column.searchable %}
                             html =  '<th>';
-                            html += '<input type="text" class="individual_filtering"';
-                            html += 'style="{% if column.width %}width:{{ column.width }};{% endif %}"';
-                            html += 'placeholder="{{ column.title|striptags|trim }}"';
-                            html += 'name="{% if column.name %}{{ column.name }}{% endif %}"';
-                            html += "/>";
+                            html += '{{ datatable_filter_render(datatable, column, loop.index0)|escape('js') }}';
                             html += '</th>';
                         {% else %}
                             html =  '<th>';
@@ -85,7 +81,7 @@
                         .draw();
                 });
 
-                $("tfoot select.individual_filtering").on("keyup change", function(event) {
+                $("select.individual_filtering").on("keyup change", function(event) {
                     var searchFieldId = $(event.currentTarget).data('filter-property-id');
                     var searchValue = $(this).val();
                     searchValue = searchValue ? searchValue.toString() : '';
