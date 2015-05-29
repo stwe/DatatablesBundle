@@ -14,7 +14,12 @@ namespace Sg\DatatablesBundle\Datatable\View;
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Twig_Environment;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Exception;
 
@@ -26,11 +31,46 @@ use Exception;
 abstract class AbstractDatatableView implements DatatableViewInterface
 {
     /**
-     * The service container.
+     * The AuthorizationChecker service.
      *
-     * @var ContainerInterface
+     * @var AuthorizationCheckerInterface
      */
-    protected $container;
+    protected $authorizationChecker;
+
+    /**
+     * The SecurityTokenStorage service.
+     *
+     * @var TokenStorageInterface
+     */
+    protected $securityToken;
+
+    /**
+     * The Twig_Environment service.
+     *
+     * @var Twig_Environment
+     */
+    protected $twig;
+
+    /**
+     * The Translator service.
+     *
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
+     * The Router service.
+     *
+     * @var RouterInterface
+     */
+    protected $router;
+
+    /**
+     * The Doctrine service.
+     *
+     * @var RegistryInterface
+     */
+    protected $doctrine;
 
     /**
      * A Features instance.
@@ -87,12 +127,30 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * Ctor.
      *
-     * @param ContainerInterface $container            The service container
-     * @param array              $defaultLayoutOptions The default layout options
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param TokenStorageInterface         $securityToken
+     * @param Twig_Environment              $twig
+     * @param TranslatorInterface           $translator
+     * @param RouterInterface               $router
+     * @param RegistryInterface             $doctrine
+     * @param array                         $defaultLayoutOptions
      */
-    public function __construct(ContainerInterface $container, array $defaultLayoutOptions)
+    public function __construct(
+        AuthorizationCheckerInterface $authorizationChecker,
+        TokenStorageInterface $securityToken,
+        Twig_Environment $twig,
+        TranslatorInterface $translator,
+        RouterInterface $router,
+        RegistryInterface $doctrine,
+        array $defaultLayoutOptions
+    )
     {
-        $this->container = $container;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->securityToken = $securityToken;
+        $this->twig = $twig;
+        $this->translator = $translator;
+        $this->router = $router;
+        $this->doctrine = $doctrine;
 
         $this->features = new Features();
         $this->options = new Options();
@@ -142,13 +200,13 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         switch ($type) {
             case "html":
-                return $this->container->get("templating")->render($this->templates["html"], $options);
+                return $this->twig->render($this->templates["html"], $options);
                 break;
             case "js":
-                return $this->container->get("templating")->render($this->templates["js"], $options);
+                return $this->twig->render($this->templates["js"], $options);
                 break;
             default:
-                return $this->container->get("templating")->render($this->templates["base"], $options);
+                return $this->twig->render($this->templates["base"], $options);
                 break;
         }
     }
