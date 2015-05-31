@@ -36,19 +36,12 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
     protected function configure()
     {
         $this
-            ->setName("datatable:generate:class")
-            ->setDescription("Generates a datatable class based on a Doctrine entity.")
-            ->setDefinition(
-                array(
-                    new InputArgument("entity", InputArgument::REQUIRED, "The Doctrine entity class name (shortcut notation)."),
-                    new InputOption("style", "", InputOption::VALUE_REQUIRED, "The datatable style (base, base-no-classes, base-row-borders,
-                        base-cell-borders, base-hover, base-order, base-stripe, jquery-ui, bootstrap, foundation)", "bootstrap"),
-                    new InputOption("fields", "", InputOption::VALUE_OPTIONAL, "The fields in the datatable"),
-                    new InputOption("client-side", "", InputOption::VALUE_NONE, "The client-side flag"),
-                    new InputOption("ajax-url", "", InputOption::VALUE_OPTIONAL, "The ajax url"),
-                    new InputOption("filtering", "", InputOption::VALUE_OPTIONAL, "The individual filtering flag"),
-                )
-            );
+            ->setName("sg:datatable:generate")
+            ->setDescription("Generates a new datatable class based on the given entity.")
+            ->addArgument("entity", InputArgument::REQUIRED, "The entity class name (shortcut notation).")
+            ->addOption("fields", "f", InputOption::VALUE_OPTIONAL, "The fields.")
+            ->addOption("client-side", "c", InputOption::VALUE_NONE, "The client-side flag.")
+            ->addOption("ajax-url", "a", InputOption::VALUE_OPTIONAL, "The ajax url.");
     }
 
     /**
@@ -59,11 +52,9 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
         $entity = Validators::validateEntityName($input->getArgument("entity"));
         list($bundle, $entity) = $this->parseShortcutNotation($entity);
 
-        $style = $input->getOption("style");
         $fields = Fields::parseFields($input->getOption("fields"));
         $clientSide = $input->getOption("client-side");
         $ajaxUrl = $input->getOption("ajax-url");
-        $individualFiltering = $input->getOption("filtering");
 
         $entityClass = $this->getContainer()->get("doctrine")->getAliasNamespace($bundle) . "\\" . $entity;
         $metadata = $this->getEntityMetadata($entityClass);
@@ -76,10 +67,11 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
             $fields = $this->getFieldsFromMetadata($metadata[0]);
         }
 
-        $bundle = $this->getApplication()->getKernel()->getBundle($bundle);
+        $bundle = $this->getContainer()->get("kernel")->getBundle($bundle);
 
+        /** @var \Sg\DatatablesBundle\Generator\DatatableGenerator $generator */
         $generator = $this->getGenerator($bundle);
-        $generator->generate($bundle, $entity, $style, $fields, $clientSide, $ajaxUrl, $individualFiltering);
+        $generator->generate($bundle, $entity, $fields, $clientSide, $ajaxUrl);
 
         $output->writeln(
             sprintf(
@@ -107,20 +99,11 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
     {
         $skeletonDirs = array();
 
-        if (isset($bundle) && is_dir($dir = $bundle->getPath() . "/Resources/SensioGeneratorBundle/skeleton")) {
-            $skeletonDirs[] = $dir;
-        }
-
-        if (is_dir($dir = $this->getContainer()->get("kernel")->getRootdir() . "/Resources/SensioGeneratorBundle/skeleton")) {
-            $skeletonDirs[] = $dir;
-        }
-
         $reflClass = new \ReflectionClass(get_class($this));
         $skeletonDirs[] = dirname($reflClass->getFileName()) . "/../Resources/views/Skeleton";
 
         return $skeletonDirs;
     }
-
 
     //-------------------------------------------------
     // Private

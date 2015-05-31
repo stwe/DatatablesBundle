@@ -1,16 +1,17 @@
 <?php
 
-namespace {{ namespace }}\Datatables{{ entity_namespace ? '\\' ~ entity_namespace : '' }};
+namespace {{ namespace }}\Datatables;
 
 {% block use_statements %}
 use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
+use Sg\DatatablesBundle\Datatable\View\Style;
 {% endblock use_statements %}
 
 {% block class_definition %}
 /**
  * Class {{ datatable_class }}
  *
- * @package {{ namespace }}\Datatables{{ entity_namespace ? '\\' ~ entity_namespace : '' }}
+ * @package {{ namespace }}\Datatables
  */
 class {{ datatable_class }} extends AbstractDatatableView
 {% endblock class_definition %}
@@ -21,27 +22,54 @@ class {{ datatable_class }} extends AbstractDatatableView
      */
     public function buildDatatableView()
     {
-        $this->getFeatures()
-            {% if false == client_side %}
-            ->setServerSide(true)
-            {% else %}
-            ->setServerSide(false)
-            {% endif %}
-            ->setProcessing(true);
+        $this->features->setFeatures(array(
+            "auto_width" => true,
+            "defer_render" => false,
+            "info" => true,
+            "jquery_ui" => false,
+            "length_change" => true,
+            "ordering" => true,
+            "paging" => true,
+            "processing" => true,
+            "scroll_x" => false,
+            "scroll_y" => "",
+            "searching" => true,
+            "server_side" => {{ client_side ? "false" : "true" }},
+            "state_save" => false,
+            "delay" => 0
+        ));
 
-        {% if '' != ajax_url %}
-        $this->getAjax()->setUrl($this->getRouter()->generate('{{ ajax_url }}'));
+        {% if false == client_side %}
+        $this->ajax->setOptions(array(
+            "url" => $this->router->generate("{{ ajax_url }}"),
+            "type" => "GET"
+        ));
         {% endif %}
 
-        $this->setStyle({{ style }});
+        $this->options->setOptions(array(
+            "display_start" => 0,
+            "dom" => "lfrtip",
+            "length_menu" => array(10, 25, 50, 100),
+            "order_classes" => true,
+            "order" => [[0, "asc"]],
+            "order_multi" => true,
+            "page_length" => 10,
+            "paging_type" => Style::FULL_NUMBERS_PAGINATION,
+            "renderer" => "",
+            "scroll_collapse" => false,
+            "search_delay" => 0,
+            "state_duration" => 7200,
+            "stripe_classes" => array(),
+            "responsive" => false,
+            "class" => Style::BASE_STYLE,
+            "individual_filtering" => false,
+            "individual_filtering_position" => "foot",
+            "use_integration_options" => false
+        ));
 
-        {% if true == individual_filtering %}
-        $this->setIndividualFiltering(true);
-        {% endif %}
-
-        $this->getColumnBuilder()
+        $this->columnBuilder
         {% for field in fields %}
-        ->add('{{ field.property }}', '{{ field.column_name }}', array('title' => '{{ field.title }}',))
+        ->add("{{ field.property }}", "{{ field.column_name }}", array("title" => "{{ field.title }}",))
         {% endfor %}
         ;
     }
@@ -51,7 +79,7 @@ class {{ datatable_class }} extends AbstractDatatableView
      */
     public function getEntity()
     {
-        return '{{ namespace }}\Entity{{ entity_namespace ? '\\' ~ entity_namespace : '' }}\{{ entity_class }}';
+        return "{{ namespace }}\Entity{{ entity_namespace ? '\\' ~ entity_namespace : '' }}\{{ entity_class }}";
     }
 
     /**
@@ -59,7 +87,7 @@ class {{ datatable_class }} extends AbstractDatatableView
      */
     public function getName()
     {
-        return '{{ datatable_name }}';
+        return "{{ datatable_name }}";
     }
 {% endblock class_body %}
 }

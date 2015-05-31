@@ -35,13 +35,7 @@ class DatatableGenerator extends Generator
     /**
      * @var string
      */
-    private $style;
-
-    /**
-     * @var string
-     */
     private $ajaxUrl;
-
 
     //-------------------------------------------------
     // Ctor.
@@ -54,10 +48,8 @@ class DatatableGenerator extends Generator
     {
         $this->className = "";
         $this->classPath = "";
-        $this->style = "";
         $this->ajaxUrl = "";
     }
-
 
     //-------------------------------------------------
     // Public
@@ -82,17 +74,15 @@ class DatatableGenerator extends Generator
     /**
      * Generates the datatable class if it does not exist.
      *
-     * @param BundleInterface $bundle              The bundle in which to create the class
-     * @param string          $entity              The entity relative class name
-     * @param string          $style               The style (base, jquery-ui, bootstrap, foundation)
-     * @param array           $fields              The datatable fields
-     * @param boolean         $clientSide          The client side flag
-     * @param string          $ajaxUrl             The ajax route name
-     * @param string          $individualFiltering The individual filtering flag
+     * @param BundleInterface $bundle     The bundle in which to create the class
+     * @param string          $entity     The entity relative class name
+     * @param array           $fields     The datatable fields
+     * @param boolean         $clientSide The client side flag
+     * @param string          $ajaxUrl    The ajax url
      *
      * @throws RuntimeException
      */
-    public function generate(BundleInterface $bundle, $entity, $style, array $fields, $clientSide, $ajaxUrl, $individualFiltering)
+    public function generate(BundleInterface $bundle, $entity, array $fields, $clientSide, $ajaxUrl)
     {
         $parts = explode("\\", $entity);
         $entityClass = array_pop($parts);
@@ -108,9 +98,6 @@ class DatatableGenerator extends Generator
         $parts = explode("\\", $entity);
         array_pop($parts);
 
-        // set style
-        $this->setStyle($style);
-
         // set ajaxUrl
         if (false === $clientSide) {
             // server-side
@@ -119,76 +106,18 @@ class DatatableGenerator extends Generator
             } else {
                 $this->ajaxUrl = $ajaxUrl;
             }
-        } else {
-            // client-side
-            $this->ajaxUrl = "";
         }
 
         $this->renderFile("class.php.twig", $this->classPath, array(
-                "namespace" => $bundle->getNamespace(),
-                "entity_namespace" => implode('\\', $parts),
-                "entity_class" => $entityClass,
-                "bundle" => $bundle->getName(),
-                "datatable_class" => $this->className,
-                "datatable_name" => strtolower($entityClass) . "_datatable",
-                "style" => $this->style,
-                "fields" => $fields,
-                "client_side" => (boolean) $clientSide,
-                "ajax_url" => $this->ajaxUrl,
-                "individual_filtering" => (boolean) $individualFiltering
-            ));
-    }
-
-
-    //-------------------------------------------------
-    // Private
-    //-------------------------------------------------
-
-    /**
-     * Sets the style format.
-     *
-     * @param string $style
-     *
-     * @return $this
-     */
-    private function setStyle($style)
-    {
-        switch ($style) {
-            case "base":
-                $this->style = "self::BASE_STYLE";
-                break;
-            case "base-no-classes":
-                $this->style = "self::BASE_STYLE_NO_CLASSES";
-                break;
-            case "base-row-borders":
-                $this->style = "self::BASE_STYLE_ROW_BORDERS";
-                break;
-            case "base-cell-borders":
-                $this->style = "self::BASE_STYLE_CELL_BORDERS";
-                break;
-            case "base-hover":
-                $this->style = "self::BASE_STYLE_HOVER";
-                break;
-            case "base-order":
-                $this->style = "self::BASE_STYLE_ORDER_COLUMN";
-                break;
-            case "base-stripe":
-                $this->style = "self::BASE_STYLE_STRIPE";
-                break;
-            case "jquery-ui":
-                $this->style = "self::JQUERY_UI_STYLE";
-                break;
-            case "bootstrap":
-                $this->style = "self::BOOTSTRAP_3_STYLE";
-                break;
-            case "foundation":
-                $this->style = "self::FOUNDATION_STYLE";
-                break;
-            default:
-                $this->style = "self::BOOTSTRAP_3_STYLE";
-                break;
-        }
-
-        return $this;
+            "namespace" => $bundle->getNamespace(),
+            "entity_namespace" => implode('\\', $parts),
+            "entity_class" => $entityClass,
+            "bundle" => $bundle->getName(),
+            "datatable_class" => $this->className,
+            "datatable_name" => strtolower($entityClass) . "_datatable",
+            "fields" => $fields,
+            "client_side" => (boolean) $clientSide,
+            "ajax_url" => $this->ajaxUrl
+        ));
     }
 }

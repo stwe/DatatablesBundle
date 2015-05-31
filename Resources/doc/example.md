@@ -4,18 +4,17 @@
 
 ### Step 1: Create your Datatables class
 
-There are two options: You write the class by hand (recommended) or use the command line (unstable).
+#### Use the command line
 
-The `datatable:generate:class` command generates a new datatable class.
+The `sg:datatable:generate` command generates a new datatable class.
 
-The command is run in a non interactive mode.
 ``` bash
-$ php app/console datatable:generate:class MyTestBundle:Entity
+$ php app/console sg:datatable:generate AppBundle:Entity
 ```
 
 A description of all available options of the generator is located [here](./generator.md).
 
-The generator is currently in an early development stage. Better you write the class by hand. Then it should look something like this:
+#### Create the class itself
 
 ```php
 <?php
