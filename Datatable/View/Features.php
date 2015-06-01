@@ -195,22 +195,20 @@ class Features
             "delay" => 0
         ));
 
-        $resolver->setAllowedTypes(array(
-            "auto_width" => "bool",
-            "defer_render" => "bool",
-            "info" => "bool",
-            "jquery_ui" => "bool",
-            "length_change" => "bool",
-            "ordering" => "bool",
-            "paging" => "bool",
-            "processing" => "bool",
-            "scroll_x" => "bool",
-            "scroll_y" => "string",
-            "searching" => "bool",
-            "server_side" => "bool",
-            "state_save" => "bool",
-            "delay" => "int"
-        ));
+        $resolver->setAllowedTypes('auto_width', 'bool');
+        $resolver->setAllowedTypes('defer_render', 'bool');
+        $resolver->setAllowedTypes('info', 'bool');
+        $resolver->setAllowedTypes('jquery_ui', 'bool');
+        $resolver->setAllowedTypes('length_change', 'bool');
+        $resolver->setAllowedTypes('ordering', 'bool');
+        $resolver->setAllowedTypes('paging', 'bool');
+        $resolver->setAllowedTypes('processing', 'bool');
+        $resolver->setAllowedTypes('scroll_x', 'bool');
+        $resolver->setAllowedTypes('scroll_y', 'string');
+        $resolver->setAllowedTypes('searching', 'bool');
+        $resolver->setAllowedTypes('server_side', 'bool');
+        $resolver->setAllowedTypes('state_save', 'bool');
+        $resolver->setAllowedTypes('delay', 'int');
 
         return $this;
     }

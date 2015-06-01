@@ -113,30 +113,26 @@ class BooleanColumn extends AbstractColumn
             "filter_property" => ""
         ));
 
-        $resolver->setAllowedTypes(array(
-            "class" => "string",
-            "padding" => "string",
-            "name" => "string",
-            "orderable" => "bool",
-            "render" => "string",
-            "searchable" => "bool",
-            "title" => "string",
-            "type" => "string",
-            "visible" => "bool",
-            "width" => "string",
-            "true_icon" => "string",
-            "false_icon" => "string",
-            "true_label" => "string",
-            "false_label" => "string",
-            "search_type" => "string",
-            "filter_type" => "string",
-            "filter_options" => "array",
-            "filter_property" => "string"
-        ));
+        $resolver->setAllowedTypes('class', 'string');
+        $resolver->setAllowedTypes('padding', 'string');
+        $resolver->setAllowedTypes('name', 'string');
+        $resolver->setAllowedTypes('orderable', 'bool');
+        $resolver->setAllowedTypes('render', 'string');
+        $resolver->setAllowedTypes('searchable', 'bool');
+        $resolver->setAllowedTypes('title', 'string');
+        $resolver->setAllowedTypes('type', 'string');
+        $resolver->setAllowedTypes('visible', 'bool');
+        $resolver->setAllowedTypes('width', 'string');
+        $resolver->setAllowedTypes('search_type', 'string');
+        $resolver->setAllowedTypes('filter_type', 'string');
+        $resolver->setAllowedTypes('filter_options', 'array');
+        $resolver->setAllowedTypes('filter_property', 'string');
+        $resolver->setAllowedTypes('true_icon', 'string');
+        $resolver->setAllowedTypes('false_icon', 'string');
+        $resolver->setAllowedTypes('true_label', 'string');
+        $resolver->setAllowedTypes('false_label', 'string');
 
-        $resolver->setAllowedValues("search_type", array("like", "notLike", "eq", "neq", "lt", "lte", "gt", "gte",
-            "in", "notIn", "isNull", "isNotNull"));
-
+        $resolver->setAllowedValues("search_type", array("like", "notLike", "eq", "neq", "lt", "lte", "gt", "gte", "in", "notIn", "isNull", "isNotNull"));
         $resolver->setAllowedValues("filter_type", array("text", "select"));
 
         return $this;

@@ -71,10 +71,8 @@ class MultiselectColumn extends ActionColumn
             "value" => "id",
         ));
 
-        $resolver->addAllowedTypes(array(
-            "attributes" => "array",
-            "value" => "string",
-        ));
+        $resolver->addAllowedTypes("attributes", "array");
+        $resolver->addAllowedTypes("value", "string");
 
         return $this;
     }
