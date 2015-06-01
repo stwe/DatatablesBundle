@@ -39,21 +39,15 @@ class MultiselectAction extends Action
             "attributes" => array(),
         ));
 
-        $resolver->setAllowedTypes(array(
-            "icon" => "string",
-            "route" => "string",
-            "label" => "string",
-            "role" => "string",
-            "route_parameters" => "array",
-            "attributes" => "array",
-        ));
+        $resolver->setAllowedTypes('icon', 'string');
+        $resolver->setAllowedTypes('route', 'string');
+        $resolver->setAllowedTypes('label', 'string');
+        $resolver->setAllowedTypes('role', 'string');
+        $resolver->setAllowedTypes('route_parameters', 'array');
+        $resolver->setAllowedTypes('attributes', 'array');
 
         $resolver->setNormalizer("attributes", function($options, $value) {
-            if (array_key_exists("class", $value)) {
-                $value["class"] = $value["class"] . " multiselect_action_click";
-            } else {
-                $value["class"] = "multiselect_action_click";
-            }
+            $value["class"] = array_key_exists("class", $value) ? ($value["class"] . " multiselect_action_click") : "multiselect_action_click";
 
             return $value;
         });

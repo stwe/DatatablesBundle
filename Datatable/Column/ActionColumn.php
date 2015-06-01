@@ -102,18 +102,16 @@ class ActionColumn extends AbstractColumn
             "end_html" => ""
         ));
 
-        $resolver->setAllowedTypes(array(
-            "class" => "string",
-            "padding" => "string",
-            "name" => "string",
-            "title" => "string",
-            "type" => "string",
-            "visible" => "bool",
-            "width" => "string",
-            "start_html" => "string",
-            "end_html" => "string",
-            "actions" => "array"
-        ));
+        $resolver->setAllowedTypes('class', 'string');
+        $resolver->setAllowedTypes('padding', 'string');
+        $resolver->setAllowedTypes('name', 'string');
+        $resolver->setAllowedTypes('title', 'string');
+        $resolver->setAllowedTypes('type', 'string');
+        $resolver->setAllowedTypes('visible', 'bool');
+        $resolver->setAllowedTypes('width', 'string');
+        $resolver->setAllowedTypes('start_html', 'string');
+        $resolver->setAllowedTypes('end_html', 'string');
+        $resolver->setAllowedTypes('actions', 'array');
 
         return $this;
     }

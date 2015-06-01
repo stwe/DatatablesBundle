@@ -69,9 +69,7 @@ class DateTimeColumn extends TimeagoColumn
             "date_format" => "lll",
         ));
 
-        $resolver->addAllowedTypes(array(
-            "date_format" => "string",
-        ));
+        $resolver->addAllowedTypes("date_format", "string");
 
         return $this;
     }

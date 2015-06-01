@@ -128,17 +128,15 @@ class Action implements OptionsInterface
             "render_if" => array()
         ));
 
-        $resolver->setAllowedTypes(array(
-            "route" => "string",
-            "route_parameters" => "array",
-            "icon" => "string",
-            "label" => "string",
-            "confirm" => "bool",
-            "confirm_message" => "string",
-            "attributes" => "array",
-            "role" => "string",
-            "render_if" => "array"
-        ));
+        $resolver->setAllowedTypes('route', 'string');
+        $resolver->setAllowedTypes('route_parameters', 'array');
+        $resolver->setAllowedTypes('icon', 'string');
+        $resolver->setAllowedTypes('label', 'string');
+        $resolver->setAllowedTypes('confirm', 'bool');
+        $resolver->setAllowedTypes('confirm_message', 'string');
+        $resolver->setAllowedTypes('attributes', 'array');
+        $resolver->setAllowedTypes('role', 'string');
+        $resolver->setAllowedTypes('render_if', 'array');
 
         return $this;
     }

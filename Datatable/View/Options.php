@@ -231,26 +231,24 @@ class Options
             "use_integration_options" => false
         ));
 
-        $resolver->setAllowedTypes(array(
-            "display_start" => "int",
-            "dom" => "string",
-            "length_menu" => "array",
-            "order_classes" => "bool",
-            "order" => "array",
-            "order_multi" => "bool",
-            "page_length" => "int",
-            "paging_type" => "string",
-            "renderer" => "string",
-            "scroll_collapse" => "bool",
-            "search_delay" => "int",
-            "state_duration" => "int",
-            "stripe_classes" => "array",
-            "responsive" => "bool",
-            "class" => "string",
-            "individual_filtering" => "bool",
-            "individual_filtering_position" => "string",
-            "use_integration_options" => "bool"
-        ));
+        $resolver->setAllowedTypes('display_start', 'int');
+        $resolver->setAllowedTypes('dom', 'string');
+        $resolver->setAllowedTypes('length_menu', 'array');
+        $resolver->setAllowedTypes('order_classes', 'bool');
+        $resolver->setAllowedTypes('order', 'array');
+        $resolver->setAllowedTypes('order_multi', 'bool');
+        $resolver->setAllowedTypes('page_length', 'int');
+        $resolver->setAllowedTypes('paging_type', 'string');
+        $resolver->setAllowedTypes('renderer', 'string');
+        $resolver->setAllowedTypes('scroll_collapse', 'bool');
+        $resolver->setAllowedTypes('search_delay', 'int');
+        $resolver->setAllowedTypes('state_duration', 'int');
+        $resolver->setAllowedTypes('stripe_classes', 'array');
+        $resolver->setAllowedTypes('responsive', 'bool');
+        $resolver->setAllowedTypes('class', 'string');
+        $resolver->setAllowedTypes('individual_filtering', 'bool');
+        $resolver->setAllowedTypes('individual_filtering_position', 'string');
+        $resolver->setAllowedTypes('use_integration_options', 'bool');
 
         $resolver->setAllowedValues("individual_filtering_position", array("head", "foot", "both"));
 

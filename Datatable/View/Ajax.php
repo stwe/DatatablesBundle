@@ -98,10 +98,8 @@ class Ajax
             "type" => "GET"
         ));
 
-        $resolver->setAllowedTypes(array(
-            "url" => "string",
-            "type" => "string"
-        ));
+        $resolver->setAllowedTypes('url', 'string');
+        $resolver->setAllowedTypes('type', 'string');
 
         $resolver->setAllowedValues('type', array("GET", "POST", "get", "post"));
 
