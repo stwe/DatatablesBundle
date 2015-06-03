@@ -87,6 +87,13 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     protected $options;
 
     /**
+     * A Callbacks instance.
+     *
+     * @var Callbacks
+     */
+    protected $callbacks;
+
+    /**
      * A ColumnBuilder instance.
      *
      * @var ColumnBuilder
@@ -154,6 +161,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         $this->features = new Features();
         $this->options = new Options();
+        $this->callbacks = new Callbacks();
         $this->columnBuilder = new ColumnBuilder();
         $this->ajax = new Ajax();
 
@@ -188,6 +196,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         $options["view_features"] = $this->features;
         $options["view_options"] = $this->options;
+        $options["view_callbacks"] = $this->callbacks;
         $options["view_columns"] = $this->columnBuilder->getColumns();
         $options["view_ajax"] = $this->ajax;
 
