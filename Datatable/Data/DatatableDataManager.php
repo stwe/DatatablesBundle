@@ -13,10 +13,8 @@ namespace Sg\DatatablesBundle\Datatable\Data;
 
 use Sg\DatatablesBundle\Datatable\View\DatatableViewInterface;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * Class DatatableDataManager
@@ -25,13 +23,6 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  */
 class DatatableDataManager
 {
-    /**
-     * The doctrine service.
-     *
-     * @var RegistryInterface
-     */
-    private $doctrine;
-
     /**
      * The request service.
      *
@@ -46,13 +37,6 @@ class DatatableDataManager
      */
     private $serializer;
 
-    /**
-     * Holds request parameters.
-     *
-     * @var ParameterBag
-     */
-    private $parameterBag;
-
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -60,16 +44,13 @@ class DatatableDataManager
     /**
      * Ctor.
      *
-     * @param RegistryInterface $doctrine   The doctrine service
-     * @param Request           $request    The request service
-     * @param Serializer        $serializer The serializer service
+     * @param Request    $request    The request service
+     * @param Serializer $serializer The serializer service
      */
-    public function __construct(RegistryInterface $doctrine, Request $request, Serializer $serializer)
+    public function __construct(Request $request, Serializer $serializer)
     {
-        $this->doctrine = $doctrine;
         $this->request = $request;
         $this->serializer = $serializer;
-        $this->parameterBag = null;
     }
 
     //-------------------------------------------------
@@ -86,32 +67,27 @@ class DatatableDataManager
     public function getDatatable(DatatableViewInterface $datatableView)
     {
         $type = $datatableView->getAjax()->getType();
-        $entity = $datatableView->getEntity();
+        $qb = $datatableView->getQb();
+        $datatableQueryBuilder = null;
+        $parameterBag = null;
 
         if ("GET" === strtoupper($type)) {
-            $this->parameterBag = $this->request->query;
+            $parameterBag = $this->request->query;
         }
 
         if ("POST" === strtoupper($type)) {
-            $this->parameterBag = $this->request->request;
+            $parameterBag = $this->request->request;
         }
 
-        $params = $this->parameterBag->all();
+        $params = $parameterBag->all();
 
-        /**
-         * @var \Doctrine\ORM\Mapping\ClassMetadata $metadata
-         */
-        $metadata = $this->doctrine->getManager()->getClassMetadata($entity);
+        if (null !== $qb) {
+            $datatableQueryBuilder = new DatatableCustomQuery($params, $datatableView);
+        } else {
+            $datatableQueryBuilder = new DatatableQuery($params, $datatableView);
+        }
 
-        /**
-         * @var \Doctrine\ORM\EntityManager $em
-         */
-        $em = $this->doctrine->getManager();
-
-        $datatableQuery = new DatatableQuery($params, $metadata, $em, $datatableView);
-        $virtualColumns = $datatableView->getColumnBuilder()->getVirtualColumns();
-        $datatableData = new DatatableData($params, $metadata, $em, $this->serializer, $datatableQuery, $virtualColumns);
-        $datatableData->setLineFormatter($datatableView->getLineFormatter());
+        $datatableData = new DatatableData($this->serializer, $datatableQueryBuilder);
 
         return $datatableData;
     }
