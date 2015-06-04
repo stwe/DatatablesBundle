@@ -14,6 +14,7 @@ namespace Sg\DatatablesBundle\Datatable\View;
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig_Environment;
@@ -117,8 +118,17 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * This variable stores the array of column names as keys and column ids as values
      * in order to perform search column id by name.
+     *
+     * @var array
      */
     private $columnNames;
+
+    /**
+     * A custom query.
+     *
+     * @var QueryBuilder
+     */
+    protected $qb;
 
     //-------------------------------------------------
     // Ctor.
@@ -159,6 +169,8 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         $this->data = null;
         $this->templates = $defaultLayoutOptions["templates"];
+
+        $this->qb = null;
 
         $this->buildDatatableView();
     }
@@ -233,6 +245,22 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getLineFormatter()
     {
         return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDoctrine()
+    {
+        return $this->doctrine;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getQb()
+    {
+        return $this->qb;
     }
 
     //-------------------------------------------------
