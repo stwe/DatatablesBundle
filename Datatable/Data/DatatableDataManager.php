@@ -13,7 +13,7 @@ namespace Sg\DatatablesBundle\Datatable\Data;
 
 use Sg\DatatablesBundle\Datatable\View\DatatableViewInterface;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -26,9 +26,9 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class DatatableDataManager
 {
     /**
-     * The doctrine service.
+     * The doctrine entityManager.
      *
-     * @var RegistryInterface
+     * @var \Doctrine\ORM\EntityManager
      */
     private $doctrine;
 
@@ -60,13 +60,13 @@ class DatatableDataManager
     /**
      * Ctor.
      *
-     * @param RegistryInterface $doctrine   The doctrine service
+     * @param EntityManger      $em        The doctrine EntityManager
      * @param Request           $request    The request service
      * @param Serializer        $serializer The serializer service
      */
-    public function __construct(RegistryInterface $doctrine, Request $request, Serializer $serializer)
+    public function __construct(EntityManagerInterface $em, Request $request, Serializer $serializer)
     {
-        $this->doctrine = $doctrine;
+        $this->em = $em;
         $this->request = $request;
         $this->serializer = $serializer;
         $this->parameterBag = null;
@@ -101,16 +101,11 @@ class DatatableDataManager
         /**
          * @var \Doctrine\ORM\Mapping\ClassMetadata $metadata
          */
-        $metadata = $this->doctrine->getManager()->getClassMetadata($entity);
+        $metadata = $this->em->getClassMetadata($entity);
 
-        /**
-         * @var \Doctrine\ORM\EntityManager $em
-         */
-        $em = $this->doctrine->getManager();
-
-        $datatableQuery = new DatatableQuery($params, $metadata, $em, $datatableView);
+        $datatableQuery = new DatatableQuery($params, $metadata, $this->em, $datatableView);
         $virtualColumns = $datatableView->getColumnBuilder()->getVirtualColumns();
-        $datatableData = new DatatableData($params, $metadata, $em, $this->serializer, $datatableQuery, $virtualColumns);
+        $datatableData = new DatatableData($params, $metadata, $this->em, $this->serializer, $datatableQuery, $virtualColumns);
         $datatableData->setLineFormatter($datatableView->getLineFormatter());
 
         return $datatableData;
