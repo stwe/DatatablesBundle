@@ -50,6 +50,7 @@
 | Option                        | Type   | Default                                    |
 |-------------------------------|--------|--------------------------------------------|
 | display_start                 | int    | 0                                          |
+| defer_loading                 | int    | -1 (disabled)                              |
 | dom                           | string | "lfrtip"                                   |
 | length_menu                   | array  | array(10, 25, 50, 100)                     |
 | order_classes                 | bool   | true                                       |
