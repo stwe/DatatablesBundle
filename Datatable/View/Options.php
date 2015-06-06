@@ -238,7 +238,7 @@ class Options
             "individual_filtering_position" => "foot",
             "use_integration_options" => false
         ));
-        
+
         $resolver->setAllowedTypes('display_start', 'int');
         $resolver->setAllowedTypes('defer_loading', 'int');
         $resolver->setAllowedTypes('dom', 'string');
