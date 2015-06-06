@@ -21,6 +21,10 @@
 "stateDuration": {{ view_options.stateDuration }},
 "stripeClasses": [{{ view_options.stripeClasses|join(", ")|json_encode|raw }}],
 
+{% if view_options.deferLoading %}
+    "deferLoading": {{ view_options.deferLoading }},
+{% endif %}
+
 {% if view_options.responsive %}
     "responsive": true,
 {% endif %}
