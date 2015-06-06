@@ -219,7 +219,7 @@ class Options
     {
         $resolver->setDefaults(array(
             "display_start" => 0,
-            "defer_loading" => "",
+            "defer_loading" => -1,
             "dom" => "lfrtip",
             "length_menu" => array(10, 25, 50, 100),
             "order_classes" => true,
@@ -238,7 +238,7 @@ class Options
             "individual_filtering_position" => "foot",
             "use_integration_options" => false
         ));
-
+        
         $resolver->setAllowedTypes('display_start', 'int');
         $resolver->setAllowedTypes('defer_loading', 'int');
         $resolver->setAllowedTypes('dom', 'string');
