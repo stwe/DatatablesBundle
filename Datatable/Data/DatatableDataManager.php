@@ -14,6 +14,7 @@ namespace Sg\DatatablesBundle\Datatable\Data;
 use Sg\DatatablesBundle\Datatable\View\DatatableViewInterface;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Serializer;
 
 /**
@@ -58,17 +59,15 @@ class DatatableDataManager
     //-------------------------------------------------
 
     /**
-     * Get Datatable.
+     * Get response.
      *
      * @param DatatableViewInterface $datatableView
      *
-     * @return DatatableData
+     * @return Response
      */
-    public function getDatatable(DatatableViewInterface $datatableView)
+    public function getResponse(DatatableViewInterface $datatableView)
     {
         $type = $datatableView->getAjax()->getType();
-        $qb = $datatableView->getQb();
-        $datatableQueryBuilder = null;
         $parameterBag = null;
 
         if ("GET" === strtoupper($type)) {
@@ -80,15 +79,8 @@ class DatatableDataManager
         }
 
         $params = $parameterBag->all();
+        $query = new DatatableQuery($this->serializer, $params, $datatableView);
 
-        if (null !== $qb) {
-            $datatableQueryBuilder = new DatatableCustomQuery($params, $datatableView);
-        } else {
-            $datatableQueryBuilder = new DatatableQuery($params, $datatableView);
-        }
-
-        $datatableData = new DatatableData($this->serializer, $datatableQueryBuilder);
-
-        return $datatableData;
+        return $query->getResponse();
     }
 }
