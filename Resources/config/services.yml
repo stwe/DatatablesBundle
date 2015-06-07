@@ -13,7 +13,7 @@ services:
         arguments: [@translator]
         tags:
             - { name: twig.extension }
-    sg_datatables.response:
+    sg_datatables.query:
         class: Sg\DatatablesBundle\Datatable\Data\DatatableDataManager
         scope: request
         arguments: [@request, @sg_datatables.serializer]

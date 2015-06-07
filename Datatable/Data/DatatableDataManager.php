@@ -14,7 +14,6 @@ namespace Sg\DatatablesBundle\Datatable\Data;
 use Sg\DatatablesBundle\Datatable\View\DatatableViewInterface;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Serializer;
 
 /**
@@ -59,13 +58,13 @@ class DatatableDataManager
     //-------------------------------------------------
 
     /**
-     * Get response.
+     * Get query.
      *
      * @param DatatableViewInterface $datatableView
      *
-     * @return Response
+     * @return DatatableQuery
      */
-    public function getResponse(DatatableViewInterface $datatableView)
+    public function getQueryFrom(DatatableViewInterface $datatableView)
     {
         $type = $datatableView->getAjax()->getType();
         $parameterBag = null;
@@ -81,6 +80,6 @@ class DatatableDataManager
         $params = $parameterBag->all();
         $query = new DatatableQuery($this->serializer, $params, $datatableView);
 
-        return $query->getResponse();
+        return $query;
     }
 }
