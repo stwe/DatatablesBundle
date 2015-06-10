@@ -149,7 +149,7 @@ class DatatableQuery
         $this->callbacks = array();
         $this->columns = $datatableView->getColumnBuilder()->getColumns();
 
-        $this->setLineFormatterCallback();
+        $this->setLineFormatter();
         $this->setupColumnArrays();
     }
 
@@ -294,6 +294,8 @@ class DatatableQuery
         $this->setSelectFrom();
         $this->setLeftJoins($this->qb);
         $this->setWhere($this->qb);
+        $this->setWhereResultCallback($this->qb);
+        $this->setWhereAllCallback($this->qb);
         $this->setOrderBy();
         $this->setLimit();
 
@@ -305,7 +307,7 @@ class DatatableQuery
     //-------------------------------------------------
 
     /**
-     * Add where result.
+     * Add the where-result function.
      *
      * @param callable $callback
      *
@@ -313,13 +315,13 @@ class DatatableQuery
      */
     public function addWhereResult(callable $callback)
     {
-        $this->callbacks["WhereResult"][] = $callback;
+        $this->callbacks["WhereResult"] = $callback;
 
         return $this;
     }
 
     /**
-     * Add where all.
+     * Add the where-all function.
      *
      * @param callable $callback
      *
@@ -327,7 +329,7 @@ class DatatableQuery
      */
     public function addWhereAll(callable $callback)
     {
-        $this->callbacks["WhereAll"][] = $callback;
+        $this->callbacks["WhereAll"] = $callback;
 
         return $this;
     }
@@ -337,7 +339,7 @@ class DatatableQuery
      *
      * @return $this
      */
-    private function setLineFormatterCallback()
+    private function setLineFormatter()
     {
         $this->lineFormatter = $this->datatableView->getLineFormatter();
 
@@ -345,36 +347,32 @@ class DatatableQuery
     }
 
     /**
-     * Set where result.
+     * Set where result callback.
      *
      * @param QueryBuilder $qb
      *
      * @return $this
      */
-    private function setWhereResultCallbacks(QueryBuilder $qb)
+    private function setWhereResultCallback(QueryBuilder $qb)
     {
         if (!empty($this->callbacks["WhereResult"])) {
-            foreach ($this->callbacks["WhereResult"] as $callback) {
-                $callback($qb);
-            }
+            $this->callbacks["WhereResult"]($qb);
         }
 
         return $this;
     }
 
     /**
-     * Set where all.
+     * Set where all callback.
      *
      * @param QueryBuilder $qb
      *
      * @return $this
      */
-    private function setWhereAllCallbacks(QueryBuilder $qb)
+    private function setWhereAllCallback(QueryBuilder $qb)
     {
         if (!empty($this->callbacks["WhereAll"])) {
-            foreach ($this->callbacks["WhereAll"] as $callback) {
-                $callback($qb);
-            }
+            $this->callbacks["WhereAll"]($qb);
         }
 
         return $this;
@@ -609,6 +607,8 @@ class DatatableQuery
         $qb->select("count(" . $this->tableName . "." . $rootEntityIdentifier . ")");
         $qb->from($this->entity, $this->tableName);
 
+        $this->setWhereAllCallback($qb);
+
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
@@ -627,7 +627,7 @@ class DatatableQuery
 
         $this->setLeftJoins($qb);
         $this->setWhere($qb);
-        //$this->setCallbacks($qb);
+        $this->setWhereAllCallback($qb);
 
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
