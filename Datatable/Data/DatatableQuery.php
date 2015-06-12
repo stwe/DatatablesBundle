@@ -186,21 +186,21 @@ class DatatableQuery
                         $this->selectColumns[$this->tableName][] = $data;
                     }
                 } else {
-                    $array = explode(".", $data);
+                    $array = explode('.', $data);
                     $count = count($array);
 
                     if ($count > 2) {
-                        $replaced = str_replace(".", "_", $data);
-                        $parts = explode("_", $replaced);
+                        $replaced = str_replace('.', '_', $data);
+                        $parts = explode('_', $replaced);
                         $last = array_pop($parts);
-                        $select = implode("_", $parts);
-                        $join = str_replace("_", ".", $select);
+                        $select = implode('_', $parts);
+                        $join = str_replace('_', '.', $select);
                         $this->selectColumns[$select][] = $last;
                         $this->joins[$join] = $select;
                         $this->addSearchOrderColumn($key, $select, $last);
                     } else {
                         $this->selectColumns[$array[0]][] = $array[1];
-                        $this->joins[$this->tableName . "." . $array[0]] = $array[0];
+                        $this->joins[$this->tableName . '.' . $array[0]] = $array[0];
                         $this->addSearchOrderColumn($key, $array[0], $array[1]);
                     }
                 }
@@ -216,8 +216,8 @@ class DatatableQuery
         foreach ($this->selectColumns as $key => $value) {
             $array = $this->selectColumns[$key];
 
-            if (false === array_search("id", $array)) {
-                $array[] = "id";
+            if (false === array_search('id', $array)) {
+                $array[] = 'id';
             }
 
             $this->selectColumns[$key] = $array;
@@ -267,7 +267,7 @@ class DatatableQuery
      */
     public function addWhereResult(callable $callback)
     {
-        $this->callbacks["WhereResult"] = $callback;
+        $this->callbacks['WhereResult'] = $callback;
 
         return $this;
     }
@@ -281,7 +281,7 @@ class DatatableQuery
      */
     public function addWhereAll(callable $callback)
     {
-        $this->callbacks["WhereAll"] = $callback;
+        $this->callbacks['WhereAll'] = $callback;
 
         return $this;
     }
@@ -307,8 +307,8 @@ class DatatableQuery
      */
     private function setWhereResultCallback(QueryBuilder $qb)
     {
-        if (!empty($this->callbacks["WhereResult"])) {
-            $this->callbacks["WhereResult"]($qb);
+        if (!empty($this->callbacks['WhereResult'])) {
+            $this->callbacks['WhereResult']($qb);
         }
 
         return $this;
@@ -323,8 +323,8 @@ class DatatableQuery
      */
     private function setWhereAllCallback(QueryBuilder $qb)
     {
-        if (!empty($this->callbacks["WhereAll"])) {
-            $this->callbacks["WhereAll"]($qb);
+        if (!empty($this->callbacks['WhereAll'])) {
+            $this->callbacks['WhereAll']($qb);
         }
 
         return $this;
@@ -342,7 +342,7 @@ class DatatableQuery
     private function setSelectFrom()
     {
         foreach ($this->selectColumns as $key => $value) {
-            $this->qb->addSelect("partial " . $key . ".{" . implode(",", $this->selectColumns[$key]) . "}");
+            $this->qb->addSelect('partial ' . $key . '.{' . implode(',', $this->selectColumns[$key]) . '}');
         }
 
         $this->qb->from($this->entity, $this->tableName);
@@ -376,7 +376,7 @@ class DatatableQuery
      */
     private function setWhere(QueryBuilder $qb)
     {
-        $globalSearch = $this->requestParams["search"]["value"];
+        $globalSearch = $this->requestParams['search']['value'];
 
         // global filtering
         if ("" != $globalSearch) {
@@ -386,8 +386,8 @@ class DatatableQuery
             foreach ($this->searchColumns as $key => $column) {
                 if (null !== $this->searchColumns[$key]) {
                     $searchField = $this->searchColumns[$key];
-                    $orExpr->add($qb->expr()->like($searchField, "?$key"));
-                    $qb->setParameter($key, "%" . $globalSearch . "%");
+                    $orExpr->add($qb->expr()->like($searchField, '?' . $key));
+                    $qb->setParameter($key, '%' . $globalSearch . '%');
                 }
             }
 
@@ -403,17 +403,17 @@ class DatatableQuery
             if (null !== $this->searchColumns[$key]) {
                 $searchType = $this->columns[$key]->getSearchType();
                 $searchField = $this->searchColumns[$key];
-                $searchValue = $this->requestParams["columns"][$key]["search"]["value"];
-                $searchRange = $this->requestParams["columns"][$key]["name"] === "daterange";
-                if ("" != $searchValue && "null" != $searchValue) {
+                $searchValue = $this->requestParams['columns'][$key]['search']['value'];
+                $searchRange = $this->requestParams['columns'][$key]['name'] === 'daterange';
+                if ('' != $searchValue && 'null' != $searchValue) {
                     if ($searchRange) {
                         list($_dateStart, $_dateEnd) = explode(' - ', $searchValue);
                         $dateStart = new \DateTime($_dateStart);
                         $dateEnd = new \DateTime($_dateEnd);
                         $dateEnd->setTime(23, 59, 59);
 
-                        $k = $i+1;
-                        $andExpr->add($qb->expr()->between($searchField, "?$i", "?$k"));
+                        $k = $i + 1;
+                        $andExpr->add($qb->expr()->between($searchField, '?' . $i, '?' . $k));
                         $qb->setParameter($i, $dateStart->format('Y-m-d H:i:s'));
                         $qb->setParameter($k, $dateEnd->format('Y-m-d H:i:s'));
                         $i+=2;
@@ -447,50 +447,50 @@ class DatatableQuery
     private function addCondition(Andx $andExpr, QueryBuilder $pivot, $searchType, $searchField, $searchValue, $i)
     {
         switch ($searchType) {
-            case "like":
-                $andExpr->add($pivot->expr()->like($searchField, "?$i"));
-                $pivot->setParameter($i, "%" . $searchValue . "%");
+            case 'like':
+                $andExpr->add($pivot->expr()->like($searchField, '?' . $i));
+                $pivot->setParameter($i, '%' . $searchValue . '%');
                 break;
-            case "notLike":
-                $andExpr->add($pivot->expr()->notLike($searchField, "?$i"));
-                $pivot->setParameter($i, "%" . $searchValue . "%");
+            case 'notLike':
+                $andExpr->add($pivot->expr()->notLike($searchField, '?' . $i));
+                $pivot->setParameter($i, '%' . $searchValue . '%');
                 break;
-            case "eq":
-                $andExpr->add($pivot->expr()->eq($searchField, "?$i"));
+            case 'eq':
+                $andExpr->add($pivot->expr()->eq($searchField, '?' . $i));
                 $pivot->setParameter($i, $searchValue);
                 break;
-            case "neq":
-                $andExpr->add($pivot->expr()->neq($searchField, "?$i"));
+            case 'neq':
+                $andExpr->add($pivot->expr()->neq($searchField, '?' . $i));
                 $pivot->setParameter($i, $searchValue);
                 break;
-            case "lt":
-                $andExpr->add($pivot->expr()->lt($searchField, "?$i"));
+            case 'lt':
+                $andExpr->add($pivot->expr()->lt($searchField, '?' . $i));
                 $pivot->setParameter($i, $searchValue);
                 break;
-            case "lte":
-                $andExpr->add($pivot->expr()->lte($searchField, "?$i"));
+            case 'lte':
+                $andExpr->add($pivot->expr()->lte($searchField, '?' . $i));
                 $pivot->setParameter($i, $searchValue);
                 break;
-            case "gt":
-                $andExpr->add($pivot->expr()->gt($searchField, "?$i"));
+            case 'gt':
+                $andExpr->add($pivot->expr()->gt($searchField, '?' . $i));
                 $pivot->setParameter($i, $searchValue);
                 break;
-            case "gte":
-                $andExpr->add($pivot->expr()->gte($searchField, "?$i"));
+            case 'gte':
+                $andExpr->add($pivot->expr()->gte($searchField, '?' . $i));
                 $pivot->setParameter($i, $searchValue);
                 break;
-            case "in":
-                $andExpr->add($pivot->expr()->in($searchField, "?$i"));
+            case 'in':
+                $andExpr->add($pivot->expr()->in($searchField, '?' . $i));
                 $pivot->setParameter($i, explode(',', $searchValue));
                 break;
-            case "notIn":
-                $andExpr->add($pivot->expr()->notIn($searchField, "?$i"));
+            case 'notIn':
+                $andExpr->add($pivot->expr()->notIn($searchField, '?' . $i));
                 $pivot->setParameter($i, explode(",", $searchValue));
                 break;
-            case "isNull":
+            case 'isNull':
                 $andExpr->add($pivot->expr()->isNull($searchField));
                 break;
-            case "isNotNull":
+            case 'isNotNull':
                 $andExpr->add($pivot->expr()->isNull($searchField));
                 break;
         }
@@ -506,18 +506,18 @@ class DatatableQuery
      */
     private function setOrderBy()
     {
-        if (isset($this->requestParams["order"]) && count($this->requestParams["order"])) {
+        if (isset($this->requestParams['order']) && count($this->requestParams['order'])) {
 
-            $counter = count($this->requestParams["order"]);
+            $counter = count($this->requestParams['order']);
 
             for ($i = 0; $i < $counter; $i++) {
-                $columnIdx = (integer) $this->requestParams["order"][$i]["column"];
-                $requestColumn = $this->requestParams["columns"][$columnIdx];
+                $columnIdx = (integer) $this->requestParams['order'][$i]['column'];
+                $requestColumn = $this->requestParams['columns'][$columnIdx];
 
-                if ("true" == $requestColumn["orderable"]) {
+                if ('true' == $requestColumn['orderable']) {
                     $this->qb->addOrderBy(
                         $this->orderColumns[$columnIdx],
-                        $this->requestParams["order"][$i]["dir"]
+                        $this->requestParams['order'][$i]['dir']
                     );
                 }
             }
@@ -534,8 +534,8 @@ class DatatableQuery
      */
     private function setLimit()
     {
-        if (isset($this->requestParams["start"]) && -1 != $this->requestParams["length"]) {
-            $this->qb->setFirstResult($this->requestParams["start"])->setMaxResults($this->requestParams["length"]);
+        if (isset($this->requestParams['start']) && -1 != $this->requestParams['length']) {
+            $this->qb->setFirstResult($this->requestParams['start'])->setMaxResults($this->requestParams['length']);
         }
 
         return $this;
@@ -555,7 +555,7 @@ class DatatableQuery
     private function getCountAllResults($rootEntityIdentifier)
     {
         $qb = $this->em->createQueryBuilder();
-        $qb->select("count(" . $this->tableName . "." . $rootEntityIdentifier . ")");
+        $qb->select('count(' . $this->tableName . '.' . $rootEntityIdentifier . ')');
         $qb->from($this->entity, $this->tableName);
 
         $this->setWhereAllCallback($qb);
@@ -573,7 +573,7 @@ class DatatableQuery
     private function getCountFilteredResults($rootEntityIdentifier)
     {
         $qb = $this->em->createQueryBuilder();
-        $qb->select("count(distinct " . $this->tableName . "." . $rootEntityIdentifier . ")");
+        $qb->select('count(distinct ' . $this->tableName . '.' . $rootEntityIdentifier . ')');
         $qb->from($this->entity, $this->tableName);
 
         $this->setLeftJoins($qb);
@@ -605,7 +605,7 @@ class DatatableQuery
         $this->buildQuery();
 
         $fresults = new Paginator($this->execute(), true);
-        $output = array("data" => array());
+        $output = array('data' => array());
 
         foreach ($fresults as $item) {
             if (is_callable($this->lineFormatter)) {
@@ -613,18 +613,18 @@ class DatatableQuery
                 $item = call_user_func($callable, $item);
             }
 
-            $output["data"][] = $item;
+            $output['data'][] = $item;
         }
 
         $outputHeader = array(
-            "draw" => (integer) $this->requestParams["draw"],
-            "recordsTotal" => (integer) $this->getCountAllResults($this->rootEntityIdentifier),
-            "recordsFiltered" => (integer) $this->getCountFilteredResults($this->rootEntityIdentifier)
+            'draw' => (int) $this->requestParams['draw'],
+            'recordsTotal' => (int) $this->getCountAllResults($this->rootEntityIdentifier),
+            'recordsFiltered' => (int) $this->getCountFilteredResults($this->rootEntityIdentifier)
         );
 
-        $json = $this->serializer->serialize(array_merge($outputHeader, $output), "json");
+        $json = $this->serializer->serialize(array_merge($outputHeader, $output), 'json');
         $response = new Response($json);
-        $response->headers->set("Content-Type", "application/json");
+        $response->headers->set('Content-Type', 'application/json');
 
         return $response;
     }
@@ -644,8 +644,8 @@ class DatatableQuery
     {
         $column = $this->columns[$key];
 
-        true === $column->getOrderable() ? $this->orderColumns[] = $columnTableName . "." . $data : $this->orderColumns[] = null;
-        true === $column->getSearchable() ? $this->searchColumns[] = $columnTableName . "." . $data : $this->searchColumns[] = null;
+        true === $column->getOrderable() ? $this->orderColumns[] = $columnTableName . '.' . $data : $this->orderColumns[] = null;
+        true === $column->getSearchable() ? $this->searchColumns[] = $columnTableName . '.' . $data : $this->searchColumns[] = null;
     }
 
     /**
@@ -661,7 +661,7 @@ class DatatableQuery
         try {
             $metadata = $this->em->getMetadataFactory()->getMetadataFor($entity);
         } catch (MappingException $e) {
-            throw new Exception("getMetadata(): Given object {$entity} is not a Doctrine Entity. ");
+            throw new Exception('getMetadata(): Given object ' . $entity . ' is not a Doctrine Entity.');
         }
 
         return $metadata;
@@ -702,7 +702,7 @@ class DatatableQuery
      */
     private function isAssociation($data)
     {
-        return strpos($data, ".");
+        return strpos($data, '.');
     }
 
     /**
