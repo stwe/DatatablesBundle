@@ -69,11 +69,11 @@ class DatatableDataManager
         $type = $datatableView->getAjax()->getType();
         $parameterBag = null;
 
-        if ("GET" === strtoupper($type)) {
+        if ('GET' === strtoupper($type)) {
             $parameterBag = $this->request->query;
         }
 
-        if ("POST" === strtoupper($type)) {
+        if ('POST' === strtoupper($type)) {
             $parameterBag = $this->request->request;
         }
 
