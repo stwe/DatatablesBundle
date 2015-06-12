@@ -35,87 +35,82 @@ class DatatableQuery
     /**
      * @var Serializer
      */
-    protected $serializer;
+    private $serializer;
 
     /**
      * @var array
      */
-    protected $requestParams;
+    private $requestParams;
 
     /**
      * @var DatatableViewInterface
      */
-    protected $datatableView;
+    private $datatableView;
 
     /**
      * @var string
      */
-    protected $entity;
+    private $entity;
 
     /**
      * @var EntityManager
      */
-    protected $em;
-
-    /**
-     * @var ClassMetadata
-     */
-    protected $metadata;
+    private $em;
 
     /**
      * @var string
      */
-    protected $tableName;
+    private $tableName;
 
     /**
      * @var mixed
      */
-    protected $rootEntityIdentifier;
+    private $rootEntityIdentifier;
 
     /**
      * @var QueryBuilder
      */
-    protected $qb;
+    private $qb;
 
     /**
      * @var array
      */
-    protected $selectColumns;
+    private $selectColumns;
 
     /**
      * @var array
      */
-    protected $virtualColumns;
+    private $virtualColumns;
 
     /**
      * @var array
      */
-    protected $joins;
+    private $joins;
 
     /**
      * @var array
      */
-    protected $searchColumns;
+    private $searchColumns;
 
     /**
      * @var array
      */
-    protected $orderColumns;
+    private $orderColumns;
 
     /**
      * @var array
      */
-    protected $callbacks;
+    private $callbacks;
 
     /**
      * @var callable
      */
-    protected $lineFormatter;
+    private $lineFormatter;
 
     /**
      * @var AbstractColumn[]
      */
-    protected $columns;
+    private $columns;
 
     //-------------------------------------------------
     // Ctor.
@@ -136,9 +131,9 @@ class DatatableQuery
 
         $this->entity = $this->datatableView->getEntity();
         $this->em = $this->datatableView->getDoctrine()->getManager();
-        $this->metadata = $this->getMetadata($this->entity);
-        $this->tableName = $this->getTableName($this->metadata);
-        $this->rootEntityIdentifier = $this->getIdentifier($this->metadata);
+        $metadata = $this->getMetadata($this->entity);
+        $this->tableName = $this->getTableName($metadata);
+        $this->rootEntityIdentifier = $this->getIdentifier($metadata);
         $this->qb = $this->em->createQueryBuilder();
 
         $this->selectColumns = array();
@@ -154,22 +149,22 @@ class DatatableQuery
     }
 
     //-------------------------------------------------
-    // Setup
+    // Setup query
     //-------------------------------------------------
 
-    /* Example:
-    $qb = $this->em->createQueryBuilder();
-    $qb->select("
-         partial post.{id, title},
-         partial comments.{id, title},
-         partial createdby.{id, username},
-         partial updatedby.{id, username}");
-    $qb->from("AppBundle:Post", "post");
-    $qb->leftJoin("post.comments", "comments");
-    $qb->leftJoin("comments.createdby", "createdby");
-    $qb->leftJoin("comments.updatedby", "updatedby");
-    $query = $qb->getQuery();
-    $results = $query->getArrayResult();
+    /* Setup example:
+        $qb = $this->em->createQueryBuilder();
+        $qb->select("
+             partial post.{id, title},
+             partial comments.{title,id},
+             partial createdby.{username, id},
+             partial updatedby.{username, id}");
+        $qb->from("AppBundle:Post", "post");
+        $qb->leftJoin("post.comments", "comments");
+        $qb->leftJoin("comments.createdby", "createdby");
+        $qb->leftJoin("comments.updatedby", "updatedby");
+        $query = $qb->getQuery();
+        $results = $query->getArrayResult();
     */
 
     /**
@@ -179,106 +174,53 @@ class DatatableQuery
      */
     private function setupColumnArrays()
     {
-        // Start with the tableName and the primary key e.g. "post" and "id"
-        $this->addSelectColumn($this->metadata, $this->rootEntityIdentifier, $this->tableName);
+        $this->selectColumns[$this->tableName][] = $this->rootEntityIdentifier;
 
         foreach ($this->columns as $key => $column) {
-            // Get the column data source
             $data = $column->getDql();
 
-            if (false === $this->isAssociation($data)) {
-                $this->addSearchOrderColumn($key, $this->tableName, $data);
-            }
-
-            if (null !== $data && !in_array($data, $this->virtualColumns)) {
-                // Association found (e.g. "comments.title")?
-                if (false !== $this->isAssociation($data)) {
-                    $array = explode(".", $data);
-                    $this->setAssociations($array, 0, $this->metadata, $this->tableName, $key);
-                } else {
+            if (true === $this->isSelectField($data)) {
+                if (false === $this->isAssociation($data)) {
+                    $this->addSearchOrderColumn($key, $this->tableName, $data);
                     if ($data !== $this->rootEntityIdentifier) {
-                        $this->addSelectColumn($this->metadata, $data, $this->tableName);
+                        $this->selectColumns[$this->tableName][] = $data;
+                    }
+                } else {
+                    $array = explode(".", $data);
+                    $count = count($array);
+
+                    if ($count > 2) {
+                        $replaced = str_replace(".", "_", $data);
+                        $parts = explode("_", $replaced);
+                        $last = array_pop($parts);
+                        $select = implode("_", $parts);
+                        $join = str_replace("_", ".", $select);
+                        $this->selectColumns[$select][] = $last;
+                        $this->joins[$join] = $select;
+                        $this->addSearchOrderColumn($key, $select, $last);
+                    } else {
+                        $this->selectColumns[$array[0]][] = $array[1];
+                        $this->joins[$this->tableName . "." . $array[0]] = $array[0];
+                        $this->addSearchOrderColumn($key, $array[0], $array[1]);
                     }
                 }
+            } else {
+                $this->orderColumns[] = null;
+                $this->searchColumns[] = null;
             }
+
         }
 
-        return $this;
-    }
+        // joins - hardcoded id's
+        // @todo: get && add the other id's
+        foreach ($this->selectColumns as $key => $value) {
+            $array = $this->selectColumns[$key];
 
-    /**
-     * Add select columns.
-     *
-     * @param ClassMetadata $metadata
-     * @param string        $data
-     * @param string        $columnTableName
-     *
-     * @return $this
-     * @throws Exception
-     */
-    private function addSelectColumn(ClassMetadata $metadata, $data, $columnTableName)
-    {
-        if (in_array($data, $metadata->getFieldNames())) {
-            $this->selectColumns[$columnTableName][] = $data;
-        } else {
-            throw new Exception("Exception when parsing the columns.");
-        }
-
-        return $this;
-    }
-
-    /**
-     * Add search/order columns.
-     *
-     * @param integer $key
-     * @param string  $columnTableName
-     * @param string  $data
-     */
-    private function addSearchOrderColumn($key, $columnTableName, $data)
-    {
-        $column = $this->columns[$key];
-
-        true === $column->getOrderable() ? $this->orderColumns[] = $columnTableName . "." . $data : $this->orderColumns[] = null;
-        true === $column->getSearchable() ? $this->searchColumns[] = $columnTableName . "." . $data : $this->searchColumns[] = null;
-    }
-
-    /**
-     * Set associations.
-     *
-     * @param array         $associationParts
-     * @param integer       $i
-     * @param ClassMetadata $metadata
-     * @param string        $lastTableName
-     * @param integer       $key
-     *
-     * @return $this
-     * @throws Exception
-     */
-    private function setAssociations(array $associationParts, $i, ClassMetadata $metadata, $lastTableName, $key)
-    {
-        $column = $associationParts[$i];
-
-        if (true === $metadata->hasAssociation($column)) {
-            $targetClass = $metadata->getAssociationTargetClass($column);
-            $targetMeta = $this->getMetadata($targetClass);
-            $targetRootIdentifier = $this->getIdentifier($targetMeta);
-            $targetTableName = $column;
-
-            if (!array_key_exists($targetTableName, $this->selectColumns)) {
-                // add the target primary key e.g. 'comments' => 'id'
-                $this->addSelectColumn($targetMeta, $targetRootIdentifier, $targetTableName);
-                $this->joins[] = array("source" => $lastTableName . "." . $column, "target" => $targetTableName);
+            if (false === array_search("id", $array)) {
+                $array[] = "id";
             }
 
-            $i++;
-            $this->setAssociations($associationParts, $i, $targetMeta, $targetTableName, $key);
-        } else {
-            $targetRootIdentifier = $this->getIdentifier($metadata);
-
-            if ($column !== $targetRootIdentifier) {
-                $this->addSelectColumn($metadata, $column, $lastTableName);
-                $this->addSearchOrderColumn($key, $lastTableName, $column);
-            }
+            $this->selectColumns[$key] = $array;
         }
 
         return $this;
@@ -300,6 +242,16 @@ class DatatableQuery
         $this->setLimit();
 
         return $this;
+    }
+
+    /**
+     * Get query.
+     *
+     * @return QueryBuilder
+     */
+    public function getQuery()
+    {
+        return $this->qb;
     }
 
     //-------------------------------------------------
@@ -407,8 +359,8 @@ class DatatableQuery
      */
     private function setLeftJoins(QueryBuilder $qb)
     {
-        foreach ($this->joins as $join) {
-            $qb->leftJoin($join["source"], $join["target"]);
+        foreach ($this->joins as $key => $value) {
+            $qb->leftJoin($key, $value);
         }
 
         return $this;
@@ -432,7 +384,6 @@ class DatatableQuery
             $orExpr = $qb->expr()->orX();
 
             foreach ($this->searchColumns as $key => $column) {
-                //var_dump($this->searchColumns); die();
                 if (null !== $this->searchColumns[$key]) {
                     $searchField = $this->searchColumns[$key];
                     $orExpr->add($qb->expr()->like($searchField, "?$key"));
@@ -683,6 +634,21 @@ class DatatableQuery
     //-------------------------------------------------
 
     /**
+     * Add search/order columns.
+     *
+     * @param integer $key
+     * @param string  $columnTableName
+     * @param string  $data
+     */
+    private function addSearchOrderColumn($key, $columnTableName, $data)
+    {
+        $column = $this->columns[$key];
+
+        true === $column->getOrderable() ? $this->orderColumns[] = $columnTableName . "." . $data : $this->orderColumns[] = null;
+        true === $column->getSearchable() ? $this->searchColumns[] = $columnTableName . "." . $data : $this->searchColumns[] = null;
+    }
+
+    /**
      * Get metadata.
      *
      * @param string $entity
@@ -695,7 +661,7 @@ class DatatableQuery
         try {
             $metadata = $this->em->getMetadataFactory()->getMetadataFor($entity);
         } catch (MappingException $e) {
-            throw new Exception("Given object {$entity} is not a Doctrine Entity. ");
+            throw new Exception("getMetadata(): Given object {$entity} is not a Doctrine Entity. ");
         }
 
         return $metadata;
@@ -740,18 +706,18 @@ class DatatableQuery
     }
 
     /**
-     * Dump query.
+     * Is select field.
      *
-     * @param bool $die
+     * @param $data
      *
-     * @return $this
+     * @return bool
      */
-    private function dumpQuery($die = false)
+    private function isSelectField($data)
     {
-        var_dump($this->qb->getDQL());
+        if (null !== $data && !in_array($data, $this->virtualColumns)) {
+            return true;
+        }
 
-        if ($die) die();
-
-        return $this;
+        return false;
     }
 }
