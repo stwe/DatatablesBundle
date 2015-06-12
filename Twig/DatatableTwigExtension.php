@@ -104,7 +104,7 @@ class DatatableTwigExtension extends Twig_Extension
             $count = count($values) - 1;
 
             if (-1 !== $values[$count]) {
-                throw new Exception("For lengthMenu the value -1 should always be the last one.");
+                throw new Exception("lengthJoin(): For lengthMenu the value -1 should always be the last one.");
             }
 
             $result = "[[" . implode(", ", $values) . "]," . "[";
