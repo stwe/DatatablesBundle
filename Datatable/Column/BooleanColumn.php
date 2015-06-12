@@ -59,7 +59,7 @@ class BooleanColumn extends AbstractColumn
     public function setData($data)
     {
         if (empty($data) || !is_string($data)) {
-            throw new InvalidArgumentException("setData(): Expecting non-empty string.");
+            throw new InvalidArgumentException('setData(): Expecting non-empty string.');
         }
 
         $this->data = $data;
@@ -72,7 +72,7 @@ class BooleanColumn extends AbstractColumn
      */
     public function getTemplate()
     {
-        return "SgDatatablesBundle:Column:boolean.html.twig";
+        return 'SgDatatablesBundle:Column:boolean.html.twig';
     }
 
     /**
@@ -80,7 +80,7 @@ class BooleanColumn extends AbstractColumn
      */
     public function getAlias()
     {
-        return "boolean";
+        return 'boolean';
     }
 
     //-------------------------------------------------
@@ -93,24 +93,24 @@ class BooleanColumn extends AbstractColumn
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            "class" => "",
-            "padding" => "",
-            "name" => "",
-            "orderable" => true,
-            "render" => "render_boolean",
-            "searchable" => true,
-            "title" => "",
-            "type" => "",
-            "visible" => true,
-            "width" => "",
-            "true_icon" => "",
-            "false_icon" => "",
-            "true_label" => "",
-            "false_label" => "",
-            "search_type" => "like",
-            "filter_type" => "select",
-            "filter_options" => ["" => "Any", "1" => "Yes", "0" => "No"],
-            "filter_property" => ""
+            'class' => '',
+            'padding' => '',
+            'name' => '',
+            'orderable' => true,
+            'render' => 'render_boolean',
+            'searchable' => true,
+            'title' => '',
+            'type' => '',
+            'visible' => true,
+            'width' => '',
+            'true_icon' => '',
+            'false_icon' => '',
+            'true_label' => '',
+            'false_label' => '',
+            'search_type' => 'like',
+            'filter_type' => 'select',
+            'filter_options' => ['' => 'Any', '1' => 'Yes', '0' => 'No'],
+            'filter_property' => ''
         ));
 
         $resolver->setAllowedTypes('class', 'string');
@@ -132,8 +132,8 @@ class BooleanColumn extends AbstractColumn
         $resolver->setAllowedTypes('true_label', 'string');
         $resolver->setAllowedTypes('false_label', 'string');
 
-        $resolver->setAllowedValues("search_type", array("like", "notLike", "eq", "neq", "lt", "lte", "gt", "gte", "in", "notIn", "isNull", "isNotNull"));
-        $resolver->setAllowedValues("filter_type", array("text", "select"));
+        $resolver->setAllowedValues('search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
+        $resolver->setAllowedValues('filter_type', array('text', 'select'));
 
         return $this;
     }

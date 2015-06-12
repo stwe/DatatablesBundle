@@ -55,7 +55,7 @@ class ActionColumn extends AbstractColumn
     public function setData($data)
     {
         if (null !== $data) {
-            throw new InvalidArgumentException("setData(): Null expected.");
+            throw new InvalidArgumentException('setData(): Null expected.');
         }
 
         $this->data = $data;
@@ -68,7 +68,7 @@ class ActionColumn extends AbstractColumn
      */
     public function getTemplate()
     {
-        return "SgDatatablesBundle:Column:action.html.twig";
+        return 'SgDatatablesBundle:Column:action.html.twig';
     }
 
     /**
@@ -76,7 +76,7 @@ class ActionColumn extends AbstractColumn
      */
     public function getAlias()
     {
-        return "action";
+        return 'action';
     }
 
     //-------------------------------------------------
@@ -88,18 +88,18 @@ class ActionColumn extends AbstractColumn
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(array("actions"));
+        $resolver->setRequired(array('actions'));
 
         $resolver->setDefaults(array(
-            "class" => "",
-            "padding" => "",
-            "name" => "",
-            "title" => "",
-            "type" => "",
-            "visible" => true,
-            "width" => "",
-            "start_html" => "",
-            "end_html" => ""
+            'class' => '',
+            'padding' => '',
+            'name' => '',
+            'title' => '',
+            'type' => '',
+            'visible' => true,
+            'width' => '',
+            'start_html' => '',
+            'end_html' => ''
         ));
 
         $resolver->setAllowedTypes('class', 'string');

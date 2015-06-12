@@ -204,11 +204,11 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
 
         foreach ($options as $key => $value) {
             $key = Container::camelize($key);
-            $method = "set" . ucfirst($key);
+            $method = 'set' . ucfirst($key);
             if (in_array($method, $methods)) {
                 $this->$method($value);
             } else {
-                throw new \Exception("setOptions(): {$method} invalid method name");
+                throw new \Exception('setOptions(): ' . $method . ' invalid method name');
             }
         }
 

@@ -49,7 +49,7 @@ class ColumnFactory implements ColumnFactoryInterface
     public function createColumnByName($name)
     {
         if (empty($name) || !is_string($name) && !$name instanceof ColumnInterface) {
-            throw new InvalidArgumentException("createColumnByName(): String or ColumnInterface expected.");
+            throw new InvalidArgumentException('createColumnByName(): String or ColumnInterface expected.');
         }
 
         if ($name instanceof ColumnInterface) {
@@ -61,36 +61,36 @@ class ColumnFactory implements ColumnFactoryInterface
         $this->column = null;
 
         switch ($name) {
-            case "action":
+            case 'action':
                 $this->column = new ActionColumn();
                 break;
-            case "array":
+            case 'array':
                 $this->column = new ArrayColumn();
                 break;
-            case "boolean":
+            case 'boolean':
                 $this->column = new BooleanColumn();
                 break;
-            case "column":
+            case 'column':
                 $this->column = new Column();
                 break;
-            case "datetime":
+            case 'datetime':
                 $this->column = new DateTimeColumn();
                 break;
-            case "timeago":
+            case 'timeago':
                 $this->column = new TimeagoColumn();
                 break;
-            case "multiselect":
+            case 'multiselect':
                 $this->column = new MultiselectColumn();
                 break;
-            case "virtual":
+            case 'virtual':
                 $this->column = new VirtualColumn();
                 break;
             default:
-                throw new InvalidArgumentException("createColumnByName(): The column is not supported.");
+                throw new InvalidArgumentException('createColumnByName(): The column is not supported.');
         }
 
         if (null === $this->column) {
-            throw new InvalidArgumentException("createColumnByName(): The column could not be created.");
+            throw new InvalidArgumentException('createColumnByName(): The column could not be created.');
         }
 
         return $this->column;

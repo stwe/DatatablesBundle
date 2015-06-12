@@ -87,7 +87,7 @@ class ColumnBuilder implements ColumnBuilderInterface
                 $this->multiselect = true;
                 $this->multiselectColumn = $column;
             } else {
-                throw new Exception("add(): There is only one multiselect column allowed.");
+                throw new Exception('add(): There is only one multiselect column allowed.');
             }
         }
 

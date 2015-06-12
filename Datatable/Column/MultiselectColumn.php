@@ -44,7 +44,7 @@ class MultiselectColumn extends ActionColumn
      */
     public function getTemplate()
     {
-        return "SgDatatablesBundle:Column:multiselect.html.twig";
+        return 'SgDatatablesBundle:Column:multiselect.html.twig';
     }
 
     /**
@@ -52,7 +52,7 @@ class MultiselectColumn extends ActionColumn
      */
     public function getAlias()
     {
-        return "multiselect";
+        return 'multiselect';
     }
 
     //-------------------------------------------------
@@ -67,12 +67,12 @@ class MultiselectColumn extends ActionColumn
         parent::configureOptions($resolver);
 
         $resolver->setDefaults(array(
-            "attributes" => array(),
-            "value" => "id",
+            'attributes' => array(),
+            'value' => 'id',
         ));
 
-        $resolver->addAllowedTypes("attributes", "array");
-        $resolver->addAllowedTypes("value", "string");
+        $resolver->addAllowedTypes('attributes', 'array');
+        $resolver->addAllowedTypes('value', 'string');
 
         return $this;
     }
@@ -110,21 +110,21 @@ class MultiselectColumn extends ActionColumn
     {
         $this->attributes = $attributes;
 
-        if (array_key_exists("type", $this->attributes)) {
-            throw new InvalidArgumentException("The 'type' attribute is not supported.");
+        if (array_key_exists('type', $this->attributes)) {
+            throw new InvalidArgumentException('The type attribute is not supported.');
         }
-        if (array_key_exists("value", $this->attributes)) {
-            throw new InvalidArgumentException("The 'value' attribute is not supported.");
+        if (array_key_exists('value', $this->attributes)) {
+            throw new InvalidArgumentException('The value attribute is not supported.');
         }
-        if (array_key_exists("name", $this->attributes)) {
-            $this->attributes["name"] = "multiselect_checkbox " . $this->attributes["name"];
+        if (array_key_exists('name', $this->attributes)) {
+            $this->attributes['name'] = 'multiselect_checkbox ' . $this->attributes['name'];
         } else {
-            $this->attributes["name"] = "multiselect_checkbox";
+            $this->attributes['name'] = 'multiselect_checkbox';
         }
-        if (array_key_exists("class", $this->attributes)) {
-            $this->attributes["class"] = "multiselect_checkbox " . $this->attributes["class"];
+        if (array_key_exists('class', $this->attributes)) {
+            $this->attributes['class'] = 'multiselect_checkbox ' . $this->attributes['class'];
         } else {
-            $this->attributes["class"] = "multiselect_checkbox";
+            $this->attributes['class'] = 'multiselect_checkbox';
         }
 
         return $this;

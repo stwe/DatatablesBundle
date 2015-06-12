@@ -42,7 +42,7 @@ class DateTimeColumn extends TimeagoColumn
      */
     public function getTemplate()
     {
-        return "SgDatatablesBundle:Column:datetime.html.twig";
+        return 'SgDatatablesBundle:Column:datetime.html.twig';
     }
 
     /**
@@ -50,7 +50,7 @@ class DateTimeColumn extends TimeagoColumn
      */
     public function getAlias()
     {
-        return "datetime";
+        return 'datetime';
     }
 
     //-------------------------------------------------
@@ -65,11 +65,11 @@ class DateTimeColumn extends TimeagoColumn
         parent::configureOptions($resolver);
 
         $resolver->setDefaults(array(
-            "render" => "render_datetime",
-            "date_format" => "lll",
+            'render' => 'render_datetime',
+            "date_format" => 'lll',
         ));
 
-        $resolver->addAllowedTypes("date_format", "string");
+        $resolver->addAllowedTypes('date_format', 'string');
 
         return $this;
     }
@@ -88,7 +88,7 @@ class DateTimeColumn extends TimeagoColumn
     public function setDateFormat($dateFormat)
     {
         if (empty($dateFormat) || !is_string($dateFormat)) {
-            throw new InvalidArgumentException("setDateFormat(): Expecting non-empty string.");
+            throw new InvalidArgumentException('setDateFormat(): Expecting non-empty string.');
         }
 
         $this->dateFormat = $dateFormat;

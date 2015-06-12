@@ -115,17 +115,17 @@ class Action implements OptionsInterface
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(array("route"));
+        $resolver->setRequired(array('route'));
 
         $resolver->setDefaults(array(
-            "route_parameters" => array(),
-            "icon" => "",
-            "label" => "",
-            "confirm" => false,
-            "confirm_message" => "",
-            "attributes" => array(),
-            "role" => "",
-            "render_if" => array()
+            'route_parameters' => array(),
+            'icon' => '',
+            'label' => '',
+            'confirm' => false,
+            'confirm_message' => '',
+            'attributes' => array(),
+            'role' => '',
+            'render_if' => array()
         ));
 
         $resolver->setAllowedTypes('route', 'string');
@@ -150,11 +150,11 @@ class Action implements OptionsInterface
 
         foreach ($options as $key => $value) {
             $key = Container::camelize($key);
-            $method = "set" . ucfirst($key);
+            $method = 'set' . ucfirst($key);
             if (in_array($method, $methods)) {
                 $this->$method($value);
             } else {
-                throw new \Exception("setOptions(): {$method} invalid method name");
+                throw new \Exception('setOptions(): ' . $method . ' invalid method name');
             }
         }
 

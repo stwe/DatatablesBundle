@@ -32,7 +32,7 @@ class VirtualColumn extends Column
      */
     public function getAlias()
     {
-        return "virtual";
+        return 'virtual';
     }
 
     //-------------------------------------------------
@@ -47,8 +47,8 @@ class VirtualColumn extends Column
         parent::configureOptions($resolver);
         
         $resolver->setDefaults(array(
-            "orderable" => false,
-            "searchable" => false,
+            'orderable' => false,
+            'searchable' => false,
         ));
 
         return $this;

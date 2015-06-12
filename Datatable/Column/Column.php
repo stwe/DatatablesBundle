@@ -38,7 +38,7 @@ class Column extends AbstractColumn
     public function setData($data)
     {
         if (empty($data) || !is_string($data)) {
-            throw new InvalidArgumentException("setData(): Expecting non-empty string.");
+            throw new InvalidArgumentException('setData(): Expecting non-empty string.');
         }
 
         $this->data = $data;
@@ -51,7 +51,7 @@ class Column extends AbstractColumn
      */
     public function getTemplate()
     {
-        return "SgDatatablesBundle:Column:column.html.twig";
+        return 'SgDatatablesBundle:Column:column.html.twig';
     }
 
     /**
@@ -59,7 +59,7 @@ class Column extends AbstractColumn
      */
     public function getAlias()
     {
-        return "column";
+        return 'column';
     }
 
     //-------------------------------------------------
@@ -72,21 +72,21 @@ class Column extends AbstractColumn
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            "class" => "",
-            "padding" => "",
-            "name" => "",
-            "orderable" => true,
-            "render" => null,
-            "searchable" => true,
-            "title" => "",
-            "type" => "",
-            "visible" => true,
-            "width" => "",
-            "default" => "",
-            "search_type" => "like",
-            "filter_type" => "text",
-            "filter_options" => [],
-            "filter_property" => "",
+            'class' => '',
+            'padding' => '',
+            'name' => '',
+            'orderable' => true,
+            'render' => null,
+            'searchable' => true,
+            'title' => '',
+            'type' => '',
+            'visible' => true,
+            'width' => '',
+            'default' => '',
+            'search_type' => 'like',
+            'filter_type' => 'text',
+            'filter_options' => [],
+            'filter_property' => '',
         ));
 
         $resolver->setAllowedTypes('class', 'string');
@@ -105,8 +105,8 @@ class Column extends AbstractColumn
         $resolver->setAllowedTypes('filter_options', 'array');
         $resolver->setAllowedTypes('filter_property', 'string');
 
-        $resolver->setAllowedValues("search_type", array("like", "notLike", "eq", "neq", "lt", "lte", "gt", "gte", "in", "notIn", "isNull", "isNotNull"));
-        $resolver->setAllowedValues("filter_type", array("text", "select"));
+        $resolver->setAllowedValues('search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
+        $resolver->setAllowedValues('filter_type', array('text', 'select'));
 
         return $this;
     }
