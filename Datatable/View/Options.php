@@ -211,24 +211,24 @@ class Options
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            "display_start" => 0,
-            "dom" => "lfrtip",
-            "length_menu" => array(10, 25, 50, 100),
-            "order_classes" => true,
-            "order" => [[0, "asc"]],
-            "order_multi" => true,
-            "page_length" => 10,
-            "paging_type" => Style::FULL_NUMBERS_PAGINATION,
-            "renderer" => "",
-            "scroll_collapse" => false,
-            "search_delay" => 0,
-            "state_duration" => 7200,
-            "stripe_classes" => array(),
-            "responsive" => false,
-            "class" => Style::BASE_STYLE,
-            "individual_filtering" => false,
-            "individual_filtering_position" => "foot",
-            "use_integration_options" => false
+            'display_start' => 0,
+            'dom' => 'lfrtip',
+            'length_menu' => array(10, 25, 50, 100),
+            'order_classes' => true,
+            'order' => [[0, 'asc']],
+            'order_multi' => true,
+            'page_length' => 10,
+            'paging_type' => Style::FULL_NUMBERS_PAGINATION,
+            'renderer' => "",
+            'scroll_collapse' => false,
+            'search_delay' => 0,
+            'state_duration' => 7200,
+            'stripe_classes' => array(),
+            'responsive' => false,
+            'class' => Style::BASE_STYLE,
+            'individual_filtering' => false,
+            'individual_filtering_position' => 'foot',
+            'use_integration_options' => false
         ));
 
         $resolver->setAllowedTypes('display_start', 'int');
@@ -250,7 +250,7 @@ class Options
         $resolver->setAllowedTypes('individual_filtering_position', 'string');
         $resolver->setAllowedTypes('use_integration_options', 'bool');
 
-        $resolver->setAllowedValues("individual_filtering_position", array("head", "foot", "both"));
+        $resolver->setAllowedValues('individual_filtering_position', array('head', 'foot', 'both'));
 
         return $this;
     }
@@ -269,11 +269,11 @@ class Options
 
         foreach ($options as $key => $value) {
             $key = Container::camelize($key);
-            $method = "set" . ucfirst($key);
+            $method = 'set' . ucfirst($key);
             if (in_array($method, $methods)) {
                 $this->$method($value);
             } else {
-                throw new Exception("callingSettersWithOptions(): {$method} invalid method name");
+                throw new Exception('callingSettersWithOptions(): ' . $method . ' invalid method name');
             }
         }
 
@@ -396,7 +396,7 @@ class Options
                 !is_numeric($o[0]) ||
                 !array_key_exists(1, $o) ||
                 !in_array($o[1], ['desc', 'asc'])){
-                throw new \Exception("setOrder(): Invalid array format.");
+                throw new \Exception('setOrder(): Invalid array format.');
             }
         }
         

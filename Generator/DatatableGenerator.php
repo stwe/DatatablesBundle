@@ -46,9 +46,9 @@ class DatatableGenerator extends Generator
      */
     public function __construct()
     {
-        $this->className = "";
-        $this->classPath = "";
-        $this->ajaxUrl = "";
+        $this->className = '';
+        $this->classPath = '';
+        $this->ajaxUrl = '';
     }
 
     //-------------------------------------------------
@@ -87,37 +87,37 @@ class DatatableGenerator extends Generator
         $parts = explode("\\", $entity);
         $entityClass = array_pop($parts);
 
-        $this->className = $entityClass . "Datatable";
-        $dirPath = $bundle->getPath() . "/Datatables";
-        $this->classPath = $dirPath . "/" . str_replace("\\", "/", $entity) . "Datatable.php";
+        $this->className = $entityClass . 'Datatable';
+        $dirPath = $bundle->getPath() . '/Datatables';
+        $this->classPath = $dirPath . '/' . str_replace('\\', '/', $entity) . 'Datatable.php';
 
         if (file_exists($this->classPath)) {
-            throw new RuntimeException(sprintf("Unable to generate the %s datatable class as it already exists under the %s file", $this->className, $this->classPath));
+            throw new RuntimeException(sprintf('Unable to generate the %s datatable class as it already exists under the %s file', $this->className, $this->classPath));
         }
 
-        $parts = explode("\\", $entity);
+        $parts = explode('\\', $entity);
         array_pop($parts);
 
         // set ajaxUrl
         if (false === $clientSide) {
             // server-side
             if (!$ajaxUrl) {
-                $this->ajaxUrl = strtolower($entityClass) . "_results";
+                $this->ajaxUrl = strtolower($entityClass) . '_results';
             } else {
                 $this->ajaxUrl = $ajaxUrl;
             }
         }
 
-        $this->renderFile("class.php.twig", $this->classPath, array(
-            "namespace" => $bundle->getNamespace(),
-            "entity_namespace" => implode('\\', $parts),
-            "entity_class" => $entityClass,
-            "bundle" => $bundle->getName(),
-            "datatable_class" => $this->className,
-            "datatable_name" => strtolower($entityClass) . "_datatable",
-            "fields" => $fields,
-            "client_side" => (boolean) $clientSide,
-            "ajax_url" => $this->ajaxUrl
+        $this->renderFile('class.php.twig', $this->classPath, array(
+            'namespace' => $bundle->getNamespace(),
+            'entity_namespace' => implode('\\', $parts),
+            'entity_class' => $entityClass,
+            'bundle' => $bundle->getName(),
+            'datatable_class' => $this->className,
+            'datatable_name' => strtolower($entityClass) . '_datatable',
+            'fields' => $fields,
+            'client_side' => (boolean) $clientSide,
+            'ajax_url' => $this->ajaxUrl
         ));
     }
 }

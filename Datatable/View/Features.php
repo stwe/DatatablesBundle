@@ -179,20 +179,20 @@ class Features
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            "auto_width" => true,
-            "defer_render" => false,
-            "info" => true,
-            "jquery_ui" => false,
-            "length_change" => true,
-            "ordering" => true,
-            "paging" => true,
-            "processing" => true,
-            "scroll_x" => false,
-            "scroll_y" => "",
-            "searching" => true,
-            "server_side" => true,
-            "state_save" => false,
-            "delay" => 0
+            'auto_width' => true,
+            'defer_render' => false,
+            'info' => true,
+            'jquery_ui' => false,
+            'length_change' => true,
+            'ordering' => true,
+            'paging' => true,
+            'processing' => true,
+            'scroll_x' => false,
+            'scroll_y' => '',
+            'searching' => true,
+            'server_side' => true,
+            'state_save' => false,
+            'delay' => 0
         ));
 
         $resolver->setAllowedTypes('auto_width', 'bool');
@@ -227,11 +227,11 @@ class Features
 
         foreach ($options as $key => $value) {
             $key = Container::camelize($key);
-            $method = "set" . ucfirst($key);
+            $method = 'set' . ucfirst($key);
             if (in_array($method, $methods)) {
                 $this->$method($value);
             } else {
-                throw new Exception("callingSettersWithOptions(): {$method} invalid method name");
+                throw new Exception('callingSettersWithOptions(): ' . $method . ' invalid method name');
             }
         }
 

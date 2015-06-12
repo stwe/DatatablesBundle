@@ -36,12 +36,12 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
     protected function configure()
     {
         $this
-            ->setName("sg:datatable:generate")
-            ->setDescription("Generates a new datatable class based on the given entity.")
-            ->addArgument("entity", InputArgument::REQUIRED, "The entity class name (shortcut notation).")
-            ->addOption("fields", "f", InputOption::VALUE_OPTIONAL, "The fields.")
-            ->addOption("client-side", "c", InputOption::VALUE_NONE, "The client-side flag.")
-            ->addOption("ajax-url", "a", InputOption::VALUE_OPTIONAL, "The ajax url.");
+            ->setName('sg:datatable:generate')
+            ->setDescription('Generates a new datatable class based on the given entity.')
+            ->addArgument('entity', InputArgument::REQUIRED, 'The entity class name (shortcut notation).')
+            ->addOption('fields', 'f', InputOption::VALUE_OPTIONAL, 'The fields.')
+            ->addOption('client-side', 'c', InputOption::VALUE_NONE, 'The client-side flag.')
+            ->addOption('ajax-url', 'a', InputOption::VALUE_OPTIONAL, 'The ajax url.');
     }
 
     /**
@@ -49,25 +49,25 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $entity = Validators::validateEntityName($input->getArgument("entity"));
+        $entity = Validators::validateEntityName($input->getArgument('entity'));
         list($bundle, $entity) = $this->parseShortcutNotation($entity);
 
-        $fields = Fields::parseFields($input->getOption("fields"));
-        $clientSide = $input->getOption("client-side");
-        $ajaxUrl = $input->getOption("ajax-url");
+        $fields = Fields::parseFields($input->getOption('fields'));
+        $clientSide = $input->getOption('client-side');
+        $ajaxUrl = $input->getOption('ajax-url');
 
-        $entityClass = $this->getContainer()->get("doctrine")->getAliasNamespace($bundle) . "\\" . $entity;
+        $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle) . "\\" . $entity;
         $metadata = $this->getEntityMetadata($entityClass);
 
         if (count($metadata[0]->identifier) > 1) {
-            throw new RuntimeException("The datatable class generator does not support entities with multiple primary keys.");
+            throw new RuntimeException('The datatable class generator does not support entities with multiple primary keys.');
         }
 
         if (0 == count($fields)) {
             $fields = $this->getFieldsFromMetadata($metadata[0]);
         }
 
-        $bundle = $this->getContainer()->get("kernel")->getBundle($bundle);
+        $bundle = $this->getContainer()->get('kernel')->getBundle($bundle);
 
         /** @var \Sg\DatatablesBundle\Generator\DatatableGenerator $generator */
         $generator = $this->getGenerator($bundle);
@@ -75,7 +75,7 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
 
         $output->writeln(
             sprintf(
-                "The new datatable %s.php class file has been created under %s.",
+                'The new datatable %s.php class file has been created under %s.',
                 $generator->getClassName(),
                 $generator->getClassPath()
             )
@@ -87,7 +87,7 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
      */
     protected function createGenerator()
     {
-        return new DatatableGenerator($this->getContainer()->get("filesystem"));
+        return new DatatableGenerator($this->getContainer()->get('filesystem'));
     }
 
     /**
@@ -100,7 +100,7 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
         $skeletonDirs = array();
 
         $reflClass = new \ReflectionClass(get_class($this));
-        $skeletonDirs[] = dirname($reflClass->getFileName()) . "/../Resources/views/Skeleton";
+        $skeletonDirs[] = dirname($reflClass->getFileName()) . '/../Resources/views/Skeleton';
 
         return $skeletonDirs;
     }
@@ -123,34 +123,34 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
 
         foreach ($metadata->fieldMappings as $field) {
             $row = array();
-            $row["property"] = $field["fieldName"];
+            $row['property'] = $field['fieldName'];
 
-            switch($field["type"]) {
-                case "datetime":
-                    $row["column_name"] = "datetime";
+            switch($field['type']) {
+                case 'datetime':
+                    $row['column_name'] = 'datetime';
                     break;
-                case "boolean":
-                    $row["column_name"] = "boolean";
+                case 'boolean':
+                    $row['column_name'] = 'boolean';
                     break;
                 default:
-                    $row["column_name"] = "column";
+                    $row['column_name'] = 'column';
             }
 
-            $row["title"] = ucwords($field["fieldName"]);
+            $row['title'] = ucwords($field['fieldName']);
             $fields[] = $row;
         }
 
         foreach ($metadata->associationMappings as $relation) {
-            if ( ($relation["type"] !== ClassMetadataInfo::ONE_TO_MANY) && ($relation["type"] !== ClassMetadataInfo::MANY_TO_MANY) ) {
+            if ( ($relation['type'] !== ClassMetadataInfo::ONE_TO_MANY) && ($relation['type'] !== ClassMetadataInfo::MANY_TO_MANY) ) {
 
-                $targetClass = $relation["targetEntity"];
+                $targetClass = $relation['targetEntity'];
                 $targetMetadata = $this->getEntityMetadata($targetClass);
 
                 foreach ($targetMetadata[0]->fieldMappings as $field) {
                     $row = array();
-                    $row["property"] = $relation["fieldName"] . "." . $field["fieldName"];
-                    $row["column_name"] = "column";
-                    $row["title"] = ucwords(str_replace(".", " ", $row["property"]));
+                    $row['property'] = $relation['fieldName'] . '.' . $field['fieldName'];
+                    $row['column_name'] = 'column';
+                    $row['title'] = ucwords(str_replace('.', ' ', $row['property']));
                     $fields[] = $row;
                 }
             }

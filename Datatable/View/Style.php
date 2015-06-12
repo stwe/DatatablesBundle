@@ -27,70 +27,70 @@ class Style
      *
      * @var string
      */
-    const BASE_STYLE = "display";
+    const BASE_STYLE = 'display';
 
     /**
      * Default style with none of the additional feature style classes.
      *
      * @var string
      */
-    const BASE_STYLE_NO_CLASSES = "";
+    const BASE_STYLE_NO_CLASSES = '';
 
     /**
      * Default style with row border.
      *
      * @var string
      */
-    const BASE_STYLE_ROW_BORDERS = "row-border";
+    const BASE_STYLE_ROW_BORDERS = 'row-border';
 
     /**
      * Default style with cell border.
      *
      * @var string
      */
-    const BASE_STYLE_CELL_BORDERS = "cell-border";
+    const BASE_STYLE_CELL_BORDERS = 'cell-border';
 
     /**
      * Default style with hover class.
      *
      * @var string
      */
-    const BASE_STYLE_HOVER = "hover";
+    const BASE_STYLE_HOVER = 'hover';
 
     /**
      * Default style with order-column class.
      *
      * @var string
      */
-    const BASE_STYLE_ORDER_COLUMN = "order-column";
+    const BASE_STYLE_ORDER_COLUMN = 'order-column';
 
     /**
      * Default style with stripe class.
      *
      * @var string
      */
-    const BASE_STYLE_STRIPE = "stripe";
+    const BASE_STYLE_STRIPE = 'stripe';
 
     /**
      * jQuery UI's ThemeRoller styles.
      *
      * @var string
      */
-    const JQUERY_UI_STYLE = "display";
+    const JQUERY_UI_STYLE = 'display';
 
     /**
      * Bootstrap's table styling options.
      *
      * @var string
      */
-    const BOOTSTRAP_3_STYLE = "table table-striped table-bordered";
+    const BOOTSTRAP_3_STYLE = 'table table-striped table-bordered';
 
     /**
      * Foundations's table styling options.
      *
      * @var string
      */
-    const FOUNDATION_STYLE = "display";
+    const FOUNDATION_STYLE = 'display';
 
     //-------------------------------------------------
     // Built-in paging button arrangements
@@ -101,26 +101,26 @@ class Style
      *
      * @var string
      */
-    const SIMPLE_PAGINATION = "simple";
+    const SIMPLE_PAGINATION = 'simple';
 
     /**
      * "Previous" and "Next" buttons, plus page numbers.
      *
      * @var string
      */
-    const SIMPLE_NUMBERS_PAGINATION = "simple_numbers";
+    const SIMPLE_NUMBERS_PAGINATION = 'simple_numbers';
 
     /**
      * "First", "Previous", "Next" and "Last" buttons.
      *
      * @var string
      */
-    const FULL_PAGINATION = "full";
+    const FULL_PAGINATION = 'full';
 
     /**
      * "First", "Previous", "Next" and "Last" buttons, plus page numbers.
      *
      * @var string
      */
-    const FULL_NUMBERS_PAGINATION = "full_numbers";
+    const FULL_NUMBERS_PAGINATION = 'full_numbers';
 }

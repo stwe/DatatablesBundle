@@ -94,14 +94,14 @@ class Ajax
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            "url" => "",
-            "type" => "GET"
+            'url' => '',
+            'type' => 'GET'
         ));
 
         $resolver->setAllowedTypes('url', 'string');
         $resolver->setAllowedTypes('type', 'string');
 
-        $resolver->setAllowedValues('type', array("GET", "POST", "get", "post"));
+        $resolver->setAllowedValues('type', array('GET', 'POST', 'get', 'post'));
 
         return $this;
     }
@@ -120,11 +120,11 @@ class Ajax
 
         foreach ($options as $key => $value) {
             $key = Container::camelize($key);
-            $method = "set" . ucfirst($key);
+            $method = 'set' . ucfirst($key);
             if (in_array($method, $methods)) {
                 $this->$method($value);
             } else {
-                throw new Exception("callingSettersWithOptions(): {$method} invalid method name");
+                throw new Exception('callingSettersWithOptions(): ' . $method . ' invalid method name');
             }
         }
 

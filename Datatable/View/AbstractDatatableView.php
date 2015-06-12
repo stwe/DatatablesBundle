@@ -168,7 +168,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->ajax = new Ajax();
 
         $this->data = null;
-        $this->templates = $defaultLayoutOptions["templates"];
+        $this->templates = $defaultLayoutOptions['templates'];
 
         $this->qb = null;
 
@@ -187,38 +187,38 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $options = array();
 
         if (true === $this->features->getServerSide()) {
-            if ("" === $this->ajax->getUrl()) {
-                throw new Exception("render(): The ajax url parameter must be given.");
+            if ('' === $this->ajax->getUrl()) {
+                throw new Exception('render(): The ajax url parameter must be given.');
             }
         } else {
             if (null === $this->data) {
-                throw new Exception("render(): Call setData() in your controller.");
+                throw new Exception('render(): Call setData() in your controller.');
             } else {
-                $options["view_data"] = $this->data;
+                $options['view_data'] = $this->data;
             }
         }
 
-        $options["view_features"] = $this->features;
-        $options["view_options"] = $this->options;
-        $options["view_columns"] = $this->columnBuilder->getColumns();
-        $options["view_ajax"] = $this->ajax;
+        $options['view_features'] = $this->features;
+        $options['view_options'] = $this->options;
+        $options['view_columns'] = $this->columnBuilder->getColumns();
+        $options['view_ajax'] = $this->ajax;
 
-        $options["view_multiselect"] = $this->columnBuilder->isMultiselect();
-        $options["view_multiselect_column"] = $this->columnBuilder->getMultiselectColumn();
+        $options['view_multiselect'] = $this->columnBuilder->isMultiselect();
+        $options['view_multiselect_column'] = $this->columnBuilder->getMultiselectColumn();
 
-        $options["view_table_id"] = $this->getName();
+        $options['view_table_id'] = $this->getName();
 
-        $options["datatable"] = $this;
+        $options['datatable'] = $this;
 
         switch ($type) {
-            case "html":
-                return $this->twig->render($this->templates["html"], $options);
+            case 'html':
+                return $this->twig->render($this->templates['html'], $options);
                 break;
-            case "js":
-                return $this->twig->render($this->templates["js"], $options);
+            case 'js':
+                return $this->twig->render($this->templates['js'], $options);
                 break;
             default:
-                return $this->twig->render($this->templates["base"], $options);
+                return $this->twig->render($this->templates['base'], $options);
                 break;
         }
     }
@@ -330,8 +330,8 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function truncate($text, $chars = 25)
     {
         if (strlen($text) > $chars) {
-            $text = substr($text . " ", 0, $chars);
-            $text = substr($text, 0, strrpos($text, ' ')) . "...";
+            $text = substr($text . ' ', 0, $chars);
+            $text = substr($text, 0, strrpos($text, ' ')) . '...';
         }
 
         return $text;
