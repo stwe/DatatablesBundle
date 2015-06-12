@@ -14,13 +14,13 @@ namespace Sg\DatatablesBundle\Datatable\View;
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig_Environment;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Exception;
 
@@ -67,11 +67,11 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     protected $router;
 
     /**
-     * The Doctrine service.
+     * The doctrine orm entity manager service.
      *
-     * @var RegistryInterface
+     * @var EntityManagerInterface
      */
-    protected $doctrine;
+    protected $em;
 
     /**
      * A Features instance.
@@ -142,7 +142,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @param Twig_Environment              $twig
      * @param TranslatorInterface           $translator
      * @param RouterInterface               $router
-     * @param RegistryInterface             $doctrine
+     * @param EntityManagerInterface        $em
      * @param array                         $defaultLayoutOptions
      */
     public function __construct(
@@ -151,7 +151,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         Twig_Environment $twig,
         TranslatorInterface $translator,
         RouterInterface $router,
-        RegistryInterface $doctrine,
+        EntityManagerInterface $em,
         array $defaultLayoutOptions
     )
     {
@@ -160,7 +160,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->twig = $twig;
         $this->translator = $translator;
         $this->router = $router;
-        $this->doctrine = $doctrine;
+        $this->em = $em;
 
         $this->features = new Features();
         $this->options = new Options();
@@ -250,9 +250,9 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * {@inheritdoc}
      */
-    public function getDoctrine()
+    public function getEntityManager()
     {
-        return $this->doctrine;
+        return $this->em;
     }
 
     /**

@@ -130,7 +130,7 @@ class DatatableQuery
         $this->datatableView = $datatableView;
 
         $this->entity = $this->datatableView->getEntity();
-        $this->em = $this->datatableView->getDoctrine()->getManager();
+        $this->em = $this->datatableView->getEntityManager();
         $metadata = $this->getMetadata($this->entity);
         $this->tableName = $this->getTableName($metadata);
         $this->rootEntityIdentifier = $this->getIdentifier($metadata);

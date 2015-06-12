@@ -13,8 +13,8 @@ namespace Sg\DatatablesBundle\Datatable\View;
 
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Twig_Error;
 
@@ -63,11 +63,11 @@ interface DatatableViewInterface
     public function getLineFormatter();
 
     /**
-     * Get doctrine.
+     * Get entity manager.
      *
-     * @return RegistryInterface
+     * @return EntityManagerInterface
      */
-    public function getDoctrine();
+    public function getEntityManager();
 
     /**
      * Get custom qb.
