@@ -196,6 +196,10 @@ class DatatableQuery
                         $select = implode('_', $parts);
                         $join = str_replace('_', '.', $select);
                         $this->selectColumns[$select][] = $last;
+
+                        $this->selectColumns[$array[0]][] = 'id';
+                        $this->joins[$this->tableName . '.' . $array[0]] = $array[0];
+
                         $this->joins[$join] = $select;
                         $this->addSearchOrderColumn($key, $select, $last);
                     } else {
