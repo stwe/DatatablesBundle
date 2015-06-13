@@ -44,6 +44,13 @@ class Options
     protected $displayStart;
 
     /**
+     * Delay the loading of server-side data until second draw.
+     *
+     * @var integer
+     */
+    protected $deferLoading;
+
+    /**
      * Define the table control elements to appear on the page and in what order.
      *
      * @var string
@@ -212,6 +219,7 @@ class Options
     {
         $resolver->setDefaults(array(
             'display_start' => 0,
+            'defer_loading' => -1,
             'dom' => 'lfrtip',
             'length_menu' => array(10, 25, 50, 100),
             'order_classes' => true,
@@ -232,6 +240,7 @@ class Options
         ));
 
         $resolver->setAllowedTypes('display_start', 'int');
+        $resolver->setAllowedTypes('defer_loading', 'int');
         $resolver->setAllowedTypes('dom', 'string');
         $resolver->setAllowedTypes('length_menu', 'array');
         $resolver->setAllowedTypes('order_classes', 'bool');
@@ -306,6 +315,30 @@ class Options
     public function getDisplayStart()
     {
         return (integer) $this->displayStart;
+    }
+
+    /**
+     * Set DeferLoading.
+     *
+     * @param integer $deferLoading
+     *
+     * @return $this
+     */
+    public function setDeferLoading($deferLoading)
+    {
+        $this->deferLoading = (integer) $deferLoading;
+
+        return $this;
+    }
+
+    /**
+     * Get DeferLoading.
+     *
+     * @return integer
+     */
+    public function getDeferLoading()
+    {
+        return (integer) $this->deferLoading;
     }
 
     /**
