@@ -48,12 +48,13 @@ public function indexResultsAction()
     //$query->addWhereResult($function);
 
     // Or add the callback function as WhereAll
-    $query->addWhereAll($function);
+    //$query->addWhereAll($function);
 
-    // Or get the actual query and do whatever you want with this
+    // Or to the actual query
     //$query->buildQuery();
-    //$qb = $query->getQuery()->getDQL();
-    //var_dump($qb); die();
+    //$qb = $query->getQuery();
+    //$qb->andWhere("post.visible = true");
+    //$query->setQuery($qb);
     //return $query->getResponse(false);
 
     return $query->getResponse();
