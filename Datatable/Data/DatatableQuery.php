@@ -258,6 +258,20 @@ class DatatableQuery
         return $this->qb;
     }
 
+    /**
+     * Set query.
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return $this
+     */
+    public function setQuery(QueryBuilder $qb)
+    {
+        $this->qb = $qb;
+
+        return $this;
+    }
+
     //-------------------------------------------------
     // Callbacks
     //-------------------------------------------------

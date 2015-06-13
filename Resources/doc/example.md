@@ -219,13 +219,13 @@ class PostDatatable extends AbstractDatatableView
                 'data' => 'comments[, ].title',
             ))
             ->add('comments.createdby.username', 'array', array(
-                'title' => 'Ersteller',
+                'title' => 'Created by',
                 'searchable' => true,
                 'orderable' => true,
                 'data' => 'comments[, ].createdby.username',
             ))
             ->add('comments.updatedby.username', 'array', array(
-                'title' => 'Bearbeiter',
+                'title' => 'Updated by',
                 'searchable' => true,
                 'orderable' => true,
                 'data' => 'comments[, ].updatedby.username',
@@ -354,7 +354,7 @@ public function indexAction()
  */
 public function indexResultsAction()
 {
-    $query = $this->get('sg_datatables.query')->getQueryFrom($this->get('app.datatable.server_side.post'));
+    $query = $this->get('sg_datatables.query')->getQueryFrom($this->get('app.datatable.post'));
 
     // Callback example
     $function = function($qb)
@@ -366,12 +366,13 @@ public function indexResultsAction()
     //$query->addWhereResult($function);
 
     // Or add the callback function as WhereAll
-    $query->addWhereAll($function);
+    //$query->addWhereAll($function);
 
-    // Or get the actual query
+    // Or to the actual query
     //$query->buildQuery();
-    //$qb = $query->getQuery()->getDQL();
-    //var_dump($qb);
+    //$qb = $query->getQuery();
+    //$qb->andWhere("post.visible = true");
+    //$query->setQuery($qb);
     //return $query->getResponse(false);
 
     return $query->getResponse();
@@ -474,5 +475,73 @@ public function clientSideIndexAction()
     return array(
         'datatable' => $datatable,
     );
+}
+
+/**
+ * Delete action.
+ *
+ * @param Request $request
+ *
+ * @Route("/bulk/delete", name="post_bulk_delete")
+ * @Method("POST")
+ * @Security("has_role('ROLE_ADMIN')")
+ *
+ * @return Response
+ */
+public function bulkDeleteAction(Request $request)
+{
+    $isAjax = $request->isXmlHttpRequest();
+
+    if ($isAjax) {
+        $choices = $request->request->get("data");
+
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository("AppBundle:Post");
+
+        foreach ($choices as $choice) {
+            $entity = $repository->find($choice["value"]);
+            $em->remove($entity);
+        }
+
+        $em->flush();
+
+        return new Response("Success", 200);
+    }
+
+    return new Response("Bad Request", 400);
+}
+
+/**
+ * Invisible action.
+ *
+ * @param Request $request
+ *
+ * @Route("/bulk/invisible", name="post_bulk_invisible")
+ * @Method("POST")
+ *
+ * @return Response
+ */
+public function bulkInvisibleAction(Request $request)
+{
+    $isAjax = $request->isXmlHttpRequest();
+
+    if ($isAjax) {
+        $choices = $request->request->get("data");
+
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository("AppBundle:Post");
+
+        foreach ($choices as $choice) {
+            $entity = $repository->find($choice["value"]);
+            $entity->setVisible(false);
+            $em->persist($entity);
+        }
+
+        $em->flush();
+
+        return new Response("Success", 200);
+    }
+
+    return new Response("Bad Request", 400);
 }
 ```
