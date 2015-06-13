@@ -26,6 +26,7 @@ public function indexResultsAction()
 
 ### Callbacks (WhereResult, WhereAll) && get query
 
+``` php
 /**
  * Get all Post entities.
  *
@@ -57,6 +58,7 @@ public function indexResultsAction()
 
     return $query->getResponse();
 }
+```
 
 ### Custom filters
 
