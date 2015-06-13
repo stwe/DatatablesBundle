@@ -26,7 +26,7 @@
         "sensio/generator-bundle": "~2.3"
     },
     "suggest": {
-        "components/jquery": "1.11.2",
+        "components/jquery": "1.11.3",
         "datatables/datatables": "1.10.7",
         "moment/moment": "2.10.2"
     },

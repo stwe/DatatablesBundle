@@ -235,7 +235,7 @@ class DatatableQuery
      *
      * @return $this
      */
-    private function buildQuery()
+    public function buildQuery()
     {
         $this->setSelectFrom();
         $this->setLeftJoins($this->qb);
@@ -604,9 +604,9 @@ class DatatableQuery
     // Response
     //-------------------------------------------------
 
-    public function getResponse()
+    public function getResponse($buildQuery = true)
     {
-        $this->buildQuery();
+        false === $buildQuery ? : $this->buildQuery();
 
         $fresults = new Paginator($this->execute(), true);
         $output = array('data' => array());
