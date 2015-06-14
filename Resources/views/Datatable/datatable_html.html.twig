@@ -9,8 +9,6 @@
                         <td>
                             {% if column.searchable %}
                                 {{ datatable_filter_render(datatable, column, loop.index0) }}
-                            {% else %}
-                                <input type="hidden" />
                             {% endif %}
                         </td>
                     {% endfor %}
