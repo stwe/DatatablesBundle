@@ -53,6 +53,11 @@ class DatatableQuery
     private $entity;
 
     /**
+     * @var boolean
+     */
+    private $individualFiltering;
+
+    /**
      * @var EntityManager
      */
     private $em;
@@ -129,6 +134,8 @@ class DatatableQuery
         $this->requestParams = $requestParams;
         $this->datatableView = $datatableView;
 
+        $this->individualFiltering = $this->datatableView->getOptions()->getIndividualFiltering();
+
         $this->entity = $this->datatableView->getEntity();
         $this->em = $this->datatableView->getEntityManager();
         $metadata = $this->getMetadata($this->entity);
@@ -152,21 +159,6 @@ class DatatableQuery
     // Setup query
     //-------------------------------------------------
 
-    /* Setup example:
-        $qb = $this->em->createQueryBuilder();
-        $qb->select("
-             partial post.{id, title},
-             partial comments.{title,id},
-             partial createdby.{username, id},
-             partial updatedby.{username, id}");
-        $qb->from("AppBundle:Post", "post");
-        $qb->leftJoin("post.comments", "comments");
-        $qb->leftJoin("comments.createdby", "createdby");
-        $qb->leftJoin("comments.updatedby", "updatedby");
-        $query = $qb->getQuery();
-        $results = $query->getArrayResult();
-    */
-
     /**
      * Setup column arrays.
      *
@@ -179,7 +171,7 @@ class DatatableQuery
         foreach ($this->columns as $key => $column) {
             $data = $column->getDql();
 
-            if (true === $this->isSelectField($data)) {
+            if (true === $this->isSelectColumn($data)) {
                 if (false === $this->isAssociation($data)) {
                     $this->addSearchOrderColumn($key, $this->tableName, $data);
                     if ($data !== $this->rootEntityIdentifier) {
@@ -216,13 +208,14 @@ class DatatableQuery
         }
 
         // joins - hardcoded id's
-        // @todo: get && add the other id's
         foreach ($this->selectColumns as $key => $value) {
             $array = $this->selectColumns[$key];
 
             if (false === array_search('id', $array)) {
                 $array[] = 'id';
             }
+
+            $array = array_unique($array);
 
             $this->selectColumns[$key] = $array;
         }
@@ -397,12 +390,12 @@ class DatatableQuery
         $globalSearch = $this->requestParams['search']['value'];
 
         // global filtering
-        if ("" != $globalSearch) {
+        if ('' != $globalSearch) {
 
             $orExpr = $qb->expr()->orX();
 
-            foreach ($this->searchColumns as $key => $column) {
-                if (null !== $this->searchColumns[$key]) {
+            foreach ($this->columns as $key => $column) {
+                if (true === $this->isSearchColumn($column)) {
                     $searchField = $this->searchColumns[$key];
                     $orExpr->add($qb->expr()->like($searchField, '?' . $key));
                     $qb->setParameter($key, '%' . $globalSearch . '%');
@@ -413,38 +406,41 @@ class DatatableQuery
         }
 
         // individual filtering
-        $andExpr = $qb->expr()->andX();
+        if (true === $this->individualFiltering) {
+            $andExpr = $qb->expr()->andX();
 
-        $i = 100;
+            $i = 100;
 
-        foreach ($this->searchColumns as $key => $column) {
-            if (null !== $this->searchColumns[$key]) {
-                $searchType = $this->columns[$key]->getSearchType();
-                $searchField = $this->searchColumns[$key];
-                $searchValue = $this->requestParams['columns'][$key]['search']['value'];
-                $searchRange = $this->requestParams['columns'][$key]['name'] === 'daterange';
-                if ('' != $searchValue && 'null' != $searchValue) {
-                    if ($searchRange) {
-                        list($_dateStart, $_dateEnd) = explode(' - ', $searchValue);
-                        $dateStart = new \DateTime($_dateStart);
-                        $dateEnd = new \DateTime($_dateEnd);
-                        $dateEnd->setTime(23, 59, 59);
+            foreach ($this->columns as $key => $column) {
 
-                        $k = $i + 1;
-                        $andExpr->add($qb->expr()->between($searchField, '?' . $i, '?' . $k));
-                        $qb->setParameter($i, $dateStart->format('Y-m-d H:i:s'));
-                        $qb->setParameter($k, $dateEnd->format('Y-m-d H:i:s'));
-                        $i+=2;
-                    } else {
-                        $andExpr = $this->addCondition($andExpr, $qb, $searchType, $searchField, $searchValue, $i);
-                        $i++;
+                if (true === $this->isSearchColumn($column)) {
+                    $searchType = $column->getSearchType();
+                    $searchField = $this->searchColumns[$key];
+                    $searchValue = $this->requestParams['columns'][$key]['search']['value'];
+                    $searchRange = $this->requestParams['columns'][$key]['name'] === 'daterange';
+                    if ('' != $searchValue && 'null' != $searchValue) {
+                        if ($searchRange) {
+                            list($_dateStart, $_dateEnd) = explode(' - ', $searchValue);
+                            $dateStart = new \DateTime($_dateStart);
+                            $dateEnd = new \DateTime($_dateEnd);
+                            $dateEnd->setTime(23, 59, 59);
+
+                            $k = $i + 1;
+                            $andExpr->add($qb->expr()->between($searchField, '?' . $i, '?' . $k));
+                            $qb->setParameter($i, $dateStart->format('Y-m-d H:i:s'));
+                            $qb->setParameter($k, $dateEnd->format('Y-m-d H:i:s'));
+                            $i += 2;
+                        } else {
+                            $andExpr = $this->addCondition($andExpr, $qb, $searchType, $searchField, $searchValue, $i);
+                            $i++;
+                        }
                     }
                 }
             }
-        }
 
-        if ($andExpr->count() > 0) {
-            $qb->andWhere($andExpr);
+            if ($andExpr->count() > 0) {
+                $qb->andWhere($andExpr);
+            }
         }
 
         return $this;
@@ -724,15 +720,31 @@ class DatatableQuery
     }
 
     /**
-     * Is select field.
+     * Is select column.
      *
-     * @param $data
+     * @param string $data
      *
      * @return bool
      */
-    private function isSelectField($data)
+    private function isSelectColumn($data)
     {
         if (null !== $data && !in_array($data, $this->virtualColumns)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Is search column.
+     *
+     * @param AbstractColumn $column
+     *
+     * @return bool
+     */
+    private function isSearchColumn(AbstractColumn $column)
+    {
+        if (null !== $column->getDql() && true === $column->getSearchable() && true === $column->getVisible()) {
             return true;
         }
 

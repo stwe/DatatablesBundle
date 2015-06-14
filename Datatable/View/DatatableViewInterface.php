@@ -56,6 +56,13 @@ interface DatatableViewInterface
     public function getColumnBuilder();
 
     /**
+     * Get Options.
+     *
+     * @return Options
+     */
+    public function getOptions();
+
+    /**
      * Returns a callable that could transform the data line
      *
      * @return callable
