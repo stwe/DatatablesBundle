@@ -40,37 +40,20 @@
 
             {% if view_options.individualFiltering %}
 
-                var html = '';
-
-                {# "head" and "both" position #}
-                {% if "head" == view_options.individualFilteringPosition or "both" == view_options.individualFilteringPosition %}
-                    var head = $(selector + "_wrapper").find("div.dataTables_scrollHeadInner table thead");
-
-                    $(head).append('<tr class="individual_filter_row"></tr>');
-                    head = $(head).find('tr.individual_filter_row');
-
-                    {% for column in view_columns %}
-                        {% if column.searchable %}
-                            html =  '<th>';
-                            html += '{{ datatable_filter_render(datatable, column, loop.index0)|escape('js') }}';
-                            html += '</th>';
-                        {% else %}
-                            html =  '<th>';
-                            html += '<input type="hidden" />';
-                            html += '</th>';
-                        {% endif %}
-                        $(head).append(html);
-
-                        {# init 3rd party libs #}
-                        var daterange = $('input[name="daterange"]');
-                        try {
-                            $(daterange).daterangepicker();
-                        } catch (e) {
-                            console.log(e.message);
-                        }
-
-                    {% endfor %}
+                {% if "head" == view_options.individualFilteringPosition %}
+                    $(selector + '_wrapper tfoot tr').insertAfter($(selector + '_wrapper thead tr'));
                 {% endif %}
+
+                {% if "both" == view_options.individualFilteringPosition %}
+                    $(selector + '_wrapper tfoot tr').clone().insertAfter($(selector + '_wrapper thead tr'));
+                {% endif %}
+
+                var daterange = $('input[name="daterange"]');
+                try {
+                    $(daterange).daterangepicker();
+                } catch (e) {
+                    console.log(e.message);
+                }
 
                 {# "foot" position -> datatable_html.html.twig #}
 

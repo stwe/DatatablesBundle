@@ -2,19 +2,17 @@
     <thead>
     </thead>
     {% if view_options.individualFiltering %}
-        {% if "foot" == view_options.individualFilteringPosition or "both" == view_options.individualFilteringPosition %}
-            <tfoot>
-                <tr>
-                    {% for column in view_columns %}
-                        <td>
-                            {% if column.searchable %}
-                                {{ datatable_filter_render(datatable, column, loop.index0) }}
-                            {% endif %}
-                        </td>
-                    {% endfor %}
-                </tr>
-            </tfoot>
-        {% endif %}
+        <tfoot>
+            <tr>
+                {% for column in view_columns %}
+                    <td>
+                        {% if column.searchable %}
+                            {{ datatable_filter_render(datatable, column, loop.index0) }}
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        </tfoot>
     {% endif %}
     <tbody>
     </tbody>
