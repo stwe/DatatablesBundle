@@ -1,0 +1,40 @@
+{% if (view_callbacks.createdRow) %}
+    "createdRow": {{ view_callbacks.createdRow|raw }},
+{% endif %}
+{% if (view_callbacks.drawCallback) %}
+    "drawCallback": {{ view_callbacks.drawCallback|raw }},
+{% endif %}
+{% if (view_callbacks.footerCallback) %}
+    "footerCallback": {{ view_callbacks.footerCallback|raw }},
+{% endif %}
+{% if (view_callbacks.formatNumber) %}
+    "formatNumber": {{ view_callbacks.formatNumber|raw }},
+{% endif %}{% if (view_callbacks.headerCallback) %}
+    "headerCallback": {{ view_callbacks.headerCallback|raw }},
+{% endif %}{% if (view_callbacks.infoCallback) %}
+    "infoCallback": {{ view_callbacks.infoCallback|raw }},
+{% endif %}
+{% if (view_callbacks.initComplete) %}
+    "initComplete": {{ view_callbacks.initComplete|raw }},
+{% endif %}
+{% if (view_callbacks.preDrawCallback) %}
+    "preDrawCallback": {{ view_callbacks.preDrawCallback|raw }},
+{% endif %}
+{% if (view_callbacks.rowCallback) %}
+    "rowCallback": {{ view_callbacks.rowCallback|raw }},
+{% endif %}
+{% if (view_callbacks.stateLoadCallback) %}
+    "stateLoadCallback": {{ view_callbacks.stateLoadCallback|raw }},
+{% endif %}
+{% if (view_callbacks.stateLoaded) %}
+    "stateLoaded": {{ view_callbacks.stateLoaded|raw }},
+{% endif %}
+{% if (view_callbacks.stateLoadParams) %}
+    "stateLoadParams": {{ view_callbacks.stateLoadParams|raw }},
+{% endif %}
+{% if (view_callbacks.stateSaveCallback) %}
+    "stateSaveCallback": {{ view_callbacks.stateSaveCallback|raw }},
+{% endif %}
+{% if (view_callbacks.stateSaveParams) %}
+    "stateSaveParams": {{ view_callbacks.stateSaveParams|raw }},
+{% endif %}

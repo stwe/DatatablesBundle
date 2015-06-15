@@ -176,7 +176,7 @@ class Features
      *
      * @return $this
      */
-    public function configureOptions(OptionsResolver $resolver)
+    private function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'auto_width' => true,

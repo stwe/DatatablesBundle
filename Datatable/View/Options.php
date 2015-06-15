@@ -215,7 +215,7 @@ class Options
      *
      * @return $this
      */
-    public function configureOptions(OptionsResolver $resolver)
+    private function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'display_start' => 0,
@@ -324,7 +324,7 @@ class Options
      *
      * @return $this
      */
-    public function setDeferLoading($deferLoading)
+    protected function setDeferLoading($deferLoading)
     {
         $this->deferLoading = (integer) $deferLoading;
 
@@ -719,7 +719,7 @@ class Options
      *
      * @return $this
      */
-    public function setIndividualFilteringPosition($individualFilteringPosition)
+    protected function setIndividualFilteringPosition($individualFilteringPosition)
     {
         $this->individualFilteringPosition = $individualFilteringPosition;
 
@@ -743,7 +743,7 @@ class Options
      *
      * @return $this
      */
-    public function setUseIntegrationOptions($useIntegrationOptions)
+    protected function setUseIntegrationOptions($useIntegrationOptions)
     {
         $this->useIntegrationOptions = $useIntegrationOptions;
 

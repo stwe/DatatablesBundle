@@ -91,7 +91,7 @@ class Ajax
      *
      * @return $this
      */
-    public function configureOptions(OptionsResolver $resolver)
+    private function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'url' => '',
