@@ -3,6 +3,12 @@
 ``` php
     public function buildDatatableView()
     {
+        $this->callbacks->setCallbacks(array(
+            'draw_callback' => "function( settings ) {
+                                    alert( 'DataTables has redrawn the table' );
+                                }"
+        ));
+
         $this->features->setFeatures(array(
             'processing' => true,
             // ...
@@ -25,6 +31,25 @@
         // ...
     }
 ```
+
+# Callbacks
+
+| Callback            | Type   | Default |
+|---------------------|--------|---------|
+| created_row         | string | ''      |
+| draw_callback       | string | ''      |
+| footer_callback     | string | ''      |
+| format_number       | string | ''      |
+| header_callback     | string | ''      |
+| info_callback       | string | ''      |
+| init_complete       | string | ''      |
+| pre_draw_callback   | string | ''      |
+| row_callback        | string | ''      |
+| state_load_callback | string | ''      |
+| state_loaded        | string | ''      |
+| state_load_params   | string | ''      |
+| state_save_callback | string | ''      |
+| state_save_params   | string | ''      |
 
 # Features
 

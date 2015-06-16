@@ -63,6 +63,14 @@ class PostDatatable extends AbstractDatatableView
      */
     public function buildDatatableView()
     {
+        /*
+        $this->callbacks->setCallbacks(array(
+            'draw_callback' => "function( settings ) {
+                                    alert( 'DataTables has redrawn the table' );
+                                }"
+        ));
+        */
+
         $this->features->setFeatures(array(
             'auto_width' => true,
             'defer_render' => false,
