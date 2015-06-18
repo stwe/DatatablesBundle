@@ -95,6 +95,27 @@ class ColumnBuilder implements ColumnBuilderInterface
     }
 
     /**
+     * Remove column by key.
+     *
+     * @param integer $key
+     *
+     * @return $this
+     * @throws Exception
+     */
+    public function removeByKey($key)
+    {
+        if (is_int($key) && array_key_exists($key, $this->columns)) {
+            unset($this->columns[$key]);
+        } else {
+            throw new Exception('removeColumnByKey(): The array key ' . $key . ' does not exist.');
+        }
+
+        $this->columns = array_values($this->columns);
+
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getColumns()

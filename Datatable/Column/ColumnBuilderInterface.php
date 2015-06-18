@@ -30,6 +30,16 @@ interface ColumnBuilderInterface
     public function add($data, $name, array $options = array());
 
     /**
+     * Remove column by key.
+     *
+     * @param integer $key
+     *
+     * @return $this
+     * @throws \Exception
+     */
+    public function removeByKey($key);
+
+    /**
      * Get all columns.
      *
      * @return array
