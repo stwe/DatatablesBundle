@@ -569,9 +569,10 @@ class DatatableQuery
     private function getCountAllResults($rootEntityIdentifier)
     {
         $qb = $this->em->createQueryBuilder();
-        $qb->select('count(' . $this->tableName . '.' . $rootEntityIdentifier . ')');
+        $qb->select('count(distinct ' . $this->tableName . '.' . $rootEntityIdentifier . ')');
         $qb->from($this->entity, $this->tableName);
 
+        $this->setLeftJoins($qb);
         $this->setWhereAllCallback($qb);
 
         return (int) $qb->getQuery()->getSingleScalarResult();
