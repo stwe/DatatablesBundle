@@ -194,22 +194,20 @@ class Callbacks
             'state_save_params' => '',
         ));
 
-        $resolver->setAllowedTypes(array(
-            'created_row' => 'string',
-            'draw_callback' => 'string',
-            'footer_callback' => 'string',
-            'format_number' => 'string',
-            'header_callback' => 'string',
-            'info_callback' => 'string',
-            'init_complete' => 'string',
-            'pre_draw_callback' => 'string',
-            'row_callback' => 'string',
-            'state_load_callback' => 'string',
-            'state_loaded' => 'string',
-            'state_load_params' => 'string',
-            'state_save_callback' => 'string',
-            'state_save_params' => 'string',
-        ));
+        $resolver->setAllowedTypes('created_row', 'string');
+        $resolver->setAllowedTypes('draw_callback', 'string');
+        $resolver->setAllowedTypes('footer_callback', 'string');
+        $resolver->setAllowedTypes('format_number', 'string');
+        $resolver->setAllowedTypes('header_callback', 'string');
+        $resolver->setAllowedTypes('info_callback', 'string');
+        $resolver->setAllowedTypes('init_complete', 'string');
+        $resolver->setAllowedTypes('pre_draw_callback', 'string');
+        $resolver->setAllowedTypes('row_callback', 'string');
+        $resolver->setAllowedTypes('state_load_callback', 'string');
+        $resolver->setAllowedTypes('state_loaded', 'string');
+        $resolver->setAllowedTypes('state_load_params', 'string');
+        $resolver->setAllowedTypes('state_save_callback', 'string');
+        $resolver->setAllowedTypes('state_save_params', 'string');
 
         return $this;
     }
