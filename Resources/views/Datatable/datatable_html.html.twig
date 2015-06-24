@@ -3,6 +3,7 @@
     </thead>
     {% if view_options.individualFiltering or view_multiselect %}
         <tfoot>
+            {% if view_options.individualFiltering %}
             <tr>
                 {% for column in view_columns %}
                     <td>
@@ -12,6 +13,7 @@
                     </td>
                 {% endfor %}
             </tr>
+            {% endif %}
         </tfoot>
     {% endif %}
     <tbody>
