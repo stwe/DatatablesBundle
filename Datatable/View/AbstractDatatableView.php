@@ -179,6 +179,8 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->templates = $defaultLayoutOptions['templates'];
 
         $this->qb = null;
+
+        $this->buildDatatableView();
     }
 
     //-------------------------------------------------
@@ -190,8 +192,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      */
     public function render($type = "all")
     {
-        $this->buildDatatableView();
-
         $options = array();
 
         if (true === $this->features->getServerSide()) {
