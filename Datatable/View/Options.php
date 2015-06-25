@@ -196,6 +196,8 @@ class Options
     /**
      * Set options.
      *
+     * All options not specified will be set to default.
+     *
      * @param array $options
      *
      * @return $this
@@ -204,6 +206,23 @@ class Options
     {
         $this->options = $this->resolver->resolve($options);
         $this->callingSettersWithOptions($this->options);
+
+        return $this;
+    }
+
+    /**
+     * Set one option.
+     *
+     * All the other parameters will not be altered.
+     *
+     * @param string $optionKey
+     * @param mixed  $optionValue
+     *
+     * @return $this
+     */
+    public function setOption($optionKey, $optionValue)
+    {
+        $this->callingSettersWithOptions(array($optionKey => $optionValue));
 
         return $this;
     }
