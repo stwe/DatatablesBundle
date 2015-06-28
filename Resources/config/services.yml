@@ -15,5 +15,4 @@ services:
             - { name: twig.extension }
     sg_datatables.query:
         class: Sg\DatatablesBundle\Datatable\Data\DatatableDataManager
-        scope: request
-        arguments: [@request, @sg_datatables.serializer]
+        arguments: [@request_stack, @sg_datatables.serializer]

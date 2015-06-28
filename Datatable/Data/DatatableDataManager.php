@@ -13,6 +13,7 @@ namespace Sg\DatatablesBundle\Datatable\Data;
 
 use Sg\DatatablesBundle\Datatable\View\DatatableViewInterface;
 
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Serializer;
 
@@ -24,7 +25,7 @@ use Symfony\Component\Serializer\Serializer;
 class DatatableDataManager
 {
     /**
-     * The request service.
+     * The request.
      *
      * @var Request
      */
@@ -44,12 +45,12 @@ class DatatableDataManager
     /**
      * Ctor.
      *
-     * @param Request    $request    The request service
-     * @param Serializer $serializer The serializer service
+     * @param RequestStack $requestStack
+     * @param Serializer   $serializer
      */
-    public function __construct(Request $request, Serializer $serializer)
+    public function __construct(RequestStack $requestStack, Serializer $serializer)
     {
-        $this->request = $request;
+        $this->request = $requestStack->getCurrentRequest();
         $this->serializer = $serializer;
     }
 
