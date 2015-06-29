@@ -31,6 +31,11 @@ interface DatatableViewInterface
     public function buildDatatableView();
 
     /**
+     * Builds the datatable.
+     */
+    public function buildDatatable();
+
+    /**
      * Renders the datatable view.
      *
      * @param string $type

@@ -190,6 +190,18 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * {@inheritdoc}
      */
+    public function buildDatatableView()
+    {}
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildDatatable()
+    {}
+
+    /**
+     * {@inheritdoc}
+     */
     public function render($type = "all")
     {
         $options = array();
