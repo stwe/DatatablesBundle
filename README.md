@@ -8,8 +8,6 @@
 
 ## Documentation
 
-### master
-
 [Demo Application](https://github.com/stwe/dtbundle-demo)
 
 [Read the Changelog for master](https://github.com/stwe/DatatablesBundle/blob/master/CHANGELOG.md)

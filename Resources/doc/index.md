@@ -8,7 +8,7 @@ This Bundle integrates the jQuery DataTables 1.10.x plugin into your Symfony2 ap
 
 This bundle requires the following additional packages:
 
-* Symfony 2.3.x
+* Symfony 2.6.x
 * jQuery 1.11.x
 * DataTables 1.10.x
 * Moment.js 2.10.x

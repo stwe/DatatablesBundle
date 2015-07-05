@@ -188,21 +188,28 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     //-------------------------------------------------
 
     /**
-     * {@inheritdoc}
+     * Builds the datatable view.
+     *
+     * @deprecated Deprecated since v0.7.1, to be removed in v0.8.
+     *             Use {@link buildDatatable()} instead.
      */
     public function buildDatatableView()
-    {}
+    {
+        // implement an empty function for backward compatibility reasons
+    }
 
     /**
      * {@inheritdoc}
      */
     public function buildDatatable()
-    {}
+    {
+        // implement an empty function for backward compatibility reasons
+    }
 
     /**
      * {@inheritdoc}
      */
-    public function render($type = "all")
+    public function render($type = 'all')
     {
         $options = array();
 

@@ -1,6 +1,6 @@
 # Examples
 
-## Server-Side example
+## 1. Server-Side example
 
 ### Step 1: Create your Datatables class
 
@@ -61,7 +61,7 @@ class PostDatatable extends AbstractDatatableView
     /**
      * {@inheritdoc}
      */
-    public function buildDatatableView()
+    public function buildDatatable()
     {
         /*
         $this->callbacks->setCallbacks(array(
@@ -347,6 +347,7 @@ app.datatable.post:
 public function indexAction()
 {
     $datatable = $this->get('app.datatable.post');
+    $datatable->buildDatatable();
 
     return array(
         'datatable' => $datatable,
@@ -362,7 +363,10 @@ public function indexAction()
  */
 public function indexResultsAction()
 {
-    $query = $this->get('sg_datatables.query')->getQueryFrom($this->get('app.datatable.post'));
+    $datatable = $this->get('app.datatable.post');
+    $datatable->buildDatatable();
+
+    $query = $this->get('sg_datatables.query')->getQueryFrom($datatable);
 
     // Callback example
     $function = function($qb)
@@ -455,7 +459,7 @@ public function bulkInvisibleAction(Request $request)
 }
 ```
 
-## Client-Side example
+## 2. Client-Side example
 
 The differences to the above description:
 
@@ -479,7 +483,7 @@ class PostDatatable extends AbstractDatatableView
     /**
      * {@inheritdoc}
      */
-    public function buildDatatableView()
+    public function buildDatatable()
     {
         $this->features->setFeatures(array(
             'server_side' => false
@@ -546,6 +550,7 @@ public function clientSideIndexAction()
     $serializer = new Serializer($normalizers, $encoders);
 
     $datatable = $this->get('app.datatable.client_side.post');
+    $datatable->buildDatatable();
     $datatable->setData($serializer->serialize($results, 'json'));
 
     return array(

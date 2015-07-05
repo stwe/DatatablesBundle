@@ -95,12 +95,7 @@ class ColumnBuilder implements ColumnBuilderInterface
     }
 
     /**
-     * Remove column by key.
-     *
-     * @param integer $key
-     *
-     * @return $this
-     * @throws Exception
+     * {@inheritdoc}
      */
     public function removeByKey($key)
     {

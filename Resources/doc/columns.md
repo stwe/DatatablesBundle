@@ -1,6 +1,6 @@
 # Columns
 
-## Column
+## 1. Column
 
 Represents the most basic column, including many-to-one and one-to-one relations.
 
@@ -53,7 +53,7 @@ $this->columnBuilder
 ```
 ___
 
-## Array column
+## 2. Array column
 
 Represents a column for many-to-many or one-to-many associations.
 
@@ -93,7 +93,7 @@ $this->columnBuilder
 ```
 ___
 
-## Virtual column
+## 3. Virtual column
 
 Represents a virtual column.
 
@@ -113,7 +113,7 @@ $this->columnBuilder
 ```
 ___
 
-## Boolean column
+## 4. Boolean column
 
 Represents a boolean column.
 
@@ -158,7 +158,7 @@ $this->columnBuilder
 ```
 ___
 
-## DateTime column
+## 5. DateTime column
 
 Represents a datetime column.
 
@@ -197,7 +197,7 @@ $this->columnBuilder
 ```
 ___
 
-## Timeago column
+## 6. Timeago column
 
 Represents a timeago column.
 
@@ -234,7 +234,7 @@ $this->columnBuilder
 ```
 ___
 
-## Action column
+## 7. Action column
 
 Represents an action column.
 
@@ -321,7 +321,7 @@ $this->columnBuilder
 ```
 ___
 
-## Multiselect column
+## 8. Multiselect column
 
 ### Default template
 

@@ -41,7 +41,7 @@ class UserDatatable extends AbstractDatatableView
     /**
      * {@inheritdoc}
      */
-    public function buildDatatableView()
+    public function buildDatatable()
     {
         //...
 
