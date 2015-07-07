@@ -2,7 +2,7 @@
 
 ## 1. Server-Side example
 
-### Step 1: Create your Datatables class
+### Step 1: Create your DataTables class
 
 #### Use the command line
 
@@ -19,17 +19,17 @@ A description of all available options of the generator is located [here](./gene
 ```php
 <?php
 
-namespace AppBundle\Datatables;
+namespace AppBundle\DataTables;
 
-use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
-use Sg\DatatablesBundle\Datatable\View\Style;
+use Wg\UniversalDataTable\DataTable\View\AbstractDataTableView;
+use Wg\UniversalDataTable\DataTable\View\Style;
 
 /**
- * Class PostDatatable
+ * Class PostDataTable
  *
- * @package AppBundle\Datatables
+ * @package AppBundle\DataTables
  */
-class PostDatatable extends AbstractDatatableView
+class PostDataTable extends AbstractDataTableView
 {
     /**
      * {@inheritdoc}
@@ -61,7 +61,7 @@ class PostDatatable extends AbstractDatatableView
     /**
      * {@inheritdoc}
      */
-    public function buildDatatable()
+    public function buildDataTable()
     {
         /*
         $this->callbacks->setCallbacks(array(
@@ -323,11 +323,11 @@ class PostDatatable extends AbstractDatatableView
 {% endblock %}
 ```
 
-### Step 3: Registering your Datatables class as a Service
+### Step 3: Registering your DataTables class as a Service
 
 ```yaml
 app.datatable.post:
-    class: AppBundle\Datatables\PostDatatable
+    class: AppBundle\DataTables\PostDataTable
     tags:
         - { name: sg.datatable.view }
 ```
@@ -347,7 +347,7 @@ app.datatable.post:
 public function indexAction()
 {
     $datatable = $this->get('app.datatable.post');
-    $datatable->buildDatatable();
+    $datatable->buildDataTable();
 
     return array(
         'datatable' => $datatable,
@@ -364,7 +364,7 @@ public function indexAction()
 public function indexResultsAction()
 {
     $datatable = $this->get('app.datatable.post');
-    $datatable->buildDatatable();
+    $datatable->buildDataTable();
 
     $query = $this->get('sg_datatables.query')->getQueryFrom($datatable);
 
@@ -463,27 +463,27 @@ public function bulkInvisibleAction(Request $request)
 
 The differences to the above description:
 
-### Your Datatables class
+### Your DataTables class
 
 ```php
 <?php
 
-namespace Sg\BlogBundle\Datatables;
+namespace Sg\BlogBundle\DataTables;
 
-use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
-use Sg\DatatablesBundle\Column\ActionColumn;
+use Wg\UniversalDataTable\DataTable\View\AbstractDataTableView;
+use Wg\UniversalDataTable\Column\ActionColumn;
 
 /**
- * Class PostDatatable
+ * Class PostDataTable
  *
- * @package Sg\BlogBundle\Datatables
+ * @package Sg\BlogBundle\DataTables
  */
-class PostDatatable extends AbstractDatatableView
+class PostDataTable extends AbstractDataTableView
 {
     /**
      * {@inheritdoc}
      */
-    public function buildDatatable()
+    public function buildDataTable()
     {
         $this->features->setFeatures(array(
             'server_side' => false
@@ -550,7 +550,7 @@ public function clientSideIndexAction()
     $serializer = new Serializer($normalizers, $encoders);
 
     $datatable = $this->get('app.datatable.client_side.post');
-    $datatable->buildDatatable();
+    $datatable->buildDataTable();
     $datatable->setData($serializer->serialize($results, 'json'));
 
     return array(

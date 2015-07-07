@@ -1,15 +1,15 @@
 <?php
 
 /**
- * This file is part of the SgDatatablesBundle package.
+ * This file is part of the WgUniversalDataTableBundle package.
  *
- * (c) stwe <https://github.com/stwe/DatatablesBundle>
+ * (c) stwe <https://github.com/stwe/DataTablesBundle>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\DependencyInjection;
+namespace Wg\UniversalDataTable\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -17,11 +17,11 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
 /**
- * Class SgDatatablesExtension
+ * Class SgDataTablesExtension
  *
- * @package Sg\DatatablesBundle\DependencyInjection
+ * @package Wg\UniversalDataTable\DependencyInjection
  */
-class SgDatatablesExtension extends Extension
+class SgDataTablesExtension extends Extension
 {
     /**
      * {@inheritDoc}

@@ -4,7 +4,7 @@
 sg_datatables:
     default_layout:
         templates:
-            base: 'SgDatatablesBundle:Datatable:datatable.html.twig'
-            html: 'SgDatatablesBundle:Datatable:datatable_html.html.twig'
-            js:   'SgDatatablesBundle:Datatable:datatable_js.html.twig'
+            base: 'WgUniversalDataTableBundle:DataTable:datatable.html.twig'
+            html: 'WgUniversalDataTableBundle:DataTable:datatable_html.html.twig'
+            js:   'WgUniversalDataTableBundle:DataTable:datatable_js.html.twig'
 ```

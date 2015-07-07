@@ -1,26 +1,26 @@
 <?php
 
-namespace {{ namespace }}\Datatables;
+namespace {{ namespace }}\DataTables;
 
 {% block use_statements %}
-use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
-use Sg\DatatablesBundle\Datatable\View\Style;
+use Wg\UniversalDataTable\DataTable\View\AbstractDataTableView;
+use Wg\UniversalDataTable\DataTable\View\Style;
 {% endblock use_statements %}
 
 {% block class_definition %}
 /**
  * Class {{ datatable_class }}
  *
- * @package {{ namespace }}\Datatables
+ * @package {{ namespace }}\DataTables
  */
-class {{ datatable_class }} extends AbstractDatatableView
+class {{ datatable_class }} extends AbstractDataTableView
 {% endblock class_definition %}
 {
 {% block class_body %}
     /**
      * {@inheritdoc}
      */
-    public function buildDatatable()
+    public function buildDataTable()
     {
         $this->features->setFeatures(array(
             "auto_width" => true,

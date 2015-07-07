@@ -1,26 +1,26 @@
 <?php
 
 /**
- * This file is part of the SgDatatablesBundle package.
+ * This file is part of the WgUniversalDataTableBundle package.
  *
- * (c) stwe <https://github.com/stwe/DatatablesBundle>
+ * (c) stwe <https://github.com/stwe/DataTablesBundle>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Generator;
+namespace Wg\UniversalDataTable\Generator;
 
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use RuntimeException;
 
 /**
- * Class DatatableGenerator
+ * Class DataTableGenerator
  *
- * @package Sg\DatatablesBundle\Generator
+ * @package Wg\UniversalDataTable\Generator
  */
-class DatatableGenerator extends Generator
+class DataTableGenerator extends Generator
 {
     /**
      * @var string
@@ -87,9 +87,9 @@ class DatatableGenerator extends Generator
         $parts = explode("\\", $entity);
         $entityClass = array_pop($parts);
 
-        $this->className = $entityClass . 'Datatable';
-        $dirPath = $bundle->getPath() . '/Datatables';
-        $this->classPath = $dirPath . '/' . str_replace('\\', '/', $entity) . 'Datatable.php';
+        $this->className = $entityClass . 'DataTable';
+        $dirPath = $bundle->getPath() . '/DataTables';
+        $this->classPath = $dirPath . '/' . str_replace('\\', '/', $entity) . 'DataTable.php';
 
         if (file_exists($this->classPath)) {
             throw new RuntimeException(sprintf('Unable to generate the %s datatable class as it already exists under the %s file', $this->className, $this->classPath));

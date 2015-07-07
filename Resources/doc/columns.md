@@ -6,7 +6,7 @@ Represents the most basic column, including many-to-one and one-to-one relations
 
 ### Default template
 
-SgDatatablesBundle:Column:column.html.twig
+WgUniversalDataTableBundle:Column:column.html.twig
 
 ### Options
 
@@ -59,7 +59,7 @@ Represents a column for many-to-many or one-to-many associations.
 
 ### Default template
 
-SgDatatablesBundle:Column:column.html.twig
+WgUniversalDataTableBundle:Column:column.html.twig
 
 ### Options
 
@@ -99,7 +99,7 @@ Represents a virtual column.
 
 ### Default template
 
-SgDatatablesBundle:Column:column.html.twig
+WgUniversalDataTableBundle:Column:column.html.twig
 
 ### Options
 
@@ -119,7 +119,7 @@ Represents a boolean column.
 
 ### Default template
 
-SgDatatablesBundle:Column:boolean.html.twig
+WgUniversalDataTableBundle:Column:boolean.html.twig
 
 ### Options
 
@@ -164,7 +164,7 @@ Represents a datetime column.
 
 ### Default template
 
-SgDatatablesBundle:Column:datetime.html.twig
+WgUniversalDataTableBundle:Column:datetime.html.twig
 
 ### Options
 
@@ -203,7 +203,7 @@ Represents a timeago column.
 
 ### Default template
 
-SgDatatablesBundle:Column:timeago.html.twig
+WgUniversalDataTableBundle:Column:timeago.html.twig
 
 ### Options
 
@@ -240,7 +240,7 @@ Represents an action column.
 
 ### Default template
 
-SgDatatablesBundle:Column:action.html.twig
+WgUniversalDataTableBundle:Column:action.html.twig
 
 ### Options
 
@@ -325,7 +325,7 @@ ___
 
 ### Default template
 
-SgDatatablesBundle:Column:multiselect.html.twig
+WgUniversalDataTableBundle:Column:multiselect.html.twig
 
 ### Options
 

@@ -1,17 +1,17 @@
 <?php
 
 /**
- * This file is part of the SgDatatablesBundle package.
+ * This file is part of the WgUniversalDataTableBundle package.
  *
- * (c) stwe <https://github.com/stwe/DatatablesBundle>
+ * (c) stwe <https://github.com/stwe/DataTablesBundle>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Command;
+namespace Wg\UniversalDataTable\Command;
 
-use Sg\DatatablesBundle\Generator\DatatableGenerator;
+use Wg\UniversalDataTable\Generator\DataTableGenerator;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -24,11 +24,11 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use RuntimeException;
 
 /**
- * Class GenerateDatatableCommand
+ * Class GenerateDataTableCommand
  *
- * @package Sg\DatatablesBundle\Command
+ * @package Wg\UniversalDataTable\Command
  */
-class GenerateDatatableCommand extends GenerateDoctrineCommand
+class GenerateDataTableCommand extends GenerateDoctrineCommand
 {
     /**
      * {@inheritdoc}
@@ -69,7 +69,7 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
 
         $bundle = $this->getContainer()->get('kernel')->getBundle($bundle);
 
-        /** @var \Sg\DatatablesBundle\Generator\DatatableGenerator $generator */
+        /** @var \Wg\UniversalDataTable\Generator\DataTableGenerator $generator */
         $generator = $this->getGenerator($bundle);
         $generator->generate($bundle, $entity, $fields, $clientSide, $ajaxUrl);
 
@@ -83,11 +83,11 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
     }
 
     /**
-     * @return DatatableGenerator
+     * @return DataTableGenerator
      */
     protected function createGenerator()
     {
-        return new DatatableGenerator($this->getContainer()->get('filesystem'));
+        return new DataTableGenerator($this->getContainer()->get('filesystem'));
     }
 
     /**

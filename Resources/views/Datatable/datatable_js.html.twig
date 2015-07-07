@@ -5,28 +5,28 @@
         var selector = "#{{ view_table_id }}";
 
         var defaults = {
-            {% include "SgDatatablesBundle:Datatable:language.html.twig" %}
+            {% include "WgUniversalDataTableBundle:DataTable:language.html.twig" %}
         };
 
         var features = {
-            {% include "SgDatatablesBundle:Datatable:features.html.twig" %}
+            {% include "WgUniversalDataTableBundle:DataTable:features.html.twig" %}
         };
 
         var options = {
-            {% include "SgDatatablesBundle:Datatable:options.html.twig" %}
+            {% include "WgUniversalDataTableBundle:DataTable:options.html.twig" %}
         };
 
         var callbacks = {
-            {% include "SgDatatablesBundle:Datatable:callbacks.html.twig" %}
+            {% include "WgUniversalDataTableBundle:DataTable:callbacks.html.twig" %}
         };
 
         var ajax = {
-            {% include "SgDatatablesBundle:Datatable:ajax.html.twig" %}
+            {% include "WgUniversalDataTableBundle:DataTable:ajax.html.twig" %}
         };
 
         setTimeout(function() {
             var columns = {
-                {% include "SgDatatablesBundle:Datatable:columns.html.twig" %}
+                {% include "WgUniversalDataTableBundle:DataTable:columns.html.twig" %}
             };
 
             $.extend(defaults, features);
@@ -82,7 +82,7 @@
             {% endif %}
 
             {% if view_multiselect %}
-                {% include "SgDatatablesBundle:Datatable:multiselect_actions.html.twig" with {'column': view_multiselect_column} %}
+                {% include "WgUniversalDataTableBundle:DataTable:multiselect_actions.html.twig" with {'column': view_multiselect_column} %}
             {% endif %}
 
         }, features.delay);
@@ -92,6 +92,6 @@
 
 {% block sg_datatable_render_functions %}
 
-    {% include "SgDatatablesBundle:Datatable:render_functions.html.twig" %}
+    {% include "WgUniversalDataTableBundle:DataTable:render_functions.html.twig" %}
 
 {% endblock %}

@@ -1,5 +1,5 @@
 <input type="text"
-       class="individual_filtering"
+       class="individual_filtering form-control"
        style="{% if column.width %} width:{{ column.width }};{% endif %}"
        placeholder="{{ column.title|striptags|trim }}"
        {% if column.name %}name="{{ column.name }}"{% endif %} />

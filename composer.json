@@ -1,21 +1,20 @@
 {
-    "name": "sg/datatablesbundle",
+    "name": "wg/universaldatatablebundle",
     "type": "symfony-bundle",
-    "description": "Symfony2 Datatable Bundle For Doctrine2 Entities",
+    "description": "Symfony2 DataTable Bundle For Doctrine2 Entities",
     "keywords": ["symfony2", "datatable", "grid", "table", "datagrid", "pagination"],
-    "homepage": "https://github.com/stwe/DatatablesBundle",
+    "homepage": "https://github.com/WojciechGrzeszkiewicz/UniversalDataTable",
     "license": "MIT",
     "authors": [
         {
             "name": "stwe"
         },
         {
-            "name": "SgDatatablesBundle contributors",
-            "homepage": "https://github.com/stwe/DatatablesBundle/graphs/contributors"
+            "name": "WojciechGrzeszkiewicz"
         }
     ],
     "support": {
-        "issues": "https://github.com/stwe/DatatablesBundle/issues"
+        "issues": "https://github.com/WojciechGrzeszkiewicz/UniversalDataTable/issues"
     },
     "require": {
         "php": ">=5.3.2",
@@ -31,7 +30,7 @@
         "moment/moment": "2.10.2"
     },
     "autoload": {
-        "psr-0": { "Sg\\DatatablesBundle": "" }
+        "psr-0": { "Wg\\UniversalDataTableBundle": "" }
     },
-    "target-dir": "Sg/DatatablesBundle"
+    "target-dir": "Wg/UniversalDataTableBundle"
 }

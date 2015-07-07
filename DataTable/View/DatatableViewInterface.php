@@ -1,17 +1,17 @@
 <?php
 
 /**
- * This file is part of the SgDatatablesBundle package.
+ * This file is part of the WgUniversalDataTableBundle package.
  *
- * (c) stwe <https://github.com/stwe/DatatablesBundle>
+ * (c) stwe <https://github.com/stwe/DataTablesBundle>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Datatable\View;
+namespace Wg\UniversalDataTable\DataTable\View;
 
-use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
+use Wg\UniversalDataTable\DataTable\Column\ColumnBuilder;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,24 +19,24 @@ use Exception;
 use Twig_Error;
 
 /**
- * Interface DatatableViewInterface
+ * Interface DataTableViewInterface
  *
- * @package Sg\DatatablesBundle\Datatable\View
+ * @package Wg\UniversalDataTable\DataTable\View
  */
-interface DatatableViewInterface
+interface DataTableViewInterface
 {
     /**
      * Builds the datatable view.
      *
      * @deprecated Deprecated since v0.7.1, to be removed in v0.8.
-     *             Use {@link buildDatatable()} instead.
+     *             Use {@link buildDataTable()} instead.
      */
-    public function buildDatatableView();
+    public function buildDataTableView();
 
     /**
      * Builds the datatable.
      */
-    public function buildDatatable();
+    public function buildDataTable();
 
     /**
      * Renders the datatable view.

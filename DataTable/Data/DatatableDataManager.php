@@ -1,28 +1,28 @@
 <?php
 
 /**
- * This file is part of the SgDatatablesBundle package.
+ * This file is part of the WgUniversalDataTableBundle package.
  *
- * (c) stwe <https://github.com/stwe/DatatablesBundle>
+ * (c) stwe <https://github.com/stwe/DataTablesBundle>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Datatable\Data;
+namespace Wg\UniversalDataTable\DataTable\Data;
 
-use Sg\DatatablesBundle\Datatable\View\DatatableViewInterface;
+use Wg\UniversalDataTable\DataTable\View\DataTableViewInterface;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Serializer;
 
 /**
- * Class DatatableDataManager
+ * Class DataTableDataManager
  *
- * @package Sg\DatatablesBundle\Datatable\Data
+ * @package Wg\UniversalDataTable\DataTable\Data
  */
-class DatatableDataManager
+class DataTableDataManager
 {
     /**
      * The request.
@@ -52,6 +52,7 @@ class DatatableDataManager
     {
         $this->request = $requestStack->getCurrentRequest();
         $this->serializer = $serializer;
+
     }
 
     //-------------------------------------------------
@@ -61,13 +62,14 @@ class DatatableDataManager
     /**
      * Get query.
      *
-     * @param DatatableViewInterface $datatableView
+     * @param DataTableViewInterface $dataTableView
+     * @param $disabledCoreSearch
      *
-     * @return DatatableQuery
+     * @return DataTableQuery
      */
-    public function getQueryFrom(DatatableViewInterface $datatableView)
+    public function getQueryFrom(DataTableViewInterface $dataTableView, array $disabledCoreSearch = null)
     {
-        $type = $datatableView->getAjax()->getType();
+        $type = $dataTableView->getAjax()->getType();
         $parameterBag = null;
 
         if ('GET' === strtoupper($type)) {
@@ -79,7 +81,7 @@ class DatatableDataManager
         }
 
         $params = $parameterBag->all();
-        $query = new DatatableQuery($this->serializer, $params, $datatableView);
+        $query = new DataTableQuery($this->serializer, $params, $dataTableView, $disabledCoreSearch);
 
         return $query;
     }

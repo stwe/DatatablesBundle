@@ -1,18 +1,18 @@
 <?php
 
 /**
- * This file is part of the SgDatatablesBundle package.
+ * This file is part of the WgUniversalDataTableBundle package.
  *
- * (c) stwe <https://github.com/stwe/DatatablesBundle>
+ * (c) stwe <https://github.com/stwe/DataTablesBundle>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Twig;
+namespace Wg\UniversalDataTable\Twig;
 
-use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
-use Sg\DatatablesBundle\Datatable\Column\AbstractColumn;
+use Wg\UniversalDataTable\DataTable\View\AbstractDataTableView;
+use Wg\UniversalDataTable\DataTable\Column\AbstractColumn;
 
 use Twig_Environment;
 use Twig_Extension;
@@ -22,11 +22,11 @@ use Exception;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Class DatatableTwigExtension
+ * Class DataTableTwigExtension
  *
- * @package Sg\DatatablesBundle\Twig
+ * @package Wg\UniversalDataTable\Twig
  */
-class DatatableTwigExtension extends Twig_Extension
+class DataTableTwigExtension extends Twig_Extension
 {
     /**
      * @var TranslatorInterface
@@ -119,12 +119,12 @@ class DatatableTwigExtension extends Twig_Extension
     /**
      * Renders the template.
      *
-     * @param AbstractDatatableView $datatable
+     * @param AbstractDataTableView $datatable
      *
      * @return mixed|string|void
      * @throws Exception
      */
-    public function datatableRender(AbstractDatatableView $datatable)
+    public function datatableRender(AbstractDataTableView $datatable)
     {
         return $datatable->render();
     }
@@ -133,13 +133,13 @@ class DatatableTwigExtension extends Twig_Extension
      * Renders the custom datatable filter.
      *
      * @param Twig_Environment      $twig
-     * @param AbstractDatatableView $datatable
+     * @param AbstractDataTableView $datatable
      * @param AbstractColumn        $column
      * @param integer               $loopIndex
      *
      * @return mixed|string|void
      */
-    public function datatableFilterRender(Twig_Environment $twig, AbstractDatatableView $datatable, AbstractColumn $column, $loopIndex)
+    public function datatableFilterRender(Twig_Environment $twig, AbstractDataTableView $datatable, AbstractColumn $column, $loopIndex)
     {
         $filterType = $column->getFilterType() ?: 'text';
 
@@ -149,18 +149,18 @@ class DatatableTwigExtension extends Twig_Extension
             $filterColumnId = $loopIndex;
         }
 
-        return $twig->render('SgDatatablesBundle:Filters:filter_' . $filterType . '.html.twig', ['column' => $column, 'filterColumnId' => $filterColumnId]);
+        return $twig->render('WgUniversalDataTableBundle:Filters:filter_' . $filterType . '.html.twig', ['column' => $column, 'filterColumnId' => $filterColumnId]);
     }
 
     /**
      * Renders the html template.
      *
-     * @param AbstractDatatableView $datatable
+     * @param AbstractDataTableView $datatable
      *
      * @return mixed|string|void
      * @throws Exception
      */
-    public function datatableRenderHtml(AbstractDatatableView $datatable)
+    public function datatableRenderHtml(AbstractDataTableView $datatable)
     {
         return $datatable->render('html');
     }
@@ -168,12 +168,12 @@ class DatatableTwigExtension extends Twig_Extension
     /**
      * Renders the js template.
      *
-     * @param AbstractDatatableView $datatable
+     * @param AbstractDataTableView $datatable
      *
      * @return mixed|string|void
      * @throws Exception
      */
-    public function datatableRenderJs(AbstractDatatableView $datatable)
+    public function datatableRenderJs(AbstractDataTableView $datatable)
     {
         return $datatable->render('js');
     }

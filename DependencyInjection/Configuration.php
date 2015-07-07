@@ -1,15 +1,15 @@
 <?php
 
 /**
- * This file is part of the SgDatatablesBundle package.
+ * This file is part of the WgUniversalDataTableBundle package.
  *
- * (c) stwe <https://github.com/stwe/DatatablesBundle>
+ * (c) stwe <https://github.com/stwe/DataTablesBundle>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\DependencyInjection;
+namespace Wg\UniversalDataTable\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -17,7 +17,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 /**
  * Class Configuration
  *
- * @package Sg\DatatablesBundle\DependencyInjection
+ * @package Wg\UniversalDataTable\DependencyInjection
  */
 class Configuration implements ConfigurationInterface
 {
@@ -35,9 +35,9 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->arrayNode('templates')->addDefaultsIfNotSet()
                             ->children()
-                                ->scalarNode('base')->defaultValue('SgDatatablesBundle:Datatable:datatable.html.twig')->end()
-                                ->scalarNode('html')->defaultValue('SgDatatablesBundle:Datatable:datatable_html.html.twig')->end()
-                                ->scalarNode('js')->defaultValue('SgDatatablesBundle:Datatable:datatable_js.html.twig')->end()
+                                ->scalarNode('base')->defaultValue('WgUniversalDataTableBundle:DataTable:datatable.html.twig')->end()
+                                ->scalarNode('html')->defaultValue('WgUniversalDataTableBundle:DataTable:datatable_html.html.twig')->end()
+                                ->scalarNode('js')->defaultValue('WgUniversalDataTableBundle:DataTable:datatable_js.html.twig')->end()
                             ->end()
                         ->end()
                     ->end()

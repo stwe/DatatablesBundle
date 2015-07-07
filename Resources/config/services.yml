@@ -9,10 +9,10 @@ services:
             - [@sg_datatables.serializer.method]
             - [@sg_datatables.serializer.encoder.json]
     sg_datatables.twig.extension:
-        class: Sg\DatatablesBundle\Twig\DatatableTwigExtension
+        class: Wg\UniversalDataTable\Twig\DataTableTwigExtension
         arguments: [@translator]
         tags:
             - { name: twig.extension }
     sg_datatables.query:
-        class: Sg\DatatablesBundle\Datatable\Data\DatatableDataManager
+        class: Wg\UniversalDataTable\DataTable\Data\DataTableDataManager
         arguments: [@request_stack, @sg_datatables.serializer]
