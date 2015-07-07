@@ -1,33 +1,26 @@
 <?php
 
 /**
- * This file is part of the SgDatatablesBundle package.
+ * This file is part of the WgUniversalDataTableBundle package.
  *
- * (c) stwe <https://github.com/stwe/DatatablesBundle>
+ * (c) stwe <https://github.com/stwe/DataTablesBundle>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Datatable\Column;
+namespace Wg\UniversalDataTable\DataTable\Column;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 
 /**
- * Class Column
+ * Class TimeagoColumn
  *
- * @package Sg\DatatablesBundle\Datatable\Column
+ * @package Wg\UniversalDataTable\DataTable\Column
  */
-class Column extends AbstractColumn
+class TimeagoColumn extends AbstractColumn
 {
-    /**
-     * Default content.
-     *
-     * @var string
-     */
-    protected $default;
-
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -51,7 +44,7 @@ class Column extends AbstractColumn
      */
     public function getTemplate()
     {
-        return 'SgDatatablesBundle:Column:column.html.twig';
+        return 'WgUniversalDataTableBundle:Column:timeago.html.twig';
     }
 
     /**
@@ -59,7 +52,7 @@ class Column extends AbstractColumn
      */
     public function getAlias()
     {
-        return 'column';
+        return 'timeago';
     }
 
     //-------------------------------------------------
@@ -76,13 +69,12 @@ class Column extends AbstractColumn
             'padding' => '',
             'name' => '',
             'orderable' => true,
-            'render' => null,
+            'render' => 'render_timeago',
             'searchable' => true,
             'title' => '',
             'type' => '',
             'visible' => true,
             'width' => '',
-            'default' => '',
             'search_type' => 'like',
             'filter_type' => 'text',
             'filter_options' => [],
@@ -92,49 +84,21 @@ class Column extends AbstractColumn
         $resolver->setAllowedTypes('class', 'string');
         $resolver->setAllowedTypes('padding', 'string');
         $resolver->setAllowedTypes('name', 'string');
-        $resolver->setAllowedTypes('orderable', 'bool');
-        $resolver->setAllowedTypes('render', array('string', 'null'));
-        $resolver->setAllowedTypes('searchable', 'bool');
         $resolver->setAllowedTypes('title', 'string');
         $resolver->setAllowedTypes('type', 'string');
         $resolver->setAllowedTypes('visible', 'bool');
         $resolver->setAllowedTypes('width', 'string');
-        $resolver->setAllowedTypes('default', 'string');
+        $resolver->setAllowedTypes('render', "string");
+        $resolver->setAllowedTypes('orderable', 'bool');
+        $resolver->setAllowedTypes('searchable', 'bool');
         $resolver->setAllowedTypes('search_type', 'string');
         $resolver->setAllowedTypes('filter_type', 'string');
         $resolver->setAllowedTypes('filter_options', 'array');
         $resolver->setAllowedTypes('filter_property', 'string');
 
         $resolver->setAllowedValues('search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
+
         $resolver->setAllowedValues('filter_type', array('text', 'select'));
-
-        return $this;
-    }
-
-    //-------------------------------------------------
-    // Getters && Setters
-    //-------------------------------------------------
-
-    /**
-     * Get default.
-     *
-     * @return string
-     */
-    public function getDefault()
-    {
-        return $this->default;
-    }
-
-    /**
-     * Set default.
-     *
-     * @param string $default
-     *
-     * @return $this
-     */
-    public function setDefault($default)
-    {
-        $this->default = $default;
 
         return $this;
     }

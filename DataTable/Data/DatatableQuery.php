@@ -1,18 +1,18 @@
 <?php
 
 /**
- * This file is part of the SgDatatablesBundle package.
+ * This file is part of the WgUniversalDataTableBundle package.
  *
- * (c) stwe <https://github.com/stwe/DatatablesBundle>
+ * (c) stwe <https://github.com/stwe/DataTablesBundle>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Datatable\Data;
+namespace Wg\UniversalDataTable\DataTable\Data;
 
-use Sg\DatatablesBundle\Datatable\View\DatatableViewInterface;
-use Sg\DatatablesBundle\Datatable\Column\AbstractColumn;
+use Wg\UniversalDataTable\DataTable\View\DataTableViewInterface;
+use Wg\UniversalDataTable\DataTable\Column\AbstractColumn;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Serializer;
@@ -26,11 +26,11 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;
 
 /**
- * Class DatatableQuery
+ * Class DataTableQuery
  *
- * @package Sg\DatatablesBundle\Datatable\Data
+ * @package Wg\UniversalDataTable\DataTable\Data
  */
-class DatatableQuery
+class DataTableQuery
 {
     /**
      * @var Serializer
@@ -43,7 +43,7 @@ class DatatableQuery
     private $requestParams;
 
     /**
-     * @var DatatableViewInterface
+     * @var DataTableViewInterface
      */
     private $datatableView;
 
@@ -117,18 +117,30 @@ class DatatableQuery
      */
     private $columns;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
+    /**
+     * @var array
+     */
+    protected $order = array();
+
+    /**
+     * @var array
+     */
+    protected $select = array();
+
+    /**
+     * @var array
+     */
+    protected $disabledCoreSearch = array();
 
     /**
      * Ctor.
      *
      * @param Serializer             $serializer
      * @param array                  $requestParams
-     * @param DatatableViewInterface $datatableView
+     * @param DataTableViewInterface $datatableView
+     * @param array                  $disabledCoreSearch
      */
-    public function __construct(Serializer $serializer, array $requestParams, DatatableViewInterface $datatableView)
+    public function __construct(Serializer $serializer, array $requestParams, DataTableViewInterface $datatableView, $disabledCoreSearch)
     {
         $this->serializer = $serializer;
         $this->requestParams = $requestParams;
@@ -153,6 +165,8 @@ class DatatableQuery
 
         $this->setLineFormatter();
         $this->setupColumnArrays();
+
+        $this->disabledCoreSearch = $disabledCoreSearch;
     }
 
     //-------------------------------------------------
@@ -356,6 +370,10 @@ class DatatableQuery
             $this->qb->addSelect('partial ' . $key . '.{' . implode(',', $this->selectColumns[$key]) . '}');
         }
 
+        foreach ($this->select as $sel) {
+            $this->qb->addSelect($sel);
+        }
+
         $this->qb->from($this->entity, $this->tableName);
 
         return $this;
@@ -414,6 +432,8 @@ class DatatableQuery
             foreach ($this->columns as $key => $column) {
 
                 if (true === $this->isSearchColumn($column)) {
+                    if( in_array($column, (array) $this->disabledCoreSearch) ) continue;
+
                     $searchType = $column->getSearchType();
                     $searchField = $this->searchColumns[$key];
                     $searchValue = $this->requestParams['columns'][$key]['search']['value'];
@@ -520,6 +540,12 @@ class DatatableQuery
      */
     private function setOrderBy()
     {
+        if( count($this->order) > 0 ) {
+            foreach($this->order AS $column => $order) {
+                $this->qb->addOrderBy($column, $order);
+            }
+        }
+
         if (isset($this->requestParams['order']) && count($this->requestParams['order'])) {
 
             $counter = count($this->requestParams['order']);
@@ -750,5 +776,23 @@ class DatatableQuery
         }
 
         return false;
+    }
+
+
+    /**
+     * @param $column
+     * @param string $order
+     */
+    public function addOrder($column, $order = 'DESC')
+    {
+        $this->order[$column] = $order;
+    }
+
+    /**
+     * @param $select
+     */
+    public function addSelect($select)
+    {
+        $this->select[] = $select;
     }
 }

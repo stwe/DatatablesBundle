@@ -1,7 +1,7 @@
 # Example
 
 ``` php
-    public function buildDatatable()
+    public function buildDataTable()
     {
         $this->callbacks->setCallbacks(array(
             'draw_callback' => "function( settings ) {

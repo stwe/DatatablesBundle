@@ -1,26 +1,26 @@
 <?php
 
 /**
- * This file is part of the SgDatatablesBundle package.
+ * This file is part of the WgUniversalDataTableBundle package.
  *
- * (c) stwe <https://github.com/stwe/DatatablesBundle>
+ * (c) stwe <https://github.com/stwe/DataTablesBundle>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle;
+namespace Wg\UniversalDataTableBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Sg\DatatablesBundle\DependencyInjection\Compiler\DatatableViewPass;
+use Wg\UniversalDataTableBundle\DependencyInjection\Compiler\DataTableViewPass;
 
 /**
- * Class SgDatatablesBundle
+ * Class WgUniversalDataTableBundle
  *
- * @package Sg\DatatablesBundle
+ * @package Sg\DataTablesBundle
  */
-class SgDatatablesBundle extends Bundle
+class WgUniversalDataTableBundle extends Bundle
 {
     /**
      * @param ContainerBuilder $container
@@ -29,6 +29,6 @@ class SgDatatablesBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new DatatableViewPass());
+        $container->addCompilerPass(new DataTableViewPass());
     }
 }

@@ -1,4 +1,4 @@
-# Getting Started With SgDatatablesBundle
+# Getting Started With WgUniversalDataTableBundle
 
 This Bundle integrates the jQuery DataTables 1.10.x plugin into your Symfony2 application.
 
@@ -39,9 +39,9 @@ framework:
     default_locale:  "%locale%"
 ```
 
-### Step 1: Download SgDatatablesBundle using composer
+### Step 1: Download WgUniversalDataTableBundle using composer
 
-If not already done: add SgDatatablesBundle in your composer.json:
+If not already done: add WgUniversalDataTableBundle in your composer.json:
 
 ```js
 {
@@ -75,7 +75,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new Sg\DatatablesBundle\SgDatatablesBundle(),
+        new Wg\UniversalDataTable\WgUniversalDataTableBundle(),
     );
 }
 ```

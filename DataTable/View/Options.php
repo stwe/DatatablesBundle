@@ -1,15 +1,15 @@
 <?php
 
 /**
- * This file is part of the SgDatatablesBundle package.
+ * This file is part of the WgUniversalDataTableBundle package.
  *
- * (c) stwe <https://github.com/stwe/DatatablesBundle>
+ * (c) stwe <https://github.com/stwe/DataTablesBundle>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Datatable\View;
+namespace Wg\UniversalDataTable\DataTable\View;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\DependencyInjection\Container;
@@ -18,7 +18,7 @@ use Exception;
 /**
  * Class Options
  *
- * @package Sg\DatatablesBundle\Datatable\View
+ * @package Wg\UniversalDataTable\DataTable\View
  */
 class Options
 {

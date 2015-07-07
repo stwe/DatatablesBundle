@@ -1,26 +1,26 @@
 <?php
 
 /**
- * This file is part of the SgDatatablesBundle package.
+ * This file is part of the WgUniversalDataTableBundle package.
  *
- * (c) stwe <https://github.com/stwe/DatatablesBundle>
+ * (c) stwe <https://github.com/stwe/DataTablesBundle>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\DependencyInjection\Compiler;
+namespace Wg\UniversalDataTable\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Class DatatableViewPass
+ * Class DataTableViewPass
  *
- * @package Sg\DatatablesBundle\DependencyInjection\Compiler
+ * @package Wg\UniversalDataTable\DependencyInjection\Compiler
  */
-class DatatableViewPass implements CompilerPassInterface
+class DataTableViewPass implements CompilerPassInterface
 {
     /**
      * Process.

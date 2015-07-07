@@ -1,17 +1,17 @@
 <?php
 
 /**
- * This file is part of the SgDatatablesBundle package.
+ * This file is part of the WgUniversalDataTableBundle package.
  *
- * (c) stwe <https://github.com/stwe/DatatablesBundle>
+ * (c) stwe <https://github.com/stwe/DataTablesBundle>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Datatable\View;
+namespace Wg\UniversalDataTable\DataTable\View;
 
-use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
+use Wg\UniversalDataTable\DataTable\Column\ColumnBuilder;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,11 +25,11 @@ use Symfony\Component\DependencyInjection\Container;
 use Exception;
 
 /**
- * Class AbstractDatatableView
+ * Class AbstractDataTableView
  *
- * @package Sg\DatatablesBundle\Datatable\View
+ * @package Wg\UniversalDataTable\DataTable\View
  */
-abstract class AbstractDatatableView implements DatatableViewInterface
+abstract class AbstractDataTableView implements DataTableViewInterface
 {
     /**
      * The AuthorizationChecker service.
@@ -180,30 +180,32 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         $this->qb = null;
 
-        $this->buildDatatableView();
+//        $this->buildDataTableView();
     }
 
     //-------------------------------------------------
-    // DatatableViewInterface
+    // DataTableViewInterface
     //-------------------------------------------------
 
     /**
      * Builds the datatable view.
      *
      * @deprecated Deprecated since v0.7.1, to be removed in v0.8.
-     *             Use {@link buildDatatable()} instead.
+     *             Use {@link buildDataTable()} instead.
      */
-    public function buildDatatableView()
+    public function buildDataTableView()
     {
         // implement an empty function for backward compatibility reasons
+        throw new \Exception('buildDataTableView is depreciated');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function buildDatatable()
+    public function buildDataTable()
     {
         // implement an empty function for backward compatibility reasons
+        throw new \Exception('buildDataTable is depreciated');
     }
 
     /**
@@ -384,7 +386,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getColumnIdByColumnName($name)
     {
         if (count($this->columnNames) == 0) {
-            /** @var \Sg\DatatablesBundle\Datatable\Column\AbstractColumn $column */
+            /** @var \Wg\UniversalDataTable\DataTable\Column\AbstractColumn $column */
             foreach ($this->getColumnBuilder()->getColumns() as $key => $column) {
                 $this->columnNames[$column->getData()] = $key;
             }

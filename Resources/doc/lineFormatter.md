@@ -1,6 +1,6 @@
 # How to use the LineFormatter
 
-The purpose is to format line directly by passing a closure in the DatatableView
+The purpose is to format line directly by passing a closure in the DataTableView
 class. The transformer modificate data after that orders and filters are applied.
 Used in thinking that to alter data couldn't change originals orders or filters.
 
@@ -12,16 +12,16 @@ securize request by removing id and transform it in a slug.
 ```php
 <?php
 
-namespace Sg\BlogBundle\Datatables;
+namespace Sg\BlogBundle\DataTables;
 
-use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
+use Wg\UniversalDataTable\DataTable\View\AbstractDataTableView;
 
 /**
- * Class UserDatatable
+ * Class UserDataTable
  *
- * @package Sg\BlogBundle\Datatables
+ * @package Sg\BlogBundle\DataTables
  */
-class UserDatatable extends AbstractDatatableView
+class UserDataTable extends AbstractDataTableView
 {
 
     /**
@@ -41,7 +41,7 @@ class UserDatatable extends AbstractDatatableView
     /**
      * {@inheritdoc}
      */
-    public function buildDatatable()
+    public function buildDataTable()
     {
         //...
 
