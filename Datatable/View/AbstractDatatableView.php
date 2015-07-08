@@ -180,7 +180,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         $this->qb = null;
 
-        $this->buildDatatableView();
+        $this->buildDatatable();
     }
 
     //-------------------------------------------------
@@ -195,7 +195,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      */
     public function buildDatatableView()
     {
-        // implement an empty function for backward compatibility reasons
+        $this->buildDatatable();
     }
 
     /**
