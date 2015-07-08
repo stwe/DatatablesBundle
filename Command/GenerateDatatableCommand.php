@@ -99,15 +99,15 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
     {
         $skeletonDirs = array();
 
-        if (isset($bundle) && is_dir($dir = $bundle->getPath().'/Resources/SgDatatablesBundle/skeleton')) {
+        if (isset($bundle) && is_dir($dir = $bundle->getPath().'/Resources/SgDatatablesBundle/Skeleton')) {
             $skeletonDirs[] = $dir;
         }
 
-        if (is_dir($dir = $this->getContainer()->get('kernel')->getRootdir().'/Resources/SgDatatablesBundle/skeleton')) {
+        if (is_dir($dir = $this->getContainer()->get('kernel')->getRootdir().'/Resources/SgDatatablesBundle/Skeleton')) {
             $skeletonDirs[] = $dir;
         }
 
-        $skeletonDirs[] = __DIR__.'/../Resources/skeleton';
+        $skeletonDirs[] = __DIR__.'/../Resources/Skeleton';
         $skeletonDirs[] = __DIR__.'/../Resources';
 
         return $skeletonDirs;
