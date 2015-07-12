@@ -11,6 +11,7 @@
 
 namespace Sg\DatatablesBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -29,6 +30,19 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('sg_datatables');
 
+        $this->addLayoutSection($rootNode);
+        $this->addRoutesSection($rootNode);
+
+        return $treeBuilder;
+    }
+
+    /**
+     * Add layout section.
+     *
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addLayoutSection(ArrayNodeDefinition $rootNode)
+    {
         $rootNode
             ->children()
                 ->arrayNode('default_layout')->addDefaultsIfNotSet()
@@ -42,8 +56,61 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
+    }
 
-        return $treeBuilder;
+    /**
+     * Add routes section.
+     *
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addRoutesSection(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('routes')
+                    ->requiresAtLeastOneElement()
+                    ->prototype('scalar')->end()
+                ->end()
+                ->arrayNode('fields')
+                    ->requiresAtLeastOneElement()
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('route')
+                                ->isRequired()
+                            ->end()
+                            ->arrayNode('show')
+                                ->requiresAtLeastOneElement()
+                                ->prototype('scalar')->end()
+                            ->end()
+                            ->arrayNode('new')
+                                ->requiresAtLeastOneElement()
+                                ->prototype('scalar')->end()
+                            ->end()
+                            ->arrayNode('edit')
+                                ->requiresAtLeastOneElement()
+                                ->prototype('scalar')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+                ->arrayNode('roles')
+                    ->requiresAtLeastOneElement()
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('route')
+                                ->isRequired()
+                            ->end()
+                            ->scalarNode('index')->end()
+                            ->scalarNode('show')->end()
+                            ->scalarNode('new')->end()
+                            ->scalarNode('edit')->end()
+                            ->scalarNode('delete')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
     }
 }

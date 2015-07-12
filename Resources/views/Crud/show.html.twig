@@ -1,0 +1,8 @@
+{% extends 'SgDatatablesBundle:Crud:base.html.twig' %}
+
+{% block main %}
+    {% for field in fields %}
+        {{ attribute(entity, field) }}
+    {% endfor %}
+    {{ form(delete_form) }}
+{% endblock %}

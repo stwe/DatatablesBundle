@@ -103,3 +103,7 @@ Include the jQuery, DataTables, Moment and FOSJsRoutingBundle javascript/css fil
 ## Reference configuration
 
 - [Reference configuration](./configuration.md)
+
+## Using the SgDatatablesBundle routing loader (new and unstable)
+
+- [Example](./crud.md)

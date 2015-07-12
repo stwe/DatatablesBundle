@@ -29,11 +29,10 @@ class DatatableViewPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $taggedServices = $container->findTaggedServiceIds(
-            'sg.datatable.view'
-        );
+        $datatablesContainer = $container->findDefinition('sg_datatables.view.container');
+        $taggedServices = $container->findTaggedServiceIds('sg.datatable.view');
 
-        foreach ($taggedServices as $id => $tagAttributes) {
+        foreach ($taggedServices as $id => $tags) {
             $def = $container->getDefinition($id);
             $def->addArgument(new Reference('security.authorization_checker'));
             $def->addArgument(new Reference('security.token_storage'));
@@ -42,6 +41,8 @@ class DatatableViewPass implements CompilerPassInterface
             $def->addArgument(new Reference('router'));
             $def->addArgument(new Reference('doctrine.orm.entity_manager'));
             $def->addArgument('%sg_datatables.default.layout.options%');
+
+            $datatablesContainer->addMethodCall('addDatatable', array(new Reference($id)));
         }
     }
 }
