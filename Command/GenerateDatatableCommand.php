@@ -99,8 +99,16 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
     {
         $skeletonDirs = array();
 
-        $reflClass = new \ReflectionClass(get_class($this));
-        $skeletonDirs[] = dirname($reflClass->getFileName()) . '/../Resources/views/Skeleton';
+        if (isset($bundle) && is_dir($dir = $bundle->getPath().'/Resources/SgDatatablesBundle/views/Skeleton')) {
+            $skeletonDirs[] = $dir;
+        }
+
+        if (is_dir($dir = $this->getContainer()->get('kernel')->getRootdir().'/Resources/SgDatatablesBundle/views/Skeleton')) {
+            $skeletonDirs[] = $dir;
+        }
+
+        $skeletonDirs[] = __DIR__.'/../Resources/views/Skeleton';
+        $skeletonDirs[] = __DIR__.'/../Resources';
 
         return $skeletonDirs;
     }
