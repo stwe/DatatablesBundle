@@ -745,7 +745,7 @@ class DatatableQuery
      */
     private function isSearchColumn(AbstractColumn $column)
     {
-        if (null !== $column->getDql() && true === $column->getSearchable() && true === $column->getVisible()) {
+        if (null !== $column->getDql() && true === $column->getSearchable()) {
             return true;
         }
 
