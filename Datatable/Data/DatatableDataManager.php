@@ -38,6 +38,13 @@ class DatatableDataManager
      */
     private $serializer;
 
+    /**
+     * Configuration settings.
+     *
+     * @var array
+     */
+    private $configs;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -47,11 +54,13 @@ class DatatableDataManager
      *
      * @param RequestStack $requestStack
      * @param Serializer   $serializer
+     * @param array        $configs
      */
-    public function __construct(RequestStack $requestStack, Serializer $serializer)
+    public function __construct(RequestStack $requestStack, Serializer $serializer, array $configs)
     {
         $this->request = $requestStack->getCurrentRequest();
         $this->serializer = $serializer;
+        $this->configs = $configs;
     }
 
     //-------------------------------------------------
@@ -79,7 +88,7 @@ class DatatableDataManager
         }
 
         $params = $parameterBag->all();
-        $query = new DatatableQuery($this->serializer, $params, $datatableView);
+        $query = new DatatableQuery($this->serializer, $params, $datatableView, $this->configs);
 
         return $query;
     }

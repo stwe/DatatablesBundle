@@ -31,6 +31,7 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('sg_datatables');
 
         $this->addLayoutSection($rootNode);
+        $this->addQuerySection($rootNode);
         $this->addRoutesSection($rootNode);
 
         return $treeBuilder;
@@ -53,6 +54,26 @@ class Configuration implements ConfigurationInterface
                                 ->scalarNode('html')->defaultValue('SgDatatablesBundle:Datatable:datatable_html.html.twig')->end()
                                 ->scalarNode('js')->defaultValue('SgDatatablesBundle:Datatable:datatable_js.html.twig')->end()
                             ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * Add query section.
+     *
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addQuerySection(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('query')->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('search_on_non_visible_columns')
+                            ->defaultFalse()
                         ->end()
                     ->end()
                 ->end()

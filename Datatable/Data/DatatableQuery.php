@@ -117,6 +117,11 @@ class DatatableQuery
      */
     private $columns;
 
+    /**
+     * @var array
+     */
+    private $configs;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -127,8 +132,11 @@ class DatatableQuery
      * @param Serializer             $serializer
      * @param array                  $requestParams
      * @param DatatableViewInterface $datatableView
+     * @param array                  $configs
+     *
+     * @throws Exception
      */
-    public function __construct(Serializer $serializer, array $requestParams, DatatableViewInterface $datatableView)
+    public function __construct(Serializer $serializer, array $requestParams, DatatableViewInterface $datatableView, array $configs)
     {
         $this->serializer = $serializer;
         $this->requestParams = $requestParams;
@@ -150,6 +158,8 @@ class DatatableQuery
         $this->orderColumns = array();
         $this->callbacks = array();
         $this->columns = $datatableView->getColumnBuilder()->getColumns();
+
+        $this->configs = $configs;
 
         $this->setLineFormatter();
         $this->setupColumnArrays();
@@ -745,8 +755,14 @@ class DatatableQuery
      */
     private function isSearchColumn(AbstractColumn $column)
     {
-        if (null !== $column->getDql() && true === $column->getSearchable() && true === $column->getVisible()) {
-            return true;
+        if (false === $this->configs['search_on_non_visible_columns']) {
+            if (null !== $column->getDql() && true === $column->getSearchable() && true === $column->getVisible()) {
+                return true;
+            }
+        } else {
+            if (null !== $column->getDql() && true === $column->getSearchable()) {
+                return true;
+            }
         }
 
         return false;

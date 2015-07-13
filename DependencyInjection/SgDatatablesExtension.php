@@ -35,6 +35,7 @@ class SgDatatablesExtension extends Extension
         $loader->load('services.yml');
 
         $container->setParameter('sg_datatables.default.layout.options', $config['default_layout']);
+        $container->setParameter('sg_datatables.query', $config['query']);
         $container->setParameter('sg_datatables.generate.routes', $config['routes']);
         $container->setParameter('sg_datatables.crud.fields', $config['fields']);
         $container->setParameter('sg_datatables.crud.roles', $config['roles']);
