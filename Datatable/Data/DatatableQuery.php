@@ -630,6 +630,7 @@ class DatatableQuery
         false === $buildQuery ? : $this->buildQuery();
 
         $fresults = new Paginator($this->execute(), true);
+        $fresults->setUseOutputWalkers(false);
         $output = array('data' => array());
 
         foreach ($fresults as $item) {
