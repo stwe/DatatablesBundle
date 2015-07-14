@@ -246,7 +246,7 @@ class Options
             'order_multi' => true,
             'page_length' => 10,
             'paging_type' => Style::FULL_NUMBERS_PAGINATION,
-            'renderer' => "",
+            'renderer' => '',
             'scroll_collapse' => false,
             'search_delay' => 0,
             'state_duration' => 7200,

@@ -23,53 +23,54 @@ class {{ datatable_class }} extends AbstractDatatableView
     public function buildDatatable()
     {
         $this->features->setFeatures(array(
-            "auto_width" => true,
-            "defer_render" => false,
-            "info" => true,
-            "jquery_ui" => false,
-            "length_change" => true,
-            "ordering" => true,
-            "paging" => true,
-            "processing" => true,
-            "scroll_x" => false,
-            "scroll_y" => "",
-            "searching" => true,
-            "server_side" => {{ client_side ? "false" : "true" }},
-            "state_save" => false,
-            "delay" => 0
+            'auto_width' => true,
+            'defer_render' => false,
+            'info' => true,
+            'jquery_ui' => false,
+            'length_change' => true,
+            'ordering' => true,
+            'paging' => true,
+            'processing' => true,
+            'scroll_x' => false,
+            'scroll_y' => '',
+            'searching' => true,
+            'server_side' => {{ client_side ? 'false' : 'true' }},
+            'state_save' => false,
+            'delay' => 0
         ));
 
         {% if false == client_side %}
         $this->ajax->setOptions(array(
-            "url" => $this->router->generate("{{ ajax_url }}"),
-            "type" => "GET"
+            'url' => $this->router->generate('{{ ajax_url }}'),
+            'type' => 'GET'
         ));
         {% endif %}
 
         $this->options->setOptions(array(
-            "display_start" => 0,
-            "dom" => "lfrtip",
-            "length_menu" => array(10, 25, 50, 100),
-            "order_classes" => true,
-            "order" => [[0, "asc"]],
-            "order_multi" => true,
-            "page_length" => 10,
-            "paging_type" => Style::FULL_NUMBERS_PAGINATION,
-            "renderer" => "",
-            "scroll_collapse" => false,
-            "search_delay" => 0,
-            "state_duration" => 7200,
-            "stripe_classes" => array(),
-            "responsive" => false,
-            "class" => Style::BASE_STYLE,
-            "individual_filtering" => false,
-            "individual_filtering_position" => "foot",
-            "use_integration_options" => false
+            'display_start' => 0,
+            'defer_loading' => -1,
+            'dom' => 'lfrtip',
+            'length_menu' => array(10, 25, 50, 100),
+            'order_classes' => true,
+            'order' => [[0, 'asc']],
+            'order_multi' => true,
+            'page_length' => 10,
+            'paging_type' => Style::FULL_NUMBERS_PAGINATION,
+            'renderer' => '',
+            'scroll_collapse' => false,
+            'search_delay' => 0,
+            'state_duration' => 7200,
+            'stripe_classes' => array(),
+            'responsive' => false,
+            'class' => Style::BASE_STYLE,
+            'individual_filtering' => false,
+            'individual_filtering_position' => 'foot',
+            'use_integration_options' => false
         ));
 
         $this->columnBuilder
         {% for field in fields %}
-        ->add("{{ field.property }}", "{{ field.column_name }}", array("title" => "{{ field.title }}",))
+        ->add('{{ field.property }}', '{{ field.column_name }}', array('title' => '{{ field.title }}',))
         {% endfor %}
         ;
     }
@@ -79,7 +80,7 @@ class {{ datatable_class }} extends AbstractDatatableView
      */
     public function getEntity()
     {
-        return "{{ namespace }}\Entity{{ entity_namespace ? '\\' ~ entity_namespace : '' }}\{{ entity_class }}";
+        return '{{ namespace }}\Entity{{ entity_namespace ? '\\' ~ entity_namespace : '' }}\{{ entity_class }}';
     }
 
     /**
@@ -87,7 +88,7 @@ class {{ datatable_class }} extends AbstractDatatableView
      */
     public function getName()
     {
-        return "{{ datatable_name }}";
+        return '{{ datatable_name }}';
     }
 {% endblock class_body %}
 }
