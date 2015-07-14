@@ -24,6 +24,10 @@
             {% include "SgDatatablesBundle:Datatable:ajax.html.twig" %}
         };
 
+        var searchCols = {
+            {% include "SgDatatablesBundle:Datatable:search_columns.html.twig" %}
+        };
+
         setTimeout(function() {
             var columns = {
                 {% include "SgDatatablesBundle:Datatable:columns.html.twig" %}
@@ -34,6 +38,7 @@
             $.extend(defaults, callbacks);
             $.extend(defaults, ajax);
             $.extend(defaults, columns);
+            $.extend(defaults, searchCols);
 
             if ( $.fn.dataTable.isDataTable( selector ) ) {
                 {#
