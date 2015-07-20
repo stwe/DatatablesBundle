@@ -51,11 +51,11 @@
             {% if view_options.individualFiltering %}
 
                 {% if "head" == view_options.individualFilteringPosition %}
-                    $(selector + '_wrapper tfoot tr').insertAfter($(selector + '_wrapper thead tr').last());
+                    $(selector + '_wrapper tfoot tr').insertAfter($(selector + '_wrapper thead tr').first());
                 {% endif %}
 
                 {% if "both" == view_options.individualFilteringPosition %}
-                    $(selector + '_wrapper tfoot tr').clone().insertAfter($(selector + '_wrapper thead tr').last());
+                    $(selector + '_wrapper tfoot tr').clone().insertAfter($(selector + '_wrapper thead tr').first());
                 {% endif %}
 
                 var daterange = $('input[name="daterange"]');
