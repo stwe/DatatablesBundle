@@ -13,6 +13,7 @@ namespace Sg\DatatablesBundle\Twig;
 
 use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
 use Sg\DatatablesBundle\Datatable\Column\AbstractColumn;
+use Sg\DatatablesBundle\Routing\DatatablesRoutingLoader;
 
 use Twig_Environment;
 use Twig_Extension;
@@ -33,6 +34,11 @@ class DatatableTwigExtension extends Twig_Extension
      */
     private $translator;
 
+    /**
+     * @var array
+     */
+    private $routes;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -41,10 +47,12 @@ class DatatableTwigExtension extends Twig_Extension
      * Ctor.
      *
      * @param TranslatorInterface $translator
+     * @param array               $routes
      */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator, array $routes)
     {
         $this->translator = $translator;
+        $this->routes = $routes;
     }
 
     //-------------------------------------------------
@@ -69,7 +77,8 @@ class DatatableTwigExtension extends Twig_Extension
             new Twig_SimpleFunction('datatable_render_html', array($this, 'datatableRenderHtml'), array('is_safe' => array('all'))),
             new Twig_SimpleFunction('datatable_render_js', array($this, 'datatableRenderJs'), array('is_safe' => array('all'))),
             new Twig_SimpleFunction('datatable_filter_render', array($this, 'datatableFilterRender'), array('is_safe' => array('all'), 'needs_environment' => true)),
-            new Twig_SimpleFunction('datatable_icon', array($this, 'datatableIcon'), array('is_safe' => array('all')))
+            new Twig_SimpleFunction('datatable_icon', array($this, 'datatableIcon'), array('is_safe' => array('all'))),
+            new Twig_SimpleFunction('datatable_navigation', array($this, 'datatableNavigation'), array('is_safe' => array('all'), 'needs_environment' => true))
         );
     }
 
@@ -192,5 +201,23 @@ class DatatableTwigExtension extends Twig_Extension
             return sprintf('<i class="%s"></i> %s', $icon, $label);
         else
             return $label;
+    }
+
+    /**
+     * Renders the navigation.
+     *
+     * @param Twig_Environment $twig
+     *
+     * @return string
+     */
+    public function datatableNavigation(Twig_Environment $twig)
+    {
+        $routes = array();
+
+        foreach ($this->routes as $key => $value) {
+            $routes[$key] = DatatablesRoutingLoader::PREF . $key . '_index';
+        }
+
+        return $twig->render('SgDatatablesBundle:Crud:navigation.html.twig', array('routes' => $routes));
     }
 }

@@ -34,10 +34,11 @@ class SgDatatablesExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $container->setParameter('sg_datatables.default.layout.options', $config['default_layout']);
+        $container->setParameter('sg_datatables.datatable.templates', $config['datatable']['templates']);
+        $container->setParameter('sg_datatables.site', $config['site']);
         $container->setParameter('sg_datatables.query', $config['query']);
-        $container->setParameter('sg_datatables.generate.routes', $config['routes']);
-        $container->setParameter('sg_datatables.crud.fields', $config['fields']);
-        $container->setParameter('sg_datatables.crud.roles', $config['roles']);
+        $container->setParameter('sg_datatables.routes', $config['routes']);
+        $container->setParameter('sg_datatables.fields', $config['fields']);
+        $container->setParameter('sg_datatables.roles', $config['roles']);
     }
 }

@@ -1,8 +1,19 @@
-{% extends 'SgDatatablesBundle:Crud:base.html.twig' %}
+{% extends datatable_site_config.base_layout %}
 
 {% block main %}
-    {% for field in fields %}
-        {{ attribute(entity, field) }}
-    {% endfor %}
+    <table class="table">
+        <tbody>
+            {% for field in fields %}
+                <tr>
+                    <td>
+                        <b>{{ field|capitalize }}:</b>
+                    </td>
+                    <td>
+                        {{ attribute(entity, field) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     {{ form(delete_form) }}
 {% endblock %}

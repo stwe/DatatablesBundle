@@ -170,7 +170,10 @@ class CrudController extends Controller
 
         return $this->render(
             'SgDatatablesBundle:Crud:index.html.twig',
-            array('datatable' => $datatable)
+            array(
+                'datatable' => $datatable,
+                'datatable_site_config' => $this->container->getParameter('sg_datatables.site')
+            )
         );
     }
 
@@ -220,7 +223,8 @@ class CrudController extends Controller
             'SgDatatablesBundle:Crud:new.html.twig',
             array(
                 'entity' => $entity,
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'datatable_site_config' => $this->container->getParameter('sg_datatables.site')
             )
         );
     }
@@ -245,7 +249,7 @@ class CrudController extends Controller
             $formBuilder->add($field);
         };
 
-        $formBuilder->add('submit', 'submit', array('label' => 'Create'));
+        $formBuilder->add('submit', 'submit', array('label' => 'Create', 'attr' => array('class' => 'btn btn-primary')));
 
         return $formBuilder->getForm();
     }
@@ -269,7 +273,8 @@ class CrudController extends Controller
             'SgDatatablesBundle:Crud:new.html.twig',
             array(
                 'entity' => $entity,
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'datatable_site_config' => $this->container->getParameter('sg_datatables.site')
             )
         );
     }
@@ -304,6 +309,7 @@ class CrudController extends Controller
                 'entity' => $entity,
                 'fields' => $this->getFields('show'),
                 'delete_form' => $deleteForm->createView(),
+                'datatable_site_config' => $this->container->getParameter('sg_datatables.site')
             )
         );
     }
@@ -335,7 +341,8 @@ class CrudController extends Controller
             'SgDatatablesBundle:Crud:edit.html.twig',
             array(
                 'entity' => $entity,
-                'edit_form' => $editForm->createView()
+                'edit_form' => $editForm->createView(),
+                'datatable_site_config' => $this->container->getParameter('sg_datatables.site')
             )
         );
     }
@@ -360,7 +367,7 @@ class CrudController extends Controller
             $formBuilder->add($field);
         };
 
-        $formBuilder->add('submit', 'submit', array('label' => 'Update'));
+        $formBuilder->add('submit', 'submit', array('label' => 'Update', 'attr' => array('class' => 'btn btn-primary')));
 
         return $formBuilder->getForm();
     }
@@ -401,7 +408,8 @@ class CrudController extends Controller
             'SgDatatablesBundle:Crud:edit.html.twig',
             array(
                 'entity' => $entity,
-                'edit_form' => $editForm->createView()
+                'edit_form' => $editForm->createView(),
+                'datatable_site_config' => $this->container->getParameter('sg_datatables.site')
             )
         );
     }
@@ -455,7 +463,7 @@ class CrudController extends Controller
         $formBuilder = $this->container->get('form.factory')->createBuilder('form');
         $formBuilder->setAction($this->generateUrl(DatatablesRoutingLoader::PREF . $alias . '_delete', array('id' => $id)));
         $formBuilder->setMethod('DELETE');
-        $formBuilder->add('submit', 'submit', array('label' => 'Delete'));
+        $formBuilder->add('submit', 'submit', array('label' => 'Delete', 'attr' => array('class' => 'btn btn-danger')));
 
         return $formBuilder->getForm();
     }

@@ -30,7 +30,8 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('sg_datatables');
 
-        $this->addLayoutSection($rootNode);
+        $this->addDatatableSection($rootNode);
+        $this->addSiteSection($rootNode);
         $this->addQuerySection($rootNode);
         $this->addRoutesSection($rootNode);
 
@@ -38,15 +39,15 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * Add layout section.
+     * Add datatable section.
      *
      * @param ArrayNodeDefinition $rootNode
      */
-    private function addLayoutSection(ArrayNodeDefinition $rootNode)
+    private function addDatatableSection(ArrayNodeDefinition $rootNode)
     {
         $rootNode
             ->children()
-                ->arrayNode('default_layout')->addDefaultsIfNotSet()
+                ->arrayNode('datatable')->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('templates')->addDefaultsIfNotSet()
                             ->children()
@@ -55,6 +56,25 @@ class Configuration implements ConfigurationInterface
                                 ->scalarNode('js')->defaultValue('SgDatatablesBundle:Datatable:datatable_js.html.twig')->end()
                             ->end()
                         ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * Add site section.
+     *
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addSiteSection(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('site')->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('title')->defaultValue('SgDatatablesBundle')->end()
+                        ->scalarNode('base_layout')->defaultValue('SgDatatablesBundle:Crud:layout.html.twig')->end()
                     ->end()
                 ->end()
             ->end()

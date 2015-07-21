@@ -2,9 +2,21 @@
 
 ```yaml
 sg_datatables:
-    default_layout:
+    datatable:
         templates:
             base: 'SgDatatablesBundle:Datatable:datatable.html.twig'
             html: 'SgDatatablesBundle:Datatable:datatable_html.html.twig'
             js:   'SgDatatablesBundle:Datatable:datatable_js.html.twig'
+    site:
+        title: 'SgDatatablesBundle'
+        base_layout: 'SgDatatablesBundle:Crud:layout.html.twig'
+    query:
+        search_on_non_visible_columns: false
+    # example
+    #routes:
+    #    post: post_datatable
+    #fields:
+    #    - { route: post, edit: [title, content, visible], new: [title, content, visible], show: [id, title, content, visible] }
+    #roles:
+    #    - { route: post, index: ROLE_ADMIN, edit: ROLE_ADMIN, new: ROLE_ADMIN, show: ROLE_USER, delete: ROLE_ADMIN }
 ```

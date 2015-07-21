@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}SgDatatablesBundle{% endblock %}</title>
+        <title>{% block title %}{{ datatable_site_config.title }}{% endblock %}</title>
         {% block stylesheets %}
             <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
             <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" >
@@ -30,7 +30,7 @@
                     <div class="container">
                         <div class="navbar-header">
                             <a class="navbar-brand" href="{{ path('homepage') }}">
-                                SgDatatablesBundle
+                                {% block brand %}{{ datatable_site_config.title }}{% endblock %}
                             </a>
                             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                                 <span class="sr-only">Toggle navigation</span>
@@ -42,13 +42,7 @@
                         <div class="navbar-collapse collapse">
                             <ul class="nav navbar-nav navbar-right">
                                 {% block header_navigation_links %}
-                                    {#
-                                    <li>
-                                        <a href="{{ path('sg_post_index') }}">
-                                            <i class="glyphicon glyphicon-th-list"></i> Posts
-                                        </a>
-                                    </li>
-                                    #}
+                                    {{ datatable_navigation() }}
                                 {% endblock %}
                             </ul>
                         </div>

@@ -10,7 +10,7 @@ services:
             - [@sg_datatables.serializer.encoder.json]
     sg_datatables.twig.extension:
         class: Sg\DatatablesBundle\Twig\DatatableTwigExtension
-        arguments: [@translator]
+        arguments: [@translator, %sg_datatables.routes%]
         tags:
             - { name: twig.extension }
     sg_datatables.query:
@@ -18,7 +18,7 @@ services:
         arguments: [@request_stack, @sg_datatables.serializer, %sg_datatables.query%]
     sg_datatables.routing.loader:
         class: Sg\DatatablesBundle\Routing\DatatablesRoutingLoader
-        arguments: [%sg_datatables.generate.routes%, %sg_datatables.crud.fields%, %sg_datatables.crud.roles%]
+        arguments: [%sg_datatables.routes%, %sg_datatables.fields%, %sg_datatables.roles%]
         tags:
             - { name: routing.loader }
     sg_datatables.view.container:

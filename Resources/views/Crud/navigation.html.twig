@@ -1,0 +1,7 @@
+{% for name, route in routes %}
+    <li>
+        <a href="{{ path(route) }}">
+            <i class="glyphicon glyphicon-th-list"></i> {{ name|capitalize }}
+        </a>
+    </li>
+{% endfor %}

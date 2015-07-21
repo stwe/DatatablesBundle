@@ -150,7 +150,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @param TranslatorInterface           $translator
      * @param RouterInterface               $router
      * @param EntityManagerInterface        $em
-     * @param array                         $defaultLayoutOptions
+     * @param array                         $templates
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -159,7 +159,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         TranslatorInterface $translator,
         RouterInterface $router,
         EntityManagerInterface $em,
-        array $defaultLayoutOptions
+        array $templates
     )
     {
         $this->authorizationChecker = $authorizationChecker;
@@ -176,7 +176,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->ajax = new Ajax();
 
         $this->data = null;
-        $this->templates = $defaultLayoutOptions['templates'];
+        $this->templates = $templates;
 
         $this->qb = null;
 
