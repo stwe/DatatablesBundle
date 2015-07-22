@@ -171,8 +171,7 @@ class CrudController extends Controller
         return $this->render(
             'SgDatatablesBundle:Crud:index.html.twig',
             array(
-                'datatable' => $datatable,
-                'datatable_site_config' => $this->container->getParameter('sg_datatables.site')
+                'datatable' => $datatable
             )
         );
     }
@@ -223,8 +222,7 @@ class CrudController extends Controller
             'SgDatatablesBundle:Crud:new.html.twig',
             array(
                 'entity' => $entity,
-                'form' => $form->createView(),
-                'datatable_site_config' => $this->container->getParameter('sg_datatables.site')
+                'form' => $form->createView()
             )
         );
     }
@@ -273,8 +271,7 @@ class CrudController extends Controller
             'SgDatatablesBundle:Crud:new.html.twig',
             array(
                 'entity' => $entity,
-                'form' => $form->createView(),
-                'datatable_site_config' => $this->container->getParameter('sg_datatables.site')
+                'form' => $form->createView()
             )
         );
     }
@@ -308,8 +305,7 @@ class CrudController extends Controller
             array(
                 'entity' => $entity,
                 'fields' => $this->getFields('show'),
-                'delete_form' => $deleteForm->createView(),
-                'datatable_site_config' => $this->container->getParameter('sg_datatables.site')
+                'delete_form' => $deleteForm->createView()
             )
         );
     }
@@ -341,8 +337,7 @@ class CrudController extends Controller
             'SgDatatablesBundle:Crud:edit.html.twig',
             array(
                 'entity' => $entity,
-                'edit_form' => $editForm->createView(),
-                'datatable_site_config' => $this->container->getParameter('sg_datatables.site')
+                'edit_form' => $editForm->createView()
             )
         );
     }
@@ -408,8 +403,7 @@ class CrudController extends Controller
             'SgDatatablesBundle:Crud:edit.html.twig',
             array(
                 'entity' => $entity,
-                'edit_form' => $editForm->createView(),
-                'datatable_site_config' => $this->container->getParameter('sg_datatables.site')
+                'edit_form' => $editForm->createView()
             )
         );
     }
