@@ -103,14 +103,15 @@ class BooleanColumn extends AbstractColumn
             'type' => '',
             'visible' => true,
             'width' => '',
-            'true_icon' => '',
-            'false_icon' => '',
-            'true_label' => '',
-            'false_label' => '',
             'search_type' => 'like',
             'filter_type' => 'select',
             'filter_options' => ['' => 'Any', '1' => 'Yes', '0' => 'No'],
-            'filter_property' => ''
+            'filter_property' => '',
+            'filter_search_column' => '',
+            'true_icon' => '',
+            'false_icon' => '',
+            'true_label' => '',
+            'false_label' => ''
         ));
 
         $resolver->setAllowedTypes('class', 'string');
@@ -127,6 +128,7 @@ class BooleanColumn extends AbstractColumn
         $resolver->setAllowedTypes('filter_type', 'string');
         $resolver->setAllowedTypes('filter_options', 'array');
         $resolver->setAllowedTypes('filter_property', 'string');
+        $resolver->setAllowedTypes('filter_search_column', 'string');
         $resolver->setAllowedTypes('true_icon', 'string');
         $resolver->setAllowedTypes('false_icon', 'string');
         $resolver->setAllowedTypes('true_label', 'string');

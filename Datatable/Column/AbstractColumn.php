@@ -166,8 +166,8 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     protected $filterProperty;
 
     /**
-     * Implementation of the searchCol config property of jquery datatable
-     * Option: filterSearchColumn
+     * Implementation of the searchCol config property of jquery datatable.
+     * Option: filter_search_column
      *
      * @var string
      */
@@ -627,18 +627,26 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     }
 
     /**
+     * Set filter search column.
+     *
+     * @param string $filterSearchColumn
+     *
+     * @return $this
+     */
+    public function setFilterSearchColumn($filterSearchColumn)
+    {
+        $this->filterSearchColumn = $filterSearchColumn;
+
+        return $this;
+    }
+
+    /**
+     * Get filter search column.
+     *
      * @return string
      */
     public function getFilterSearchColumn()
     {
         return $this->filterSearchColumn;
-    }
-
-    /**
-     * @param string $filterSearchColumn
-     */
-    public function setFilterSearchColumn($filterSearchColumn)
-    {
-        $this->filterSearchColumn = $filterSearchColumn;
     }
 }

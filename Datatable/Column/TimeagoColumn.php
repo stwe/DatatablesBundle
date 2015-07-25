@@ -79,6 +79,7 @@ class TimeagoColumn extends AbstractColumn
             'filter_type' => 'text',
             'filter_options' => [],
             'filter_property' => '',
+            'filter_search_column' => ''
         ));
 
         $resolver->setAllowedTypes('class', 'string');
@@ -95,9 +96,9 @@ class TimeagoColumn extends AbstractColumn
         $resolver->setAllowedTypes('filter_type', 'string');
         $resolver->setAllowedTypes('filter_options', 'array');
         $resolver->setAllowedTypes('filter_property', 'string');
+        $resolver->setAllowedTypes('filter_search_column', 'string');
 
         $resolver->setAllowedValues('search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
-
         $resolver->setAllowedValues('filter_type', array('text', 'select'));
 
         return $this;
