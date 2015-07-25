@@ -72,27 +72,27 @@
 
 # Options
 
-| Option                        | Type   | Default                                    |
-|-------------------------------|--------|--------------------------------------------|
-| display_start                 | int    | 0                                          |
-| defer_loading                 | int    | -1                                         |
-| dom                           | string | 'lfrtip'                                   |
-| length_menu                   | array  | array(10, 25, 50, 100)                     |
-| order_classes                 | bool   | true                                       |
-| order                         | array  | array('column' => 0, 'direction' => 'asc') |
-| order_multi                   | bool   | true                                       |
-| page_length                   | int    | 10                                         |
-| paging_type                   | string | Style::FULL_NUMBERS_PAGINATION             |
-| renderer                      | string | ''                                         |
-| scroll_collapse               | bool   | false                                      |
-| search_delay                  | int    | 0                                          |
-| state_duration                | int    | 7200                                       |
-| stripe_classes                | array  | array()                                    |
-| responsive                    | bool   | false                                      |
-| class                         | string | Style::BASE_STYLE                          |
-| individual_filtering          | bool   | false                                      |
-| individual_filtering_position | string | 'foot'                                     |
-| use_integration_options       | bool   | false                                      |
+| Option                        | Type   | Default                        |
+|-------------------------------|--------|--------------------------------|
+| display_start                 | int    | 0                              |
+| defer_loading                 | int    | -1                             |
+| dom                           | string | 'lfrtip'                       |
+| length_menu                   | array  | array(10, 25, 50, 100)         |
+| order_classes                 | bool   | true                           |
+| order                         | array  | array(array(0, 'asc'))         |
+| order_multi                   | bool   | true                           |
+| page_length                   | int    | 10                             |
+| paging_type                   | string | Style::FULL_NUMBERS_PAGINATION |
+| renderer                      | string | ''                             |
+| scroll_collapse               | bool   | false                          |
+| search_delay                  | int    | 0                              |
+| state_duration                | int    | 7200                           |
+| stripe_classes                | array  | array()                        |
+| responsive                    | bool   | false                          |
+| class                         | string | Style::BASE_STYLE              |
+| individual_filtering          | bool   | false                          |
+| individual_filtering_position | string | 'foot'                         |
+| use_integration_options       | bool   | false                          |
 
 # Ajax options
 
