@@ -10,16 +10,14 @@ sg_datatables:
     site:
         title: 'SgDatatablesBundle'
         base_layout: 'SgDatatablesBundle:Crud:layout.html.twig'
-        home_route: ~   # example: homepage
         login_route: ~  # example: fos_user_security_login
         logout_route: ~ # example: fos_user_security_logout
     query:
         search_on_non_visible_columns: false
+    global_prefix: admin
     # example
     #routes:
     #    post: post_datatable
     #fields:
     #    - { route: post, edit: [title, content, visible], new: [title, content, visible], show: [id, title, content, visible] }
-    #roles:
-    #    - { route: post, index: ROLE_ADMIN, edit: ROLE_ADMIN, new: ROLE_ADMIN, show: ROLE_USER, delete: ROLE_ADMIN }
 ```

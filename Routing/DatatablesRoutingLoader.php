@@ -36,6 +36,11 @@ class DatatablesRoutingLoader extends Loader
     private $routes;
 
     /**
+     * @var string
+     */
+    private $globalPrefix;
+
+    /**
      * @var array
      */
     private $options;
@@ -45,11 +50,6 @@ class DatatablesRoutingLoader extends Loader
      */
     private $fields;
 
-    /**
-     * @var array
-     */
-    private $roles;
-
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -57,17 +57,17 @@ class DatatablesRoutingLoader extends Loader
     /**
      * Ctor.
      *
-     * @param array $options
-     * @param array $fields
-     * @param array $roles
+     * @param string $globalPrefix
+     * @param array  $options
+     * @param array  $fields
      */
-    public function __construct(array $options, array $fields, array $roles)
+    public function __construct($globalPrefix, array $options, array $fields)
     {
         $this->loaded = false;
         $this->routes = new RouteCollection();
+        $this->globalPrefix = $globalPrefix;
         $this->options = $options;
         $this->fields = $fields;
-        $this->roles = $roles;
     }
 
     //-------------------------------------------------
@@ -85,7 +85,7 @@ class DatatablesRoutingLoader extends Loader
                 DatatablesRoutingLoader::PREF . $alias . '_index',
                 new Route(
                     '/' . $alias . '/',
-                    array('_controller' => 'SgDatatablesBundle:Crud:index', 'alias' => $alias, 'datatable' => $datatable, 'roles' => $this->roles),
+                    array('_controller' => 'SgDatatablesBundle:Crud:index', 'alias' => $alias, 'datatable' => $datatable),
                     array(),
                     array('expose' => true),
                     '',
@@ -97,7 +97,7 @@ class DatatablesRoutingLoader extends Loader
                 DatatablesRoutingLoader::PREF . $alias . '_results',
                 new Route(
                     '/' . $alias . '/results',
-                    array('_controller' => 'SgDatatablesBundle:Crud:indexResults', 'alias' => $alias, 'datatable' => $datatable, 'roles' => $this->roles),
+                    array('_controller' => 'SgDatatablesBundle:Crud:indexResults', 'alias' => $alias, 'datatable' => $datatable),
                     array(),
                     array(),
                     '',
@@ -111,7 +111,7 @@ class DatatablesRoutingLoader extends Loader
                 DatatablesRoutingLoader::PREF . $alias . '_create',
                 new Route(
                     '/' . $alias . '/',
-                    array('_controller' => 'SgDatatablesBundle:Crud:create', 'alias' => $alias, 'datatable' => $datatable, 'fields' => $this->fields, 'roles' => $this->roles),
+                    array('_controller' => 'SgDatatablesBundle:Crud:create', 'alias' => $alias, 'datatable' => $datatable, 'fields' => $this->fields),
                     array(),
                     array(),
                     '',
@@ -123,7 +123,7 @@ class DatatablesRoutingLoader extends Loader
                 DatatablesRoutingLoader::PREF . $alias . '_new',
                 new Route(
                     '/' . $alias . '/new',
-                    array('_controller' => 'SgDatatablesBundle:Crud:new', 'alias' => $alias, 'datatable' => $datatable, 'fields' => $this->fields, 'roles' => $this->roles),
+                    array('_controller' => 'SgDatatablesBundle:Crud:new', 'alias' => $alias, 'datatable' => $datatable, 'fields' => $this->fields),
                     array(),
                     array('expose' => true),
                     '',
@@ -136,7 +136,7 @@ class DatatablesRoutingLoader extends Loader
             $this->routes->add(
                 DatatablesRoutingLoader::PREF . $alias . '_show',
                 new Route('/' . $alias . '/{id}',
-                    array('_controller' => 'SgDatatablesBundle:Crud:show', 'alias' => $alias, 'datatable' => $datatable, 'fields' => $this->fields, 'roles' => $this->roles),
+                    array('_controller' => 'SgDatatablesBundle:Crud:show', 'alias' => $alias, 'datatable' => $datatable, 'fields' => $this->fields),
                     array('id' => '\d+'),
                     array('expose' => true),
                     '',
@@ -150,7 +150,7 @@ class DatatablesRoutingLoader extends Loader
                 DatatablesRoutingLoader::PREF . $alias . '_edit',
                 new Route(
                     '/' . $alias . '/{id}/edit',
-                    array('_controller' => 'SgDatatablesBundle:Crud:edit', 'alias' => $alias, 'datatable' => $datatable, 'fields' => $this->fields, 'roles' => $this->roles),
+                    array('_controller' => 'SgDatatablesBundle:Crud:edit', 'alias' => $alias, 'datatable' => $datatable, 'fields' => $this->fields),
                     array('id' => '\d+'),
                     array('expose' => true),
                     '',
@@ -162,7 +162,7 @@ class DatatablesRoutingLoader extends Loader
                 DatatablesRoutingLoader::PREF . $alias . '_update',
                 new Route(
                     '/' . $alias . '/{id}',
-                    array('_controller' => 'SgDatatablesBundle:Crud:update', 'alias' => $alias, 'datatable' => $datatable, 'fields' => $this->fields, 'roles' => $this->roles),
+                    array('_controller' => 'SgDatatablesBundle:Crud:update', 'alias' => $alias, 'datatable' => $datatable, 'fields' => $this->fields),
                     array('id' => '\d+'),
                     array(),
                     '',
@@ -176,7 +176,7 @@ class DatatablesRoutingLoader extends Loader
                 DatatablesRoutingLoader::PREF . $alias . '_delete',
                 new Route(
                     '/' . $alias . '/{id}',
-                    array('_controller' => 'SgDatatablesBundle:Crud:delete', 'alias' => $alias, 'datatable' => $datatable, 'roles' => $this->roles),
+                    array('_controller' => 'SgDatatablesBundle:Crud:delete', 'alias' => $alias, 'datatable' => $datatable),
                     array('id' => '\d+'),
                     array(),
                     '',
@@ -185,6 +185,22 @@ class DatatablesRoutingLoader extends Loader
                 )
             );
         }
+    }
+
+    private function generateHomeRoute()
+    {
+        $this->routes->add(
+            DatatablesRoutingLoader::PREF . 'home',
+            new Route(
+                '/',
+                array('_controller' => 'SgDatatablesBundle:Crud:home'),
+                array(),
+                array(),
+                '',
+                array(),
+                array('GET')
+            )
+        );
     }
 
     //-------------------------------------------------
@@ -201,6 +217,8 @@ class DatatablesRoutingLoader extends Loader
         }
 
         $this->generatesRoutes();
+        $this->generateHomeRoute();
+        $this->routes->addPrefix($this->globalPrefix);
 
         return $this->routes;
     }

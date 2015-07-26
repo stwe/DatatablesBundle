@@ -104,6 +104,6 @@ Include the jQuery, DataTables, Moment and FOSJsRoutingBundle javascript/css fil
 
 - [Reference configuration](./configuration.md)
 
-## Using the SgDatatablesBundle routing loader (new and unstable)
+## Creating an Admin Section (new, unstable and experimental)
 
-- [Example](./crud.md)
+- [Example](./admin.md)

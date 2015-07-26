@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\MappingException;
 use Exception;
 
 /**
@@ -79,48 +81,42 @@ class CrudController extends Controller
     {
         $request = $this->container->get('request');
         $fields = $request->get('fields');
+        $alias = $this->getAlias();
 
-        $array = $this->searchSubArray($fields, 'route', $this->getAlias());
+        $array = $this->searchSubArray($fields, 'route', $alias);
 
         if (null === $array) {
-            throw new Exception('getFields(): Config error.');
+            throw new Exception('getFields(): No fields configured for ' . $alias);
         }
 
         if (false === array_key_exists($action, $array)) {
-            throw new Exception('getFields(): Config error.');
+            throw new Exception('getFields(): No fields configured for ' . $action);
         }
 
         return $array[$action];
     }
 
     /**
-     * Get role.
+     * Get metadata.
      *
-     * @param string $action
+     * @param string $entity
      *
-     * @return mixed
+     * @return ClassMetadata
      * @throws Exception
      */
-    private function getRole($action)
+    private function getMetadata($entity)
     {
-        $request = $this->container->get('request');
-        $roles = $request->get('roles');
-
-        $array = $this->searchSubArray($roles, 'route', $this->getAlias());
-
-        if (null === $array) {
-            throw new Exception('getRole(): Config error.');
+        try {
+            $metadata = $this->getDoctrine()->getManager()->getMetadataFactory()->getMetadataFor($entity);
+        } catch (MappingException $e) {
+            throw new Exception('getMetadata(): Given ' . $entity . ' is not a Doctrine Entity.');
         }
 
-        if (false === array_key_exists($action, $array)) {
-            throw new Exception('getRole(): Config error.');
-        }
-
-        return $array[$action];
+        return $metadata;
     }
 
     /**
-     * Get entity.
+     * Get new entity instance.
      *
      * @return object
      * @throws Exception
@@ -128,11 +124,9 @@ class CrudController extends Controller
     private function getNewEntity()
     {
         $datatable = $this->getDatatable();
-        $entityName = $datatable->getEntity();
+        $entity = $this->getMetadata($datatable->getEntity())->getName();
 
-        $metadata = $this->getDoctrine()->getManager()->getClassMetadata($entityName);
-        $className = $metadata->getName();
-        return new $className;
+        return new $entity;
     }
 
     /**
@@ -158,14 +152,22 @@ class CrudController extends Controller
     //-------------------------------------------------
 
     /**
+     * Homepage.
+     *
+     * @return Response
+     */
+    public function homeAction()
+    {
+        return $this->render('SgDatatablesBundle:Crud:home.html.twig');
+    }
+
+    /**
      * Lists all entities.
      *
      * @return Response
      */
     public function indexAction()
     {
-        $this->denyAccessUnlessGranted($this->getRole('index'), null, 'Unable to access this page!');
-
         $datatable = $this->getDatatable();
 
         return $this->render(
@@ -183,10 +185,7 @@ class CrudController extends Controller
      */
     public function indexResultsAction()
     {
-        $this->denyAccessUnlessGranted($this->getRole('index'), null, 'Unable to access this page!');
-
         $datatable = $this->getDatatable();
-
         $datatable = $this->container->get('sg_datatables.query')->getQueryFrom($datatable);
 
         return $datatable->getResponse();
@@ -201,8 +200,6 @@ class CrudController extends Controller
      */
     public function createAction(Request $request)
     {
-        $this->denyAccessUnlessGranted($this->getRole('new'), null, 'Unable to access this page!');
-
         $entity = $this->getNewEntity();
         $alias = $this->getAlias();
         $fields = $this->getFields('new');
@@ -259,8 +256,6 @@ class CrudController extends Controller
      */
     public function newAction()
     {
-        $this->denyAccessUnlessGranted($this->getRole('new'), null, 'Unable to access this page!');
-
         $entity = $this->getNewEntity();
         $alias = $this->getAlias();
         $fields = $this->getFields('new');
@@ -286,8 +281,6 @@ class CrudController extends Controller
      */
     public function showAction($id)
     {
-        $this->denyAccessUnlessGranted($this->getRole('show'), null, 'Unable to access this page!');
-
         $datatable = $this->getDatatable();
         $alias = $this->getAlias();
 
@@ -320,8 +313,6 @@ class CrudController extends Controller
      */
     public function editAction($id)
     {
-        $this->denyAccessUnlessGranted($this->getRole('edit'), null, 'Unable to access this page!');
-
         $datatable = $this->getDatatable();
 
         $em = $this->getDoctrine()->getManager();
@@ -378,8 +369,6 @@ class CrudController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $this->denyAccessUnlessGranted($this->getRole('edit'), null, 'Unable to access this page!');
-
         $datatable = $this->getDatatable();
         $alias = $this->getAlias();
 
@@ -419,8 +408,6 @@ class CrudController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        $this->denyAccessUnlessGranted($this->getRole('delete'), null, 'Unable to access this page!');
-
         $alias = $this->getAlias();
 
         $form = $this->createDeleteForm($id, $alias);
