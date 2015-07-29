@@ -70,6 +70,13 @@ class Options
      * @var string
      */
     private $dom;
+    
+    /**
+     * Define the table control elements to appear on the page and in what order with datatable extension.
+     *
+     * @var string
+     */
+    private $sdom;
 
     /**
      * Change the options in the page length select list.
@@ -147,7 +154,12 @@ class Options
      * @var boolean
      */
     private $responsive;
-
+    /**
+     * Enable the TableTools extension for DataTables.
+     *
+     * @var boolean
+     */
+    private $tabletools;
 
     //-------------------------------------------------
     // Ctor.
@@ -160,6 +172,7 @@ class Options
     {
         $this->displayStart = 0;
         $this->dom = "lfrtip";
+        $this->sDom = "lfrtip";
         $this->lengthMenu = array(10, 25, 50, 100);
         $this->orderClasses = true;
         $this->order = array("column" => 0, "direction" => "asc");
@@ -171,6 +184,8 @@ class Options
         $this->stateDuration = 7200;
         $this->stripeClasses = array();
         $this->responsive = false;
+        $this->tabletools = false;
+        
     }
 
 
@@ -226,6 +241,30 @@ class Options
         return $this->dom;
     }
 
+    /**
+     * Set sdom.
+     *
+     * @param string $sdom
+     *
+     * @return $this
+     */
+    public function setSdom($sdom)
+    {
+        $this->sdom = $sdom;
+
+        return $this;
+    }
+
+    /**
+     * Get sdom.
+     *
+     * @return string
+     */
+    public function getSdom()
+    {
+        return $this->sdom;
+    }
+    
     /**
      * Set LengthMenu.
      *
@@ -493,5 +532,29 @@ class Options
     public function getResponsive()
     {
         return (boolean) $this->responsive;
+    }
+    
+    /**
+     * Set tabletools.
+     *
+     * @param boolean $tabletools
+     *
+     * @return $this
+     */
+    public function setTabletools($tabletools)
+    {
+        $this->tabletools = (boolean) $tabletools;
+
+        return $this;
+    }
+
+    /**
+     * Get tabletools.
+     *
+     * @return boolean
+     */
+    public function getTabletools()
+    {
+        return (boolean) $this->tabletools;
     }
 }

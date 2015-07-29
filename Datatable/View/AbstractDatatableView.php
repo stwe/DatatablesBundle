@@ -187,6 +187,10 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @var boolean
      */
     protected $detailsChildRows;
+    /* 
+     * @var boolean
+     */
+    protected $useSDom;
 
 
     //-------------------------------------------------
@@ -224,6 +228,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->templates = $defaultLayoutOptions["templates"];
         $this->useIntegrationOptions = false;
         $this->detailsChildRows = false;
+        $this->useSDom=false;
     }
 
 
@@ -262,6 +267,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $options["view_use_integration_options"] = $this->useIntegrationOptions;
         
         $options["view_details_child_rows"] = $this->detailsChildRows;
+        $options["view_use_sdom"] = $this->useSDom;
 
         switch($type) {
             case 'html':
@@ -610,12 +616,35 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         return $this;
     }
     /**
-     * Get detailsChildRows
+     * Get DetailsChildRows
      *
      * @return boolean
      */
     public function getDetailsChildRows()
     {
         return (boolean) $this->detailsChildRows;
+    }
+    
+    /**
+     * Set useSDom
+     *
+     * @param boolean $useSDom
+     *
+     * @return $this
+     */
+    public function setUseSDom($useSDom)
+    {
+        $this->useSDom = (boolean) $useSDom;
+
+        return $this;
+    }
+    /**
+     * Get useSDom
+     *
+     * @return boolean
+     */
+    public function getUseSDom()
+    {
+        return (boolean) $this->useSDom;
     }
 }

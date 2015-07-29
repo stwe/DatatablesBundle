@@ -93,13 +93,10 @@ class DatatableDataManager
         if ("GET" === strtoupper($type)) {
             $this->parameterBag = $this->request->query;
         }
-
         if ("POST" === strtoupper($type)) {
             $this->parameterBag = $this->request->request;
         }
-
         $params = $this->parameterBag->all();
-
         /**
          * @var \Doctrine\ORM\Mapping\ClassMetadata $metadata
          */

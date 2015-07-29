@@ -12,11 +12,14 @@ datatables: # the bundle name
         infoPostFix: ""
         search: "Buscar"
         sSearch: "<span class='input-group-addon'><i class='glyphicon glyphicon-search'></i></span>"
-        
         first: "Primero"
+        sFirst: "Primero"
         previous: "Anterior"
+        sPrevious: "Anterior"
         next: "Siguiente"
+        sNext: "Siguiente"
         last: "Último"
+        sLast: "Último"
         all: "Todos"
     bulk:
         confirmMsg: "¿Está seguro?"

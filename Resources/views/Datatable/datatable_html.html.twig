@@ -1,24 +1,37 @@
 <table cellpadding="0" cellspacing="0" class="{{ view_style }}" border="0" id="{{ view_table_id }}" width="100%">
        
    <thead>
+    
+    
    </thead>
-    {% if view_individual_filtering %}
-    <tfoot>  
-            {% for column in view_columns %}
-                <th>
-                    {% if column.searchable %}
-                        <input type="text" class="individual_filtering" placeholder="{{column.title}}" />
-                    {% else %}
-                        <input type="hidden" />
-                    {% endif %}
-                </th>
-            {% endfor %}
-    </tfoot>
-    {% endif %}
-  
 
-
-    <tbody>
+   <tbody>
     </tbody>
 
+    <tfoot>
+    {% if view_individual_filtering %}
+        <tr>  
+            {% for column in view_columns %}
+                
+                    
+                    {% if column.searchable %}
+                        {% if column.getAlias()!='datetime' %}
+                        <th class="hasinput">
+                        <input type="text" class="individual_filtering form-control" placeholder="{{column.title}}" />
+                        {% else %}
+                        <th class="hasinput icon-addon">
+                        <input id="{{column.name}}" type="text" placeholder="{{column.title}}" class="individual_filtering form-control datepicker" data-dateformat="yy-mm-dd">
+                        <label for="{{column.name}}" class="glyphicon glyphicon-calendar no-margin padding-top-15" rel="tooltip" title="{{column.title}}" data-original-title="{{column.title}}"></label>
+                        {% endif %}
+                        </th>
+                    {% else %}
+                        <th class="hasinput">
+                        <input type="hidden" />
+                        </th>
+                    {% endif %}
+                
+            {% endfor %}
+        </tr>
+    {% endif %}
+    </tfoot>
 </table>

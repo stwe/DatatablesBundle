@@ -1,4 +1,4 @@
-function format (d) {
+                function format (d) {
                  {#{% for column in view_columns %}
                             {% if column.getAlias()=='rowdetail' or column.getAlias()=='arrayrowdetail' %}
                                 {%if column.getAlias()=='arrayrowdetail'%}
@@ -32,6 +32,7 @@ function format (d) {
                                         }
                                 
                                 {%elseif column.getAlias()=='arrayrowdetail'%}
+                                    
                                     function perfom_{{column.arraydatafield|replace({'.':'_'})}}(a){
                                        var ahtml="<ul>";
                                         a.forEach(function (e,i,a){

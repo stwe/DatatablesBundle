@@ -4,7 +4,15 @@
     $(document).ready(function () {
 
         var selector = "#{{view_table_id}}";
-
+        
+        var responsiveHelper_dt_basic = undefined;
+	var responsiveHelper_datatable_fixed_column = undefined;
+	var responsiveHelper_datatable_col_reorder = undefined;
+	var responsiveHelper_datatable_tabletools = undefined;
+        var breakpointDefinition = {
+                tablet : 1024,
+                phone : 480
+        };
         var defaults = {
             {% include "SgDatatablesBundle:Datatable:language.html.twig" %}
         };
