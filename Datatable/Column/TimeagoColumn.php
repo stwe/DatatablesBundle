@@ -31,7 +31,7 @@ class TimeagoColumn extends AbstractColumn
     public function setData($data)
     {
         if (empty($data) || !is_string($data)) {
-            throw new InvalidArgumentException("setData(): Expecting non-empty string.");
+            throw new InvalidArgumentException('setData(): Expecting non-empty string.');
         }
 
         $this->data = $data;
@@ -42,44 +42,9 @@ class TimeagoColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(array(
-            "class" => "",
-            "classicon" => "",
-            "padding" => "",
-            "name" => "",
-            "orderable" => true,
-            "render" => "render_timeago",
-            "searchable" => true,
-            "title" => "",
-            "type" => "",
-            "visible" => true,
-            "width" => ""
-        ));
-
-        $resolver->setAllowedTypes(array(
-            "class" => "string",
-            "padding" => "string",
-            "name" => "string",
-            "orderable" => "bool",
-            "render" => array("string"),
-            "searchable" => "bool",
-            "title" => "string",
-            "type" => "string",
-            "visible" => "bool",
-            "width" => "string"
-        ));
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getTemplate()
     {
-        return "SgDatatablesBundle:Column:timeago.html.twig";
+        return 'SgDatatablesBundle:Column:timeago.html.twig';
     }
 
     /**
@@ -87,6 +52,56 @@ class TimeagoColumn extends AbstractColumn
      */
     public function getAlias()
     {
-        return "timeago";
+        return 'timeago';
+    }
+
+    //-------------------------------------------------
+    // OptionsInterface
+    //-------------------------------------------------
+
+/**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'class' => '',
+            'classicon' => '',
+            'padding' => '',
+            'name' => '',
+            'orderable' => true,
+            'render' => 'render_timeago',
+            'searchable' => true,
+            'title' => '',
+            'type' => '',
+            'visible' => true,
+            'width' => '',
+            'search_type' => 'like',
+            'filter_type' => 'text',
+            'filter_options' => [],
+            'filter_property' => '',
+            'filter_search_column' => ''
+        ));
+
+        $resolver->setAllowedTypes('class', 'string');
+        $resolver->setAllowedTypes('padding', 'string');
+        $resolver->setAllowedTypes('name', 'string');
+        $resolver->setAllowedTypes('title', 'string');
+        $resolver->setAllowedTypes('type', 'string');
+        $resolver->setAllowedTypes('visible', 'bool');
+        $resolver->setAllowedTypes('width', 'string');
+        $resolver->setAllowedTypes('render', "string");
+        $resolver->setAllowedTypes('orderable', 'bool');
+        $resolver->setAllowedTypes('searchable', 'bool');
+        $resolver->setAllowedTypes('search_type', 'string');
+        $resolver->setAllowedTypes('filter_type', 'string');
+        $resolver->setAllowedTypes('filter_options', 'array');
+        $resolver->setAllowedTypes('filter_property', 'string');
+        $resolver->setAllowedTypes('filter_search_column', 'string');
+
+        $resolver->setAllowedValues('search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
+        $resolver->setAllowedValues('filter_type', array('text', 'select'));
+
+        return $this;
     }
 }

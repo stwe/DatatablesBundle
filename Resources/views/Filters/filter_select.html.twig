@@ -1,0 +1,10 @@
+<select
+        class="individual_filtering{% if column.class %} {{ column.class }}{% endif %}"
+        style="{% if column.width %} width:{{ column.width }};{% endif %}"
+        {% if column.name %}name="{{ column.name }}"{% endif %}
+        data-filter-property-id="{{ filterColumnId }}"
+        >
+       {% for key,name in column.filterOptions %}
+            <option value="{{ key }}" {% if key == column.filterSearchColumn %}selected{% endif %}>{{ name }}</option>
+       {% endfor %}
+</select>

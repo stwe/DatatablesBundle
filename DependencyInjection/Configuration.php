@@ -11,6 +11,7 @@
 
 namespace Sg\DatatablesBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -29,28 +30,117 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('sg_datatables');
 
+        $this->addDatatableSection($rootNode);
+        $this->addSiteSection($rootNode);
+        $this->addQuerySection($rootNode);
+        $this->addRoutesSection($rootNode);
+
+        return $treeBuilder;
+    }
+
+    /**
+     * Add datatable section.
+     *
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addDatatableSection(ArrayNodeDefinition $rootNode)
+    {
         $rootNode
             ->children()
-                ->arrayNode('default_layout')->addDefaultsIfNotSet()
+                ->arrayNode('datatable')->addDefaultsIfNotSet()
                     ->children()
-                        ->integerNode('page_length')
-                            ->defaultValue(10)
-                            ->min(1)
-                        ->end()
-                        ->booleanNode('server_side')->defaultTrue()->end()
-                        ->booleanNode('processing')->defaultTrue()->end()
-                        ->booleanNode('individual_filtering')->defaultFalse()->end()
                         ->arrayNode('templates')->addDefaultsIfNotSet()
-                        ->children()
-                            ->scalarNode('base')->defaultValue('SgDatatablesBundle:Datatable:datatable.html.twig')->end()
-                            ->scalarNode('html')->defaultValue('SgDatatablesBundle:Datatable:datatable_html.html.twig')->end()
-                            ->scalarNode('js')->defaultValue('SgDatatablesBundle:Datatable:datatable_js.html.twig')->end()
-                            ->scalarNode('jsns')->defaultValue('SgDatatablesBundle:Datatable:datatable_jsns.html.twig')->end()
+                            ->children()
+                                ->scalarNode('base')->defaultValue('SgDatatablesBundle:Datatable:datatable.html.twig')->end()
+                                ->scalarNode('html')->defaultValue('SgDatatablesBundle:Datatable:datatable_html.html.twig')->end()
+                                ->scalarNode('js')->defaultValue('SgDatatablesBundle:Datatable:datatable_js.html.twig')->end()
+                                ->scalarNode('jsns')->defaultValue('SgDatatablesBundle:Datatable:datatable_jsns.html.twig')->end()
+                            ->end()
                         ->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
+    }
 
-        return $treeBuilder;
+    /**
+     * Add site section.
+     *
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addSiteSection(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('site')->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('title')->defaultValue('SgDatatablesBundle')->end()
+                        ->scalarNode('base_layout')->defaultValue('SgDatatablesBundle:Crud:layout.html.twig')->end()
+                        ->scalarNode('login_route')->defaultNull()->end()
+                        ->scalarNode('logout_route')->defaultNull()->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * Add query section.
+     *
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addQuerySection(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('query')->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('search_on_non_visible_columns')
+                            ->defaultFalse()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * Add routes section.
+     *
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addRoutesSection(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->scalarNode('global_prefix')->defaultValue('admin')->end()
+                ->arrayNode('routes')
+                    ->requiresAtLeastOneElement()
+                    ->prototype('scalar')->end()
+                ->end()
+                ->arrayNode('fields')
+                    ->requiresAtLeastOneElement()
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('route')
+                                ->isRequired()
+                            ->end()
+                            ->arrayNode('show')
+                                ->requiresAtLeastOneElement()
+                                ->prototype('scalar')->end()
+                            ->end()
+                            ->arrayNode('new')
+                                ->requiresAtLeastOneElement()
+                                ->prototype('scalar')->end()
+                            ->end()
+                            ->arrayNode('edit')
+                                ->requiresAtLeastOneElement()
+                                ->prototype('scalar')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
     }
 }

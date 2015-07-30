@@ -1,5 +1,6 @@
 <script type="text/javascript">
-     {% if view_details_child_rows %}
+    
+    {% if view_details_child_rows %}
         {% include "SgDatatablesBundle:Datatable:detailsfunction.html.twig" %}
      {% endif %}	
     $(document).ready(function () {
@@ -23,8 +24,16 @@
             {% include "SgDatatablesBundle:Datatable:options.html.twig" %}
         };
 
+        var callbacks = {
+            {% include "SgDatatablesBundle:Datatable:callbacks.html.twig" %}
+        };
+
         var ajax = {
             {% include "SgDatatablesBundle:Datatable:ajax.html.twig" %}
+        };
+
+        var searchCols = {
+            {% include "SgDatatablesBundle:Datatable:search_columns.html.twig" %}
         };
 
         setTimeout(function() {
@@ -34,8 +43,10 @@
 
             $.extend(defaults, features);
             $.extend(defaults, options);
+            $.extend(defaults, callbacks);
             $.extend(defaults, ajax);
             $.extend(defaults, columns);
+            $.extend(defaults, searchCols);
 
             if ( $.fn.dataTable.isDataTable( selector ) ) {
                 {#
@@ -45,13 +56,42 @@
                 var oTable = $(selector).DataTable(defaults);
             }
 
-            {% if view_individual_filtering %}
-                $("thead input.individual_filtering").on("keyup change", function() {
+            {% if view_options.individualFiltering %}
+
+                {% if "head" == view_options.individualFilteringPosition %}
+                    $(selector + '_wrapper tfoot tr').insertAfter($(selector + '_wrapper thead tr').first());
+                {% endif %}
+
+                {% if "both" == view_options.individualFilteringPosition %}
+                    $(selector + '_wrapper tfoot tr').clone().insertAfter($(selector + '_wrapper thead tr').first());
+                {% endif %}
+
+                var daterange = $('input[name="daterange"]');
+                try {
+                    $(daterange).daterangepicker();
+                } catch (e) {
+                    console.log(e.message);
+                }
+
+                {# "foot" position -> datatable_html.html.twig #}
+
+                $(selector + "_wrapper").find("tr input.individual_filtering").on("keyup change", function() {
                     oTable
                         .column( $(this).parent().index()+':visible' )
                         .search( this.value )
                         .draw();
                 });
+
+                $("select.individual_filtering").on("keyup change", function(event) {
+                    var searchFieldId = $(event.currentTarget).data('filter-property-id');
+                    var searchValue = $(this).val();
+                    searchValue = searchValue ? searchValue.toString() : '';
+                    oTable
+                        .column(searchFieldId)
+                        .search(searchValue)
+                        .draw();
+                });
+
             {% endif %}
 
             {% if view_multiselect %}

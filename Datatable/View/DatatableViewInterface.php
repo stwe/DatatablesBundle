@@ -11,6 +11,13 @@
 
 namespace Sg\DatatablesBundle\Datatable\View;
 
+use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
+
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use Twig_Error;
+
 /**
  * Interface DatatableViewInterface
  *
@@ -20,8 +27,16 @@ interface DatatableViewInterface
 {
     /**
      * Builds the datatable view.
+     *
+     * @deprecated Deprecated since v0.7.1, to be removed in v0.8.
+     *             Use {@link buildDatatable()} instead.
      */
     public function buildDatatableView();
+
+    /**
+     * Builds the datatable.
+     */
+    public function buildDatatable();
 
     /**
      * Renders the datatable view.
@@ -29,24 +44,10 @@ interface DatatableViewInterface
      * @param string $type
      *
      * @return mixed
+     * @throws Exception
+     * @throws Twig_Error
      */
-    public function renderDatatableView($type = 'all');
-
-    /**
-     * Returns Entity.
-     *
-     * @return string
-     */
-    public function getEntity();
-
-    /**
-     * Set Ajax.
-     *
-     * @param Ajax $ajax
-     *
-     * @return $this
-     */
-    public function setAjax(Ajax $ajax);
+    public function render($type = "all");
 
     /**
      * Get Ajax.
@@ -56,12 +57,18 @@ interface DatatableViewInterface
     public function getAjax();
 
     /**
-     * Returns the name of this datatable view.
-     * Is used as jQuery datatable id selector.
+     * Get ColumnBuilder.
      *
-     * @return string
+     * @return ColumnBuilder
      */
-    public function getName();
+    public function getColumnBuilder();
+
+    /**
+     * Get Options.
+     *
+     * @return Options
+     */
+    public function getOptions();
 
     /**
      * Returns a callable that could transform the data line
@@ -69,4 +76,33 @@ interface DatatableViewInterface
      * @return callable
      */
     public function getLineFormatter();
+
+    /**
+     * Get entity manager.
+     *
+     * @return EntityManagerInterface
+     */
+    public function getEntityManager();
+
+    /**
+     * Get custom qb.
+     *
+     * @return QueryBuilder
+     */
+    public function getQb();
+
+    /**
+     * Returns Entity.
+     *
+     * @return string
+     */
+    public function getEntity();
+
+    /**
+     * Returns the name of this datatable view.
+     * Is used as jQuery datatable id selector.
+     *
+     * @return string
+     */
+    public function getName();
 }

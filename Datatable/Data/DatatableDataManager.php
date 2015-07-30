@@ -13,10 +13,9 @@ namespace Sg\DatatablesBundle\Datatable\Data;
 
 use Sg\DatatablesBundle\Datatable\View\DatatableViewInterface;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * Class DatatableDataManager
@@ -26,14 +25,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class DatatableDataManager
 {
     /**
-     * The doctrine service.
-     *
-     * @var RegistryInterface
-     */
-    private $doctrine;
-
-    /**
-     * The request service.
+     * The request.
      *
      * @var Request
      */
@@ -47,12 +39,11 @@ class DatatableDataManager
     private $serializer;
 
     /**
-     * Holds request parameters.
+     * Configuration settings.
      *
-     * @var ParameterBag
+     * @var array
      */
-    private $parameterBag;
-
+    private $configs;
 
     //-------------------------------------------------
     // Ctor.
@@ -61,57 +52,44 @@ class DatatableDataManager
     /**
      * Ctor.
      *
-     * @param RegistryInterface $doctrine   The doctrine service
-     * @param Request           $request    The request service
-     * @param Serializer        $serializer The serializer service
+     * @param RequestStack $requestStack
+     * @param Serializer   $serializer
+     * @param array        $configs
      */
-    public function __construct(RegistryInterface $doctrine, Request $request, Serializer $serializer)
+    public function __construct(RequestStack $requestStack, Serializer $serializer, array $configs)
     {
-        $this->doctrine = $doctrine;
-        $this->request = $request;
+        $this->request = $requestStack->getCurrentRequest();
         $this->serializer = $serializer;
-        $this->parameterBag = null;
+        $this->configs = $configs;
     }
-
 
     //-------------------------------------------------
     // Public
     //-------------------------------------------------
 
     /**
-     * Get Datatable.
+     * Get query.
      *
      * @param DatatableViewInterface $datatableView
      *
-     * @return DatatableData
+     * @return DatatableQuery
      */
-    public function getDatatable(DatatableViewInterface $datatableView)
+    public function getQueryFrom(DatatableViewInterface $datatableView)
     {
         $type = $datatableView->getAjax()->getType();
-        $entity = $datatableView->getEntity();
+        $parameterBag = null;
 
-        if ("GET" === strtoupper($type)) {
-            $this->parameterBag = $this->request->query;
+        if ('GET' === strtoupper($type)) {
+            $parameterBag = $this->request->query;
         }
-        if ("POST" === strtoupper($type)) {
-            $this->parameterBag = $this->request->request;
+
+        if ('POST' === strtoupper($type)) {
+            $parameterBag = $this->request->request;
         }
-        $params = $this->parameterBag->all();
-        /**
-         * @var \Doctrine\ORM\Mapping\ClassMetadata $metadata
-         */
-        $metadata = $this->doctrine->getManager()->getClassMetadata($entity);
 
-        /**
-         * @var \Doctrine\ORM\EntityManager $em
-         */
-        $em = $this->doctrine->getManager();
+        $params = $parameterBag->all();
+        $query = new DatatableQuery($this->serializer, $params, $datatableView, $this->configs);
 
-        $datatableQuery = new DatatableQuery($params, $metadata, $em);
-        $virtualColumns = $datatableView->getColumnBuilder()->getVirtualColumnNames();
-        $datatableData = new DatatableData($params, $metadata, $em, $this->serializer, $datatableQuery, $virtualColumns);
-        $datatableData->setLineFormatter($datatableView->getLineFormatter());
-
-        return $datatableData;
+        return $query;
     }
 }

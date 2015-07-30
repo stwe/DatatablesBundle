@@ -11,6 +11,10 @@
 
 namespace Sg\DatatablesBundle\Datatable\View;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\DependencyInjection\Container;
+use Exception;
+
 /**
  * Class Features
  *
@@ -19,25 +23,39 @@ namespace Sg\DatatablesBundle\Datatable\View;
 class Features
 {
     /**
+     * Features container.
+     *
+     * @var array
+     */
+    protected $features;
+
+    /**
+     * An OptionsResolver instance.
+     *
+     * @var OptionsResolver
+     */
+    protected $resolver;
+
+    /**
      * Feature control DataTables smart column width handling.
      *
      * @var boolean
      */
-    private $autoWidth;
+    protected $autoWidth;
 
     /**
      * Feature control deferred rendering for additional speed of initialisation.
      *
      * @var boolean
      */
-    private $deferRender;
+    protected $deferRender;
 
     /**
      * Feature control table information display field.
      *
      * @var boolean
      */
-    private $info;
+    protected $info;
 
     /**
      * Use markup and classes for the table to be themed by jQuery UI ThemeRoller.
@@ -45,78 +63,77 @@ class Features
      * @var boolean
      * @deprecated in DataTables 1.10 will be removed in 1.11
      */
-    private $jQueryUI;
+    protected $jQueryUi;
 
     /**
      * Feature control the end user's ability to change the paging display length of the table.
      *
      * @var boolean
      */
-    private $lengthChange;
+    protected $lengthChange;
 
     /**
      * Feature control ordering (sorting) abilities in DataTables.
      *
      * @var boolean
      */
-    private $ordering;
+    protected $ordering;
 
     /**
      * Enable or disable table pagination.
      *
      * @var boolean
      */
-    private $paging;
+    protected $paging;
 
     /**
      * Feature control the processing indicator.
      *
      * @var boolean
      */
-    private $processing;
+    protected $processing;
 
     /**
      * Horizontal scrolling.
      *
      * @var boolean
      */
-    private $scrollX;
+    protected $scrollX;
 
     /**
      * Vertical scrolling.
      *
      * @var string
      */
-    private $scrollY;
+    protected $scrollY;
 
     /**
      * Feature control search (filtering) abilities.
      *
      * @var boolean
      */
-    private $searching;
+    protected $searching;
 
     /**
      * Feature control DataTables server-side processing mode.
      *
      * @var boolean
      */
-    private $serverSide;
+    protected $serverSide;
 
     /**
      * State saving - restore table state on page reload.
      *
      * @var boolean
      */
-    private $stateSave;
+    protected $stateSave;
 
     /**
      * Delay time to render.
      *
      * @var integer
      */
-    private $delay;
-
+    protected $delay;
 
     //-------------------------------------------------
     // Ctor.
@@ -127,22 +144,99 @@ class Features
      */
     public function __construct()
     {
-        $this->autoWidth = true;
-        $this->deferRender = false;
-        $this->info = true;
-        $this->jQueryUI = false;
-        $this->lengthChange = true;
-        $this->ordering = true;
-        $this->paging = true;
-        $this->processing = false;
-        $this->scrollX = false;
-        $this->scrollY = "";
-        $this->searching = true;
-        $this->serverSide = false;
-        $this->stateSave = false;
-        $this->delay = 0;
+        $this->features = array();
+        $this->resolver = new OptionsResolver();
+        $this->configureOptions($this->resolver);
+        $this->setFeatures($this->features);
     }
 
+    //-------------------------------------------------
+    // Setup Features
+    //-------------------------------------------------
+
+    /**
+     * Set features.
+     *
+     * @param array $features
+     *
+     * @return $this
+     */
+    public function setFeatures(array $features)
+    {
+        $this->features = $this->resolver->resolve($features);
+        $this->callingSettersWithOptions($this->features);
+
+        return $this;
+    }
+
+    /**
+     * Configure Options.
+     *
+     * @param OptionsResolver $resolver
+     *
+     * @return $this
+     */
+    private function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'auto_width' => true,
+            'defer_render' => false,
+            'info' => true,
+            'jquery_ui' => false,
+            'length_change' => true,
+            'ordering' => true,
+            'paging' => true,
+            'processing' => true,
+            'scroll_x' => false,
+            'scroll_y' => '',
+            'searching' => true,
+            'server_side' => true,
+            'state_save' => false,
+            'delay' => 0
+        ));
+
+        $resolver->setAllowedTypes('auto_width', 'bool');
+        $resolver->setAllowedTypes('defer_render', 'bool');
+        $resolver->setAllowedTypes('info', 'bool');
+        $resolver->setAllowedTypes('jquery_ui', 'bool');
+        $resolver->setAllowedTypes('length_change', 'bool');
+        $resolver->setAllowedTypes('ordering', 'bool');
+        $resolver->setAllowedTypes('paging', 'bool');
+        $resolver->setAllowedTypes('processing', 'bool');
+        $resolver->setAllowedTypes('scroll_x', 'bool');
+        $resolver->setAllowedTypes('scroll_y', 'string');
+        $resolver->setAllowedTypes('searching', 'bool');
+        $resolver->setAllowedTypes('server_side', 'bool');
+        $resolver->setAllowedTypes('state_save', 'bool');
+        $resolver->setAllowedTypes('delay', 'int');
+
+        return $this;
+    }
+
+    /**
+     * Calling setters with options.
+     *
+     * @param array $options
+     *
+     * @return $this
+     * @throws Exception
+     */
+    private function callingSettersWithOptions(array $options)
+    {
+        $methods = get_class_methods($this);
+
+        foreach ($options as $key => $value) {
+            $key = Container::camelize($key);
+            $method = 'set' . ucfirst($key);
+            if (in_array($method, $methods)) {
+                $this->$method($value);
+            } else {
+                throw new Exception('callingSettersWithOptions(): ' . $method . ' invalid method name');
+            }
+        }
+
+        return $this;
+    }
 
     //-------------------------------------------------
     // Getters && Setters
@@ -155,7 +249,7 @@ class Features
      *
      * @return $this
      */
-    public function setAutoWidth($autoWidth)
+    protected function setAutoWidth($autoWidth)
     {
         $this->autoWidth = (boolean) $autoWidth;
 
@@ -179,7 +273,7 @@ class Features
      *
      * @return $this
      */
-    public function setDeferRender($deferRender)
+    protected function setDeferRender($deferRender)
     {
         $this->deferRender = (boolean) $deferRender;
 
@@ -203,7 +297,7 @@ class Features
      *
      * @return $this
      */
-    public function setInfo($info)
+    protected function setInfo($info)
     {
         $this->info = (boolean) $info;
 
@@ -221,27 +315,29 @@ class Features
     }
 
     /**
-     * Set JQueryUI.
+     * Set JqueryUi.
      *
-     * @param boolean $jQueryUI
+     * @param boolean $jQueryUi
      *
      * @return $this
+     * @deprecated
      */
-    public function setJQueryUI($jQueryUI)
+    protected function setJqueryUi($jQueryUi)
     {
-        $this->jQueryUI = (boolean) $jQueryUI;
+        $this->jQueryUi = (boolean) $jQueryUi;
 
         return $this;
     }
 
     /**
-     * Get JQueryUI.
+     * Get JqueryUi.
      *
      * @return boolean
+     * @deprecated
      */
-    public function getJQueryUI()
+    public function getJqueryUi()
     {
-        return (boolean) $this->jQueryUI;
+        return (boolean) $this->jQueryUi;
     }
 
     /**
@@ -251,7 +347,7 @@ class Features
      *
      * @return $this
      */
-    public function setLengthChange($lengthChange)
+    protected function setLengthChange($lengthChange)
     {
         $this->lengthChange = (boolean) $lengthChange;
 
@@ -275,7 +371,7 @@ class Features
      *
      * @return $this
      */
-    public function setOrdering($ordering)
+    protected function setOrdering($ordering)
     {
         $this->ordering = (boolean) $ordering;
 
@@ -299,7 +395,7 @@ class Features
      *
      * @return $this
      */
-    public function setPaging($paging)
+    protected function setPaging($paging)
     {
         $this->paging = (boolean) $paging;
 
@@ -323,7 +419,7 @@ class Features
      *
      * @return $this
      */
-    public function setProcessing($processing)
+    protected function setProcessing($processing)
     {
         $this->processing = (boolean) $processing;
 
@@ -347,7 +443,7 @@ class Features
      *
      * @return $this
      */
-    public function setScrollX($scrollX)
+    protected function setScrollX($scrollX)
     {
         $this->scrollX = (boolean) $scrollX;
 
@@ -371,7 +467,7 @@ class Features
      *
      * @return $this
      */
-    public function setScrollY($scrollY)
+    protected function setScrollY($scrollY)
     {
         $this->scrollY = $scrollY;
 
@@ -395,7 +491,7 @@ class Features
      *
      * @return $this
      */
-    public function setSearching($searching)
+    protected function setSearching($searching)
     {
         $this->searching = (boolean) $searching;
 
@@ -419,7 +515,7 @@ class Features
      *
      * @return $this
      */
-    public function setServerSide($serverSide)
+    protected function setServerSide($serverSide)
     {
         $this->serverSide = (boolean) $serverSide;
 
@@ -443,7 +539,7 @@ class Features
      *
      * @return $this
      */
-    public function setStateSave($stateSave)
+    protected function setStateSave($stateSave)
     {
         $this->stateSave = (boolean) $stateSave;
 
@@ -467,7 +563,7 @@ class Features
      *
      * @return $this
      */
-    public function setDelay($delay)
+    protected function setDelay($delay)
     {
         $this->delay = $delay;
 

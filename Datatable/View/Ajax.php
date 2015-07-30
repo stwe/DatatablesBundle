@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\View;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\DependencyInjection\Container;
 use Exception;
 
 /**
@@ -21,19 +23,32 @@ use Exception;
 class Ajax
 {
     /**
+     * Options container.
+     *
+     * @var array
+     */
+    protected $options;
+
+    /**
+     * An OptionsResolver instance.
+     *
+     * @var OptionsResolver
+     */
+    protected $resolver;
+
+    /**
      * URL set as the Ajax data source for the table.
      *
      * @var string
      */
-    private $url;
+    protected $url;
 
     /**
      * Send request as POST or GET.
      *
      * @var string
      */
-    private $type;
-
+    protected $type;
 
     //-------------------------------------------------
     // Ctor.
@@ -44,10 +59,77 @@ class Ajax
      */
     public function __construct()
     {
-        $this->url = "";
-        $this->type = "GET";
+        $this->options = array();
+        $this->resolver = new OptionsResolver();
+        $this->configureOptions($this->resolver);
+        $this->setOptions($this->options);
     }
 
+    //-------------------------------------------------
+    // Setup Ajax
+    //-------------------------------------------------
+
+    /**
+     * Set options.
+     *
+     * @param array $options
+     *
+     * @return $this
+     */
+    public function setOptions(array $options)
+    {
+        $this->options = $this->resolver->resolve($options);
+        $this->callingSettersWithOptions($this->options);
+
+        return $this;
+    }
+
+    /**
+     * Configure Options.
+     *
+     * @param OptionsResolver $resolver
+     *
+     * @return $this
+     */
+    private function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'url' => '',
+            'type' => 'GET'
+        ));
+
+        $resolver->setAllowedTypes('url', 'string');
+        $resolver->setAllowedTypes('type', 'string');
+
+        $resolver->setAllowedValues('type', array('GET', 'POST', 'get', 'post'));
+
+        return $this;
+    }
+
+    /**
+     * Calling setters with options.
+     *
+     * @param array $options
+     *
+     * @return $this
+     * @throws Exception
+     */
+    private function callingSettersWithOptions(array $options)
+    {
+        $methods = get_class_methods($this);
+
+        foreach ($options as $key => $value) {
+            $key = Container::camelize($key);
+            $method = 'set' . ucfirst($key);
+            if (in_array($method, $methods)) {
+                $this->$method($value);
+            } else {
+                throw new Exception('callingSettersWithOptions(): ' . $method . ' invalid method name');
+            }
+        }
+
+        return $this;
+    }
 
     //-------------------------------------------------
     // Getters && Setters
@@ -60,7 +142,7 @@ class Ajax
      *
      * @return $this
      */
-    public function setUrl($url)
+    protected function setUrl($url)
     {
         $this->url = $url;
 
@@ -82,16 +164,11 @@ class Ajax
      *
      * @param string $type
      *
-     * @throws Exception
      * @return $this
      */
-    public function setType($type)
+    protected function setType($type)
     {
-        if ("GET" === strtoupper($type) || "POST" === strtoupper($type)) {
-            $this->type = $type;
-        } else {
-            throw new Exception("The type {$type} is not supported.");
-        }
+        $this->type = $type;
 
         return $this;
     }

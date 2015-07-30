@@ -20,7 +20,7 @@ use Exception;
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-abstract class AbstractColumn implements ColumnInterface
+abstract class AbstractColumn implements ColumnInterface, OptionsInterface
 {
     /**
      * Column options.
@@ -131,6 +131,7 @@ abstract class AbstractColumn implements ColumnInterface
      * @var boolean
      */
     protected $visible;
+
     /**
      * Enable or disable the display of this column on row detail.
      * Option: visibleonrow
@@ -146,6 +147,46 @@ abstract class AbstractColumn implements ColumnInterface
      */
     protected $width;
 
+    /**
+     * The search type (e.g. "like").
+     * Option: search_type
+     *
+     * @var string
+     */
+    protected $searchType;
+
+    /**
+     * The filter type name ("text" or "select).
+     * Option: filter_type
+     *
+     * @var string
+     */
+    protected $filterType;
+
+    /**
+     * Options for "select" filter type (e.g. "1" => "Yes", "0" => "No").
+     * Option: filter_options
+     *
+     * @var array
+     */
+    protected $filterOptions;
+
+    /**
+     * Filter property: Column name, on which the filter is applied,
+     * based on options for this column.
+     * Option: filter_property
+     *
+     * @var string
+     */
+    protected $filterProperty;
+
+    /**
+     * Implementation of the searchCol config property of jquery datatable.
+     * Option: filter_search_column
+     *
+     * @var string
+     */
+    protected $filterSearchColumn;
 
     //-------------------------------------------------
     // Ctor.
@@ -158,7 +199,6 @@ abstract class AbstractColumn implements ColumnInterface
     {
         $this->options = array();
     }
-
 
     //-------------------------------------------------
     // ColumnInterface
@@ -174,6 +214,10 @@ abstract class AbstractColumn implements ColumnInterface
         return $this;
     }
 
+    //-------------------------------------------------
+    // OptionsInterface
+    //-------------------------------------------------
+
     /**
      * {@inheritdoc}
      */
@@ -183,11 +227,11 @@ abstract class AbstractColumn implements ColumnInterface
 
         foreach ($options as $key => $value) {
             $key = Container::camelize($key);
-            $method = "set" . ucfirst($key);
+            $method = 'set' . ucfirst($key);
             if (in_array($method, $methods)) {
                 $this->$method($value);
             } else {
-                throw new \Exception("setOptions(): {$method} invalid method name");
+                throw new \Exception('setOptions(): ' . $method . ' invalid method name');
             }
         }
 
@@ -208,7 +252,6 @@ abstract class AbstractColumn implements ColumnInterface
 
         return $this;
     }
-
 
     //-------------------------------------------------
     // Getters && Setters
@@ -499,29 +542,7 @@ abstract class AbstractColumn implements ColumnInterface
     {
         return $this->visible;
     }
-    /**
-     * Set visibleonrow.
-     *
-     * @param boolean $visibleonrow
-     *
-     * @return $this
-     */
-    public function setVisibleonrow($visibleonrow)
-    {
-        $this->visibleonrow = (boolean) $visibleonrow;
 
-        return $this;
-    }
-
-    /**
-     * Get visibleonrow.
-     *
-     * @return boolean
-     */
-    public function getVisibleonrow()
-    {
-        return $this->visibleonrow;
-    }
     /**
      * Set width.
      *
@@ -544,5 +565,148 @@ abstract class AbstractColumn implements ColumnInterface
     public function getWidth()
     {
         return $this->width;
+    }
+
+    /**
+     * Set search type.
+     *
+     * @param string $searchType
+     *
+     * @return $this
+     */
+    public function setSearchType($searchType)
+    {
+        $this->searchType = $searchType;
+
+        return $this;
+    }
+
+    /**
+     * Get search type.
+     *
+     * @return string
+     */
+    public function getSearchType()
+    {
+        return $this->searchType;
+    }
+
+    /**
+     * Set filter type.
+     *
+     * @param string $filterType
+     *
+     * @return $this
+     */
+    public function setFilterType($filterType)
+    {
+        $this->filterType = $filterType;
+
+        return $this;
+}
+
+    /**
+     * Get filter type.
+     *
+     * @return string
+     */
+    public function getFilterType()
+    {
+        return $this->filterType;
+    }
+
+    /**
+     * Set filter options.
+     *
+     * @param array $filterOptions
+     *
+     * @return $this
+     */
+    public function setFilterOptions(array $filterOptions)
+    {
+        $this->filterOptions = $filterOptions;
+
+        return $this;
+    }
+
+    /**
+     * Get filter options.
+     *
+     * @return array
+     */
+    public function getFilterOptions()
+    {
+        return $this->filterOptions;
+    }
+
+    /**
+     * Set filter property.
+     *
+     * @param string $filterProperty
+     *
+     * @return $this
+     */
+    public function setFilterProperty($filterProperty)
+    {
+        $this->filterProperty = $filterProperty;
+
+        return $this;
+    }
+
+    /**
+     * Get filter property.
+     *
+     * @return string
+     */
+    public function getFilterProperty()
+    {
+        return $this->filterProperty;
+    }
+
+    /**
+     * Set filter search column.
+     *
+     * @param string $filterSearchColumn
+     *
+     * @return $this
+     */
+    public function setFilterSearchColumn($filterSearchColumn)
+    {
+        $this->filterSearchColumn = $filterSearchColumn;
+
+        return $this;
+    }
+
+    /**
+     * Get filter search column.
+     *
+     * @return string
+     */
+    public function getFilterSearchColumn()
+    {
+        return $this->filterSearchColumn;
+    }
+    /**
+     * Set visibleonrow.
+     *
+     * @param boolean $visibleonrow
+     *
+     * @return $this
+     */
+    public function setVisibleonrow($visibleonrow)
+    {
+        $this->visibleonrow = (boolean) $visibleonrow;
+
+        return $this;
+    }
+
+    /**
+     * Get visibleonrow.
+     *
+     * @return boolean
+     */
+    public function getVisibleonrow()
+    {
+        return $this->visibleonrow;
     }
 }

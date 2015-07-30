@@ -1,170 +1,280 @@
 # Examples
 
-## Server side example
+## 1. Server-Side example
 
 ### Step 1: Create your Datatables class
 
-There are two options: You write the class by hand (recommended) or use the command line (unstable).
+#### Use the command line
 
-The `datatable:generate:class` command generates a new datatable class.
+The `sg:datatable:generate` command generates a new datatable class.
 
-The command is run in a non interactive mode.
 ``` bash
-$ php app/console datatable:generate:class MyTestBundle:Entity
+$ php app/console sg:datatable:generate AppBundle:Entity
 ```
 
 A description of all available options of the generator is located [here](./generator.md).
 
-The generator is currently in an early development stage. Better you write the class by hand. Then it should look something like this:
+#### Create the class itself
 
 ```php
 <?php
 
-namespace Sg\BlogBundle\Datatables;
+namespace AppBundle\Datatables;
 
 use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
+use Sg\DatatablesBundle\Datatable\View\Style;
 
 /**
  * Class PostDatatable
  *
- * @package Sg\BlogBundle\Datatables
+ * @package AppBundle\Datatables
  */
 class PostDatatable extends AbstractDatatableView
 {
     /**
      * {@inheritdoc}
      */
-    public function buildDatatableView()
+    public function getLineFormatter()
     {
-        //-------------------------------------------------
-        // Datatable
-        //-------------------------------------------------
+        $formatter = function($line) {
+            $repository = $this->em->getRepository($this->getEntity());
+            $entity = $repository->find($line['id']);
 
-        // Features (defaults)
-        $this->getFeatures()
-            ->setAutoWidth(true)
-            ->setDeferRender(false)
-            ->setInfo(true)
-            ->setJQueryUI(false)
-            ->setLengthChange(true)
-            ->setOrdering(true)
-            ->setPaging(true)
-            ->setProcessing(true)  // default: false
-            ->setScrollX(true)     // default: false
-            ->setScrollY("")
-            ->setSearching(true)
-            ->setServerSide(true)  // default: false
-            ->setStateSave(false)
-            ->setDelay(500);       // default: 0
+            // see if a User is logged in
+            if ($this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
+                $user = $this->securityToken->getToken()->getUser();
+                // is the given User the author of this Post?
+                $line['owner'] = $entity->isAuthor($user); // render 'true' or 'false'
+            } else {
+                // render a twig template with login link
+                $line['owner'] = $this->twig->render(':post:login_link.html.twig', array(
+                    'entity' => $repository->find($line['id'])
+                ));
+            }
 
-        // Options (for more options see file: Sg\DatatablesBundle\Datatable\View\Options.php)
-        //$this->getOptions()->setLengthMenu(array(10, 25, 50));
-        $this->getOptions()
-            ->setLengthMenu(array(10, 25, 50, 100, -1))
-            ->setOrder(array("column" => 1, "direction" => "desc"))
-            ->setPagingType("simple_numbers");
-            //->setResponsive(true); // enable Responsive extension
+            return $line;
+        };
 
-        $this->getAjax()->setUrl($this->getRouter()->generate("post_results"));
+        return $formatter;
+    }
 
-        $this->setStyle(self::BOOTSTRAP_3_STYLE);
+    /**
+     * {@inheritdoc}
+     */
+    public function buildDatatable()
+    {
+        /*
+        $this->callbacks->setCallbacks(array(
+            'draw_callback' => "function( settings ) {
+                                    alert( 'DataTables has redrawn the table' );
+                                }"
+        ));
+        */
 
-        $this->setIndividualFiltering(true);
+        $this->features->setFeatures(array(
+            'auto_width' => true,
+            'defer_render' => false,
+            'info' => true,
+            'jquery_ui' => false,
+            'length_change' => true,
+            'ordering' => true,
+            'paging' => true,
+            'processing' => true,
+            'scroll_x' => true,
+            'scroll_y' => '',
+            'searching' => true,
+            'server_side' => true,
+            'state_save' => false,
+            'delay' => 0
+        ));
 
+        $this->ajax->setOptions(array(
+            'url' => $this->router->generate('post_results'),
+            'type' => 'GET'
+        ));
 
-        //-------------------------------------------------
-        // Columns
-        //-------------------------------------------------
+        $this->options->setOptions(array(
+            'display_start' => 0,
+            'dom' => 'lfrtip', // default, but not used because 'use_integration_options' = true
+            'length_menu' => array(10, 25, 50, 100),
+            'order_classes' => true,
+            'order' => [[0, 'asc']],
+            'order_multi' => true,
+            'page_length' => 10,
+            'paging_type' => Style::FULL_NUMBERS_PAGINATION,
+            'renderer' => '', // default, but not used because 'use_integration_options' = true
+            'scroll_collapse' => false,
+            'search_delay' => 0,
+            'state_duration' => 7200,
+            'stripe_classes' => array(),
+            'responsive' => false,
+            'class' => Style::BOOTSTRAP_3_STYLE . ' table-condensed',
+            'individual_filtering' => true,
+            'individual_filtering_position' => 'both',
+            'use_integration_options' => true
+        ));
 
-        $this->getColumnBuilder()
-            ->add(null, "multiselect", array(
-                    "start_html" => '<div class="wrapper" id="testwrapper">',
-                    "end_html" => '</div>',
-                    "attributes" => array(
-                        "class" => "testclass",
-                        "name" => "testname",
-                    ),
-                    "actions" => array(
-                        array(
-                            "route" => "post_bulk_delete",
-                            "label" => "Delete",
-                            "role" => "ROLE_ADMIN"
+        $users = $this->em->getRepository('AppBundle:User')->findAll();
+
+        $this->columnBuilder
+            ->add(null, 'multiselect', array(
+                'start_html' => '<div class="wrapper" id="wrapper">',
+                'end_html' => '</div>',
+                'attributes' => array(
+                    'class' => 'testclass',
+                    'name' => 'testname',
+                ),
+                'actions' => array(
+                    array(
+                        'route' => 'post_bulk_delete',
+                        'label' => $this->translator->trans('dtbundle.post.actions.delete'),
+                        'role' => 'ROLE_ADMIN',
+                        'icon' => 'fa fa-times',
+                        'attributes' => array(
+                            'rel' => 'tooltip',
+                            'title' => $this->translator->trans('dtbundle.post.actions.delete'),
+                            'class' => 'btn btn-danger btn-xs',
+                            'role' => 'button'
                         ),
-                        array(
-                            "route" => "post_bulk_disable",
-                            "label" => "Disable"
-                        )
+                    ),
+                    array(
+                        'route' => 'post_bulk_invisible',
+                        'label' => $this->translator->trans('dtbundle.post.actions.invisible'),
+                        'icon' => 'fa fa-eye-slash',
+                        'attributes' => array(
+                            'rel' => 'tooltip',
+                            'title' => $this->translator->trans('dtbundle.post.actions.invisible'),
+                            'class' => 'btn btn-primary btn-xs',
+                            'role' => 'button'
+                        ),
                     )
-                ))
-            ->add("id", "column", array(
-                    "title" => "Post-id",
-                    "searchable" => true,
-                    "orderable" => true,
-                    "visible" => true,
-                    "class" => "active",
-                    "width" => "100px"
-                ))
-            ->add("createdBy.username", "column", array(
-                    "title" => "Created by"
-                ))
-            ->add("updatedBy.username", "column", array(
-                    "title" => "Updated by"
-                ))
-            ->add("title", "column", array(
-                    "title" => $this->getTranslator()->trans("test.title", array(), "msg")
-                ))
-            ->add("visible", "boolean", array(
-                    "title" => "Visible",
-                    "true_label" => "yes",
-                    "false_label" => "no",
-                    "true_icon" => "glyphicon glyphicon-ok",
-                    "false_icon" => "glyphicon glyphicon-remove"
-                ))
-            ->add("createdAt", /*choose timeago or datetime*/ "datetime", array(
-                    "title" => "Created at"
-                ))
-            ->add("tags.name", "array", array(
-                    "title" => "Tags",
-                    "data" => "tags[, ].name"
-                ))
-            ->add(null, "action", array(
-                "title" => "Actions",
-                "start_html" => '<div class="wrapper">',
-                "end_html" => '</div>',
-                "actions" => array(
+                )
+            ))
+            ->add('id', 'column', array(
+                'class' => '',
+                'padding' => '',
+                'name' => '',
+                'orderable' => true,
+                'render' => null,
+                'searchable' => true,
+                'title' => 'Id',
+                'type' => '',
+                'visible' => true,
+                'width' => '40px',
+                'default' => ''
+            ))
+            ->add('visible', 'boolean', array(
+                'class' => '',
+                'padding' => '',
+                'name' => '',
+                'orderable' => true,
+                'render' => 'render_boolean',
+                'searchable' => true,
+                'title' => $this->translator->trans('dtbundle.post.titles.visible'),
+                'type' => '',
+                'visible' => true,
+                'width' => '50px',
+                'true_icon' => 'glyphicon glyphicon-ok',
+                'false_icon' => '',
+                'true_label' => 'yes',
+                'false_label' => 'no',
+                'search_type' => 'eq',
+                'filter_type' => 'select',
+                'filter_options' => ['' => $this->translator->trans('dtbundle.post.filter.any'), '1' => $this->translator->trans('dtbundle.post.filter.yes'), '0' => $this->translator->trans('dtbundle.post.filter.no')],
+            ))
+            ->add('publishedAt', 'datetime', array(
+                'class' => '',
+                'padding' => '',
+                'name' => 'daterange',
+                'orderable' => true,
+                'render' => 'render_datetime',
+                'date_format' => 'lll',
+                'searchable' => true,
+                'title' => "<span class='glyphicon glyphicon-calendar' aria-hidden='true'></span> " . $this->translator->trans('dtbundle.post.titles.published'),
+                'type' => '',
+                'visible' => true,
+                'width' => '120px'
+            ))
+            ->add('title', 'column', array(
+                'title' => "<span class='glyphicon glyphicon-book' aria-hidden='true'></span> " . $this->translator->trans('dtbundle.post.titles.title'),
+                'width' => '120px',
+            ))
+            ->add('authorEmail', 'column', array(
+                'class' => '',
+                'padding' => '',
+                'name' => '',
+                'orderable' => true,
+                'render' => null,
+                'searchable' => true,
+                'title' => "<span class='glyphicon glyphicon-user' aria-hidden='true'></span> " . $this->translator->trans('dtbundle.post.titles.email'),
+                'type' => '',
+                'visible' => true,
+                'width' => '',
+                'default' => '',
+                'filter_type' => 'select',
+                'filter_options' => ['' => $this->translator->trans('dtbundle.post.filter.any')] + $this->getCollectionAsOptionsArray($users, 'email', 'username'),
+                'filter_property' => 'authorEmail',
+            ))
+            // Virtual column example
+            ->add('owner', 'virtual', array(
+                'title' => $this->translator->trans('dtbundle.post.titles.owner')
+            ))
+            // Association examples
+            ->add('comments.title', 'array', array(
+                'title' => $this->translator->trans('dtbundle.post.titles.comments'),
+                'searchable' => true,
+                'orderable' => true,
+                'data' => 'comments[, ].title',
+            ))
+            ->add('comments.createdby.username', 'array', array(
+                'title' => 'Created by',
+                'searchable' => true,
+                'orderable' => true,
+                'data' => 'comments[, ].createdby.username',
+            ))
+            ->add('comments.updatedby.username', 'array', array(
+                'title' => 'Updated by',
+                'searchable' => true,
+                'orderable' => true,
+                'data' => 'comments[, ].updatedby.username',
+            ))
+            ->add(null, 'action', array(
+                'title' => $this->translator->trans('dtbundle.post.titles.actions'),
+                'start_html' => '<div class="wrapper">',
+                'end_html' => '</div>',
+                'actions' => array(
                     array(
-                        "route" => "post_edit",
-                        "route_parameters" => array(
-                            "id" => "id"
+                        'route' => 'post_show',
+                        'route_parameters' => array(
+                            'id' => 'id'
                         ),
-                        "icon" => "glyphicon glyphicon-edit",
-                        "attributes" => array(
-                            "rel" => "tooltip",
-                            "title" => "Edit",
-                            "class" => "btn btn-primary btn-xs",
-                            "role" => "button"
+                        'label' => $this->translator->trans('dtbundle.post.actions.show'),
+                        'icon' => 'glyphicon glyphicon-eye-open',
+                        'attributes' => array(
+                            'rel' => 'tooltip',
+                            'title' => $this->translator->trans('dtbundle.post.actions.edit'),
+                            'class' => 'btn btn-default btn-xs',
+                            'role' => 'button'
                         ),
-                        "confirm" => true,
-                        "confirm_message" => "Are you sure?",
-                        "role" => "ROLE_ADMIN",
-                        "renderif" => array(
-                            "visible"
-                        )
+                        'role' => 'ROLE_USER',
+                        'render_if' => array('visible')
                     ),
                     array(
-                        "route" => "post_show",
-                        "route_parameters" => array(
-                            "id" => "id"
+                        'route' => 'post_edit',
+                        'route_parameters' => array(
+                            'id' => 'id'
                         ),
-                        "label" => "Show",
-                        "attributes" => array(
-                            "rel" => "tooltip",
-                            "title" => "Show",
-                            "class" => "btn btn-default btn-xs",
-                            "role" => "button"
+                        'label' => $this->translator->trans('dtbundle.post.actions.edit'),
+                        'icon' => 'glyphicon glyphicon-edit',
+                        'attributes' => array(
+                            'rel' => 'tooltip',
+                            'title' => $this->translator->trans('dtbundle.post.actions.edit'),
+                            'class' => 'btn btn-primary btn-xs',
+                            'role' => 'button'
                         ),
-                        //"role" => "ROLE_USER",
-                        //"renderif" => array("visible")
+                        'confirm' => true,
+                        'confirm_message' => 'Are you sure?',
+                        'role' => 'ROLE_ADMIN',
                     )
                 )
             ));
@@ -175,7 +285,7 @@ class PostDatatable extends AbstractDatatableView
      */
     public function getEntity()
     {
-        return "SgBlogBundle:Post";
+        return 'AppBundle\Entity\Post';
     }
 
     /**
@@ -183,7 +293,7 @@ class PostDatatable extends AbstractDatatableView
      */
     public function getName()
     {
-        return "post_datatable";
+        return 'post_datatable';
     }
 }
 ```
@@ -192,9 +302,9 @@ class PostDatatable extends AbstractDatatableView
 
 #### Render entire datatable
 ```html
-{% extends 'SgBlogBundle::layout.html.twig' %}
+{% extends '::base.html.twig' %}
 
-{% block content_content %}
+{% block body %}
     {{ datatable_render(datatable) }}
 {% endblock %}
 ```
@@ -202,48 +312,45 @@ class PostDatatable extends AbstractDatatableView
 #### Decouple html and js
 
 ```html
-{% extends 'SgBlogBundle::layout.html.twig' %}
+{% extends '::base.html.twig' %}
 
-{% block content_content %}
+{% block body %}
     {{ datatable_render_html(datatable) }}
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     {{ datatable_render_js(datatable) }}
-{% endblock %} 
-
+{% endblock %}
 ```
 
 ### Step 3: Registering your Datatables class as a Service
 
 ```yaml
-services:
-
-    sg_datatables.post:
-        class: Sg\BlogBundle\Datatables\PostDatatable
-        tags:
-            - { name: sg.datatable.view }
+app.datatable.post:
+    class: AppBundle\Datatables\PostDatatable
+    tags:
+        - { name: sg.datatable.view }
 ```
 
 ### Step 4: Add controller actions
 
 ```php
 /**
- * Post datatable.
+ * Server side Post datatable.
  *
  * @Route("/", name="post")
  * @Method("GET")
- * @Template()
+ * @Template(":post:index.html.twig")
  *
  * @return array
  */
 public function indexAction()
 {
-    $postDatatable = $this->get("sg_datatables.post");
-    $postDatatable->buildDatatableView();
+    $datatable = $this->get('app.datatable.post');
+    $datatable->buildDatatable();
 
     return array(
-        "datatable" => $postDatatable,
+        'datatable' => $datatable,
     );
 }
 
@@ -256,39 +363,53 @@ public function indexAction()
  */
 public function indexResultsAction()
 {
-    /**
-     * @var \Sg\DatatablesBundle\Datatable\Data\DatatableData $datatable
-     */
-    $datatable = $this->get("sg_datatables.datatable")->getDatatable($this->get("sg_datatables.post"));
+    $datatable = $this->get('app.datatable.post');
+    $datatable->buildDatatable();
+
+    $query = $this->get('sg_datatables.query')->getQueryFrom($datatable);
 
     // Callback example
     $function = function($qb)
     {
-        $qb->andWhere("Post.visible = true");
+        $qb->andWhere("post.visible = true");
     };
 
-    // Add callback
-    $datatable->addWhereBuilderCallback($function);
+    // Add the callback function as WhereResult
+    //$query->addWhereResult($function);
 
-    return $datatable->getResponse();
+    // Or add the callback function as WhereAll
+    //$query->addWhereAll($function);
+
+    // Or to the actual query
+    //$query->buildQuery();
+    //$qb = $query->getQuery();
+    //$qb->andWhere("post.visible = true");
+    //$query->setQuery($qb);
+    //return $query->getResponse(false);
+
+    return $query->getResponse();
 }
 
 /**
+ * Delete action.
+ *
+ * @param Request $request
+ *
  * @Route("/bulk/delete", name="post_bulk_delete")
  * @Method("POST")
+ * @Security("has_role('ROLE_ADMIN')")
  *
  * @return Response
  */
-public function bulkDeleteAction()
+public function bulkDeleteAction(Request $request)
 {
-    $request = $this->getRequest();
     $isAjax = $request->isXmlHttpRequest();
 
     if ($isAjax) {
         $choices = $request->request->get("data");
 
         $em = $this->getDoctrine()->getManager();
-        $repository = $em->getRepository("SgBlogBundle:Post");
+        $repository = $em->getRepository("AppBundle:Post");
 
         foreach ($choices as $choice) {
             $entity = $repository->find($choice["value"]);
@@ -297,28 +418,31 @@ public function bulkDeleteAction()
 
         $em->flush();
 
-        return new Response("This is ajax response.");
+        return new Response("Success", 200);
     }
 
-    return new Response("This is not ajax.", 400);
+    return new Response("Bad Request", 400);
 }
 
 /**
- * @Route("/bulk/disable", name="post_bulk_disable")
+ * Invisible action.
+ *
+ * @param Request $request
+ *
+ * @Route("/bulk/invisible", name="post_bulk_invisible")
  * @Method("POST")
  *
  * @return Response
  */
-public function bulkDisableAction()
+public function bulkInvisibleAction(Request $request)
 {
-    $request = $this->getRequest();
     $isAjax = $request->isXmlHttpRequest();
 
     if ($isAjax) {
         $choices = $request->request->get("data");
 
         $em = $this->getDoctrine()->getManager();
-        $repository = $em->getRepository("SgBlogBundle:Post");
+        $repository = $em->getRepository("AppBundle:Post");
 
         foreach ($choices as $choice) {
             $entity = $repository->find($choice["value"]);
@@ -328,14 +452,14 @@ public function bulkDisableAction()
 
         $em->flush();
 
-        return new Response("This is ajax response.");
+        return new Response("Success", 200);
     }
 
-    return new Response("This is not ajax.", 400);
+    return new Response("Bad Request", 400);
 }
 ```
 
-## Non server side example
+## 2. Client-Side example
 
 The differences to the above description:
 
@@ -359,9 +483,34 @@ class PostDatatable extends AbstractDatatableView
     /**
      * {@inheritdoc}
      */
-    public function buildDatatableView()
+    public function buildDatatable()
     {
-        $this->getFeatures()->setServerSide(false);
+        $this->features->setFeatures(array(
+            'server_side' => false
+        ));
+
+        $this->columnBuilder
+            ->add('visible', 'boolean', array(
+                'class' => '',
+                'padding' => '',
+                'name' => '',
+                'orderable' => true,
+                'render' => 'render_boolean',
+                'searchable' => true,
+                'search_type' => 'eq',     // will use eq operator in search query (for example 'where visible = 1' etc.)
+                'filter_type' => 'select', // use select dropdown with options: any/yes/no options are automatically associated with 'boolean' columntype
+                'filter_options' => ['' => 'Any', 'yes' => 'Yes', 'no' => 'No'], // for client-side mode options keys should be equal to the values actually showed on the table
+                'title' => 'Visible',
+                'type' => '',
+                'visible' => true,
+                'width' => '',
+                'true_icon' => 'glyphicon glyphicon-ok',
+                'false_icon' => '',
+                'true_label' => 'yes',
+                'false_label' => 'no'
+            ))
+            // ...
+        ));
 
         // ...
     }
@@ -372,37 +521,40 @@ class PostDatatable extends AbstractDatatableView
 
 ```php
 /**
- * Post datatable.
+ * Client side Post datatable.
  *
- * @Route("/", name="post")
- * @Method("GET")
- * @Template()
+ * @Route('/cs', name='cs_post')
+ * @Method('GET')
+ * @Template(':post:index.html.twig')
  *
  * @return array
  */
-public function indexAction()
+public function clientSideIndexAction()
 {
-    $repository = $this->getDoctrine()->getRepository('SgBlogBundle:Post');
+    $repository = $this->getDoctrine()->getRepository('AppBundle:Post');
 
     $query = $repository->createQueryBuilder('p')
-        ->select('p, t, cb, ub')
-        ->join('p.tags', 't')
-        ->join('p.createdBy', 'cb')
-        ->join('p.updatedBy', 'ub')
+        ->select('p, c')
+        ->join('p.comments', 'c')
         ->getQuery();
 
     $results = $query->getArrayResult();
+
+    // the virtual field ...
+    foreach ($results as $key => $value) {
+        $results[$key]['owner'] = 'test';
+    }
 
     $encoders = array(new JsonEncoder());
     $normalizers = array(new GetSetMethodNormalizer());
     $serializer = new Serializer($normalizers, $encoders);
 
-    $postDatatable = $this->get('sg_datatables.post');
-    $postDatatable->buildDatatableView();
-    $postDatatable->setData($serializer->serialize($results, 'json'));
+    $datatable = $this->get('app.datatable.client_side.post');
+    $datatable->buildDatatable();
+    $datatable->setData($serializer->serialize($results, 'json'));
 
     return array(
-        'datatable' => $postDatatable,
+        'datatable' => $datatable,
     );
 }
 ```

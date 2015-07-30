@@ -48,7 +48,6 @@ class ColumnBuilder implements ColumnBuilderInterface
      */
     private $multiselect;
 
-
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -64,7 +63,6 @@ class ColumnBuilder implements ColumnBuilderInterface
         $this->multiselect = false;
     }
 
-
     //-------------------------------------------------
     // ColumnBuilderInterface
     //-------------------------------------------------
@@ -75,7 +73,7 @@ class ColumnBuilder implements ColumnBuilderInterface
     public function add($data, $name, array $options = array())
     {
         /**
-         * @var ColumnInterface $column
+         * @var AbstractColumn $column
          */
         $column = $this->columnFactory->createColumnByName($name);
         $column->setData($data);
@@ -84,14 +82,30 @@ class ColumnBuilder implements ColumnBuilderInterface
 
         $this->columns[] = $column;
 
-        if ("multiselect" === $column->getAlias()) {
+        if ($column instanceof MultiselectColumn) {
             if (false === $this->multiselect) {
                 $this->multiselect = true;
                 $this->multiselectColumn = $column;
             } else {
-                throw new Exception("There is only one multiselect column allowed.");
+                throw new Exception('add(): There is only one multiselect column allowed.');
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeByKey($key)
+    {
+        if (is_int($key) && array_key_exists($key, $this->columns)) {
+            unset($this->columns[$key]);
+        } else {
+            throw new Exception('removeColumnByKey(): The array key ' . $key . ' does not exist.');
+        }
+
+        $this->columns = array_values($this->columns);
 
         return $this;
     }
@@ -105,13 +119,9 @@ class ColumnBuilder implements ColumnBuilderInterface
     }
 
     /**
-     * Get all virtual column names.
-     *
-     * @deprecated
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function getVirtualColumnNames()
+    public function getVirtualColumns()
     {
         $virtualColumns = array();
 
@@ -123,7 +133,6 @@ class ColumnBuilder implements ColumnBuilderInterface
 
         return $virtualColumns;
     }
-
 
     //-------------------------------------------------
     // Getters && Setters

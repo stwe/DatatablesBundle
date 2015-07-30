@@ -11,10 +11,19 @@
 
 namespace Sg\DatatablesBundle\Datatable\Data;
 
-use Doctrine\ORM\EntityManager;
+use Sg\DatatablesBundle\Datatable\View\DatatableViewInterface;
+use Sg\DatatablesBundle\Datatable\Column\AbstractColumn;
+
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Serializer;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\MappingException;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use Exception;
 
 /**
  * Class DatatableQuery
@@ -24,60 +33,94 @@ use Doctrine\ORM\Query;
 class DatatableQuery
 {
     /**
+     * @var Serializer
+     */
+    private $serializer;
+
+    /**
      * @var array
      */
-    protected $requestParams;
+    private $requestParams;
+
+    /**
+     * @var DatatableViewInterface
+     */
+    private $datatableView;
+
+    /**
+     * @var string
+     */
+    private $entity;
+
+    /**
+     * @var boolean
+     */
+    private $individualFiltering;
 
     /**
      * @var EntityManager
      */
-    protected $em;
+    private $em;
 
     /**
      * @var string
      */
-    protected $tableName;
+    private $tableName;
 
     /**
-     * @var string
+     * @var mixed
      */
-    protected $entityName;
+    private $rootEntityIdentifier;
 
     /**
      * @var QueryBuilder
      */
-    protected $qb;
+    private $qb;
 
     /**
      * @var array
      */
-    protected $selectColumns;
+    private $selectColumns;
 
     /**
      * @var array
      */
-    protected $allColumns;
+    private $virtualColumns;
 
     /**
      * @var array
      */
-    protected $joins;
+    private $joins;
 
     /**
      * @var array
      */
-    protected $searchColumns;
+    private $searchColumns;
 
     /**
      * @var array
      */
-    protected $orderColumns;
+    private $orderColumns;
 
     /**
      * @var array
      */
-    protected $callbacks;
+    private $callbacks;
 
+    /**
+     * @var callable
+     */
+    private $lineFormatter;
+
+    /**
+     * @var AbstractColumn[]
+     */
+    private $columns;
+
+    /**
+     * @var array
+     */
+    private $configs;
 
     //-------------------------------------------------
     // Ctor.
@@ -86,176 +129,244 @@ class DatatableQuery
     /**
      * Ctor.
      *
-     * @param array         $requestParams All request params
-     * @param ClassMetadata $metadata      A ClassMetadata instance
-     * @param EntityManager $em            A EntityManager instance
+     * @param Serializer             $serializer
+     * @param array                  $requestParams
+     * @param DatatableViewInterface $datatableView
+     * @param array                  $configs
+     *
+     * @throws Exception
      */
-    public function __construct(array $requestParams, ClassMetadata $metadata, EntityManager $em)
+    public function __construct(Serializer $serializer, array $requestParams, DatatableViewInterface $datatableView, array $configs)
     {
+        $this->serializer = $serializer;
         $this->requestParams = $requestParams;
-        $this->em = $em;
-        $this->tableName = $metadata->getTableName();
-        $this->entityName = $metadata->getName();
+        $this->datatableView = $datatableView;
+
+        $this->individualFiltering = $this->datatableView->getOptions()->getIndividualFiltering();
+
+        $this->entity = $this->datatableView->getEntity();
+        $this->em = $this->datatableView->getEntityManager();
+        $metadata = $this->getMetadata($this->entity);
+        $this->tableName = $this->getTableName($metadata);
+        $this->rootEntityIdentifier = $this->getIdentifier($metadata);
         $this->qb = $this->em->createQueryBuilder();
+
         $this->selectColumns = array();
-        $this->allColumns = array();
+        $this->virtualColumns = $datatableView->getColumnBuilder()->getVirtualColumns();
         $this->joins = array();
         $this->searchColumns = array();
         $this->orderColumns = array();
-        $this->callbacks = array(
-            "WhereBuilder" => array(),
-        );
+        $this->callbacks = array();
+        $this->columns = $datatableView->getColumnBuilder()->getColumns();
+
+        $this->configs = $configs;
+
+        $this->setLineFormatter();
+        $this->setupColumnArrays();
     }
 
-
     //-------------------------------------------------
-    // Public
+    // Setup query
     //-------------------------------------------------
 
     /**
-     * Get qb.
+     * Setup column arrays.
+     *
+     * @return $this
+     */
+    private function setupColumnArrays()
+    {
+        $this->selectColumns[$this->tableName][] = $this->rootEntityIdentifier;
+
+        foreach ($this->columns as $key => $column) {
+            $data = $column->getDql();
+
+            if (true === $this->isSelectColumn($data)) {
+                if (false === $this->isAssociation($data)) {
+                    $this->addSearchOrderColumn($key, $this->tableName, $data);
+                    if ($data !== $this->rootEntityIdentifier) {
+                        $this->selectColumns[$this->tableName][] = $data;
+                    }
+                } else {
+                    $array = explode('.', $data);
+                    $count = count($array);
+
+                    if ($count > 2) {
+                        $replaced = str_replace('.', '_', $data);
+                        $parts = explode('_', $replaced);
+                        $last = array_pop($parts);
+                        $select = implode('_', $parts);
+                        $join = str_replace('_', '.', $select);
+                        $this->selectColumns[$select][] = $last;
+
+                        $this->selectColumns[$array[0]][] = 'id';
+                        $this->joins[$this->tableName . '.' . $array[0]] = $array[0];
+
+                        $this->joins[$join] = $select;
+                        $this->addSearchOrderColumn($key, $select, $last);
+                    } else {
+                        $this->selectColumns[$array[0]][] = $array[1];
+                        $this->joins[$this->tableName . '.' . $array[0]] = $array[0];
+                        $this->addSearchOrderColumn($key, $array[0], $array[1]);
+                    }
+                }
+            } else {
+                $this->orderColumns[] = null;
+                $this->searchColumns[] = null;
+            }
+
+        }
+
+        // joins - hardcoded id's
+        foreach ($this->selectColumns as $key => $value) {
+            $array = $this->selectColumns[$key];
+
+            if (false === array_search('id', $array)) {
+                $array[] = 'id';
+            }
+
+            $array = array_unique($array);
+
+            $this->selectColumns[$key] = $array;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Build query.
+     *
+     * @return $this
+     */
+    public function buildQuery()
+    {
+        $this->setSelectFrom();
+        $this->setLeftJoins($this->qb);
+        $this->setWhere($this->qb);
+        $this->setWhereResultCallback($this->qb);
+        $this->setWhereAllCallback($this->qb);
+        $this->setOrderBy();
+        $this->setLimit();
+
+        return $this;
+    }
+
+    /**
+     * Get query.
      *
      * @return QueryBuilder
      */
-    public function getQb()
+    public function getQuery()
     {
         return $this->qb;
     }
 
     /**
-     * Set selectColumns.
+     * Set query.
      *
-     * @param array $selectColumns
+     * @param QueryBuilder $qb
      *
      * @return $this
      */
-    public function setSelectColumns(array $selectColumns)
+    public function setQuery(QueryBuilder $qb)
     {
-        $this->selectColumns = $selectColumns;
+        $this->qb = $qb;
+
+        return $this;
+    }
+
+    //-------------------------------------------------
+    // Callbacks
+    //-------------------------------------------------
+
+    /**
+     * Add the where-result function.
+     *
+     * @param callable $callback
+     *
+     * @return $this
+     */
+    public function addWhereResult(callable $callback)
+    {
+        $this->callbacks['WhereResult'] = $callback;
 
         return $this;
     }
 
     /**
-     * Set allColumns.
+     * Add the where-all function.
      *
-     * @param array $allColumns
+     * @param callable $callback
      *
      * @return $this
      */
-    public function setAllColumns(array $allColumns)
+    public function addWhereAll(callable $callback)
     {
-        $this->allColumns = $allColumns;
+        $this->callbacks['WhereAll'] = $callback;
 
         return $this;
     }
 
     /**
-     * Set joins.
-     *
-     * @param array $joins
+     * Set the line formatter function.
      *
      * @return $this
      */
-    public function setJoins(array $joins)
+    private function setLineFormatter()
     {
-        $this->joins = $joins;
+        $this->lineFormatter = $this->datatableView->getLineFormatter();
 
         return $this;
     }
 
     /**
-     * Set search columns.
+     * Set where result callback.
      *
-     * @param array $searchColumns
+     * @param QueryBuilder $qb
      *
      * @return $this
      */
-    public function setSearchColumns(array $searchColumns)
+    private function setWhereResultCallback(QueryBuilder $qb)
     {
-        $this->searchColumns = $searchColumns;
+        if (!empty($this->callbacks['WhereResult'])) {
+            $this->callbacks['WhereResult']($qb);
+        }
 
         return $this;
     }
 
     /**
-     * Set order columns.
+     * Set where all callback.
      *
-     * @param array $orderColumns
+     * @param QueryBuilder $qb
      *
      * @return $this
      */
-    public function setOrderColumns(array $orderColumns)
+    private function setWhereAllCallback(QueryBuilder $qb)
     {
-        $this->orderColumns = $orderColumns;
+        if (!empty($this->callbacks['WhereAll'])) {
+            $this->callbacks['WhereAll']($qb);
+        }
 
         return $this;
     }
 
-    /**
-     * Add callback.
-     *
-     * @param string $callback
-     *
-     * @return $this
-     */
-    public function addCallback($callback)
-    {
-        $this->callbacks["WhereBuilder"][] = $callback;
-
-        return $this;
-    }
-
-    /**
-     * Query results before filtering.
-     *
-     * @param integer $rootEntityIdentifier
-     *
-     * @return int
-     */
-    public function getCountAllResults($rootEntityIdentifier)
-    {
-        $qb = $this->em->createQueryBuilder();
-        $qb->select("count(" . $this->tableName . "." . $rootEntityIdentifier . ")");
-        $qb->from($this->entityName, $this->tableName);
-
-        $this->setWhereCallbacks($qb);
-
-        return (int) $qb->getQuery()->getSingleScalarResult();
-    }
-
-    /**
-     * Query results after filtering.
-     *
-     * @param integer $rootEntityIdentifier
-     *
-     * @return int
-     */
-    public function getCountFilteredResults($rootEntityIdentifier)
-    {
-        $qb = $this->em->createQueryBuilder();
-        $qb->select("count(distinct " . $this->tableName . "." . $rootEntityIdentifier . ")");
-        $qb->from($this->entityName, $this->tableName);
-
-        $this->setLeftJoins($qb);
-        $this->setWhere($qb);
-        $this->setWhereCallbacks($qb);
-
-        return (int) $qb->getQuery()->getSingleScalarResult();
-    }
+    //-------------------------------------------------
+    // Build a query
+    //-------------------------------------------------
 
     /**
      * Set select from.
      *
      * @return $this
      */
-    public function setSelectFrom()
+    private function setSelectFrom()
     {
         foreach ($this->selectColumns as $key => $value) {
-            $this->qb->addSelect("partial " . $key . ".{" . implode(",", $this->selectColumns[$key]) . "}");
+            $this->qb->addSelect('partial ' . $key . '.{' . implode(',', $this->selectColumns[$key]) . '}');
         }
 
-        $this->qb->from($this->entityName, $this->tableName);
+        $this->qb->from($this->entity, $this->tableName);
 
         return $this;
     }
@@ -263,20 +374,14 @@ class DatatableQuery
     /**
      * Set leftJoins.
      *
-     * @param QueryBuilder|null $qb
+     * @param QueryBuilder $qb
      *
      * @return $this
      */
-    public function setLeftJoins($qb = null)
+    private function setLeftJoins(QueryBuilder $qb)
     {
-        $pivot = $this->qb;
-
-        if (null !== $qb) {
-            $pivot = $qb;
-        }
-
-        foreach ($this->joins as $join) {
-            $pivot->leftJoin($join["source"], $join["target"]);
+        foreach ($this->joins as $key => $value) {
+            $qb->leftJoin($key, $value);
         }
 
         return $this;
@@ -286,82 +391,135 @@ class DatatableQuery
      * Searching / Filtering.
      * Construct the WHERE clause for server-side processing SQL query.
      *
-     * @param QueryBuilder|null $qb
+     * @param QueryBuilder $qb
      *
      * @return $this
      */
-    public function setWhere($qb = null)
+    private function setWhere(QueryBuilder $qb)
     {
-        $pivot = $this->qb;
-
-        if (null !== $qb) {
-            $pivot = $qb;
-        }
-
-        $globalSearch = $this->requestParams["search"]["value"];
+        $globalSearch = $this->requestParams['search']['value'];
 
         // global filtering
-        if ("" != $globalSearch) {
+        if ('' != $globalSearch) {
 
-            $orExpr = $pivot->expr()->orX();
+            $orExpr = $qb->expr()->orX();
 
-            foreach ($this->searchColumns as $key => $column) {
-                if (null !== $this->searchColumns[$key]) {
+            foreach ($this->columns as $key => $column) {
+                if (true === $this->isSearchColumn($column)) {
                     $searchField = $this->searchColumns[$key];
-                    $orExpr->add($pivot->expr()->like($searchField, "?$key"));
-                    $pivot->setParameter($key, "%" . $globalSearch . "%");
+                    $orExpr->add($qb->expr()->like($searchField, '?' . $key));
+                    $qb->setParameter($key, '%' . $globalSearch . '%');
                 }
             }
 
-            $pivot->where($orExpr);
+            $qb->where($orExpr);
         }
 
         // individual filtering
-        $andExpr = $pivot->expr()->andX();
+        if (true === $this->individualFiltering) {
+            $andExpr = $qb->expr()->andX();
 
-        $i = 100;
+            $i = 100;
 
-        foreach ($this->searchColumns as $key => $column) {
-            if (null !== $this->searchColumns[$key]) {
-                $searchField = $this->searchColumns[$key];
-                $searchValue = $this->requestParams["columns"][$key]["search"]["value"];
-                if ("" != $searchValue) {
-                    $andExpr->add($pivot->expr()->like($searchField, "?$i"));
-                    $pivot->setParameter($i, "%" . $searchValue . "%");
-                    $i++;
+            foreach ($this->columns as $key => $column) {
+
+                if (true === $this->isSearchColumn($column)) {
+                    $searchType = $column->getSearchType();
+                    $searchField = $this->searchColumns[$key];
+                    $searchValue = $this->requestParams['columns'][$key]['search']['value'];
+                    $searchRange = $this->requestParams['columns'][$key]['name'] === 'daterange';
+                    if ('' != $searchValue && 'null' != $searchValue) {
+                        if ($searchRange) {
+                            list($_dateStart, $_dateEnd) = explode(' - ', $searchValue);
+                            $dateStart = new \DateTime($_dateStart);
+                            $dateEnd = new \DateTime($_dateEnd);
+                            $dateEnd->setTime(23, 59, 59);
+
+                            $k = $i + 1;
+                            $andExpr->add($qb->expr()->between($searchField, '?' . $i, '?' . $k));
+                            $qb->setParameter($i, $dateStart->format('Y-m-d H:i:s'));
+                            $qb->setParameter($k, $dateEnd->format('Y-m-d H:i:s'));
+                            $i += 2;
+                        } else {
+                            $andExpr = $this->addCondition($andExpr, $qb, $searchType, $searchField, $searchValue, $i);
+                            $i++;
+                        }
+                    }
                 }
             }
-        }
 
-        if ($andExpr->count() > 0) {
-            $pivot->andWhere($andExpr);
+            if ($andExpr->count() > 0) {
+                $qb->andWhere($andExpr);
+            }
         }
 
         return $this;
     }
 
     /**
-     * Set where callback functions.
+     * Add a condition.
      *
-     * @param QueryBuilder|null $qb
+     * @param Andx         $andExpr
+     * @param QueryBuilder $pivot
+     * @param string       $searchType
+     * @param string       $searchField
+     * @param string       $searchValue
+     * @param integer      $i
      *
-     * @return $this
+     * @return Andx
      */
-    public function setWhereCallbacks($qb = null)
+    private function addCondition(Andx $andExpr, QueryBuilder $pivot, $searchType, $searchField, $searchValue, $i)
     {
-        $pivot = $this->qb;
-
-        if (null !== $qb) {
-            $pivot = $qb;
+        switch ($searchType) {
+            case 'like':
+                $andExpr->add($pivot->expr()->like($searchField, '?' . $i));
+                $pivot->setParameter($i, '%' . $searchValue . '%');
+                break;
+            case 'notLike':
+                $andExpr->add($pivot->expr()->notLike($searchField, '?' . $i));
+                $pivot->setParameter($i, '%' . $searchValue . '%');
+                break;
+            case 'eq':
+                $andExpr->add($pivot->expr()->eq($searchField, '?' . $i));
+                $pivot->setParameter($i, $searchValue);
+                break;
+            case 'neq':
+                $andExpr->add($pivot->expr()->neq($searchField, '?' . $i));
+                $pivot->setParameter($i, $searchValue);
+                break;
+            case 'lt':
+                $andExpr->add($pivot->expr()->lt($searchField, '?' . $i));
+                $pivot->setParameter($i, $searchValue);
+                break;
+            case 'lte':
+                $andExpr->add($pivot->expr()->lte($searchField, '?' . $i));
+                $pivot->setParameter($i, $searchValue);
+                break;
+            case 'gt':
+                $andExpr->add($pivot->expr()->gt($searchField, '?' . $i));
+                $pivot->setParameter($i, $searchValue);
+                break;
+            case 'gte':
+                $andExpr->add($pivot->expr()->gte($searchField, '?' . $i));
+                $pivot->setParameter($i, $searchValue);
+                break;
+            case 'in':
+                $andExpr->add($pivot->expr()->in($searchField, '?' . $i));
+                $pivot->setParameter($i, explode(',', $searchValue));
+                break;
+            case 'notIn':
+                $andExpr->add($pivot->expr()->notIn($searchField, '?' . $i));
+                $pivot->setParameter($i, explode(",", $searchValue));
+                break;
+            case 'isNull':
+                $andExpr->add($pivot->expr()->isNull($searchField));
+                break;
+            case 'isNotNull':
+                $andExpr->add($pivot->expr()->isNull($searchField));
+                break;
         }
 
-        if (!empty($this->callbacks["WhereBuilder"])) {
-            foreach ($this->callbacks["WhereBuilder"] as $callback) {
-                $callback($pivot);
-            }
-        }
-
-        return $this;
+        return $andExpr;
     }
 
     /**
@@ -370,20 +528,20 @@ class DatatableQuery
      *
      * @return $this
      */
-    public function setOrderBy()
+    private function setOrderBy()
     {
-        if (isset($this->requestParams["order"]) && count($this->requestParams["order"])) {
+        if (isset($this->requestParams['order']) && count($this->requestParams['order'])) {
 
-            $counter = count($this->requestParams["order"]);
+            $counter = count($this->requestParams['order']);
 
             for ($i = 0; $i < $counter; $i++) {
-                $columnIdx = (integer) $this->requestParams["order"][$i]["column"];
-                $requestColumn = $this->requestParams["columns"][$columnIdx];
+                $columnIdx = (integer) $this->requestParams['order'][$i]['column'];
+                $requestColumn = $this->requestParams['columns'][$columnIdx];
 
-                if ("true" == $requestColumn["orderable"]) {
+                if ('true' == $requestColumn['orderable']) {
                     $this->qb->addOrderBy(
                         $this->orderColumns[$columnIdx],
-                        $this->requestParams["order"][$i]["dir"]
+                        $this->requestParams['order'][$i]['dir']
                     );
                 }
             }
@@ -398,13 +556,56 @@ class DatatableQuery
      *
      * @return $this
      */
-    public function setLimit()
+    private function setLimit()
     {
-        if (isset($this->requestParams["start"]) && -1 != $this->requestParams["length"]) {
-            $this->qb->setFirstResult($this->requestParams["start"])->setMaxResults($this->requestParams["length"]);
+        if (isset($this->requestParams['start']) && -1 != $this->requestParams['length']) {
+            $this->qb->setFirstResult($this->requestParams['start'])->setMaxResults($this->requestParams['length']);
         }
 
         return $this;
+    }
+
+    //-------------------------------------------------
+    // Results
+    //-------------------------------------------------
+
+    /**
+     * Query results before filtering.
+     *
+     * @param integer $rootEntityIdentifier
+     *
+     * @return int
+     */
+    private function getCountAllResults($rootEntityIdentifier)
+    {
+        $qb = $this->em->createQueryBuilder();
+        $qb->select('count(distinct ' . $this->tableName . '.' . $rootEntityIdentifier . ')');
+        $qb->from($this->entity, $this->tableName);
+
+        $this->setLeftJoins($qb);
+        $this->setWhereAllCallback($qb);
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * Query results after filtering.
+     *
+     * @param integer $rootEntityIdentifier
+     *
+     * @return int
+     */
+    private function getCountFilteredResults($rootEntityIdentifier)
+    {
+        $qb = $this->em->createQueryBuilder();
+        $qb->select('count(distinct ' . $this->tableName . '.' . $rootEntityIdentifier . ')');
+        $qb->from($this->entity, $this->tableName);
+
+        $this->setLeftJoins($qb);
+        $this->setWhere($qb);
+        $this->setWhereAllCallback($qb);
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
     /**
@@ -412,11 +613,159 @@ class DatatableQuery
      *
      * @return Query
      */
-    public function execute()
+    private function execute()
     {
         $query = $this->qb->getQuery();
         $query->setHydrationMode(Query::HYDRATE_ARRAY);
 
         return $query;
+    }
+
+    //-------------------------------------------------
+    // Response
+    //-------------------------------------------------
+
+    public function getResponse($buildQuery = true)
+    {
+        false === $buildQuery ? : $this->buildQuery();
+
+        $fresults = new Paginator($this->execute(), true);
+        $fresults->setUseOutputWalkers(false);
+        $output = array('data' => array());
+
+        foreach ($fresults as $item) {
+            if (is_callable($this->lineFormatter)) {
+                $callable = $this->lineFormatter;
+                $item = call_user_func($callable, $item);
+            }
+
+            $output['data'][] = $item;
+        }
+
+        $outputHeader = array(
+            'draw' => (int) $this->requestParams['draw'],
+            'recordsTotal' => (int) $this->getCountAllResults($this->rootEntityIdentifier),
+            'recordsFiltered' => (int) $this->getCountFilteredResults($this->rootEntityIdentifier)
+        );
+
+        $json = $this->serializer->serialize(array_merge($outputHeader, $output), 'json');
+        $response = new Response($json);
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
+    //-------------------------------------------------
+    // Helper
+    //-------------------------------------------------
+
+    /**
+     * Add search/order columns.
+     *
+     * @param integer $key
+     * @param string  $columnTableName
+     * @param string  $data
+     */
+    private function addSearchOrderColumn($key, $columnTableName, $data)
+    {
+        $column = $this->columns[$key];
+
+        true === $column->getOrderable() ? $this->orderColumns[] = $columnTableName . '.' . $data : $this->orderColumns[] = null;
+        true === $column->getSearchable() ? $this->searchColumns[] = $columnTableName . '.' . $data : $this->searchColumns[] = null;
+    }
+
+    /**
+     * Get metadata.
+     *
+     * @param string $entity
+     *
+     * @return ClassMetadata
+     * @throws Exception
+     */
+    private function getMetadata($entity)
+    {
+        try {
+            $metadata = $this->em->getMetadataFactory()->getMetadataFor($entity);
+        } catch (MappingException $e) {
+            throw new Exception('getMetadata(): Given object ' . $entity . ' is not a Doctrine Entity.');
+        }
+
+        return $metadata;
+    }
+
+    /**
+     * Get table name.
+     *
+     * @param ClassMetadata $metadata
+     *
+     * @return string
+     */
+    private function getTableName(ClassMetadata $metadata)
+    {
+        return strtolower($metadata->getTableName());
+    }
+
+    /**
+     * Get identifier.
+     *
+     * @param ClassMetadata $metadata
+     *
+     * @return mixed
+     */
+    private function getIdentifier(ClassMetadata $metadata)
+    {
+        $identifiers = $metadata->getIdentifierFieldNames();
+
+        return array_shift($identifiers);
+    }
+
+    /**
+     * Is association.
+     *
+     * @param string $data
+     *
+     * @return bool|int
+     */
+    private function isAssociation($data)
+    {
+        return strpos($data, '.');
+    }
+
+    /**
+     * Is select column.
+     *
+     * @param string $data
+     *
+     * @return bool
+     */
+    private function isSelectColumn($data)
+    {
+        if (null !== $data && !in_array($data, $this->virtualColumns)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Is search column.
+     *
+     * @param AbstractColumn $column
+     *
+     * @return bool
+     */
+    private function isSearchColumn(AbstractColumn $column)
+    {
+        if (false === $this->configs['search_on_non_visible_columns']) {
+            if (null !== $column->getDql() && true === $column->getSearchable() && true === $column->getVisible()) {
+                return true;
+            }
+        } else {
+            if (null !== $column->getDql() && true === $column->getSearchable()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

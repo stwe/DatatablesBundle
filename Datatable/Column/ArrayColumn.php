@@ -31,11 +31,11 @@ class ArrayColumn extends Column
     public function setData($data)
     {
         if (empty($data) || !is_string($data)) {
-            throw new InvalidArgumentException("setData(): Expecting non-empty string.");
+            throw new InvalidArgumentException('setData(): Expecting non-empty string.');
         }
 
         if (false === strstr($data, '.')) {
-            throw new InvalidArgumentException("setData(): An association is expected.");
+            throw new InvalidArgumentException('setData(): An association is expected.');
         }
 
         $this->data = $data;
@@ -46,21 +46,25 @@ class ArrayColumn extends Column
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function getAlias()
     {
-        parent::configureOptions($resolver);
-
-        $resolver->setRequired(array("data"));
-        $resolver->addAllowedTypes("data", "string");
-
-        return $this;
+        return 'array';
     }
+
+    //-------------------------------------------------
+    // OptionsInterface
+    //-------------------------------------------------
 
     /**
      * {@inheritdoc}
      */
-    public function getAlias()
+    public function configureOptions(OptionsResolver $resolver)
     {
-        return "array";
+        parent::configureOptions($resolver);
+
+        $resolver->setRequired(array('data'));
+        $resolver->addAllowedTypes('data', 'string');
+
+        return $this;
     }
 }

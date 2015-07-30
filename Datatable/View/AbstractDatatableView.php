@@ -13,9 +13,15 @@ namespace Sg\DatatablesBundle\Datatable\View;
 
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 
-use Symfony\Bundle\TwigBundle\TwigEngine;
-use Symfony\Component\Routing\RouterInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Twig_Environment;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Exception;
 
 /**
@@ -26,81 +32,25 @@ use Exception;
 abstract class AbstractDatatableView implements DatatableViewInterface
 {
     /**
-     * Default style.
+     * The AuthorizationChecker service.
      *
-     * @var string
+     * @var AuthorizationCheckerInterface
      */
-    const BASE_STYLE = "display";
+    protected $authorizationChecker;
 
     /**
-     * Default style with none of the additional feature style classes.
+     * The SecurityTokenStorage service.
      *
-     * @var string
+     * @var TokenStorageInterface
      */
-    const BASE_STYLE_NO_CLASSES = "";
+    protected $securityToken;
 
     /**
-     * Default style with row border.
+     * The Twig_Environment service.
      *
-     * @var string
+     * @var Twig_Environment
      */
-    const BASE_STYLE_ROW_BORDERS = "row-border";
-
-    /**
-     * Default style with cell border.
-     *
-     * @var string
-     */
-    const BASE_STYLE_CELL_BORDERS = "cell-border";
-
-    /**
-     * Default style with hover class.
-     *
-     * @var string
-     */
-    const BASE_STYLE_HOVER = "hover";
-
-    /**
-     * Default style with order-column class.
-     *
-     * @var string
-     */
-    const BASE_STYLE_ORDER_COLUMN = "order-column";
-
-    /**
-     * Default style with stripe class.
-     *
-     * @var string
-     */
-    const BASE_STYLE_STRIPE = "stripe";
-
-    /**
-     * jQuery UI's ThemeRoller styles.
-     *
-     * @var string
-     */
-    const JQUERY_UI_STYLE = "display";
-
-    /**
-     * Bootstrap's table styling options.
-     *
-     * @var string
-     */
-    const BOOTSTRAP_3_STYLE = "table table-striped table-bordered";
-
-    /**
-     * Foundations's table styling options.
-     *
-     * @var string
-     */
-    const FOUNDATION_STYLE = "display";
-
-    /**
-     * The Templating service.
-     *
-     * @var TwigEngine
-     */
-    protected $templating;
+    protected $twig;
 
     /**
      * The Translator service.
@@ -117,6 +67,13 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     protected $router;
 
     /**
+     * The doctrine orm entity manager service.
+     *
+     * @var EntityManagerInterface
+     */
+    protected $em;
+
+    /**
      * A Features instance.
      *
      * @var Features
@@ -129,6 +86,13 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @var Options
      */
     protected $options;
+
+    /**
+     * A Callback instance.
+     *
+     * @var Callbacks
+     */
+    protected $callbacks;
 
     /**
      * A ColumnBuilder instance.
@@ -152,20 +116,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     protected $data;
 
     /**
-     * The name of style.
-     *
-     * @var string
-     */
-    protected $style;
-
-    /**
-     * Enable or disable individual filtering.
-     *
-     * @var boolean
-     */
-    protected $individualFiltering;
-
-    /**
      * The Twig templates.
      *
      * @var array
@@ -173,16 +123,19 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     protected $templates;
 
     /**
-     * DataTables provides direct integration support (https://github.com/DataTables/Plugins/tree/master/integration) for:
-     * - Bootstrap
-     * - Foundation
-     * - jQuery UI
+     * This variable stores the array of column names as keys and column ids as values
+     * in order to perform search column id by name.
      *
-     * This flag is set in the layout, the "dom" and "renderer" options for the integration plugin (i.e. bootstrap).
-     *
-     * @var boolean
+     * @var array
      */
-    protected $useIntegrationOptions;
+    private $columnNames;
+
+    /**
+     * A custom query.
+     *
+     * @var QueryBuilder
+     */
+    protected $qb;
     /* 
      * @var boolean
      */
@@ -192,7 +145,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      */
     protected $useSDom;
 
-
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -200,100 +152,116 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * Ctor.
      *
-     * @param TwigEngine          $templating           The templating service
-     * @param TranslatorInterface $translator           The translator service
-     * @param RouterInterface     $router               The router service
-     * @param array               $defaultLayoutOptions The default layout options
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param TokenStorageInterface         $securityToken
+     * @param Twig_Environment              $twig
+     * @param TranslatorInterface           $translator
+     * @param RouterInterface               $router
+     * @param EntityManagerInterface        $em
+     * @param array                         $templates
      */
-    public function __construct(TwigEngine $templating, TranslatorInterface $translator, RouterInterface $router, array $defaultLayoutOptions)
+    public function __construct(
+        AuthorizationCheckerInterface $authorizationChecker,
+        TokenStorageInterface $securityToken,
+        Twig_Environment $twig,
+        TranslatorInterface $translator,
+        RouterInterface $router,
+        EntityManagerInterface $em,
+        array $templates
+    )
     {
-        $this->templating = $templating;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->securityToken = $securityToken;
+        $this->twig = $twig;
         $this->translator = $translator;
         $this->router = $router;
+        $this->em = $em;
 
         $this->features = new Features();
-        $this->features->setServerSide($defaultLayoutOptions["server_side"]);
-        $this->features->setProcessing($defaultLayoutOptions["processing"]);
-
         $this->options = new Options();
-        $this->options->setPageLength($defaultLayoutOptions["page_length"]);
-
+        $this->callbacks = new Callbacks();
         $this->columnBuilder = new ColumnBuilder();
-
         $this->ajax = new Ajax();
 
         $this->data = null;
-        $this->style = self::BASE_STYLE;
-        $this->individualFiltering = $defaultLayoutOptions["individual_filtering"];
-        $this->templates = $defaultLayoutOptions["templates"];
-        $this->useIntegrationOptions = false;
-        $this->detailsChildRows = false;
-        $this->useSDom=false;
-    }
+        $this->templates = $templates;
 
+        $this->qb = null;
+
+        $this->buildDatatableView();
+    }
 
     //-------------------------------------------------
     // DatatableViewInterface
     //-------------------------------------------------
 
     /**
-     * {@inheritdoc}
+     * Builds the datatable view.
+     *
+     * @deprecated Deprecated since v0.7.1, to be removed in v0.8.
+     *             Use {@link buildDatatable()} instead.
      */
-    public function renderDatatableView($type = 'all')
+    public function buildDatatableView()
     {
-        $options = array();
-
-        if (true === $this->features->getServerSide()) {
-            if ("" === $this->ajax->getUrl()) {
-                throw new Exception("The ajax url parameter must be given.");
-            }
-        } else {
-            $options["view_data"] = $this->getData();
-        }
-
-        $options["view_features"] = $this->features;
-        $options["view_options"] = $this->options;
-        $options["view_columns"] = $this->columnBuilder->getColumns();
-        $options["view_ajax"] = $this->ajax;
-
-        $options["view_style"] = $this->style;
-        $options["view_individual_filtering"] = $this->individualFiltering;
-
-        $options["view_multiselect"] = $this->columnBuilder->isMultiselect();
-        $options["view_multiselect_column"] = $this->columnBuilder->getMultiselectColumn();
-        
-        $options["view_table_id"] = $this->getName();
-
-        $options["view_use_integration_options"] = $this->useIntegrationOptions;
-        
-        $options["view_details_child_rows"] = $this->detailsChildRows;
-        $options["view_use_sdom"] = $this->useSDom;
-
-        switch($type) {
-            case 'html':
-                return $this->templating->render($this->templates['html'], $options);
-                break;
-            case 'js':
-                return $this->templating->render($this->templates['js'], $options);
-                break;
-            case 'jsns':
-                return $this->templating->render($this->templates['jsns'], $options);
-                break;
-            default:
-                return $this->templating->render($this->templates['base'], $options);
-                break;
-        }
-
+        // implement an empty function for backward compatibility reasons
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setAjax(Ajax $ajax)
+    public function buildDatatable()
     {
-        $this->ajax = $ajax;
+        // implement an empty function for backward compatibility reasons
+    }
 
-        return $this;
+    /**
+     * {@inheritdoc}
+     */
+    public function render($type = 'all')
+    {
+        $options = array();
+
+        if (true === $this->features->getServerSide()) {
+            if ('' === $this->ajax->getUrl()) {
+                throw new Exception('render(): The ajax url parameter must be given.');
+            }
+        } else {
+            if (null === $this->data) {
+                throw new Exception('render(): Call setData() in your controller.');
+            } else {
+                $options['view_data'] = $this->data;
+            }
+        }
+
+        $options['view_features'] = $this->features;
+        $options['view_options'] = $this->options;
+        $options["view_callbacks"] = $this->callbacks;
+        $options['view_columns'] = $this->columnBuilder->getColumns();
+        $options['view_ajax'] = $this->ajax;
+
+        $options['view_multiselect'] = $this->columnBuilder->isMultiselect();
+        $options['view_multiselect_column'] = $this->columnBuilder->getMultiselectColumn();
+        
+        $options["view_details_child_rows"] = $this->detailsChildRows;
+        $options["view_use_sdom"] = $this->useSDom;
+        $options['view_table_id'] = $this->getName();
+
+        $options['datatable'] = $this;
+
+        switch ($type) {
+            case 'html':
+                return $this->twig->render($this->templates['html'], $options);
+                break;
+            case 'js':
+                return $this->twig->render($this->templates['js'], $options);
+                break;
+            case 'jsns':
+                return $this->twig->render($this->templates['jsns'], $options);
+                break;
+            default:
+                return $this->twig->render($this->templates['base'], $options);
+                break;
+        }
     }
 
     /**
@@ -304,140 +272,16 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         return $this->ajax;
     }
 
-
-    //-------------------------------------------------
-    // Callable
-    //-------------------------------------------------
-
     /**
-     * Get Line Formatter.
-     *
-     * @return callable
+     * {@inheritdoc}
      */
-    public function getLineFormatter()
+    public function getColumnBuilder()
     {
-        return null;
-    }
-
-
-    //-------------------------------------------------
-    // Getters && Setters
-    //-------------------------------------------------
-
-    /**
-     * Set Templating.
-     *
-     * @param TwigEngine $templating
-     *
-     * @return $this
-     */
-    public function setTemplating(TwigEngine $templating)
-    {
-        $this->templating = $templating;
-
-        return $this;
+        return $this->columnBuilder;
     }
 
     /**
-     * Get Templating.
-     *
-     * @return TwigEngine
-     */
-    public function getTemplating()
-    {
-        return $this->templating;
-    }
-
-    /**
-     * Set Translator.
-     *
-     * @param TranslatorInterface $translator
-     *
-     * @return $this
-     */
-    public function setTranslator(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-
-        return $this;
-    }
-
-    /**
-     * Get Translator.
-     *
-     * @return TranslatorInterface
-     */
-    public function getTranslator()
-    {
-        return $this->translator;
-    }
-
-    /**
-     * Set Router.
-     *
-     * @param RouterInterface $router
-     *
-     * @return $this
-     */
-    public function setRouter(RouterInterface $router)
-    {
-        $this->router = $router;
-
-        return $this;
-    }
-
-    /**
-     * Get Router.
-     *
-     * @return RouterInterface
-     */
-    public function getRouter()
-    {
-        return $this->router;
-    }
-
-    /**
-     * Set Features.
-     *
-     * @param Features $features
-     *
-     * @return $this
-     */
-    public function setFeatures(Features $features)
-    {
-        $this->features = $features;
-
-        return $this;
-    }
-
-    /**
-     * Get Features.
-     *
-     * @return Features
-     */
-    public function getFeatures()
-    {
-        return $this->features;
-    }
-
-    /**
-     * Set Options.
-     *
-     * @param Options $options
-     *
-     * @return $this
-     */
-    public function setOptions(Options $options)
-    {
-        $this->options = $options;
-
-        return $this;
-    }
-
-    /**
-     * Get Options.
-     *
-     * @return Options
+     * {@inheritdoc}
      */
     public function getOptions()
     {
@@ -445,28 +289,32 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     }
 
     /**
-     * Set ColumnBuilder.
-     *
-     * @param ColumnBuilder $columnBuilder
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-    public function setColumnBuilder(ColumnBuilder $columnBuilder)
+    public function getLineFormatter()
     {
-        $this->columnBuilder = $columnBuilder;
-
-        return $this;
+        return null;
     }
 
     /**
-     * Get ColumnBuilder.
-     *
-     * @return ColumnBuilder
+     * {@inheritdoc}
      */
-    public function getColumnBuilder()
+    public function getEntityManager()
     {
-        return $this->columnBuilder;
+        return $this->em;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getQb()
+    {
+        return $this->qb;
+    }
+
+    //-------------------------------------------------
+    // Getters && Setters
+    //-------------------------------------------------
 
     /**
      * Set Data.
@@ -493,73 +341,13 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     }
 
     /**
-     * Set Style.
-     *
-     * @param string $style
-     *
-     * @return $this
-     */
-    public function setStyle($style)
-    {
-        switch ($style) {
-            case self::JQUERY_UI_STYLE:
-                $this->useIntegrationOptions = true;
-                break;
-            case self::BOOTSTRAP_3_STYLE:
-                $this->useIntegrationOptions = true;
-                break;
-            case self::FOUNDATION_STYLE:
-                $this->useIntegrationOptions = true;
-                break;
-        }
-
-        $this->style = $style;
-
-        return $this;
-    }
-
-    /**
-     * Get Style.
-     *
-     * @return string
-     */
-    public function getStyle()
-    {
-        return $this->style;
-    }
-
-    /**
-     * Set IndividualFiltering.
-     *
-     * @param boolean $individualFiltering
-     *
-     * @return $this
-     */
-    public function setIndividualFiltering($individualFiltering)
-    {
-        $this->individualFiltering = (boolean) $individualFiltering;
-
-        return $this;
-    }
-
-    /**
-     * Get IndividualFiltering.
-     *
-     * @return boolean
-     */
-    public function getIndividualFiltering()
-    {
-        return (boolean) $this->individualFiltering;
-    }
-
-    /**
      * Set templates.
      *
      * @param array $templates
      *
      * @return $this
      */
-    public function setTemplates($templates)
+    public function setTemplates(array $templates)
     {
         $this->templates = $templates;
 
@@ -576,32 +364,72 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         return $this->templates;
     }
 
-    /**
-     * Set useIntegrationsOptions.
-     *
-     * @param boolean $useIntegrationOptions
-     *
-     * @return $this
-     */
-    public function setUseIntegrationOptions($useIntegrationOptions)
-    {
-        $this->useIntegrationOptions = $useIntegrationOptions;
+    //-------------------------------------------------
+    // Helper
+    //-------------------------------------------------
 
-        return $this;
+    /**
+     * Truncate text.
+     * 
+     * @param string  $text
+     * @param integer $chars
+     * 
+     * @return string
+     */
+    public function truncate($text, $chars = 25)
+    {
+        if (strlen($text) > $chars) {
+            $text = substr($text . ' ', 0, $chars);
+            $text = substr($text, 0, strrpos($text, ' ')) . '...';
+        }
+
+        return $text;
     }
 
-   
     /**
-     * Get useIntegrationsOptions.
+     * Searches the column index by column name.
+     * Returns the position of the column in datatable columns or false if column is not found.
      *
-     * @return boolean
+     * @param string $name
+     *
+     * @return int|bool
      */
-    public function getUseIntegrationOptions()
+    public function getColumnIdByColumnName($name)
     {
-        return $this->useIntegrationOptions;
+        if (count($this->columnNames) == 0) {
+            /** @var \Sg\DatatablesBundle\Datatable\Column\AbstractColumn $column */
+            foreach ($this->getColumnBuilder()->getColumns() as $key => $column) {
+                $this->columnNames[$column->getData()] = $key;
+            }
+        }
+
+        return array_key_exists($name, $this->columnNames) ? $this->columnNames[$name] : false;
     }
-     
-    
+
+    /**
+     * Returns options array based on key/value pairs, where key and value are the object's properties.
+     *
+     * @param ArrayCollection $entitiesCollection
+     * @param string          $keyPropertyName
+     * @param string          $valuePropertyName
+     *
+     * @return array
+     */
+    public function getCollectionAsOptionsArray($entitiesCollection, $keyPropertyName = 'id', $valuePropertyName = 'name')
+    {
+        $options = [];
+
+        foreach ($entitiesCollection as $entity) {
+            $keyPropertyName = Container::camelize($keyPropertyName);
+            $keyGetter = 'get' . ucfirst($keyPropertyName);
+            $valuePropertyName = Container::camelize($valuePropertyName);
+            $valueGetter = 'get' . ucfirst($valuePropertyName);
+            $options[$entity->$keyGetter()] = $entity->$valueGetter();
+        }
+
+        return $options;
+    }
+
     /**
      * Set detailsChildRows
      *
@@ -647,4 +475,5 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     {
         return (boolean) $this->useSDom;
     }
+    
 }

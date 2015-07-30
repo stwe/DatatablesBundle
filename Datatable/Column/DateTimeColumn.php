@@ -33,7 +33,6 @@ class DateTimeColumn extends TimeagoColumn
      */
     protected $dateFormat;
 
-
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -41,26 +40,9 @@ class DateTimeColumn extends TimeagoColumn
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        parent::configureOptions($resolver);
-
-        $resolver->setDefault("render", "render_datetime");
-        $resolver->setDefault("date_format", "lll");
-
-        $resolver->addAllowedTypes(array(
-            "date_format" => "string",
-        ));
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getTemplate()
     {
-        return "SgDatatablesBundle:Column:datetime.html.twig";
+        return 'SgDatatablesBundle:Column:datetime.html.twig';
     }
 
     /**
@@ -68,9 +50,29 @@ class DateTimeColumn extends TimeagoColumn
      */
     public function getAlias()
     {
-        return "datetime";
+        return 'datetime';
     }
 
+    //-------------------------------------------------
+    // OptionsInterface
+    //-------------------------------------------------
+
+ /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        parent::configureOptions($resolver);
+
+        $resolver->setDefaults(array(
+            'render' => 'render_datetime',
+            'date_format' => 'lll',
+        ));
+
+        $resolver->addAllowedTypes('date_format', 'string');
+
+        return $this;
+    }
 
     //-------------------------------------------------
     // Getters && Setters
@@ -86,7 +88,7 @@ class DateTimeColumn extends TimeagoColumn
     public function setDateFormat($dateFormat)
     {
         if (empty($dateFormat) || !is_string($dateFormat)) {
-            throw new InvalidArgumentException("setDateFormat(): Expecting non-empty string.");
+            throw new InvalidArgumentException('setDateFormat(): Expecting non-empty string.');
         }
 
         $this->dateFormat = $dateFormat;

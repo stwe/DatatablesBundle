@@ -11,13 +11,23 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\DependencyInjection\Container;
+
 /**
  * Class Action
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-class Action
+class Action implements OptionsInterface
 {
+    /**
+     * Options container.
+     *
+     * @var array
+     */
+    protected $options;
+
     /**
      * The route to the action.
      *
@@ -86,77 +96,83 @@ class Action
      *
      * @var array
      */
-    protected $renderConditions;
-
+    protected $renderIf;
 
     //-------------------------------------------------
-    // Ctor.
+    // OptionsInterface
     //-------------------------------------------------
 
     /**
-     * Ctor.
+     * {@inheritdoc}
      */
-    public function __construct()
+    public function setupOptionsResolver(array $options)
     {
-        $this->route = "";
-        $this->routeParameters = array();
-        $this->toajax = false;
-        $this->icon = "";
-        $this->label = "";
-        $this->confirm = false;
-        $this->confirmMessage = "";
-        $this->attributes = array();
-        $this->role = "";
-        $this->renderConditions = array();
+        $resolver = new OptionsResolver();
+        $this->configureOptions($resolver);
+
+        $this->options = $resolver->resolve($options);
+
+        $this->setOptions($this->options);
+
+        return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired(array('route'));
 
-    //-------------------------------------------------
-    // Getters && Setters
-    //-------------------------------------------------
+        $resolver->setDefaults(array(
+            'route_parameters' => array(),
+            'toajax'=>false,
+            'icon' => '',
+            'label' => '',
+            'confirm' => false,
+            'confirm_message' => '',
+            'attributes' => array(),
+            'role' => '',
+            'render_if' => array()
+        ));
+
+        $resolver->setAllowedTypes('route', 'string');
+        $resolver->setAllowedTypes('route_parameters', 'array');
+        $resolver->setAllowedTypes('toajax', 'bool');
+        $resolver->setAllowedTypes('icon', 'string');
+        $resolver->setAllowedTypes('label', 'string');
+        $resolver->setAllowedTypes('confirm', 'bool');
+        $resolver->setAllowedTypes('confirm_message', 'string');
+        $resolver->setAllowedTypes('attributes', 'array');
+        $resolver->setAllowedTypes('role', 'string');
+        $resolver->setAllowedTypes('render_if', 'array');
+
+        return $this;
+    }
 
     /**
-     * Set options.
-     *
-     * @param array $options
-     *
-     * @return $this
+     * {@inheritdoc}
      */
     public function setOptions(array $options)
     {
-        if (array_key_exists("route", $options)) {
-            $this->setRoute($options["route"]);
+        $methods = get_class_methods($this);
+
+        foreach ($options as $key => $value) {
+            $key = Container::camelize($key);
+            $method = 'set' . ucfirst($key);
+            if (in_array($method, $methods)) {
+                $this->$method($value);
+            } else {
+                throw new \Exception('setOptions(): ' . $method . ' invalid method name');
         }
-        if (array_key_exists("route_parameters", $options)) {
-            $this->setRouteParameters($options["route_parameters"]);
-        }
-        if (array_key_exists("toajax", $options)) {
-            $this->setToajax($options["toajax"]);
-        }
-        if (array_key_exists("icon", $options)) {
-            $this->setIcon($options["icon"]);
-        }
-        if (array_key_exists("label", $options)) {
-            $this->setLabel($options["label"]);
-        }
-        if (array_key_exists("confirm", $options)) {
-            $this->setConfirm($options["confirm"]);
-        }
-        if (array_key_exists("confirm_message", $options)) {
-            $this->setConfirmMessage($options["confirm_message"]);
-        }
-        if (array_key_exists("attributes", $options)) {
-            $this->setAttributes($options["attributes"]);
-        }
-        if (array_key_exists("role", $options)) {
-            $this->setRole($options["role"]);
-        }
-        if (array_key_exists("renderif", $options)) {
-            $this->setRenderConditions($options["renderif"]);
         }
 
         return $this;
     }
+
+    //-------------------------------------------------
+    // Getters && Setters
+    //-------------------------------------------------
 
     /**
      * Set route.
@@ -181,7 +197,6 @@ class Action
     {
         return $this->route;
     }
-
 
     /**
      * Set route parameters.
@@ -375,26 +390,26 @@ class Action
     }
 
     /**
-     * Set render conditions.
+     * Set renderIf.
      *
-     * @param array $renderConditions
+     * @param array $renderIf
      *
      * @return $this
      */
-    public function setRenderConditions(array $renderConditions)
+    public function setRenderIf(array $renderIf)
     {
-        $this->renderConditions = $renderConditions;
+        $this->renderIf = $renderIf;
 
         return $this;
     }
 
     /**
-     * Get render conditions.
+     * Get renderIf.
      *
      * @return array
      */
-    public function getRenderConditions()
+    public function getRenderIf()
     {
-        return $this->renderConditions;
+        return $this->renderIf;
     }
 }

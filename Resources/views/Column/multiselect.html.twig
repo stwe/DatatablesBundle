@@ -52,14 +52,11 @@
             attributes += '{{ key }}="{{ value }}" ';
         {% endfor %}
 
-        {# get id #}
+        {# get value (e.g. the id) #}
         var first;
-        for (var i in row) {
-            if (row.hasOwnProperty(i) && typeof(i) !== 'function') {
-                first = row[i];
-                break;
+        if (row.hasOwnProperty('{{ column.value }}') && typeof('{{ column.value }}') !== 'function') {
+            first = row['{{ column.value }}'];
             }
-        }
 
         {# return html #}
         if ("" != attributes) {

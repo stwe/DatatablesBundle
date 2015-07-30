@@ -14,7 +14,7 @@
     "name": "{{ column.name }}",
     "orderable": false,
     "searchable": false,
-    "title": "{{ column.title }}",
+    "title": "{{ column.title|raw }}",
     {% if column.type %}
         "type": "{{ column.type }}",
     {% endif %}
@@ -46,7 +46,7 @@
             visibleFlag = true;
             roleFlag = true;
 
-            {% for key, value in action.renderConditions %}
+            {% for key, value in action.renderIf %}
                 visibleFlag &= Boolean(row.{{ value }});
             {% endfor %}
 
@@ -79,13 +79,7 @@
                     url += 'onclick="' + "return confirm('{{ action.ConfirmMessage }}')" + '" ';
                 {% endif %}
                 url += ">";
-
-                {% if action.icon %}
-                    url += '<span class="{{ action.icon }}"></span> {{ action.label }}';
-                {% else %}
-                    url += "{{ action.label }}";
-                {% endif %}
-
+                url += '{{ datatable_icon(action.icon, action.label) }}';
                 url += "</a>";
 
                 actionsString += url;

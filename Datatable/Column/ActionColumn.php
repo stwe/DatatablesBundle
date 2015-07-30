@@ -45,7 +45,6 @@ class ActionColumn extends AbstractColumn
      */
     protected $actions;
 
-
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -56,7 +55,7 @@ class ActionColumn extends AbstractColumn
     public function setData($data)
     {
         if (null !== $data) {
-            throw new InvalidArgumentException("setData(): Null expected.");
+            throw new InvalidArgumentException('setData(): Null expected.');
         }
 
         $this->data = $data;
@@ -67,44 +66,9 @@ class ActionColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setRequired(array("actions"));
-
-        $resolver->setDefaults(array(
-            "class" => "",
-            "padding" => "",
-            "name" => "",
-            "title" => "",
-            "type" => "",
-            "visible" => true,
-            "width" => "",
-            "start_html" => "",
-            "end_html" => ""
-        ));
-
-        $resolver->setAllowedTypes(array(
-            "class" => "string",
-            "padding" => "string",
-            "name" => "string",
-            "title" => "string",
-            "type" => "string",
-            "visible" => "bool",
-            "width" => "string",
-            "start_html" => "string",
-            "end_html" => "string",
-            "actions" => "array"
-        ));
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getTemplate()
     {
-        return "SgDatatablesBundle:Column:action.html.twig";
+        return 'SgDatatablesBundle:Column:action.html.twig';
     }
 
     /**
@@ -112,9 +76,45 @@ class ActionColumn extends AbstractColumn
      */
     public function getAlias()
     {
-        return "action";
+        return 'action';
     }
 
+    //-------------------------------------------------
+    // OptionsInterface
+    //-------------------------------------------------
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired(array('actions'));
+
+        $resolver->setDefaults(array(
+            'class' => '',
+            'padding' => '',
+            'name' => '',
+            'title' => '',
+            'type' => '',
+            'visible' => true,
+            'width' => '',
+            'start_html' => '',
+            'end_html' => ''
+        ));
+
+        $resolver->setAllowedTypes('class', 'string');
+        $resolver->setAllowedTypes('padding', 'string');
+        $resolver->setAllowedTypes('name', 'string');
+        $resolver->setAllowedTypes('title', 'string');
+        $resolver->setAllowedTypes('type', 'string');
+        $resolver->setAllowedTypes('visible', 'bool');
+        $resolver->setAllowedTypes('width', 'string');
+        $resolver->setAllowedTypes('start_html', 'string');
+        $resolver->setAllowedTypes('end_html', 'string');
+        $resolver->setAllowedTypes('actions', 'array');
+
+        return $this;
+    }
 
     //-------------------------------------------------
     // Getters && Setters
@@ -179,7 +179,7 @@ class ActionColumn extends AbstractColumn
     {
         foreach ($actions as $action) {
             $newAction = new Action();
-            $this->actions[] = $newAction->setOptions($action);
+            $this->actions[] = $newAction->setupOptionsResolver($action);
         }
 
         return $this;

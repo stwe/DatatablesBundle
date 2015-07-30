@@ -8,20 +8,20 @@ This Bundle integrates the jQuery DataTables 1.10.x plugin into your Symfony2 ap
 
 This bundle requires the following additional packages:
 
-* Symfony 2.3.x
-* jQuery 1.x
+* Symfony 2.6.x
+* jQuery 1.11.x
 * DataTables 1.10.x
-* Moment.js 2.8.x
-* FOSJsRoutingBundle 1.5.3. ***Please follow all steps described [here](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/index.md).***
+* Moment.js 2.10.x
+* FOSJsRoutingBundle @stable ***Please follow all steps described [here](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/index.md).***
 
 The `require` part of your composer.json might look like this:
 
 ```js
     "require": {
-        "symfony/symfony": "2.3.*",
-        "components/jquery": "1.11.1",
-        "datatables/datatables": "1.10.4",
-        "moment/moment": "2.8.4",
+        "symfony/symfony": "2.6.*",
+        "components/jquery": "1.11.3",
+        "datatables/datatables": "1.10.7",
+        "moment/moment": "2.10.2",
         "friendsofsymfony/jsrouting-bundle": "@stable"
     },
 ```
@@ -92,6 +92,10 @@ Include the jQuery, DataTables, Moment and FOSJsRoutingBundle javascript/css fil
 
 - [Columns](./columns.md)
 
+## List of available features and options
+
+- [Features and Options](./options.md)
+
 ## To use a line formatter
 
 - [Line formatter](./lineFormatter.md)
@@ -99,3 +103,7 @@ Include the jQuery, DataTables, Moment and FOSJsRoutingBundle javascript/css fil
 ## Reference configuration
 
 - [Reference configuration](./configuration.md)
+
+## Creating an Admin Section (new, unstable and experimental)
+
+- [Example](./admin.md)

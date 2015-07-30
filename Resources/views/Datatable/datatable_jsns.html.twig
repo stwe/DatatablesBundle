@@ -1,14 +1,11 @@
     {% if view_details_child_rows %}
         {% include "SgDatatablesBundle:Datatable:detailsfunction.html.twig" %}
-     {% endif %}
+     {% endif %}	
     $(document).ready(function () {
 
-        var selector = "#{{view_table_id}}";
-        
-        var responsiveHelper_dt_basic = undefined;
-	var responsiveHelper_datatable_fixed_column = undefined;
-	var responsiveHelper_datatable_col_reorder = undefined;
-	var responsiveHelper_datatable_tabletools = undefined;
+        var selector = "#{{ view_table_id }}";
+
+        var responsiveHelper_datatable_tabletools = undefined;
         var breakpointDefinition = {
                 tablet : 1024,
                 phone : 480
@@ -25,8 +22,16 @@
             {% include "SgDatatablesBundle:Datatable:options.html.twig" %}
         };
 
+        var callbacks = {
+            {% include "SgDatatablesBundle:Datatable:callbacks.html.twig" %}
+        };
+
         var ajax = {
             {% include "SgDatatablesBundle:Datatable:ajax.html.twig" %}
+        };
+
+        var searchCols = {
+            {% include "SgDatatablesBundle:Datatable:search_columns.html.twig" %}
         };
 
         setTimeout(function() {
@@ -36,48 +41,61 @@
 
             $.extend(defaults, features);
             $.extend(defaults, options);
+            $.extend(defaults, callbacks);
             $.extend(defaults, ajax);
             $.extend(defaults, columns);
+            $.extend(defaults, searchCols);
 
             if ( $.fn.dataTable.isDataTable( selector ) ) {
                 {#
                     to check if datatable already exists
                 #}
-               
             } else {
                 var oTable = $(selector).DataTable(defaults);
-               
             }
 
-            {% if view_individual_filtering %}
-                $("tfoot input.individual_filtering").on("keyup change", function() {
+            {% if view_options.individualFiltering %}
+
+                {% if "head" == view_options.individualFilteringPosition %}
+                    $(selector + '_wrapper tfoot tr').insertAfter($(selector + '_wrapper thead tr').first());
+                {% endif %}
+
+                {% if "both" == view_options.individualFilteringPosition %}
+                    $(selector + '_wrapper tfoot tr').clone().insertAfter($(selector + '_wrapper thead tr').first());
+                {% endif %}
+
+                var daterange = $('input[name="daterange"]');
+                try {
+                    $(daterange).daterangepicker();
+                } catch (e) {
+                    console.log(e.message);
+                }
+
+                {# "foot" position -> datatable_html.html.twig #}
+
+                $(selector + "_wrapper").find("tr input.individual_filtering").on("keyup change", function() {
                     oTable
                         .column( $(this).parent().index()+':visible' )
                         .search( this.value )
                         .draw();
                 });
+
+                $("select.individual_filtering").on("keyup change", function(event) {
+                    var searchFieldId = $(event.currentTarget).data('filter-property-id');
+                    var searchValue = $(this).val();
+                    searchValue = searchValue ? searchValue.toString() : '';
+                    oTable
+                        .column(searchFieldId)
+                        .search(searchValue)
+                        .draw();
+                });
+
             {% endif %}
 
             {% if view_multiselect %}
                 {% include "SgDatatablesBundle:Datatable:multiselect_actions.html.twig" with {'column': view_multiselect_column} %}
             {% endif %}
-               {% if view_details_child_rows %}
-                  
-                        $(selector+' tbody').on('click', 'td.details-control', function () {
-                            var tr = $(this).closest('tr');
-                            var row = oTable.row( tr );
 
-                            if ( row.child.isShown() ) {
-                                row.child.hide();
-                                tr.removeClass('shown');
-                            }
-                            else {
-                                row.child( format(row.data()) ).show();
-                                tr.addClass('shown');
-                            }
-                        });
-                {% endif %}
-            
         }, features.delay);
     });
 {% block sg_datatable_render_functions %}

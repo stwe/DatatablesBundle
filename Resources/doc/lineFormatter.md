@@ -15,7 +15,6 @@ securize request by removing id and transform it in a slug.
 namespace Sg\BlogBundle\Datatables;
 
 use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
-use Sg\DatatablesBundle\Column\ActionColumn;
 
 /**
  * Class UserDatatable
@@ -31,7 +30,7 @@ class UserDatatable extends AbstractDatatableView
     public function getLineFormatter()
     {
         $formatter = function($line){
-            $line["lastName"] = $line["lastName"] . ", " . $line["firstName"];
+            $line["name"] = $line["firstName"] . ", " . $line["lastName"];
 
             return $line;
         };
@@ -42,15 +41,15 @@ class UserDatatable extends AbstractDatatableView
     /**
      * {@inheritdoc}
      */
-    public function buildDatatableView()
+    public function buildDatatable()
     {
-        $this->getFeatures()->setServerSide(false);
-
         //...
 
-        $this
-            ->add("firstName", "column", array("visible"=>false))
-            ->add("lastName", "column")
+        $this->columnBuilder
+            ->add("firstName", "column", array("visible" => false))
+            ->add("lastName", "column", array("visible" => false))
+            ->add("name", "virtual")
+
             //....
         ;
         // ...
