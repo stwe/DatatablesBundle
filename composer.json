@@ -1,9 +1,9 @@
 {
-    "name": "renearias/ArxisDatatablesBundle",
+    "name": "renearias/arxis-datatables-bundle",
     "type": "symfony-bundle",
     "description": "Symfony2 Datatable Bundle For Doctrine2 Entities",
     "keywords": ["symfony2", "datatable", "grid", "table", "datagrid", "pagination"],
-    "homepage": "https://github.com/renearias/ArxisDatatablesBundle",
+    "homepage": "https://github.com/renearias/arxis-datatables-bundle",
     "license": "MIT",
     "minimum-stability": "master",
     "authors": [
