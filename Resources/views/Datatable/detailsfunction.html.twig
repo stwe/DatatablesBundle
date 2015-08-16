@@ -1,20 +1,5 @@
                 function format (d) {
-                 {#{% for column in view_columns %}
-                            {% if column.getAlias()=='rowdetail' or column.getAlias()=='arrayrowdetail' %}
-                                {%if column.getAlias()=='arrayrowdetail'%}
-                                    var arrayData={{'d.'~column.arrayData}};
-                                    if (typeof arrayData !== 'undefined' && arrayData.length > 0) {
-                                    var recofuntion='Registra '+arrayData.length+' movimientos';
-                                    }else
-                                    {
-                                    var recofuntion='No Registra Movimientos';
-                                    };
-                                 {% endif %}
-                             {% endif %}   
-                   {% endfor %}#}
-                   
-                     
-		    var tabledetail= '<table cellpadding="5" cellspacing="0" border="0" class="table table-hover table-condensed">';
+                    var tabledetail= '<table cellpadding="5" cellspacing="0" border="0" class="table table-hover table-condensed">';
                         {% set f=1 %}
 		        {% for column in view_columns %}
                             {% if (column.getAlias()=='rowdetail' or column.getAlias()=='arrayrowdetail') and column.visibleonrow %}

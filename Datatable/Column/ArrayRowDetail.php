@@ -19,7 +19,7 @@ use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-class ArrayRowDetail extends Column
+class ArrayRowDetail extends ArrayColumn
 {
     //-------------------------------------------------
     // ColumnInterface
@@ -99,24 +99,9 @@ class ArrayRowDetail extends Column
     {
       return $this->arraydatafield;
     }
-   
-    /**
-     * {@inheritdoc}
-     */
-    public function setData($data)
-    {
-        if (empty($data) || !is_string($data)) {
-            throw new InvalidArgumentException("setData(): Expecting non-empty string.");
-        }
-
-        if (false === strstr($data, '.')) {
-            throw new InvalidArgumentException("setData(): An association is expected.");
-        }
-
-        $this->data = $data;
-
-        return $this;
-    }
+    //-------------------------------------------------
+    // OptionsInterface
+    //-------------------------------------------------
 
     /**
      * {@inheritdoc}
@@ -124,33 +109,23 @@ class ArrayRowDetail extends Column
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
-        
         $resolver->setDefaults(array(
-           
             "searchable" => false,
-
             "visible" => false,
             "visibleonrow" => true,
             "arraydata" => "",
             "arraydatatype" => "",
             "arraydatafield" => ""
         ));
-        $resolver->setRequired(array("data"));
-        $resolver->addAllowedTypes(array("data"=>"string",
-                            "arraydata"=>"string",
-                            "arraydatatype"=>"string",
-                            "arraydatafield"=>"string",
-                            "render"=>array("string")));
         
+        
+        $resolver->addAllowedTypes(array(
+                            'arraydata'=>'string',
+                            'arraydatatype'=>'string',
+                            'arraydatafield'=>'string',
+                            'render'=>array('string')));
 
         return $this;
-    }
-     /**
-     * {@inheritdoc}
-     */
-    public function getTemplate()
-    {
-        return "SgDatatablesBundle:Column:arrayrow.html.twig";
     }
     /**
      * {@inheritdoc}
