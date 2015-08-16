@@ -1,13 +1,17 @@
 {
-    "name": "sg/datatablesbundle",
+    "name": "renearias/ArxisDatatablesBundle",
     "type": "symfony-bundle",
     "description": "Symfony2 Datatable Bundle For Doctrine2 Entities",
     "keywords": ["symfony2", "datatable", "grid", "table", "datagrid", "pagination"],
-    "homepage": "https://github.com/stwe/DatatablesBundle",
+    "homepage": "https://github.com/renearias/ArxisDatatablesBundle",
     "license": "MIT",
+    "minimum-stability": "master",
     "authors": [
         {
             "name": "stwe"
+        },
+        {
+            "name": "renearias"
         },
         {
             "name": "SgDatatablesBundle contributors",
