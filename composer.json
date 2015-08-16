@@ -5,7 +5,7 @@
     "keywords": ["symfony2", "datatable", "grid", "table", "datagrid", "pagination"],
     "homepage": "https://github.com/renearias/arxis-datatables-bundle",
     "license": "MIT",
-    "minimum-stability": "master",
+   
     "authors": [
         {
             "name": "stwe"
