@@ -1,6 +1,6 @@
 <script type="text/javascript">
     
-    {% if view_details_child_rows %}
+    {% if view_options.detailChildRows %}
         {% include "SgDatatablesBundle:Datatable:detailsfunction.html.twig" %}
      {% endif %}	
     $(document).ready(function () {
@@ -97,6 +97,23 @@
             {% if view_multiselect %}
                 {% include "SgDatatablesBundle:Datatable:multiselect_actions.html.twig" with {'column': view_multiselect_column} %}
             {% endif %}
+                
+                 {% if view_options.detailChildRows %}
+                  
+                        $(selector+' tbody').on('click', 'td.details-control', function () {
+                            var tr = $(this).closest('tr');
+                            var row = oTable.row( tr );
+
+                            if ( row.child.isShown() ) {
+                                row.child.hide();
+                                tr.removeClass('shown');
+                            }
+                            else {
+                                row.child( format(row.data()) ).show();
+                                tr.addClass('shown');
+                            }
+                        });
+                {% endif %}
 
         }, features.delay);
     });

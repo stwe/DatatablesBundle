@@ -73,6 +73,7 @@ public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'class' => '',
+            'classicon' => '',
             'padding' => '',
             'name' => '',
             'orderable' => true,
@@ -92,6 +93,7 @@ public function configureOptions(OptionsResolver $resolver)
         ));
 
         $resolver->setAllowedTypes('class', 'string');
+        $resolver->setAllowedTypes('classicon', 'string');
         $resolver->setAllowedTypes('padding', 'string');
         $resolver->setAllowedTypes('name', 'string');
         $resolver->setAllowedTypes('orderable', 'bool');

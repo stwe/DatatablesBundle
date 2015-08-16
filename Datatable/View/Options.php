@@ -181,6 +181,7 @@ class Options
      */
     protected $useIntegrationOptions;
 
+    protected $detailChildRows;
     protected $tabletools;
     //-------------------------------------------------
     // Ctor.
@@ -265,6 +266,7 @@ class Options
             'individual_filtering' => false,
             'individual_filtering_position' => 'foot',
             'use_integration_options' => false,
+            'detail_child_rows'=>false,
             'tabletools'=>false
         ));
 
@@ -287,6 +289,7 @@ class Options
         $resolver->setAllowedTypes('individual_filtering', 'bool');
         $resolver->setAllowedTypes('individual_filtering_position', 'string');
         $resolver->setAllowedTypes('use_integration_options', 'bool');
+        $resolver->setAllowedTypes('detail_child_rows', 'bool');
         $resolver->setAllowedTypes('tabletools', 'bool');
 
         $resolver->setAllowedValues('individual_filtering_position', array('head', 'foot', 'both'));
@@ -811,7 +814,24 @@ class Options
     {
         return $this->useIntegrationOptions;
     }
+   
     /**
+     * 
+     * @param boolean $detailChildRows
+     * @return $this
+     */
+    function setDetailChildRows($detailChildRows) {
+        $this->detailChildRows = $detailChildRows;
+         return $this;
+    }
+    /**
+     * 
+     * @return boolean
+     */
+    function getDetailChildRows() {
+        return $this->detailChildRows;
+    }
+        /**
      * Set tabletools.
      * @param boolean $tabletools
      * @return $this

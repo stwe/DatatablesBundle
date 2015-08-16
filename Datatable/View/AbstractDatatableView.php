@@ -139,10 +139,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /* 
      * @var boolean
      */
-    protected $detailsChildRows;
-    /* 
-     * @var boolean
-     */
     protected $useSDom;
 
     //-------------------------------------------------
@@ -242,7 +238,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $options['view_multiselect'] = $this->columnBuilder->isMultiselect();
         $options['view_multiselect_column'] = $this->columnBuilder->getMultiselectColumn();
         
-        $options["view_details_child_rows"] = $this->detailsChildRows;
+        
         $options["view_use_sdom"] = $this->useSDom;
         $options['view_table_id'] = $this->getName();
 
@@ -430,29 +426,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         return $options;
     }
 
-    /**
-     * Set detailsChildRows
-     *
-     * @param boolean $detailsChildRows
-     *
-     * @return $this
-     */
-    public function setDetailsChildRows($detailsChildRows)
-    {
-        $this->detailsChildRows = (boolean) $detailsChildRows;
-
-        return $this;
-    }
-    /**
-     * Get DetailsChildRows
-     *
-     * @return boolean
-     */
-    public function getDetailsChildRows()
-    {
-        return (boolean) $this->detailsChildRows;
-    }
-    
     /**
      * Set useSDom
      *

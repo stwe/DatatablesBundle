@@ -53,35 +53,47 @@ class RowDetail extends AbstractColumn
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            "class" => "",
-            "classicon" => "",
-            "padding" => "",
-            "name" => "",
-            "orderable" => true,
-            "render" => null,
-            "searchable" => false,
-            "title" => "",
-            "type" => "",
-            "visible" => true,
-            "visibleonrow" => true,
-            "width" => "",
-            "default" => ""
+            'class' => '',
+            'classicon' => '',
+            'padding' => '',
+            'name' => '',
+            'orderable' => true,
+            'render' => null,
+            'searchable' => true,
+            'title' => '',
+            'type' => '',
+            'visible' => true,
+            'visibleonrow' => true,
+            'width' => '',
+            'search_type' => 'like',
+            'filter_type' => 'text',
+            'filter_options' => [],
+            'filter_property' => '',
+            'filter_search_column' => '',
+            'default' => ''
         ));
 
-        $resolver->setAllowedTypes(array(
-            "class" => "string",
-            "padding" => "string",
-            "name" => "string",
-            "orderable" => "bool",
-            "render" => array("string", "null"),
-            "searchable" => "bool",
-            "title" => "string",
-            "type" => "string",
-            "visible" => "bool",
-             "visibleonrow" => "bool",
-            "width" => "string",
-            "default" => "string"
-        ));
+        $resolver->setAllowedTypes('class', 'string');
+        $resolver->setAllowedTypes('classicon', 'string');
+        $resolver->setAllowedTypes('padding', 'string');
+        $resolver->setAllowedTypes('name', 'string');
+        $resolver->setAllowedTypes('orderable', 'bool');
+        $resolver->setAllowedTypes('render', array('string', 'null'));
+        $resolver->setAllowedTypes('searchable', 'bool');
+        $resolver->setAllowedTypes('title', 'string');
+        $resolver->setAllowedTypes('type', 'string');
+        $resolver->setAllowedTypes('visible', 'bool');
+        $resolver->setAllowedTypes('visibleonrow', 'bool');
+        $resolver->setAllowedTypes('width', 'string');
+        $resolver->setAllowedTypes('search_type', 'string');
+        $resolver->setAllowedTypes('filter_type', 'string');
+        $resolver->setAllowedTypes('filter_options', 'array');
+        $resolver->setAllowedTypes('filter_property', 'string');
+        $resolver->setAllowedTypes('filter_search_column', 'string');
+        $resolver->setAllowedTypes('default', 'string');
+          
+        $resolver->setAllowedValues('search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
+        $resolver->setAllowedValues('filter_type', array('text', 'select'));
 
         return $this;
     }
@@ -91,7 +103,7 @@ class RowDetail extends AbstractColumn
      */
     public function getTemplate()
     {
-        return "SgDatatablesBundle:Column:column.html.twig";
+        return 'SgDatatablesBundle:Column:column.html.twig';
     }
 
     /**
@@ -99,7 +111,7 @@ class RowDetail extends AbstractColumn
      */
     public function getAlias()
     {
-        return "rowdetail";
+        return 'rowdetail';
     }
 
 
