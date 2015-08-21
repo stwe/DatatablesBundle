@@ -40,7 +40,7 @@ class CrudController extends Controller
      * @return DatatableViewInterface
      * @throws Exception
      */
-    private function getDatatable()
+    protected function getDatatable()
     {
         $request = $this->container->get('request');
         $datatableName = $request->get('datatable');
@@ -62,7 +62,7 @@ class CrudController extends Controller
      *
      * @return string
      */
-    private function getAlias()
+    protected function getAlias()
     {
         $request = $this->container->get('request');
 
@@ -77,7 +77,7 @@ class CrudController extends Controller
      * @return array
      * @throws Exception
      */
-    private function getFields($action)
+    protected function getFields($action)
     {
         $request = $this->container->get('request');
         $fields = $request->get('fields');
@@ -104,7 +104,7 @@ class CrudController extends Controller
      * @return ClassMetadata
      * @throws Exception
      */
-    private function getMetadata($entity)
+    protected function getMetadata($entity)
     {
         try {
             $metadata = $this->getDoctrine()->getManager()->getMetadataFactory()->getMetadataFor($entity);
@@ -121,7 +121,7 @@ class CrudController extends Controller
      * @return object
      * @throws Exception
      */
-    private function getNewEntity()
+    protected function getNewEntity()
     {
         $datatable = $this->getDatatable();
         $entity = $this->getMetadata($datatable->getEntity())->getName();
@@ -138,7 +138,7 @@ class CrudController extends Controller
      *
      * @return array|null
      */
-    private function searchSubArray(array $array, $key, $value) {
+    protected function searchSubArray(array $array, $key, $value) {
         foreach ($array as $subarray){
             if (isset($subarray[$key]) && $subarray[$key] == $value)
                 return $subarray;

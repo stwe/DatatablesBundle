@@ -106,4 +106,4 @@ Include the jQuery, DataTables, Moment and FOSJsRoutingBundle javascript/css fil
 
 ## Creating an Admin Section (new, unstable and experimental)
 
-- [Example](./admin.md)
+- [Admin section](./admin.md)

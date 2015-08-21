@@ -18,7 +18,7 @@ services:
         arguments: [@request_stack, @sg_datatables.serializer, %sg_datatables.query%]
     sg_datatables.routing.loader:
         class: Sg\DatatablesBundle\Routing\DatatablesRoutingLoader
-        arguments: [%sg_datatables.global.prefix%, %sg_datatables.routes%, %sg_datatables.fields%]
+        arguments: [%sg_datatables.global.prefix%, %sg_datatables.routes%, %sg_datatables.fields%, %sg_datatables.controller%]
         tags:
             - { name: routing.loader }
     sg_datatables.view.container:
