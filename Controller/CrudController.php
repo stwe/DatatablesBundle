@@ -81,19 +81,12 @@ class CrudController extends Controller
     {
         $request = $this->container->get('request');
         $fields = $request->get('fields');
-        $alias = $this->getAlias();
 
-        $array = $this->searchSubArray($fields, 'route', $alias);
-
-        if (null === $array) {
-            throw new Exception('getFields(): No fields configured for ' . $alias);
+        if (!isset($fields[$action])) {
+            throw new Exception('getFields(): No fields configured for ' . $this->getAlias() . ':' . $action . 'Action');
         }
 
-        if (false === array_key_exists($action, $array)) {
-            throw new Exception('getFields(): No fields configured for ' . $action);
-        }
-
-        return $array[$action];
+        return $fields[$action];
     }
 
     /**
@@ -127,24 +120,6 @@ class CrudController extends Controller
         $entity = $this->getMetadata($datatable->getEntity())->getName();
 
         return new $entity;
-    }
-
-    /**
-     * Search sub array.
-     *
-     * @param array  $array
-     * @param string $key
-     * @param string $value
-     *
-     * @return array|null
-     */
-    protected function searchSubArray(array $array, $key, $value) {
-        foreach ($array as $subarray){
-            if (isset($subarray[$key]) && $subarray[$key] == $value)
-                return $subarray;
-        }
-
-        return null;
     }
 
     //-------------------------------------------------

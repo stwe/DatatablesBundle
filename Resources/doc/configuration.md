@@ -19,7 +19,7 @@ sg_datatables:
     #routes:
     #    post: post_datatable
     #fields:
-    #    - { route: post, edit: [title, content, visible], new: [title, content, visible], show: [id, title, content, visible] }
+    #    post: { edit: [title, content, visible], new: [title, content, visible], show: [id, title, content, visible] }
     #controller:
     #    post: { index: AppBundle:Admin:index }
 ```

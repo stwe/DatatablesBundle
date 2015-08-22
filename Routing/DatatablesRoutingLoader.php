@@ -112,6 +112,8 @@ class DatatablesRoutingLoader extends Loader
     private function generatesRoutes()
     {
         foreach ($this->options as $alias => $datatable) {
+            $fields = isset($this->fields[$alias]) ? $this->fields[$alias] : null;
+
             // index
             $this->routes->add(
                 DatatablesRoutingLoader::PREF . $alias . '_index',
@@ -143,7 +145,7 @@ class DatatablesRoutingLoader extends Loader
                 DatatablesRoutingLoader::PREF . $alias . '_create',
                 new Route(
                     '/' . $alias . '/',
-                    array('_controller' => $this->controller[$alias]['create'], 'alias' => $alias, 'datatable' => $datatable, 'fields' => $this->fields),
+                    array('_controller' => $this->controller[$alias]['create'], 'alias' => $alias, 'datatable' => $datatable, 'fields' => $fields),
                     array(),
                     array(),
                     '',
@@ -155,7 +157,7 @@ class DatatablesRoutingLoader extends Loader
                 DatatablesRoutingLoader::PREF . $alias . '_new',
                 new Route(
                     '/' . $alias . '/new',
-                    array('_controller' => $this->controller[$alias]['new'], 'alias' => $alias, 'datatable' => $datatable, 'fields' => $this->fields),
+                    array('_controller' => $this->controller[$alias]['new'], 'alias' => $alias, 'datatable' => $datatable, 'fields' => $fields),
                     array(),
                     array('expose' => true),
                     '',
@@ -168,7 +170,7 @@ class DatatablesRoutingLoader extends Loader
             $this->routes->add(
                 DatatablesRoutingLoader::PREF . $alias . '_show',
                 new Route('/' . $alias . '/{id}',
-                    array('_controller' => $this->controller[$alias]['show'], 'alias' => $alias, 'datatable' => $datatable, 'fields' => $this->fields),
+                    array('_controller' => $this->controller[$alias]['show'], 'alias' => $alias, 'datatable' => $datatable, 'fields' => $fields),
                     array('id' => '\d+'),
                     array('expose' => true),
                     '',
@@ -182,7 +184,7 @@ class DatatablesRoutingLoader extends Loader
                 DatatablesRoutingLoader::PREF . $alias . '_edit',
                 new Route(
                     '/' . $alias . '/{id}/edit',
-                    array('_controller' => $this->controller[$alias]['edit'], 'alias' => $alias, 'datatable' => $datatable, 'fields' => $this->fields),
+                    array('_controller' => $this->controller[$alias]['edit'], 'alias' => $alias, 'datatable' => $datatable, 'fields' => $fields),
                     array('id' => '\d+'),
                     array('expose' => true),
                     '',
@@ -194,7 +196,7 @@ class DatatablesRoutingLoader extends Loader
                 DatatablesRoutingLoader::PREF . $alias . '_update',
                 new Route(
                     '/' . $alias . '/{id}',
-                    array('_controller' => $this->controller[$alias]['update'], 'alias' => $alias, 'datatable' => $datatable, 'fields' => $this->fields),
+                    array('_controller' => $this->controller[$alias]['update'], 'alias' => $alias, 'datatable' => $datatable, 'fields' => $fields),
                     array('id' => '\d+'),
                     array(),
                     '',

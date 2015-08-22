@@ -27,7 +27,7 @@ sg_datatables:
         # The key is the route prefix, the value is the name of the datatable.
         post: post_datatable
     fields:
-        - { route: post, edit: [title, content, visible], new: [title, content, visible], show: [id, title, content, visible] }
+        post: { edit: [title, content, visible], new: [title, content, visible], show: [id, title, content, visible] }
     controller:
         post: { index: AppBundle:Admin:index }
 ```
