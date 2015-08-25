@@ -63,6 +63,11 @@ class DatatableQuery
     private $em;
 
     /**
+     * @var ClassMetadata
+     */
+    private $metadata;
+
+    /**
      * @var string
      */
     private $tableName;
@@ -146,9 +151,9 @@ class DatatableQuery
 
         $this->entity = $this->datatableView->getEntity();
         $this->em = $this->datatableView->getEntityManager();
-        $metadata = $this->getMetadata($this->entity);
-        $this->tableName = $this->getTableName($metadata);
-        $this->rootEntityIdentifier = $this->getIdentifier($metadata);
+        $this->metadata = $this->getMetadata($this->entity);
+        $this->tableName = $this->getTableName($this->metadata);
+        $this->rootEntityIdentifier = $this->getIdentifier($this->metadata);
         $this->qb = $this->em->createQueryBuilder();
 
         $this->selectColumns = array();
@@ -176,6 +181,21 @@ class DatatableQuery
      */
     private function setupColumnArrays()
     {
+        /* Example:
+              SELECT
+                  partial fos_user.{id},
+                  partial posts_comments.{title,id},
+                  partial posts.{id,title}
+              FROM
+                  AppBundle\Entity\User fos_user
+              LEFT JOIN
+                  fos_user.posts posts
+              LEFT JOIN
+                  posts.comments posts_comments
+              ORDER BY
+                  posts_comments.title asc
+         */
+
         $this->selectColumns[$this->tableName][] = $this->rootEntityIdentifier;
 
         foreach ($this->columns as $key => $column) {
@@ -197,14 +217,26 @@ class DatatableQuery
                         $last = array_pop($parts);
                         $select = implode('_', $parts);
                         $join = str_replace('_', '.', $select);
-                        $this->selectColumns[$select][] = $last;
 
-                        $this->selectColumns[$array[0]][] = 'id';
+                        // id root-table
+                        if (false === array_key_exists($array[0], $this->selectColumns)) {
+                            $this->setIdentifierFromAssociation($array[0]);
+                        }
                         $this->joins[$this->tableName . '.' . $array[0]] = $array[0];
 
+                        // id association
+                        if (false === array_key_exists($select, $this->selectColumns)) {
+                            $this->setIdentifierFromAssociation($parts, $select);
+                        }
                         $this->joins[$join] = $select;
+
+                        $this->selectColumns[$select][] = $last;
                         $this->addSearchOrderColumn($key, $select, $last);
                     } else {
+                        if (false === array_key_exists($array[0], $this->selectColumns)) {
+                            $this->setIdentifierFromAssociation($array[0]);
+                        }
+
                         $this->selectColumns[$array[0]][] = $array[1];
                         $this->joins[$this->tableName . '.' . $array[0]] = $array[0];
                         $this->addSearchOrderColumn($key, $array[0], $array[1]);
@@ -215,19 +247,6 @@ class DatatableQuery
                 $this->searchColumns[] = null;
             }
 
-        }
-
-        // joins - hardcoded id's
-        foreach ($this->selectColumns as $key => $value) {
-            $array = $this->selectColumns[$key];
-
-            if (false === array_search('id', $array)) {
-                $array[] = 'id';
-            }
-
-            $array = array_unique($array);
-
-            $this->selectColumns[$key] = $array;
         }
 
         return $this;
@@ -717,6 +736,49 @@ class DatatableQuery
         $identifiers = $metadata->getIdentifierFieldNames();
 
         return array_shift($identifiers);
+    }
+
+    /**
+     * Set identifier from association.
+     *
+     * @param string|array       $association
+     * @param string             $key
+     * @param integer            $i
+     * @param ClassMetadata|null $metadata
+     *
+     * @return $this
+     * @throws Exception
+     */
+    private function setIdentifierFromAssociation($association, $key = '', $i = 0, $metadata = null)
+    {
+        $id = null;
+
+        if (null === $metadata) {
+            $metadata = $this->metadata;
+        }
+
+        if (is_string($association)) {
+            $targetEntityClass = $metadata->getAssociationTargetClass($association);
+            $targetMetadata = $this->getMetadata($targetEntityClass);
+            $this->selectColumns[$association][] = $this->getIdentifier($targetMetadata);
+        }
+
+        if (is_array($association) && array_key_exists($i, $association)) {
+            $column = $association[$i];
+            $count = count($association) - 1;
+            if (true === $metadata->hasAssociation($column)) {
+                $targetEntityClass = $metadata->getAssociationTargetClass($column);
+                $targetMetadata = $this->getMetadata($targetEntityClass);
+                if ($count == $i) {
+                    $this->selectColumns[$key][] = $this->getIdentifier($targetMetadata);
+                } else {
+                    $i++;
+                    $this->setIdentifierFromAssociation($association, $key, $i, $targetMetadata);
+                }
+            }
+        }
+
+        return $this;
     }
 
     /**
