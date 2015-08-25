@@ -67,7 +67,7 @@
 
                 {# "foot" position -> datatable_html.html.twig #}
 
-                $(selector + "_wrapper").find("tr input.individual_filtering").on("keyup change", function() {
+                $(selector + "_wrapper").find("tr input.individual_filtering").on("keyup change", function(event) {
                     
                     if ( event.type == "keyup" )
                     {
