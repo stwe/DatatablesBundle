@@ -1,5 +1,5 @@
 "searchCols": [
     {% for column in view_columns %}
-         {% if column.filterSearchColumn is defined and column.filterSearchColumn|length > 0 %}{"search" : "{{ column.filterSearchColumn }}"}{% else %}null{% endif %} ,
+        {% if column.filterSearchColumn is defined and column.filterSearchColumn|length > 0 %}{"search" : "{{ column.filterSearchColumn }}"}{% else %}null{% endif %},
     {% endfor %}
 ]
