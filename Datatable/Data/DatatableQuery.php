@@ -751,8 +751,6 @@ class DatatableQuery
      */
     private function setIdentifierFromAssociation($association, $key = '', $i = 0, $metadata = null)
     {
-        $id = null;
-
         if (null === $metadata) {
             $metadata = $this->metadata;
         }
