@@ -88,10 +88,15 @@ SgDatatablesBundle:Column:column.html.twig
 
 ``` php
 $this->columnBuilder
-    ->add('tags.name', 'array', array(
-            'title' => 'Tags',
-            'data' => 'tags[, ].name' // required option
+    ->add('posts.title', 'array', array(
+            'title' => 'Posts',
+            'data' => 'posts[, ].title' // required option
         ));
+        ->add('posts.comments.title', 'array', array(
+            'title' => 'Comments titles',
+            'render' => 'render_count', // set this render function for a counter
+            'data' => 'posts[, ].comments[, ].title'
+        ))
 ```
 ___
 

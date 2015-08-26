@@ -224,6 +224,7 @@ class PostDatatable extends AbstractDatatableView
                 'title' => $this->translator->trans('dtbundle.post.titles.comments'),
                 'searchable' => true,
                 'orderable' => true,
+                //'render' => 'render_count',
                 'data' => 'comments[, ].title',
             ))
             ->add('comments.createdby.username', 'array', array(
