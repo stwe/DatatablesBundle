@@ -107,8 +107,9 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
             $skeletonDirs[] = $dir;
         }
 
-        $skeletonDirs[] = __DIR__.'/../Resources/views/Skeleton';
-        $skeletonDirs[] = __DIR__.'/../Resources';
+        $reflClass = new \ReflectionClass(get_class($this));
+        $skeletonDirs[] = dirname($reflClass->getFileName()) . '/../Resources/views/Skeleton';
+        $skeletonDirs[] = dirname($reflClass->getFileName()) . '/../Resources';
 
         return $skeletonDirs;
     }
