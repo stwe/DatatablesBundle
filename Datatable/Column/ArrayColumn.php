@@ -21,6 +21,13 @@ use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
  */
 class ArrayColumn extends Column
 {
+    /**
+     * The counter represents a link.
+     *
+     * @var Action
+     */
+    protected $countAction;
+
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -63,8 +70,43 @@ class ArrayColumn extends Column
         parent::configureOptions($resolver);
 
         $resolver->setRequired(array('data'));
+
+        $resolver->setDefault('count_action', array());
+
         $resolver->addAllowedTypes('data', 'string');
+        $resolver->addAllowedTypes('count_action', 'array');
 
         return $this;
+    }
+
+    //-------------------------------------------------
+    // Getters && Setters
+    //-------------------------------------------------
+
+    /**
+     * Set count action.
+     *
+     * @param array $countAction
+     *
+     * @return $this
+     */
+    public function setCountAction(array $countAction)
+    {
+        if ($countAction) {
+            $this->countAction = new Action();
+            $this->countAction->setupOptionsResolver($countAction);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get count action.
+     *
+     * @return Action
+     */
+    public function getCountAction()
+    {
+        return $this->countAction;
     }
 }

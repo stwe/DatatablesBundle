@@ -34,8 +34,20 @@
         }
     }
 
-    function render_count(data, type, row, meta) {
+    function render_count(data, type, row, meta, route) {
         var array = data.split(',');
-        return array.length;
+        var count = (data == '') ? 0 : array.length;
+        if (typeof(route) != 'undefined') {
+
+            var url  = "<a ";
+            url += 'href="' + route + '" ';
+            url += ">";
+            url += count;
+            url += "</a>";
+
+            return url;
+        } else {
+            return count;
+        }
     }
 </script>
