@@ -6,6 +6,8 @@
 
 [![Latest Stable Version](https://poser.pugx.org/sg/datatablesbundle/v/stable)](https://packagist.org/packages/sg/datatablesbundle) [![Total Downloads](https://poser.pugx.org/sg/datatablesbundle/downloads)](https://packagist.org/packages/sg/datatablesbundle) [![Latest Unstable Version](https://poser.pugx.org/sg/datatablesbundle/v/unstable)](https://packagist.org/packages/sg/datatablesbundle) [![License](https://poser.pugx.org/sg/datatablesbundle/license)](https://packagist.org/packages/sg/datatablesbundle)
 
+### Thanks for 10k downloads. A special thanks goes to all the [contributors](https://github.com/stwe/DatatablesBundle/graphs/contributors), each of whom made many important suggestions and improvements.
+
 ## Documentation
 
 [Demo Application](https://github.com/stwe/dtbundle-demo)
