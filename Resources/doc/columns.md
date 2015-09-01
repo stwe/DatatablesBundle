@@ -34,11 +34,12 @@ SgDatatablesBundle:Column:column.html.twig
 ``` php
 $this->columnBuilder
     ->add('title', 'column', array(
-            'title' => 'title',
-            'searchable' => false,
-            'orderable' => false,
-            'default' => 'default title value'
-        ));
+        'title' => 'title',
+        'searchable' => false,
+        'orderable' => false,
+        'default' => 'default title value'
+    ))
+;
 ```
 
 For many-to-one associations:
@@ -46,11 +47,12 @@ For many-to-one associations:
 ``` php
 $this->columnBuilder
     ->add('createdBy.username', 'column', array(
-            'title' => 'CreatedBy'
-        ))
+        'title' => 'CreatedBy'
+    ))
     ->add('updatedBy.username', 'column', array(
-            'title' => 'UpdatedBy'
-        ));
+        'title' => 'UpdatedBy'
+    ))
+;
 ```
 ___
 
@@ -60,7 +62,7 @@ Represents a column for many-to-many or one-to-many associations.
 
 ### Default template
 
-SgDatatablesBundle:Column:column.html.twig
+SgDatatablesBundle:Column:array.html.twig
 
 ### Options
 
@@ -83,6 +85,8 @@ SgDatatablesBundle:Column:column.html.twig
 | filter_search_column | string         | ''      |          |
 | default              | string         | ''      |          |
 | data                 | string         |         | required |
+| count                | boolean        | false   |          |
+| count_action         | array          | array() |          |
 
 ### Example
 
@@ -91,12 +95,29 @@ $this->columnBuilder
     ->add('posts.title', 'array', array(
             'title' => 'Posts',
             'data' => 'posts[, ].title' // required option
-        ));
-        ->add('posts.comments.title', 'array', array(
-            'title' => 'Comments titles',
-            'render' => 'render_count', // set this render function for a counter
-            'data' => 'posts[, ].comments[, ].title'
         ))
+        // count example:
+        ->add('posts.comments.title', 'array', array(
+            'title' => 'Posts comments',
+            'count' => true,
+            'data' => 'posts[, ].comments[, ].title',
+            'count_action' => array(
+                'route' => 'post_show',
+                'route_parameters' => array(
+                    'id' => 'id' // the post id
+                ),
+                //'label' => 'Comments',
+                //'icon' => 'fa fa-eye-slash',
+                'attributes' => array(
+                    'rel' => 'tooltip',
+                    'title' => 'Comments',
+                    'class' => 'badge alert-info',
+                    //'class' => 'btn btn-primary btn-xs',
+                    'role' => 'button'
+                ),
+            )
+        ))
+;
 ```
 ___
 
@@ -117,8 +138,9 @@ see: Column
 ``` php
 $this->columnBuilder
     ->add('a virtual field', 'virtual', array(
-            'title' => 'virtual'
-    ));
+        'title' => 'virtual'
+    ))
+;
 ```
 ___
 
@@ -159,12 +181,13 @@ SgDatatablesBundle:Column:boolean.html.twig
 ``` php
 $this->columnBuilder
     ->add('visible', 'boolean', array(
-            'title' => 'Visible',
-            'true_icon' => 'glyphicon glyphicon-ok',
-            'false_icon' => 'glyphicon glyphicon-remove',
-            'true_label' => 'yes',
-            'false_label' => 'no'
-        ));
+        'title' => 'Visible',
+        'true_icon' => 'glyphicon glyphicon-ok',
+        'false_icon' => 'glyphicon glyphicon-remove',
+        'true_label' => 'yes',
+        'false_label' => 'no'
+    ))
+;
 ```
 ___
 
@@ -202,9 +225,10 @@ SgDatatablesBundle:Column:datetime.html.twig
 ``` php
 $this->columnBuilder
     ->add('createdAt', 'datetime', array(
-            'title' => 'Created',
-            'format' => 'LLL' // default = "lll"
-        ));
+        'title' => 'Created',
+        'format' => 'LLL' // default = "lll"
+    ))
+;
 ```
 ___
 
@@ -242,7 +266,8 @@ SgDatatablesBundle:Column:timeago.html.twig
 $this->columnBuilder
     ->add('createdAt', 'timeago', array(
             'title' => 'Created'
-        ));
+    ))
+;
 ```
 ___
 
@@ -329,7 +354,8 @@ $this->columnBuilder
                 )
             )
         )
-    ));
+    ))
+;
 ```
 ___
 
@@ -397,5 +423,6 @@ $this->getColumnBuilder()
                 'icon' => 'fa fa-lock'
             )
         )
-    ));
+    ))
+;
 ```

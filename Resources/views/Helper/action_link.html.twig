@@ -1,0 +1,62 @@
+var actionsString = "";
+
+{# start html #}
+{#
+{% if column.startHtml %}
+    actionsString += '{{ column.startHtml|raw }}';
+{% endif %}
+#}
+
+var routeParameters, attributes, visibleFlag, roleFlag;
+
+routeParameters  = new Array();
+attributes = "";
+visibleFlag = true;
+roleFlag = true;
+
+{% for key, value in action.renderIf %}
+    visibleFlag &= Boolean(row.{{ value }});
+{% endfor %}
+
+{% if action.role %}
+    roleFlag = false;
+    {% if app.user is not null and is_granted(action.role) %}
+        roleFlag = true;
+    {% endif %}
+{% endif %}
+
+if (true == visibleFlag && true == roleFlag) {
+    {% for key, value in action.routeParameters %}
+        routeParameters["{{ key }}"] = row.{{ value }};
+    {% endfor %}
+
+    var route  = Routing.generate("{{ action.route }}", routeParameters);
+
+    {% for key, value in action.attributes %}
+        attributes += '{{ key }}="{{ value }}" ';
+    {% endfor %}
+
+    var url  = "<a ";
+    url += 'href="' + route + '" ';
+    url += attributes;
+    {% if action.confirm %}
+        url += 'onclick="' + "return confirm('{{ action.ConfirmMessage }}')" + '" ';
+    {% endif %}
+    url += ">";
+    if (count !== 'undefined') {
+        url += count + ' ';
+    }
+    url += '{{ datatable_icon(action.icon, action.label) }}';
+    url += "</a>";
+
+    actionsString += url;
+}
+
+{# end html #}
+{#
+{% if column.endHtml %}
+    actionsString += '{{ column.endHtml|raw }}';
+{% endif %}
+#}
+
+return actionsString;

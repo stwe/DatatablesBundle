@@ -48,10 +48,6 @@
         {% endif %}
         {% if column.render %}
             "render": function(data, type, row, meta) {
-                {% if column.countAction.route is defined %}
-                    var route  = Routing.generate("{{ column.countAction.route }}");
-                    return {{ column.render }}(data, type, row, meta, route);
-                {% endif %}
                 return {{ column.render }}(data, type, row, meta);
             },
         {% endif %}

@@ -22,6 +22,13 @@ use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 class ArrayColumn extends Column
 {
     /**
+     *
+     *
+     * @var boolean
+     */
+    protected $count;
+
+    /**
      * The counter represents a link.
      *
      * @var Action
@@ -53,6 +60,14 @@ class ArrayColumn extends Column
     /**
      * {@inheritdoc}
      */
+    public function getTemplate()
+    {
+        return 'SgDatatablesBundle:Column:array.html.twig';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAlias()
     {
         return 'array';
@@ -71,9 +86,11 @@ class ArrayColumn extends Column
 
         $resolver->setRequired(array('data'));
 
+        $resolver->setDefault('count', false);
         $resolver->setDefault('count_action', array());
 
         $resolver->addAllowedTypes('data', 'string');
+        $resolver->setAllowedTypes('count', 'bool');
         $resolver->addAllowedTypes('count_action', 'array');
 
         return $this;
@@ -82,6 +99,30 @@ class ArrayColumn extends Column
     //-------------------------------------------------
     // Getters && Setters
     //-------------------------------------------------
+
+    /**
+     * Set count.
+     *
+     * @param boolean $count
+     *
+     * @return $this
+     */
+    public function setCount($count)
+    {
+        $this->count = (boolean) $count;
+
+        return $this;
+    }
+
+    /**
+     * Get count.
+     *
+     * @return boolean
+     */
+    public function getCount()
+    {
+        return (boolean) $this->count;
+    }
 
     /**
      * Set count action.
