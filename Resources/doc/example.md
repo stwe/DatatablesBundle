@@ -98,7 +98,7 @@ class PostDatatable extends AbstractDatatableView
             'dom' => 'lfrtip', // default, but not used because 'use_integration_options' = true
             'length_menu' => array(10, 25, 50, 100),
             'order_classes' => true,
-            'order' => [[0, 'asc']],
+            'order' => array(array(0, 'asc')),
             'order_multi' => true,
             'page_length' => 10,
             'paging_type' => Style::FULL_NUMBERS_PAGINATION,
