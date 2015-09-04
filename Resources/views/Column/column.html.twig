@@ -21,7 +21,7 @@
         {% else %}
             "searchable": false,
         {% endif %}
-        "title": "{{ column.title|raw }}",
+        "title": "{{ column.title|raw|e('js') }}",
         {% if column.type %}
             "type": "{{ column.type }}",
         {% endif %}
