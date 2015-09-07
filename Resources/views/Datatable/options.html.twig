@@ -56,20 +56,6 @@
 	             ],
 	            "sSwfPath": "{{asset("js/plugin/datatables/swf/copy_csv_xls_pdf.swf")}}"
 	        },
-                
-                        "preDrawCallback" : function() {
-				// Initialize the responsive datatables helper once.
-				if (!responsiveHelper_datatable_tabletools) {
-                                        console.log(selector,breakpointDefinition,$(selector));
-					responsiveHelper_datatable_tabletools = new ResponsiveDatatablesHelper($(selector), breakpointDefinition);
-				}
-			},
-			"rowCallback" : function(nRow) {
-				responsiveHelper_datatable_tabletools.createExpandIcon(nRow);
-			},
-			"drawCallback" : function( oSettings ) {
-				responsiveHelper_datatable_tabletools.respond();
-			},
 {% endif %}
 {% if view_options.detailChildRows %}
 "bDestroy":true,
