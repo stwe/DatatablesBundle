@@ -15,7 +15,7 @@ visibleFlag = true;
 roleFlag = true;
 
 {% for key, value in action.renderIf %}
-    visibleFlag &= Boolean(row.{{ value }});
+    visibleFlag &= Boolean(row.{{ key }} == '{{ value }}');
 {% endfor %}
 
 {% if action.role %}

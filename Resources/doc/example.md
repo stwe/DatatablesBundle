@@ -258,7 +258,7 @@ class PostDatatable extends AbstractDatatableView
                             'role' => 'button'
                         ),
                         'role' => 'ROLE_USER',
-                        'render_if' => array('visible')
+                        'render_if' => array('visible' => true)
                     ),
                     array(
                         'route' => 'post_edit',

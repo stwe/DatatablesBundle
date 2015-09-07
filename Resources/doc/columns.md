@@ -226,7 +226,7 @@ SgDatatablesBundle:Column:datetime.html.twig
 $this->columnBuilder
     ->add('createdAt', 'datetime', array(
         'title' => 'Created',
-        'format' => 'LLL' // default = "lll"
+        'date_format' => 'LLL' // default = "lll"
     ))
 ;
 ```
@@ -265,7 +265,7 @@ SgDatatablesBundle:Column:timeago.html.twig
 ``` php
 $this->columnBuilder
     ->add('createdAt', 'timeago', array(
-            'title' => 'Created'
+        'title' => 'Created'
     ))
 ;
 ```
@@ -350,7 +350,10 @@ $this->columnBuilder
                 ),
                 'role' => 'ROLE_USER',
                 'render_if' => array(
-                    'enabled'
+                    'id' => 1,
+                    'username' => 'admin',
+                    'enabled' => false,
+                    // ...
                 )
             )
         )
