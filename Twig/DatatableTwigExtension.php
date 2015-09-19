@@ -166,7 +166,7 @@ class DatatableTwigExtension extends Twig_Extension
             $filterColumnId = $loopIndex;
         }
 
-        return $twig->render('SgDatatablesBundle:Filters:filter_' . $filterType . '.html.twig', ['column' => $column, 'filterColumnId' => $filterColumnId]);
+        return $twig->render('SgDatatablesBundle:Filters:filter_' . $filterType . '.html.twig', array('column' => $column, 'filterColumnId' => $filterColumnId));
     }
 
     /**

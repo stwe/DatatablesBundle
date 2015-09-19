@@ -404,7 +404,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      */
     public function getCollectionAsOptionsArray($entitiesCollection, $keyPropertyName = 'id', $valuePropertyName = 'name')
     {
-        $options = [];
+        $options = array();
 
         foreach ($entitiesCollection as $entity) {
             $keyPropertyName = Container::camelize($keyPropertyName);

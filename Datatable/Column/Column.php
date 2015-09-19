@@ -84,7 +84,7 @@ class Column extends AbstractColumn
             'width' => '',
             'search_type' => 'like',
             'filter_type' => 'text',
-            'filter_options' => [],
+            'filter_options' => array(),
             'filter_property' => '',
             'filter_search_column' => '',
             'default' => ''

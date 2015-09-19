@@ -242,7 +242,7 @@ class Options
             'dom' => 'lfrtip',
             'length_menu' => array(10, 25, 50, 100),
             'order_classes' => true,
-            'order' => [[0, 'asc']],
+            'order' => array(array(0, 'asc')),
             'order_multi' => true,
             'page_length' => 10,
             'paging_type' => Style::FULL_NUMBERS_PAGINATION,
@@ -447,7 +447,7 @@ class Options
                 !array_key_exists(0, $o) ||
                 !is_numeric($o[0]) ||
                 !array_key_exists(1, $o) ||
-                !in_array($o[1], ['desc', 'asc'])){
+                !in_array($o[1], array('desc', 'asc'))){
                 throw new \Exception('setOrder(): Invalid array format.');
             }
         }
