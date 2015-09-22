@@ -17,7 +17,9 @@
 "scrollX": {{ view_features.scrollX ? 'true' : 'false' }},
 "scrollY": "{{ view_features.scrollY }}",
 "searching": {{ view_features.searching ? 'true' : 'false' }},
-
+{% for extension, options in view_features.extensions %}
+    "{{ extension }}": {{ options|json_encode|raw }},
+{% endfor %}
 {# "serverSide" -> Ajax.html.twig #}
 
 "stateSave": {{ view_features.stateSave ? 'true' : 'false' }},
