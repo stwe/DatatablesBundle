@@ -69,6 +69,7 @@
 | server_side   | bool   | true    |
 | state_save    | bool   | false   |
 | delay         | int    | 0       |
+| extensions    | array  | array() |
 
 # Options
 
