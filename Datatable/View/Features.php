@@ -135,6 +135,13 @@ class Features
      */
     protected $delay;
 
+    /**
+     * Extensions.
+     *
+     * @var array
+     */
+    protected $extensions;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -192,7 +199,8 @@ class Features
             'searching' => true,
             'server_side' => true,
             'state_save' => false,
-            'delay' => 0
+            'delay' => 0,
+            'extensions' => array()
         ));
 
         $resolver->setAllowedTypes('auto_width', 'bool');
@@ -209,6 +217,7 @@ class Features
         $resolver->setAllowedTypes('server_side', 'bool');
         $resolver->setAllowedTypes('state_save', 'bool');
         $resolver->setAllowedTypes('delay', 'int');
+        $resolver->setAllowedTypes('extensions', 'array');
 
         return $this;
     }
@@ -578,5 +587,21 @@ class Features
     public function getDelay()
     {
         return $this->delay;
+    }
+
+    /**
+     * @return array
+     */
+    public function getExtensions()
+    {
+        return $this->extensions;
+    }
+
+    /**
+     * @param array $extensions
+     */
+    public function setExtensions($extensions)
+    {
+        $this->extensions = $extensions;
     }
 }
