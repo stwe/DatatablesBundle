@@ -603,5 +603,7 @@ class Features
     public function setExtensions($extensions)
     {
         $this->extensions = $extensions;
+
+        return $this;
     }
 }
