@@ -5,6 +5,6 @@
         data-filter-property-id="{{ filterColumnId }}"
         >
        {% for key,name in column.filterOptions %}
-            <option value="{{ key }}" {% if key == column.filterSearchColumn %}selected{% endif %}>{{ name }}</option>
+            <option value="{{ key }}" {% if key is sameas(column.filterSearchColumn) %}selected{% endif %}>{{ name }}</option>
        {% endfor %}
 </select>
