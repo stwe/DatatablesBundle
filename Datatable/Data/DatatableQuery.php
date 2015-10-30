@@ -307,7 +307,7 @@ class DatatableQuery
      */
     public function addWhereResult(callable $callback)
     {
-        $this->callbacks['WhereResult'] = $callback;
+        $this->callbacks['WhereResult'][] = $callback;
 
         return $this;
     }
@@ -321,7 +321,7 @@ class DatatableQuery
      */
     public function addWhereAll(callable $callback)
     {
-        $this->callbacks['WhereAll'] = $callback;
+        $this->callbacks['WhereAll'][] = $callback;
 
         return $this;
     }
@@ -348,7 +348,9 @@ class DatatableQuery
     private function setWhereResultCallback(QueryBuilder $qb)
     {
         if (!empty($this->callbacks['WhereResult'])) {
-            $this->callbacks['WhereResult']($qb);
+            foreach ($this->callbacks['WhereResult'] as $callback) {
+                $callback($qb);
+            }
         }
 
         return $this;
@@ -364,7 +366,9 @@ class DatatableQuery
     private function setWhereAllCallback(QueryBuilder $qb)
     {
         if (!empty($this->callbacks['WhereAll'])) {
-            $this->callbacks['WhereAll']($qb);
+            foreach ($this->callbacks['WhereAll'] as $callback) {
+                $callback($qb);
+            }
         }
 
         return $this;
