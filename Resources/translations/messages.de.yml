@@ -17,3 +17,8 @@ datatables: # the bundle name
         confirmMsg: "Sind sie sicher?"
         selectError: "Sie müssen mindestens ein Element auswählen."
         ok: "Ok"
+    actions:
+        title: "Aktionen"
+        show: "Anzeigen"
+        new: "Neu"
+        edit: "Ändern"

@@ -17,3 +17,8 @@ datatables: # the bundle name
         confirmMsg: "Are you sure?"
         selectError: "You need to select at least one element."
         ok: "Ok"
+    actions:
+        title: "Actions"
+        show: "Show"
+        new: "New"
+        edit: "Edit"

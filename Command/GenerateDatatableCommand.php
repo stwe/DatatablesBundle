@@ -41,6 +41,7 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
             ->addArgument('entity', InputArgument::REQUIRED, 'The entity class name (shortcut notation).')
             ->addOption('fields', 'f', InputOption::VALUE_OPTIONAL, 'The fields.')
             ->addOption('client-side', 'c', InputOption::VALUE_NONE, 'The client-side flag.')
+            ->addOption('bootstrap3', 'b', InputOption::VALUE_NONE, 'The Bootstrap3-Framework flag.')
             ->addOption('ajax-url', 'a', InputOption::VALUE_OPTIONAL, 'The ajax url.');
     }
 
@@ -55,6 +56,7 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
         $fields = Fields::parseFields($input->getOption('fields'));
         $clientSide = $input->getOption('client-side');
         $ajaxUrl = $input->getOption('ajax-url');
+        $bootstrap = $input->getOption('bootstrap3');
 
         $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle) . "\\" . $entity;
         $metadata = $this->getEntityMetadata($entityClass);
@@ -71,7 +73,7 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
 
         /** @var \Sg\DatatablesBundle\Generator\DatatableGenerator $generator */
         $generator = $this->getGenerator($bundle);
-        $generator->generate($bundle, $entity, $fields, $clientSide, $ajaxUrl);
+        $generator->generate($bundle, $entity, $fields, $clientSide, $ajaxUrl, $bootstrap);
 
         $output->writeln(
             sprintf(

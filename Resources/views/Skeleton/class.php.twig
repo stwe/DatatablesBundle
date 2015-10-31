@@ -39,12 +39,13 @@ class {{ datatable_class }} extends AbstractDatatableView
             'delay' => 0
         ));
 
-        {% if false == client_side %}
+        {% if false == client_side -%}
         $this->ajax->setOptions(array(
             'url' => $this->router->generate('{{ ajax_url }}'),
             'type' => 'GET'
         ));
-        {% endif %}
+
+        {% endif -%}
 
         $this->options->setOptions(array(
             'display_start' => 0,
@@ -62,16 +63,59 @@ class {{ datatable_class }} extends AbstractDatatableView
             'state_duration' => 7200,
             'stripe_classes' => array(),
             'responsive' => false,
+            {% if true == bootstrap3 -%}
+            'class' => Style::BOOTSTRAP_3_STYLE,
+            {% else -%}
             'class' => Style::BASE_STYLE,
+            {% endif -%}
             'individual_filtering' => false,
             'individual_filtering_position' => 'foot',
+            {% if true == bootstrap3 -%}
+            'use_integration_options' => true
+            {% else -%}
             'use_integration_options' => false
+            {% endif -%}
         ));
 
         $this->columnBuilder
-        {% for field in fields %}
-        ->add('{{ field.property }}', '{{ field.column_name }}', array('title' => '{{ field.title }}',))
-        {% endfor %}
+            {% for field in fields -%}
+            ->add('{{ field.property }}', '{{ field.column_name }}', array(
+                'title' => '{{ field.title }}',
+            ))
+            {% endfor -%}
+            ->add(null, 'action', array(
+                'title' => $this->translator->trans('datatables.actions.title'),
+                'actions' => array(
+                    array(
+                        'route' => '{{ entity_class|lower }}_show',
+                        'route_parameters' => array(
+                            'id' => 'id'
+                        ),
+                        'label' => $this->translator->trans('datatables.actions.show'),
+                        'icon' => 'glyphicon glyphicon-eye-open',
+                        'attributes' => array(
+                            'rel' => 'tooltip',
+                            'title' => $this->translator->trans('datatables.actions.show'),
+                            'class' => 'btn btn-primary btn-xs',
+                            'role' => 'button'
+                        ),
+                    ),
+                    array(
+                        'route' => '{{ entity_class|lower }}_edit',
+                        'route_parameters' => array(
+                            'id' => 'id'
+                        ),
+                        'label' => $this->translator->trans('datatables.actions.edit'),
+                        'icon' => 'glyphicon glyphicon-edit',
+                        'attributes' => array(
+                            'rel' => 'tooltip',
+                            'title' => $this->translator->trans('datatables.actions.edit'),
+                            'class' => 'btn btn-primary btn-xs',
+                            'role' => 'button'
+                        ),
+                    )
+                )
+            ))
         ;
     }
 
