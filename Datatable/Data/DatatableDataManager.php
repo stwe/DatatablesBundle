@@ -76,6 +76,8 @@ class DatatableDataManager
      */
     public function getQueryFrom(DatatableViewInterface $datatableView)
     {
+        $twig = $datatableView->getTwig();
+
         $type = $datatableView->getAjax()->getType();
         $parameterBag = null;
 
@@ -88,7 +90,7 @@ class DatatableDataManager
         }
 
         $params = $parameterBag->all();
-        $query = new DatatableQuery($this->serializer, $params, $datatableView, $this->configs);
+        $query = new DatatableQuery($this->serializer, $params, $datatableView, $this->configs, $twig);
 
         return $query;
     }

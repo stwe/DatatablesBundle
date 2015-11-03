@@ -429,3 +429,51 @@ $this->getColumnBuilder()
     ))
 ;
 ```
+___
+
+## 9. Image column
+
+### Default template
+
+SgDatatablesBundle:Column:image.html.twig
+
+### Options
+
+| Option               | Type           | Default |          |
+|----------------------|----------------|---------|----------|
+| class                | string         | ''      |          |
+| padding              | string         | ''      |          |
+| name                 | string         | ''      |          |
+| orderable            | boolean        | false   |          |
+| searchable           | boolean        | false   |          |
+| title                | string         | ''      |          |
+| type                 | string         | ''      |          |
+| visible              | boolean        | true    |          |
+| width                | string         | ''      |          |
+| search_type          | string         | 'like'  |          |
+| filter_type          | string         | 'text'  |          |
+| filter_options       | array          | array() |          |
+| filter_property      | string         | ''      |          |
+| filter_search_column | string         | ''      |          |
+| imagine_filter       | string         | ''      |          |
+| relative_path        | string         |         | required |
+| holder_url           | string         | ''      |          |
+| holder_width         | string         | '50     |          |
+| holder_height        | string         | '50'    |          |
+| enlarge              | boolean        | false   |          |
+
+### Example
+
+``` php
+$this->columnBuilder
+    ->add('imageName', 'image', array(
+        'title' => 'Bild',
+        'relative_path' => 'images/posts',
+        //'imagine_filter' => 'my_thumb_40x40',
+        //'holder_url' => 'https://placehold.it',
+        //'holder_width' => '65',
+        //'holder_height' => '65',
+        //'enlarge' => true
+    ))
+;
+```

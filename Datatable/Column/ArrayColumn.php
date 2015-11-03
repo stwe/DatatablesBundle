@@ -22,7 +22,7 @@ use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 class ArrayColumn extends Column
 {
     /**
-     *
+     * Count array elements.
      *
      * @var boolean
      */

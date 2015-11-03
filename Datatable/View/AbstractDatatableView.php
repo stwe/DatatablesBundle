@@ -254,6 +254,14 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * {@inheritdoc}
      */
+    public function getTwig()
+    {
+        return $this->twig;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAjax()
     {
         return $this->ajax;

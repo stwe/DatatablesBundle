@@ -17,6 +17,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Twig_Error;
+use Twig_Environment;
 
 /**
  * Interface DatatableViewInterface
@@ -48,6 +49,13 @@ interface DatatableViewInterface
      * @throws Twig_Error
      */
     public function render($type = "all");
+
+    /**
+     * Get the Twig_Environment service.
+     *
+     * @return Twig_Environment
+     */
+    public function getTwig();
 
     /**
      * Get Ajax.

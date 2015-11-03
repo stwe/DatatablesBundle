@@ -24,6 +24,7 @@ use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;
+use Twig_Environment;
 
 /**
  * Class DatatableQuery
@@ -127,6 +128,11 @@ class DatatableQuery
      */
     private $configs;
 
+    /**
+     * @var Twig_Environment
+     */
+    private $twig;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -138,10 +144,11 @@ class DatatableQuery
      * @param array                  $requestParams
      * @param DatatableViewInterface $datatableView
      * @param array                  $configs
+     * @param Twig_Environment       $twig
      *
      * @throws Exception
      */
-    public function __construct(Serializer $serializer, array $requestParams, DatatableViewInterface $datatableView, array $configs)
+    public function __construct(Serializer $serializer, array $requestParams, DatatableViewInterface $datatableView, array $configs, Twig_Environment $twig)
     {
         $this->serializer = $serializer;
         $this->requestParams = $requestParams;
@@ -165,6 +172,8 @@ class DatatableQuery
         $this->columns = $datatableView->getColumnBuilder()->getColumns();
 
         $this->configs = $configs;
+
+        $this->twig = $twig;
 
         $this->setLineFormatter();
         $this->setupColumnArrays();
@@ -657,9 +666,40 @@ class DatatableQuery
         $output = array('data' => array());
 
         foreach ($fresults as $item) {
+            // Line formatter
             if (is_callable($this->lineFormatter)) {
                 $callable = $this->lineFormatter;
                 $item = call_user_func($callable, $item);
+            }
+
+            // Images
+            foreach ($this->columns as $column) {
+                /** @var \Sg\DatatablesBundle\Datatable\Column\ImageColumn $column */
+                if ('image' === $column->getAlias()) {
+                    if (class_exists('Liip\ImagineBundle\LiipImagineBundle')) {
+                        $item['imageName'] = $this->twig->render(
+                            'SgDatatablesBundle:Helper:ii_render_image.html.twig',
+                            array(
+                                'image_id' => 'sg_image_' . $item['id'],
+                                'image_name' => $item['imageName'],
+                                'filter' => $column->getImagineFilter(),
+                                'path' => $column->getRelativePath(),
+                                'holder_url' => $column->getHolderUrl(),
+                                'width' => $column->getHolderWidth(),
+                                'height' => $column->getHolderHeight(),
+                                'enlarge' => $column->getEnlarge()
+                            )
+                        );
+                    } else {
+                        $item['imageName'] = $this->twig->render(
+                            'SgDatatablesBundle:Helper:render_image.html.twig',
+                            array(
+                                'image_name' => $item['imageName'],
+                                'path' => $column->getRelativePath()
+                            )
+                        );
+                    }
+                }
             }
 
             $output['data'][] = $item;

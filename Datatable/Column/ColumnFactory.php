@@ -85,6 +85,9 @@ class ColumnFactory implements ColumnFactoryInterface
             case 'virtual':
                 $this->column = new VirtualColumn();
                 break;
+            case 'image':
+                $this->column = new ImageColumn();
+                break;
             default:
                 throw new InvalidArgumentException('createColumnByName(): The column is not supported.');
         }

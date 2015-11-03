@@ -22,3 +22,5 @@ datatables: # the bundle name
         show: "Show"
         new: "New"
         edit: "Edit"
+    dialog:
+        close: "Close"
