@@ -135,13 +135,6 @@ class Options
     protected $stripeClasses;
 
     /**
-     * Enable the Responsive extension for DataTables.
-     *
-     * @var boolean
-     */
-    protected $responsive;
-
-    /**
      * Table class names.
      *
      * @var string
@@ -251,7 +244,6 @@ class Options
             'search_delay' => 0,
             'state_duration' => 7200,
             'stripe_classes' => array(),
-            'responsive' => false,
             'class' => Style::BASE_STYLE,
             'individual_filtering' => false,
             'individual_filtering_position' => 'foot',
@@ -272,7 +264,6 @@ class Options
         $resolver->setAllowedTypes('search_delay', 'int');
         $resolver->setAllowedTypes('state_duration', 'int');
         $resolver->setAllowedTypes('stripe_classes', 'array');
-        $resolver->setAllowedTypes('responsive', 'bool');
         $resolver->setAllowedTypes('class', 'string');
         $resolver->setAllowedTypes('individual_filtering', 'bool');
         $resolver->setAllowedTypes('individual_filtering_position', 'string');
@@ -657,30 +648,6 @@ class Options
     public function getStripeClasses()
     {
         return $this->stripeClasses;
-    }
-
-    /**
-     * Set responsive.
-     *
-     * @param boolean $responsive
-     *
-     * @return $this
-     */
-    protected function setResponsive($responsive)
-    {
-        $this->responsive = (boolean) $responsive;
-
-        return $this;
-    }
-
-    /**
-     * Get responsive.
-     *
-     * @return boolean
-     */
-    public function getResponsive()
-    {
-        return (boolean) $this->responsive;
     }
 
     /**

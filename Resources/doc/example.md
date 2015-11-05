@@ -85,7 +85,10 @@ class PostDatatable extends AbstractDatatableView
             'searching' => true,
             'server_side' => true,
             'state_save' => false,
-            'delay' => 0
+            'delay' => 0,
+            'extensions' => array(
+                'responsive' => true
+            )
         ));
 
         $this->ajax->setOptions(array(
@@ -107,7 +110,6 @@ class PostDatatable extends AbstractDatatableView
             'search_delay' => 0,
             'state_duration' => 7200,
             'stripe_classes' => array(),
-            'responsive' => false,
             'class' => Style::BOOTSTRAP_3_STYLE . ' table-condensed',
             'individual_filtering' => true,
             'individual_filtering_position' => 'both',

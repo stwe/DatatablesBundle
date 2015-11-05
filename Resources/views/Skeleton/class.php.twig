@@ -63,7 +63,6 @@ class {{ datatable_class }} extends AbstractDatatableView
             'search_delay' => 0,
             'state_duration' => 7200,
             'stripe_classes' => array(),
-            'responsive' => false,
             {% if true == bootstrap3 -%}
             'class' => Style::BOOTSTRAP_3_STYLE,
             {% else -%}

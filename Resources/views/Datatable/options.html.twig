@@ -25,10 +25,6 @@
 "stateDuration": {{ view_options.stateDuration }},
 "stripeClasses": [{{ view_options.stripeClasses|join(", ")|json_encode|raw }}],
 
-{% if view_options.responsive %}
-    "responsive": true,
-{% endif %}
-
 {#
 "class"               -> datatable_html.html.twig
 "individualFiltering" -> datatable_js.html.twig
