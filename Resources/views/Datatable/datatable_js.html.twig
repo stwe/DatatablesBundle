@@ -1,5 +1,4 @@
 <script type="text/javascript">
-
     $(document).ready(function () {
 
         var selector = "#{{ view_table_id }}";
@@ -45,7 +44,32 @@
                     to check if datatable already exists
                 #}
             } else {
-                var oTable = $(selector).DataTable(defaults);
+                var oTable = $(selector)
+                {# Use the Button-Extension with integration options #}
+                {% if view_features.extensions.buttons is defined %}
+                    {% if true == view_options.useIntegrationOptions %}
+                        .on('init.dt',
+                            function() {
+                                new $.fn.dataTable.Buttons(oTable, {
+                                    "buttons": {% for option in view_features.extensions.buttons %}[{{ option|json_encode|raw }}]{% endfor %}
+                                });
+
+                                if ('bootstrap' == oTable.context[0].renderer) {
+                                    oTable.buttons().container().appendTo('#' + oTable.table().container().id + ' .col-sm-6:eq(0)');
+                                }
+
+                                if ('foundation' == oTable.context[0].renderer) {
+                                    oTable.buttons().container().appendTo('#' + oTable.table().container().id + ' .small-6.columns:eq(0)');
+                                }
+
+                                if ('jqueryui' == oTable.context[0].renderer) {
+                                    oTable.buttons().container().appendTo('#' + oTable.table().container().id);
+                                }
+                            }
+                        )
+                    {% endif %}
+                {% endif %}
+                .DataTable(defaults);
             }
 
             {% if view_options.individualFiltering %}
