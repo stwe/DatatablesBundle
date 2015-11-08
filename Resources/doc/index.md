@@ -96,6 +96,10 @@ Include the jQuery, DataTables, Moment and FOSJsRoutingBundle javascript/css fil
 
 - [Features and Options](./options.md)
 
+## Extensions like Buttons or Responsive
+
+- [Extensions](./extensions.md)
+
 ## To use a line formatter
 
 - [Line formatter](./lineFormatter.md)
