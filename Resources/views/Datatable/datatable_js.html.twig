@@ -51,7 +51,7 @@
                         .on('init.dt',
                             function() {
                                 new $.fn.dataTable.Buttons(oTable, {
-                                    "buttons": {% for option in view_features.extensions.buttons %}[{{ option|json_encode|raw }}]{% endfor %}
+                                    "buttons": [{% for option in view_features.extensions.buttons %}{{ option|json_encode|raw }},{% endfor %}]
                                 });
 
                                 if ('bootstrap' == oTable.context[0].renderer) {
