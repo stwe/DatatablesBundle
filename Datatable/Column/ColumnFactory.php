@@ -88,6 +88,9 @@ class ColumnFactory implements ColumnFactoryInterface
             case 'image':
                 $this->column = new ImageColumn();
                 break;
+            case 'gallery':
+                $this->column = new GalleryColumn();
+                break;
             default:
                 throw new InvalidArgumentException('createColumnByName(): The column is not supported.');
         }

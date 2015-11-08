@@ -433,6 +433,40 @@ ___
 
 ## 9. Image column
 
+Shows an uploaded image.
+
+Example entity:
+
+```php
+/**
+ * Class Post
+ *
+ * @ORM\Table()
+ * @ORM\Entity
+ * @Vich\Uploadable
+ */
+class Post
+{
+    // ...
+
+    /**
+     * @Vich\UploadableField(mapping="post_image", fileNameProperty="imageName")
+     *
+     * @var File
+     */
+    private $imageFile;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @var string
+     */
+    private $imageName;
+    
+    // ...
+}
+```
+
 ### Default template
 
 SgDatatablesBundle:Column:image.html.twig
@@ -458,7 +492,7 @@ SgDatatablesBundle:Column:image.html.twig
 | imagine_filter       | string         | ''      |          |
 | relative_path        | string         |         | required |
 | holder_url           | string         | ''      |          |
-| holder_width         | string         | '50     |          |
+| holder_width         | string         | '50'    |          |
 | holder_height        | string         | '50'    |          |
 | enlarge              | boolean        | false   |          |
 
@@ -474,6 +508,127 @@ $this->columnBuilder
         //'holder_width' => '65',
         //'holder_height' => '65',
         //'enlarge' => true
+    ))
+;
+```
+___
+
+## 10. Gallery column
+
+This column shows a list of uploaded images.
+
+Example: Suppose you have an entity `Post`, and `Post` have one or more images associated.
+
+```php
+/**
+ * Class Post
+ *
+ * @ORM\Table()
+ * @ORM\Entity
+ */
+class Post
+{
+    // ...
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Media", mappedBy="post", cascade={"persist"})
+     */
+    private $images;
+
+    public function __construct()
+    {
+        $this->images = new ArrayCollection();
+    }
+    
+    // ...
+}
+```
+
+```php
+/**
+ * Class Media
+ *
+ * @ORM\Table()
+ * @ORM\Entity
+ * @Vich\Uploadable
+ */
+class Media
+{
+    // ...
+
+    /**
+     * @var File
+     *
+     * @Vich\UploadableField(mapping="post_image", fileNameProperty="fileName")
+     * @Assert\File(
+     *     maxSize="512k",
+     *     mimeTypes={"image/gif", "image/jpeg", "image/png", "image/jpg", "image/bmp"}
+     * )
+     */
+    private $image;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="fileName", type="string", length=255)
+     */
+    private $fileName;
+
+    /**
+     * @var Post
+     *
+     * @ORM\ManyToOne(targetEntity="Post", inversedBy="images")
+     * @ORM\JoinColumn(name="post_id", referencedColumnName="id", nullable=true)
+     */
+    private $post;
+    
+    // ...
+}
+```
+
+### Default template
+
+SgDatatablesBundle:Column:image.html.twig
+
+### Options
+
+| Option               | Type           | Default |          |
+|----------------------|----------------|---------|----------|
+| class                | string         | ''      |          |
+| padding              | string         | ''      |          |
+| name                 | string         | ''      |          |
+| orderable            | boolean        | false   |          |
+| searchable           | boolean        | false   |          |
+| title                | string         | ''      |          |
+| type                 | string         | ''      |          |
+| visible              | boolean        | true    |          |
+| width                | string         | ''      |          |
+| search_type          | string         | 'like'  |          |
+| filter_type          | string         | 'text'  |          |
+| filter_options       | array          | array() |          |
+| filter_property      | string         | ''      |          |
+| filter_search_column | string         | ''      |          |
+| imagine_filter       | string         |         | required |
+| relative_path        | string         |         | required |
+| holder_url           | string         | ''      |          |
+| holder_width         | string         | '50'    |          |
+| holder_height        | string         | '50'    |          |
+| enlarge              | boolean        | false   |          |
+
+### Example
+
+``` php
+$this->columnBuilder
+    ->add('images.fileName', 'gallery', array(
+        'title' => 'Bilder',
+        'relative_path' => 'images/posts',
+        'imagine_filter' => 'my_thumb_40x40',
+        //'holder_url' => 'https://placehold.it',
+        //'holder_width' => '65',
+        //'holder_height' => '65',
+        'enlarge' => true
     ))
 ;
 ```

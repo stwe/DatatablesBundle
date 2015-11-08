@@ -45,6 +45,13 @@ class DatatableDataManager
      */
     private $configs;
 
+    /**
+     * True if the LiipImagineBundle is installed.
+     *
+     * @var boolean
+     */
+    private $imagineBundle;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -55,12 +62,18 @@ class DatatableDataManager
      * @param RequestStack $requestStack
      * @param Serializer   $serializer
      * @param array        $configs
+     * @param array        $bundles
      */
-    public function __construct(RequestStack $requestStack, Serializer $serializer, array $configs)
+    public function __construct(RequestStack $requestStack, Serializer $serializer, array $configs, array $bundles)
     {
         $this->request = $requestStack->getCurrentRequest();
         $this->serializer = $serializer;
         $this->configs = $configs;
+        $this->imagineBundle = false;
+
+        if (true === array_key_exists('LiipImagineBundle', $bundles)) {
+            $this->imagineBundle = true;
+        }
     }
 
     //-------------------------------------------------
@@ -90,7 +103,7 @@ class DatatableDataManager
         }
 
         $params = $parameterBag->all();
-        $query = new DatatableQuery($this->serializer, $params, $datatableView, $this->configs, $twig);
+        $query = new DatatableQuery($this->serializer, $params, $datatableView, $this->configs, $twig, $this->imagineBundle);
 
         return $query;
     }

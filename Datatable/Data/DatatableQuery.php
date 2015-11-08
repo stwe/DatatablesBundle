@@ -13,9 +13,11 @@ namespace Sg\DatatablesBundle\Datatable\Data;
 
 use Sg\DatatablesBundle\Datatable\View\DatatableViewInterface;
 use Sg\DatatablesBundle\Datatable\Column\AbstractColumn;
+use Sg\DatatablesBundle\Datatable\Column\ImageColumn;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\EntityManager;
@@ -133,6 +135,11 @@ class DatatableQuery
      */
     private $twig;
 
+    /**
+     * @var boolean
+     */
+    private $imagineBundle;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -145,10 +152,11 @@ class DatatableQuery
      * @param DatatableViewInterface $datatableView
      * @param array                  $configs
      * @param Twig_Environment       $twig
+     * @param boolean                $imagineBundle
      *
      * @throws Exception
      */
-    public function __construct(Serializer $serializer, array $requestParams, DatatableViewInterface $datatableView, array $configs, Twig_Environment $twig)
+    public function __construct(Serializer $serializer, array $requestParams, DatatableViewInterface $datatableView, array $configs, Twig_Environment $twig, $imagineBundle)
     {
         $this->serializer = $serializer;
         $this->requestParams = $requestParams;
@@ -174,6 +182,7 @@ class DatatableQuery
         $this->configs = $configs;
 
         $this->twig = $twig;
+        $this->imagineBundle = $imagineBundle;
 
         $this->setLineFormatter();
         $this->setupColumnArrays();
@@ -674,30 +683,34 @@ class DatatableQuery
 
             // Images
             foreach ($this->columns as $column) {
-                /** @var \Sg\DatatablesBundle\Datatable\Column\ImageColumn $column */
+                $data = $column->getDql();
+
+                /** @var ImageColumn $column */
                 if ('image' === $column->getAlias()) {
-                    if (class_exists('Liip\ImagineBundle\LiipImagineBundle')) {
-                        $item['imageName'] = $this->twig->render(
-                            'SgDatatablesBundle:Helper:ii_render_image.html.twig',
-                            array(
-                                'image_id' => 'sg_image_' . $item['id'],
-                                'image_name' => $item['imageName'],
-                                'filter' => $column->getImagineFilter(),
-                                'path' => $column->getRelativePath(),
-                                'holder_url' => $column->getHolderUrl(),
-                                'width' => $column->getHolderWidth(),
-                                'height' => $column->getHolderHeight(),
-                                'enlarge' => $column->getEnlarge()
-                            )
-                        );
+                    if (true === $this->imagineBundle) {
+                        $item[$data] = $this->renderImage($item[$data], $column);
                     } else {
-                        $item['imageName'] = $this->twig->render(
+                        $item[$data] = $this->twig->render(
                             'SgDatatablesBundle:Helper:render_image.html.twig',
                             array(
-                                'image_name' => $item['imageName'],
+                                'image_name' => $item[$data],
                                 'path' => $column->getRelativePath()
                             )
                         );
+                    }
+                }
+
+                if ('gallery' === $column->getAlias()) {
+                    $fields = explode('.', $data);
+
+                    if (true === $this->imagineBundle) {
+                        $galleryImages = '';
+                        foreach ($item[$fields[0]] as $image) {
+                            $galleryImages = $galleryImages . $this->renderImage($image[$fields[1]], $column);
+                        }
+                        $item[$fields[0]] = $galleryImages;
+                    } else {
+                        throw new InvalidArgumentException('getResponse(): Bundle "LiipImagineBundle" does not exist or it is not enabled.');
                     }
                 }
             }
@@ -871,5 +884,30 @@ class DatatableQuery
         }
 
         return false;
+    }
+
+    /**
+     * Render image.
+     *
+     * @param string      $imageName
+     * @param ImageColumn $column
+     *
+     * @return string
+     */
+    private function renderImage($imageName, ImageColumn $column)
+    {
+        return $this->twig->render(
+            'SgDatatablesBundle:Helper:ii_render_image.html.twig',
+            array(
+                'image_id' => 'sg_image_' . uniqid(rand(10000, 99999)),
+                'image_name' => $imageName,
+                'filter' => $column->getImagineFilter(),
+                'path' => $column->getRelativePath(),
+                'holder_url' => $column->getHolderUrl(),
+                'width' => $column->getHolderWidth(),
+                'height' => $column->getHolderHeight(),
+                'enlarge' => $column->getEnlarge()
+            )
+        );
     }
 }

@@ -15,7 +15,7 @@ services:
             - { name: twig.extension }
     sg_datatables.query:
         class: Sg\DatatablesBundle\Datatable\Data\DatatableDataManager
-        arguments: [@request_stack, @sg_datatables.serializer, %sg_datatables.query%]
+        arguments: [@request_stack, @sg_datatables.serializer, %sg_datatables.query%, %kernel.bundles%]
     sg_datatables.routing.loader:
         class: Sg\DatatablesBundle\Routing\DatatablesRoutingLoader
         arguments: [%sg_datatables.global.prefix%, %sg_datatables.routes%, %sg_datatables.fields%, %sg_datatables.controller%]
