@@ -666,7 +666,7 @@ class DatatableQuery
     // Response
     //-------------------------------------------------
 
-    public function getResponse($buildQuery = true)
+    public function getResponse($buildQuery = true, $responseType='json')
     {
         false === $buildQuery ? : $this->buildQuery();
 
@@ -724,9 +724,18 @@ class DatatableQuery
             'recordsFiltered' => (int) $this->getCountFilteredResults($this->rootEntityIdentifier)
         );
 
-        $json = $this->serializer->serialize(array_merge($outputHeader, $output), 'json');
-        $response = new Response($json);
-        $response->headers->set('Content-Type', 'application/json');
+        switch ($responseType) {
+            case 'array':
+                $response = array_merge($outputHeader, $output);
+                break;
+            
+            case 'json':
+            default:
+                $json = $this->serializer->serialize(array_merge($outputHeader, $output), 'json');
+                $response = new Response($json);
+                $response->headers->set('Content-Type', 'application/json');
+                break;
+        }
 
         return $response;
     }
