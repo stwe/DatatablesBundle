@@ -23,7 +23,10 @@
 "scrollCollapse": {{ view_options.scrollCollapse ? 'true' : 'false' }},
 "searchDelay": {{ view_options.searchDelay }},
 "stateDuration": {{ view_options.stateDuration }},
-"stripeClasses": [{{ view_options.stripeClasses|join(", ")|json_encode|raw }}],
+
+{% if view_options.stripeClasses %}
+    "stripeClasses": [{{ view_options.stripeClasses|join(", ")|json_encode|raw }}],
+{% endif %}
 
 {#
 "class"               -> datatable_html.html.twig
