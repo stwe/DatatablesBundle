@@ -74,6 +74,13 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     protected $em;
 
     /**
+     * Actions on the top of the table (e.g. 'New' button).
+     *
+     * @var TopActions
+     */
+    protected $topActions;
+
+    /**
      * A Features instance.
      *
      * @var Features
@@ -169,6 +176,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->router = $router;
         $this->em = $em;
 
+        $this->topActions = new TopActions();
         $this->features = new Features();
         $this->options = new Options();
         $this->callbacks = new Callbacks();
@@ -225,6 +233,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
             }
         }
 
+        $options['view_actions'] = $this->topActions;
         $options['view_features'] = $this->features;
         $options['view_options'] = $this->options;
         $options["view_callbacks"] = $this->callbacks;
@@ -262,17 +271,25 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * {@inheritdoc}
      */
-    public function getAjax()
+    public function getEntityManager()
     {
-        return $this->ajax;
+        return $this->em;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getColumnBuilder()
+    public function getTopActions()
     {
-        return $this->columnBuilder;
+        return $this->topActions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFeatures()
+    {
+        return $this->features;
     }
 
     /**
@@ -286,17 +303,33 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * {@inheritdoc}
      */
-    public function getLineFormatter()
+    public function getCallbacks()
     {
-        return null;
+        return $this->callbacks;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getEntityManager()
+    public function getColumnBuilder()
     {
-        return $this->em;
+        return $this->columnBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAjax()
+    {
+        return $this->ajax;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLineFormatter()
+    {
+        return null;
     }
 
     /**

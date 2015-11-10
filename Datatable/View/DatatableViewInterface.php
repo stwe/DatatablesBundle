@@ -48,7 +48,7 @@ interface DatatableViewInterface
      * @throws Exception
      * @throws Twig_Error
      */
-    public function render($type = "all");
+    public function render($type = 'all');
 
     /**
      * Get the Twig_Environment service.
@@ -58,18 +58,25 @@ interface DatatableViewInterface
     public function getTwig();
 
     /**
-     * Get Ajax.
+     * Get entity manager.
      *
-     * @return Ajax
+     * @return EntityManagerInterface
      */
-    public function getAjax();
+    public function getEntityManager();
 
     /**
-     * Get ColumnBuilder.
+     * Get TopActions.
      *
-     * @return ColumnBuilder
+     * @return TopActions
      */
-    public function getColumnBuilder();
+    public function getTopActions();
+
+    /**
+     * Get Features.
+     *
+     * @return Features
+     */
+    public function getFeatures();
 
     /**
      * Get Options.
@@ -79,18 +86,32 @@ interface DatatableViewInterface
     public function getOptions();
 
     /**
+     * Get Callbacks.
+     *
+     * @return Callbacks
+     */
+    public function getCallbacks();
+
+    /**
+     * Get ColumnBuilder.
+     *
+     * @return ColumnBuilder
+     */
+    public function getColumnBuilder();
+
+    /**
+     * Get Ajax.
+     *
+     * @return Ajax
+     */
+    public function getAjax();
+
+    /**
      * Returns a callable that could transform the data line
      *
      * @return callable
      */
     public function getLineFormatter();
-
-    /**
-     * Get entity manager.
-     *
-     * @return EntityManagerInterface
-     */
-    public function getEntityManager();
 
     /**
      * Get custom qb.

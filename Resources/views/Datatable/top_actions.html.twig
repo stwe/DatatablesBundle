@@ -1,0 +1,15 @@
+{% if action.role %}
+    {% if app.user is not null and is_granted(action.role) %}
+    <a href="{{action.route }}"
+        {% for key, value in action.attributes %}
+                {{ key }}="{{ value }}"
+        {% endfor %}
+    >{{ action.label }}</a>    {% endif %}
+{% else %}
+    <a href="{{action.route }}"
+        {% for key, value in action.attributes %}
+                {{ key }}="{{ value }}"
+        {% endfor %}
+    >{{ action.label }}</a>
+{% endif %}
+
