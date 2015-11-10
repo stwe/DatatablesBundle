@@ -16,9 +16,9 @@
 "delay": {{ view_features.delay }},
 
 {% for extension, options in view_features.extensions %}
-    {% if extension.buttons is defined %}
+    {% if 'buttons' == extension %}
         "buttons": [
-            {% for option in extension.buttons %}
+            {% for option in options %}
                 {% if option.action is defined %}
                 {
                     "text": "{{ option.text }}",
