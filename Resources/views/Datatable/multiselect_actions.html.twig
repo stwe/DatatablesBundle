@@ -16,18 +16,17 @@
     </div>
 {% endset %}
 
-var dt_wrapper = $("#{{ view_table_id }}" + "_wrapper");
-dt_wrapper.find(".dataTables_scrollFootInner").append("{{ multiple_actions|e('js') }}");
+$("#{{ view_table_id }}_multiselect_actions").append("{{ multiple_actions|e('js') }}");
 
-dt_wrapper.find(".multiselect_checkall").click(function(event) {
+$(".{{ view_table_id }}_multiselect_checkall").click(function(event) {
     var that = this;
-    dt_wrapper.find("input.multiselect_checkbox:checkbox").each(function() {
+    $("input.{{ view_table_id }}_multiselect_checkbox:checkbox").each(function() {
         this.checked = that.checked;
     });
 });
 
-dt_wrapper.find(".multiselect_action_click").on('click', function(event) {
-    var length = dt_wrapper.find("input.multiselect_checkbox:checkbox:checked").length;
+$(".{{ view_table_id }}_multiselect_action_click").on('click', function(event) {
+    var length = $("input.{{ view_table_id }}_multiselect_checkbox:checkbox:checked").length;
 
     event.preventDefault();
 
@@ -41,7 +40,7 @@ dt_wrapper.find(".multiselect_action_click").on('click', function(event) {
             type: "POST",
             cache: false,
             data: {
-                'data': $("input:checkbox:checked.multiselect_checkbox", oTable.rows().nodes()).serializeArray()
+                'data': $("input:checkbox:checked.{{ view_table_id }}_multiselect_checkbox", oTable.rows().nodes()).serializeArray()
             },
             success: function(msg) {
                 oTable.draw();

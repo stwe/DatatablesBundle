@@ -173,6 +173,13 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
      */
     protected $filterSearchColumn;
 
+    /**
+     * Name of datatable view.
+     *
+     * @var string
+     */
+    protected $tableName;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -648,5 +655,29 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     public function getFilterSearchColumn()
     {
         return $this->filterSearchColumn;
+    }
+
+    /**
+     * Set table name.
+     *
+     * @param string $tableName
+     *
+     * @return $this
+     */
+    public function setTableName($tableName)
+    {
+        $this->tableName = $tableName;
+
+        return $this;
+    }
+
+    /**
+     * Get table name.
+     *
+     * @return string
+     */
+    public function getTableName()
+    {
+        return $this->tableName;
     }
 }

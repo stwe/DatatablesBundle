@@ -180,7 +180,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->features = new Features();
         $this->options = new Options();
         $this->callbacks = new Callbacks();
-        $this->columnBuilder = new ColumnBuilder();
+        $this->columnBuilder = new ColumnBuilder($this->getName());
         $this->ajax = new Ajax();
 
         $this->data = null;

@@ -48,19 +48,29 @@ class ColumnBuilder implements ColumnBuilderInterface
      */
     private $multiselect;
 
+    /**
+     * Name of datatable view.
+     *
+     * @var string
+     */
+    private $tableName;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
 
     /**
      * Ctor.
+     *
+     * @param string $tableName
      */
-    public function __construct()
+    public function __construct($tableName)
     {
         $this->columnFactory = new ColumnFactory();
         $this->columns = array();
         $this->multiselectColumn = null;
         $this->multiselect = false;
+        $this->tableName = $tableName;
     }
 
     //-------------------------------------------------
@@ -76,6 +86,7 @@ class ColumnBuilder implements ColumnBuilderInterface
          * @var AbstractColumn $column
          */
         $column = $this->columnFactory->createColumnByName($name);
+        $column->setTableName($this->tableName);
         $column->setData($data);
         $column->setDql($data);
         $column->setupOptionsResolver($options);

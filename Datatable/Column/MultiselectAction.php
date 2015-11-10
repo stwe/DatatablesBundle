@@ -20,6 +20,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class MultiselectAction extends Action
 {
+    /**
+     * Name of datatable view.
+     *
+     * @var string
+     */
+    protected $tableName;
+
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -46,12 +53,42 @@ class MultiselectAction extends Action
         $resolver->setAllowedTypes('route_parameters', 'array');
         $resolver->setAllowedTypes('attributes', 'array');
 
-        $resolver->setNormalizer('attributes', function($options, $value) {
-            $value['class'] = array_key_exists('class', $value) ? ($value['class'] . ' multiselect_action_click') : 'multiselect_action_click';
+        $tableName = $this->tableName;
+        $resolver->setNormalizer('attributes', function($options, $value) use($tableName) {
+            $baseClass = $tableName . '_multiselect_action_click';
+            $value['class'] = array_key_exists('class', $value) ? ($value['class'] . ' ' . $baseClass) : $baseClass;
 
             return $value;
         });
 
         return $this;
+    }
+
+    //-------------------------------------------------
+    // Getters && Setters
+    //-------------------------------------------------
+
+    /**
+     * Set table name.
+     *
+     * @param string $tableName
+     *
+     * @return $this
+     */
+    public function setTableName($tableName)
+    {
+        $this->tableName = $tableName;
+
+        return $this;
+    }
+
+    /**
+     * Get table name.
+     *
+     * @return string
+     */
+    public function getTableName()
+    {
+        return $this->tableName;
     }
 }
