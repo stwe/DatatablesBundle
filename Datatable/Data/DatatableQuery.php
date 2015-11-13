@@ -622,6 +622,7 @@ class DatatableQuery
         $qb = $this->em->createQueryBuilder();
         $qb->select('count(distinct ' . $this->tableName . '.' . $rootEntityIdentifier . ')');
         $qb->from($this->entity, $this->tableName);
+        $qb->groupBy($this->tableName . '.' . $rootEntityIdentifier);
 
         $this->setLeftJoins($qb);
         $this->setWhereAllCallback($qb);
@@ -641,6 +642,7 @@ class DatatableQuery
         $qb = $this->em->createQueryBuilder();
         $qb->select('count(distinct ' . $this->tableName . '.' . $rootEntityIdentifier . ')');
         $qb->from($this->entity, $this->tableName);
+        $qb->groupBy($this->tableName . '.' . $rootEntityIdentifier);
 
         $this->setLeftJoins($qb);
         $this->setWhere($qb);
