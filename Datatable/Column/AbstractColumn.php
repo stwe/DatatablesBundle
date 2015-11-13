@@ -11,9 +11,10 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\OptionsResolver\OptionsInterface;
+use Sg\DatatablesBundle\OptionsResolver\OptionsHelper;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\DependencyInjection\Container;
-use Exception;
 
 /**
  * Class AbstractColumn
@@ -213,26 +214,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     /**
      * {@inheritdoc}
      */
-    public function setOptions(array $options)
-    {
-        $methods = get_class_methods($this);
-
-        foreach ($options as $key => $value) {
-            $key = Container::camelize($key);
-            $method = 'set' . ucfirst($key);
-            if (in_array($method, $methods)) {
-                $this->$method($value);
-            } else {
-                throw new \Exception('setOptions(): ' . $method . ' invalid method name');
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setupOptionsResolver(array $options)
     {
         $resolver = new OptionsResolver();
@@ -240,7 +221,7 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
 
         $this->options = $resolver->resolve($options);
 
-        $this->setOptions($this->options);
+        OptionsHelper::setOptions($this->options, $this);
 
         return $this;
     }

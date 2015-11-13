@@ -9,15 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Datatable\Column;
+namespace Sg\DatatablesBundle\OptionsResolver;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Exception;
 
 /**
  * Interface OptionsInterface
  *
- * @package Sg\DatatablesBundle\Datatable\Column
+ * @package Sg\DatatablesBundle\OptionsResolver
  */
 interface OptionsInterface
 {
@@ -38,14 +37,4 @@ interface OptionsInterface
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver);
-
-    /**
-     * Set options.
-     *
-     * @param array $options
-     *
-     * @return $this
-     * @throws Exception
-     */
-    public function setOptions(array $options);
 }

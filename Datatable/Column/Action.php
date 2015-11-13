@@ -11,8 +11,10 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\OptionsResolver\OptionsInterface;
+use Sg\DatatablesBundle\OptionsResolver\OptionsHelper;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\DependencyInjection\Container;
 
 /**
  * Class Action
@@ -105,7 +107,7 @@ class Action implements OptionsInterface
 
         $this->options = $resolver->resolve($options);
 
-        $this->setOptions($this->options);
+        OptionsHelper::setOptions($this->options, $this);
 
         return $this;
     }
@@ -137,26 +139,6 @@ class Action implements OptionsInterface
         $resolver->setAllowedTypes('attributes', 'array');
         $resolver->setAllowedTypes('role', 'string');
         $resolver->setAllowedTypes('render_if', 'array');
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOptions(array $options)
-    {
-        $methods = get_class_methods($this);
-
-        foreach ($options as $key => $value) {
-            $key = Container::camelize($key);
-            $method = 'set' . ucfirst($key);
-            if (in_array($method, $methods)) {
-                $this->$method($value);
-            } else {
-                throw new \Exception('setOptions(): ' . $method . ' invalid method name');
-            }
-        }
 
         return $this;
     }
