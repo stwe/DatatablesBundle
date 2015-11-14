@@ -11,8 +11,9 @@
 
 namespace Sg\DatatablesBundle\Datatable\View;
 
+use Sg\DatatablesBundle\OptionsResolver\BaseOptions;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\DependencyInjection\Container;
 use Exception;
 
 /**
@@ -20,22 +21,8 @@ use Exception;
  *
  * @package Sg\DatatablesBundle\Datatable\View
  */
-class Options
+class Options extends BaseOptions
 {
-    /**
-     * Options container.
-     *
-     * @var array
-     */
-    protected $options;
-
-    /**
-     * An OptionsResolver instance.
-     *
-     * @var OptionsResolver
-     */
-    protected $resolver;
-
     /**
      * Initial paging start point.
      *
@@ -176,10 +163,10 @@ class Options
      */
     public function __construct()
     {
-        $this->options = array();
-        $this->resolver = new OptionsResolver();
+        parent::__construct();
+
         $this->configureOptions($this->resolver);
-        $this->setOptions($this->options);
+        $this->set($this->options);
     }
 
     //-------------------------------------------------
@@ -193,12 +180,14 @@ class Options
      *
      * @param array $options
      *
+     * @deprecated Deprecated since v0.7.1, to be removed in v0.8.
+     *             Use {@link set()} instead.
+     *
      * @return $this
      */
     public function setOptions(array $options)
     {
-        $this->options = $this->resolver->resolve($options);
-        $this->callingSettersWithOptions($this->options);
+        $this->set($options);
 
         return $this;
     }
@@ -215,7 +204,7 @@ class Options
      */
     public function setOption($optionKey, $optionValue)
     {
-        $this->callingSettersWithOptions(array($optionKey => $optionValue));
+        $this->callingSettersWithOptions(array($optionKey => $optionValue), $this);
 
         return $this;
     }
@@ -270,31 +259,6 @@ class Options
         $resolver->setAllowedTypes('use_integration_options', 'bool');
 
         $resolver->setAllowedValues('individual_filtering_position', array('head', 'foot', 'both'));
-
-        return $this;
-    }
-
-    /**
-     * Calling setters with options.
-     *
-     * @param array $options
-     *
-     * @return $this
-     * @throws Exception
-     */
-    private function callingSettersWithOptions(array $options)
-    {
-        $methods = get_class_methods($this);
-
-        foreach ($options as $key => $value) {
-            $key = Container::camelize($key);
-            $method = 'set' . ucfirst($key);
-            if (in_array($method, $methods)) {
-                $this->$method($value);
-            } else {
-                throw new Exception('callingSettersWithOptions(): ' . $method . ' invalid method name');
-            }
-        }
 
         return $this;
     }

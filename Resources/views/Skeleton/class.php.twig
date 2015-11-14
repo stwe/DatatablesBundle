@@ -22,7 +22,7 @@ class {{ datatable_class }} extends AbstractDatatableView
      */
     public function buildDatatable()
     {
-        $this->topActions->setTopActions(array(
+        $this->topActions->set(array(
             'start_html' => '<div class="row"><div class="col-sm-3">',
             'end_html' => '<hr></div></div>',
             'actions' => array(
@@ -41,7 +41,7 @@ class {{ datatable_class }} extends AbstractDatatableView
             )
         ));
 
-        $this->features->setFeatures(array(
+        $this->features->set(array(
             'auto_width' => true,
             'defer_render' => false,
             'info' => true,
@@ -60,14 +60,14 @@ class {{ datatable_class }} extends AbstractDatatableView
         ));
 
         {% if false == client_side -%}
-        $this->ajax->setOptions(array(
+        $this->ajax->set(array(
             'url' => $this->router->generate('{{ ajax_url }}'),
             'type' => 'GET'
         ));
 
         {% endif -%}
 
-        $this->options->setOptions(array(
+        $this->options->set(array(
             'display_start' => 0,
             'defer_loading' => -1,
             'dom' => 'lfrtip',

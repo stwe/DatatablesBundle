@@ -12,7 +12,7 @@
 namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Sg\DatatablesBundle\OptionsResolver\OptionsInterface;
-use Sg\DatatablesBundle\OptionsResolver\OptionsHelper;
+use Sg\DatatablesBundle\OptionsResolver\BaseOptions;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -221,7 +221,7 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
 
         $this->options = $resolver->resolve($options);
 
-        OptionsHelper::setOptions($this->options, $this);
+        BaseOptions::callingSettersWithOptions($this->options, $this);
 
         return $this;
     }

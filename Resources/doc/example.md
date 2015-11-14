@@ -64,14 +64,14 @@ class PostDatatable extends AbstractDatatableView
     public function buildDatatable()
     {
         /*
-        $this->callbacks->setCallbacks(array(
+        $this->callbacks->set(array(
             'draw_callback' => "function( settings ) {
                                     alert( 'DataTables has redrawn the table' );
                                 }"
         ));
         */
 
-        $this->features->setFeatures(array(
+        $this->features->set(array(
             'auto_width' => true,
             'defer_render' => false,
             'info' => true,
@@ -91,12 +91,12 @@ class PostDatatable extends AbstractDatatableView
             )
         ));
 
-        $this->ajax->setOptions(array(
+        $this->ajax->set(array(
             'url' => $this->router->generate('post_results'),
             'type' => 'GET'
         ));
 
-        $this->options->setOptions(array(
+        $this->options->set(array(
             'display_start' => 0,
             'dom' => 'lfrtip', // default, but not used because 'use_integration_options' = true
             'length_menu' => array(10, 25, 50, 100),
@@ -488,7 +488,7 @@ class PostDatatable extends AbstractDatatableView
      */
     public function buildDatatable()
     {
-        $this->features->setFeatures(array(
+        $this->features->set(array(
             'server_side' => false
         ));
 

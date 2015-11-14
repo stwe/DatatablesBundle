@@ -3,23 +3,23 @@
 ``` php
     public function buildDatatable()
     {
-        $this->callbacks->setCallbacks(array(
+        $this->callbacks->set(array(
             'draw_callback' => "function( settings ) {
                                     alert( 'DataTables has redrawn the table' );
                                 }"
         ));
 
-        $this->features->setFeatures(array(
+        $this->features->set(array(
             'processing' => true,
             // ...
         ));
 
-        $this->ajax->setOptions(array(
+        $this->ajax->set(array(
             'url' => $this->getRouter()->generate('post_results'),
             'type' => 'GET' // default
         ));
 
-        $this->options->setOptions(array(
+        $this->options->set(array(
             'paging_type' => Style::FULL_PAGINATION,
             'responsive' => true,
             'class' => Style::BASE_STYLE,

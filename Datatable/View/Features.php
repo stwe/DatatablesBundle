@@ -11,31 +11,17 @@
 
 namespace Sg\DatatablesBundle\Datatable\View;
 
+use Sg\DatatablesBundle\OptionsResolver\BaseOptions;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\DependencyInjection\Container;
-use Exception;
 
 /**
  * Class Features
  *
  * @package Sg\DatatablesBundle\Datatable\View
  */
-class Features
+class Features extends BaseOptions
 {
-    /**
-     * Features container.
-     *
-     * @var array
-     */
-    protected $features;
-
-    /**
-     * An OptionsResolver instance.
-     *
-     * @var OptionsResolver
-     */
-    protected $resolver;
-
     /**
      * Feature control DataTables smart column width handling.
      *
@@ -151,10 +137,10 @@ class Features
      */
     public function __construct()
     {
-        $this->features = array();
-        $this->resolver = new OptionsResolver();
+        parent::__construct();
+
         $this->configureOptions($this->resolver);
-        $this->setFeatures($this->features);
+        $this->set($this->options);
     }
 
     //-------------------------------------------------
@@ -164,14 +150,16 @@ class Features
     /**
      * Set features.
      *
-     * @param array $features
+     * @param array $options
+     *
+     * @deprecated Deprecated since v0.7.1, to be removed in v0.8.
+     *             Use {@link set()} instead.
      *
      * @return $this
      */
-    public function setFeatures(array $features)
+    public function setFeatures(array $options)
     {
-        $this->features = $this->resolver->resolve($features);
-        $this->callingSettersWithOptions($this->features);
+        $this->set($options);
 
         return $this;
     }
@@ -218,31 +206,6 @@ class Features
         $resolver->setAllowedTypes('state_save', 'bool');
         $resolver->setAllowedTypes('delay', 'int');
         $resolver->setAllowedTypes('extensions', 'array');
-
-        return $this;
-    }
-
-    /**
-     * Calling setters with options.
-     *
-     * @param array $options
-     *
-     * @return $this
-     * @throws Exception
-     */
-    private function callingSettersWithOptions(array $options)
-    {
-        $methods = get_class_methods($this);
-
-        foreach ($options as $key => $value) {
-            $key = Container::camelize($key);
-            $method = 'set' . ucfirst($key);
-            if (in_array($method, $methods)) {
-                $this->$method($value);
-            } else {
-                throw new Exception('callingSettersWithOptions(): ' . $method . ' invalid method name');
-            }
-        }
 
         return $this;
     }

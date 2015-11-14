@@ -11,31 +11,17 @@
 
 namespace Sg\DatatablesBundle\Datatable\View;
 
+use Sg\DatatablesBundle\OptionsResolver\BaseOptions;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\DependencyInjection\Container;
-use Exception;
 
 /**
  * Class Ajax
  *
  * @package Sg\DatatablesBundle\Datatable\View
  */
-class Ajax
+class Ajax extends BaseOptions
 {
-    /**
-     * Options container.
-     *
-     * @var array
-     */
-    protected $options;
-
-    /**
-     * An OptionsResolver instance.
-     *
-     * @var OptionsResolver
-     */
-    protected $resolver;
-
     /**
      * URL set as the Ajax data source for the table.
      *
@@ -59,10 +45,10 @@ class Ajax
      */
     public function __construct()
     {
-        $this->options = array();
-        $this->resolver = new OptionsResolver();
+        parent::__construct();
+
         $this->configureOptions($this->resolver);
-        $this->setOptions($this->options);
+        $this->set($this->options);
     }
 
     //-------------------------------------------------
@@ -74,12 +60,14 @@ class Ajax
      *
      * @param array $options
      *
+     * @deprecated Deprecated since v0.7.1, to be removed in v0.8.
+     *             Use {@link set()} instead.
+     *
      * @return $this
      */
     public function setOptions(array $options)
     {
-        $this->options = $this->resolver->resolve($options);
-        $this->callingSettersWithOptions($this->options);
+        $this->set($options);
 
         return $this;
     }
@@ -102,31 +90,6 @@ class Ajax
         $resolver->setAllowedTypes('type', 'string');
 
         $resolver->setAllowedValues('type', array('GET', 'POST', 'get', 'post'));
-
-        return $this;
-    }
-
-    /**
-     * Calling setters with options.
-     *
-     * @param array $options
-     *
-     * @return $this
-     * @throws Exception
-     */
-    private function callingSettersWithOptions(array $options)
-    {
-        $methods = get_class_methods($this);
-
-        foreach ($options as $key => $value) {
-            $key = Container::camelize($key);
-            $method = 'set' . ucfirst($key);
-            if (in_array($method, $methods)) {
-                $this->$method($value);
-            } else {
-                throw new Exception('callingSettersWithOptions(): ' . $method . ' invalid method name');
-            }
-        }
 
         return $this;
     }

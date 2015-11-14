@@ -17,7 +17,7 @@ class PostDatatable extends AbstractDatatableView
     {
         // ...
 
-        $this->features->setFeatures(array(
+        $this->features->set(array(
             // ...
 
             'extensions' => array(

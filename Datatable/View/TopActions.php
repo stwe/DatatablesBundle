@@ -12,32 +12,17 @@
 namespace Sg\DatatablesBundle\Datatable\View;
 
 use Sg\DatatablesBundle\Datatable\Column\Action;
+use Sg\DatatablesBundle\OptionsResolver\BaseOptions;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\DependencyInjection\Container;
-use Exception;
 
 /**
  * Class TopActions
  *
  * @package Sg\DatatablesBundle\Datatable\View
  */
-class TopActions
+class TopActions extends BaseOptions
 {
-    /**
-     * TopActions container.
-     *
-     * @var array
-     */
-    protected $topActions;
-
-    /**
-     * An OptionsResolver instance.
-     *
-     * @var OptionsResolver
-     */
-    protected $resolver;
-
     /**
      * Start HTML.
      *
@@ -68,8 +53,8 @@ class TopActions
      */
     public function __construct()
     {
-        $this->topActions = array();
-        $this->resolver = new OptionsResolver();
+        parent::__construct();
+
         $this->configureOptions($this->resolver);
     }
 
@@ -80,14 +65,16 @@ class TopActions
     /**
      * Set TopActions.
      *
-     * @param array $topActions
+     * @param array $options
+     *
+     * @deprecated Deprecated since v0.7.1, to be removed in v0.8.
+     *             Use {@link set()} instead.
      *
      * @return $this
      */
-    public function setTopActions(array $topActions)
+    public function setTopActions(array $options)
     {
-        $this->topActions = $this->resolver->resolve($topActions);
-        $this->callingSettersWithOptions($this->topActions);
+        $this->set($options);
 
         return $this;
     }
@@ -111,31 +98,6 @@ class TopActions
         $resolver->setAllowedTypes('start_html', 'string');
         $resolver->setAllowedTypes('end_html', 'string');
         $resolver->setAllowedTypes('actions', 'array');
-
-        return $this;
-    }
-
-    /**
-     * Calling setters with options.
-     *
-     * @param array $options
-     *
-     * @return $this
-     * @throws Exception
-     */
-    private function callingSettersWithOptions(array $options)
-    {
-        $methods = get_class_methods($this);
-
-        foreach ($options as $key => $value) {
-            $key = Container::camelize($key);
-            $method = 'set' . ucfirst($key);
-            if (in_array($method, $methods)) {
-                $this->$method($value);
-            } else {
-                throw new Exception('callingSettersWithOptions(): ' . $method . ' invalid method name');
-            }
-        }
 
         return $this;
     }
