@@ -1,5 +1,16 @@
 # Columns
 
+1. [Column](#1-column)
+2. [Array Column](#2-array-column)
+3. [Virtual Column](#3-virtual-column)
+4. [Boolean Column](#4-boolean-column)
+5. [DateTime Column](#5-datetime-column)
+6. [Timeago Column](#6-timeago-column)
+7. [Action Column](#7-action-column)
+8. [Multiselect Column](#8-multiselect-column)
+9. [Image Column](#9-image-column)
+10. [Gallery Column](#10-gallery-column)
+
 ## 1. Column
 
 Represents the most basic column, including many-to-one and one-to-one relations.
