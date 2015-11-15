@@ -14,6 +14,7 @@ sg_datatables:
         logout_route: ~ # example: fos_user_security_logout
     query:
         search_on_non_visible_columns: false
+        translation_query_hints: false
     global_prefix: admin
     # example
     #routes:

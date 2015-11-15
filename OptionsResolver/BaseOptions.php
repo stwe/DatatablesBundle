@@ -83,7 +83,7 @@ class BaseOptions
             if (in_array($method, $methods)) {
                 $class->$method($value);
             } else {
-                throw new Exception('setOptions(): ' . $method . ' invalid method name');
+                throw new Exception('callingSettersWithOptions(): ' . $method . ' invalid method name');
             }
         }
     }

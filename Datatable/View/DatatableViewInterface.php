@@ -36,8 +36,10 @@ interface DatatableViewInterface
 
     /**
      * Builds the datatable.
+     *
+     * @param null|string $locale
      */
-    public function buildDatatable();
+    public function buildDatatable($locale = null);
 
     /**
      * Renders the datatable view.

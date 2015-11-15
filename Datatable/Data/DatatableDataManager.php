@@ -52,6 +52,20 @@ class DatatableDataManager
      */
     private $imagineBundle;
 
+    /**
+     * True if GedmoDoctrineExtensions installed.
+     *
+     * @var boolean
+     */
+    private $doctrineExtensions;
+
+    /**
+     * The locale.
+     *
+     * @var string
+     */
+    private $locale;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -70,10 +84,17 @@ class DatatableDataManager
         $this->serializer = $serializer;
         $this->configs = $configs;
         $this->imagineBundle = false;
+        $this->doctrineExtensions = false;
+
+        if (true === class_exists('Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker')) {
+            $this->doctrineExtensions = true;
+        }
 
         if (true === array_key_exists('LiipImagineBundle', $bundles)) {
             $this->imagineBundle = true;
         }
+
+        $this->locale = $this->request->getLocale();
     }
 
     //-------------------------------------------------
@@ -103,7 +124,16 @@ class DatatableDataManager
         }
 
         $params = $parameterBag->all();
-        $query = new DatatableQuery($this->serializer, $params, $datatableView, $this->configs, $twig, $this->imagineBundle);
+        $query = new DatatableQuery(
+            $this->serializer,
+            $params,
+            $datatableView,
+            $this->configs,
+            $twig,
+            $this->imagineBundle,
+            $this->doctrineExtensions,
+            $this->locale
+        );
 
         return $query;
     }

@@ -209,7 +209,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * {@inheritdoc}
      */
-    public function buildDatatable()
+    public function buildDatatable($locale = null)
     {
         // implement an empty function for backward compatibility reasons
     }

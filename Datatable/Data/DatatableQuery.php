@@ -140,6 +140,18 @@ class DatatableQuery
      */
     private $imagineBundle;
 
+    /**
+     * @var boolean
+     */
+    private $doctrineExtensions;
+
+    /**
+     * The locale.
+     *
+     * @var string
+     */
+    private $locale;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -153,10 +165,21 @@ class DatatableQuery
      * @param array                  $configs
      * @param Twig_Environment       $twig
      * @param boolean                $imagineBundle
+     * @param boolean                $doctrineExtensions
+     * @param string                 $locale
      *
      * @throws Exception
      */
-    public function __construct(Serializer $serializer, array $requestParams, DatatableViewInterface $datatableView, array $configs, Twig_Environment $twig, $imagineBundle)
+    public function __construct(
+        Serializer $serializer,
+        array $requestParams,
+        DatatableViewInterface $datatableView,
+        array $configs,
+        Twig_Environment $twig,
+        $imagineBundle,
+        $doctrineExtensions,
+        $locale
+    )
     {
         $this->serializer = $serializer;
         $this->requestParams = $requestParams;
@@ -183,6 +206,8 @@ class DatatableQuery
 
         $this->twig = $twig;
         $this->imagineBundle = $imagineBundle;
+        $this->doctrineExtensions = $doctrineExtensions;
+        $this->locale = $locale;
 
         $this->setLineFormatter();
         $this->setupColumnArrays();
@@ -653,10 +678,33 @@ class DatatableQuery
      * Constructs a Query instance.
      *
      * @return Query
+     * @throws Exception
      */
     private function execute()
     {
         $query = $this->qb->getQuery();
+
+        if (true === $this->configs['translation_query_hints']) {
+            if (true === $this->doctrineExtensions) {
+                $query->setHint(
+                    \Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER,
+                    'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker'
+                );
+
+                $query->setHint(
+                    \Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE,
+                    $this->locale
+                );
+
+                $query->setHint(
+                    \Gedmo\Translatable\TranslatableListener::HINT_FALLBACK,
+                    1
+                );
+            } else {
+                throw new Exception('execute(): "DoctrineExtensions" does not exist.');
+            }
+        }
+
         $query->setHydrationMode(Query::HYDRATE_ARRAY);
 
         return $query;
