@@ -20,8 +20,8 @@ The `require` part of your composer.json might look like this:
     "require": {
         "symfony/symfony": "2.6.*",
         "components/jquery": "1.11.3",
-        "datatables/datatables": "1.10.7",
-        "moment/moment": "2.10.2",
+        "datatables/datatables": "1.10.10",
+        "moment/moment": "2.10.6",
         "friendsofsymfony/jsrouting-bundle": "@stable"
     },
 ```
@@ -84,30 +84,64 @@ public function registerBundles()
 
 Include the jQuery, DataTables, Moment and FOSJsRoutingBundle javascript/css files in your layout.
 
-## Full examples
+### Step 4: Create your Datatable class
 
-- [Example](./example.md)
+``` bash
+$ php app/console sg:datatable:generate AppBundle:Post
+```
 
-## List of available column types
+### Step 5: Registering your Datatable class as a Service
 
-- [Columns](./columns.md)
+```yaml
+app.datatable.post:
+    class: AppBundle\Datatables\PostDatatable
+    tags:
+        - { name: sg.datatable.view }
+```
 
-## List of available features and options
+### Step 6: Create your index.html.twig
 
-- [Features and Options](./options.md)
+```html
+{% extends '::base.html.twig' %}
 
-## Extensions like Buttons or Responsive
+{% block body %}
+    {{ datatable_render(datatable) }}
+{% endblock %}
+```
 
-- [Extensions](./extensions.md)
+### Step 7: Add controller actions
 
-## To use a line formatter
+```php
+/**
+ * @Route("/", name="post")
+ * @Method("GET")
+ * @Template(":post:index.html.twig")
+ *
+ * @return array
+ */
+public function indexAction()
+{
+    $datatable = $this->get('app.datatable.post');
+    $datatable->buildDatatable();
 
-- [Line formatter](./lineFormatter.md)
+    return array(
+        'datatable' => $datatable,
+    );
+}
 
-## Reference configuration
+/**
+ * @Route("/results", name="post_results")
+ *
+ * @return \Symfony\Component\HttpFoundation\Response
+ */
+public function indexResultsAction()
+{
+    $datatable = $this->get('app.datatable.post');
+    $datatable->buildDatatable();
 
-- [Reference configuration](./configuration.md)
+    $query = $this->get('sg_datatables.query')->getQueryFrom($datatable);
 
-## Creating an Admin Section (new, unstable and experimental)
+    return $query->getResponse();
+}
+```
 
-- [Admin section](./admin.md)

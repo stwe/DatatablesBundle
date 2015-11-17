@@ -13,7 +13,7 @@ class PostDatatable extends AbstractDatatableView
     /**
      * {@inheritdoc}
      */
-    public function buildDatatable()
+    public function buildDatatable($locale = null)
     {
         // ...
 

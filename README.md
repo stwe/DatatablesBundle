@@ -18,15 +18,37 @@
 
 ## Documentation
 
-[Demo Application](https://github.com/stwe/dtbundle-demo)
+[Installation](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/installation.md)
 
-[Read the Documentation for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/index.md)
+[Column types](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/columns.md)
 
-[The examples for master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
+[Callbacks, Features and Options](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/options.md)
 
-## Installation
+[Options of the generator](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/generator.md)
 
-All the installation instructions are located in the documentation.
+[Reference configuration](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/configuration.md)
+
+## Examples
+
+[Examples](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
+
+[Extensions like Buttons or Responsive](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/extensions.md)
+
+[To use a line formatter](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/lineFormatter.md)
+
+[Setup Bootstrap3 layout](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/bootstrap3.md)
+
+[Integrate Translatable DoctrineExtension](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/translatable.md)
+
+[ImageColumn and thumbnails with LiipImagineBundle](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/thumbs.md)
+
+## Creating an Admin Section (new, unstable and experimental)
+
+- [Admin section](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/admin.md)
+
+## Demo
+
+[Demo Application - must be updated!](https://github.com/stwe/dtbundle-demo)
 
 ## Friendly License
 

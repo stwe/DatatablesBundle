@@ -27,7 +27,7 @@
     },
     "suggest": {
         "components/jquery": "1.11.3",
-        "datatables/datatables": "1.10.9",
+        "datatables/datatables": "1.10.10",
         "moment/moment": "2.10.6",
         "liip/imagine-bundle": "^1.3"
     },

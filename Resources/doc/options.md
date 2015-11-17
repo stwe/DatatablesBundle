@@ -21,7 +21,6 @@
 
         $this->options->set(array(
             'paging_type' => Style::FULL_PAGINATION,
-            'responsive' => true,
             'class' => Style::BASE_STYLE,
             'individual_filtering' => false,
             'individual_filtering_position' => 'head'
@@ -89,7 +88,6 @@
 | search_delay                  | int    | 0                              |
 | state_duration                | int    | 7200                           |
 | stripe_classes                | array  | array()                        |
-| responsive                    | bool   | false                          |
 | class                         | string | Style::BASE_STYLE              |
 | individual_filtering          | bool   | false                          |
 | individual_filtering_position | string | 'foot'                         |
