@@ -12,7 +12,7 @@ Please follow all steps as described [here](http://symfony.com/doc/master/bundle
 
 The enlargement of thumbnails needs the Bootstrap3 framework. 
 
-Optional: Please follow all steps as described [here](.\bootstrap3.md).
+Optional: Please follow all steps as described [here](\bootstrap3.md).
 
 ## 4. Entity example
 

@@ -1,8 +1,36 @@
-# Example
+# Setup Datatable Class
+
+1. [Example](#1-example)
+2. [Top actions](#2-top-actions)
+3. [Callbacks](#3-callbacks)
+4. [Features](#4-features)
+5. [Options](#5-options)
+6. [Ajax](#6-ajax)
+
+## 1. Example
 
 ``` php
     public function buildDatatable()
     {
+        $this->topActions->set(array(
+            'start_html' => '<div class="row"><div class="col-sm-3">',
+            'end_html' => '<hr></div></div>',
+            'actions' => array(
+                array(
+                    'route' => $this->router->generate('post_new'),
+                    'label' => $this->translator->trans('datatables.actions.new'),
+                    'icon' => 'glyphicon glyphicon-plus',
+                    //'role' => 'ROLE_USER',
+                    'attributes' => array(
+                        'rel' => 'tooltip',
+                        'title' => $this->translator->trans('datatables.actions.new'),
+                        'class' => 'btn btn-primary',
+                        'role' => 'button'
+                    ),
+                )
+            )
+        ));
+    
         $this->callbacks->set(array(
             'draw_callback' => "function( settings ) {
                                     alert( 'DataTables has redrawn the table' );
@@ -31,7 +59,15 @@
     }
 ```
 
-# Callbacks
+## 2. Top actions
+
+| Top action | Type   | Default |          |
+|------------|--------|---------|----------|
+| start_html | string | ''      |          |
+| end_html   | string | ''      |          |
+| actions    | array  |         | required |
+
+## 3. Callbacks
 
 | Callback            | Type   | Default |
 |---------------------|--------|---------|
@@ -50,7 +86,7 @@
 | state_save_callback | string | ''      |
 | state_save_params   | string | ''      |
 
-# Features
+## 4. Features
 
 | Feature       | Type   | Default |
 |---------------|--------|---------|
@@ -70,7 +106,7 @@
 | delay         | int    | 0       |
 | extensions    | array  | array() |
 
-# Options
+## 5. Options
 
 | Option                        | Type   | Default                        |
 |-------------------------------|--------|--------------------------------|
@@ -93,7 +129,7 @@
 | individual_filtering_position | string | 'foot'                         |
 | use_integration_options       | bool   | false                          |
 
-# Ajax options
+## 6. Ajax
 
 | Option | Type   | Default |
 |------  |--------|---------|

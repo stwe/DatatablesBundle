@@ -22,7 +22,7 @@
 
 [Column types](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/columns.md)
 
-[Callbacks, Features and Options](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/options.md)
+[Setup Datatable Class](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/setup.md)
 
 [Options of the generator](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/generator.md)
 
