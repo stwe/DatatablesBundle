@@ -2,7 +2,7 @@
 
 ## Example for the Button and Responsive Extension
 
-1. Datatable class
+### 1. Datatable class
 
 ```php
 /**
@@ -39,7 +39,7 @@ class PostDatatable extends AbstractDatatableView
 }
 ```
 
-2. The action template for the Reload-Button
+### 2. The action template for the Reload-Button
 
 ```js
 function ( e, dt, node, config ) {

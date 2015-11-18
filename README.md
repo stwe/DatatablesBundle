@@ -36,15 +36,15 @@
 
 [To use a line formatter](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/lineFormatter.md)
 
-[Setup Bootstrap3 layout](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/bootstrap3.md)
+[Integrate Bootstrap3](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/bootstrap3.md)
 
-[Integrate Translatable DoctrineExtension](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/translatable.md)
+[Integrate the Translatable behavior extension for Doctrine 2](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/translatable.md)
 
-[ImageColumn and thumbnails with LiipImagineBundle](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/thumbs.md)
+[ImageColumn and thumbnails](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/thumbs.md)
 
 ## Creating an Admin Section (new, unstable and experimental)
 
-- [Admin section](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/admin.md)
+[Admin section](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/admin.md)
 
 ## Demo
 
