@@ -145,3 +145,25 @@ public function indexResultsAction()
 }
 ```
 
+### Step 8: Update route annotations for FOSJsRoutingBundle 
+
+Actions like `new`, `show` or `edit` should be updated. 
+
+Add `options`: 
+
+```php
+options={"expose"=true}
+```
+
+Example: 
+
+```php
+    /**
+     * Displays a form to create a new Post entity.
+     *
+     * @Route("/new", name="post_new", options={"expose"=true})
+     * @Method("GET")
+     * @Template(":post:new.html.twig")
+     */
+    public function newAction()
+```

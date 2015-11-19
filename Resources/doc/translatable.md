@@ -187,6 +187,16 @@ class PostTranslation extends AbstractPersonalTranslation
 
 ## 3. Setup for the SgDatatablesBundle
 
+### Config.yml
+
+```yml
+# config.yml
+
+sg_datatables:
+    query:
+        translation_query_hints: true
+```
+
 ### PostDatatable
 
 ```php
