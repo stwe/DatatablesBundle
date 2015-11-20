@@ -24,6 +24,8 @@
 
 [Setup Datatable Class](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/setup.md)
 
+[Query callbacks](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/query.md)
+
 [Options of the generator](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/generator.md)
 
 [Reference configuration](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/configuration.md)
