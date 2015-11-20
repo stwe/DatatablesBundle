@@ -36,7 +36,22 @@ class MultiselectAction extends AbstractAction
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        parent::configureOptions($resolver);
+        $resolver->setRequired(array('route'));
+
+        $resolver->setDefaults(array(
+            'route_parameters' => array(),
+            'icon' => '',
+            'label' => '',
+            'attributes' => array(),
+            'role' => ''
+        ));
+
+        $resolver->setAllowedTypes('route', 'string');
+        $resolver->setAllowedTypes('route_parameters', 'array');
+        $resolver->setAllowedTypes('icon', 'string');
+        $resolver->setAllowedTypes('label', 'string');
+        $resolver->setAllowedTypes('attributes', 'array');
+        $resolver->setAllowedTypes('role', 'string');
 
         $tableName = $this->tableName;
         $resolver->setNormalizer('attributes', function($options, $value) use($tableName) {

@@ -99,6 +99,20 @@ SgDatatablesBundle:Column:array.html.twig
 | count                | boolean        | false   |          |
 | count_action         | array          | array() |          |
 
+### Count Action options
+
+| Option           | Type        | Default                      |          |
+|------------------|-------------|------------------------------|----------|
+| route            | string      |                              | required |
+| route_parameters | array       | array()                      |          |
+| icon             | string      | ''                           |          |
+| label            | string      | ''                           |          |
+| confirm          | boolean     | false                        |          |
+| confirm_message  | string      | 'datatables.bulk.confirmMsg' |          |
+| attributes       | array       | array()                      |          |
+| role             | string      | ''                           |          |
+| render_if        | array       | array()                      |          |
+
 ### Example
 
 ``` php
@@ -307,17 +321,17 @@ SgDatatablesBundle:Column:action.html.twig
 
 ### Action options
 
-| Option           | Type        | Default |          |
-|------------------|-------------|---------|----------|
-| route            | string      |         | required |
-| route_parameters | array       | array() |          |
-| icon             | string      | ''      |          |
-| label            | string      | ''      |          |
-| confirm          | boolean     | false   |          |
-| confirm_message  | string      | ''      |          |
-| attributes       | array       | array() |          |
-| role             | string      | ''      |          |
-| render_if        | array       | array() |          |
+| Option           | Type        | Default                      |          |
+|------------------|-------------|------------------------------|----------|
+| route            | string      |                              | required |
+| route_parameters | array       | array()                      |          |
+| icon             | string      | ''                           |          |
+| label            | string      | ''                           |          |
+| confirm          | boolean     | false                        |          |
+| confirm_message  | string      | 'datatables.bulk.confirmMsg' |          |
+| attributes       | array       | array()                      |          |
+| role             | string      | ''                           |          |
+| render_if        | array       | array()                      |          |
 
 ### Example
 
@@ -400,12 +414,12 @@ SgDatatablesBundle:Column:multiselect.html.twig
 
 | Option           | Type        | Default |          |
 |------------------|-------------|---------|----------|
-| icon             | string      | ''      |          |
 | route            | string      |         | required |
-| label            | string      | ''      |          |
-| role             | string      | ''      |          |
 | route_parameters | array       | array() |          |
+| icon             | string      | ''      |          |
+| label            | string      | ''      |          |
 | attributes       | array       | array() |          |
+| role             | string      | ''      |          |
 
 ### Example
 

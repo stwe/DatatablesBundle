@@ -61,11 +61,25 @@
 
 ## 2. Top actions
 
+### Top actions Options
+
 | Top action | Type   | Default |          |
 |------------|--------|---------|----------|
 | start_html | string | ''      |          |
 | end_html   | string | ''      |          |
 | actions    | array  |         | required |
+
+### Action options
+
+| Option           | Type        | Default                      |          |
+|------------------|-------------|------------------------------|----------|
+| route            | string      |                              | required |
+| icon             | string      | ''                           |          |
+| label            | string      | ''                           |          |
+| confirm          | boolean     | false                        |          |
+| confirm_message  | string      | 'datatables.bulk.confirmMsg' |          |
+| attributes       | array       | array()                      |          |
+| role             | string      | ''                           |          |
 
 ## 3. Callbacks
 

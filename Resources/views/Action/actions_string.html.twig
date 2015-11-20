@@ -37,7 +37,12 @@ if (true == visibleFlag && true == roleFlag) {
     url += 'href="' + route + '" ';
     url += attributes;
     {% if action.confirm %}
-        url += 'onclick="' + "return confirm('{{ action.ConfirmMessage }}')" + '" ';
+        url += 'onclick="';
+        {% if action.confirmMessage %}
+            url += "return confirm('{{ action.confirmMessage }}')" + '" ';
+        {% else %}
+            url += "return confirm('{{ 'datatables.bulk.confirmMsg'|trans({}, 'messages') }}')" + '" ';
+        {% endif %}
     {% endif %}
     url += ">";
 

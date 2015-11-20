@@ -11,10 +11,43 @@
 
 namespace Sg\DatatablesBundle\Datatable\Action;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 /**
  * Class TopAction
  *
  * @package Sg\DatatablesBundle\Datatable\Action
  */
 class TopAction extends AbstractAction
-{}
+{
+    //-------------------------------------------------
+    // OptionsInterface
+    //-------------------------------------------------
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired(array('route'));
+
+        $resolver->setDefaults(array(
+            'icon' => '',
+            'label' => '',
+            'confirm' => false,
+            'confirm_message' => '',
+            'attributes' => array(),
+            'role' => ''
+        ));
+
+        $resolver->setAllowedTypes('route', 'string');
+        $resolver->setAllowedTypes('icon', 'string');
+        $resolver->setAllowedTypes('label', 'string');
+        $resolver->setAllowedTypes('confirm', 'bool');
+        $resolver->setAllowedTypes('confirm_message', 'string');
+        $resolver->setAllowedTypes('attributes', 'array');
+        $resolver->setAllowedTypes('role', 'string');
+
+        return $this;
+    }
+}
