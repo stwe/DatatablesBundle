@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Datatable\Column;
+namespace Sg\DatatablesBundle\Datatable\Action;
 
 use Sg\DatatablesBundle\OptionsResolver\OptionsInterface;
 use Sg\DatatablesBundle\OptionsResolver\BaseOptions;
@@ -17,11 +17,11 @@ use Sg\DatatablesBundle\OptionsResolver\BaseOptions;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class Action
+ * Class AbstractAction
  *
- * @package Sg\DatatablesBundle\Datatable\Column
+ * @package Sg\DatatablesBundle\Datatable\Action
  */
-class Action implements OptionsInterface
+abstract class AbstractAction implements ActionInterface, OptionsInterface
 {
     /**
      * Options container.
@@ -86,12 +86,45 @@ class Action implements OptionsInterface
      */
     protected $role;
 
+    //-------------------------------------------------
+    // Ctor.
+    //-------------------------------------------------
+
     /**
-     * Render only if parameter / conditions are TRUE
-     *
-     * @var array
+     * Ctor.
      */
-    protected $renderIf;
+    public function __construct()
+    {
+        $this->options = array();
+    }
+
+    //-------------------------------------------------
+    // ActionInterface
+    //-------------------------------------------------
+
+    /**
+     * Set route.
+     *
+     * @param string $route
+     *
+     * @return $this
+     */
+    public function setRoute($route)
+    {
+        $this->route = $route;
+
+        return $this;
+    }
+
+    /**
+     * Get route.
+     *
+     * @return string
+     */
+    public function getRoute()
+    {
+        return $this->route;
+    }
 
     //-------------------------------------------------
     // OptionsInterface
@@ -126,8 +159,7 @@ class Action implements OptionsInterface
             'confirm' => false,
             'confirm_message' => '',
             'attributes' => array(),
-            'role' => '',
-            'render_if' => array()
+            'role' => ''
         ));
 
         $resolver->setAllowedTypes('route', 'string');
@@ -138,7 +170,6 @@ class Action implements OptionsInterface
         $resolver->setAllowedTypes('confirm_message', 'string');
         $resolver->setAllowedTypes('attributes', 'array');
         $resolver->setAllowedTypes('role', 'string');
-        $resolver->setAllowedTypes('render_if', 'array');
 
         return $this;
     }
@@ -146,30 +177,6 @@ class Action implements OptionsInterface
     //-------------------------------------------------
     // Getters && Setters
     //-------------------------------------------------
-
-    /**
-     * Set route.
-     *
-     * @param string $route
-     *
-     * @return $this
-     */
-    public function setRoute($route)
-    {
-        $this->route = $route;
-
-        return $this;
-    }
-
-    /**
-     * Get route.
-     *
-     * @return string
-     */
-    public function getRoute()
-    {
-        return $this->route;
-    }
 
     /**
      * Set route parameters.
@@ -337,29 +344,5 @@ class Action implements OptionsInterface
     public function getRole()
     {
         return $this->role;
-    }
-
-    /**
-     * Set renderIf.
-     *
-     * @param array $renderIf
-     *
-     * @return $this
-     */
-    public function setRenderIf(array $renderIf)
-    {
-        $this->renderIf = $renderIf;
-
-        return $this;
-    }
-
-    /**
-     * Get renderIf.
-     *
-     * @return array
-     */
-    public function getRenderIf()
-    {
-        return $this->renderIf;
     }
 }

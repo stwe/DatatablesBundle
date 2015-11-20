@@ -11,7 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable\View;
 
-use Sg\DatatablesBundle\Datatable\Column\Action;
+use Sg\DatatablesBundle\Datatable\Action\TopAction;
 use Sg\DatatablesBundle\OptionsResolver\BaseOptions;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -164,7 +164,7 @@ class TopActions extends BaseOptions
     protected function setActions(array $actions)
     {
         foreach ($actions as $action) {
-            $newAction = new Action();
+            $newAction = new TopAction();
             $this->actions[] = $newAction->setupOptionsResolver($action);
         }
 

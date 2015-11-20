@@ -122,7 +122,7 @@
             {% endif %}
 
             {% if view_multiselect %}
-                {% include "SgDatatablesBundle:Datatable:multiselect_actions.html.twig" with {'column': view_multiselect_column} %}
+                {% include "SgDatatablesBundle:Action:multiselect_actions.html.twig" with {'column': view_multiselect_column} %}
             {% endif %}
 
         }, features.delay);

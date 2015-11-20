@@ -1,15 +1,12 @@
-var actionsString = "";
-
-{# start html #}
-{#
-{% if column.startHtml %}
-    actionsString += '{{ column.startHtml|raw }}';
-{% endif %}
-#}
-
-var routeParameters, attributes, visibleFlag, roleFlag;
-
-routeParameters  = new Array();
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+routeParameters = new Array();
 attributes = "";
 visibleFlag = true;
 roleFlag = true;
@@ -43,20 +40,16 @@ if (true == visibleFlag && true == roleFlag) {
         url += 'onclick="' + "return confirm('{{ action.ConfirmMessage }}')" + '" ';
     {% endif %}
     url += ">";
-    if (count !== 'undefined') {
-        url += count + ' ';
-    }
+
+    {# count - for ArrayColumn #}
+    {% if 'array' == column.alias %}
+        if (count !== 'undefined') {
+            url += count + ' ';
+        }
+    {% endif %}
+
     url += '{{ datatable_icon(action.icon, action.label) }}';
     url += "</a>";
 
     actionsString += url;
 }
-
-{# end html #}
-{#
-{% if column.endHtml %}
-    actionsString += '{{ column.endHtml|raw }}';
-{% endif %}
-#}
-
-return actionsString;

@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\Datatable\Action\MultiselectAction;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 

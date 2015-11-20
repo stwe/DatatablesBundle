@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Datatable\Column;
+namespace Sg\DatatablesBundle\Datatable\Action;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class MultiselectAction
  *
- * @package Sg\DatatablesBundle\Datatable\Column
+ * @package Sg\DatatablesBundle\Datatable\Action
  */
-class MultiselectAction extends Action
+class MultiselectAction extends AbstractAction
 {
     /**
      * Name of datatable view.
@@ -36,22 +36,7 @@ class MultiselectAction extends Action
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(array('route'));
-
-        $resolver->setDefaults(array(
-            'icon' => '',
-            'label' => '',
-            'role' => '',
-            'route_parameters' => array(),
-            'attributes' => array(),
-        ));
-
-        $resolver->setAllowedTypes('icon', 'string');
-        $resolver->setAllowedTypes('route', 'string');
-        $resolver->setAllowedTypes('label', 'string');
-        $resolver->setAllowedTypes('role', 'string');
-        $resolver->setAllowedTypes('route_parameters', 'array');
-        $resolver->setAllowedTypes('attributes', 'array');
+        parent::configureOptions($resolver);
 
         $tableName = $this->tableName;
         $resolver->setNormalizer('attributes', function($options, $value) use($tableName) {
