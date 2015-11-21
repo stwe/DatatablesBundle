@@ -4,7 +4,7 @@
     "deferLoading": {{ view_options.deferLoading }},
 {% endif %}
 
-{% if false == view_options.useIntegrationOptions OR true == view_options.forceDom %}
+{% if false == view_options.useIntegrationOptions or true == view_options.forceDom %}
     "dom": "{{ view_options.dom|e('js') }}",
 {% endif %}
 
