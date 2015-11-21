@@ -33,3 +33,29 @@ class PostDatatable extends AbstractDatatableView
         ;
     }
 ```
+
+## 3. Custom DOM model
+
+You can define your own DOM model, following the syntax given on https://datatables.net/reference/option/dom
+To do so, set the 'dom' and 'force_dom' options in your Datatable class.
+'force_dom' is needed if you use integration options, to allow you to ovveride bootstrap's dom
+
+```php
+class PostDatatable extends AbstractDatatableView
+{
+    public function buildDatatable($locale = null)
+    {
+        // ...
+
+        $this->options->set(array(
+            // ...
+            // default bootstrap dom for datatable. modify it to your needs
+            'dom' => "<'row'<'col-sm-6'l><'col-sm-6'f>>" .
+                    "<'row'<'col-sm-12'tr>>" .
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            'force_dom' => true,
+        ));
+
+        // ...
+    }
+```
