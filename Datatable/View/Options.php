@@ -722,13 +722,13 @@ class Options extends BaseOptions
     /**
      * Set force dom.
      *
-     * @param boolean $useIntegrationOptions
+     * @param boolean $forceDom
      *
      * @return $this
      */
     protected function setForceDom($forceDom)
     {
-        $this->forceDom = $useIntegrationOptions;
+        $this->forceDom = $forceDom;
 
         return $this;
     }
