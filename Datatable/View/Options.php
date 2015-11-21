@@ -154,6 +154,13 @@ class Options extends BaseOptions
      */
     protected $useIntegrationOptions;
 
+    /**
+     * Force the use of the provided dom option, even if integration options are used.
+     *
+     * @var boolean
+     */
+    protected $forceDom;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -236,7 +243,8 @@ class Options extends BaseOptions
             'class' => Style::BASE_STYLE,
             'individual_filtering' => false,
             'individual_filtering_position' => 'foot',
-            'use_integration_options' => false
+            'use_integration_options' => false,
+            'force_dom' => false
         ));
 
         $resolver->setAllowedTypes('display_start', 'int');
@@ -257,6 +265,7 @@ class Options extends BaseOptions
         $resolver->setAllowedTypes('individual_filtering', 'bool');
         $resolver->setAllowedTypes('individual_filtering_position', 'string');
         $resolver->setAllowedTypes('use_integration_options', 'bool');
+        $resolver->setAllowedTypes('force_dom', 'bool');
 
         $resolver->setAllowedValues('individual_filtering_position', array('head', 'foot', 'both'));
 
@@ -677,7 +686,7 @@ class Options extends BaseOptions
     }
 
     /**
-     * Set individual filtering position.
+     * Get individual filtering position.
      *
      * @return string
      */
@@ -701,12 +710,36 @@ class Options extends BaseOptions
     }
 
     /**
-     * Set use integration options.
+     * Get use integration options.
      *
      * @return boolean
      */
     public function getUseIntegrationOptions()
     {
         return $this->useIntegrationOptions;
+    }
+
+    /**
+     * Set force dom.
+     *
+     * @param boolean $useIntegrationOptions
+     *
+     * @return $this
+     */
+    protected function setForceDom($forceDom)
+    {
+        $this->forceDom = $useIntegrationOptions;
+
+        return $this;
+    }
+
+    /**
+     * Get force dom.
+     *
+     * @return boolean
+     */
+    public function getForceDom()
+    {
+        return $this->forceDom;
     }
 }
