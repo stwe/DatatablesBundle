@@ -21,6 +21,13 @@ use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
  */
 class GalleryColumn extends ImageColumn
 {
+    /**
+     * Maximum number of images to be displayed.
+     *
+     * @var integer
+     */
+    protected $viewLimit;
+
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -82,7 +89,8 @@ class GalleryColumn extends ImageColumn
             'holder_url' => '',
             'holder_width' => '50',
             'holder_height' => '50',
-            'enlarge' => false
+            'enlarge' => false,
+            'view_limit' => 4
         ));
 
         $resolver->setAllowedTypes('class', 'string');
@@ -105,10 +113,39 @@ class GalleryColumn extends ImageColumn
         $resolver->setAllowedTypes('holder_width', 'string');
         $resolver->setAllowedTypes('holder_height', 'string');
         $resolver->setAllowedTypes('enlarge', 'bool');
+        $resolver->setAllowedTypes('view_limit', 'integer');
 
         $resolver->setAllowedValues('search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
         $resolver->setAllowedValues('filter_type', array('text', 'select'));
 
         return $this;
+    }
+
+    //-------------------------------------------------
+    // Getters && Setters
+    //-------------------------------------------------
+
+    /**
+     * Set view limit.
+     *
+     * @param integer $viewLimit
+     *
+     * @return $this
+     */
+    public function setViewLimit($viewLimit)
+    {
+        $this->viewLimit = $viewLimit;
+
+        return $this;
+    }
+
+    /**
+     * Get view limit.
+     *
+     * @return integer
+     */
+    public function getViewLimit()
+    {
+        return $this->viewLimit;
     }
 }

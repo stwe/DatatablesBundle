@@ -641,6 +641,7 @@ SgDatatablesBundle:Column:image.html.twig
 | holder_width         | string         | '50'    |          |
 | holder_height        | string         | '50'    |          |
 | enlarge              | boolean        | false   |          |
+| view_limit           | integer        | 4       |          |
 
 ### Example
 
@@ -653,7 +654,8 @@ $this->columnBuilder
         //'holder_url' => 'https://placehold.it',
         //'holder_width' => '65',
         //'holder_height' => '65',
-        'enlarge' => true
+        'enlarge' => true,
+        'view_limit' => 2,
     ))
 ;
 ```

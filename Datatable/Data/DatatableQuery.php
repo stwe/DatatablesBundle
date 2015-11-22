@@ -14,6 +14,7 @@ namespace Sg\DatatablesBundle\Datatable\Data;
 use Sg\DatatablesBundle\Datatable\View\DatatableViewInterface;
 use Sg\DatatablesBundle\Datatable\Column\AbstractColumn;
 use Sg\DatatablesBundle\Datatable\Column\ImageColumn;
+use Sg\DatatablesBundle\Datatable\Column\GalleryColumn;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Serializer;
@@ -748,13 +749,21 @@ class DatatableQuery
                     }
                 }
 
+                /** @var GalleryColumn $column */
                 if ('gallery' === $column->getAlias()) {
                     $fields = explode('.', $data);
 
                     if (true === $this->imagineBundle) {
                         $galleryImages = '';
+                        $counter = 0;
+                        //$startHtml = '<div class="row">';
+                        //$endHtml = '</div>';
                         foreach ($item[$fields[0]] as $image) {
-                            $galleryImages = $galleryImages . $this->renderImage($image[$fields[1]], $column);
+                            $galleryImages = $galleryImages .
+                                //'<div class="col-md-1">' .
+                                $this->renderImage($image[$fields[1]], $column);
+                                //'</div>';
+                            if (++$counter == $column->getViewLimit()) break;
                         }
                         $item[$fields[0]] = $galleryImages;
                     } else {
