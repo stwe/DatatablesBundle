@@ -90,10 +90,11 @@ class {{ datatable_class }} extends AbstractDatatableView
             'individual_filtering' => false,
             'individual_filtering_position' => 'foot',
             {% if true == bootstrap3 -%}
-            'use_integration_options' => true
+            'use_integration_options' => true,
             {% else -%}
-            'use_integration_options' => false
+            'use_integration_options' => false,
             {% endif -%}
+            'force_dom' => false
         ));
 
         $this->columnBuilder
