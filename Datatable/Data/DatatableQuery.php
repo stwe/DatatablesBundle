@@ -582,7 +582,7 @@ class DatatableQuery
                 $andExpr->add($pivot->expr()->isNull($searchField));
                 break;
             case 'isNotNull':
-                $andExpr->add($pivot->expr()->isNull($searchField));
+                $andExpr->add($pivot->expr()->isNotNull($searchField));
                 break;
         }
 
