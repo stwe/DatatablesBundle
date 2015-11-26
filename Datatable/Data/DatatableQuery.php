@@ -756,13 +756,8 @@ class DatatableQuery
                     if (true === $this->imagineBundle) {
                         $galleryImages = '';
                         $counter = 0;
-                        //$startHtml = '<div class="row">';
-                        //$endHtml = '</div>';
                         foreach ($item[$fields[0]] as $image) {
-                            $galleryImages = $galleryImages .
-                                //'<div class="col-md-1">' .
-                                $this->renderImage($image[$fields[1]], $column);
-                                //'</div>';
+                            $galleryImages = $galleryImages . $this->renderImage($image[$fields[1]], $column);
                             if (++$counter == $column->getViewLimit()) break;
                         }
                         $item[$fields[0]] = $galleryImages;
