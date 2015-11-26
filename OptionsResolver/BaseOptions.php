@@ -68,8 +68,8 @@ class BaseOptions
     /**
      * Calls the setters.
      *
-     * @param array  $options
-     * @param object $class
+     * @param array $options
+     * @param mixed $class
      *
      * @throws Exception
      */
