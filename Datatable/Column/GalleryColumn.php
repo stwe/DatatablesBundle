@@ -68,55 +68,13 @@ class GalleryColumn extends ImageColumn
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(array('relative_path'));
+        parent::configureOptions($resolver);
+
         $resolver->setRequired(array('imagine_filter'));
 
-        $resolver->setDefaults(array(
-            'class' => '',
-            'padding' => '',
-            'name' => '',
-            'orderable' => false,
-            'searchable' => false,
-            'title' => '',
-            'type' => '',
-            'visible' => true,
-            'width' => '',
-            'search_type' => 'like',
-            'filter_type' => 'text',
-            'filter_options' => array(),
-            'filter_property' => '',
-            'filter_search_column' => '',
-            'holder_url' => '',
-            'holder_width' => '50',
-            'holder_height' => '50',
-            'enlarge' => false,
-            'view_limit' => 4
-        ));
+        $resolver->setDefault('view_limit', 4);
 
-        $resolver->setAllowedTypes('class', 'string');
-        $resolver->setAllowedTypes('padding', 'string');
-        $resolver->setAllowedTypes('name', 'string');
-        $resolver->setAllowedTypes('orderable', 'bool');
-        $resolver->setAllowedTypes('searchable', 'bool');
-        $resolver->setAllowedTypes('title', 'string');
-        $resolver->setAllowedTypes('type', 'string');
-        $resolver->setAllowedTypes('visible', 'bool');
-        $resolver->setAllowedTypes('width', 'string');
-        $resolver->setAllowedTypes('search_type', 'string');
-        $resolver->setAllowedTypes('filter_type', 'string');
-        $resolver->setAllowedTypes('filter_options', 'array');
-        $resolver->setAllowedTypes('filter_property', 'string');
-        $resolver->setAllowedTypes('filter_search_column', 'string');
-        $resolver->setAllowedTypes('imagine_filter', 'string');
-        $resolver->setAllowedTypes('relative_path', 'string');
-        $resolver->setAllowedTypes('holder_url', 'string');
-        $resolver->setAllowedTypes('holder_width', 'string');
-        $resolver->setAllowedTypes('holder_height', 'string');
-        $resolver->setAllowedTypes('enlarge', 'bool');
         $resolver->setAllowedTypes('view_limit', 'integer');
-
-        $resolver->setAllowedValues('search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
-        $resolver->setAllowedValues('filter_type', array('text', 'select'));
 
         return $this;
     }
