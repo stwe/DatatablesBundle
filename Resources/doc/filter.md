@@ -19,7 +19,7 @@ class PostDatatable extends AbstractDatatableView
     
     // ...
 }
-``
+```
 
 ## Server-side individual column filtering
 
