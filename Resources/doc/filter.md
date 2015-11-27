@@ -1,6 +1,10 @@
 # Filtering
 
-## Search globally
+1. [Enable or disable the search abilities](#1-enable-or-disable-the-search-abilities)
+2. [Server-side individual column filtering](#2-serverside-individual-column-filtering)
+3. [Hide the global search box](#3-hide-the-global-search-box)
+
+## 1. Enable or disable the search abilities
 
 ```php
 class PostDatatable extends AbstractDatatableView
@@ -21,7 +25,7 @@ class PostDatatable extends AbstractDatatableView
 }
 ```
 
-## Server-side individual column filtering
+## 2. ServerSide individual column filtering
 
 ```php
 class PostDatatable extends AbstractDatatableView
@@ -59,3 +63,31 @@ class PostDatatable extends AbstractDatatableView
     // ...
 }
 ```
+
+## 3. Hide the global search box
+
+The global search box is located in the dom. Remove the `f` option (`f` for filter).
+
+Example:
+
+```php
+class PostDatatable extends AbstractDatatableView
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function buildDatatable($locale = null)
+    {
+        // ...
+
+        $this->options->set(array(
+            'dom' => 'lrtip',
+        ));
+        
+        // ...
+    }
+    
+    // ...
+}
+```
+
