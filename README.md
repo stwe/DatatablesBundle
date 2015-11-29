@@ -26,7 +26,11 @@
 
 [Filtering](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filter.md)
 
+[To use a line formatter](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/lineFormatter.md)
+
 [Query callbacks](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/query.md)
+
+[Extensions like Buttons or Responsive](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/extensions.md)
 
 [Options of the generator](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/generator.md)
 
@@ -36,23 +40,38 @@
 
 [Examples](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
 
-[Extensions like Buttons or Responsive](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/extensions.md)
+[Demo Application - must be updated!](https://github.com/stwe/dtbundle-demo)
 
-[To use a line formatter](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/lineFormatter.md)
+## Integrating 3rd party stuff 
 
 [Integrate Bootstrap3](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/bootstrap3.md)
 
 [Integrate the Translatable behavior extension for Doctrine 2](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/translatable.md)
 
-[ImageColumn and thumbnails](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/thumbs.md)
+[Integrate the LiipImagineBundle / ImageColumn, GalleryColumn and thumbnails](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/thumbs.md)
 
 ## Creating an Admin Section (new, unstable and experimental)
 
 [Admin section](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/admin.md)
 
-## Demo
+## Limitations and Known Issues
 
-[Demo Application - must be updated!](https://github.com/stwe/dtbundle-demo)
+Much like every other piece of software `SgDatatablesBundle` is not perfect and far from feature complete.
+
+### Use this Bundle in ServerSide mode
+
+The ClientSide mode currently does not work with all features. There are some problems with the Buttons-Extension and MultiSelectColumn. 
+At the moment I can not say whether the ClientSide mode is supported by me in the future. Priority has the ServerSide mode.
+
+### Other limitations
+
+- This bundle does not support multiple Ids
+- 4th level associations are currently not supported
+- Searching and filtering on a virtual column not yet implemented and disabled by default
+
+## Reporting an issue or a feature request
+
+Issues and feature requests are tracked in the [Github issue tracker](https://github.com/stwe/DatatablesBundle/issues).
 
 ## Friendly License
 
@@ -61,7 +80,3 @@ This bundle is available under the MIT license. See the complete license in the 
     Resources/meta/LICENSE
 
 You are free to use, modify and distribute this software, as long as the copyright header is left intact (specifically the comment block which starts with /*)!
-
-## Reporting an issue or a feature request
-
-Issues and feature requests are tracked in the [Github issue tracker](https://github.com/stwe/DatatablesBundle/issues).
