@@ -187,32 +187,11 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->templates = $templates;
 
         $this->qb = null;
-
-        $this->buildDatatableView();
     }
 
     //-------------------------------------------------
     // DatatableViewInterface
     //-------------------------------------------------
-
-    /**
-     * Builds the datatable view.
-     *
-     * @deprecated Deprecated since v0.7.1, to be removed in v0.8.
-     *             Use {@link buildDatatable()} instead.
-     */
-    public function buildDatatableView()
-    {
-        // implement an empty function for backward compatibility reasons
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildDatatable($locale = null)
-    {
-        // implement an empty function for backward compatibility reasons
-    }
 
     /**
      * {@inheritdoc}

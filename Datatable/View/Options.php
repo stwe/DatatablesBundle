@@ -181,25 +181,6 @@ class Options extends BaseOptions
     //-------------------------------------------------
 
     /**
-     * Set options.
-     *
-     * All options not specified will be set to default.
-     *
-     * @param array $options
-     *
-     * @deprecated Deprecated since v0.7.1, to be removed in v0.8.
-     *             Use {@link set()} instead.
-     *
-     * @return $this
-     */
-    public function setOptions(array $options)
-    {
-        $this->set($options);
-
-        return $this;
-    }
-
-    /**
      * Set one option.
      *
      * All the other parameters will not be altered.

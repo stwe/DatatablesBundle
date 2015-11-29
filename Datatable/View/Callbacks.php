@@ -140,23 +140,6 @@ class Callbacks extends BaseOptions
     //-------------------------------------------------
 
     /**
-     * Set callbacks.
-     *
-     * @param array $options
-     *
-     * @deprecated Deprecated since v0.7.1, to be removed in v0.8.
-     *             Use {@link set()} instead.
-     *
-     * @return $this
-     */
-    public function setCallbacks(array $options)
-    {
-        $this->set($options);
-
-        return $this;
-    }
-
-    /**
      * Configure Options.
      *
      * @param OptionsResolver $resolver
