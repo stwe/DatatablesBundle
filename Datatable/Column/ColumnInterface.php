@@ -37,6 +37,13 @@ interface ColumnInterface
     public function setDql($data);
 
     /**
+     * Get dql.
+     *
+     * @return null|string
+     */
+    public function getDql();
+
+    /**
      * Get template.
      *
      * @return string

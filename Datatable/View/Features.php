@@ -542,7 +542,7 @@ class Features extends BaseOptions
      *
      * @return $this
      */
-    public function setExtensions(array $extensions)
+    protected function setExtensions(array $extensions)
     {
         $this->extensions = $extensions;
 

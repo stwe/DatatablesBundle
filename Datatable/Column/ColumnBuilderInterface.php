@@ -40,6 +40,16 @@ interface ColumnBuilderInterface
     public function removeByKey($key);
 
     /**
+     * Remove column by data.
+     *
+     * @param string $data
+     *
+     * @return $this
+     * @throws \Exception
+     */
+    public function removeByData($data);
+
+    /**
      * Get all columns.
      *
      * @return array

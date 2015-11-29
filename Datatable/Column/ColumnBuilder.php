@@ -124,6 +124,28 @@ class ColumnBuilder implements ColumnBuilderInterface
     /**
      * {@inheritdoc}
      */
+    public function removeByData($data)
+    {
+        if (is_string($data)) {
+            foreach ($this->columns as $key => $column) {
+                /** @var ColumnInterface $column */
+                if ($data === $column->getDql()) {
+                    unset($this->columns[$key]);
+                    $this->columns = array_values($this->columns);
+
+                    return $this;
+                }
+            }
+
+            throw new Exception('removeColumnByData(): The column with data ' . $data . ' does not exist.');
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getColumns()
     {
         return $this->columns;

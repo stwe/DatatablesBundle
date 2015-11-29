@@ -207,6 +207,14 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getDql()
+    {
+        return $this->dql;
+    }
+
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -238,16 +246,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     public function getData()
     {
         return $this->data;
-    }
-
-    /**
-     * Get dql.
-     *
-     * @return null|string
-     */
-    public function getDql()
-    {
-        return $this->dql;
     }
 
     /**

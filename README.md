@@ -22,6 +22,8 @@
 
 [Column types](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/columns.md)
 
+[How to use the ColumnBuilder](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/columnBuilder.md)
+
 [Setup Datatable Class](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/setup.md)
 
 [Filtering](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filter.md)
