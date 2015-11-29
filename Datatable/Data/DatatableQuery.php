@@ -756,11 +756,16 @@ class DatatableQuery
                     if (true === $this->imagineBundle) {
                         $galleryImages = '';
                         $counter = 0;
-                        foreach ($item[$fields[0]] as $image) {
-                            $galleryImages = $galleryImages . $this->renderImage($image[$fields[1]], $column);
-                            if (++$counter == $column->getViewLimit()) break;
+                        $images = count($item[$fields[0]]);
+                        if (0 === $images) {
+                            $item[$fields[0]] = $this->renderImage(null, $column);
+                        } else {
+                            foreach ($item[$fields[0]] as $image) {
+                                $galleryImages = $galleryImages . $this->renderImage($image[$fields[1]], $column);
+                                if (++$counter == $column->getViewLimit()) break;
+                            }
+                            $item[$fields[0]] = $galleryImages;
                         }
-                        $item[$fields[0]] = $galleryImages;
                     } else {
                         throw new InvalidArgumentException('getResponse(): Bundle "LiipImagineBundle" does not exist or it is not enabled.');
                     }
