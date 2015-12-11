@@ -37,7 +37,7 @@ class DatatableTwigExtension extends Twig_Extension
     /**
      * @var array
      */
-    private $routes;
+    private $entities;
 
     /**
      * @var array
@@ -52,13 +52,13 @@ class DatatableTwigExtension extends Twig_Extension
      * Ctor.
      *
      * @param TranslatorInterface $translator
-     * @param array               $routes
+     * @param array               $entities
      * @param array               $site
      */
-    public function __construct(TranslatorInterface $translator, array $routes, array $site)
+    public function __construct(TranslatorInterface $translator, array $entities, array $site)
     {
         $this->translator = $translator;
-        $this->routes = $routes;
+        $this->entities = $entities;
         $this->site = $site;
     }
 
@@ -85,8 +85,8 @@ class DatatableTwigExtension extends Twig_Extension
             new Twig_SimpleFunction('datatable_render_js', array($this, 'datatableRenderJs'), array('is_safe' => array('all'))),
             new Twig_SimpleFunction('datatable_filter_render', array($this, 'datatableFilterRender'), array('is_safe' => array('all'), 'needs_environment' => true)),
             new Twig_SimpleFunction('datatable_icon', array($this, 'datatableIcon'), array('is_safe' => array('all'))),
-            new Twig_SimpleFunction('datatable_navigation_links', array($this, 'datatableNavigationLinks'), array('is_safe' => array('all'), 'needs_environment' => true)),
-            new Twig_SimpleFunction('datatable_site_config', array($this, 'datatableSiteConfig'), array('is_safe' => array('all'))),
+            new Twig_SimpleFunction('datatable_admin_navigation_links', array($this, 'datatableAdminNavigationLinks'), array('is_safe' => array('all'), 'needs_environment' => true)),
+            new Twig_SimpleFunction('datatable_admin_site_config', array($this, 'datatableAdminSiteConfig'), array('is_safe' => array('all'))),
         );
     }
 
@@ -212,29 +212,29 @@ class DatatableTwigExtension extends Twig_Extension
     }
 
     /**
-     * Renders the navigation links.
+     * Renders the admin navigation links.
      *
      * @param Twig_Environment $twig
      *
      * @return string
      */
-    public function datatableNavigationLinks(Twig_Environment $twig)
+    public function datatableAdminNavigationLinks(Twig_Environment $twig)
     {
         $routes = array();
 
-        foreach ($this->routes as $key => $value) {
-            $routes[$key] = DatatablesRoutingLoader::PREF . $key . '_index';
+        foreach ($this->entities as $key => $options) {
+            $routes[$options['label']] = DatatablesRoutingLoader::PREF . $key . '_index';
         }
 
         return $twig->render('SgDatatablesBundle:Crud:navigation.html.twig', array('routes' => $routes));
     }
 
     /**
-     * Pass the site config.
+     * Pass the admin site config.
      *
      * @return array
      */
-    public function datatableSiteConfig()
+    public function datatableAdminSiteConfig()
     {
         return $this->site;
     }

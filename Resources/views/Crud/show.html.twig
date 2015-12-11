@@ -1,4 +1,4 @@
-{% extends datatable_site_config().base_layout %}
+{% extends datatable_admin_site_config().base_layout %}
 
 {% block main %}
     <table class="table">
@@ -9,7 +9,11 @@
                         <b>{{ field|capitalize }}:</b>
                     </td>
                     <td>
-                        {{ attribute(entity, field) }}
+                        {% if 'datetime' != mappings[field]['type'] %}
+                            {{ entity[field] }}
+                        {% else %}
+                            {{ entity[field]|date }}
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}

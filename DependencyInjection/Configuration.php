@@ -31,12 +31,14 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('sg_datatables');
 
         $this->addDatatableSection($rootNode);
-        $this->addSiteSection($rootNode);
-        $this->addQuerySection($rootNode);
-        $this->addRoutesSection($rootNode);
+        $this->addAdminSections($rootNode);
 
         return $treeBuilder;
     }
+
+    //-------------------------------------------------
+    // Datatable section
+    //-------------------------------------------------
 
     /**
      * Add datatable section.
@@ -57,48 +59,16 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                     ->end()
-                ->end()
-            ->end()
-        ;
-    }
-
-    /**
-     * Add site section.
-     *
-     * @param ArrayNodeDefinition $rootNode
-     */
-    private function addSiteSection(ArrayNodeDefinition $rootNode)
-    {
-        $rootNode
-            ->children()
-                ->arrayNode('site')->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('title')->defaultValue('SgDatatablesBundle')->end()
-                        ->scalarNode('base_layout')->defaultValue('SgDatatablesBundle:Crud:layout.html.twig')->end()
-                        ->scalarNode('login_route')->defaultNull()->end()
-                        ->scalarNode('logout_route')->defaultNull()->end()
-                    ->end()
-                ->end()
-            ->end()
-        ;
-    }
-
-    /**
-     * Add query section.
-     *
-     * @param ArrayNodeDefinition $rootNode
-     */
-    private function addQuerySection(ArrayNodeDefinition $rootNode)
-    {
-        $rootNode
-            ->children()
-                ->arrayNode('query')->addDefaultsIfNotSet()
-                    ->children()
-                        ->booleanNode('search_on_non_visible_columns')
-                            ->defaultFalse()
-                        ->end()
-                        ->booleanNode('translation_query_hints')
-                            ->defaultFalse()
+                        ->arrayNode('query')->addDefaultsIfNotSet()
+                            ->children()
+                                ->booleanNode('search_on_non_visible_columns')
+                                    ->defaultFalse()
+                                ->end()
+                                ->booleanNode('translation_query_hints')
+                                    ->defaultFalse()
+                                ->end()
+                            ->end()
                         ->end()
                     ->end()
                 ->end()
@@ -106,44 +76,68 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
+    //-------------------------------------------------
+    // Admin sections
+    //-------------------------------------------------
+
     /**
-     * Add routes section.
+     * Add admin sections.
      *
      * @param ArrayNodeDefinition $rootNode
      */
-    private function addRoutesSection(ArrayNodeDefinition $rootNode)
+    private function addAdminSections(ArrayNodeDefinition $rootNode)
     {
         $rootNode
             ->children()
-                ->scalarNode('global_prefix')->defaultValue('admin')->end()
-                ->arrayNode('routes')
-                    ->requiresAtLeastOneElement()
-                    ->prototype('scalar')->end()
+                ->arrayNode('admin')->addDefaultsIfNotSet()
+                    ->append($this->addAdminSiteSection())
+                    ->append($this->addEntitiesSection())
                 ->end()
-                ->arrayNode('fields')
-                    ->useAttributeAsKey('route')
-                    ->requiresAtLeastOneElement()
-                    ->prototype('array')
-                        ->children()
-                            ->arrayNode('show')
-                                ->requiresAtLeastOneElement()
-                                ->prototype('scalar')->end()
-                            ->end()
-                            ->arrayNode('new')
-                                ->requiresAtLeastOneElement()
-                                ->prototype('scalar')->end()
-                            ->end()
-                            ->arrayNode('edit')
-                                ->requiresAtLeastOneElement()
-                                ->prototype('scalar')->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-                ->arrayNode('controller')
-                    ->useAttributeAsKey('route')
-                    ->requiresAtLeastOneElement()
-                    ->prototype('array')
+            ->end()
+        ;
+    }
+
+    /**
+     * Add admin site section.
+     *
+     * @return ArrayNodeDefinition|\Symfony\Component\Config\Definition\Builder\NodeDefinition
+     */
+    private function addAdminSiteSection()
+    {
+        $builder = new TreeBuilder();
+        $node = $builder->root('site')->addDefaultsIfNotSet();
+
+        $node
+            ->children()
+                ->scalarNode('title')->defaultValue('SgDatatablesBundle')->end()
+                ->scalarNode('base_layout')->defaultValue('SgDatatablesBundle:Crud:layout.html.twig')->end()
+                ->scalarNode('admin_route_prefix')->defaultValue('admin')->end()
+                ->scalarNode('login_route')->defaultValue('fos_user_security_login')->end()
+                ->scalarNode('logout_route')->defaultValue('fos_user_security_logout')->end()
+            ->end()
+        ;
+
+        return $node;
+    }
+
+    /**
+     * Add entities section.
+     *
+     * @return ArrayNodeDefinition|\Symfony\Component\Config\Definition\Builder\NodeDefinition
+     */
+    private function addEntitiesSection()
+    {
+        $builder = new TreeBuilder();
+        $node = $builder->root('entities');
+
+        $node
+            ->prototype('array')
+                ->children()
+                    ->scalarNode('class')->isRequired()->cannotBeEmpty()->end()
+                    ->scalarNode('route_prefix')->isRequired()->cannotBeEmpty()->end()
+                    ->scalarNode('datatable')->isRequired()->cannotBeEmpty()->end()
+                    ->scalarNode('label')->isRequired()->cannotBeEmpty()->end()
+                    ->arrayNode('controller')
                         ->addDefaultsIfNotSet()
                         ->children()
                             ->scalarNode('index')
@@ -172,9 +166,32 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                     ->end()
-
+                    ->arrayNode('fields')
+                        ->children()
+                            ->arrayNode('show')
+                                ->requiresAtLeastOneElement()
+                                ->prototype('scalar')->end()
+                            ->end()
+                            ->arrayNode('new')
+                                ->requiresAtLeastOneElement()
+                                ->prototype('scalar')->end()
+                            ->end()
+                            ->arrayNode('edit')
+                                ->requiresAtLeastOneElement()
+                                ->prototype('scalar')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('form_types')
+                        ->children()
+                            ->scalarNode('new')->end()
+                            ->scalarNode('edit')->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end()
         ;
+
+        return $node;
     }
 }

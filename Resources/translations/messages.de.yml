@@ -22,5 +22,6 @@ datatables: # the bundle name
         show: "Anzeigen"
         new: "Neu"
         edit: "Ändern"
+        delete: "Löschen"
     dialog:
         close: "Schließen"

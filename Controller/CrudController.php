@@ -21,6 +21,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\MappingException;
+use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\NoResultException;
 use Exception;
 
 /**
@@ -58,38 +60,6 @@ class CrudController extends Controller
     }
 
     /**
-     * Get alias.
-     *
-     * @return string
-     */
-    protected function getAlias()
-    {
-        $request = $this->container->get('request');
-
-        return $request->get('alias');
-    }
-
-    /**
-     * Get fields.
-     *
-     * @param string $action
-     *
-     * @return array
-     * @throws Exception
-     */
-    protected function getFields($action)
-    {
-        $request = $this->container->get('request');
-        $fields = $request->get('fields');
-
-        if (!isset($fields[$action])) {
-            throw new Exception('getFields(): No fields configured for ' . $this->getAlias() . ':' . $action . 'Action');
-        }
-
-        return $fields[$action];
-    }
-
-    /**
      * Get metadata.
      *
      * @param string $entity
@@ -109,17 +79,113 @@ class CrudController extends Controller
     }
 
     /**
-     * Get new entity instance.
+     * Get fields.
+     *
+     * @param ClassMetadata $metadata
+     * @param array         $options
+     * @param string        $action
+     *
+     * @return array
+     */
+    protected function getFields(ClassMetadata $metadata, array $options, $action)
+    {
+        if (isset($options['fields'][$action]) && !empty($options['fields'][$action])) {
+            $fields = $options['fields'][$action];
+        } else {
+            $fields = $metadata->getFieldNames();
+        }
+
+        return $fields;
+    }
+
+    /**
+     * Get custom form type.
+     *
+     * @param array  $options
+     * @param string $action
+     *
+     * @return string|null
+     */
+    protected function getCustomFormType(array $options, $action)
+    {
+        $type = null;
+        if (isset($options['form_types'][$action]) && !empty($options['form_types'][$action])) {
+            $type = $options['form_types'][$action];
+        }
+
+        return $type;
+    }
+
+    /**
+     * Get mappings.
+     *
+     * @param ClassMetadata $metadata
+     * @param array         $fields
+     *
+     * @return array
+     * @throws MappingException
+     */
+    protected function getMappings(ClassMetadata $metadata, array $fields)
+    {
+        $mappings = array();
+        foreach ($fields as $field) {
+            $mappings[$field] = $metadata->getFieldMapping($field);
+        }
+
+        return $mappings;
+    }
+
+    /**
+     * New entity instance.
+     *
+     * @param ClassMetadata $metadata
+     *
+     * @return mixed
+     */
+    protected function newEntityInstance(ClassMetadata $metadata)
+    {
+        $entityName = $metadata->getName();
+        $entity = new $entityName;
+
+        return $entity;
+    }
+
+    /**
+     * Get entity by id.
+     *
+     * @param array $options
+     * @param mixed $id
+     * @param bool  $asArray
      *
      * @return object
-     * @throws Exception
      */
-    protected function getNewEntity()
+    protected function getEntity(array $options, $id, $asArray = false)
     {
-        $datatable = $this->getDatatable();
-        $entity = $this->getMetadata($datatable->getEntity())->getName();
+        $em = $this->getDoctrine()->getManager();
 
-        return new $entity;
+        if (false === $asArray) {
+            $entity = $em->getRepository($options['class'])->find($id);
+        } else {
+            $query = $em->createQueryBuilder()
+                ->select('e')
+                ->from($options['class'], 'e')
+                ->where('e.id = :id')
+                ->setParameter('id', $id)
+                ->getQuery()
+            ;
+
+            try {
+                $entity = $query->getSingleResult(AbstractQuery::HYDRATE_ARRAY);
+            } catch (NoResultException $e) {
+                $entity = null;
+            }
+        }
+
+        if (!$entity) {
+            throw new NotFoundHttpException('Unable to find the object with id ' . $id);
+        }
+
+        return $entity;
     }
 
     //-------------------------------------------------
@@ -175,11 +241,16 @@ class CrudController extends Controller
      */
     public function createAction(Request $request)
     {
-        $entity = $this->getNewEntity();
-        $alias = $this->getAlias();
-        $fields = $this->getFields('new');
+        $options = $request->get('options');
+        $alias = $request->get('alias');
 
-        $form = $this->createCreateForm($entity, $alias, $fields);
+        $metadata = $this->getMetadata($options['class']);
+        $entity = $this->newEntityInstance($metadata);
+
+        $fields = $this->getFields($metadata, $options, 'new');
+        $type = $this->getCustomFormType($options, 'new');
+
+        $form = $this->createCreateForm($entity, $alias, $fields, $type);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -202,14 +273,26 @@ class CrudController extends Controller
     /**
      * Creates a form to create an entity.
      *
-     * @param object $entity
-     * @param string $alias
-     * @param array  $fields
+     * @param object      $entity
+     * @param string      $alias
+     * @param array       $fields
+     * @param string|null $type
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm($entity, $alias, array $fields)
+    private function createCreateForm($entity, $alias, array $fields, $type)
     {
+        if (null !== $type) {
+            $form = $this->createForm(new $type, $entity, array(
+                'action' => $this->generateUrl(DatatablesRoutingLoader::PREF . $alias . '_create'),
+                'method' => 'POST',
+            ));
+
+            $form->add('submit', 'submit', array('label' => $this->get('translator')->trans('datatables.actions.new'), 'attr' => array('class' => 'btn btn-primary')));
+
+            return $form;
+        }
+
         /** @var \Symfony\Component\Form\FormBuilder $formBuilder */
         $formBuilder = $this->container->get('form.factory')->createBuilder('form', $entity);
         $formBuilder->setAction($this->generateUrl(DatatablesRoutingLoader::PREF . $alias . '_create'));
@@ -219,7 +302,7 @@ class CrudController extends Controller
             $formBuilder->add($field);
         };
 
-        $formBuilder->add('submit', 'submit', array('label' => 'Create', 'attr' => array('class' => 'btn btn-primary')));
+        $formBuilder->add('submit', 'submit', array('label' => $this->get('translator')->trans('datatables.actions.new'), 'attr' => array('class' => 'btn btn-primary')));
 
         return $formBuilder->getForm();
     }
@@ -231,11 +314,17 @@ class CrudController extends Controller
      */
     public function newAction()
     {
-        $entity = $this->getNewEntity();
-        $alias = $this->getAlias();
-        $fields = $this->getFields('new');
+        $request = $this->container->get('request');
+        $options = $request->get('options');
+        $alias = $request->get('alias');
 
-        $form = $this->createCreateForm($entity, $alias, $fields);
+        $metadata = $this->getMetadata($options['class']);
+        $entity = $this->newEntityInstance($metadata);
+
+        $fields = $this->getFields($metadata, $options, 'new');
+        $type = $this->getCustomFormType($options, 'new');
+
+        $form = $this->createCreateForm($entity, $alias, $fields, $type);
 
         return $this->render(
             'SgDatatablesBundle:Crud:new.html.twig',
@@ -256,15 +345,15 @@ class CrudController extends Controller
      */
     public function showAction($id)
     {
-        $datatable = $this->getDatatable();
-        $alias = $this->getAlias();
+        $request = $this->container->get('request');
+        $options = $request->get('options');
+        $alias = $request->get('alias');
 
-        $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository($datatable->getEntity())->find($id);
+        $metadata = $this->getMetadata($options['class']);
+        $entity = $this->getEntity($options, $id, true);
 
-        if (!$entity) {
-            throw new NotFoundHttpException('Unable to find the object with id ' . $id);
-        }
+        $fields = $this->getFields($metadata, $options, 'show');
+        $mappings = $this->getMappings($metadata, $fields);
 
         $deleteForm = $this->createDeleteForm($id, $alias);
 
@@ -272,7 +361,8 @@ class CrudController extends Controller
             'SgDatatablesBundle:Crud:show.html.twig',
             array(
                 'entity' => $entity,
-                'fields' => $this->getFields('show'),
+                'fields' => $fields,
+                'mappings' => $mappings,
                 'delete_form' => $deleteForm->createView()
             )
         );
@@ -288,16 +378,17 @@ class CrudController extends Controller
      */
     public function editAction($id)
     {
-        $datatable = $this->getDatatable();
+        $request = $this->container->get('request');
+        $options = $request->get('options');
+        $alias = $request->get('alias');
 
-        $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository($datatable->getEntity())->find($id);
+        $metadata = $this->getMetadata($options['class']);
+        $entity = $this->getEntity($options, $id);
 
-        if (!$entity) {
-            throw new NotFoundHttpException('Unable to find the object with id ' . $id);
-        }
+        $fields = $this->getFields($metadata, $options, 'edit');
+        $type = $this->getCustomFormType($options, 'edit');
 
-        $editForm = $this->createEditForm($entity, $this->getAlias(), $this->getFields('edit'));
+        $editForm = $this->createEditForm($entity, $alias, $fields, $type);
 
         return $this->render(
             'SgDatatablesBundle:Crud:edit.html.twig',
@@ -311,14 +402,26 @@ class CrudController extends Controller
     /**
      * Creates a form to edit an entity.
      *
-     * @param object $entity
-     * @param string $alias
-     * @param array  $fields
+     * @param object      $entity
+     * @param string      $alias
+     * @param array       $fields
+     * @param string|null $type
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createEditForm($entity, $alias, array $fields)
+    private function createEditForm($entity, $alias, array $fields, $type)
     {
+        if (null !== $type) {
+            $form = $this->createForm(new $type, $entity, array(
+                'action' => $this->generateUrl(DatatablesRoutingLoader::PREF . $alias . '_update', array('id' => $entity->getId())),
+                'method' => 'PUT',
+            ));
+
+            $form->add('submit', 'submit', array('label' => $this->get('translator')->trans('datatables.actions.edit'), 'attr' => array('class' => 'btn btn-primary')));
+
+            return $form;
+        }
+
         /** @var \Symfony\Component\Form\FormBuilder $formBuilder */
         $formBuilder = $this->container->get('form.factory')->createBuilder('form', $entity);
         $formBuilder->setAction($this->generateUrl(DatatablesRoutingLoader::PREF . $alias . '_update', array('id' => $entity->getId())));
@@ -328,7 +431,7 @@ class CrudController extends Controller
             $formBuilder->add($field);
         };
 
-        $formBuilder->add('submit', 'submit', array('label' => 'Update', 'attr' => array('class' => 'btn btn-primary')));
+        $formBuilder->add('submit', 'submit', array('label' => $this->get('translator')->trans('datatables.actions.edit'), 'attr' => array('class' => 'btn btn-primary')));
 
         return $formBuilder->getForm();
     }
@@ -344,20 +447,20 @@ class CrudController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $datatable = $this->getDatatable();
-        $alias = $this->getAlias();
+        $options = $request->get('options');
+        $alias = $request->get('alias');
 
-        $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository($datatable->getEntity())->find($id);
+        $metadata = $this->getMetadata($options['class']);
+        $entity = $this->getEntity($options, $id);
 
-        if (!$entity) {
-            throw new NotFoundHttpException('Unable to find the object with id ' . $id);
-        }
+        $fields = $this->getFields($metadata, $options, 'edit');
+        $type = $this->getCustomFormType($options, 'edit');
 
-        $editForm = $this->createEditForm($entity, $alias, $this->getFields('edit'));
+        $editForm = $this->createEditForm($entity, $alias, $fields, $type);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
             $em->flush();
 
             return $this->redirect($this->generateUrl(DatatablesRoutingLoader::PREF . $alias . '_show', array('id' => $entity->getId())));
@@ -383,21 +486,16 @@ class CrudController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        $alias = $this->getAlias();
+        $alias = $request->get('alias');
 
         $form = $this->createDeleteForm($id, $alias);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $datatable = $this->getDatatable();
+            $options = $request->get('options');
+            $entity = $this->getEntity($options, $id);
 
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository($datatable->getEntity())->find($id);
-
-            if (!$entity) {
-                throw new NotFoundHttpException('Unable to find the object with id ' . $id);
-            }
-
             $em->remove($entity);
             $em->flush();
         }
@@ -419,7 +517,7 @@ class CrudController extends Controller
         $formBuilder = $this->container->get('form.factory')->createBuilder('form');
         $formBuilder->setAction($this->generateUrl(DatatablesRoutingLoader::PREF . $alias . '_delete', array('id' => $id)));
         $formBuilder->setMethod('DELETE');
-        $formBuilder->add('submit', 'submit', array('label' => 'Delete', 'attr' => array('class' => 'btn btn-danger')));
+        $formBuilder->add('submit', 'submit', array('label' => $this->get('translator')->trans('datatables.actions.delete'), 'attr' => array('class' => 'btn btn-danger')));
 
         return $formBuilder->getForm();
     }

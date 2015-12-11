@@ -23,7 +23,7 @@ use RuntimeException;
  */
 class DatatablesRoutingLoader extends Loader
 {
-    const PREF = 'sg_';
+    const PREF = 'sg_admin_';
 
     const DEFAULT_CONTROLLER = 'SgDatatablesBundle:Crud';
 
@@ -40,22 +40,17 @@ class DatatablesRoutingLoader extends Loader
     /**
      * @var string
      */
-    private $globalPrefix;
+    private $adminRoutePrefix;
 
     /**
      * @var array
      */
-    private $options;
+    private $entities;
 
     /**
      * @var array
      */
-    private $fields;
-
-    /**
-     * @var array
-     */
-    private $controller;
+    private $actions;
 
     //-------------------------------------------------
     // Ctor.
@@ -64,19 +59,19 @@ class DatatablesRoutingLoader extends Loader
     /**
      * Ctor.
      *
-     * @param string $globalPrefix
-     * @param array  $options
-     * @param array  $fields
-     * @param array  $controller
+     * @param string $adminRoutePrefix
+     * @param array  $entities
      */
-    public function __construct($globalPrefix, array $options, array $fields, array $controller)
+    public function __construct($adminRoutePrefix, array $entities)
     {
         $this->loaded = false;
         $this->routes = new RouteCollection();
-        $this->globalPrefix = $globalPrefix;
-        $this->options = $options;
-        $this->fields = $fields;
-        $this->setController($controller);
+        $this->adminRoutePrefix = $adminRoutePrefix;
+        $this->entities = $entities;
+
+        $this->actions = array();
+
+        $this->setActions();
     }
 
     //-------------------------------------------------
@@ -84,23 +79,23 @@ class DatatablesRoutingLoader extends Loader
     //-------------------------------------------------
 
     /**
-     * Set the default crud controller.
-     *
-     * @param array $controller
+     * Set actions.
      *
      * @return $this
      */
-    private function setController(array $controller)
+    private function setActions()
     {
-        foreach ($this->options as $alias => $datatable) {
-            $this->controller[$alias]['index'] = isset($controller[$alias]['index']) ? $controller[$alias]['index'] : self::DEFAULT_CONTROLLER . ':index';
-            $this->controller[$alias]['index_results'] = isset($controller[$alias]['index_results']) ? $controller[$alias]['index_results'] : self::DEFAULT_CONTROLLER . ':indexResults';
-            $this->controller[$alias]['create'] = isset($controller[$alias]['create']) ? $controller[$alias]['create'] : self::DEFAULT_CONTROLLER . ':create';
-            $this->controller[$alias]['new'] = isset($controller[$alias]['new']) ? $controller[$alias]['new'] : self::DEFAULT_CONTROLLER . ':new';
-            $this->controller[$alias]['show'] = isset($controller[$alias]['show']) ? $controller[$alias]['show'] : self::DEFAULT_CONTROLLER . ':show';
-            $this->controller[$alias]['edit'] = isset($controller[$alias]['edit']) ? $controller[$alias]['edit'] : self::DEFAULT_CONTROLLER . ':edit';
-            $this->controller[$alias]['update'] = isset($controller[$alias]['update']) ? $controller[$alias]['update'] : self::DEFAULT_CONTROLLER . ':update';
-            $this->controller[$alias]['delete'] = isset($controller[$alias]['delete']) ? $controller[$alias]['delete'] : self::DEFAULT_CONTROLLER . ':delete';
+        foreach ($this->entities as $alias => $options) {
+            $alias = strtolower($alias);
+
+            $this->actions[$alias]['index'] = isset($options['controller']) ? $options['controller']['index'] : self::DEFAULT_CONTROLLER . ':index';
+            $this->actions[$alias]['index_results'] = isset($options['controller']['index_results']) ? $options['controller']['index_results'] : self::DEFAULT_CONTROLLER . ':indexResults';
+            $this->actions[$alias]['create'] = isset($options['controller']['create']) ? $options['controller']['create'] : self::DEFAULT_CONTROLLER . ':create';
+            $this->actions[$alias]['new'] = isset($options['controller']['new']) ? $options['controller']['new'] : self::DEFAULT_CONTROLLER . ':new';
+            $this->actions[$alias]['show'] = isset($options['controller']['show']) ? $options['controller']['show'] : self::DEFAULT_CONTROLLER . ':show';
+            $this->actions[$alias]['edit'] = isset($options['controller']['edit']) ? $options['controller']['edit'] : self::DEFAULT_CONTROLLER . ':edit';
+            $this->actions[$alias]['update'] = isset($options['controller']['update']) ? $options['controller']['update'] : self::DEFAULT_CONTROLLER . ':update';
+            $this->actions[$alias]['delete'] = isset($options['controller']['delete']) ? $options['controller']['delete'] : self::DEFAULT_CONTROLLER . ':delete';
         }
 
         return $this;
@@ -111,15 +106,15 @@ class DatatablesRoutingLoader extends Loader
      */
     private function generatesRoutes()
     {
-        foreach ($this->options as $alias => $datatable) {
-            $fields = isset($this->fields[$alias]) ? $this->fields[$alias] : null;
+        foreach ($this->entities as $alias => $options) {
+            $alias = strtolower($alias);
 
             // index
             $this->routes->add(
                 DatatablesRoutingLoader::PREF . $alias . '_index',
                 new Route(
-                    '/' . $alias . '/',
-                    array('_controller' => $this->controller[$alias]['index'], 'alias' => $alias, 'datatable' => $datatable),
+                    '/' . $options['route_prefix'] . '/',
+                    array('_controller' => $this->actions[$alias]['index'], 'datatable' => $options['datatable']),
                     array(),
                     array('expose' => true),
                     '',
@@ -130,8 +125,8 @@ class DatatablesRoutingLoader extends Loader
             $this->routes->add(
                 DatatablesRoutingLoader::PREF . $alias . '_results',
                 new Route(
-                    '/' . $alias . '/results',
-                    array('_controller' => $this->controller[$alias]['index_results'], 'alias' => $alias, 'datatable' => $datatable),
+                    '/' . $options['route_prefix'] . '/results',
+                    array('_controller' => $this->actions[$alias]['index_results'], 'datatable' => $options['datatable']),
                     array(),
                     array(),
                     '',
@@ -144,8 +139,8 @@ class DatatablesRoutingLoader extends Loader
             $this->routes->add(
                 DatatablesRoutingLoader::PREF . $alias . '_create',
                 new Route(
-                    '/' . $alias . '/',
-                    array('_controller' => $this->controller[$alias]['create'], 'alias' => $alias, 'datatable' => $datatable, 'fields' => $fields),
+                    '/' . $options['route_prefix'] . '/',
+                    array('_controller' => $this->actions[$alias]['create'], 'alias' => $alias, 'options' => $options),
                     array(),
                     array(),
                     '',
@@ -156,8 +151,8 @@ class DatatablesRoutingLoader extends Loader
             $this->routes->add(
                 DatatablesRoutingLoader::PREF . $alias . '_new',
                 new Route(
-                    '/' . $alias . '/new',
-                    array('_controller' => $this->controller[$alias]['new'], 'alias' => $alias, 'datatable' => $datatable, 'fields' => $fields),
+                    '/' . $options['route_prefix'] . '/new',
+                    array('_controller' => $this->actions[$alias]['new'], 'alias' => $alias, 'options' => $options),
                     array(),
                     array('expose' => true),
                     '',
@@ -169,8 +164,8 @@ class DatatablesRoutingLoader extends Loader
             // show
             $this->routes->add(
                 DatatablesRoutingLoader::PREF . $alias . '_show',
-                new Route('/' . $alias . '/{id}',
-                    array('_controller' => $this->controller[$alias]['show'], 'alias' => $alias, 'datatable' => $datatable, 'fields' => $fields),
+                new Route('/' . $options['route_prefix'] . '/{id}',
+                    array('_controller' => $this->actions[$alias]['show'], 'alias' => $alias, 'options' => $options),
                     array('id' => '\d+'),
                     array('expose' => true),
                     '',
@@ -183,8 +178,8 @@ class DatatablesRoutingLoader extends Loader
             $this->routes->add(
                 DatatablesRoutingLoader::PREF . $alias . '_edit',
                 new Route(
-                    '/' . $alias . '/{id}/edit',
-                    array('_controller' => $this->controller[$alias]['edit'], 'alias' => $alias, 'datatable' => $datatable, 'fields' => $fields),
+                    '/' . $options['route_prefix'] . '/{id}/edit',
+                    array('_controller' => $this->actions[$alias]['edit'], 'alias' => $alias, 'options' => $options),
                     array('id' => '\d+'),
                     array('expose' => true),
                     '',
@@ -195,8 +190,8 @@ class DatatablesRoutingLoader extends Loader
             $this->routes->add(
                 DatatablesRoutingLoader::PREF . $alias . '_update',
                 new Route(
-                    '/' . $alias . '/{id}',
-                    array('_controller' => $this->controller[$alias]['update'], 'alias' => $alias, 'datatable' => $datatable, 'fields' => $fields),
+                    '/' . $options['route_prefix'] . '/{id}',
+                    array('_controller' => $this->actions[$alias]['update'], 'alias' => $alias, 'options' => $options),
                     array('id' => '\d+'),
                     array(),
                     '',
@@ -209,8 +204,8 @@ class DatatablesRoutingLoader extends Loader
             $this->routes->add(
                 DatatablesRoutingLoader::PREF . $alias . '_delete',
                 new Route(
-                    '/' . $alias . '/{id}',
-                    array('_controller' => $this->controller[$alias]['delete'], 'alias' => $alias, 'datatable' => $datatable),
+                    '/' . $options['route_prefix'] . '/{id}',
+                    array('_controller' => $this->actions[$alias]['delete'], 'alias' => $alias, 'options' => $options),
                     array('id' => '\d+'),
                     array(),
                     '',
@@ -221,7 +216,7 @@ class DatatablesRoutingLoader extends Loader
         }
     }
 
-    private function generateHomeRoute()
+    private function generateAdminHomeRoute()
     {
         $this->routes->add(
             DatatablesRoutingLoader::PREF . 'home',
@@ -251,8 +246,8 @@ class DatatablesRoutingLoader extends Loader
         }
 
         $this->generatesRoutes();
-        $this->generateHomeRoute();
-        $this->routes->addPrefix($this->globalPrefix);
+        $this->generateAdminHomeRoute();
+        $this->routes->addPrefix($this->adminRoutePrefix);
 
         return $this->routes;
     }

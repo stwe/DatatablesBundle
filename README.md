@@ -52,7 +52,7 @@
 
 [Integrate the LiipImagineBundle / ImageColumn, GalleryColumn and thumbnails](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/thumbs.md)
 
-## 5. Creating an Admin Section (new, unstable and experimental)
+## 5. Creating an Admin Section (unstable)
 
 [Admin section](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/admin.md)
 

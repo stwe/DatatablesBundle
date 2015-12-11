@@ -1,15 +1,15 @@
 {% if app.user %}
-    {% if (datatable_site_config().logout_route is defined and datatable_site_config().logout_route is not null) %}
+    {% if (datatable_admin_site_config().logout_route is defined and datatable_admin_site_config().logout_route is not null) %}
         <li>
-            <a href="{{ path(datatable_site_config().logout_route) }}">
+            <a href="{{ path(datatable_admin_site_config().logout_route) }}">
                 <i class="glyphicon glyphicon-log-out"></i> Logout
             </a>
         </li>
     {% endif %}
 {% else %}
-    {% if (datatable_site_config().login_route is defined and datatable_site_config().login_route is not null) %}
+    {% if (datatable_admin_site_config().login_route is defined and datatable_admin_site_config().login_route is not null) %}
         <li>
-            <a href="{{ path(datatable_site_config().login_route) }}">
+            <a href="{{ path(datatable_admin_site_config().login_route) }}">
                 <i class="glyphicon glyphicon-log-in"></i> Login
             </a>
         </li>
