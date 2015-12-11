@@ -223,7 +223,7 @@ class DatatableTwigExtension extends Twig_Extension
         $routes = array();
 
         foreach ($this->entities as $key => $options) {
-            $routes[$options['label']] = DatatablesRoutingLoader::PREF . $key . '_index';
+            $routes[$options['label_group']][$options['label']] = DatatablesRoutingLoader::PREF . $key . '_index';
         }
 
         return $twig->render('SgDatatablesBundle:Crud:navigation.html.twig', array('routes' => $routes));

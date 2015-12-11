@@ -37,12 +37,10 @@
                             </button>
                         </div>
                         <div class="navbar-collapse collapse">
-                            <ul class="nav navbar-nav navbar-left">
-                                {% block header_navigation_links %}
-                                    {% if app.user and is_granted('ROLE_ADMIN') %}
-                                        {{ datatable_admin_navigation_links() }}
-                                    {% endif %}
-                                {% endblock %}
+                            <ul class="nav navbar-nav">
+                                <li class="dropdown">
+                                    {{ datatable_admin_navigation_links() }}
+                                </li>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
                                 {% block header_security_links %}

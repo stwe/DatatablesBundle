@@ -136,6 +136,7 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('class')->isRequired()->cannotBeEmpty()->end()
                     ->scalarNode('route_prefix')->isRequired()->cannotBeEmpty()->end()
                     ->scalarNode('datatable')->isRequired()->cannotBeEmpty()->end()
+                    ->scalarNode('label_group')->isRequired()->cannotBeEmpty()->end()
                     ->scalarNode('label')->isRequired()->cannotBeEmpty()->end()
                     ->arrayNode('controller')
                         ->addDefaultsIfNotSet()
