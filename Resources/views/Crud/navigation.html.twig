@@ -1,16 +1,18 @@
 {% for group, labels in routes %}
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ group }}<span class="caret"></span></a>
-    <ul class="dropdown-menu">
-        {% block header_navigation_links %}
-            {% if app.user and is_granted('ROLE_ADMIN') %}
-                {% for label, route in labels %}
-                    <li>
-                        <a href="{{ path(route) }}">
-                            <i class="glyphicon glyphicon-th-list"></i> {{ label|capitalize }}
-                        </a>
-                    </li>
-                {% endfor %}
-            {% endif %}
-        {% endblock %}
-    </ul>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ group }}<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            {% block header_navigation_links %}
+                {% if app.user and is_granted('ROLE_ADMIN') %}
+                    {% for label, route in labels %}
+                        <li>
+                            <a href="{{ path(route) }}">
+                                <i class="glyphicon glyphicon-th-list"></i> {{ label|capitalize }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            {% endblock %}
+        </ul>
+    </li>
 {% endfor %}
