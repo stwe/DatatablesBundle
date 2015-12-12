@@ -20,4 +20,6 @@
         </tbody>
     </table>
     {{ form(delete_form) }}
+    <hr>
+    <a href="{{ path(list_action) }}" class="btn btn-primary">{{ 'datatables.actions.toList'|trans({}, 'messages') }}</a>
 {% endblock %}

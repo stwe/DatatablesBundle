@@ -23,5 +23,7 @@ datatables: # the bundle name
         new: "Neu"
         edit: "Ändern"
         delete: "Löschen"
+        toList: "Zurück zur Übersicht"
+        save: "Speichern"
     dialog:
         close: "Schließen"

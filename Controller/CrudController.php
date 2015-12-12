@@ -265,7 +265,8 @@ class CrudController extends Controller
             'SgDatatablesBundle:Crud:new.html.twig',
             array(
                 'entity' => $entity,
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'list_action' => DatatablesRoutingLoader::PREF . $alias . '_index'
             )
         );
     }
@@ -288,7 +289,7 @@ class CrudController extends Controller
                 'method' => 'POST',
             ));
 
-            $form->add('submit', 'submit', array('label' => $this->get('translator')->trans('datatables.actions.new'), 'attr' => array('class' => 'btn btn-primary')));
+            $form->add('submit', 'submit', array('label' => $this->get('translator')->trans('datatables.actions.save'), 'attr' => array('class' => 'btn btn-primary')));
 
             return $form;
         }
@@ -302,7 +303,7 @@ class CrudController extends Controller
             $formBuilder->add($field);
         };
 
-        $formBuilder->add('submit', 'submit', array('label' => $this->get('translator')->trans('datatables.actions.new'), 'attr' => array('class' => 'btn btn-primary')));
+        $formBuilder->add('submit', 'submit', array('label' => $this->get('translator')->trans('datatables.actions.save'), 'attr' => array('class' => 'btn btn-primary')));
 
         return $formBuilder->getForm();
     }
@@ -330,7 +331,8 @@ class CrudController extends Controller
             'SgDatatablesBundle:Crud:new.html.twig',
             array(
                 'entity' => $entity,
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'list_action' => DatatablesRoutingLoader::PREF . $alias . '_index'
             )
         );
     }
@@ -363,7 +365,8 @@ class CrudController extends Controller
                 'entity' => $entity,
                 'fields' => $fields,
                 'mappings' => $mappings,
-                'delete_form' => $deleteForm->createView()
+                'delete_form' => $deleteForm->createView(),
+                'list_action' => DatatablesRoutingLoader::PREF . $alias . '_index'
             )
         );
     }
@@ -394,7 +397,8 @@ class CrudController extends Controller
             'SgDatatablesBundle:Crud:edit.html.twig',
             array(
                 'entity' => $entity,
-                'edit_form' => $editForm->createView()
+                'edit_form' => $editForm->createView(),
+                'list_action' => DatatablesRoutingLoader::PREF . $alias . '_index'
             )
         );
     }
@@ -417,7 +421,7 @@ class CrudController extends Controller
                 'method' => 'PUT',
             ));
 
-            $form->add('submit', 'submit', array('label' => $this->get('translator')->trans('datatables.actions.edit'), 'attr' => array('class' => 'btn btn-primary')));
+            $form->add('submit', 'submit', array('label' => $this->get('translator')->trans('datatables.actions.save'), 'attr' => array('class' => 'btn btn-primary')));
 
             return $form;
         }
@@ -431,7 +435,7 @@ class CrudController extends Controller
             $formBuilder->add($field);
         };
 
-        $formBuilder->add('submit', 'submit', array('label' => $this->get('translator')->trans('datatables.actions.edit'), 'attr' => array('class' => 'btn btn-primary')));
+        $formBuilder->add('submit', 'submit', array('label' => $this->get('translator')->trans('datatables.actions.save'), 'attr' => array('class' => 'btn btn-primary')));
 
         return $formBuilder->getForm();
     }
@@ -470,7 +474,8 @@ class CrudController extends Controller
             'SgDatatablesBundle:Crud:edit.html.twig',
             array(
                 'entity' => $entity,
-                'edit_form' => $editForm->createView()
+                'edit_form' => $editForm->createView(),
+                'list_action' => DatatablesRoutingLoader::PREF . $alias . '_index'
             )
         );
     }
