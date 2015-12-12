@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Generator;
 
+use Sg\DatatablesBundle\Routing\DatatablesRoutingLoader;
+
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use RuntimeException;
@@ -80,17 +82,28 @@ class DatatableGenerator extends Generator
      * @param boolean         $clientSide The client side flag
      * @param string          $ajaxUrl    The ajax url
      * @param boolean         $bootstrap3 The bootstrap3 flag
+     * @param boolean         $admin      The admin flag
      *
      * @throws RuntimeException
      */
-    public function generate(BundleInterface $bundle, $entity, array $fields, $clientSide, $ajaxUrl, $bootstrap3)
+    public function generate(BundleInterface $bundle, $entity, array $fields, $clientSide, $ajaxUrl, $bootstrap3, $admin)
     {
         $parts = explode("\\", $entity);
         $entityClass = array_pop($parts);
 
         $this->className = $entityClass . 'Datatable';
         $dirPath = $bundle->getPath() . '/Datatables';
+
+        if (true === $admin) {
+            $this->className = $entityClass . 'AdminDatatable';
+            $dirPath = $bundle->getPath() . '/Datatables/Admin';
+        }
+
         $this->classPath = $dirPath . '/' . str_replace('\\', '/', $entity) . 'Datatable.php';
+
+        if (true === $admin) {
+            $this->classPath = $dirPath . '/' . str_replace('\\', '/', $entity) . 'AdminDatatable.php';
+        }
 
         if (file_exists($this->classPath)) {
             throw new RuntimeException(sprintf('Unable to generate the %s datatable class as it already exists under the %s file', $this->className, $this->classPath));
@@ -109,17 +122,25 @@ class DatatableGenerator extends Generator
             }
         }
 
+        $routePref = strtolower($entityClass);
+        if (true === $admin) {
+            $routePref = DatatablesRoutingLoader::PREF . strtolower($entityClass);
+            $bootstrap3 = true;
+        }
+
         $this->renderFile('class.php.twig', $this->classPath, array(
             'namespace' => $bundle->getNamespace(),
             'entity_namespace' => implode('\\', $parts),
             'entity_class' => $entityClass,
             'bundle' => $bundle->getName(),
             'datatable_class' => $this->className,
-            'datatable_name' => strtolower($entityClass) . '_datatable',
+            'datatable_name' => $admin ? strtolower($entityClass) . '_admin_datatable' : strtolower($entityClass) . '_datatable',
             'fields' => $fields,
             'client_side' => (boolean) $clientSide,
-            'ajax_url' => $this->ajaxUrl,
-            'bootstrap3' => (boolean) $bootstrap3
+            'ajax_url' => $admin ? DatatablesRoutingLoader::PREF . $this->ajaxUrl : $this->ajaxUrl,
+            'bootstrap3' => (boolean) $bootstrap3,
+            'admin' => (boolean) $admin,
+            'route_pref' => $routePref
         ));
     }
 }

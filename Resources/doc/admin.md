@@ -2,7 +2,7 @@
 
 Don't forget to clear the cache!
 
-## routing.yml
+## 1. routing.yml
 
 ```yaml
 sg_datatables:
@@ -10,7 +10,22 @@ sg_datatables:
     type: sg_datatables_routing
 ```
 
-## config.yml
+## 2. Create your admin Datatable class
+
+``` bash
+$ php app/console sg:datatable:generate AppBundle:Post --admin
+```
+
+## 3. Registering your admin Datatable class as a Service
+
+```yaml
+app.datatable.post:
+    class: AppBundle\Datatables\Admin\PostAdminDatatable
+    tags:
+        - { name: sg.datatable.view }
+```
+
+## 4. config.yml
 
 ```yaml
 sg_datatables:
@@ -26,11 +41,12 @@ sg_datatables:
             post:
                 class: AppBundle:Post
                 route_prefix: post
-                datatable: post_datatable
+                datatable: post_admin_datatable
+                label_group: Post
                 label: Postings
                 #controller:
-                #    index: AppBundle:Post:index
-                #    edit: AppBundle:Post:edit
+                #    index: AppBundle:PostAdmin:index
+                #    edit: AppBundle:PostAdmin:edit
                 #fields:
                 #    show:
                 #        - title
@@ -39,15 +55,16 @@ sg_datatables:
                 #        - title
                 #        - content
                 #form_types:
-                #    edit: AppBundle\Form\PostType
+                #    edit: AppBundle\Form\PostAdminType
             comment:
                 class: AppBundle:Comment
                 route_prefix: comment
-                datatable: comment_datatable
+                datatable: comment_admin_datatable
+                label_group: Comment
                 label: Comments
                 #controller:
-                #    index: AppBundle:Comment:index
-                #    edit: AppBundle:Comment:edit
+                #    index: AppBundle:CommentAdmin:index
+                #    edit: AppBundle:CommentAdmin:edit
                 #fields:
                 #    show:
                 #        - title
@@ -56,10 +73,10 @@ sg_datatables:
                 #        - title
                 #        - content
                 #form_types:
-                #    edit: AppBundle\Form\CommentType
+                #    edit: AppBundle\Form\CommentAdminType
 ```
 
-## security.yml
+## 5. security.yml
 
 ```yaml
 security:
@@ -69,7 +86,11 @@ security:
         - { path: ^/backend/, role: ROLE_ADMIN }
 ```
 
-## The generated routes
+## 6. Go to the admin section
+
+Browse the `/backend` URL in your application and you'll get access to the admin section.
+
+## 7. The generated routes
 
 This bundle generates some routes for your admin section. For the above example, they are:
 

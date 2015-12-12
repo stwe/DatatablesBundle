@@ -24,10 +24,16 @@ $ php app/console sg:datatable:generate AppBundle:Post --fields="id name created
 $ php app/console sg:datatable:generate AppBundle:Post --client-side
 ```
 
-- `--bootstrap3` (optional): The The Bootstrap3-Framework flag.
+- `--bootstrap3` (optional): The Bootstrap3-Framework flag.
 
 ``` bash
 $ php app/console sg:datatable:generate AppBundle:Post --bootstrap3
+```
+
+- `--admin` (optional): The admin flag.
+
+``` bash
+$ php app/console sg:datatable:generate AppBundle:Post --admin
 ```
 
 - `--ajax-url` (optional): The ajax url.

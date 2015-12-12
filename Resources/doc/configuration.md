@@ -21,7 +21,8 @@ sg_datatables:
             post:
                 class: AppBundle:Post
                 route_prefix: post
-                datatable: post_datatable
+                datatable: post_admin_datatable
+                label_group: Post
                 label: Postings
                 #controller:
                 #    index: AppBundle:Post:index
