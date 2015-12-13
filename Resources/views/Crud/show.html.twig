@@ -10,7 +10,13 @@
                     </td>
                     <td>
                         {% if 'datetime' != mappings[field]['type'] %}
-                            {{ entity[field] }}
+                            {% if entity[field] is iterable %}
+                                {% for value in entity[field] %}
+                                    {{ value }}
+                                {% endfor %}
+                            {% else %}
+                                {{ entity[field] }}
+                            {% endif %}
                         {% else %}
                             {{ entity[field]|date }}
                         {% endif %}

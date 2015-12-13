@@ -21,8 +21,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\MappingException;
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\NoResultException;
 use Exception;
 
 /**
@@ -129,7 +127,13 @@ class CrudController extends Controller
     {
         $mappings = array();
         foreach ($fields as $field) {
-            $mappings[$field] = $metadata->getFieldMapping($field);
+            try {
+                // Gets the mapping of a regular field
+                $mappings[$field] = $metadata->getFieldMapping($field);
+            } catch (MappingException $e) {
+                // Gets the mapping of an association
+                $mappings[$field] = $metadata->getAssociationMapping($field);
+            }
         }
 
         return $mappings;
@@ -153,36 +157,39 @@ class CrudController extends Controller
     /**
      * Get entity by id.
      *
-     * @param array $options
-     * @param mixed $id
-     * @param bool  $asArray
+     * @param array      $options
+     * @param mixed      $id
+     * @param null|array $fields
+     * @param bool       $asArray
      *
-     * @return object
+     * @return array|object
+     * @throws Exception
      */
-    protected function getEntity(array $options, $id, $asArray = false)
+    protected function getEntity(array $options, $id, $fields = null, $asArray = false)
     {
         $em = $this->getDoctrine()->getManager();
-
-        if (false === $asArray) {
-            $entity = $em->getRepository($options['class'])->find($id);
-        } else {
-            $query = $em->createQueryBuilder()
-                ->select('e')
-                ->from($options['class'], 'e')
-                ->where('e.id = :id')
-                ->setParameter('id', $id)
-                ->getQuery()
-            ;
-
-            try {
-                $entity = $query->getSingleResult(AbstractQuery::HYDRATE_ARRAY);
-            } catch (NoResultException $e) {
-                $entity = null;
-            }
-        }
+        $entity = $em->getRepository($options['class'])->find($id);
 
         if (!$entity) {
-            throw new NotFoundHttpException('Unable to find the object with id ' . $id);
+            throw new NotFoundHttpException('getEntity(): Unable to find the object with id ' . $id);
+        }
+
+        if (true === $asArray) {
+            $array = array();
+            $methods = get_class_methods($entity);
+
+            if (!empty($fields)) {
+                foreach ($fields as $field) {
+                    $method = 'get' . ucfirst($field);
+                    if (in_array($method, $methods)) {
+                        $array[$field] = $entity->$method();
+                    } else {
+                        throw new Exception('getEntity(): ' . $method . ' invalid method name');
+                    }
+                }
+            }
+
+            return $array;
         }
 
         return $entity;
@@ -352,9 +359,9 @@ class CrudController extends Controller
         $alias = $request->get('alias');
 
         $metadata = $this->getMetadata($options['class']);
-        $entity = $this->getEntity($options, $id, true);
 
         $fields = $this->getFields($metadata, $options, 'show');
+        $entity = $this->getEntity($options, $id, $fields, true);
         $mappings = $this->getMappings($metadata, $fields);
 
         $deleteForm = $this->createDeleteForm($id, $alias);
