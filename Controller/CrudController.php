@@ -93,6 +93,10 @@ class CrudController extends Controller
             $fields = $metadata->getFieldNames();
         }
 
+        array_unshift($fields, 'id');
+        $fields = array_unique($fields);
+        $fields = array_values($fields);
+
         return $fields;
     }
 
@@ -373,6 +377,7 @@ class CrudController extends Controller
                 'fields' => $fields,
                 'mappings' => $mappings,
                 'delete_form' => $deleteForm->createView(),
+                'edit_action' => DatatablesRoutingLoader::PREF . $alias . '_edit',
                 'list_action' => DatatablesRoutingLoader::PREF . $alias . '_index'
             )
         );
