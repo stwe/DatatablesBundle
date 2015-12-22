@@ -24,6 +24,11 @@ sg_datatables:
                 datatable: post_admin_datatable
                 label_group: Post
                 label: Postings
+                #heading:
+                #    index: 'Index'
+                #    show: 'Show'
+                #    edit: 'Edit'
+                #    new: 'New'
                 #controller:
                 #    index: AppBundle:Post:index
                 #    edit: AppBundle:Post:edit

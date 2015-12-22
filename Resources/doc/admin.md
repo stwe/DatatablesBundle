@@ -44,6 +44,11 @@ sg_datatables:
                 datatable: post_admin_datatable
                 label_group: Post
                 label: Postings
+                #heading:
+                #    index: 'Index'
+                #    show: 'Show'
+                #    edit: 'Edit'
+                #    new: 'New'
                 #controller:
                 #    index: AppBundle:PostAdmin:index
                 #    edit: AppBundle:PostAdmin:edit
@@ -62,6 +67,11 @@ sg_datatables:
                 datatable: comment_admin_datatable
                 label_group: Comment
                 label: Comments
+                #heading:
+                #    index: 'Index'
+                #    show: 'Show'
+                #    edit: 'Edit'
+                #    new: 'New'
                 #controller:
                 #    index: AppBundle:CommentAdmin:index
                 #    edit: AppBundle:CommentAdmin:edit

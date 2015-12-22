@@ -35,6 +35,18 @@ class CrudController extends Controller
     //-------------------------------------------------
 
     /**
+     * Get heading.
+     *
+     * @return string
+     */
+    protected function getHeading()
+    {
+        $request = $this->container->get('request');
+
+        return $request->get('heading');
+    }
+
+    /**
      * Get datatable.
      *
      * @return DatatableViewInterface
@@ -220,12 +232,11 @@ class CrudController extends Controller
      */
     public function indexAction()
     {
-        $datatable = $this->getDatatable();
-
         return $this->render(
             'SgDatatablesBundle:Crud:index.html.twig',
             array(
-                'datatable' => $datatable
+                'datatable' => $this->getDatatable(),
+                'heading' => $this->getHeading()
             )
         );
     }
@@ -343,7 +354,8 @@ class CrudController extends Controller
             array(
                 'entity' => $entity,
                 'form' => $form->createView(),
-                'list_action' => DatatablesRoutingLoader::PREF . $alias . '_index'
+                'list_action' => DatatablesRoutingLoader::PREF . $alias . '_index',
+                'heading' => $this->getHeading()
             )
         );
     }
@@ -378,7 +390,8 @@ class CrudController extends Controller
                 'mappings' => $mappings,
                 'delete_form' => $deleteForm->createView(),
                 'edit_action' => DatatablesRoutingLoader::PREF . $alias . '_edit',
-                'list_action' => DatatablesRoutingLoader::PREF . $alias . '_index'
+                'list_action' => DatatablesRoutingLoader::PREF . $alias . '_index',
+                'heading' => $this->getHeading()
             )
         );
     }
@@ -410,7 +423,8 @@ class CrudController extends Controller
             array(
                 'entity' => $entity,
                 'edit_form' => $editForm->createView(),
-                'list_action' => DatatablesRoutingLoader::PREF . $alias . '_index'
+                'list_action' => DatatablesRoutingLoader::PREF . $alias . '_index',
+                'heading' => $this->getHeading()
             )
         );
     }
