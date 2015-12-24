@@ -19,7 +19,7 @@
     },
     "require": {
         "php": ">=5.3.2",
-        "symfony/framework-bundle": "~2.6",
+        "symfony/framework-bundle": "~2.6|~3.0",
         "friendsofsymfony/jsrouting-bundle": "@stable"
     },
     "require-dev": {
