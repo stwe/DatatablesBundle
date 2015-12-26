@@ -10,7 +10,7 @@
 ## 1. Example
 
 ``` php
-    public function buildDatatable()
+    public function buildDatatable($locale = null)
     {
         $this->topActions->set(array(
             'start_html' => '<div class="row"><div class="col-sm-3">',

@@ -1,6 +1,6 @@
 # Getting Started With SgDatatablesBundle
 
-This Bundle integrates the jQuery DataTables 1.10.x plugin into your Symfony2 application.
+This Bundle integrates the jQuery DataTables 1.10.x plugin into your Symfony application.
 
 ## Installation
 
@@ -8,7 +8,7 @@ This Bundle integrates the jQuery DataTables 1.10.x plugin into your Symfony2 ap
 
 This bundle requires the following additional packages:
 
-* Symfony 2.6.x
+* Symfony 2.6.x or 3.0
 * jQuery 1.11.x
 * DataTables 1.10.x
 * Moment.js 2.10.x
@@ -46,7 +46,7 @@ If not already done: add SgDatatablesBundle in your composer.json:
 ```js
 {
     "require": {
-        "sg/datatablesbundle": "dev-master"
+        "sg/datatablesbundle": "v0.8"
     }
 }
 ```
@@ -82,7 +82,32 @@ public function registerBundles()
 
 ### Step 3: Assetic Configuration
 
-Include the jQuery, DataTables, Moment and FOSJsRoutingBundle javascript/css files in your layout.
+Include the jQuery, DataTables, Moment and FOSJsRoutingBundle javascript/css files in your base layout.
+
+CDN example with Bootstrap3:
+
+```html
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" >
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/1/daterangepicker-bs3.css" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/s/bs-3.3.5/jszip-2.5.0,pdfmake-0.1.18,dt-1.10.10,b-1.1.0,b-colvis-1.1.0,b-flash-1.1.0,b-html5-1.1.0,b-print-1.1.0,r-2.0.0/datatables.min.css"/>
+    {% endblock %}
+    {% block head_javascripts %}
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment-with-locales.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="//cdn.jsdelivr.net/bootstrap.daterangepicker/1/daterangepicker.js"></script>
+        <script src="https://cdn.datatables.net/s/bs-3.3.5/jszip-2.5.0,pdfmake-0.1.18,dt-1.10.10,b-1.1.0,b-colvis-1.1.0,b-flash-1.1.0,b-html5-1.1.0,b-print-1.1.0,r-2.0.0/datatables.min.js"></script>
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+    {% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+</head>
+```
 
 ### Step 4: Create your Datatable class
 
