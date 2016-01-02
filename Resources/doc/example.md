@@ -61,7 +61,7 @@ class PostDatatable extends AbstractDatatableView
     /**
      * {@inheritdoc}
      */
-    public function buildDatatable($locale = null)
+    public function buildDatatable(array $options = array())
     {
         /*
         $this->callbacks->set(array(
@@ -486,7 +486,7 @@ class PostDatatable extends AbstractDatatableView
     /**
      * {@inheritdoc}
      */
-    public function buildDatatable($locale = null)
+    public function buildDatatable(array $options = array())
     {
         $this->features->set(array(
             'server_side' => false

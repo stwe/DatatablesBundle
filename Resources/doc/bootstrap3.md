@@ -34,7 +34,7 @@ Example:
 ```php
 class PostDatatable extends AbstractDatatableView
 {
-    public function buildDatatable($locale = null)
+    public function buildDatatable(array $options = array())
     {
         // ...
 
@@ -67,7 +67,7 @@ To do so, set the 'dom' and 'force_dom' options in your Datatable class.
 ```php
 class PostDatatable extends AbstractDatatableView
 {
-    public function buildDatatable($locale = null)
+    public function buildDatatable(array $options = array())
     {
         // ...
 
