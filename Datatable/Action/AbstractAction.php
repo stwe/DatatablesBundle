@@ -12,7 +12,7 @@
 namespace Sg\DatatablesBundle\Datatable\Action;
 
 use Sg\DatatablesBundle\OptionsResolver\OptionsInterface;
-use Sg\DatatablesBundle\OptionsResolver\BaseOptions;
+use Sg\DatatablesBundle\Datatable\View\AbstractViewOptions;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -133,21 +133,6 @@ abstract class AbstractAction implements ActionInterface, OptionsInterface
     /**
      * {@inheritdoc}
      */
-    public function setupOptionsResolver(array $options)
-    {
-        $resolver = new OptionsResolver();
-        $this->configureOptions($resolver);
-
-        $this->options = $resolver->resolve($options);
-
-        BaseOptions::callingSettersWithOptions($this->options, $this);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(array('route'));
@@ -170,6 +155,30 @@ abstract class AbstractAction implements ActionInterface, OptionsInterface
         $resolver->setAllowedTypes('confirm_message', 'string');
         $resolver->setAllowedTypes('attributes', 'array');
         $resolver->setAllowedTypes('role', 'string');
+
+        return $this;
+    }
+
+    //-------------------------------------------------
+    // OptionsResolver
+    //-------------------------------------------------
+
+    /**
+     * Setup options resolver.
+     *
+     * @param array $options
+     *
+     * @return $this
+     * @throws \Exception
+     */
+    public function setupOptionsResolver(array $options)
+    {
+        $resolver = new OptionsResolver();
+        $this->configureOptions($resolver);
+
+        $this->options = $resolver->resolve($options);
+
+        AbstractViewOptions::callingSettersWithOptions($this->options, $this);
 
         return $this;
     }

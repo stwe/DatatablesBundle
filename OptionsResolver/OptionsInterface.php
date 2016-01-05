@@ -21,15 +21,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 interface OptionsInterface
 {
     /**
-     * Setup options resolver.
-     *
-     * @param array $options
-     *
-     * @return $this
-     */
-    public function setupOptionsResolver(array $options);
-
-    /**
      * Configure options.
      *
      * @param OptionsResolver $resolver

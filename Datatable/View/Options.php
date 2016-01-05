@@ -11,17 +11,14 @@
 
 namespace Sg\DatatablesBundle\Datatable\View;
 
-use Sg\DatatablesBundle\OptionsResolver\BaseOptions;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Exception;
 
 /**
  * Class Options
  *
  * @package Sg\DatatablesBundle\Datatable\View
  */
-class Options extends BaseOptions
+class Options extends AbstractViewOptions
 {
     /**
      * Initial paging start point.
@@ -162,22 +159,7 @@ class Options extends BaseOptions
     protected $forceDom;
 
     //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Ctor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->configureOptions($this->resolver);
-        $this->set($this->options);
-    }
-
-    //-------------------------------------------------
-    // Setup Options
+    // OptionsInterface
     //-------------------------------------------------
 
     /**
@@ -198,13 +180,9 @@ class Options extends BaseOptions
     }
 
     /**
-     * Configure Options.
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-    private function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'display_start' => 0,
@@ -382,7 +360,7 @@ class Options extends BaseOptions
      *
      * @param array $order
      *
-     * @throws Exception
+     * @throws \Exception
      * @return $this
      */
     protected function setOrder(array $order)

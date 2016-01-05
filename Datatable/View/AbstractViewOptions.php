@@ -9,18 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\OptionsResolver;
+namespace Sg\DatatablesBundle\Datatable\View;
+
+use Sg\DatatablesBundle\OptionsResolver\OptionsInterface;
 
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Exception;
 
 /**
- * Class BaseOptions
+ * Class AbstractViewOptions
  *
- * @package Sg\DatatablesBundle\OptionsResolver
+ * @package Sg\DatatablesBundle\Datatable\View
  */
-class BaseOptions
+abstract class AbstractViewOptions implements OptionsInterface
 {
     /**
      * Options container.
@@ -28,13 +30,6 @@ class BaseOptions
      * @var array
      */
     protected $options;
-
-    /**
-     * An OptionsResolver instance.
-     *
-     * @var OptionsResolver
-     */
-    protected $resolver;
 
     //-------------------------------------------------
     // Ctor.
@@ -46,8 +41,12 @@ class BaseOptions
     public function __construct()
     {
         $this->options = array();
-        $this->resolver = new OptionsResolver();
+        $this->set($this->options);
     }
+
+    //-------------------------------------------------
+    // Set options
+    //-------------------------------------------------
 
     /**
      * Set options.
@@ -59,21 +58,29 @@ class BaseOptions
      */
     public function set(array $options)
     {
-        $this->options = $this->resolver->resolve($options);
-        $this->callingSettersWithOptions($this->options, $this);
+        $resolver = new OptionsResolver();
+        $this->configureOptions($resolver);
+
+        $this->options = $resolver->resolve($options);
+
+        $this::callingSettersWithOptions($this->options, $this);
 
         return $this;
     }
 
+    //-------------------------------------------------
+    // Static
+    //-------------------------------------------------
+
     /**
      * Calls the setters.
      *
-     * @param array $options
-     * @param mixed $class
+     * @param array            $options
+     * @param OptionsInterface $class
      *
      * @throws Exception
      */
-    public static function callingSettersWithOptions(array $options, $class)
+    public static function callingSettersWithOptions(array $options, OptionsInterface $class)
     {
         $methods = get_class_methods($class);
 

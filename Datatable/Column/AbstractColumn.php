@@ -11,8 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\Datatable\View\AbstractViewOptions;
 use Sg\DatatablesBundle\OptionsResolver\OptionsInterface;
-use Sg\DatatablesBundle\OptionsResolver\BaseOptions;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -216,11 +216,16 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     }
 
     //-------------------------------------------------
-    // OptionsInterface
+    // OptionsResolver
     //-------------------------------------------------
 
     /**
-     * {@inheritdoc}
+     * Setup options resolver.
+     *
+     * @param array $options
+     *
+     * @return $this
+     * @throws \Exception
      */
     public function setupOptionsResolver(array $options)
     {
@@ -229,7 +234,7 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
 
         $this->options = $resolver->resolve($options);
 
-        BaseOptions::callingSettersWithOptions($this->options, $this);
+        AbstractViewOptions::callingSettersWithOptions($this->options, $this);
 
         return $this;
     }

@@ -11,8 +11,6 @@
 
 namespace Sg\DatatablesBundle\Datatable\View;
 
-use Sg\DatatablesBundle\OptionsResolver\BaseOptions;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -20,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * @package Sg\DatatablesBundle\Datatable\View
  */
-class Features extends BaseOptions
+class Features extends AbstractViewOptions
 {
     /**
      * Feature control DataTables smart column width handling.
@@ -129,32 +127,13 @@ class Features extends BaseOptions
     protected $extensions;
 
     //-------------------------------------------------
-    // Ctor.
+    // OptionsInterface
     //-------------------------------------------------
 
     /**
-     * Ctor.
+     * {@inheritdoc}
      */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->configureOptions($this->resolver);
-        $this->set($this->options);
-    }
-
-    //-------------------------------------------------
-    // Setup Features
-    //-------------------------------------------------
-
-    /**
-     * Configure Options.
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return $this
-     */
-    private function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'auto_width' => true,
