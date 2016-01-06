@@ -6,7 +6,28 @@
 
 [![Latest Stable Version](https://poser.pugx.org/sg/datatablesbundle/v/stable)](https://packagist.org/packages/sg/datatablesbundle) [![Total Downloads](https://poser.pugx.org/sg/datatablesbundle/downloads)](https://packagist.org/packages/sg/datatablesbundle) [![Latest Unstable Version](https://poser.pugx.org/sg/datatablesbundle/v/unstable)](https://packagist.org/packages/sg/datatablesbundle) [![License](https://poser.pugx.org/sg/datatablesbundle/license)](https://packagist.org/packages/sg/datatablesbundle)
 
-## 1. Screenshots
+## 1. Recent Changes
+
+- Version 0.9 is Symfony3 compatible
+- DatatableViewInterface changed
+
+```php
+// Version 0.8
+class PostDatatable extends AbstractDatatableView
+{
+    public function buildDatatable($locale = null)
+    {}
+}
+
+// Version 0.9
+class PostDatatable extends AbstractDatatableView
+{
+    public function buildDatatable(array $options = array())
+    {}
+}
+```
+
+## 2. Screenshots
 
 ### Table with Bootstrap3 integration: 
 
@@ -16,7 +37,7 @@
 
 <div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/images/display.jpg"></div>
 
-## 2. Documentation
+## 3. Documentation
 
 [Installation](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/installation.md)
 
@@ -38,13 +59,13 @@
 
 [Reference configuration](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/configuration.md)
 
-## 3. Examples
+## 4. Examples
 
 [Examples](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
 
 [Demo Application - must be updated!](https://github.com/stwe/dtbundle-demo)
 
-## 4. Integrating 3rd party stuff 
+## 5. Integrating 3rd party stuff 
 
 [Integrate Bootstrap3](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/bootstrap3.md)
 
@@ -52,11 +73,11 @@
 
 [Integrate the LiipImagineBundle / ImageColumn, GalleryColumn and thumbnails](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/thumbs.md)
 
-## 5. Creating an Admin Section (unstable)
+## 6. Creating an Admin Section (unstable)
 
 [Admin section](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/admin.md)
 
-## 6. Limitations and Known Issues
+## 7. Limitations and Known Issues
 
 Much like every other piece of software `SgDatatablesBundle` is not perfect and far from feature complete.
 
@@ -70,12 +91,13 @@ At the moment I can not say whether the ClientSide mode is supported by me in th
 - This bundle does not support multiple Ids
 - 4th level associations are currently not supported
 - Searching and filtering on a virtual column not yet implemented and disabled by default
+- PostgreSql is not supported
 
-## 7. Reporting an issue or a feature request
+## 8. Reporting an issue or a feature request
 
 Issues and feature requests are tracked in the [Github issue tracker](https://github.com/stwe/DatatablesBundle/issues).
 
-## 8. Friendly License
+## 9. Friendly License
 
 This bundle is available under the MIT license. See the complete license in the bundle:
 
