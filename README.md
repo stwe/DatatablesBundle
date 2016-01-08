@@ -27,6 +27,10 @@ class PostDatatable extends AbstractDatatableView
 }
 ```
 
+- progress_bar column added
+
+<div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/images/progress.jpg"></div>
+
 ## 2. Screenshots
 
 ### Table with Bootstrap3 integration: 

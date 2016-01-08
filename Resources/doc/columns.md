@@ -10,6 +10,7 @@
 8. [Multiselect Column](#8-multiselect-column)
 9. [Image Column](#9-image-column)
 10. [Gallery Column](#10-gallery-column)
+11. [ProgressBar Column](#11-progress-bar-column)
 
 ## 1. Column
 
@@ -179,27 +180,27 @@ SgDatatablesBundle:Column:boolean.html.twig
 
 ### Options
 
-| Option               | Type           | Default                                  |
-|----------------------|----------------|------------------------------------------|
-| class                | string         | ''                                       |
-| padding              | string         | ''                                       |
-| name                 | string         | ''                                       |
-| orderable            | boolean        | true                                     |
-| render               | null or string | render_boolean                           |
-| searchable           | boolean        | true                                     |
-| title                | string         | ''                                       |
-| type                 | string         | ''                                       |
-| visible              | boolean        | true                                     |
-| width                | string         | ''                                       |
-| true_icon            | string         | ''                                       |
-| false_icon           | string         | ''                                       |
-| true_label           | string         | ''                                       |
-| false_label          | string         | ''                                       |
-| search_type          | string         | 'like'                                   |
-| filter_type          | string         | 'select'                                 |
-| filter_options       | array          | ['' => 'Any', '1' => 'Yes', '0' => 'No'] |
-| filter_property      | string         | ''                                       |
-| filter_search_column | string         | ''                                       |
+| Option               | Type           | Default                                      |
+|----------------------|----------------|----------------------------------------------|
+| class                | string         | ''                                           |
+| padding              | string         | ''                                           |
+| name                 | string         | ''                                           |
+| orderable            | boolean        | true                                         |
+| render               | null or string | render_boolean                               |
+| searchable           | boolean        | true                                         |
+| title                | string         | ''                                           |
+| type                 | string         | ''                                           |
+| visible              | boolean        | true                                         |
+| width                | string         | ''                                           |
+| true_icon            | string         | ''                                           |
+| false_icon           | string         | ''                                           |
+| true_label           | string         | ''                                           |
+| false_label          | string         | ''                                           |
+| search_type          | string         | 'like'                                       |
+| filter_type          | string         | 'select'                                     |
+| filter_options       | array          | array('' => 'Any', '1' => 'Yes', '0' => 'No')|
+| filter_property      | string         | ''                                           |
+| filter_search_column | string         | ''                                           |
 
 ### Example
 
@@ -656,6 +657,50 @@ $this->columnBuilder
         //'holder_height' => '65',
         'enlarge' => true,
         'view_limit' => 2,
+    ))
+;
+```
+
+## 11. Progress Bar column
+
+Progress bars. Bootstrap 3 is recommended.
+
+### Default template
+
+SgDatatablesBundle:Column:progress_bar.html.twig
+
+### Options
+
+| Option               | Type           | Default             |
+|----------------------|----------------|---------------------|
+| class                | string         | ''                  |
+| padding              | string         | ''                  |
+| name                 | string         | ''                  |
+| orderable            | boolean        | true                |
+| render               | null or string | render_progress_bar |
+| searchable           | boolean        | true                |
+| title                | string         | ''                  |
+| type                 | string         | ''                  |
+| visible              | boolean        | true                |
+| width                | string         | ''                  |
+| search_type          | string         | 'eq'                |
+| filter_type          | string         | 'text'              |
+| filter_options       | array          | array()             |
+| filter_property      | string         | ''                  |
+| filter_search_column | string         | ''                  |
+| bar_classes          | string         | ''                  |
+| value_min            | string         | '0'                 |
+| value_max            | string         | '100'               |
+| label                | boolean        | true                |
+
+### Example
+
+```php
+$this->columnBuilder
+    ->add('value', 'progress_bar', array(
+        'title' => 'My value',
+        'label' => true,
+        'bar_classes' => 'progress-bar-success' // see: http://getbootstrap.com/components/#progress
     ))
 ;
 ```
