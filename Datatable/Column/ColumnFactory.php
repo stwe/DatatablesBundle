@@ -91,6 +91,9 @@ class ColumnFactory implements ColumnFactoryInterface
             case 'gallery':
                 $this->column = new GalleryColumn();
                 break;
+            case 'progress_bar':
+                $this->column = new ProgressBarColumn();
+                break;
             default:
                 throw new InvalidArgumentException('createColumnByName(): The column is not supported.');
         }

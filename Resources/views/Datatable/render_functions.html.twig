@@ -32,4 +32,20 @@
             return null;
         }
     }
+
+    function render_progress_bar(data, type, row, meta, barClasses, max, min, label) {
+        var classNames = 'class="progress-bar ' + barClasses + '"';
+        var valueNow = 'aria-valuenow="' + data + '"';
+        var valueMin = 'aria-valuemin="' + min + '"';
+        var valueMax = 'aria-valuemax="' + max + '"';
+        var style = 'style="width:' + data +  '%"';
+        var result = '<div class="progress">';
+            result += '<div ' + classNames;
+            result += 'role="progressbar"' + valueNow + ' ' + valueMin + ' ' + valueMax + ' ' + style + '>';
+            if (true == label) {
+                result += data;
+            }
+            result += '</div></div>';
+        return result;
+    }
 </script>

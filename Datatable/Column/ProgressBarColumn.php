@@ -1,0 +1,216 @@
+<?php
+
+/**
+ * This file is part of the SgDatatablesBundle package.
+ *
+ * (c) stwe <https://github.com/stwe/DatatablesBundle>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Sg\DatatablesBundle\Datatable\Column;
+
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
+
+/**
+ * Class ProgressBarColumn
+ *
+ * @package Sg\DatatablesBundle\Datatable\Column
+ */
+class ProgressBarColumn extends AbstractColumn
+{
+    /**
+     * @var string
+     */
+    protected $barClasses;
+
+    /**
+     * @var string
+     */
+    protected $valueMin;
+
+    /**
+     * @var string
+     */
+    protected $valueMax;
+
+    /**
+     * @var boolean
+     */
+    protected $label;
+
+    //-------------------------------------------------
+    // ColumnInterface
+    //-------------------------------------------------
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setData($data)
+    {
+        if (empty($data) || !is_string($data)) {
+            throw new InvalidArgumentException('setData(): Expecting non-empty string.');
+        }
+
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTemplate()
+    {
+        return 'SgDatatablesBundle:Column:progress_bar.html.twig';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        return 'progress_bar';
+    }
+
+    //-------------------------------------------------
+    // OptionsInterface
+    //-------------------------------------------------
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'class' => '',
+            'padding' => '',
+            'name' => '',
+            'orderable' => true,
+            'render' => 'render_progress_bar',
+            'searchable' => true,
+            'title' => '',
+            'type' => '',
+            'visible' => true,
+            'width' => '',
+            'search_type' => 'eq',
+            'filter_type' => 'text',
+            'filter_options' => array(),
+            'filter_property' => '',
+            'filter_search_column' => '',
+            'bar_classes' => '',
+            'value_min' => '0',
+            'value_max' => '100',
+            'label' => true
+        ));
+
+        $resolver->addAllowedTypes('bar_classes', 'string');
+        $resolver->addAllowedTypes('value_min', 'string');
+        $resolver->setAllowedTypes('value_max', 'string');
+        $resolver->addAllowedTypes('label', 'bool');
+
+        return $this;
+    }
+
+    //-------------------------------------------------
+    // Getters && Setters
+    //-------------------------------------------------
+
+    /**
+     * Set bar classes.
+     *
+     * @param string $barClasses
+     *
+     * @return $this
+     */
+    public function setBarClasses($barClasses)
+    {
+        $this->barClasses = $barClasses;
+
+        return $this;
+    }
+
+    /**
+     * Get bar classes.
+     *
+     * @return string
+     */
+    public function getBarClasses()
+    {
+        return $this->barClasses;
+    }
+
+    /**
+     * Set valueMin.
+     *
+     * @param string $valueMin
+     *
+     * @return $this
+     */
+    public function setValueMin($valueMin)
+    {
+        $this->valueMin = $valueMin;
+
+        return $this;
+    }
+
+    /**
+     * Get valueMin.
+     *
+     * @return string
+     */
+    public function getValueMin()
+    {
+        return $this->valueMin;
+    }
+
+    /**
+     * Set valueMax.
+     *
+     * @param string $valueMax
+     *
+     * @return $this
+     */
+    public function setValueMax($valueMax)
+    {
+        $this->valueMax = $valueMax;
+
+        return $this;
+    }
+
+    /**
+     * Get valueMax.
+     *
+     * @return string
+     */
+    public function getValueMax()
+    {
+        return $this->valueMax;
+    }
+
+    /**
+     * Set label.
+     *
+     * @param boolean $label
+     *
+     * @return $this
+     */
+    public function setLabel($label)
+    {
+        $this->label = (boolean) $label;
+
+        return $this;
+    }
+
+    /**
+     * Get label.
+     *
+     * @return boolean
+     */
+    public function getLabel()
+    {
+        return (boolean) $this->label;
+    }
+}
