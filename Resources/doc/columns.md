@@ -196,7 +196,7 @@ SgDatatablesBundle:Column:boolean.html.twig
 | false_icon           | string         | ''                                           |
 | true_label           | string         | ''                                           |
 | false_label          | string         | ''                                           |
-| search_type          | string         | 'like'                                       |
+| search_type          | string         | 'eq'                                         |
 | filter_type          | string         | 'select'                                     |
 | filter_options       | array          | array('' => 'Any', '1' => 'Yes', '0' => 'No')|
 | filter_property      | string         | ''                                           |

@@ -103,7 +103,7 @@ class BooleanColumn extends AbstractColumn
             'type' => '',
             'visible' => true,
             'width' => '',
-            'search_type' => 'like',
+            'search_type' => 'eq',
             'filter_type' => 'select',
             'filter_options' => array('' => 'Any', '1' => 'Yes', '0' => 'No'),
             'filter_property' => '',
