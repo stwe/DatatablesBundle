@@ -37,7 +37,8 @@
         var valueNow = 'aria-valuenow="' + data + '"';
         var valueMin = 'aria-valuemin="' + min + '"';
         var valueMax = 'aria-valuemax="' + max + '"';
-        var size = (data-min)*100/(max-min);
+        var intData = parseInt(data, 10);
+        var size = (intData-min)*100/(max-min);
         var classNames = 'class="progress-bar ';
 
         if (true == multi) {
