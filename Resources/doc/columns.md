@@ -692,6 +692,7 @@ SgDatatablesBundle:Column:progress_bar.html.twig
 | value_min            | string         | '0'                 |
 | value_max            | string         | '100'               |
 | label                | boolean        | true                |
+| multi_color          | boolean        | false               |
 
 ### Example
 
@@ -700,7 +701,10 @@ $this->columnBuilder
     ->add('value', 'progress_bar', array(
         'title' => 'My value',
         'label' => true,
-        'bar_classes' => 'progress-bar-success' // see: http://getbootstrap.com/components/#progress
+        'value_min' => '0',
+        'value_max' => '10',
+        'multi_color' => true
+        //'bar_classes' => 'progress-bar-success' // see: http://getbootstrap.com/components/#progress
     ))
 ;
 ```
