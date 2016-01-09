@@ -41,6 +41,11 @@ class ProgressBarColumn extends AbstractColumn
      */
     protected $label;
 
+    /**
+     * @var boolean
+     */
+    protected $multiColor;
+
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -103,13 +108,15 @@ class ProgressBarColumn extends AbstractColumn
             'bar_classes' => '',
             'value_min' => '0',
             'value_max' => '100',
-            'label' => true
+            'label' => true,
+            'multi_color' => false
         ));
 
         $resolver->addAllowedTypes('bar_classes', 'string');
         $resolver->addAllowedTypes('value_min', 'string');
         $resolver->setAllowedTypes('value_max', 'string');
         $resolver->addAllowedTypes('label', 'bool');
+        $resolver->addAllowedTypes('multi_color', 'bool');
 
         return $this;
     }
@@ -212,5 +219,29 @@ class ProgressBarColumn extends AbstractColumn
     public function getLabel()
     {
         return (boolean) $this->label;
+    }
+
+    /**
+     * Set multiColor.
+     *
+     * @param boolean $multiColor
+     *
+     * @return $this
+     */
+    public function setMultiColor($multiColor)
+    {
+        $this->multiColor = (boolean) $multiColor;
+
+        return $this;
+    }
+
+    /**
+     * Get multiColor.
+     *
+     * @return boolean
+     */
+    public function isMultiColor()
+    {
+        return (boolean) $this->multiColor;
     }
 }

@@ -33,12 +33,27 @@
         }
     }
 
-    function render_progress_bar(data, type, row, meta, barClasses, min, max, label) {
-        var classNames = 'class="progress-bar ' + barClasses + '"';
+    function render_progress_bar(data, type, row, meta, barClasses, min, max, label, multi) {
         var valueNow = 'aria-valuenow="' + data + '"';
         var valueMin = 'aria-valuemin="' + min + '"';
         var valueMax = 'aria-valuemax="' + max + '"';
         var size = (data-min)*100/(max-min);
+        var classNames = 'class="progress-bar ';
+
+        if (true == multi) {
+            if (size <= 35) {
+                classNames += 'progress-bar-success' + '"';
+            }
+            if (size > 35 && size <= 70) {
+                classNames += 'progress-bar-warning' + '"';
+            }
+            if (size > 70) {
+                classNames += 'progress-bar-danger' + '"';
+            }
+        } else {
+            classNames += barClasses + '"';
+        }
+
         var style = 'style="width:' + size +  '%"';
         var result = '<div class="progress">';
             result += '<div ' + classNames;
