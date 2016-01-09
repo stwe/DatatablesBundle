@@ -33,12 +33,13 @@
         }
     }
 
-    function render_progress_bar(data, type, row, meta, barClasses, max, min, label) {
+    function render_progress_bar(data, type, row, meta, barClasses, min, max, label) {
         var classNames = 'class="progress-bar ' + barClasses + '"';
         var valueNow = 'aria-valuenow="' + data + '"';
         var valueMin = 'aria-valuemin="' + min + '"';
         var valueMax = 'aria-valuemax="' + max + '"';
-        var style = 'style="width:' + data +  '%"';
+        var size = (data-min)*100/(max-min);
+        var style = 'style="width:' + size +  '%"';
         var result = '<div class="progress">';
             result += '<div ' + classNames;
             result += 'role="progressbar"' + valueNow + ' ' + valueMin + ' ' + valueMax + ' ' + style + '>';
