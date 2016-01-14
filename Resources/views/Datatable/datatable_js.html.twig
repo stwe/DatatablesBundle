@@ -79,8 +79,18 @@
                 {% endif %}
 
                 var daterange = $('input[name="daterange"]');
+                moment.locale("{{ app.request.locale }}");
                 try {
-                    $(daterange).daterangepicker();
+                    $(daterange).daterangepicker({
+                        locale: {
+                            format: "{{ 'daterange.format'|trans({}, 'messages') }}",
+                            applyLabel: "{{ 'daterange.apply'|trans({}, 'messages') }}",
+                            cancelLabel: "{{ 'daterange.cancel'|trans({}, 'messages') }}",
+                            daysOfWeek: moment.weekdaysMin(),
+                            monthNames: moment.monthsShort(),
+                            firstDay: moment.localeData().firstDayOfWeek()
+                        }
+                    });
                 } catch (e) {
                     console.log(e.message);
                 }

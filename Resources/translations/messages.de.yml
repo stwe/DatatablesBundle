@@ -1,5 +1,5 @@
-datatables: # the bundle name
-    datatable: # jQuery plugin
+datatables:
+    datatable:
         processing: "Bitte warten..."
         lengthMenu: "_MENU_ Einträge anzeigen"
         zeroRecords: "Keine Einträge vorhanden."
@@ -27,3 +27,7 @@ datatables: # the bundle name
         save: "Speichern"
     dialog:
         close: "Schließen"
+daterange:
+    apply: "Übernehmen"
+    cancel: "Abbruch"
+    format: "DD.MM.YYYY"
