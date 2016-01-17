@@ -91,11 +91,12 @@
                             monthNames: moment.monthsShort(),
                             firstDay: moment.localeData().firstDayOfWeek()
                         }
-                    }, function(start, end) {
-                        $(daterange).val(start.format("{{ 'daterange.format'|trans({}, 'messages') }}") + ' - ' + end.format("{{ 'daterange.format'|trans({}, 'messages') }}"));
-                        $(daterange).change();
                     }).on('cancel.daterangepicker', function(ev, picker) {
                         $(this).val('');
+                        $(this).change();
+                    })
+                    .on('apply.daterangepicker', function(ev, picker) {
+                        $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
                         $(this).change();
                     });
                 } catch (e) {

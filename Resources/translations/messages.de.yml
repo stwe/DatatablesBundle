@@ -29,5 +29,5 @@ datatables:
         close: "Schließen"
 daterange:
     apply: "Übernehmen"
-    cancel: "Abbruch"
+    cancel: "Löschen"
     format: "DD.MM.YYYY"
