@@ -96,7 +96,7 @@
                         $(this).change();
                     })
                     .on('apply.daterangepicker', function(ev, picker) {
-                        $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+                        $(this).val(picker.startDate.format("{{ 'daterange.format'|trans({}, 'messages') }}") + ' - ' + picker.endDate.format("{{ 'daterange.format'|trans({}, 'messages') }}"));
                         $(this).change();
                     });
                 } catch (e) {
