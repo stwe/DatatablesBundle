@@ -78,10 +78,11 @@
                     $(selector + '_wrapper tfoot tr').clone().insertAfter($(selector + '_wrapper thead tr').first());
                 {% endif %}
 
-                var daterange = $('input[name="daterange"]');
-                moment.locale("{{ app.request.locale }}");
                 try {
+                    var daterange = $('input[name="daterange"]');
+                    moment.locale("{{ app.request.locale }}");
                     $(daterange).daterangepicker({
+                        autoUpdateInput: false,
                         locale: {
                             format: "{{ 'daterange.format'|trans({}, 'messages') }}",
                             applyLabel: "{{ 'daterange.apply'|trans({}, 'messages') }}",
@@ -90,6 +91,12 @@
                             monthNames: moment.monthsShort(),
                             firstDay: moment.localeData().firstDayOfWeek()
                         }
+                    }, function(start, end) {
+                        $(daterange).val(start.format("{{ 'daterange.format'|trans({}, 'messages') }}") + ' - ' + end.format("{{ 'daterange.format'|trans({}, 'messages') }}"));
+                        $(daterange).change();
+                    }).on('cancel.daterangepicker', function(ev, picker) {
+                        $(this).val('');
+                        $(this).change();
                     });
                 } catch (e) {
                     console.log(e.message);
