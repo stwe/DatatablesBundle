@@ -29,20 +29,20 @@ class Fields
     {
         $fields = array();
 
-        foreach (explode(' ', $input) as $value) {
+        foreach (explode(" ", $input) as $value) {
             $elements = explode(':', $value);
             $property = $elements[0];
             if (strlen($property)) {
-                $columnName = isset($elements[1]) ? $elements[1] : 'column';
+                $columnName = isset($elements[1]) ? $elements[1] : "column";
                 preg_match_all('/(.*)\((.*)\)/', $columnName, $matches);
                 $columnName = isset($matches[1][0]) ? $matches[1][0] : $columnName;
 
-                $title = ucwords(str_replace('.', ' ', $property));
+                $title = ucwords(str_replace(".", " ", $property));
 
                 $row = array();
-                $row['property'] = $property;
-                $row['column_name'] = $columnName;
-                $row['title'] = $title;
+                $row["property"] = $property;
+                $row["column_name"] = $columnName;
+                $row["title"] = $title;
                 $fields[] = $row;
             }
         }
