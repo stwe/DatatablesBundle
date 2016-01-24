@@ -79,7 +79,7 @@
                 {% endif %}
 
                 try {
-                    var daterange = $(selector + ' input[name="daterange"]');
+                    var daterange = $(selector + '_wrapper' + ' input[name="daterange"]');
                     moment.locale("{{ app.request.locale }}");
                     $(daterange).daterangepicker({
                         autoUpdateInput: false,
@@ -126,7 +126,7 @@
                         .draw();
                 });
 
-                $(selector + " select.individual_filtering").on("keyup change", function(event) {
+                $(selector + "_wrapper" + " select.individual_filtering").on("keyup change", function(event) {
                     var searchFieldId = $(event.currentTarget).data('filter-property-id');
                     var searchValue = $(this).val();
                     searchValue = searchValue ? searchValue.toString() : '';
