@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Class EditableController
@@ -46,7 +47,7 @@ class EditableController extends Controller
             $setter = 'set' . ucfirst($field);
 
             if (!$this->isCsrfTokenValid('editable', $token)) {
-                // @todo: invalid token
+                throw new AccessDeniedHttpException('The CSRF token is invalid.');
             }
 
             $em = $this->getDoctrine()->getManager();

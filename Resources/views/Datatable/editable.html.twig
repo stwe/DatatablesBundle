@@ -1,6 +1,7 @@
 {% for column in view_columns %}
     {% if column.editable is defined %}
         {% if true == column.editable %}
+            {% set token = csrf_token('editable') %}
             $('span.sg-editable-' + '{{ column.data }}').editable({
                 type: 'text',
                 name: '{{ column.data }}',
@@ -8,7 +9,7 @@
                 title: 'Edit ' + '{{ column.data }}',
                 params: function (params) {
                     params.entity = '{{ datatable.entity|e('js') }}';
-                    params.token = '{{ datatable_editable_csrf_token() }}'; // @todo
+                    params.token = '{{ token }}'
 
                     return params;
                 }
