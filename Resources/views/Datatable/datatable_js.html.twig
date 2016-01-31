@@ -65,7 +65,9 @@
                         )
                     {% endif %}
                 {% endif %}
-                .DataTable(defaults);
+                .DataTable(defaults).on('draw.dt', function() {
+                            {% include "SgDatatablesBundle:Datatable:editable.html.twig" %}
+                        });
             }
 
             {% if view_options.individualFiltering %}

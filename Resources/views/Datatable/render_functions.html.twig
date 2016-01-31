@@ -69,4 +69,15 @@
             result += '</div></div>';
         return result;
     }
+
+    function render_editable(data, type, row, meta, colData) {
+        var spanClass = "sg-editable-" + colData;
+        var result = '<span class="' + spanClass + '"';
+            result += 'data-pk="' + row.id + '">' + data + '</span>';
+        if (data != null) {
+            return result;
+        } else {
+            return null;
+        }
+    }
 </script>

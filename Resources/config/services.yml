@@ -10,7 +10,7 @@ services:
             - ['@sg_datatables.serializer.encoder.json']
     sg_datatables.twig.extension:
         class: Sg\DatatablesBundle\Twig\DatatableTwigExtension
-        arguments: ['@translator', %sg_datatables.admin.entities%, %sg_datatables.admin.site%]
+        arguments: ['@translator', %sg_datatables.admin.entities%, %sg_datatables.admin.site%, '@security.csrf.token_manager']
         tags:
             - { name: twig.extension }
     sg_datatables.query:

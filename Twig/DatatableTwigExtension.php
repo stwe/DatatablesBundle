@@ -21,6 +21,7 @@ use Twig_SimpleFunction;
 use Twig_SimpleFilter;
 use Exception;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * Class DatatableTwigExtension
@@ -44,6 +45,11 @@ class DatatableTwigExtension extends Twig_Extension
      */
     private $site;
 
+    /**
+     * @var CsrfTokenManagerInterface
+     */
+    private $csrfTokenManager;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -51,15 +57,17 @@ class DatatableTwigExtension extends Twig_Extension
     /**
      * Ctor.
      *
-     * @param TranslatorInterface $translator
-     * @param array               $entities
-     * @param array               $site
+     * @param TranslatorInterface       $translator
+     * @param array                     $entities
+     * @param array                     $site
+     * @param CsrfTokenManagerInterface $csrfTokenManager
      */
-    public function __construct(TranslatorInterface $translator, array $entities, array $site)
+    public function __construct(TranslatorInterface $translator, array $entities, array $site, CsrfTokenManagerInterface $csrfTokenManager)
     {
         $this->translator = $translator;
         $this->entities = $entities;
         $this->site = $site;
+        $this->csrfTokenManager = $csrfTokenManager;
     }
 
     //-------------------------------------------------
@@ -87,6 +95,7 @@ class DatatableTwigExtension extends Twig_Extension
             new Twig_SimpleFunction('datatable_icon', array($this, 'datatableIcon'), array('is_safe' => array('all'))),
             new Twig_SimpleFunction('datatable_admin_navigation_links', array($this, 'datatableAdminNavigationLinks'), array('is_safe' => array('all'), 'needs_environment' => true)),
             new Twig_SimpleFunction('datatable_admin_site_config', array($this, 'datatableAdminSiteConfig'), array('is_safe' => array('all'))),
+            new Twig_SimpleFunction('datatable_editable_csrf_token', array($this, 'getDatatableCsrfToken'))
         );
     }
 
@@ -237,5 +246,15 @@ class DatatableTwigExtension extends Twig_Extension
     public function datatableAdminSiteConfig()
     {
         return $this->site;
+    }
+
+    /**
+     * Generates a new token.
+     *
+     * @return \Symfony\Component\Security\Csrf\CsrfToken
+     */
+    public function getDatatableCsrfToken()
+    {
+        return $this->csrfTokenManager->refreshToken('editable');
     }
 }
