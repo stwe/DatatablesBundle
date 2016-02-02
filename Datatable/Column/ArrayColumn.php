@@ -86,6 +86,8 @@ class ArrayColumn extends Column
     {
         parent::configureOptions($resolver);
 
+        $resolver->remove(array('editable'));
+
         $resolver->setRequired(array('data'));
 
         $resolver->setDefault('count', false);

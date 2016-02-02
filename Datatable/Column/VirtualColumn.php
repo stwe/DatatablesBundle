@@ -45,7 +45,9 @@ class VirtualColumn extends Column
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
-        
+
+        $resolver->remove(array('editable'));
+
         $resolver->setDefaults(array(
             'orderable' => false,
             'searchable' => false,
