@@ -33,6 +33,13 @@ class DateTimeColumn extends TimeagoColumn
      */
     protected $dateFormat;
 
+    /**
+     * Editable flag.
+     *
+     * @var boolean
+     */
+    protected $editable;
+
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -67,9 +74,11 @@ class DateTimeColumn extends TimeagoColumn
         $resolver->setDefaults(array(
             'render' => 'render_datetime',
             'date_format' => 'lll',
+            'editable' => false
         ));
 
         $resolver->addAllowedTypes('date_format', 'string');
+        $resolver->setAllowedTypes('editable', 'bool');
 
         return $this;
     }
@@ -104,5 +113,29 @@ class DateTimeColumn extends TimeagoColumn
     public function getDateFormat()
     {
         return $this->dateFormat;
+    }
+
+    /**
+     * Set editable.
+     *
+     * @param boolean $editable
+     *
+     * @return $this
+     */
+    public function setEditable($editable)
+    {
+        $this->editable = $editable;
+
+        return $this;
+    }
+
+    /**
+     * Get editable.
+     *
+     * @return boolean
+     */
+    public function getEditable()
+    {
+        return $this->editable;
     }
 }

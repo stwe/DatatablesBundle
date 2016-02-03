@@ -49,6 +49,13 @@ class BooleanColumn extends AbstractColumn
      */
     protected $falseLabel;
 
+    /**
+     * Editable flag.
+     *
+     * @var boolean
+     */
+    protected $editable;
+
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -111,7 +118,8 @@ class BooleanColumn extends AbstractColumn
             'true_icon' => '',
             'false_icon' => '',
             'true_label' => '',
-            'false_label' => ''
+            'false_label' => '',
+            'editable' => false
         ));
 
         $resolver->setAllowedTypes('class', 'string');
@@ -133,6 +141,7 @@ class BooleanColumn extends AbstractColumn
         $resolver->setAllowedTypes('false_icon', 'string');
         $resolver->setAllowedTypes('true_label', 'string');
         $resolver->setAllowedTypes('false_label', 'string');
+        $resolver->setAllowedTypes('editable', 'bool');
 
         $resolver->setAllowedValues('search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
         $resolver->setAllowedValues('filter_type', array('text', 'select'));
@@ -238,5 +247,29 @@ class BooleanColumn extends AbstractColumn
     public function getTrueLabel()
     {
         return $this->trueLabel;
+    }
+
+    /**
+     * Set editable.
+     *
+     * @param boolean $editable
+     *
+     * @return $this
+     */
+    public function setEditable($editable)
+    {
+        $this->editable = $editable;
+
+        return $this;
+    }
+
+    /**
+     * Get editable.
+     *
+     * @return boolean
+     */
+    public function getEditable()
+    {
+        return $this->editable;
     }
 }

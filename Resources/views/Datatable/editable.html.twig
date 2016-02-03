@@ -3,13 +3,21 @@
         {% if true == column.editable %}
             {% set token = csrf_token('editable') %}
             $('span.sg-editable-' + '{{ column.data }}').editable({
-                type: 'text',
+                {# datetime column #}
+                {% if 'datetime' == column.alias %}
+                viewformat: '{{ column.dateFormat }}',
+                {% endif %}
+                {# boolean column #}
+                {% if 'boolean' == column.alias %}
+                source: [{'true': 'true'}, {'false': 'false'}],
+                emptytext: 'false',
+                {% endif %}
                 name: '{{ column.data }}',
                 url: "{{ path('sg_datatables_edit') }}",
                 title: 'Edit ' + '{{ column.data }}',
                 params: function (params) {
                     params.entity = '{{ datatable.entity|e('js') }}';
-                    params.token = '{{ token }}'
+                    params.token = '{{ token }}';
 
                     return params;
                 }

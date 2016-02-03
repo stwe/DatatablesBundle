@@ -30,10 +30,11 @@ class EditableController extends Controller
      *
      * @param Request $request
      *
-     * @Route("/sg/datatables/edit", name="sg_datatables_edit")
+     * @Route("/sg/datatables/edit/field", name="sg_datatables_edit")
      * @Method("POST")
      *
      * @return Response
+     * @throws \Exception
      */
     public function editAction(Request $request)
     {
@@ -51,10 +52,39 @@ class EditableController extends Controller
             }
 
             $em = $this->getDoctrine()->getManager();
+
+            $metadata = $em->getClassMetadata($entityName);
+            $fieldType = $metadata->getTypeOfField($field);
+
             $entity = $em->getRepository($entityName)->find($id);
-            $entity->$setter($value);
-            $em->persist($entity);
-            $em->flush();
+            if (!$entity) {
+                throw $this->createNotFoundException('The entity does not exist.');
+            }
+
+            $supportedFieldType = false;
+
+            switch ($fieldType) {
+                case 'datetime':
+                    $dateTime = new \DateTime($value);
+                    $entity->$setter($dateTime);
+                    $supportedFieldType = true;
+                    break;
+                case 'boolean':
+                    $entity->$setter($this->strToBool($value));
+                    $supportedFieldType = true;
+                    break;
+                case 'string':
+                    $entity->$setter($value);
+                    $supportedFieldType = true;
+                    break;
+                default:
+                    throw new \Exception("editAction(): The field type {$fieldType} is not supported.");
+            }
+
+            if (true === $supportedFieldType) {
+                $em->persist($entity);
+                $em->flush();
+            }
 
             return new Response('Success', 200);
         }
