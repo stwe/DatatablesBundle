@@ -40,6 +40,7 @@ SgDatatablesBundle:Column:column.html.twig
 | filter_property      | string         | ''      |
 | filter_search_column | string         | ''      |
 | default              | string         | ''      |
+| editable             | boolean        | false   |
 
 ### Example
 
@@ -201,6 +202,7 @@ SgDatatablesBundle:Column:boolean.html.twig
 | filter_options       | array          | array('' => 'Any', '1' => 'Yes', '0' => 'No')|
 | filter_property      | string         | ''                                           |
 | filter_search_column | string         | ''                                           |
+| editable             | boolean        | false                                        |
 
 ### Example
 
@@ -245,6 +247,7 @@ SgDatatablesBundle:Column:datetime.html.twig
 | filter_property      | string         | ''              |
 | filter_search_column | string         | ''              |
 | date_format          | string         | 'lll'           |
+| editable             | boolean        | false           |
 
 ### Example
 

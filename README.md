@@ -8,28 +8,28 @@
 
 ## 1. Recent Changes
 
-- Version 0.9 is Symfony3 compatible
-- DatatableViewInterface changed
+- In-place editing for text, datetime and boolean fields added (before usage you should manually include dependent x-editable js and css files).
+
+Example:
 
 ```php
-// Version 0.8
-class PostDatatable extends AbstractDatatableView
-{
-    public function buildDatatable($locale = null)
-    {}
-}
-
-// Version 0.9
-class PostDatatable extends AbstractDatatableView
-{
-    public function buildDatatable(array $options = array())
-    {}
-}
+->add('title', 'column', array(
+    'title' => 'Titel',
+    'editable' => true
+))
+->add('publishedAt', 'datetime', array(
+    'title' => 'PublishedAt',
+    'name' => 'daterange',
+    'date_format' => 'll',
+    'editable' => true
+))
+->add('visible', 'boolean', array(
+    'title' => 'Visible',
+    'editable' => true
+))
 ```
 
-- progress_bar column added
-
-<div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/images/progress.jpg"></div>
+<div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/images/editable.jpg"></div>
 
 ## 2. Screenshots
 
