@@ -6,6 +6,7 @@
                 {# datetime column #}
                 {% if 'datetime' == column.alias %}
                 viewformat: '{{ column.dateFormat }}',
+                combodate: {maxYear: 2050},
                 {% endif %}
                 {# boolean column #}
                 {% if 'boolean' == column.alias %}
@@ -14,7 +15,7 @@
                 {% endif %}
                 name: '{{ column.data }}',
                 url: "{{ path('sg_datatables_edit') }}",
-                title: 'Edit ' + '{{ column.data }}',
+                title: '{{ column.title }} ' + "{{ 'datatables.actions.edit'|trans({}, 'messages') }}",
                 params: function (params) {
                     params.entity = '{{ datatable.entity|e('js') }}';
                     params.token = '{{ token }}';
