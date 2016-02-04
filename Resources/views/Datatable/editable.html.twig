@@ -10,7 +10,7 @@
                 {% endif %}
                 {# boolean column #}
                 {% if 'boolean' == column.alias %}
-                source: [{'true': 'true'}, {'false': 'false'}],
+                source: [{'true': "{{ column.trueLabel ? column.trueLabel : 'true' }}"}, {'false': "{{ column.falseLabel ? column.falseLabel : 'false' }}"}],
                 emptytext: 'false',
                 {% endif %}
                 name: '{{ column.data }}',

@@ -102,12 +102,26 @@
         }
     }
 
-    function render_editable_boolean(data, type, row, meta, colData) {
+    function render_editable_boolean(data, type, row, meta, colData, trueLabel, falseLabel) {
+        if ("" == trueLabel) {
+            trueLabel = "true";
+        }
+
+        if ("" == falseLabel) {
+            falseLabel = "false";
+        }
+
         var spanClass = "sg-editable-" + colData;
         var result = '<span class="' + spanClass + '"';
             result += 'data-pk="' + row.id + '"data-type="select"' + 'data-value="' + data + '"' + '>';
-            result += data;
-            result += '</span>';
+
+        if (data == true) {
+            result += trueLabel;
+        } else {
+            result += falseLabel;
+        }
+
+        result += '</span>';
 
         return result;
     }

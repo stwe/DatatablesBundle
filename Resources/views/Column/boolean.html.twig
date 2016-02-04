@@ -12,7 +12,7 @@
     "data": "{{ column.data }}",
     {% if column.editable %}
         "render": function(data, type, row, meta) {
-            return render_editable_boolean(data, type, row, meta, '{{ column.data }}');
+            return render_editable_boolean(data, type, row, meta, '{{ column.data }}', '{{ column.trueLabel }}', '{{ column.falseLabel }}');
         },
     {% else %}
         "render": function(data, type, row, meta) {
