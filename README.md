@@ -47,6 +47,8 @@ Example:
 
 [Column types](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/columns.md)
 
+[In-place editing](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/editable.md)
+
 [How to use the ColumnBuilder](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/columnBuilder.md)
 
 [Setup Datatable Class](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/setup.md)
