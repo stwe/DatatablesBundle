@@ -8,7 +8,9 @@
 
 ## 1. Recent Changes
 
-- In-place editing for text, datetime and boolean fields added (before usage you should manually include dependent x-editable js and css files).
+### In-place editing
+
+In-place editing for text, datetime and boolean fields added (before usage you should manually include dependent x-editable js and css files).
 
 Example:
 
@@ -31,7 +33,9 @@ Example:
 
 <div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/images/editable.jpg"></div>
 
-- The multiselect ajax request sends now a CSRF-Token.
+### Token for multiselect actions
+
+The multiselect ajax request sends now a CSRF-Token.
 
 Update your bulk-actions like this:
 
