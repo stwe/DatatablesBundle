@@ -33,7 +33,7 @@
     
         $this->callbacks->set(array(
             'draw_callback' => "function( settings ) {
-                                    alert( 'DataTables has redrawn the table' );
+                                    alert( 'DataTables has redrawn the table.' );
                                 }"
         ));
 

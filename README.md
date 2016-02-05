@@ -31,6 +31,50 @@ Example:
 
 <div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/images/editable.jpg"></div>
 
+- The multiselect ajax request sends now a CSRF-Token.
+
+Update your bulk-actions like this:
+
+```php
+/**
+ * Bulk delete action.
+ *
+ * @param Request $request
+ *
+ * @Route("/bulk/delete", name="post_bulk_delete")
+ * @Method("POST")
+ *
+ * @return Response
+ */
+public function bulkDeleteAction(Request $request)
+{
+    $isAjax = $request->isXmlHttpRequest();
+
+    if ($isAjax) {
+        $choices = $request->request->get('data');
+        $token = $request->request->get('token');
+
+        if (!$this->isCsrfTokenValid('multiselect', $token)) {
+            throw new AccessDeniedHttpException('The CSRF token is invalid.');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('AppBundle:Post');
+
+        foreach ($choices as $choice) {
+            $entity = $repository->find($choice['value']);
+            $em->remove($entity);
+        }
+
+        $em->flush();
+
+        return new Response('Success', 200);
+    }
+
+    return new Response('Bad Request', 400);
+}
+```
+
 ## 2. Screenshots
 
 ### Table with Bootstrap3 integration: 
