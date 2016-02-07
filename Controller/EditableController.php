@@ -45,36 +45,47 @@ class EditableController extends Controller
             $value = $request->request->get('value');
             $token = $request->request->get('token');
 
-            $setter = 'set' . ucfirst($field);
+            $supportedFieldType = false;
+            $fieldType = null;
+            $getter = null;
+            $setter = null;
 
             if (!$this->isCsrfTokenValid('editable', $token)) {
                 throw new AccessDeniedHttpException('The CSRF token is invalid.');
             }
 
             $em = $this->getDoctrine()->getManager();
-
             $metadata = $em->getClassMetadata($entityName);
-            $fieldType = $metadata->getTypeOfField($field);
+
+            if (false === strstr($field, '.')) {
+                $setter = 'set' . ucfirst($field);
+                $fieldType = $metadata->getTypeOfField($field);
+            } else {
+                $parts = explode('.', $field);
+                $getter = 'get' . ucfirst($parts[0]);
+                $setter = 'set' . ucfirst($parts[1]);
+                $targetClass = $metadata->getAssociationTargetClass($parts[0]);
+                $targetMeta = $em->getClassMetadata($targetClass);
+                $fieldType = $targetMeta->getTypeOfField($parts[1]);
+            }
 
             $entity = $em->getRepository($entityName)->find($id);
             if (!$entity) {
                 throw $this->createNotFoundException('The entity does not exist.');
             }
 
-            $supportedFieldType = false;
-
             switch ($fieldType) {
                 case 'datetime':
                     $dateTime = new \DateTime($value);
-                    $entity->$setter($dateTime);
+                    null === $getter ? $entity->$setter($dateTime) : $entity->$getter()->$setter($dateTime);
                     $supportedFieldType = true;
                     break;
                 case 'boolean':
-                    $entity->$setter($this->strToBool($value));
+                    null === $getter ? $entity->$setter($this->strToBool($value)) : $entity->$getter()->$setter($this->strToBool($value));
                     $supportedFieldType = true;
                     break;
                 case 'string':
-                    $entity->$setter($value);
+                    null === $getter ? $entity->$setter($value) : $entity->$getter()->$setter($value);
                     $supportedFieldType = true;
                     break;
                 default:

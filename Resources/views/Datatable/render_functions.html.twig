@@ -80,11 +80,16 @@
     }
 
     function render_editable_text(data, type, row, meta, colData) {
-        var spanClass = "sg-editable-" + colData;
-        var result = '<span class="' + spanClass + '"';
+        if (data != null) {
+            var str = colData.split(".").join("_");
+            var spanClass = "sg-editable-" + str;
+            var result = '<span class="' + spanClass + '"';
             result += 'data-pk="' + row.id + '"data-type="text"' + '>' + data + '</span>';
 
-        return result;
+            return result;
+        } else {
+            return null;
+        }
     }
 
     function render_editable_datetime(data, type, row, meta, colData, dateFormat) {

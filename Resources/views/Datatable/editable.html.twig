@@ -2,7 +2,9 @@
     {% if column.editable is defined %}
         {% if true == column.editable %}
             {% set token = csrf_token('editable') %}
-            $('span.sg-editable-' + '{{ column.data }}').editable({
+            var str = '{{ column.data }}'.split(".").join("_");
+            str = 'span.sg-editable-' + str;
+            $(str).editable({
                 {# datetime column #}
                 {% if 'datetime' == column.alias %}
                 viewformat: '{{ column.dateFormat }}',
