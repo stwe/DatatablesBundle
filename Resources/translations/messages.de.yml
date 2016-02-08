@@ -31,3 +31,5 @@ daterange:
     apply: "Übernehmen"
     cancel: "Löschen"
     format: "DD.MM.YYYY"
+editable:
+    tableRedraw: "Die Änderung betrifft mehrere Einträge. Die Tabelle wird mit den neuen Daten aktualisiert."

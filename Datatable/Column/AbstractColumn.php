@@ -215,6 +215,14 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
         return $this->dql;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function isAssociation()
+    {
+        return (false === strstr($this->data, '.') ? false : true);
+    }
+
     //-------------------------------------------------
     // OptionsResolver
     //-------------------------------------------------

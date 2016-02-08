@@ -23,7 +23,14 @@
                     params.token = '{{ token }}';
 
                     return params;
+                },
+                {# many-to-one association needs a complete table redraw #}
+                {% if column.isAssociation %}
+                success: function(response, newValue) {
+                    oTable.draw();
+                    alert("{{ 'editable.tableRedraw'|trans({}, 'messages') }}");
                 }
+                {% endif %}
             });
         {% endif %}
     {% endif %}

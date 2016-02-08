@@ -56,4 +56,11 @@ interface ColumnInterface
      * @return string
      */
     public function getAlias();
+
+    /**
+     * Check wether an association is given.
+     *
+     * @return boolean
+     */
+    public function isAssociation();
 }
