@@ -59,7 +59,7 @@ public function bulkDeleteAction(Request $request)
         $token = $request->request->get('token');
 
         if (!$this->isCsrfTokenValid('multiselect', $token)) {
-            throw new AccessDeniedHttpException('The CSRF token is invalid.');
+            throw new AccessDeniedException('The CSRF token is invalid.');
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -113,11 +113,9 @@ public function bulkDeleteAction(Request $request)
 
 [Reference configuration](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/configuration.md)
 
-## 4. Examples
+## 4. Example
 
-[Examples](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/example.md)
-
-[Demo Application - must be updated!](https://github.com/stwe/dtbundle-demo)
+[Demo Application](https://github.com/stwe/DtBundleDemo)
 
 ## 5. Integrating 3rd party stuff 
 

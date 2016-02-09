@@ -142,6 +142,7 @@
 | individual_filtering          | bool   | false                          |
 | individual_filtering_position | string | 'foot'                         |
 | use_integration_options       | bool   | false                          |
+| force_dom                     | bool   | false                          |
 
 ## 6. Ajax
 
