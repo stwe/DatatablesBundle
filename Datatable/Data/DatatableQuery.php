@@ -183,8 +183,15 @@ class DatatableQuery
 
                     while (count($array) > 2) {
                         // Add any missing relations
-                        $this->selectColumns[$array[1]][] = 'id';
-                        $this->joins[$array[0] . '.' . $array[1]] = $array[1];
+                        if (!isset($this->selectColumns[$array[1]]) || array_search('id', $this->selectColumns[$array[1]]) === false) {
+                            $this->selectColumns[$array[1]][] = 'id';
+                        }
+
+                        $joinKey = $array[0] . '.' . $array[1];
+                        if (!isset($this->joins[$joinKey])) {
+                            $this->joins[$joinKey] = $array[1];
+                        }
+
                         array_shift($array);
                     }
 
