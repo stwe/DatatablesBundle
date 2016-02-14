@@ -179,26 +179,17 @@ class DatatableQuery
                     }
                 } else {
                     $array = explode('.', $data);
-                    $count = count($array);
+                    array_unshift($array, $this->tableName);
 
-                    if ($count > 2) {
-                        $replaced = str_replace('.', '_', $data);
-                        $parts = explode('_', $replaced);
-                        $last = array_pop($parts);
-                        $select = implode('_', $parts);
-                        $join = str_replace('_', '.', $select);
-                        $this->selectColumns[$select][] = $last;
-
-                        $this->selectColumns[$array[0]][] = 'id';
-                        $this->joins[$this->tableName . '.' . $array[0]] = $array[0];
-
-                        $this->joins[$join] = $select;
-                        $this->addSearchOrderColumn($key, $select, $last);
-                    } else {
-                        $this->selectColumns[$array[0]][] = $array[1];
-                        $this->joins[$this->tableName . '.' . $array[0]] = $array[0];
-                        $this->addSearchOrderColumn($key, $array[0], $array[1]);
+                    while (count($array) > 2) {
+                        // Add any missing relations
+                        $this->selectColumns[$array[1]][] = 'id';
+                        $this->joins[$array[0] . '.' . $array[1]] = $array[1];
+                        array_shift($array);
                     }
+
+                    $this->selectColumns[$array[0]][] = $array[1];
+                    $this->addSearchOrderColumn($key, $array[0], $array[1]);
                 }
             } else {
                 $this->orderColumns[] = null;
