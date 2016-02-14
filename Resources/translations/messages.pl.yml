@@ -17,3 +17,13 @@ datatables: # the bundle name
         confirmMsg: "Jesteś pewien?"
         selectError: "Musisz wybrać przynajmniej jeden element"
         ok: "Ok"
+    actions:
+        title: "Akcje"
+        show: "Pokaż"
+        new: "Nowy"
+        edit: "Edycja"
+        delete: "usuń"
+        toList: "Powrót to listy"
+        save: "Zapisz"
+    dialog:
+        close: "Zamknij"
