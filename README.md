@@ -52,9 +52,7 @@ Update your bulk-actions like this:
  */
 public function bulkDeleteAction(Request $request)
 {
-    $isAjax = $request->isXmlHttpRequest();
-
-    if ($isAjax) {
+    if ($request->isXmlHttpRequest()) {
         $choices = $request->request->get('data');
         $token = $request->request->get('token');
 
