@@ -156,14 +156,14 @@ options={"expose"=true}
 Example: 
 
 ```php
-    /**
-     * Displays a form to edit an existing Post entity.
-     *
-     * @Route("/{id}/edit", name="post_edit", options={"expose"=true})
-     * @Method({"GET", "POST"})
-     */
-    public function editAction(Request $request, Post $post)
-    {
-        // ...
-    }
+/**
+ * Displays a form to edit an existing Post entity.
+ *
+ * @Route("/{id}/edit", name="post_edit", options={"expose"=true})
+ * @Method({"GET", "POST"})
+ */
+public function editAction(Request $request, Post $post)
+{
+    // ...
+}
 ```
