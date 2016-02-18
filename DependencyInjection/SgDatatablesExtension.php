@@ -36,10 +36,5 @@ class SgDatatablesExtension extends Extension
 
         $container->setParameter('sg_datatables.datatable.templates', $config['datatable']['templates']);
         $container->setParameter('sg_datatables.datatable.query', $config['datatable']['query']);
-
-        $container->setParameter('sg_datatables.admin.site', $config['admin']['site']);
-        $container->setParameter('sg_datatables.admin.site.route.prefix', $config['admin']['site']['admin_route_prefix']);
-
-        $container->setParameter('sg_datatables.admin.entities', $config['admin']['entities']);
     }
 }

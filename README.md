@@ -125,11 +125,7 @@ public function bulkDeleteAction(Request $request)
 
 [Integrate the LiipImagineBundle / ImageColumn, GalleryColumn and thumbnails](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/thumbs.md)
 
-## 6. Creating an Admin Section (unstable)
-
-[Admin section](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/admin.md)
-
-## 7. Limitations and Known Issues
+## 6. Limitations and Known Issues
 
 Much like every other piece of software `SgDatatablesBundle` is not perfect and far from feature complete.
 
@@ -145,11 +141,11 @@ At the moment I can not say whether the ClientSide mode is supported by me in th
 - Searching and filtering on a virtual column not yet implemented and disabled by default
 - PostgreSql is not supported
 
-## 8. Reporting an issue or a feature request
+## 7. Reporting an issue or a feature request
 
 Issues and feature requests are tracked in the [Github issue tracker](https://github.com/stwe/DatatablesBundle/issues).
 
-## 9. Friendly License
+## 8. Friendly License
 
 This bundle is available under the MIT license. See the complete license in the bundle:
 

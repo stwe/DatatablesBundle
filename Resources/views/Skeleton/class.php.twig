@@ -1,20 +1,7 @@
 <?php
-{% set complete_namespace %}
-{% if admin %}
-{{ namespace }}\Datatables\Admin;
-{% else %}
-{{ namespace }}\Datatables;
-{% endif %}
-{% endset %}
 
-{% set package_namespace %}
-{% if admin %}
-{{ namespace }}\Datatables\Admin
-{% else %}
-{{ namespace }}\Datatables
-{% endif %}
-{% endset %}
-namespace {{ complete_namespace }}
+{{ namespace }}\Datatables;
+
 {% block use_statements %}
 use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
 use Sg\DatatablesBundle\Datatable\View\Style;
@@ -24,7 +11,7 @@ use Sg\DatatablesBundle\Datatable\View\Style;
 /**
  * Class {{ datatable_class }}
  *
- * @package {{ package_namespace -}}
+ * @package {{ namespace }}\Datatables
  */
 class {{ datatable_class }} extends AbstractDatatableView
 {% endblock class_definition %}

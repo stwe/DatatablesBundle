@@ -1,9 +1,0 @@
-{% extends datatable_admin_site_config().base_layout %}
-
-{% block main %}
-    {% if heading %}
-        <h2>{{ heading }}</h2>
-        <hr>
-    {% endif %}
-    {{ datatable_render(datatable) }}
-{% endblock %}
