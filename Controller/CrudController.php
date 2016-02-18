@@ -37,24 +37,25 @@ class CrudController extends Controller
     /**
      * Get heading.
      *
+     * @param Request $request
+     *
      * @return string
      */
-    protected function getHeading()
+    protected function getHeading(Request $request)
     {
-        $request = $this->container->get('request');
-
         return $request->get('heading');
     }
 
     /**
      * Get datatable.
      *
+     * @param Request $request
+     *
      * @return DatatableViewInterface
      * @throws Exception
      */
-    protected function getDatatable()
+    protected function getDatatable(Request $request)
     {
-        $request = $this->container->get('request');
         $datatableName = $request->get('datatable');
         $container = $this->container->get('sg_datatables.view.container');
 
@@ -228,15 +229,18 @@ class CrudController extends Controller
     /**
      * Lists all entities.
      *
+     * @param Request $request
+     *
      * @return Response
+     * @throws Exception
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         return $this->render(
             'SgDatatablesBundle:Crud:index.html.twig',
             array(
-                'datatable' => $this->getDatatable(),
-                'heading' => $this->getHeading()
+                'datatable' => $this->getDatatable($request),
+                'heading' => $this->getHeading($request)
             )
         );
     }
@@ -244,11 +248,13 @@ class CrudController extends Controller
     /**
      * Index results action.
      *
+     * @param Request $request
+     *
      * @return Response
      */
-    public function indexResultsAction()
+    public function indexResultsAction(Request $request)
     {
-        $datatable = $this->getDatatable();
+        $datatable = $this->getDatatable($request);
         $datatable = $this->container->get('sg_datatables.query')->getQueryFrom($datatable);
 
         return $datatable->getResponse();
@@ -333,11 +339,13 @@ class CrudController extends Controller
     /**
      * Displays a form to create a new entity.
      *
+     * @param Request $request
+     *
      * @return Response
+     * @throws Exception
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
-        $request = $this->container->get('request');
         $options = $request->get('options');
         $alias = $request->get('alias');
 
@@ -355,7 +363,7 @@ class CrudController extends Controller
                 'entity' => $entity,
                 'form' => $form->createView(),
                 'list_action' => DatatablesRoutingLoader::PREF . $alias . '_index',
-                'heading' => $this->getHeading()
+                'heading' => $this->getHeading($request)
             )
         );
     }
@@ -363,14 +371,14 @@ class CrudController extends Controller
     /**
      * Finds and displays an entity.
      *
+     * @param Request $request
      * @param integer $id
      *
      * @return Response
-     * @throws NotFoundHttpException
+     * @throws Exception
      */
-    public function showAction($id)
+    public function showAction(Request $request, $id)
     {
-        $request = $this->container->get('request');
         $options = $request->get('options');
         $alias = $request->get('alias');
 
@@ -391,7 +399,7 @@ class CrudController extends Controller
                 'delete_form' => $deleteForm->createView(),
                 'edit_action' => DatatablesRoutingLoader::PREF . $alias . '_edit',
                 'list_action' => DatatablesRoutingLoader::PREF . $alias . '_index',
-                'heading' => $this->getHeading()
+                'heading' => $this->getHeading($request)
             )
         );
     }
@@ -399,14 +407,14 @@ class CrudController extends Controller
     /**
      * Displays a form to edit an existing entity.
      *
+     * @param Request $request
      * @param integer $id
      *
      * @return Response
-     * @throws NotFoundHttpException
+     * @throws Exception
      */
-    public function editAction($id)
+    public function editAction(Request $request, $id)
     {
-        $request = $this->container->get('request');
         $options = $request->get('options');
         $alias = $request->get('alias');
 
@@ -424,7 +432,7 @@ class CrudController extends Controller
                 'entity' => $entity,
                 'edit_form' => $editForm->createView(),
                 'list_action' => DatatablesRoutingLoader::PREF . $alias . '_index',
-                'heading' => $this->getHeading()
+                'heading' => $this->getHeading($request)
             )
         );
     }
