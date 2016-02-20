@@ -17,3 +17,9 @@ datatables: # the bundle name
         confirmMsg: "Êtes vous certain?"
         selectError: "Vous devez sélectionner au moins un élément."
         ok: "Ok"
+daterange:
+    apply: "Appliquer"
+    cancel: "Annuler"
+    format: "DD-MM-YYYY"
+editable:
+    tableRedraw: "Les changements liés à plusieurs enregistrements. Le tableau est redessiné avec les nouvelles données."
