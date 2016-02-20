@@ -1,5 +1,5 @@
-datatables: # the bundle name
-    datatable: # jQuery plugin
+datatables:
+    datatable:
         processing: "Procesando..."
         lengthMenu: "Ver _MENU_ resultados"
         zeroRecords: "Ningún resultado encontrado"

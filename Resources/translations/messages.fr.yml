@@ -1,5 +1,5 @@
-datatables: # the bundle name
-    datatable: # jQuery plugin
+datatables:
+    datatable:
         processing: "En cours de traitement..."
         lengthMenu: "Voir _MENU_ entrées"
         zeroRecords: "Aucun enregistrement trouvé"
@@ -17,6 +17,16 @@ datatables: # the bundle name
         confirmMsg: "Êtes vous certain?"
         selectError: "Vous devez sélectionner au moins un élément."
         ok: "Ok"
+    actions:
+        title: "Actions"
+        show: "Show"
+        new: "New"
+        edit: "Edit"
+        delete: "Delete"
+        toList: "Back to the list"
+        save: "Save"
+    dialog:
+        close: "Close"
 daterange:
     apply: "Appliquer"
     cancel: "Annuler"

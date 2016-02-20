@@ -1,5 +1,5 @@
-datatables: # the bundle name
-    datatable: # jQuery plugin
+datatables:
+    datatable:
         processing: "Przetwarzanie"
         lengthMenu: "Pokaż _MENU_ wpisy"
         zeroRecords: "Nie znaleziono pasujących rekordów"
@@ -27,3 +27,9 @@ datatables: # the bundle name
         save: "Zapisz"
     dialog:
         close: "Zamknij"
+daterange:
+    apply: "Apply"
+    cancel: "Cancel"
+    format: "YYYY-MM-DD"
+editable:
+    tableRedraw: "The changes relates multiple records. The table is redraw with the new data."
