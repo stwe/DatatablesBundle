@@ -19,14 +19,14 @@ datatables:
         ok: "Ok"
     actions:
         title: "Actions"
-        show: "Show"
-        new: "New"
-        edit: "Edit"
-        delete: "Delete"
-        toList: "Back to the list"
-        save: "Save"
+        show: "Voir"
+        new: "Nouveau"
+        edit: "Modifier"
+        delete: "Supprimer"
+        toList: "Retour à la liste"
+        save: "Enregistrer"
     dialog:
-        close: "Close"
+        close: "Fermer"
 daterange:
     apply: "Appliquer"
     cancel: "Annuler"
