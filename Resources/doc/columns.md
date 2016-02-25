@@ -427,6 +427,8 @@ SgDatatablesBundle:Column:multiselect.html.twig
 
 ### Example
 
+#### Datatables class
+
 ``` php
 $this->getColumnBuilder()
     ->add(null, 'multiselect', array(
@@ -457,6 +459,48 @@ $this->getColumnBuilder()
         )
     ))
 ;
+```
+
+#### Controller
+
+```php
+/**
+ * Bulk delete action.
+ *
+ * @param Request $request
+ *
+ * @Route("/bulk/delete", name="post_bulk_delete")
+ * @Method("POST")
+ *
+ * @return Response
+ */
+public function bulkDeleteAction(Request $request)
+{
+    $isAjax = $request->isXmlHttpRequest();
+
+    if ($isAjax) {
+        $choices = $request->request->get('data');
+        $token = $request->request->get('token');
+
+        if (!$this->isCsrfTokenValid('multiselect', $token)) {
+            throw new AccessDeniedException('The CSRF token is invalid.');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('AppBundle:Post');
+
+        foreach ($choices as $choice) {
+            $entity = $repository->find($choice['value']);
+            $em->remove($entity);
+        }
+
+        $em->flush();
+
+        return new Response('Success', 200);
+    }
+
+    return new Response('Bad Request', 400);
+}
 ```
 ___
 

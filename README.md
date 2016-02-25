@@ -8,76 +8,7 @@
 
 ## 1. Recent Changes
 
-### In-place editing
-
-In-place editing for text, datetime and boolean fields added (before usage you should manually include dependent x-editable js and css files).
-
-Example:
-
-```php
-->add('title', 'column', array(
-    'title' => 'Titel',
-    'editable' => true
-))
-->add('publishedAt', 'datetime', array(
-    'title' => 'PublishedAt',
-    'name' => 'daterange',
-    'date_format' => 'll',
-    'editable' => true
-))
-->add('visible', 'boolean', array(
-    'title' => 'Visible',
-    'editable' => true
-))
-```
-
-<div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/images/editable.jpg"></div>
-
-### Token for multiselect actions
-
-The multiselect ajax request sends now a CSRF-Token.
-
-Update your bulk-actions like this:
-
-```php
-/**
- * Bulk delete action.
- *
- * @param Request $request
- *
- * @Route("/bulk/delete", name="post_bulk_delete")
- * @Method("POST")
- *
- * @return Response
- */
-public function bulkDeleteAction(Request $request)
-{
-    $isAjax = $request->isXmlHttpRequest();
-
-    if ($isAjax) {
-        $choices = $request->request->get('data');
-        $token = $request->request->get('token');
-
-        if (!$this->isCsrfTokenValid('multiselect', $token)) {
-            throw new AccessDeniedException('The CSRF token is invalid.');
-        }
-
-        $em = $this->getDoctrine()->getManager();
-        $repository = $em->getRepository('AppBundle:Post');
-
-        foreach ($choices as $choice) {
-            $entity = $repository->find($choice['value']);
-            $em->remove($entity);
-        }
-
-        $em->flush();
-
-        return new Response('Success', 200);
-    }
-
-    return new Response('Bad Request', 400);
-}
-```
+Nothing since Version 0.10.
 
 ## 2. Screenshots
 
