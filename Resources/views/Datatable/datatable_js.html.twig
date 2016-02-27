@@ -39,7 +39,7 @@
             $.extend(defaults, columns);
             $.extend(defaults, searchCols);
 
-            if ( $.fn.dataTable.isDataTable( selector ) ) {
+            if ($.fn.DataTable.isDataTable(selector)) {
                 {#
                     to check if datatable already exists
                 #}
@@ -107,7 +107,7 @@
 
                 {# "foot" position -> datatable_html.html.twig #}
 
-                var throttledSearch = $.fn.dataTable.util.throttle(
+                var throttledSearch = $.fn.DataTable.util.throttle(
                     function (event) {
                         if (event.type == "keyup") {
                             if (
