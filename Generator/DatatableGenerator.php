@@ -11,8 +11,6 @@
 
 namespace Sg\DatatablesBundle\Generator;
 
-use Sg\DatatablesBundle\Routing\DatatablesRoutingLoader;
-
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use RuntimeException;

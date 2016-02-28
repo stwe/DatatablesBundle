@@ -20,10 +20,13 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/framework-bundle": "~2.6|~3.0",
+        "symfony/options-resolver": "~2.6|~3.0",
+        "symfony/property-access": "~2.6|~3.0",
         "friendsofsymfony/jsrouting-bundle": "~1.6"
     },
     "require-dev": {
-        "sensio/generator-bundle": "~2.3"
+        "sensio/generator-bundle": "~2.3",
+        "doctrine/orm": "^2.5"
     },
     "suggest": {
         "components/jquery": "~1.12",

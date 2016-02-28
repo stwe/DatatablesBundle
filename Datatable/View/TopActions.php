@@ -53,6 +53,7 @@ class TopActions extends AbstractViewOptions
     public function __construct()
     {
         $this->options = array();
+        parent::__construct();
     }
 
     //-------------------------------------------------

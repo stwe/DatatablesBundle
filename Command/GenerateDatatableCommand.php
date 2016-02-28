@@ -13,14 +13,15 @@ namespace Sg\DatatablesBundle\Command;
 
 use Sg\DatatablesBundle\Generator\DatatableGenerator;
 
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
 use RuntimeException;
 
 /**
@@ -28,8 +29,17 @@ use RuntimeException;
  *
  * @package Sg\DatatablesBundle\Command
  */
-class GenerateDatatableCommand extends GenerateDoctrineCommand
+class GenerateDatatableCommand extends ContainerAwareCommand
 {
+    public function isEnabled()
+    {
+        return (
+            class_exists('Doctrine\\ORM\\Mapping\\ClassMetadataInfo')
+            &&
+            class_exists('Sensio\\Bundle\\GeneratorBundle\\Command\\GenerateDoctrineCommand')
+        );
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -168,5 +178,23 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
         }
 
         return $fields;
+    }
+
+    protected function parseShortcutNotation($shortcut)
+    {
+        $entity = str_replace('/', '\\', $shortcut);
+
+        if (false === $pos = strpos($entity, ':')) {
+            throw new \InvalidArgumentException(sprintf('The entity name must contain a : ("%s" given, expecting something like AcmeBlogBundle:Blog/Post)', $entity));
+        }
+
+        return array(substr($entity, 0, $pos), substr($entity, $pos + 1));
+    }
+
+    protected function getEntityMetadata($entity)
+    {
+        $factory = new DisconnectedMetadataFactory($this->getContainer()->get('doctrine'));
+
+        return $factory->getClassMetadata($entity)->getMetadata();
     }
 }
