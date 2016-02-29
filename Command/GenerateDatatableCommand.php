@@ -31,6 +31,12 @@ use RuntimeException;
  */
 class GenerateDatatableCommand extends ContainerAwareCommand
 {
+
+    /**
+     * @var
+     */
+    private $generator;
+
     public function isEnabled()
     {
         return (
@@ -197,4 +203,15 @@ class GenerateDatatableCommand extends ContainerAwareCommand
 
         return $factory->getClassMetadata($entity)->getMetadata();
     }
+
+    protected function getGenerator(BundleInterface $bundle = null)
+    {
+        if (null === $this->generator) {
+            $this->generator = $this->createGenerator();
+            $this->generator->setSkeletonDirs($this->getSkeletonDirs($bundle));
+        }
+
+        return $this->generator;
+    }
+
 }
