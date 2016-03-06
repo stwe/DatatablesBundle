@@ -147,11 +147,14 @@ class DatatableQuery
     private $doctrineExtensions;
 
     /**
-     * The locale.
-     *
      * @var string
      */
     private $locale;
+
+    /**
+     * @var boolean
+     */
+    private $isPostgreSQLConnection;
 
     //-------------------------------------------------
     // Ctor.
@@ -209,9 +212,49 @@ class DatatableQuery
         $this->imagineBundle = $imagineBundle;
         $this->doctrineExtensions = $doctrineExtensions;
         $this->locale = $locale;
+        $this->isPostgreSQLConnection = false;
 
         $this->setLineFormatter();
         $this->setupColumnArrays();
+
+        $this->setupPostgreSQL();
+    }
+
+    //-------------------------------------------------
+    // PostgreSQL
+    //-------------------------------------------------
+
+    /**
+     * Setup PostgreSQL
+     *
+     * @return $this
+     * @throws \Doctrine\ORM\ORMException
+     */
+    private function setupPostgreSQL()
+    {
+        if ($this->em->getConnection()->getDriver()->getName() === 'pdo_pgsql') {
+            $this->isPostgreSQLConnection = true;
+            $this->em->getConfiguration()->addCustomStringFunction('CAST', '\Sg\DatatablesBundle\DQL\CastFunction');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Cast search field.
+     *
+     * @param string         $searchField
+     * @param AbstractColumn $column
+     *
+     * @return string
+     */
+    private function cast($searchField, AbstractColumn $column)
+    {
+        if ('datetime' === $column->getAlias() || 'boolean' === $column->getAlias()) {
+            return 'CAST(' . $searchField . ' AS text)';
+        }
+
+        return $searchField;
     }
 
     //-------------------------------------------------
@@ -474,8 +517,13 @@ class DatatableQuery
             foreach ($this->columns as $key => $column) {
                 if (true === $this->isSearchColumn($column)) {
                     $searchField = $this->searchColumns[$key];
-                    $orExpr->add($qb->expr()->like($searchField, '?' . $key));
-                    $qb->setParameter($key, '%' . $globalSearch . '%');
+
+                    if (true === $this->isPostgreSQLConnection) {
+                        $searchField = $this->cast($searchField, $column);
+                    }
+
+                    $orExpr->add($qb->expr()->like($qb->expr()->lower($searchField), '?' . $key));
+                    $qb->setParameter($key, strtolower('%' . $globalSearch . '%'));
                 }
             }
 
@@ -539,8 +587,8 @@ class DatatableQuery
     {
         switch ($searchType) {
             case 'like':
-                $andExpr->add($pivot->expr()->like($searchField, '?' . $i));
-                $pivot->setParameter($i, '%' . $searchValue . '%');
+                $andExpr->add($pivot->expr()->like($pivot->expr()->lower($searchField), '?' . $i));
+                $pivot->setParameter($i, strtolower('%' . $searchValue . '%'));
                 break;
             case 'notLike':
                 $andExpr->add($pivot->expr()->notLike($searchField, '?' . $i));
