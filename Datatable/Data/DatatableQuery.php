@@ -250,8 +250,8 @@ class DatatableQuery
      */
     private function cast($searchField, AbstractColumn $column)
     {
-        if ('datetime' === $column->getAlias() || 'boolean' === $column->getAlias()) {
-            return 'CAST(' . $searchField . ' AS text)';
+        if ('datetime' === $column->getAlias() || 'boolean' === $column->getAlias() || 'column' === $column->getAlias()) {
+            return 'CAST('.$searchField.' AS text)';
         }
 
         return $searchField;
@@ -522,8 +522,8 @@ class DatatableQuery
                         $searchField = $this->cast($searchField, $column);
                     }
 
-                    $orExpr->add($qb->expr()->like($qb->expr()->lower($searchField), '?' . $key));
-                    $qb->setParameter($key, strtolower('%' . $globalSearch . '%'));
+                    $orExpr->add($qb->expr()->like($searchField, '?' . $key));
+                    $qb->setParameter($key, '%' . $globalSearch . '%');
                 }
             }
 
@@ -587,8 +587,8 @@ class DatatableQuery
     {
         switch ($searchType) {
             case 'like':
-                $andExpr->add($pivot->expr()->like($pivot->expr()->lower($searchField), '?' . $i));
-                $pivot->setParameter($i, strtolower('%' . $searchValue . '%'));
+                $andExpr->add($pivot->expr()->like($searchField, '?' . $i));
+                $pivot->setParameter($i, '%' . $searchValue . '%');
                 break;
             case 'notLike':
                 $andExpr->add($pivot->expr()->notLike($searchField, '?' . $i));
