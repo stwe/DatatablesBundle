@@ -556,6 +556,10 @@ class DatatableQuery
                             $qb->setParameter($k, $dateEnd->format('Y-m-d H:i:s'));
                             $i += 2;
                         } else {
+                            if (true === $this->isPostgreSQLConnection) {
+                                $searchField = $this->cast($searchField, $column);
+                            }
+
                             $andExpr = $this->addCondition($andExpr, $qb, $searchType, $searchField, $searchValue, $i);
                             $i++;
                         }
