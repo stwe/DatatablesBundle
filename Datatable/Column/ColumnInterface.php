@@ -51,6 +51,13 @@ interface ColumnInterface
     public function getTemplate();
 
     /**
+     * Get helper template.
+     *
+     * @return string
+     */
+    public function getHelperTemplate();
+
+    /**
      * Get alias.
      *
      * @return string
