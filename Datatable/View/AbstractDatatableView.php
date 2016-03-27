@@ -13,6 +13,7 @@ namespace Sg\DatatablesBundle\Datatable\View;
 
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 
+use Exception;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -22,7 +23,6 @@ use Twig_Environment;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\DependencyInjection\Container;
-use Exception;
 
 /**
  * Class AbstractDatatableView
@@ -31,6 +31,8 @@ use Exception;
  */
 abstract class AbstractDatatableView implements DatatableViewInterface
 {
+    const NAME_REGEX = '/[a-zA-Z0-9\-\_]+/';
+
     /**
      * The AuthorizationChecker service.
      *
@@ -169,6 +171,8 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         array $templates
     )
     {
+        $this->assertTheNameOnlyContainsAllowedCharacters();
+
         $this->authorizationChecker = $authorizationChecker;
         $this->securityToken = $securityToken;
         $this->twig = $twig;
@@ -435,5 +439,17 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         }
 
         return $options;
+    }
+
+    /**
+     * Checks the name only contains letters, numbers, underscores or dashes.
+     *
+     * @throws Exception
+     */
+    private function assertTheNameOnlyContainsAllowedCharacters()
+    {
+        if (1 !== preg_match(self::NAME_REGEX, $this->getName())) {
+            throw new Exception('The result of the getName method can only contain letters, numbers, underscore and dashes.');
+        }
     }
 }

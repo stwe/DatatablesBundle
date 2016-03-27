@@ -6,6 +6,7 @@
 4. [Features](#4-features)
 5. [Options](#5-options)
 6. [Ajax](#6-ajax)
+7. [Name](#7-name)
 
 ## 1. Example
 
@@ -150,3 +151,6 @@
 |------  |--------|---------|
 | url    | string | ''      |
 | type   | string | 'GET'   |
+
+## 7. Name
+Since the datatable class should extend the ``AbstractDatatableView`` and this one implements ``DatatableViewInterface``, a ``getName`` method is required. The returned value **must only include letters, numbers, underscores or dashes** as it will be a seed for the id of the generated container of the datatable.
