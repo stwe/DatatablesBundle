@@ -8,12 +8,7 @@
  #}
 routeParameters = new Array();
 attributes = "";
-visibleFlag = true;
 roleFlag = true;
-
-{% for key, value in action.renderIf %}
-    visibleFlag &= Boolean(row.{{ key }} == '{{ value|raw }}');
-{% endfor %}
 
 {% if action.role %}
     roleFlag = false;
@@ -22,39 +17,39 @@ roleFlag = true;
     {% endif %}
 {% endif %}
 
-if (true == visibleFlag && true == roleFlag) {
-    {% for key, value in action.routeParameters %}
-        routeParameters["{{ key }}"] = row.{{ value }};
-    {% endfor %}
+if (row.actions.{{ action.route }} && true == roleFlag) {
+{% for key, value in action.routeParameters %}
+    routeParameters["{{ key }}"] = row.{{ value }};
+{% endfor %}
 
-    var route  = Routing.generate("{{ action.route }}", routeParameters);
+var route  = Routing.generate("{{ action.route }}", routeParameters);
 
-    {% for key, value in action.attributes %}
-        attributes += '{{ key }}="{{ value }}" ';
-    {% endfor %}
+{% for key, value in action.attributes %}
+    attributes += '{{ key }}="{{ value }}" ';
+{% endfor %}
 
-    var url  = "<a ";
-    url += 'href="' + route + '" ';
-    url += attributes;
-    {% if action.confirm %}
-        url += 'onclick="';
-        {% if action.confirmMessage %}
-            url += "return confirm('{{ action.confirmMessage }}')" + '" ';
-        {% else %}
-            url += "return confirm('{{ 'datatables.bulk.confirmMsg'|trans({}, 'messages') }}')" + '" ';
-        {% endif %}
+var url  = "<a ";
+url += 'href="' + route + '" ';
+url += attributes;
+{% if action.confirm %}
+    url += 'onclick="';
+    {% if action.confirmMessage %}
+        url += "return confirm('{{ action.confirmMessage }}')" + '" ';
+    {% else %}
+        url += "return confirm('{{ 'datatables.bulk.confirmMsg'|trans({}, 'messages') }}')" + '" ';
     {% endif %}
-    url += ">";
+{% endif %}
+url += ">";
 
-    {# count - for ArrayColumn #}
+{# count - for ArrayColumn #}
     {% if 'array' == column.alias %}
         if (count !== 'undefined') {
-            url += count + ' ';
+        url += count + ' ';
         }
     {% endif %}
 
-    url += '{{ datatable_icon(action.icon, action.label) }}';
-    url += "</a>";
+url += '{{ datatable_icon(action.icon, action.label) }}';
+url += "</a>";
 
-    actionsString += url;
+actionsString += url;
 }
