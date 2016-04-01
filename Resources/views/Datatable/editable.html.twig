@@ -24,6 +24,7 @@
 
                     return params;
                 },
+                container: 'body',
                 {# many-to-one association needs a complete table redraw #}
                 {% if column.isAssociation %}
                 success: function(response, newValue) {
