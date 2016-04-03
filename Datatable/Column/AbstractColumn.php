@@ -218,6 +218,14 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     /**
      * {@inheritdoc}
      */
+    public function getHelperTemplate()
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isAssociation()
     {
         return (false === strstr($this->data, '.') ? false : true);
@@ -671,15 +679,5 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     public function getTableName()
     {
         return $this->tableName;
-    }
-
-    /**
-     * Get helper template.
-     *
-     * @return string
-     */
-    public function getHelperTemplate()
-    {
-        return null;
     }
 }

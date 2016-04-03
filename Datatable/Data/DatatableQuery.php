@@ -832,10 +832,11 @@ class DatatableQuery
                         $_data = $_data[$part];
                     }
 
-                    $item[implode('_', $columnNames)] = $this->twig->render($column->getHelperTemplate(), [
-                        'data' => $_data,
-                        'column' => $column
-                    ]);
+                    $item[implode('_', $columnNames)] = $this->twig->render($column->getHelperTemplate(), array(
+                            'data' => $_data,
+                            'column' => $column
+                        )
+                    );
                 }
             }
 
