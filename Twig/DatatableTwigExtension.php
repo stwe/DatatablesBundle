@@ -69,7 +69,7 @@ class DatatableTwigExtension extends Twig_Extension
             new Twig_SimpleFunction('datatable_render_html', array($this, 'datatableRenderHtml'), array('is_safe' => array('all'))),
             new Twig_SimpleFunction('datatable_render_js', array($this, 'datatableRenderJs'), array('is_safe' => array('all'))),
             new Twig_SimpleFunction('datatable_filter_render', array($this, 'datatableFilterRender'), array('is_safe' => array('all'), 'needs_environment' => true)),
-            new Twig_SimpleFunction('datatable_icon', array($this, 'datatableIcon'), array('is_safe' => array('all')))
+            new Twig_SimpleFunction('datatable_icon', array($this, 'datatableIcon'), array('is_safe' => array('all'), 'needs_environment' => true))
         );
     }
 
@@ -179,17 +179,18 @@ class DatatableTwigExtension extends Twig_Extension
     }
 
     /**
-     * Renders icon and label.
+     * Renders icon && label.
      *
-     * @param string $icon
-     * @param string $label
+     * @param Twig_Environment $twig
+     * @param string           $icon
+     * @param string           $label
      *
      * @return string
      */
-    public function datatableIcon($icon, $label = '')
+    public function datatableIcon(Twig_Environment $twig, $icon, $label = '')
     {
         if ($icon)
-            return sprintf('<i class="%s"></i> %s', $icon, $label);
+            return $twig->render('SgDatatablesBundle:Action:icon.html.twig', array('icon' => $icon, 'label' => $label));
         else
             return $label;
     }
