@@ -196,7 +196,15 @@ class DatatableQuery
         $this->entity = $this->datatableView->getEntity();
         $this->em = $this->datatableView->getEntityManager();
         $this->metadata = $this->getMetadata($this->entity);
-        $this->tableName = $this->getTableName($this->metadata);
+        
+        $keyName=$this->getTableName($metadata);
+        if(strpos($keyName, ".")){
+            $tableName = substr($keyName, strpos($keyName, ".") + 1);
+            $this->tableName = $tableName;
+        }else{
+            $this->tableName =$keyName;
+        }
+        
         $this->rootEntityIdentifier = $this->getIdentifier($this->metadata);
         $this->qb = $this->em->createQueryBuilder();
 
@@ -475,7 +483,14 @@ class DatatableQuery
     private function setSelectFrom()
     {
         foreach ($this->selectColumns as $key => $value) {
-            $this->qb->addSelect('partial ' . $key . '.{' . implode(',', $this->selectColumns[$key]) . '}');
+            //$this->qb->addSelect('partial ' . $key . '.{' . implode(',', $this->selectColumns[$key]) . '}');
+            if(strpos($key, ".")){
+                $tableName = substr($key, strpos($key, ".") + 1);
+            }else{
+                $tableName=$key;
+            }
+            
+            $this->qb->addSelect('partial ' . $tableName . '.{' . implode(',', $this->selectColumns[$key]) . '}');
         }
 
         $this->qb->from($this->entity, $this->tableName);
@@ -769,7 +784,7 @@ class DatatableQuery
     // Response
     //-------------------------------------------------
 
-    public function getResponse($buildQuery = true)
+    public function getResponse($buildQuery = true, $responseType='json')
     {
         false === $buildQuery ? : $this->buildQuery();
 
@@ -849,9 +864,18 @@ class DatatableQuery
             'recordsFiltered' => (int) $this->getCountFilteredResults($this->rootEntityIdentifier)
         );
 
-        $json = $this->serializer->serialize(array_merge($outputHeader, $output), 'json');
-        $response = new Response($json);
-        $response->headers->set('Content-Type', 'application/json');
+        switch ($responseType) {
+            case 'array':
+                $response = array_merge($outputHeader, $output);
+                break;
+            
+            case 'json':
+            default:
+                $json = $this->serializer->serialize(array_merge($outputHeader, $output), 'json');
+                $response = new Response($json);
+                $response->headers->set('Content-Type', 'application/json');
+                break;
+        }
 
         return $response;
     }
