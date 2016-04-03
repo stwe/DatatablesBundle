@@ -11,7 +11,7 @@
 9. [Image Column](#9-image-column)
 10. [Gallery Column](#10-gallery-column)
 11. [ProgressBar Column](#11-progress-bar-column)
-12. [Make your own](#12-make-your-own-column)
+12. [Make your own](#12-make-your-own)
 
 ## 1. Column
 
