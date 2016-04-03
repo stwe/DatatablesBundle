@@ -769,6 +769,14 @@ class DatatableQuery
     // Response
     //-------------------------------------------------
 
+    /**
+     * Get response.
+     *
+     * @param bool $buildQuery
+     *
+     * @return Response
+     * @throws Exception
+     */
     public function getResponse($buildQuery = true)
     {
         false === $buildQuery ? : $this->buildQuery();
@@ -854,6 +862,23 @@ class DatatableQuery
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
+    }
+
+    /**
+     * Simple function to get results for export to PHPExcel.
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function getDataForExport()
+    {
+        $this->setSelectFrom();
+        $this->setLeftJoins($this->qb);
+        $this->setWhereResultCallback($this->qb);
+        $this->setWhereAllCallback($this->qb);
+        $this->setOrderBy();
+
+        return $this->execute()->getArrayResult();
     }
 
     //-------------------------------------------------
