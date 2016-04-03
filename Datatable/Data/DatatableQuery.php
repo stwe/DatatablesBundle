@@ -18,7 +18,6 @@ use Sg\DatatablesBundle\Datatable\Column\ImageColumn;
 use Sg\DatatablesBundle\Datatable\Column\GalleryColumn;
 
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 use Doctrine\ORM\Mapping\ClassMetadata;
