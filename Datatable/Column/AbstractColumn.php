@@ -672,4 +672,14 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     {
         return $this->tableName;
     }
+
+    /**
+     * Get helper template.
+     *
+     * @return string
+     */
+    public function getHelperTemplate()
+    {
+        return null;
+    }
 }

@@ -11,12 +11,14 @@
 
 namespace Sg\DatatablesBundle\Datatable\Data;
 
+use Sg\DatatablesBundle\Datatable\Column\Column;
 use Sg\DatatablesBundle\Datatable\View\DatatableViewInterface;
 use Sg\DatatablesBundle\Datatable\Column\AbstractColumn;
 use Sg\DatatablesBundle\Datatable\Column\ImageColumn;
 use Sg\DatatablesBundle\Datatable\Column\GalleryColumn;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -782,7 +784,7 @@ class DatatableQuery
                 $item = call_user_func($callable, $item);
             }
 
-            // Images
+            // Handle custom / helper templates
             foreach ($this->columns as $column) {
                 $data = $column->getDql();
 
@@ -821,6 +823,19 @@ class DatatableQuery
                     } else {
                         throw new InvalidArgumentException('getResponse(): Bundle "LiipImagineBundle" does not exist or it is not enabled.');
                     }
+                }
+
+                /** @var Column $column */
+                if (null !== $column->getHelperTemplate()) {
+                    $_data = $item;
+                    foreach($columnNames = explode('.', $data) as $part) {
+                        $_data = $_data[$part];
+                    }
+
+                    $item[implode('_', $columnNames)] = $this->twig->render($column->getHelperTemplate(), [
+                        'data' => $_data,
+                        'column' => $column
+                    ]);
                 }
             }
 
