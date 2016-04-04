@@ -335,7 +335,7 @@ SgDatatablesBundle:Column:action.html.twig
 | confirm_message  | string      | 'datatables.bulk.confirmMsg' |          |
 | attributes       | array       | array()                      |          |
 | role             | string      | ''                           |          |
-| render_if        | array       | array()                      |          |
+| render_if        | array/Closure       | array()              |          |
 
 ### Example
 
@@ -385,6 +385,36 @@ $this->columnBuilder
                     // ...
                 )
             )
+        )
+    ))
+;
+```
+### Render if closure example
+
+``` php
+$this->columnBuilder
+    ->add('title', 'column', array(
+        'title' => 'title',
+        'searchable' => false,
+        'orderable' => false,
+        'default' => 'default title value'
+        )
+    )
+    ->add(null, 'action', array(
+        'actions' => array( // required option
+            array(
+                'route' => 'post_edit',
+                'route_parameters' => array(
+                    'id' => 'id'
+                ),
+                'render_if' => function($rowEntity) {
+                    /**
+                    * Return a boolean variable or boolean condition
+                    * $rowEntity['columnName'] 
+                    */
+                    return ($rowEntity['title'] === 'Title 1');
+                },
+            ),
         )
     ))
 ;
