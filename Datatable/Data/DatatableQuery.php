@@ -16,6 +16,7 @@ use Sg\DatatablesBundle\Datatable\View\DatatableViewInterface;
 use Sg\DatatablesBundle\Datatable\Column\AbstractColumn;
 use Sg\DatatablesBundle\Datatable\Column\ImageColumn;
 use Sg\DatatablesBundle\Datatable\Column\GalleryColumn;
+use Sg\DatatablesBundle\Datatable\Column\ActionColumn;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Serializer;
@@ -830,6 +831,11 @@ class DatatableQuery
                     } else {
                         throw new InvalidArgumentException('getResponse(): Bundle "LiipImagineBundle" does not exist or it is not enabled.');
                     }
+                }
+
+                /** @var ActionColumn $column */
+                if ('action' === $column->getAlias()) {
+                    $column->checkVisibility($item);
                 }
 
                 /** @var Column $column */

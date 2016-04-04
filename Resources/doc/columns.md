@@ -104,17 +104,17 @@ SgDatatablesBundle:Column:array.html.twig
 
 ### Count Action options
 
-| Option           | Type        | Default                      |          |
-|------------------|-------------|------------------------------|----------|
-| route            | string      |                              | required |
-| route_parameters | array       | array()                      |          |
-| icon             | string      | ''                           |          |
-| label            | string      | ''                           |          |
-| confirm          | boolean     | false                        |          |
-| confirm_message  | string      | 'datatables.bulk.confirmMsg' |          |
-| attributes       | array       | array()                      |          |
-| role             | string      | ''                           |          |
-| render_if        | array       | array()                      |          |
+| Option           | Type             | Default                      |          |
+|------------------|------------------|------------------------------|----------|
+| route            | string           |                              | required |
+| route_parameters | array            | array()                      |          |
+| icon             | string           | ''                           |          |
+| label            | string           | ''                           |          |
+| confirm          | boolean          | false                        |          |
+| confirm_message  | string           | 'datatables.bulk.confirmMsg' |          |
+| attributes       | array            | array()                      |          |
+| role             | string           | ''                           |          |
+| render_if        | Closure or array | array()                      |          |
 
 ### Example
 
@@ -326,17 +326,17 @@ SgDatatablesBundle:Column:action.html.twig
 
 ### Action options
 
-| Option           | Type        | Default                      |          |
-|------------------|-------------|------------------------------|----------|
-| route            | string      |                              | required |
-| route_parameters | array       | array()                      |          |
-| icon             | string      | ''                           |          |
-| label            | string      | ''                           |          |
-| confirm          | boolean     | false                        |          |
-| confirm_message  | string      | 'datatables.bulk.confirmMsg' |          |
-| attributes       | array       | array()                      |          |
-| role             | string      | ''                           |          |
-| render_if        | array       | array()                      |          |
+| Option           | Type             | Default                      |          |
+|------------------|------------------|------------------------------|----------|
+| route            | string           |                              | required |
+| route_parameters | array            | array()                      |          |
+| icon             | string           | ''                           |          |
+| label            | string           | ''                           |          |
+| confirm          | boolean          | false                        |          |
+| confirm_message  | string           | 'datatables.bulk.confirmMsg' |          |
+| attributes       | array            | array()                      |          |
+| role             | string           | ''                           |          |
+| render_if        | Closure or array | array()                      |          |
 
 ### Example
 
@@ -362,9 +362,13 @@ $this->columnBuilder
                 'confirm' => true,
                 'confirm_message' => 'Are you sure?',
                 'role' => 'ROLE_ADMIN',
-                'render_if' => array(
-                    'enabled'
-                )
+                'render_if' => function($rowEntity) {
+                    /**
+                     * Return a boolean variable or boolean condition
+                     * $rowEntity['columnName'] 
+                     */
+                    return ($rowEntity['title'] === 'Title 1');
+                },
             ),
             array(
                 'route' => 'post_show',
