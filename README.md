@@ -24,7 +24,7 @@ Nothing since Version 0.10.
 
 [Installation](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/installation.md)
 
-[Column types](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/columns.md)
+[Column types](https://github.com/Genedys/DatatablesBundle/blob/master/Resources/doc/columns.md)
 
 [In-place editing](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/editable.md)
 

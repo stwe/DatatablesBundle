@@ -810,6 +810,11 @@ class DatatableQuery
                     }
                 }
 
+                /** ActionColumn $column */
+                if ('action' === $column->getAlias()) {
+                    $column->checkVisibility($item);
+                }
+
                 /** @var GalleryColumn $column */
                 if ('gallery' === $column->getAlias()) {
                     $fields = explode('.', $data);
