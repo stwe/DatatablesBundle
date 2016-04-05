@@ -394,6 +394,29 @@ $this->columnBuilder
     ))
 ;
 ```
+
+### Render_if
+
+The render_if option can be used with a Closure or array.
+
+```php
+'render_if' => array(
+    'id' => 1,
+    'username' => 'admin',
+    'enabled' => false,
+    // ...
+)
+```
+
+```php
+'render_if' => function($rowEntity) {
+    /**
+     * Return a boolean variable or boolean condition
+     * $rowEntity['columnName'] 
+     */
+    return ($rowEntity['title'] === 'Title 1');
+},
+```
 ___
 
 ## 8. Multiselect column
