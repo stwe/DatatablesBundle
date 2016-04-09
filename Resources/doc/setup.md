@@ -33,9 +33,7 @@
         ));
     
         $this->callbacks->set(array(
-            'draw_callback' => "function( settings ) {
-                                    alert( 'DataTables has redrawn the table.' );
-                                }"
+            'init_complete' => ':callbacks:test.js.twig'
         ));
 
         $this->features->set(array(
@@ -100,6 +98,24 @@
 | state_load_params   | string | ''      |
 | state_save_callback | string | ''      |
 | state_save_params   | string | ''      |
+
+**Example**
+
+```php
+// Datatable class
+
+$this->callbacks->set(array(
+    'init_complete' => ':callbacks:test.js.twig'
+));
+```
+
+```js
+// test.js.twig
+
+function initComplete(settings) {
+    alert('DataTables has redrawn the table.');
+}
+```
 
 ## 4. Features
 
