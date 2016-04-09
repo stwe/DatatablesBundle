@@ -6,9 +6,11 @@
 
 [![Latest Stable Version](https://poser.pugx.org/sg/datatablesbundle/v/stable)](https://packagist.org/packages/sg/datatablesbundle) [![Total Downloads](https://poser.pugx.org/sg/datatablesbundle/downloads)](https://packagist.org/packages/sg/datatablesbundle) [![Latest Unstable Version](https://poser.pugx.org/sg/datatablesbundle/v/unstable)](https://packagist.org/packages/sg/datatablesbundle) [![License](https://poser.pugx.org/sg/datatablesbundle/license)](https://packagist.org/packages/sg/datatablesbundle)
 
-## 1. Recent Changes
+## 1. Recent Important Changes
 
-Nothing since Version 0.10.
+- start for PostgreSql support
+- Datatable Events supported
+- some new translations
 
 ## 2. Screenshots
 
@@ -70,7 +72,7 @@ At the moment I can not say whether the ClientSide mode is supported by me in th
 - This bundle does not support multiple Ids
 - 4th level associations are currently not supported
 - Searching and filtering on a virtual column not yet implemented and disabled by default
-- PostgreSql is not supported
+- PostgreSql is currently not fully supported
 
 ## 7. Reporting an issue or a feature request
 
