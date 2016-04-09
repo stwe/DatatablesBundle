@@ -3,10 +3,11 @@
 1. [Example](#1-example)
 2. [Top actions](#2-top-actions)
 3. [Callbacks](#3-callbacks)
-4. [Features](#4-features)
-5. [Options](#5-options)
-6. [Ajax](#6-ajax)
-7. [Name](#7-name)
+4. [Events](#4-events)
+5. [Features](#5-features)
+6. [Options](#6-options)
+7. [Ajax](#7-ajax)
+8. [Name](#8-name)
 
 ## 1. Example
 
@@ -117,7 +118,48 @@ function initComplete(settings) {
 }
 ```
 
-## 4. Features
+## 4. Events
+
+| Event             | Type   | Default |
+|-------------------|--------|---------|
+| column_sizing     | string | ''      |
+| column_visibility | string | ''      |
+| destroy           | string | ''      |
+| draw              | string | ''      |
+| error             | string | ''      |
+| init              | string | ''      |
+| length            | string | ''      |
+| order             | string | ''      |
+| page              | string | ''      |
+| pre_init          | string | ''      |
+| pre_xhr           | string | ''      |
+| processing        | string | ''      |
+| search            | string | ''      |
+| state_loaded      | string | ''      |
+| state_load_params | string | ''      |
+| state_save_params | string | ''      |
+| xhr               | string | ''      |
+
+**Example**
+
+```php
+// Datatable class
+
+$this->events->set(array(
+    'order' => ':events:order.js.twig',
+    'column_sizing' => ':events:sizing.js.twig'
+));
+```
+
+```js
+// sizing.js.twig
+
+function columnSizing(e, settings) {
+    console.info('Column width recalculated in table.');
+}
+```
+
+## 5. Features
 
 | Feature       | Type   | Default |
 |---------------|--------|---------|
@@ -137,7 +179,7 @@ function initComplete(settings) {
 | delay         | int    | 0       |
 | extensions    | array  | array() |
 
-## 5. Options
+## 6. Options
 
 | Option                        | Type   | Default                        |
 |-------------------------------|--------|--------------------------------|
@@ -161,12 +203,12 @@ function initComplete(settings) {
 | use_integration_options       | bool   | false                          |
 | force_dom                     | bool   | false                          |
 
-## 6. Ajax
+## 7. Ajax
 
 | Option | Type   | Default |
 |------  |--------|---------|
 | url    | string | ''      |
 | type   | string | 'GET'   |
 
-## 7. Name
+## 8. Name
 Since the datatable class should extend the ``AbstractDatatableView`` and this one implements ``DatatableViewInterface``, a ``getName`` method is required. The returned value **must only include letters, numbers, underscores or dashes** as it will be a seed for the id of the generated container of the datatable.

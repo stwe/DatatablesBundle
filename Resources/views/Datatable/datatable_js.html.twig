@@ -65,9 +65,12 @@
                         )
                     {% endif %}
                 {% endif %}
-                .DataTable(defaults).on('draw.dt', function() {
+                {% include "SgDatatablesBundle:Datatable:before_events.js.twig" %}
+                .DataTable(defaults)
+                        .on('draw.dt', function() {
                             {% include "SgDatatablesBundle:Datatable:editable.html.twig" %}
-                        });
+                        })
+                        {% include "SgDatatablesBundle:Datatable:after_events.js.twig" %}
             }
 
             {% if view_options.individualFiltering %}

@@ -1,0 +1,15 @@
+{% if (view_events.processing) %}
+.on('processing.dt', {% include view_events.processing %})
+{% endif %}
+{% if (view_events.error) %}
+.on('error.dt', {% include view_events.error %})
+{% endif %}
+{% if (view_events.preInit) %}
+.on('preInit.dt', {% include view_events.preInit %})
+{% endif %}
+{% if (view_events.preXhr) %}
+.on('preXhr.dt', {% include view_events.preXhr %})
+{% endif %}
+{% if (view_events.xhr) %}
+.on('xhr.dt', {% include view_events.xhr %})
+{% endif %}
