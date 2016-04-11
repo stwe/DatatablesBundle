@@ -8,7 +8,7 @@
 
 ## Help wanted
 
-To all russian and polish speaking contributors. Please help me to update the translation file. Thanks a lot!
+To all russian and polish speaking contributors. Please help me to update the translation files. Thanks a lot!
 
 ## Recent Important Changes
 
@@ -45,6 +45,10 @@ To all russian and polish speaking contributors. Please help me to update the tr
                     'search_type' => 'eq',
                     'select_options' => array('' => 'All') + $this->getCollectionAsOptionsArray($users, 'username', 'username'),
                 ))
+            ))
+            ->add('createdAt', 'datetime', array(
+                'title' => 'Created',
+                'filter' => array('daterange', array()),
             ))
         ;
     }

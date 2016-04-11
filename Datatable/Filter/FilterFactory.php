@@ -44,6 +44,9 @@ class FilterFactory
             case 'select':
                 return new SelectFilter();
                 break;
+            case 'daterange':
+                return new DateRangeFilter();
+                break;
             default:
                 throw new InvalidArgumentException('createFilterByType(): The filter-type is not supported.');
         }

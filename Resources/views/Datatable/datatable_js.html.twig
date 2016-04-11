@@ -83,31 +83,6 @@
                     $(selector + '_wrapper tfoot tr').clone().insertAfter($(selector + '_wrapper thead tr').first());
                 {% endif %}
 
-                try {
-                    var daterange = $(selector + '_wrapper' + ' input[name="daterange"]');
-                    moment.locale("{{ app.request.locale }}");
-                    $(daterange).daterangepicker({
-                        autoUpdateInput: false,
-                        locale: {
-                            format: "{{ 'daterange.format'|trans({}, 'messages') }}",
-                            applyLabel: "{{ 'daterange.apply'|trans({}, 'messages') }}",
-                            cancelLabel: "{{ 'daterange.cancel'|trans({}, 'messages') }}",
-                            daysOfWeek: moment.weekdaysMin(),
-                            monthNames: moment.monthsShort(),
-                            firstDay: moment.localeData().firstDayOfWeek()
-                        }
-                    }).on('cancel.daterangepicker', function(ev, picker) {
-                        $(this).val('');
-                        $(this).change();
-                    })
-                    .on('apply.daterangepicker', function(ev, picker) {
-                        $(this).val(picker.startDate.format("{{ 'daterange.format'|trans({}, 'messages') }}") + ' - ' + picker.endDate.format("{{ 'daterange.format'|trans({}, 'messages') }}"));
-                        $(this).change();
-                    });
-                } catch (e) {
-                    console.log(e.message);
-                }
-
                 {# "foot" position -> datatable_html.html.twig #}
 
                 var throttledSearch = $.fn.DataTable.util.throttle(

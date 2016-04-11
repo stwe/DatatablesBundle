@@ -541,10 +541,9 @@ class DatatableQuery
             foreach ($this->columns as $key => $column) {
 
                 if (true === $this->isSearchColumn($column)) {
-                    $searchType = $column->getFilter()->getSearchType();
                     $searchField = $this->searchColumns[$key];
                     $searchValue = $this->requestParams['columns'][$key]['search']['value'];
-                    $searchRange = $this->requestParams['columns'][$key]['name'] === 'daterange';
+                    $searchRange = 'daterange' === $column->getFilter()->getAlias();
                     if ('' != $searchValue && 'null' != $searchValue) {
                         if ($searchRange) {
                             list($_dateStart, $_dateEnd) = explode(' - ', $searchValue);
@@ -562,6 +561,7 @@ class DatatableQuery
                                 $searchField = $this->cast($searchField, $column);
                             }
 
+                            $searchType = $column->getFilter()->getSearchType();
                             $andExpr = $this->addCondition($andExpr, $qb, $searchType, $searchField, $searchValue, $i);
                             $i++;
                         }

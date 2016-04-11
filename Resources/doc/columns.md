@@ -244,7 +244,8 @@ SgDatatablesBundle:Column:datetime.html.twig
 $this->columnBuilder
     ->add('createdAt', 'datetime', array(
         'title' => 'Created',
-        'date_format' => 'LLL' // default = "lll"
+        'date_format' => 'LLL', // default = "lll"
+        'filter' => array('daterange', array()),
     ))
 ;
 ```
