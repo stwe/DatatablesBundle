@@ -21,13 +21,6 @@ use Exception;
 class ColumnBuilder implements ColumnBuilderInterface
 {
     /**
-     * A ColumnFactoryInterface.
-     *
-     * @var ColumnFactory
-     */
-    private $columnFactory;
-
-    /**
      * All columns.
      *
      * @var array
@@ -66,7 +59,6 @@ class ColumnBuilder implements ColumnBuilderInterface
      */
     public function __construct($tableName)
     {
-        $this->columnFactory = new ColumnFactory();
         $this->columns = array();
         $this->multiselectColumn = null;
         $this->multiselect = false;
@@ -80,12 +72,12 @@ class ColumnBuilder implements ColumnBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function add($data, $name, array $options = array())
+    public function add($data, $alias, array $options = array())
     {
         /**
          * @var AbstractColumn $column
          */
-        $column = $this->columnFactory->createColumnByName($name);
+        $column = ColumnFactory::createColumnByAlias($alias);
         $column->setTableName($this->tableName);
         $column->setData($data);
         $column->setDql($data);

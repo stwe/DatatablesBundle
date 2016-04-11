@@ -22,12 +22,12 @@ interface ColumnBuilderInterface
      * Add a ColumnInterface.
      *
      * @param null|string            $data    The data source for the column
-     * @param string|ColumnInterface $name    Column class alias or instance of ColumnInterface
+     * @param string|ColumnInterface $alias   Column class alias or instance of ColumnInterface
      * @param array                  $options The column options
      *
      * @return $this
      */
-    public function add($data, $name, array $options = array());
+    public function add($data, $alias, array $options = array());
 
     /**
      * Remove column by key.
