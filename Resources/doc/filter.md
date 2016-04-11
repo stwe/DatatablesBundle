@@ -45,17 +45,19 @@ class PostDatatable extends AbstractDatatableView
         $users = $this->em->getRepository('AppBundle:User')->findAll();
 
         $this->columnBuilder
-            ->add('visible', 'column', array(
+            ->add('visible', 'boolean', array(
                 'title' => 'Visible',
-                'filter_type' => 'select',
-                'filter_options' => array('' => 'Any', '0' => 'No', '1' => 'Yes'),
-                'filter_property' => 'visible',
+                'filter' => array('select', array(
+                    'search_type' => 'eq',
+                    'select_options' => array('' => 'Any', '1' => 'Yes', '0' => 'No')
+                )),
             ))
             ->add('createdby.username', 'column', array(
                 'title' => 'Createdby',
-                'filter_type' => 'select', // Render the search input as a dropdown.
-                'filter_options' => array('' => 'All') + $this->getCollectionAsOptionsArray($users, 'username', 'username'), // Dropdown options list. This method should return all options as array [username => username].
-                'filter_property' => 'createdby.username', // You can set up another property, different with the current column, to search on.
+                'filter' => array('select', array(
+                    'search_type' => 'eq',
+                    'select_options' => array('' => 'All') + $this->getCollectionAsOptionsArray($users, 'username', 'username'),
+                ))                
             ))
         ;
     }

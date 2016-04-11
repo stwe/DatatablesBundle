@@ -541,7 +541,7 @@ class DatatableQuery
             foreach ($this->columns as $key => $column) {
 
                 if (true === $this->isSearchColumn($column)) {
-                    $searchType = $column->getSearchType();
+                    $searchType = $column->getFilter()->getSearchType();
                     $searchField = $this->searchColumns[$key];
                     $searchValue = $this->requestParams['columns'][$key]['search']['value'];
                     $searchRange = $this->requestParams['columns'][$key]['name'] === 'daterange';

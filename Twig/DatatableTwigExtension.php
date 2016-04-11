@@ -141,15 +141,17 @@ class DatatableTwigExtension extends Twig_Extension
      */
     public function datatableFilterRender(Twig_Environment $twig, AbstractDatatableView $datatable, AbstractColumn $column, $loopIndex)
     {
-        $filterType = $column->getFilterType() ?: 'text';
-
-        if ($filterProperty = $column->getFilterProperty()) {
+        if ($filterProperty = $column->getFilter()->getProperty()) {
             $filterColumnId = $datatable->getColumnIdByColumnName($filterProperty);
         } else {
             $filterColumnId = $loopIndex;
         }
 
-        return $twig->render('SgDatatablesBundle:Filters:filter_' . $filterType . '.html.twig', array('column' => $column, 'filterColumnId' => $filterColumnId));
+        return $twig->render($column->getFilter()->getTemplate(), array(
+            'column' => $column,
+            'filterColumnId' => $filterColumnId
+            )
+        );
     }
 
     /**

@@ -23,25 +23,21 @@ SgDatatablesBundle:Column:column.html.twig
 
 ### Options
 
-| Option               | Type           | Default |
-|----------------------|----------------|---------|
-| class                | string         | ''      |
-| padding              | string         | ''      |
-| name                 | string         | ''      |
-| orderable            | boolean        | true    |
-| render               | null or string | null    |
-| searchable           | boolean        | true    |
-| title                | string         | ''      |
-| type                 | string         | ''      |
-| visible              | boolean        | true    |
-| width                | string         | ''      |
-| search_type          | string         | 'like'  |
-| filter_type          | string         | 'text'  |
-| filter_options       | array          | array() |
-| filter_property      | string         | ''      |
-| filter_search_column | string         | ''      |
-| default              | string         | ''      |
-| editable             | boolean        | false   |
+| Option               | Type           | Default                |
+|----------------------|----------------|------------------------|
+| class                | string         | ''                     |
+| padding              | string         | ''                     |
+| name                 | string         | ''                     |
+| orderable            | boolean        | true                   |
+| render               | null or string | null                   |
+| searchable           | boolean        | true                   |
+| title                | string         | ''                     |
+| type                 | string         | ''                     |
+| visible              | boolean        | true                   |
+| width                | string         | ''                     |
+| filter               | array          | array('text', array()) |
+| default              | string         | ''                     |
+| editable             | boolean        | false                  |
 
 ### Example
 
@@ -80,27 +76,23 @@ SgDatatablesBundle:Column:array.html.twig
 
 ### Options
 
-| Option               | Type           | Default |          |
-|----------------------|----------------|---------|----------|
-| class                | string         | ''      |          |
-| padding              | string         | ''      |          |
-| name                 | string         | ''      |          |
-| orderable            | boolean        | true    |          |
-| render               | null or string | null    |          |
-| searchable           | boolean        | true    |          |
-| title                | string         | ''      |          |
-| type                 | string         | ''      |          |
-| visible              | boolean        | true    |          |
-| width                | string         | ''      |          |
-| search_type          | string         | 'like'  |          |
-| filter_type          | string         | 'text'  |          |
-| filter_options       | array          | array() |          |
-| filter_property      | string         | ''      |          |
-| filter_search_column | string         | ''      |          |
-| default              | string         | ''      |          |
-| data                 | string         |         | required |
-| count                | boolean        | false   |          |
-| count_action         | array          | array() |          |
+| Option               | Type           | Default                |          |
+|----------------------|----------------|------------------------|----------|
+| class                | string         | ''                     |          |
+| padding              | string         | ''                     |          |
+| name                 | string         | ''                     |          |
+| orderable            | boolean        | true                   |          |
+| render               | null or string | null                   |          |
+| searchable           | boolean        | true                   |          |
+| title                | string         | ''                     |          |
+| type                 | string         | ''                     |          |
+| visible              | boolean        | true                   |          |
+| width                | string         | ''                     |          |
+| filter               | array          | array('text', array()) |          |
+| default              | string         | ''                     |          |
+| data                 | string         |                        | required |
+| count                | boolean        | false                  |          |
+| count_action         | array          | array()                |          |
 
 ### Count Action options
 
@@ -182,28 +174,24 @@ SgDatatablesBundle:Column:boolean.html.twig
 
 ### Options
 
-| Option               | Type           | Default                                      |
-|----------------------|----------------|----------------------------------------------|
-| class                | string         | ''                                           |
-| padding              | string         | ''                                           |
-| name                 | string         | ''                                           |
-| orderable            | boolean        | true                                         |
-| render               | null or string | render_boolean                               |
-| searchable           | boolean        | true                                         |
-| title                | string         | ''                                           |
-| type                 | string         | ''                                           |
-| visible              | boolean        | true                                         |
-| width                | string         | ''                                           |
-| true_icon            | string         | ''                                           |
-| false_icon           | string         | ''                                           |
-| true_label           | string         | ''                                           |
-| false_label          | string         | ''                                           |
-| search_type          | string         | 'eq'                                         |
-| filter_type          | string         | 'select'                                     |
-| filter_options       | array          | array('' => 'Any', '1' => 'Yes', '0' => 'No')|
-| filter_property      | string         | ''                                           |
-| filter_search_column | string         | ''                                           |
-| editable             | boolean        | false                                        |
+| Option               | Type           | Default               |
+|----------------------|----------------|-----------------------|
+| class                | string         | ''                    |
+| padding              | string         | ''                    |
+| name                 | string         | ''                    |
+| orderable            | boolean        | true                  |
+| render               | null or string | render_boolean        |
+| searchable           | boolean        | true                  |
+| title                | string         | ''                    |
+| type                 | string         | ''                    |
+| visible              | boolean        | true                  |
+| width                | string         | ''                    |
+| true_icon            | string         | ''                    |
+| false_icon           | string         | ''                    |
+| true_label           | string         | ''                    |
+| false_label          | string         | ''                    |
+| filter               | array          | see the below example |
+| editable             | boolean        | false                 |
 
 ### Example
 
@@ -214,7 +202,11 @@ $this->columnBuilder
         'true_icon' => 'glyphicon glyphicon-ok',
         'false_icon' => 'glyphicon glyphicon-remove',
         'true_label' => 'yes',
-        'false_label' => 'no'
+        'false_label' => 'no',
+        'filter' => array('select', array(
+            'search_type' => 'eq',
+            'select_options' => array('' => 'Any', '1' => 'Yes', '0' => 'No')
+        )),
     ))
 ;
 ```
@@ -230,25 +222,21 @@ SgDatatablesBundle:Column:datetime.html.twig
 
 ### Options
 
-| Option               | Type           | Default         |
-|----------------------|----------------|-----------------|
-| class                | string         | ''              |
-| padding              | string         | ''              |
-| name                 | string         | ''              |
-| orderable            | boolean        | true            |
-| render               | null or string | render_datetime |
-| searchable           | boolean        | true            |
-| title                | string         | ''              |
-| type                 | string         | ''              |
-| visible              | boolean        | true            |
-| width                | string         | ''              |
-| search_type          | string         | 'like'          |
-| filter_type          | string         | 'text'          |
-| filter_options       | array          | array()         |
-| filter_property      | string         | ''              |
-| filter_search_column | string         | ''              |
-| date_format          | string         | 'lll'           |
-| editable             | boolean        | false           |
+| Option               | Type           | Default                |
+|----------------------|----------------|------------------------|
+| class                | string         | ''                     |
+| padding              | string         | ''                     |
+| name                 | string         | ''                     |
+| orderable            | boolean        | true                   |
+| render               | null or string | render_datetime        |
+| searchable           | boolean        | true                   |
+| title                | string         | ''                     |
+| type                 | string         | ''                     |
+| visible              | boolean        | true                   |
+| width                | string         | ''                     |
+| filter               | array          | array('text', array()) |
+| date_format          | string         | 'lll'                  |
+| editable             | boolean        | false                  |
 
 ### Example
 
@@ -272,23 +260,19 @@ SgDatatablesBundle:Column:timeago.html.twig
 
 ### Options
 
-| Option               | Type           | Default        |
-|----------------------|----------------|----------------|
-| class                | string         | ''             |
-| padding              | string         | ''             |
-| name                 | string         | ''             |
-| orderable            | boolean        | true           |
-| render               | null or string | render_timeago |
-| searchable           | boolean        | true           |
-| title                | string         | ''             |
-| type                 | string         | ''             |
-| visible              | boolean        | true           |
-| width                | string         | ''             |
-| search_type          | string         | 'like'         |
-| filter_type          | string         | 'text'         |
-| filter_options       | array          | array()        |
-| filter_property      | string         | ''             |
-| filter_search_column | string         | ''             |
+| Option               | Type           | Default                |
+|----------------------|----------------|------------------------|
+| class                | string         | ''                     |
+| padding              | string         | ''                     |
+| name                 | string         | ''                     |
+| orderable            | boolean        | true                   |
+| render               | null or string | render_timeago         |
+| searchable           | boolean        | true                   |
+| title                | string         | ''                     |
+| type                 | string         | ''                     |
+| visible              | boolean        | true                   |
+| width                | string         | ''                     |
+| filter               | array          | array('text', array()) |
 
 ### Example
 
@@ -574,28 +558,24 @@ SgDatatablesBundle:Column:image.html.twig
 
 ### Options
 
-| Option               | Type           | Default |          |
-|----------------------|----------------|---------|----------|
-| class                | string         | ''      |          |
-| padding              | string         | ''      |          |
-| name                 | string         | ''      |          |
-| orderable            | boolean        | false   |          |
-| searchable           | boolean        | false   |          |
-| title                | string         | ''      |          |
-| type                 | string         | ''      |          |
-| visible              | boolean        | true    |          |
-| width                | string         | ''      |          |
-| search_type          | string         | 'like'  |          |
-| filter_type          | string         | 'text'  |          |
-| filter_options       | array          | array() |          |
-| filter_property      | string         | ''      |          |
-| filter_search_column | string         | ''      |          |
-| imagine_filter       | string         | ''      |          |
-| relative_path        | string         |         | required |
-| holder_url           | string         | ''      |          |
-| holder_width         | string         | '50'    |          |
-| holder_height        | string         | '50'    |          |
-| enlarge              | boolean        | false   |          |
+| Option               | Type           | Default                |          |
+|----------------------|----------------|------------------------|----------|
+| class                | string         | ''                     |          |
+| padding              | string         | ''                     |          |
+| name                 | string         | ''                     |          |
+| orderable            | boolean        | false                  |          |
+| searchable           | boolean        | false                  |          |
+| title                | string         | ''                     |          |
+| type                 | string         | ''                     |          |
+| visible              | boolean        | true                   |          |
+| width                | string         | ''                     |          |
+| filter               | array          | array('text', array()) |          |
+| imagine_filter       | string         | ''                     |          |
+| relative_path        | string         |                        | required |
+| holder_url           | string         | ''                     |          |
+| holder_width         | string         | '50'                   |          |
+| holder_height        | string         | '50'                   |          |
+| enlarge              | boolean        | false                  |          |
 
 ### Example
 
@@ -695,29 +675,25 @@ SgDatatablesBundle:Column:image.html.twig
 
 ### Options
 
-| Option               | Type           | Default |          |
-|----------------------|----------------|---------|----------|
-| class                | string         | ''      |          |
-| padding              | string         | ''      |          |
-| name                 | string         | ''      |          |
-| orderable            | boolean        | false   |          |
-| searchable           | boolean        | false   |          |
-| title                | string         | ''      |          |
-| type                 | string         | ''      |          |
-| visible              | boolean        | true    |          |
-| width                | string         | ''      |          |
-| search_type          | string         | 'like'  |          |
-| filter_type          | string         | 'text'  |          |
-| filter_options       | array          | array() |          |
-| filter_property      | string         | ''      |          |
-| filter_search_column | string         | ''      |          |
-| imagine_filter       | string         |         | required |
-| relative_path        | string         |         | required |
-| holder_url           | string         | ''      |          |
-| holder_width         | string         | '50'    |          |
-| holder_height        | string         | '50'    |          |
-| enlarge              | boolean        | false   |          |
-| view_limit           | integer        | 4       |          |
+| Option               | Type           | Default                |          |
+|----------------------|----------------|------------------------|----------|
+| class                | string         | ''                     |          |
+| padding              | string         | ''                     |          |
+| name                 | string         | ''                     |          |
+| orderable            | boolean        | false                  |          |
+| searchable           | boolean        | false                  |          |
+| title                | string         | ''                     |          |
+| type                 | string         | ''                     |          |
+| visible              | boolean        | true                   |          |
+| width                | string         | ''                     |          |
+| filter               | array          | array('text', array()) |          |
+| imagine_filter       | string         |                        | required |
+| relative_path        | string         |                        | required |
+| holder_url           | string         | ''                     |          |
+| holder_width         | string         | '50'                   |          |
+| holder_height        | string         | '50'                   |          |
+| enlarge              | boolean        | false                  |          |
+| view_limit           | integer        | 4                      |          |
 
 ### Example
 
@@ -746,28 +722,24 @@ SgDatatablesBundle:Column:progress_bar.html.twig
 
 ### Options
 
-| Option               | Type           | Default             |
-|----------------------|----------------|---------------------|
-| class                | string         | ''                  |
-| padding              | string         | ''                  |
-| name                 | string         | ''                  |
-| orderable            | boolean        | true                |
-| render               | null or string | render_progress_bar |
-| searchable           | boolean        | true                |
-| title                | string         | ''                  |
-| type                 | string         | ''                  |
-| visible              | boolean        | true                |
-| width                | string         | ''                  |
-| search_type          | string         | 'eq'                |
-| filter_type          | string         | 'text'              |
-| filter_options       | array          | array()             |
-| filter_property      | string         | ''                  |
-| filter_search_column | string         | ''                  |
-| bar_classes          | string         | ''                  |
-| value_min            | string         | '0'                 |
-| value_max            | string         | '100'               |
-| label                | boolean        | true                |
-| multi_color          | boolean        | false               |
+| Option               | Type           | Default               |
+|----------------------|----------------|-----------------------|
+| class                | string         | ''                    |
+| padding              | string         | ''                    |
+| name                 | string         | ''                    |
+| orderable            | boolean        | true                  |
+| render               | null or string | render_progress_bar   |
+| searchable           | boolean        | true                  |
+| title                | string         | ''                    |
+| type                 | string         | ''                    |
+| visible              | boolean        | true                  |
+| width                | string         | ''                    |
+| filter               | array          | see the below example |
+| bar_classes          | string         | ''                    |
+| value_min            | string         | '0'                   |
+| value_max            | string         | '100'                 |
+| label                | boolean        | true                  |
+| multi_color          | boolean        | false                 |
 
 ### Example
 
@@ -776,6 +748,9 @@ $this->columnBuilder
     ->add('value', 'progress_bar', array(
         'title' => 'My value',
         'label' => true,
+        'filter' => array('text', array(
+            'search_type' => 'eq'
+        )),
         'value_min' => '0',
         'value_max' => '10',
         'multi_color' => true

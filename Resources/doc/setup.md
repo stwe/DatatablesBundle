@@ -34,7 +34,12 @@
         ));
     
         $this->callbacks->set(array(
-            'init_complete' => ':callbacks:test.js.twig'
+            'init_complete' => ':callbacks:init.js.twig'
+        ));
+        
+        $this->events->set(array(
+            'processing' => ':events:processing.js.twig',
+            'order' => ':events:order.js.twig'
         ));
 
         $this->features->set(array(
@@ -106,12 +111,12 @@
 // Datatable class
 
 $this->callbacks->set(array(
-    'init_complete' => ':callbacks:test.js.twig'
+    'init_complete' => ':callbacks:init.js.twig'
 ));
 ```
 
 ```js
-// test.js.twig
+// init.js.twig
 
 function initComplete(settings) {
     alert('DataTables has redrawn the table.');
@@ -146,16 +151,24 @@ function initComplete(settings) {
 // Datatable class
 
 $this->events->set(array(
-    'order' => ':events:order.js.twig',
-    'column_sizing' => ':events:sizing.js.twig'
+    'processing' => ':events:processing.js.twig',
+    'order' => ':events:order.js.twig'
 ));
 ```
 
 ```js
-// sizing.js.twig
+// processing.js.twig
 
-function columnSizing(e, settings) {
-    console.info('Column width recalculated in table.');
+function processing(e, settings, processing) {
+    console.info(processing);
+}
+
+
+// order.js.twig
+
+function order() {
+    var order = oTable.order();
+    console.info('Ordering on column '+order[0][0]+' ('+order[0][1]+')');
 }
 ```
 

@@ -6,13 +6,51 @@
 
 [![Latest Stable Version](https://poser.pugx.org/sg/datatablesbundle/v/stable)](https://packagist.org/packages/sg/datatablesbundle) [![Total Downloads](https://poser.pugx.org/sg/datatablesbundle/downloads)](https://packagist.org/packages/sg/datatablesbundle) [![Latest Unstable Version](https://poser.pugx.org/sg/datatablesbundle/v/unstable)](https://packagist.org/packages/sg/datatablesbundle) [![License](https://poser.pugx.org/sg/datatablesbundle/license)](https://packagist.org/packages/sg/datatablesbundle)
 
-## 1. Recent Important Changes
+## Help wanted
+
+To all russian and polish speaking contributors. Please help me to update the translation file. Thanks a lot!
+
+## Recent Important Changes
 
 - start for PostgreSql support
 - Datatable Events supported
 - some new translations
+- render_if Closure parameter in action column
+- outsourcing individual filter in new classes, see below example
 
-## 2. Screenshots
+```php
+    public function buildDatatable(array $options = array())
+    {
+        // ...
+
+        $users = $this->em->getRepository('AppBundle:User')->findAll();
+
+        $this->columnBuilder
+            ->add('title', 'column', array(
+                'title' => 'Title',
+                'filter' => array('text', array(
+                    'search_type' => 'eq'
+                ))
+            ))
+            ->add('visible', 'boolean', array(
+                'title' => 'Visible',
+                'filter' => array('select', array(
+                    'search_type' => 'eq',
+                    'select_options' => array('' => 'All', '1' => 'Yes', '0' => 'No')
+                )),
+            ))
+            ->add('createdby.username', 'column', array(
+                'title' => 'Createdby User',
+                'filter' => array('select', array(
+                    'search_type' => 'eq',
+                    'select_options' => array('' => 'All') + $this->getCollectionAsOptionsArray($users, 'username', 'username'),
+                ))
+            ))
+        ;
+    }
+```
+
+## Screenshots
 
 ### Table with Bootstrap3 integration: 
 
@@ -22,7 +60,7 @@
 
 <div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/images/display.jpg"></div>
 
-## 3. Documentation
+## Documentation
 
 [Installation](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/installation.md)
 
@@ -46,11 +84,11 @@
 
 [Reference configuration](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/configuration.md)
 
-## 4. Example
+## Example
 
 [Demo Application](https://github.com/stwe/DtBundleDemo)
 
-## 5. Integrating 3rd party stuff 
+## Integrating 3rd party stuff 
 
 [Integrate Bootstrap3](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/bootstrap3.md)
 
@@ -58,7 +96,7 @@
 
 [Integrate the LiipImagineBundle / ImageColumn, GalleryColumn and thumbnails](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/thumbs.md)
 
-## 6. Limitations and Known Issues
+## Limitations and Known Issues
 
 Much like every other piece of software `SgDatatablesBundle` is not perfect and far from feature complete.
 
@@ -74,11 +112,11 @@ At the moment I can not say whether the ClientSide mode is supported by me in th
 - Searching and filtering on a virtual column not yet implemented and disabled by default
 - PostgreSql is currently not fully supported
 
-## 7. Reporting an issue or a feature request
+## Reporting an issue or a feature request
 
 Issues and feature requests are tracked in the [Github issue tracker](https://github.com/stwe/DatatablesBundle/issues).
 
-## 8. Friendly License
+## Friendly License
 
 This bundle is available under the MIT license. See the complete license in the bundle:
 

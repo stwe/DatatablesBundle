@@ -100,11 +100,9 @@ class ProgressBarColumn extends AbstractColumn
             'type' => '',
             'visible' => true,
             'width' => '',
-            'search_type' => 'eq',
-            'filter_type' => 'text',
-            'filter_options' => array(),
-            'filter_property' => '',
-            'filter_search_column' => '',
+            'filter' => array('text', array(
+                'search_type' => 'eq'
+            )),
             'bar_classes' => '',
             'value_min' => '0',
             'value_max' => '100',

@@ -45,6 +45,8 @@ class ColumnFactory implements ColumnFactoryInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @todo: static function / factory pattern / remove interface
      */
     public function createColumnByName($name)
     {
