@@ -52,6 +52,11 @@ abstract class AbstractFilter implements FilterInterface, OptionsInterface
      */
     protected $searchColumn;
 
+    /**
+     * @var string
+     */
+    protected $class;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -160,6 +165,30 @@ abstract class AbstractFilter implements FilterInterface, OptionsInterface
     public function setSearchColumn($searchColumn)
     {
         $this->searchColumn = $searchColumn;
+
+        return $this;
+    }
+
+    /**
+     * Get class.
+     *
+     * @return string
+     */
+    public function getClass()
+    {
+        return $this->class;
+    }
+
+    /**
+     * Set class.
+     *
+     * @param string $class
+     *
+     * @return $this
+     */
+    public function setClass($class)
+    {
+        $this->class = $class;
 
         return $this;
     }

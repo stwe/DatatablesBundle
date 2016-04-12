@@ -8,7 +8,7 @@
  #}
 {% block html %}
     <input type="text"
-           class="individual_filtering sg-daterange"
+           class="individual_filtering sg-daterange{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
            style="{% if column.width %} width:{{ column.width }};{% endif %}"
            placeholder="{{ column.title|striptags|trim }}"
            {% if column.name %}name="{{ column.name }}"{% endif %} />

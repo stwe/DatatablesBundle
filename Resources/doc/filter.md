@@ -56,14 +56,16 @@ class PostDatatable extends AbstractDatatableView
             ->add('title', 'column', array(
                 'title' => 'Title',
                 'filter' => array('text', array(
-                    'search_type' => 'eq'
+                    'search_type' => 'eq',
+                    'class' => 'test1 test2'
                 ))
             ))
             ->add('visible', 'boolean', array(
                 'title' => 'Visible',
                 'filter' => array('select', array(
                     'search_type' => 'eq',
-                    'select_options' => array('' => 'Any', '1' => 'Yes', '0' => 'No')
+                    'select_options' => array('' => 'Any', '1' => 'Yes', '0' => 'No'),
+                    'class' => 'test1 test2'
                 )),
             ))
             ->add('createdby.username', 'column', array(
@@ -75,7 +77,9 @@ class PostDatatable extends AbstractDatatableView
             ))
             ->add('publishedAt', 'datetime', array(
                 'title' => 'PublishedAt',
-                'filter' => array('daterange', array())
+                'filter' => array('daterange', array(
+                    'class' => 'test1 test2'
+                ))
             ))
         ;
     }
@@ -97,6 +101,7 @@ SgDatatablesBundle:Filters:filter_text.html.twig
 | search_type   | string | 'like'  |
 | property      | string | ''      |
 | search_column | string | ''      |
+| class         | string | ''      |
 
 #### Example
 
@@ -125,6 +130,7 @@ SgDatatablesBundle:Filters:filter_select.html.twig
 | property       | string | ''      |
 | search_column  | string | ''      |
 | select_options | array  | array() |
+| class          | string | ''      |
 
 #### Example
 
@@ -153,6 +159,7 @@ SgDatatablesBundle:Filters:filter_daterange.html.twig
 | search_type    | string | 'like'  |
 | property       | string | ''      |
 | search_column  | string | ''      |
+| class          | string | ''      |
 
 #### Example
 
