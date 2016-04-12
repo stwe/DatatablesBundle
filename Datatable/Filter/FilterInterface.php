@@ -11,6 +11,9 @@
 
 namespace Sg\DatatablesBundle\Datatable\Filter;
 
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query\Expr\Andx;
+
 /**
  * Interface FilterInterface
  *
@@ -24,6 +27,19 @@ interface FilterInterface
      * @return string
      */
     public function getTemplate();
+
+    /**
+     * Add a condition.
+     *
+     * @param Andx         $andExpr
+     * @param QueryBuilder $pivot
+     * @param string       $searchField
+     * @param string       $searchValue
+     * @param integer      $i
+     *
+     * @return Andx
+     */
+    public function addAndExpression(Andx $andExpr, QueryBuilder $pivot, $searchField, $searchValue, &$i);
 
     /**
      * Get alias.
