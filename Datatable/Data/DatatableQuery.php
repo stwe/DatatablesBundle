@@ -727,7 +727,7 @@ class DatatableQuery
         //it's a classic query
         if ($buildQuery) {
             $qb = $this->em->createQueryBuilder();
-            $qb->select('count(distinct ' . $this->tableName . '.' . $rootEntityIdentifier . ')');
+            $qb->select('count(distinct '.$this->tableName.'.'.$rootEntityIdentifier.')');
             $qb->from($this->entity, $this->tableName);
 
             $this->setLeftJoins($qb);
@@ -737,8 +737,12 @@ class DatatableQuery
             return (int) $qb->getQuery()->getSingleScalarResult();
         } else {
             //custom query with some filters/conditions/joins
-            $this->qb->select('count(distinct ' . $this->tableName . '.' . $rootEntityIdentifier . ')');
-            return (int)$this->qb->getQuery()->getSingleScalarResult();
+            $this
+                ->qb
+                ->setFirstResult(null)->setMaxResults(null)
+                ->select('count(distinct '.$this->tableName.'.'.$rootEntityIdentifier.')');
+
+            return (int) $this->qb->getQuery()->getSingleScalarResult();
         }
 
     }
