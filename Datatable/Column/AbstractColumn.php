@@ -11,9 +11,12 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\Datatable\View\AbstractViewOptions;
+use Sg\DatatablesBundle\OptionsResolver\OptionsInterface;
+use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
+use Sg\DatatablesBundle\Datatable\Filter\FilterFactory;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\DependencyInjection\Container;
-use Exception;
 
 /**
  * Class AbstractColumn
@@ -45,7 +48,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
 
     /**
      * Class to assign to each cell in the column.
-     * Option: class
      *
      * @var string
      */
@@ -53,7 +55,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
 
     /**
      * Add padding to the text content used when calculating the optimal with for a table.
-     * Option: padding
      *
      * @var string
      */
@@ -61,7 +62,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
 
     /**
      * Set default, static, content for a column.
-     * Option: not in use!
      *
      * @var string
      * @deprecated
@@ -70,7 +70,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
 
     /**
      * Set a descriptive name for a column.
-     * Option: name
      *
      * @var string
      */
@@ -78,7 +77,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
 
     /**
      * Enable or disable ordering on this column.
-     * Option: orderable
      *
      * @var boolean
      */
@@ -86,7 +84,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
 
     /**
      * Render (process) the data for use in the table.
-     * Option: render
      *
      * @var null|string
      */
@@ -94,7 +91,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
 
     /**
      * Enable or disable filtering on the data in this column.
-     * Option: searchable
      *
      * @var boolean
      */
@@ -102,7 +98,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
 
     /**
      * Set the column title.
-     * Option: title
      *
      * @var string
      */
@@ -110,7 +105,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
 
     /**
      * Set the column type - used for filtering and sorting string processing.
-     * Option: type
      *
      * @var string
      */
@@ -118,7 +112,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
 
     /**
      * Enable or disable the display of this column.
-     * Option: visible
      *
      * @var boolean
      */
@@ -126,52 +119,24 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
 
     /**
      * Column width assignment.
-     * Option: width
      *
      * @var string
      */
     protected $width;
 
     /**
-     * The search type (e.g. "like").
-     * Option: search_type
+     * A Filter instance.
+     *
+     * @var FilterInterface
+     */
+    protected $filter;
+
+    /**
+     * Name of datatable view.
      *
      * @var string
      */
-    protected $searchType;
-
-    /**
-     * The filter type name ("text" or "select).
-     * Option: filter_type
-     *
-     * @var string
-     */
-    protected $filterType;
-
-    /**
-     * Options for "select" filter type (e.g. "1" => "Yes", "0" => "No").
-     * Option: filter_options
-     *
-     * @var array
-     */
-    protected $filterOptions;
-
-    /**
-     * Filter property: Column name, on which the filter is applied,
-     * based on options for this column.
-     * Option: filter_property
-     *
-     * @var string
-     */
-    protected $filterProperty;
-
-    /**
-     * Implementation of the searchCol config property of jquery datatable.
-     * Option: filter_search_column
-     *
-     * @var string
-     */
-    protected $filterSearchColumn;
+    protected $tableName;
 
     //-------------------------------------------------
     // Ctor.
@@ -199,32 +164,41 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
         return $this;
     }
 
-    //-------------------------------------------------
-    // OptionsInterface
-    //-------------------------------------------------
-
     /**
      * {@inheritdoc}
      */
-    public function setOptions(array $options)
+    public function getDql()
     {
-        $methods = get_class_methods($this);
-
-        foreach ($options as $key => $value) {
-            $key = Container::camelize($key);
-            $method = 'set' . ucfirst($key);
-            if (in_array($method, $methods)) {
-                $this->$method($value);
-            } else {
-                throw new \Exception('setOptions(): ' . $method . ' invalid method name');
-            }
-        }
-
-        return $this;
+        return $this->dql;
     }
 
     /**
      * {@inheritdoc}
+     */
+    public function getHelperTemplate()
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAssociation()
+    {
+        return (false === strstr($this->data, '.') ? false : true);
+    }
+
+    //-------------------------------------------------
+    // OptionsResolver
+    //-------------------------------------------------
+
+    /**
+     * Setup options resolver.
+     *
+     * @param array $options
+     *
+     * @return $this
+     * @throws \Exception
      */
     public function setupOptionsResolver(array $options)
     {
@@ -233,7 +207,7 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
 
         $this->options = $resolver->resolve($options);
 
-        $this->setOptions($this->options);
+        AbstractViewOptions::callingSettersWithOptions($this->options, $this);
 
         return $this;
     }
@@ -250,16 +224,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     public function getData()
     {
         return $this->data;
-    }
-
-    /**
-     * Get dql.
-     *
-     * @return null|string
-     */
-    public function getDql()
-    {
-        return $this->dql;
     }
 
     /**
@@ -531,122 +495,55 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     }
 
     /**
-     * Set search type.
+     * Set Filter instance.
      *
-     * @param string $searchType
+     * @param array $filter
      *
      * @return $this
      */
-    public function setSearchType($searchType)
+    public function setFilter(array $filter)
     {
-        $this->searchType = $searchType;
+        $filterType = $filter[0];
+        $options = $filter[1];
+
+        /** @var \Sg\DatatablesBundle\Datatable\Filter\AbstractFilter $newFilter */
+        $newFilter = FilterFactory::createFilterByType($filterType);
+        $this->filter = $newFilter->setupOptionsResolver($options);
 
         return $this;
     }
 
     /**
-     * Get search type.
+     * Get Filter instance.
+     *
+     * @return FilterInterface
+     */
+    public function getFilter()
+    {
+        return $this->filter;
+    }
+
+    /**
+     * Set table name.
+     *
+     * @param string $tableName
+     *
+     * @return $this
+     */
+    public function setTableName($tableName)
+    {
+        $this->tableName = $tableName;
+
+        return $this;
+    }
+
+    /**
+     * Get table name.
      *
      * @return string
      */
-    public function getSearchType()
+    public function getTableName()
     {
-        return $this->searchType;
-    }
-
-    /**
-     * Set filter type.
-     *
-     * @param string $filterType
-     *
-     * @return $this
-     */
-    public function setFilterType($filterType)
-    {
-        $this->filterType = $filterType;
-
-        return $this;
-    }
-
-    /**
-     * Get filter type.
-     *
-     * @return string
-     */
-    public function getFilterType()
-    {
-        return $this->filterType;
-    }
-
-    /**
-     * Set filter options.
-     *
-     * @param array $filterOptions
-     *
-     * @return $this
-     */
-    public function setFilterOptions(array $filterOptions)
-    {
-        $this->filterOptions = $filterOptions;
-
-        return $this;
-    }
-
-    /**
-     * Get filter options.
-     *
-     * @return array
-     */
-    public function getFilterOptions()
-    {
-        return $this->filterOptions;
-    }
-
-    /**
-     * Set filter property.
-     *
-     * @param string $filterProperty
-     *
-     * @return $this
-     */
-    public function setFilterProperty($filterProperty)
-    {
-        $this->filterProperty = $filterProperty;
-
-        return $this;
-    }
-
-    /**
-     * Get filter property.
-     *
-     * @return string
-     */
-    public function getFilterProperty()
-    {
-        return $this->filterProperty;
-    }
-
-    /**
-     * Set filter search column.
-     *
-     * @param string $filterSearchColumn
-     *
-     * @return $this
-     */
-    public function setFilterSearchColumn($filterSearchColumn)
-    {
-        $this->filterSearchColumn = $filterSearchColumn;
-
-        return $this;
-    }
-
-    /**
-     * Get filter search column.
-     *
-     * @return string
-     */
-    public function getFilterSearchColumn()
-    {
-        return $this->filterSearchColumn;
+        return $this->tableName;
     }
 }

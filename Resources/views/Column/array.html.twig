@@ -24,7 +24,7 @@
             var array = data.split(',');
             var count = (data == '') ? 0 : array.length;
             {% if (column.countAction) %}
-                {% include 'SgDatatablesBundle:Helper:action_link.html.twig' with { 'action': column.countAction } %}
+                {% include 'SgDatatablesBundle:Action:action.html.twig' with { 'actions': column.countAction } %}
             {% else %}
                 return count;
             {% endif %}

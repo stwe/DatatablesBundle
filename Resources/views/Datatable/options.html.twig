@@ -4,7 +4,9 @@
     "deferLoading": {{ view_options.deferLoading }},
 {% endif %}
 
-"dom": "{{ view_options.dom|e('js') }}",
+{% if false == view_options.useIntegrationOptions or true == view_options.forceDom %}
+    "dom": "{{ view_options.dom|e('js') }}",
+{% endif %}
 
 "lengthMenu": {{ view_options.lengthMenu|length_join|raw }},
 "orderClasses": {{ view_options.orderClasses ? 'true' : 'false' }},
@@ -21,10 +23,9 @@
 "scrollCollapse": {{ view_options.scrollCollapse ? 'true' : 'false' }},
 "searchDelay": {{ view_options.searchDelay }},
 "stateDuration": {{ view_options.stateDuration }},
-"stripeClasses": [{{ view_options.stripeClasses|join(", ")|json_encode|raw }}],
 
-{% if view_options.responsive %}
-    "responsive": true,
+{% if view_options.stripeClasses %}
+    "stripeClasses": [{{ view_options.stripeClasses|join(", ")|json_encode|raw }}],
 {% endif %}
 
 {#

@@ -75,31 +75,20 @@ class TimeagoColumn extends AbstractColumn
             'type' => '',
             'visible' => true,
             'width' => '',
-            'search_type' => 'like',
-            'filter_type' => 'text',
-            'filter_options' => array(),
-            'filter_property' => '',
-            'filter_search_column' => ''
+            'filter' => array('text', array()),
         ));
 
         $resolver->setAllowedTypes('class', 'string');
         $resolver->setAllowedTypes('padding', 'string');
         $resolver->setAllowedTypes('name', 'string');
+        $resolver->setAllowedTypes('orderable', 'bool');
+        $resolver->setAllowedTypes('render', 'string');
+        $resolver->setAllowedTypes('searchable', 'bool');
         $resolver->setAllowedTypes('title', 'string');
         $resolver->setAllowedTypes('type', 'string');
         $resolver->setAllowedTypes('visible', 'bool');
         $resolver->setAllowedTypes('width', 'string');
-        $resolver->setAllowedTypes('render', "string");
-        $resolver->setAllowedTypes('orderable', 'bool');
-        $resolver->setAllowedTypes('searchable', 'bool');
-        $resolver->setAllowedTypes('search_type', 'string');
-        $resolver->setAllowedTypes('filter_type', 'string');
-        $resolver->setAllowedTypes('filter_options', 'array');
-        $resolver->setAllowedTypes('filter_property', 'string');
-        $resolver->setAllowedTypes('filter_search_column', 'string');
-
-        $resolver->setAllowedValues('search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
-        $resolver->setAllowedValues('filter_type', array('text', 'select'));
+        $resolver->setAllowedTypes('filter', 'array');
 
         return $this;
     }

@@ -1,0 +1,23 @@
+{% set link %}
+    <a href="{{action.route }}"
+        {% for key, value in action.attributes %}
+            {{ key }}="{{ value }}"
+        {% endfor %}
+        {% if action.confirm %}
+            {% if action.confirmMessage %}
+                onclick="return confirm('{{ action.confirmMessage }}');"
+            {% else %}
+                onclick="return confirm('{{ 'datatables.bulk.confirmMsg'|trans({}, 'messages') }}');"
+            {% endif %}
+        {% endif %}
+    >{{ datatable_icon(action.icon, action.label) }}</a>
+{% endset %}
+
+{% if action.role %}
+    {% if app.user is not null and is_granted(action.role) %}
+        {{ link }}
+    {% endif %}
+{% else %}
+    {{ link }}
+{% endif %}
+

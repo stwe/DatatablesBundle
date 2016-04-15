@@ -37,6 +37,13 @@ interface ColumnInterface
     public function setDql($data);
 
     /**
+     * Get dql.
+     *
+     * @return null|string
+     */
+    public function getDql();
+
+    /**
      * Get template.
      *
      * @return string
@@ -44,9 +51,23 @@ interface ColumnInterface
     public function getTemplate();
 
     /**
+     * Get helper template.
+     *
+     * @return string
+     */
+    public function getHelperTemplate();
+
+    /**
      * Get alias.
      *
      * @return string
      */
     public function getAlias();
+
+    /**
+     * Check wether an association is given.
+     *
+     * @return boolean
+     */
+    public function isAssociation();
 }

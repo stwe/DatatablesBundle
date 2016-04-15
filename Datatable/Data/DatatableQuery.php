@@ -11,19 +11,24 @@
 
 namespace Sg\DatatablesBundle\Datatable\Data;
 
+use Sg\DatatablesBundle\Datatable\Column\Column;
 use Sg\DatatablesBundle\Datatable\View\DatatableViewInterface;
 use Sg\DatatablesBundle\Datatable\Column\AbstractColumn;
+use Sg\DatatablesBundle\Datatable\Column\ImageColumn;
+use Sg\DatatablesBundle\Datatable\Column\GalleryColumn;
+use Sg\DatatablesBundle\Datatable\Column\ActionColumn;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;
+use Twig_Environment;
 
 /**
  * Class DatatableQuery
@@ -127,6 +132,31 @@ class DatatableQuery
      */
     private $configs;
 
+    /**
+     * @var Twig_Environment
+     */
+    private $twig;
+
+    /**
+     * @var boolean
+     */
+    private $imagineBundle;
+
+    /**
+     * @var boolean
+     */
+    private $doctrineExtensions;
+
+    /**
+     * @var string
+     */
+    private $locale;
+
+    /**
+     * @var boolean
+     */
+    private $isPostgreSQLConnection;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -138,10 +168,23 @@ class DatatableQuery
      * @param array                  $requestParams
      * @param DatatableViewInterface $datatableView
      * @param array                  $configs
+     * @param Twig_Environment       $twig
+     * @param boolean                $imagineBundle
+     * @param boolean                $doctrineExtensions
+     * @param string                 $locale
      *
      * @throws Exception
      */
-    public function __construct(Serializer $serializer, array $requestParams, DatatableViewInterface $datatableView, array $configs)
+    public function __construct(
+        Serializer $serializer,
+        array $requestParams,
+        DatatableViewInterface $datatableView,
+        array $configs,
+        Twig_Environment $twig,
+        $imagineBundle,
+        $doctrineExtensions,
+        $locale
+    )
     {
         $this->serializer = $serializer;
         $this->requestParams = $requestParams;
@@ -166,8 +209,53 @@ class DatatableQuery
 
         $this->configs = $configs;
 
+        $this->twig = $twig;
+        $this->imagineBundle = $imagineBundle;
+        $this->doctrineExtensions = $doctrineExtensions;
+        $this->locale = $locale;
+        $this->isPostgreSQLConnection = false;
+
         $this->setLineFormatter();
         $this->setupColumnArrays();
+
+        $this->setupPostgreSQL();
+    }
+
+    //-------------------------------------------------
+    // PostgreSQL
+    //-------------------------------------------------
+
+    /**
+     * Setup PostgreSQL
+     *
+     * @return $this
+     * @throws \Doctrine\ORM\ORMException
+     */
+    private function setupPostgreSQL()
+    {
+        if ($this->em->getConnection()->getDriver()->getName() === 'pdo_pgsql') {
+            $this->isPostgreSQLConnection = true;
+            $this->em->getConfiguration()->addCustomStringFunction('CAST', '\Sg\DatatablesBundle\DQL\CastFunction');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Cast search field.
+     *
+     * @param string         $searchField
+     * @param AbstractColumn $column
+     *
+     * @return string
+     */
+    private function cast($searchField, AbstractColumn $column)
+    {
+        if ('datetime' === $column->getAlias() || 'boolean' === $column->getAlias() || 'column' === $column->getAlias()) {
+            return 'CAST('.$searchField.' AS text)';
+        }
+
+        return $searchField;
     }
 
     //-------------------------------------------------
@@ -301,13 +389,13 @@ class DatatableQuery
     /**
      * Add the where-result function.
      *
-     * @param callable $callback
+     * @param $callback
      *
      * @return $this
      */
-    public function addWhereResult(callable $callback)
+    public function addWhereResult($callback)
     {
-        $this->callbacks['WhereResult'] = $callback;
+        $this->callbacks['WhereResult'][] = $callback;
 
         return $this;
     }
@@ -315,13 +403,13 @@ class DatatableQuery
     /**
      * Add the where-all function.
      *
-     * @param callable $callback
+     * @param $callback
      *
      * @return $this
      */
-    public function addWhereAll(callable $callback)
+    public function addWhereAll($callback)
     {
-        $this->callbacks['WhereAll'] = $callback;
+        $this->callbacks['WhereAll'][] = $callback;
 
         return $this;
     }
@@ -348,7 +436,9 @@ class DatatableQuery
     private function setWhereResultCallback(QueryBuilder $qb)
     {
         if (!empty($this->callbacks['WhereResult'])) {
-            $this->callbacks['WhereResult']($qb);
+            foreach ($this->callbacks['WhereResult'] as $callback) {
+                $callback($qb);
+            }
         }
 
         return $this;
@@ -364,7 +454,9 @@ class DatatableQuery
     private function setWhereAllCallback(QueryBuilder $qb)
     {
         if (!empty($this->callbacks['WhereAll'])) {
-            $this->callbacks['WhereAll']($qb);
+            foreach ($this->callbacks['WhereAll'] as $callback) {
+                $callback($qb);
+            }
         }
 
         return $this;
@@ -426,6 +518,11 @@ class DatatableQuery
             foreach ($this->columns as $key => $column) {
                 if (true === $this->isSearchColumn($column)) {
                     $searchField = $this->searchColumns[$key];
+
+                    if (true === $this->isPostgreSQLConnection) {
+                        $searchField = $this->cast($searchField, $column);
+                    }
+
                     $orExpr->add($qb->expr()->like($searchField, '?' . $key));
                     $qb->setParameter($key, '%' . $globalSearch . '%');
                 }
@@ -443,26 +540,15 @@ class DatatableQuery
             foreach ($this->columns as $key => $column) {
 
                 if (true === $this->isSearchColumn($column)) {
-                    $searchType = $column->getSearchType();
+                    $filter = $column->getFilter();
                     $searchField = $this->searchColumns[$key];
                     $searchValue = $this->requestParams['columns'][$key]['search']['value'];
-                    $searchRange = $this->requestParams['columns'][$key]['name'] === 'daterange';
                     if ('' != $searchValue && 'null' != $searchValue) {
-                        if ($searchRange) {
-                            list($_dateStart, $_dateEnd) = explode(' - ', $searchValue);
-                            $dateStart = new \DateTime($_dateStart);
-                            $dateEnd = new \DateTime($_dateEnd);
-                            $dateEnd->setTime(23, 59, 59);
-
-                            $k = $i + 1;
-                            $andExpr->add($qb->expr()->between($searchField, '?' . $i, '?' . $k));
-                            $qb->setParameter($i, $dateStart->format('Y-m-d H:i:s'));
-                            $qb->setParameter($k, $dateEnd->format('Y-m-d H:i:s'));
-                            $i += 2;
-                        } else {
-                            $andExpr = $this->addCondition($andExpr, $qb, $searchType, $searchField, $searchValue, $i);
-                            $i++;
+                        if (true === $this->isPostgreSQLConnection) {
+                            $searchField = $this->cast($searchField, $column);
                         }
+
+                        $andExpr = $filter->addAndExpression($andExpr, $qb, $searchField, $searchValue, $i);
                     }
                 }
             }
@@ -473,72 +559,6 @@ class DatatableQuery
         }
 
         return $this;
-    }
-
-    /**
-     * Add a condition.
-     *
-     * @param Andx         $andExpr
-     * @param QueryBuilder $pivot
-     * @param string       $searchType
-     * @param string       $searchField
-     * @param string       $searchValue
-     * @param integer      $i
-     *
-     * @return Andx
-     */
-    private function addCondition(Andx $andExpr, QueryBuilder $pivot, $searchType, $searchField, $searchValue, $i)
-    {
-        switch ($searchType) {
-            case 'like':
-                $andExpr->add($pivot->expr()->like($searchField, '?' . $i));
-                $pivot->setParameter($i, '%' . $searchValue . '%');
-                break;
-            case 'notLike':
-                $andExpr->add($pivot->expr()->notLike($searchField, '?' . $i));
-                $pivot->setParameter($i, '%' . $searchValue . '%');
-                break;
-            case 'eq':
-                $andExpr->add($pivot->expr()->eq($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
-                break;
-            case 'neq':
-                $andExpr->add($pivot->expr()->neq($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
-                break;
-            case 'lt':
-                $andExpr->add($pivot->expr()->lt($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
-                break;
-            case 'lte':
-                $andExpr->add($pivot->expr()->lte($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
-                break;
-            case 'gt':
-                $andExpr->add($pivot->expr()->gt($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
-                break;
-            case 'gte':
-                $andExpr->add($pivot->expr()->gte($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
-                break;
-            case 'in':
-                $andExpr->add($pivot->expr()->in($searchField, '?' . $i));
-                $pivot->setParameter($i, explode(',', $searchValue));
-                break;
-            case 'notIn':
-                $andExpr->add($pivot->expr()->notIn($searchField, '?' . $i));
-                $pivot->setParameter($i, explode(",", $searchValue));
-                break;
-            case 'isNull':
-                $andExpr->add($pivot->expr()->isNull($searchField));
-                break;
-            case 'isNotNull':
-                $andExpr->add($pivot->expr()->isNull($searchField));
-                break;
-        }
-
-        return $andExpr;
     }
 
     /**
@@ -631,10 +651,33 @@ class DatatableQuery
      * Constructs a Query instance.
      *
      * @return Query
+     * @throws Exception
      */
     private function execute()
     {
         $query = $this->qb->getQuery();
+
+        if (true === $this->configs['translation_query_hints']) {
+            if (true === $this->doctrineExtensions) {
+                $query->setHint(
+                    \Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER,
+                    'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker'
+                );
+
+                $query->setHint(
+                    \Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE,
+                    $this->locale
+                );
+
+                $query->setHint(
+                    \Gedmo\Translatable\TranslatableListener::HINT_FALLBACK,
+                    1
+                );
+            } else {
+                throw new Exception('execute(): "DoctrineExtensions" does not exist.');
+            }
+        }
+
         $query->setHydrationMode(Query::HYDRATE_ARRAY);
 
         return $query;
@@ -644,6 +687,14 @@ class DatatableQuery
     // Response
     //-------------------------------------------------
 
+    /**
+     * Get response.
+     *
+     * @param bool $buildQuery
+     *
+     * @return Response
+     * @throws Exception
+     */
     public function getResponse($buildQuery = true)
     {
         false === $buildQuery ? : $this->buildQuery();
@@ -653,9 +704,71 @@ class DatatableQuery
         $output = array('data' => array());
 
         foreach ($fresults as $item) {
+            // Line formatter
             if (is_callable($this->lineFormatter)) {
                 $callable = $this->lineFormatter;
                 $item = call_user_func($callable, $item);
+            }
+
+            // Handle custom / helper templates
+            foreach ($this->columns as $column) {
+                $data = $column->getDql();
+
+                /** @var ImageColumn $column */
+                if ('image' === $column->getAlias()) {
+                    if (true === $this->imagineBundle) {
+                        $item[$data] = $this->renderImage($item[$data], $column);
+                    } else {
+                        $item[$data] = $this->twig->render(
+                            'SgDatatablesBundle:Helper:render_image.html.twig',
+                            array(
+                                'image_name' => $item[$data],
+                                'path' => $column->getRelativePath()
+                            )
+                        );
+                    }
+                }
+
+                /** @var GalleryColumn $column */
+                if ('gallery' === $column->getAlias()) {
+                    $fields = explode('.', $data);
+
+                    if (true === $this->imagineBundle) {
+                        $galleryImages = '';
+                        $counter = 0;
+                        $images = count($item[$fields[0]]);
+                        if (0 === $images) {
+                            $item[$fields[0]] = $this->renderImage(null, $column);
+                        } else {
+                            foreach ($item[$fields[0]] as $image) {
+                                $galleryImages = $galleryImages . $this->renderImage($image[$fields[1]], $column);
+                                if (++$counter == $column->getViewLimit()) break;
+                            }
+                            $item[$fields[0]] = $galleryImages;
+                        }
+                    } else {
+                        throw new InvalidArgumentException('getResponse(): Bundle "LiipImagineBundle" does not exist or it is not enabled.');
+                    }
+                }
+
+                /** @var ActionColumn $column */
+                if ('action' === $column->getAlias()) {
+                    $column->checkVisibility($item);
+                }
+
+                /** @var Column $column */
+                if (null !== $column->getHelperTemplate()) {
+                    $_data = $item;
+                    foreach($columnNames = explode('.', $data) as $part) {
+                        $_data = $_data[$part];
+                    }
+
+                    $item[implode('_', $columnNames)] = $this->twig->render($column->getHelperTemplate(), array(
+                            'data' => $_data,
+                            'column' => $column
+                        )
+                    );
+                }
             }
 
             $output['data'][] = $item;
@@ -672,6 +785,23 @@ class DatatableQuery
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
+    }
+
+    /**
+     * Simple function to get results for export to PHPExcel.
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function getDataForExport()
+    {
+        $this->setSelectFrom();
+        $this->setLeftJoins($this->qb);
+        $this->setWhereResultCallback($this->qb);
+        $this->setWhereAllCallback($this->qb);
+        $this->setOrderBy();
+
+        return $this->execute()->getArrayResult();
     }
 
     //-------------------------------------------------
@@ -827,5 +957,30 @@ class DatatableQuery
         }
 
         return false;
+    }
+
+    /**
+     * Render image.
+     *
+     * @param string      $imageName
+     * @param ImageColumn $column
+     *
+     * @return string
+     */
+    private function renderImage($imageName, ImageColumn $column)
+    {
+        return $this->twig->render(
+            'SgDatatablesBundle:Helper:ii_render_image.html.twig',
+            array(
+                'image_id' => 'sg_image_' . uniqid(rand(10000, 99999)),
+                'image_name' => $imageName,
+                'filter' => $column->getImagineFilter(),
+                'path' => $column->getRelativePath(),
+                'holder_url' => $column->getHolderUrl(),
+                'width' => $column->getHolderWidth(),
+                'height' => $column->getHolderHeight(),
+                'enlarge' => $column->getEnlarge()
+            )
+        );
     }
 }

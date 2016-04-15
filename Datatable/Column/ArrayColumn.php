@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\Datatable\Action\Action;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 
@@ -22,7 +24,7 @@ use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 class ArrayColumn extends Column
 {
     /**
-     *
+     * Count array elements.
      *
      * @var boolean
      */
@@ -83,6 +85,8 @@ class ArrayColumn extends Column
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
+
+        $resolver->remove(array('editable'));
 
         $resolver->setRequired(array('data'));
 

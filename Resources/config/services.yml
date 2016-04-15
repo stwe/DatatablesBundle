@@ -6,20 +6,13 @@ services:
     sg_datatables.serializer:
         class: Symfony\Component\Serializer\Serializer
         arguments:
-            - [@sg_datatables.serializer.method]
-            - [@sg_datatables.serializer.encoder.json]
+            - ['@sg_datatables.serializer.method']
+            - ['@sg_datatables.serializer.encoder.json']
     sg_datatables.twig.extension:
         class: Sg\DatatablesBundle\Twig\DatatableTwigExtension
-        arguments: [@translator, %sg_datatables.routes%, %sg_datatables.site%]
+        arguments: ['@translator']
         tags:
             - { name: twig.extension }
     sg_datatables.query:
         class: Sg\DatatablesBundle\Datatable\Data\DatatableDataManager
-        arguments: [@request_stack, @sg_datatables.serializer, %sg_datatables.query%]
-    sg_datatables.routing.loader:
-        class: Sg\DatatablesBundle\Routing\DatatablesRoutingLoader
-        arguments: [%sg_datatables.global.prefix%, %sg_datatables.routes%, %sg_datatables.fields%, %sg_datatables.controller%]
-        tags:
-            - { name: routing.loader }
-    sg_datatables.view.container:
-        class: Sg\DatatablesBundle\Datatable\View\DatatableViewContainer
+        arguments: ['@request_stack', '@sg_datatables.serializer', %sg_datatables.datatable.query%, %kernel.bundles%]

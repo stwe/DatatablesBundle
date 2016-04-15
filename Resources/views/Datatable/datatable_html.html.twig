@@ -1,3 +1,9 @@
+{{ view_actions.startHtml|raw }}
+{% for action in view_actions.actions %}
+    {% include 'SgDatatablesBundle:Action:top_actions.html.twig' %}
+{% endfor %}
+{{ view_actions.endHtml|raw }}
+
 <table cellpadding="0" cellspacing="0" class="{{ view_options.class }}" border="0" id="{{ view_table_id }}" width="100%">
     <thead>
     </thead>
@@ -19,3 +25,7 @@
     <tbody>
     </tbody>
 </table>
+
+{% if view_multiselect %}
+    <div id="{{ view_table_id }}_multiselect_actions"></div>
+{% endif %}

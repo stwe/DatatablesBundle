@@ -12,30 +12,14 @@
 namespace Sg\DatatablesBundle\Datatable\View;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\DependencyInjection\Container;
-use Exception;
 
 /**
  * Class Features
  *
  * @package Sg\DatatablesBundle\Datatable\View
  */
-class Features
+class Features extends AbstractViewOptions
 {
-    /**
-     * Features container.
-     *
-     * @var array
-     */
-    protected $features;
-
-    /**
-     * An OptionsResolver instance.
-     *
-     * @var OptionsResolver
-     */
-    protected $resolver;
-
     /**
      * Feature control DataTables smart column width handling.
      *
@@ -136,54 +120,20 @@ class Features
     protected $delay;
 
     /**
-     * Extensions.
+     * Extensions array.
      *
      * @var array
      */
     protected $extensions;
 
     //-------------------------------------------------
-    // Ctor.
+    // OptionsInterface
     //-------------------------------------------------
 
     /**
-     * Ctor.
+     * {@inheritdoc}
      */
-    public function __construct()
-    {
-        $this->features = array();
-        $this->resolver = new OptionsResolver();
-        $this->configureOptions($this->resolver);
-        $this->setFeatures($this->features);
-    }
-
-    //-------------------------------------------------
-    // Setup Features
-    //-------------------------------------------------
-
-    /**
-     * Set features.
-     *
-     * @param array $features
-     *
-     * @return $this
-     */
-    public function setFeatures(array $features)
-    {
-        $this->features = $this->resolver->resolve($features);
-        $this->callingSettersWithOptions($this->features);
-
-        return $this;
-    }
-
-    /**
-     * Configure Options.
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return $this
-     */
-    private function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'auto_width' => true,
@@ -218,31 +168,6 @@ class Features
         $resolver->setAllowedTypes('state_save', 'bool');
         $resolver->setAllowedTypes('delay', 'int');
         $resolver->setAllowedTypes('extensions', 'array');
-
-        return $this;
-    }
-
-    /**
-     * Calling setters with options.
-     *
-     * @param array $options
-     *
-     * @return $this
-     * @throws Exception
-     */
-    private function callingSettersWithOptions(array $options)
-    {
-        $methods = get_class_methods($this);
-
-        foreach ($options as $key => $value) {
-            $key = Container::camelize($key);
-            $method = 'set' . ucfirst($key);
-            if (in_array($method, $methods)) {
-                $this->$method($value);
-            } else {
-                throw new Exception('callingSettersWithOptions(): ' . $method . ' invalid method name');
-            }
-        }
 
         return $this;
     }
@@ -590,20 +515,26 @@ class Features
     }
 
     /**
+     * Set extensions.
+     *
+     * @param array $extensions
+     *
+     * @return $this
+     */
+    protected function setExtensions(array $extensions)
+    {
+        $this->extensions = $extensions;
+
+        return $this;
+    }
+
+    /**
+     * Get extensions.
+     *
      * @return array
      */
     public function getExtensions()
     {
         return $this->extensions;
-    }
-
-    /**
-     * @param array $extensions
-     */
-    public function setExtensions($extensions)
-    {
-        $this->extensions = $extensions;
-
-        return $this;
     }
 }

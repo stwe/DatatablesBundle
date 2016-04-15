@@ -1,0 +1,32 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+var actionsString = "";
+
+{# startHtml - for ActionColumn #}
+{% if column.startHtml is defined and column.startHtml is not empty %}
+    actionsString += '{{ column.startHtml|raw }}';
+{% endif %}
+
+var routeParameters, attributes, visibleFlag, roleFlag;
+
+{# build actionsString #}
+{% if actions is iterable %}
+    {% for action in actions %}
+        {% include 'SgDatatablesBundle:Action:actions_string.html.twig' %}
+    {% endfor %}
+{% else %}
+    {% include 'SgDatatablesBundle:Action:actions_string.html.twig' with { 'action': actions } %}
+{% endif %}
+
+{# endHtml - for ActionColumn #}
+{% if column.endHtml is defined and column.endHtml is not empty %}
+    actionsString += '{{ column.endHtml|raw }}';
+{% endif %}
+
+return actionsString;

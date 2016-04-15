@@ -17,6 +17,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Twig_Error;
+use Twig_Environment;
 
 /**
  * Interface DatatableViewInterface
@@ -26,17 +27,11 @@ use Twig_Error;
 interface DatatableViewInterface
 {
     /**
-     * Builds the datatable view.
-     *
-     * @deprecated Deprecated since v0.7.1, to be removed in v0.8.
-     *             Use {@link buildDatatable()} instead.
-     */
-    public function buildDatatableView();
-
-    /**
      * Builds the datatable.
+     *
+     * @param array $options
      */
-    public function buildDatatable();
+    public function buildDatatable(array $options = array());
 
     /**
      * Renders the datatable view.
@@ -47,21 +42,35 @@ interface DatatableViewInterface
      * @throws Exception
      * @throws Twig_Error
      */
-    public function render($type = "all");
+    public function render($type = 'all');
 
     /**
-     * Get Ajax.
+     * Get the Twig_Environment service.
      *
-     * @return Ajax
+     * @return Twig_Environment
      */
-    public function getAjax();
+    public function getTwig();
 
     /**
-     * Get ColumnBuilder.
+     * Get entity manager.
      *
-     * @return ColumnBuilder
+     * @return EntityManagerInterface
      */
-    public function getColumnBuilder();
+    public function getEntityManager();
+
+    /**
+     * Get TopActions.
+     *
+     * @return TopActions
+     */
+    public function getTopActions();
+
+    /**
+     * Get Features.
+     *
+     * @return Features
+     */
+    public function getFeatures();
 
     /**
      * Get Options.
@@ -71,18 +80,32 @@ interface DatatableViewInterface
     public function getOptions();
 
     /**
+     * Get Callbacks.
+     *
+     * @return Callbacks
+     */
+    public function getCallbacks();
+
+    /**
+     * Get ColumnBuilder.
+     *
+     * @return ColumnBuilder
+     */
+    public function getColumnBuilder();
+
+    /**
+     * Get Ajax.
+     *
+     * @return Ajax
+     */
+    public function getAjax();
+
+    /**
      * Returns a callable that could transform the data line
      *
      * @return callable
      */
     public function getLineFormatter();
-
-    /**
-     * Get entity manager.
-     *
-     * @return EntityManagerInterface
-     */
-    public function getEntityManager();
 
     /**
      * Get custom qb.
@@ -100,7 +123,6 @@ interface DatatableViewInterface
 
     /**
      * Returns the name of this datatable view.
-     * Is used as jQuery datatable id selector.
      *
      * @return string
      */

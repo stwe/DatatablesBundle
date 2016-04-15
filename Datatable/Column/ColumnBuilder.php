@@ -21,13 +21,6 @@ use Exception;
 class ColumnBuilder implements ColumnBuilderInterface
 {
     /**
-     * A ColumnFactoryInterface.
-     *
-     * @var ColumnFactory
-     */
-    private $columnFactory;
-
-    /**
      * All columns.
      *
      * @var array
@@ -48,19 +41,28 @@ class ColumnBuilder implements ColumnBuilderInterface
      */
     private $multiselect;
 
+    /**
+     * Name of datatable view.
+     *
+     * @var string
+     */
+    private $tableName;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
 
     /**
      * Ctor.
+     *
+     * @param string $tableName
      */
-    public function __construct()
+    public function __construct($tableName)
     {
-        $this->columnFactory = new ColumnFactory();
         $this->columns = array();
         $this->multiselectColumn = null;
         $this->multiselect = false;
+        $this->tableName = $tableName;
     }
 
     //-------------------------------------------------
@@ -70,12 +72,13 @@ class ColumnBuilder implements ColumnBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function add($data, $name, array $options = array())
+    public function add($data, $alias, array $options = array())
     {
         /**
          * @var AbstractColumn $column
          */
-        $column = $this->columnFactory->createColumnByName($name);
+        $column = ColumnFactory::createColumnByAlias($alias);
+        $column->setTableName($this->tableName);
         $column->setData($data);
         $column->setDql($data);
         $column->setupOptionsResolver($options);
@@ -106,6 +109,28 @@ class ColumnBuilder implements ColumnBuilderInterface
         }
 
         $this->columns = array_values($this->columns);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeByData($data)
+    {
+        if (is_string($data)) {
+            foreach ($this->columns as $key => $column) {
+                /** @var ColumnInterface $column */
+                if ($data === $column->getDql()) {
+                    unset($this->columns[$key]);
+                    $this->columns = array_values($this->columns);
+
+                    return $this;
+                }
+            }
+
+            throw new Exception('removeColumnByData(): The column with data ' . $data . ' does not exist.');
+        }
 
         return $this;
     }

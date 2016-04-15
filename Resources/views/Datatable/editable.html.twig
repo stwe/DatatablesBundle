@@ -1,0 +1,38 @@
+{% for column in view_columns %}
+    {% if column.editable is defined %}
+        {% if true == column.editable %}
+            {% set token = csrf_token('editable') %}
+            var str = '{{ column.data }}'.split(".").join("_");
+            str = 'span.sg-editable-' + str;
+            $(str).editable({
+                {# datetime column #}
+                {% if 'datetime' == column.alias %}
+                viewformat: '{{ column.dateFormat }}',
+                combodate: {maxYear: 2050},
+                {% endif %}
+                {# boolean column #}
+                {% if 'boolean' == column.alias %}
+                source: [{'true': "{{ column.trueLabel ? column.trueLabel : 'true' }}"}, {'false': "{{ column.falseLabel ? column.falseLabel : 'false' }}"}],
+                emptytext: 'false',
+                {% endif %}
+                name: '{{ column.data }}',
+                url: "{{ path('sg_datatables_edit') }}",
+                title: '{{ column.title }} ' + "{{ 'datatables.actions.edit'|trans({}, 'messages') }}",
+                params: function (params) {
+                    params.entity = '{{ datatable.entity|e('js') }}';
+                    params.token = '{{ token }}';
+
+                    return params;
+                },
+                container: 'body',
+                {# many-to-one association needs a complete table redraw #}
+                {% if column.isAssociation %}
+                success: function(response, newValue) {
+                    oTable.draw();
+                    alert("{{ 'editable.tableRedraw'|trans({}, 'messages') }}");
+                }
+                {% endif %}
+            });
+        {% endif %}
+    {% endif %}
+{% endfor %}

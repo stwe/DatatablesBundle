@@ -51,5 +51,10 @@
                 return {{ column.render }}(data, type, row, meta);
             },
         {% endif %}
+        {% if column.editable %}
+            "render": function(data, type, row, meta) {
+                return render_editable_text(data, type, row, meta, '{{ column.data }}');
+            },
+        {% endif %}
     {% endblock %}
 },

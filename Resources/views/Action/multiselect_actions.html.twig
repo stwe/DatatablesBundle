@@ -1,0 +1,66 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{% set visible = false %}
+
+{% set multiple_actions %}
+    <div>
+        {% for action in column.actions %}
+            {% set visible = (action.role and app.user is not null and is_granted(action.role) or not action.role) ? true : false %}
+
+            {% if visible %}
+                {% set route = action.route ? path(action.route, action.routeParameters) : '' %}
+                {% set attributes %}
+                    {% for key, value in action.attributes %} {{ key }}='{{ value }}'{% endfor %}
+                {% endset %}
+                <a href="{{ route }}" {{ attributes }}>{{ datatable_icon(action.icon, action.label) }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endset %}
+
+$("#{{ view_table_id }}_multiselect_actions").append("{{ multiple_actions|e('js') }}");
+
+$(".{{ view_table_id }}_multiselect_checkall").click(function(event) {
+    var that = this;
+    $("input.{{ view_table_id }}_multiselect_checkbox:checkbox").each(function() {
+        this.checked = that.checked;
+    });
+});
+
+$(".{{ view_table_id }}_multiselect_action_click").on('click', function(event) {
+    var length = $("input.{{ view_table_id }}_multiselect_checkbox:checkbox:checked").length;
+
+    event.preventDefault();
+
+    if (length > 0) {
+        if (!confirm( "{{ 'datatables.bulk.confirmMsg'|trans({}, 'messages') }}" )) {
+            return;
+        }
+
+        {% set token = csrf_token('multiselect') %}
+
+        $.ajax({
+            url: $(this).attr("href"),
+            type: "POST",
+            cache: false,
+            data: {
+                'data': $("input:checkbox:checked.{{ view_table_id }}_multiselect_checkbox", oTable.rows().nodes()).serializeArray(),
+                'token': '{{ token }}'
+            },
+            success: function(msg) {
+                oTable.draw();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest + ' ' + textStatus + ' ' +errorThrown);
+            }
+        })
+    } else {
+        alert("{{ 'datatables.bulk.selectError'|trans({}, 'messages') }}");
+    }
+});

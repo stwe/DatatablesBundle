@@ -14,6 +14,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\Datatable\Action\Action;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 
@@ -193,5 +195,22 @@ class ActionColumn extends AbstractColumn
     public function getActions()
     {
         return $this->actions;
+    }
+
+    /**
+     * Check visibility.
+     *
+     * @param array $entity
+     */
+    public function checkVisibility(array &$entity)
+    {
+        $actionState = array();
+
+        /** @var Action $action */
+        foreach ($this->actions as $action) {
+            $actionState[$action->getRoute()] = $action->isVisible($entity);
+        }
+
+        $entity['actions'] = $actionState;
     }
 }

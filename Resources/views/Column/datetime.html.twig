@@ -10,7 +10,13 @@
 
 {% block data %}
     "data": "{{ column.data }}",
-    "render": function(data, type, row, meta) {
-        return {{ column.render }}(data, type, row, meta, "{{ column.dateFormat }}");
-    },
+    {% if column.editable %}
+        "render": function(data, type, row, meta) {
+            return render_editable_datetime(data, type, row, meta, '{{ column.data }}', '{{ column.dateFormat }}');
+        },
+    {% else %}
+        "render": function(data, type, row, meta) {
+            return {{ column.render }}(data, type, row, meta, '{{ column.dateFormat }}');
+        },
+    {% endif %}
 {% endblock %}

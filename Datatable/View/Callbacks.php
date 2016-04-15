@@ -1,7 +1,5 @@
 <?php
 
-namespace Sg\DatatablesBundle\Datatable\View;
-
 /**
  * This file is part of the SgDatatablesBundle package.
  *
@@ -11,31 +9,17 @@ namespace Sg\DatatablesBundle\Datatable\View;
  * file that was distributed with this source code.
  */
 
+namespace Sg\DatatablesBundle\Datatable\View;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\DependencyInjection\Container;
-use Exception;
 
 /**
  * Class Callbacks
  *
  * @package Sg\DatatablesBundle\Datatable\View
  */
-class Callbacks
+class Callbacks extends AbstractViewOptions
 {
-    /**
-     * Callbacks container.
-     *
-     * @var array
-     */
-    protected $callbacks;
-
-    /**
-     * An OptionsResolver instance.
-     *
-     * @var OptionsResolver
-     */
-    protected $resolver;
-
     /**
      * Callback for whenever a TR element is created for the table's body.
      *
@@ -135,47 +119,13 @@ class Callbacks
     protected $stateSaveParams;
 
     //-------------------------------------------------
-    // Ctor.
+    // OptionsInterface
     //-------------------------------------------------
 
     /**
-     * Ctor.
+     * {@inheritdoc}
      */
-    public function __construct()
-    {
-        $this->callbacks = array();
-        $this->resolver = new OptionsResolver();
-        $this->configureOptions($this->resolver);
-        $this->setCallbacks($this->callbacks);
-    }
-
-    //-------------------------------------------------
-    // Setup Callbacks
-    //-------------------------------------------------
-
-    /**
-     * Set callbacks.
-     *
-     * @param array $callbacks
-     *
-     * @return $this
-     */
-    public function setCallbacks(array $callbacks)
-    {
-        $this->callbacks = $this->resolver->resolve($callbacks);
-        $this->callingSettersWithOptions($this->callbacks);
-
-        return $this;
-    }
-
-    /**
-     * Configure Options.
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return $this
-     */
-    private function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'created_row' => '',
@@ -208,31 +158,6 @@ class Callbacks
         $resolver->setAllowedTypes('state_load_params', 'string');
         $resolver->setAllowedTypes('state_save_callback', 'string');
         $resolver->setAllowedTypes('state_save_params', 'string');
-
-        return $this;
-    }
-
-    /**
-     * Calling setters with options.
-     *
-     * @param array $options
-     *
-     * @return $this
-     * @throws Exception
-     */
-    private function callingSettersWithOptions(array $options)
-    {
-        $methods = get_class_methods($this);
-
-        foreach ($options as $key => $value) {
-            $key = Container::camelize($key);
-            $method = 'set' . ucfirst($key);
-            if (in_array($method, $methods)) {
-                $this->$method($value);
-            } else {
-                throw new Exception('callingSettersWithOptions(): ' . $method . ' invalid method name');
-            }
-        }
 
         return $this;
     }

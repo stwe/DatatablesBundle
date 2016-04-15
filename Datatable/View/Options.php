@@ -12,30 +12,14 @@
 namespace Sg\DatatablesBundle\Datatable\View;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\DependencyInjection\Container;
-use Exception;
 
 /**
  * Class Options
  *
  * @package Sg\DatatablesBundle\Datatable\View
  */
-class Options
+class Options extends AbstractViewOptions
 {
-    /**
-     * Options container.
-     *
-     * @var array
-     */
-    protected $options;
-
-    /**
-     * An OptionsResolver instance.
-     *
-     * @var OptionsResolver
-     */
-    protected $resolver;
-
     /**
      * Initial paging start point.
      *
@@ -135,13 +119,6 @@ class Options
     protected $stripeClasses;
 
     /**
-     * Enable the Responsive extension for DataTables.
-     *
-     * @var boolean
-     */
-    protected $responsive;
-
-    /**
      * Table class names.
      *
      * @var string
@@ -174,41 +151,16 @@ class Options
      */
     protected $useIntegrationOptions;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
     /**
-     * Ctor.
+     * Force the use of the provided dom option, even if integration options are used.
+     *
+     * @var boolean
      */
-    public function __construct()
-    {
-        $this->options = array();
-        $this->resolver = new OptionsResolver();
-        $this->configureOptions($this->resolver);
-        $this->setOptions($this->options);
-    }
+    protected $forceDom;
 
     //-------------------------------------------------
-    // Setup Options
+    // OptionsInterface
     //-------------------------------------------------
-
-    /**
-     * Set options.
-     *
-     * All options not specified will be set to default.
-     *
-     * @param array $options
-     *
-     * @return $this
-     */
-    public function setOptions(array $options)
-    {
-        $this->options = $this->resolver->resolve($options);
-        $this->callingSettersWithOptions($this->options);
-
-        return $this;
-    }
 
     /**
      * Set one option.
@@ -222,19 +174,15 @@ class Options
      */
     public function setOption($optionKey, $optionValue)
     {
-        $this->callingSettersWithOptions(array($optionKey => $optionValue));
+        $this->callingSettersWithOptions(array($optionKey => $optionValue), $this);
 
         return $this;
     }
 
     /**
-     * Configure Options.
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-    private function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'display_start' => 0,
@@ -251,11 +199,11 @@ class Options
             'search_delay' => 0,
             'state_duration' => 7200,
             'stripe_classes' => array(),
-            'responsive' => false,
             'class' => Style::BASE_STYLE,
             'individual_filtering' => false,
             'individual_filtering_position' => 'foot',
-            'use_integration_options' => false
+            'use_integration_options' => false,
+            'force_dom' => false
         ));
 
         $resolver->setAllowedTypes('display_start', 'int');
@@ -272,38 +220,13 @@ class Options
         $resolver->setAllowedTypes('search_delay', 'int');
         $resolver->setAllowedTypes('state_duration', 'int');
         $resolver->setAllowedTypes('stripe_classes', 'array');
-        $resolver->setAllowedTypes('responsive', 'bool');
         $resolver->setAllowedTypes('class', 'string');
         $resolver->setAllowedTypes('individual_filtering', 'bool');
         $resolver->setAllowedTypes('individual_filtering_position', 'string');
         $resolver->setAllowedTypes('use_integration_options', 'bool');
+        $resolver->setAllowedTypes('force_dom', 'bool');
 
         $resolver->setAllowedValues('individual_filtering_position', array('head', 'foot', 'both'));
-
-        return $this;
-    }
-
-    /**
-     * Calling setters with options.
-     *
-     * @param array $options
-     *
-     * @return $this
-     * @throws Exception
-     */
-    private function callingSettersWithOptions(array $options)
-    {
-        $methods = get_class_methods($this);
-
-        foreach ($options as $key => $value) {
-            $key = Container::camelize($key);
-            $method = 'set' . ucfirst($key);
-            if (in_array($method, $methods)) {
-                $this->$method($value);
-            } else {
-                throw new Exception('callingSettersWithOptions(): ' . $method . ' invalid method name');
-            }
-        }
 
         return $this;
     }
@@ -437,7 +360,7 @@ class Options
      *
      * @param array $order
      *
-     * @throws Exception
+     * @throws \Exception
      * @return $this
      */
     protected function setOrder(array $order)
@@ -660,30 +583,6 @@ class Options
     }
 
     /**
-     * Set responsive.
-     *
-     * @param boolean $responsive
-     *
-     * @return $this
-     */
-    protected function setResponsive($responsive)
-    {
-        $this->responsive = (boolean) $responsive;
-
-        return $this;
-    }
-
-    /**
-     * Get responsive.
-     *
-     * @return boolean
-     */
-    public function getResponsive()
-    {
-        return (boolean) $this->responsive;
-    }
-
-    /**
      * Set class.
      *
      * @param string $class
@@ -746,7 +645,7 @@ class Options
     }
 
     /**
-     * Set individual filtering position.
+     * Get individual filtering position.
      *
      * @return string
      */
@@ -770,12 +669,36 @@ class Options
     }
 
     /**
-     * Set use integration options.
+     * Get use integration options.
      *
      * @return boolean
      */
     public function getUseIntegrationOptions()
     {
         return $this->useIntegrationOptions;
+    }
+
+    /**
+     * Set force dom.
+     *
+     * @param boolean $forceDom
+     *
+     * @return $this
+     */
+    protected function setForceDom($forceDom)
+    {
+        $this->forceDom = $forceDom;
+
+        return $this;
+    }
+
+    /**
+     * Get force dom.
+     *
+     * @return boolean
+     */
+    public function getForceDom()
+    {
+        return $this->forceDom;
     }
 }
