@@ -115,6 +115,11 @@ class DatatableQuery
     /**
      * @var array
      */
+    private $selects;
+
+    /**
+     * @var array
+     */
     private $callbacks;
 
     /**
@@ -204,6 +209,7 @@ class DatatableQuery
         $this->joins = array();
         $this->searchColumns = array();
         $this->orderColumns = array();
+        $this->selects = array();
         $this->callbacks = array();
         $this->columns = $datatableView->getColumnBuilder()->getColumns();
 
@@ -265,6 +271,9 @@ class DatatableQuery
     /**
      * Setup column arrays.
      *
+     * @author stwe <https://github.com/stwe>
+     * @author Gaultier Boniface <https://github.com/wysow>
+     *
      * @return $this
      */
     private function setupColumnArrays()
@@ -296,39 +305,40 @@ class DatatableQuery
                         $this->selectColumns[$this->tableName][] = $data;
                     }
                 } else {
-                    $array = explode('.', $data);
-                    $count = count($array);
+                    $replaced = str_replace('.', '_', $data);
+                    $parts = explode('_', $replaced);
+                    $last = array_pop($parts);
 
-                    if ($count > 2) {
-                        $replaced = str_replace('.', '_', $data);
-                        $parts = explode('_', $replaced);
-                        $last = array_pop($parts);
+                    $previousPart = $this->tableName;
+                    $currentPart = null;
+                    $metadata = null;
+                    $select = null;
+
+                    while (count($parts) > 0) {
                         $select = implode('_', $parts);
-                        $join = str_replace('_', '.', $select);
 
-                        // id root-table
-                        if (false === array_key_exists($array[0], $this->selectColumns)) {
-                            $this->setIdentifierFromAssociation($array[0]);
+                        if (in_array($select, $this->selects)) {
+                            $select .= '_'.uniqid();
                         }
-                        $this->joins[$this->tableName . '.' . $array[0]] = $array[0];
 
-                        // id association
+                        $this->selects[] = $select;
+                        $currentPart = array_shift($parts);
+
+                        if (!array_key_exists($previousPart.'.'.$currentPart, $this->joins)) {
+                            $this->joins[$previousPart.'.'.$currentPart] = $select;
+                        } else {
+                            $select = $this->joins[$previousPart.'.'.$currentPart];
+                        }
+
                         if (false === array_key_exists($select, $this->selectColumns)) {
-                            $this->setIdentifierFromAssociation($parts, $select);
-                        }
-                        $this->joins[$join] = $select;
-
-                        $this->selectColumns[$select][] = $last;
-                        $this->addSearchOrderColumn($key, $select, $last);
-                    } else {
-                        if (false === array_key_exists($array[0], $this->selectColumns)) {
-                            $this->setIdentifierFromAssociation($array[0]);
+                            $metadata = $this->setIdentifierFromAssociation($select, $currentPart, $metadata);
                         }
 
-                        $this->selectColumns[$array[0]][] = $array[1];
-                        $this->joins[$this->tableName . '.' . $array[0]] = $array[0];
-                        $this->addSearchOrderColumn($key, $array[0], $array[1]);
+                        $previousPart = $select;
                     }
+
+                    $this->selectColumns[$select][] = $last;
+                    $this->addSearchOrderColumn($key, $select, $last);
                 }
             } else {
                 $this->orderColumns[] = null;
@@ -871,42 +881,26 @@ class DatatableQuery
     /**
      * Set identifier from association.
      *
+     * @author Gaultier Boniface <https://github.com/wysow>
+     *
      * @param string|array       $association
      * @param string             $key
-     * @param integer            $i
      * @param ClassMetadata|null $metadata
      *
-     * @return $this
+     * @return ClassMetadata
      * @throws Exception
      */
-    private function setIdentifierFromAssociation($association, $key = '', $i = 0, $metadata = null)
+    private function setIdentifierFromAssociation($association, $key, $metadata = null)
     {
         if (null === $metadata) {
             $metadata = $this->metadata;
         }
 
-        if (is_string($association)) {
-            $targetEntityClass = $metadata->getAssociationTargetClass($association);
-            $targetMetadata = $this->getMetadata($targetEntityClass);
-            $this->selectColumns[$association][] = $this->getIdentifier($targetMetadata);
-        }
+        $targetEntityClass = $metadata->getAssociationTargetClass($key);
+        $targetMetadata = $this->getMetadata($targetEntityClass);
+        $this->selectColumns[$association][] = $this->getIdentifier($targetMetadata);
 
-        if (is_array($association) && array_key_exists($i, $association)) {
-            $column = $association[$i];
-            $count = count($association) - 1;
-            if (true === $metadata->hasAssociation($column)) {
-                $targetEntityClass = $metadata->getAssociationTargetClass($column);
-                $targetMetadata = $this->getMetadata($targetEntityClass);
-                if ($count == $i) {
-                    $this->selectColumns[$key][] = $this->getIdentifier($targetMetadata);
-                } else {
-                    $i++;
-                    $this->setIdentifierFromAssociation($association, $key, $i, $targetMetadata);
-                }
-            }
-        }
-
-        return $this;
+        return $targetMetadata;
     }
 
     /**
