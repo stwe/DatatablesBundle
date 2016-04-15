@@ -11,10 +11,12 @@
 
 namespace Sg\DatatablesBundle\Datatable\Data;
 
+use Sg\DatatablesBundle\Datatable\Column\Column;
 use Sg\DatatablesBundle\Datatable\View\DatatableViewInterface;
 use Sg\DatatablesBundle\Datatable\Column\AbstractColumn;
 use Sg\DatatablesBundle\Datatable\Column\ImageColumn;
 use Sg\DatatablesBundle\Datatable\Column\GalleryColumn;
+use Sg\DatatablesBundle\Datatable\Column\ActionColumn;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Serializer;
@@ -23,7 +25,6 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;
@@ -147,11 +148,14 @@ class DatatableQuery
     private $doctrineExtensions;
 
     /**
-     * The locale.
-     *
      * @var string
      */
     private $locale;
+
+    /**
+     * @var boolean
+     */
+    private $isPostgreSQLConnection;
 
     //-------------------------------------------------
     // Ctor.
@@ -209,9 +213,49 @@ class DatatableQuery
         $this->imagineBundle = $imagineBundle;
         $this->doctrineExtensions = $doctrineExtensions;
         $this->locale = $locale;
+        $this->isPostgreSQLConnection = false;
 
         $this->setLineFormatter();
         $this->setupColumnArrays();
+
+        $this->setupPostgreSQL();
+    }
+
+    //-------------------------------------------------
+    // PostgreSQL
+    //-------------------------------------------------
+
+    /**
+     * Setup PostgreSQL
+     *
+     * @return $this
+     * @throws \Doctrine\ORM\ORMException
+     */
+    private function setupPostgreSQL()
+    {
+        if ($this->em->getConnection()->getDriver()->getName() === 'pdo_pgsql') {
+            $this->isPostgreSQLConnection = true;
+            $this->em->getConfiguration()->addCustomStringFunction('CAST', '\Sg\DatatablesBundle\DQL\CastFunction');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Cast search field.
+     *
+     * @param string         $searchField
+     * @param AbstractColumn $column
+     *
+     * @return string
+     */
+    private function cast($searchField, AbstractColumn $column)
+    {
+        if ('datetime' === $column->getAlias() || 'boolean' === $column->getAlias() || 'column' === $column->getAlias()) {
+            return 'CAST('.$searchField.' AS text)';
+        }
+
+        return $searchField;
     }
 
     //-------------------------------------------------
@@ -477,6 +521,11 @@ class DatatableQuery
             foreach ($this->columns as $key => $column) {
                 if (true === $this->isSearchColumn($column)) {
                     $searchField = $this->searchColumns[$key];
+
+                    if (true === $this->isPostgreSQLConnection) {
+                        $searchField = $this->cast($searchField, $column);
+                    }
+
                     $orExpr->add($qb->expr()->like($searchField, '?' . $key));
                     $qb->setParameter($key, '%' . $globalSearch . '%');
                 }
@@ -494,26 +543,15 @@ class DatatableQuery
             foreach ($this->columns as $key => $column) {
 
                 if (true === $this->isSearchColumn($column)) {
-                    $searchType = $column->getSearchType();
+                    $filter = $column->getFilter();
                     $searchField = $this->searchColumns[$key];
                     $searchValue = $this->requestParams['columns'][$key]['search']['value'];
-                    $searchRange = $this->requestParams['columns'][$key]['name'] === 'daterange';
                     if ('' != $searchValue && 'null' != $searchValue) {
-                        if ($searchRange) {
-                            list($_dateStart, $_dateEnd) = explode(' - ', $searchValue);
-                            $dateStart = new \DateTime($_dateStart);
-                            $dateEnd = new \DateTime($_dateEnd);
-                            $dateEnd->setTime(23, 59, 59);
-
-                            $k = $i + 1;
-                            $andExpr->add($qb->expr()->between($searchField, '?' . $i, '?' . $k));
-                            $qb->setParameter($i, $dateStart->format('Y-m-d H:i:s'));
-                            $qb->setParameter($k, $dateEnd->format('Y-m-d H:i:s'));
-                            $i += 2;
-                        } else {
-                            $andExpr = $this->addCondition($andExpr, $qb, $searchType, $searchField, $searchValue, $i);
-                            $i++;
+                        if (true === $this->isPostgreSQLConnection) {
+                            $searchField = $this->cast($searchField, $column);
                         }
+
+                        $andExpr = $filter->addAndExpression($andExpr, $qb, $searchField, $searchValue, $i);
                     }
                 }
             }
@@ -524,72 +562,6 @@ class DatatableQuery
         }
 
         return $this;
-    }
-
-    /**
-     * Add a condition.
-     *
-     * @param Andx         $andExpr
-     * @param QueryBuilder $pivot
-     * @param string       $searchType
-     * @param string       $searchField
-     * @param string       $searchValue
-     * @param integer      $i
-     *
-     * @return Andx
-     */
-    private function addCondition(Andx $andExpr, QueryBuilder $pivot, $searchType, $searchField, $searchValue, $i)
-    {
-        switch ($searchType) {
-            case 'like':
-                $andExpr->add($pivot->expr()->like($searchField, '?' . $i));
-                $pivot->setParameter($i, '%' . $searchValue . '%');
-                break;
-            case 'notLike':
-                $andExpr->add($pivot->expr()->notLike($searchField, '?' . $i));
-                $pivot->setParameter($i, '%' . $searchValue . '%');
-                break;
-            case 'eq':
-                $andExpr->add($pivot->expr()->eq($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
-                break;
-            case 'neq':
-                $andExpr->add($pivot->expr()->neq($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
-                break;
-            case 'lt':
-                $andExpr->add($pivot->expr()->lt($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
-                break;
-            case 'lte':
-                $andExpr->add($pivot->expr()->lte($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
-                break;
-            case 'gt':
-                $andExpr->add($pivot->expr()->gt($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
-                break;
-            case 'gte':
-                $andExpr->add($pivot->expr()->gte($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
-                break;
-            case 'in':
-                $andExpr->add($pivot->expr()->in($searchField, '?' . $i));
-                $pivot->setParameter($i, explode(',', $searchValue));
-                break;
-            case 'notIn':
-                $andExpr->add($pivot->expr()->notIn($searchField, '?' . $i));
-                $pivot->setParameter($i, explode(",", $searchValue));
-                break;
-            case 'isNull':
-                $andExpr->add($pivot->expr()->isNull($searchField));
-                break;
-            case 'isNotNull':
-                $andExpr->add($pivot->expr()->isNotNull($searchField));
-                break;
-        }
-
-        return $andExpr;
     }
 
     /**
@@ -718,6 +690,14 @@ class DatatableQuery
     // Response
     //-------------------------------------------------
 
+    /**
+     * Get response.
+     *
+     * @param bool $buildQuery
+     *
+     * @return Response
+     * @throws Exception
+     */
     public function getResponse($buildQuery = true, $limit = true)
     {
         false === $buildQuery ? : $this->buildQuery($limit);
@@ -772,6 +752,25 @@ class DatatableQuery
                     } else {
                         throw new InvalidArgumentException('getResponse(): Bundle "LiipImagineBundle" does not exist or it is not enabled.');
                     }
+                }
+
+                /** @var ActionColumn $column */
+                if ('action' === $column->getAlias()) {
+                    $column->checkVisibility($item);
+                }
+
+                /** @var Column $column */
+                if (null !== $column->getHelperTemplate()) {
+                    $_data = $item;
+                    foreach($columnNames = explode('.', $data) as $part) {
+                        $_data = $_data[$part];
+                    }
+
+                    $item[implode('_', $columnNames)] = $this->twig->render($column->getHelperTemplate(), array(
+                            'data' => $_data,
+                            'column' => $column
+                        )
+                    );
                 }
             }
 
