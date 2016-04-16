@@ -641,20 +641,35 @@ class DatatableQuery
      * Query results after filtering.
      *
      * @param integer $rootEntityIdentifier
+     * @param bool    $buildQuery
      *
      * @return int
      */
-    private function getCountFilteredResults($rootEntityIdentifier)
+    private function getCountFilteredResults($rootEntityIdentifier, $buildQuery = true)
     {
-        $qb = $this->em->createQueryBuilder();
-        $qb->select('count(distinct ' . $this->tableName . '.' . $rootEntityIdentifier . ')');
-        $qb->from($this->entity, $this->tableName);
+        if (true === $buildQuery) {
+            $qb = $this->em->createQueryBuilder();
+            $qb->select('count(distinct ' . $this->tableName . '.' . $rootEntityIdentifier . ')');
+            $qb->from($this->entity, $this->tableName);
 
-        $this->setLeftJoins($qb);
-        $this->setWhere($qb);
-        $this->setWhereAllCallback($qb);
+            $this->setLeftJoins($qb);
+            $this->setWhere($qb);
+            $this->setWhereAllCallback($qb);
 
-        return (int) $qb->getQuery()->getSingleScalarResult();
+            return (int) $qb->getQuery()->getSingleScalarResult();
+        } else {
+            $this
+                ->qb
+                ->setFirstResult(null)
+                ->setMaxResults(null)
+                ->select('count(distinct ' . $this->tableName . '.' . $rootEntityIdentifier . ')');
+            if (true === $this->isPostgreSQLConnection) {
+                $this->qb->groupBy($this->tableName . '.' . $rootEntityIdentifier);
+                return count($this->qb->getQuery()->getResult());
+            } else {
+                return (int) $this->qb->getQuery()->getSingleScalarResult();
+            }
+        }
     }
 
     /**
@@ -787,7 +802,7 @@ class DatatableQuery
         $outputHeader = array(
             'draw' => (int) $this->requestParams['draw'],
             'recordsTotal' => (int) $this->getCountAllResults($this->rootEntityIdentifier),
-            'recordsFiltered' => (int) $this->getCountFilteredResults($this->rootEntityIdentifier)
+            'recordsFiltered' => (int) $this->getCountFilteredResults($this->rootEntityIdentifier, $buildQuery)
         );
 
         $json = $this->serializer->serialize(array_merge($outputHeader, $output), 'json');
