@@ -68,16 +68,16 @@
                 {% include "SgDatatablesBundle:Datatable:before_events.js.twig" %}
                 .DataTable(defaults)
                         .on('draw.dt', function() {
-                            make_fields_editable()
+                            {% include "SgDatatablesBundle:Datatable:editable.html.twig" %}
                         })
                         {% include "SgDatatablesBundle:Datatable:after_events.js.twig" %}
                         {% if view_features.extensions.responsive is defined %}
                             {% if true == view_features.extensions.responsive %}
                                 .on( 'responsive-display', function ( e, datatable, row, showHide, update ) {
                                     if (showHide) {
-                                        make_fields_editable()
+                                        {% include "SgDatatablesBundle:Datatable:editable.html.twig" %}
                                     }
-                                })
+                                });
                             {% endif %}
                         {% endif %}
             }
