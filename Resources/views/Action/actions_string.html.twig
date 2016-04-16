@@ -17,7 +17,7 @@ roleFlag = true;
     {% endif %}
 {% endif %}
 
-if (row.actions.{{ action.route }} && true == roleFlag) {
+if (row.actions["{{ action.route }}"] && true == roleFlag) {
     {% for key, value in action.routeParameters %}
         routeParameters["{{ key }}"] = row.{{ value }};
     {% endfor %}
