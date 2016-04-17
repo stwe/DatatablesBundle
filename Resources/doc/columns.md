@@ -777,29 +777,4 @@ use it in the Datatable class:
 .
 
 - Define `getTemplate` to talk to datatables api : (ex. `SgDatatablesBundle:Column:column.html.twig`)
-- Define `getHelperTemplate` to define complexe and custom template : (ex. `SgDatatablesBundle:Helper:your_helper_template.html.twig`)
-
-The entry point is in `DatatableQuery`::`getResponse()` method:
-
-```php
-...
-    /** @var Column $column */
-    if (null !== $column->getHelperTemplate()) {
-        $_data = $item;
-        foreach($columnNames = explode('.', $data) as $part) {
-            $_data = $_data[$part];
-        }
-
-        $item[implode('_', $columnNames)] = $this->twig->render($column->getHelperTemplate(), [
-            'data' => $_data,
-            'column' => $column
-        ]);
-    }
-...
-```
-
-You can notice we render the helper template with the `data` (ex. `name` or `client.name` in a ManyToOne case) and the
-whole `column` instance so you'll be able to access to them in the `helper template`.
-
-
-- Define `configureOptions` to be able to pass some options when using your column.
+- Implement the `renderContent` function to render complexe contents
