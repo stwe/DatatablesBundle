@@ -11,6 +11,7 @@
            class="individual_filtering sg-daterange{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
            style="{% if column.width %} width:{{ column.width }};{% endif %}"
            placeholder="{{ column.title|striptags|trim }}"
+           data-filter-property-id="{{ filterColumnId }}"
            {% if column.name %}name="{{ column.name }}"{% endif %} />
 {% endblock %}
 {% block javascript %}
