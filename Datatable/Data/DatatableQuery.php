@@ -468,6 +468,23 @@ class DatatableQuery
         return $this;
     }
 
+    public function addResponseCallback($callback)
+    {
+        $this->callbacks['Response'][] = $callback;
+
+        return $this;
+    }
+
+    private function applyResponseCallbacks($data)
+    {
+        if (!empty($this->callbacks['Response'])) {
+            foreach ($this->callbacks['Response'] as $callback) {
+                $data = $callback($data, $this);
+            }
+        }
+        return $data;
+    }
+
     //-------------------------------------------------
     // Build a query
     //-------------------------------------------------
@@ -748,7 +765,10 @@ class DatatableQuery
             'recordsFiltered' => (int) $this->getCountFilteredResults($this->rootEntityIdentifier, $buildQuery)
         );
 
-        $json = $this->serializer->serialize(array_merge($outputHeader, $output), 'json');
+        $fullOutput = array_merge($outputHeader, $output);
+        $fullOutput = $this->applyResponseCallbacks($fullOutput);
+
+        $json = $this->serializer->serialize($fullOutput, 'json');
         $response = new Response($json);
         $response->headers->set('Content-Type', 'application/json');
 
