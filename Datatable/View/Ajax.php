@@ -45,11 +45,13 @@ class Ajax extends AbstractViewOptions
     {
         $resolver->setDefaults(array(
             'url' => '',
-            'type' => 'GET'
+            'type' => 'GET',
+            'data' => ''
         ));
 
         $resolver->setAllowedTypes('url', 'string');
         $resolver->setAllowedTypes('type', 'string');
+        $resolver->setAllowedTypes('data', 'string');
 
         $resolver->setAllowedValues('type', array('GET', 'POST', 'get', 'post'));
 
@@ -106,5 +108,30 @@ class Ajax extends AbstractViewOptions
     public function getType()
     {
         return $this->type;
+    }
+
+
+    /**
+     * Set Data.
+     *
+     * @param string $data
+     *
+     * @return $this
+     */
+    protected function setData($data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * Get Data.
+     *
+     * @return string
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 }

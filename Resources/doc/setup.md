@@ -222,6 +222,7 @@ function order() {
 |------  |--------|---------|
 | url    | string | ''      |
 | type   | string | 'GET'   |
+| data   | string | ''      |
 
 ## 8. Name
 Since the datatable class should extend the ``AbstractDatatableView`` and this one implements ``DatatableViewInterface``, a ``getName`` method is required. The returned value **must only include letters, numbers, underscores or dashes** as it will be a seed for the id of the generated container of the datatable.

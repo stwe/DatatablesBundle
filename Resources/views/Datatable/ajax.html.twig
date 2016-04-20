@@ -2,6 +2,7 @@
     "serverSide": true,
     "ajax": {
         "url": "{{ view_ajax.url }}",
+{% if view_ajax.data %}        "data": {{ view_ajax.data }},{% endif %}
         "type": "{{ view_ajax.type }}"
     },
 {% else %}
