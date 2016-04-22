@@ -93,6 +93,7 @@
 | individual_filtering          | bool   | false                                      |
 | individual_filtering_position | string | 'foot'                                     |
 | use_integration_options       | bool   | false                                      |
+| load_on_document_ready        | bool   | true                                       |
 
 # Ajax options
 
