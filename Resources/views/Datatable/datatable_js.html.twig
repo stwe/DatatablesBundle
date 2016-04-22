@@ -1,6 +1,13 @@
 <script type="text/javascript">
 
-    $(document).ready(function () {
+    {% if true == view_options.isLoadOnDocumentReady %}
+    $(document).ready(function()
+    {
+        initialize_{{ view_table_id }}();
+    });
+    {% endif %}
+
+    function initialize_{{ view_table_id }}() {
 
         var selector = "#{{ view_table_id }}";
 
