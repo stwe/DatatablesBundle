@@ -12,6 +12,9 @@ To all russian and polish speaking contributors. Please help me to update the tr
 
 ## Recent Important Changes
 
+The ClientSide mode is no longer supported by me!
+
+- unlimited nested association support and fix filtered counter when using a custom query
 - start for PostgreSql support
 - Datatable Events supported
 - some new translations
@@ -106,13 +109,11 @@ Much like every other piece of software `SgDatatablesBundle` is not perfect and 
 
 ### Use this Bundle in ServerSide mode
 
-The ClientSide mode currently does not work with all features. There are some problems with the Buttons-Extension and MultiSelectColumn. 
-At the moment I can not say whether the ClientSide mode is supported by me in the future. Priority has the ServerSide mode.
+The ClientSide mode is no longer supported by me.
 
 ### Other limitations
 
 - This bundle does not support multiple Ids
-- 4th level associations are currently not supported
 - Searching and filtering on a virtual column not yet implemented and disabled by default
 - PostgreSql is currently not fully supported
 

@@ -11,8 +11,11 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\Datatable\Data\DatatableQuery;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
+use Twig_Environment;
 
 /**
  * Class ImageColumn
@@ -90,6 +93,49 @@ class ImageColumn extends AbstractColumn
     public function getTemplate()
     {
         return 'SgDatatablesBundle:Column:image.html.twig';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function renderContent(&$item, DatatableQuery $datatableQuery = null)
+    {
+        if (true === $datatableQuery->getImagineBundle()) {
+            $item[$this->getDql()] = $this->renderImage($item[$this->getDql()], $datatableQuery->getTwig());
+        } else {
+            $item[$this->getDql()] = $datatableQuery->getTwig()->render(
+                'SgDatatablesBundle:Helper:render_image.html.twig',
+                array(
+                    'image_name' => $item[$this->getDql()],
+                    'path' => $this->getRelativePath()
+                )
+            );
+        }
+    }
+
+    /**
+     * Render image.
+     *
+     * @param string|null      $imageName
+     * @param Twig_Environment $twig
+     *
+     * @return string
+     */
+    protected function renderImage($imageName, Twig_Environment $twig)
+    {
+        return $twig->render(
+            'SgDatatablesBundle:Helper:ii_render_image.html.twig',
+            array(
+                'image_id' => 'sg_image_' . uniqid(rand(10000, 99999)),
+                'image_name' => $imageName,
+                'filter' => $this->getImagineFilter(),
+                'path' => $this->getRelativePath(),
+                'holder_url' => $this->getHolderUrl(),
+                'width' => $this->getHolderWidth(),
+                'height' => $this->getHolderHeight(),
+                'enlarge' => $this->getEnlarge()
+            )
+        );
     }
 
     /**
