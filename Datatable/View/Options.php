@@ -174,6 +174,13 @@ class Options
      */
     protected $useIntegrationOptions;
 
+    /**
+     * Load table on $(document).ready().
+     *
+     * @var boolean
+     */
+    protected $loadOnDocumentReady;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -236,7 +243,8 @@ class Options
             'class' => Style::BASE_STYLE,
             'individual_filtering' => false,
             'individual_filtering_position' => 'foot',
-            'use_integration_options' => false
+            'use_integration_options' => false,
+            'load_on_document_ready' => true
         ));
 
         $resolver->setAllowedTypes('display_start', 'int');
@@ -758,5 +766,21 @@ class Options
     public function getUseIntegrationOptions()
     {
         return $this->useIntegrationOptions;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isLoadOnDocumentReady()
+    {
+        return $this->loadOnDocumentReady;
+    }
+
+    /**
+     * @param boolean $loadOnDocumentReady
+     */
+    public function setLoadOnDocumentReady($loadOnDocumentReady)
+    {
+        $this->loadOnDocumentReady = $loadOnDocumentReady;
     }
 }
