@@ -94,8 +94,7 @@ $ php app/console sg:datatable:generate AppBundle:Post
 ```yaml
 app.datatable.post:
     class: AppBundle\Datatables\PostDatatable
-    tags:
-        - { name: sg.datatable.view }
+    parent: sg_datatables.view.abstract
 ```
 
 ### Step 6: Create your index.html.twig

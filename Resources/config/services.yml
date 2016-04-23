@@ -1,18 +1,38 @@
 services:
     sg_datatables.serializer.method:
         class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
+
     sg_datatables.serializer.encoder.json:
         class: Symfony\Component\Serializer\Encoder\JsonEncoder
+
     sg_datatables.serializer:
         class: Symfony\Component\Serializer\Serializer
         arguments:
             - ['@sg_datatables.serializer.method']
             - ['@sg_datatables.serializer.encoder.json']
+
     sg_datatables.twig.extension:
         class: Sg\DatatablesBundle\Twig\DatatableTwigExtension
         arguments: ['@translator']
         tags:
             - { name: twig.extension }
+
+    sg_datatables.view.abstract:
+        class: Sg\DatatablesBundle\Datatable\View\AbstractDatatableView
+        abstract: true
+        arguments:
+            - '@security.authorization_checker'
+            - '@security.token_storage'
+            - '@twig'
+            - '@translator.default'
+            - '@router'
+            - '@doctrine.orm.entity_manager'
+            - '%sg_datatables.datatable.templates%'
+
     sg_datatables.query:
         class: Sg\DatatablesBundle\Datatable\Data\DatatableDataManager
-        arguments: ['@request_stack', '@sg_datatables.serializer', %sg_datatables.datatable.query%, %kernel.bundles%]
+        arguments:
+            - '@request_stack'
+            - '@sg_datatables.serializer'
+            - '%sg_datatables.datatable.query%'
+            - '%kernel.bundles%'
