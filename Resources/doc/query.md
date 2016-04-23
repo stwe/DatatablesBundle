@@ -75,3 +75,42 @@ public function indexResultsAction()
     return $query->getResponse(false); // important: $query->getResponse(false) instead $query->getResponse()
 }
 ```
+
+## 4. Response callback
+
+This can be used to change the response data of a datatable query after the datatable specific information are added and before it is rendered.
+The first parameter passed to the callbacks are the response data and the second parameter is the DatatableQuery object.
+
+```php
+public function indexResultsAction()
+{
+    $datatable = $this->get('app.datatable.comment');
+    $datatable->buildDatatable();
+
+    $query = $this->get('sg_datatables.query')->getQueryFrom($datatable);
+
+    $function = function($data, DatatableQuery $query)
+    {
+        $data['custom_value'] = 123;
+        return $data;
+    };
+
+    $query->addResponseCallback($function);
+
+    return $query->getResponse();
+}
+```
+
+After the example above the JSON output will look like this:
+
+```json
+{
+  "draw": 1,
+  "data": [
+    ...
+  ],
+  "recordsTotal": 100,
+  "recordsFiltered": 30,
+  "custom_value": 123
+}
+```
