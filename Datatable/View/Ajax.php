@@ -34,6 +34,13 @@ class Ajax extends AbstractViewOptions
      */
     protected $type;
 
+    /**
+     * Send extra data in the request.
+     *
+     * @var string
+     */
+    protected $data;
+
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -45,11 +52,13 @@ class Ajax extends AbstractViewOptions
     {
         $resolver->setDefaults(array(
             'url' => '',
-            'type' => 'GET'
+            'type' => 'GET',
+            'data' => '',
         ));
 
         $resolver->setAllowedTypes('url', 'string');
         $resolver->setAllowedTypes('type', 'string');
+        $resolver->setAllowedTypes('data', 'string');
 
         $resolver->setAllowedValues('type', array('GET', 'POST', 'get', 'post'));
 
@@ -107,4 +116,21 @@ class Ajax extends AbstractViewOptions
     {
         return $this->type;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @param mixed $data
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+    }
+
 }

@@ -3,6 +3,10 @@
     "ajax": {
         "url": "{{ view_ajax.url }}",
         "type": "{{ view_ajax.type }}"
+
+        {% if view_ajax.data %}
+        ,"data": {{ view_ajax.data|raw }}
+        {% endif %}
     },
 {% else %}
     "serverSide": false,
