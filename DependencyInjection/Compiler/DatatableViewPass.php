@@ -32,7 +32,7 @@ class DatatableViewPass implements CompilerPassInterface
         $taggedServices = $container->findTaggedServiceIds('sg.datatable.view');
 
         foreach ($taggedServices as $id => $tags) {
-            @trigger_error("Tagging datatables view services is deprecated. Use 'sg_datatables.view.abstract' as parent service", E_USER_DEPRECATED);
+            @trigger_error("Tagging datatables view services is deprecated. Use 'sg_datatables.datatable.abstract' as parent service", E_USER_DEPRECATED);
 
             $def = $container->getDefinition($id);
             $def->addArgument(new Reference('security.authorization_checker'));

@@ -92,9 +92,10 @@ $ php app/console sg:datatable:generate AppBundle:Post
 ### Step 5: Registering your Datatable class as a Service
 
 ```yaml
-app.datatable.post:
-    class: AppBundle\Datatables\PostDatatable
-    parent: sg_datatables.view.abstract
+services:
+    app.datatable.post:
+        class: AppBundle\Datatables\PostDatatable
+        parent: sg_datatables.datatable.abstract
 ```
 
 ### Step 6: Create your index.html.twig

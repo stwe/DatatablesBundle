@@ -14,6 +14,15 @@ To all russian and polish speaking contributors. Please help me to update the tr
 
 The ClientSide mode is no longer supported by me!
 
+- use parent service instead of tagging datatables view class
+
+```yml
+services:
+    app.datatable.post:
+        class: AppBundle\Datatables\PostDatatable
+        parent: sg_datatables.datatable.abstract
+```
+
 - unlimited nested association support and fix filtered counter when using a custom query
 - start for PostgreSql support
 - Datatable Events supported

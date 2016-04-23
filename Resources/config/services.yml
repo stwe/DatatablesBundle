@@ -17,7 +17,7 @@ services:
         tags:
             - { name: twig.extension }
 
-    sg_datatables.view.abstract:
+    sg_datatables.datatable.abstract:
         class: Sg\DatatablesBundle\Datatable\View\AbstractDatatableView
         abstract: true
         arguments:
