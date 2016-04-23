@@ -468,6 +468,13 @@ class DatatableQuery
         return $this;
     }
 
+    /**
+     * Add response callback.
+     *
+     * @param mixed $callback
+     *
+     * @return $this
+     */
     public function addResponseCallback($callback)
     {
         $this->callbacks['Response'][] = $callback;
@@ -475,13 +482,21 @@ class DatatableQuery
         return $this;
     }
 
-    private function applyResponseCallbacks($data)
+    /**
+     * Apply response callbacks.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    private function applyResponseCallbacks(array $data)
     {
         if (!empty($this->callbacks['Response'])) {
             foreach ($this->callbacks['Response'] as $callback) {
                 $data = $callback($data, $this);
             }
         }
+
         return $data;
     }
 
