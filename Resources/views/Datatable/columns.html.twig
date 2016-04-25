@@ -1,5 +1,6 @@
 "columns": [
     {% for column in view_columns %}
+         {% if loop.index > 1 %},{% endif %}
         {% include column.getTemplate %}
     {% endfor %}
 ]
