@@ -47,6 +47,9 @@ class FilterFactory
             case 'daterange':
                 return new DateRangeFilter();
                 break;
+            case 'slider':
+                return new SliderFilter();
+                break;
             default:
                 throw new InvalidArgumentException('createFilterByType(): The filter-type is not supported.');
         }

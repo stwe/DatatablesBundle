@@ -34,7 +34,7 @@ interface FilterInterface
      * @param Andx         $andExpr
      * @param QueryBuilder $pivot
      * @param string       $searchField
-     * @param string       $searchValue
+     * @param mixed        $searchValue
      * @param integer      $i
      *
      * @return Andx
