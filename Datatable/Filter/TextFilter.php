@@ -39,55 +39,7 @@ class TextFilter extends AbstractFilter
      */
     public function addAndExpression(Andx $andExpr, QueryBuilder $pivot, $searchField, $searchValue, &$i)
     {
-        switch ($this->getSearchType()) {
-            case 'like':
-                $andExpr->add($pivot->expr()->like($searchField, '?' . $i));
-                $pivot->setParameter($i, '%' . $searchValue . '%');
-                break;
-            case 'notLike':
-                $andExpr->add($pivot->expr()->notLike($searchField, '?' . $i));
-                $pivot->setParameter($i, '%' . $searchValue . '%');
-                break;
-            case 'eq':
-                $andExpr->add($pivot->expr()->eq($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
-                break;
-            case 'neq':
-                $andExpr->add($pivot->expr()->neq($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
-                break;
-            case 'lt':
-                $andExpr->add($pivot->expr()->lt($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
-                break;
-            case 'lte':
-                $andExpr->add($pivot->expr()->lte($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
-                break;
-            case 'gt':
-                $andExpr->add($pivot->expr()->gt($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
-                break;
-            case 'gte':
-                $andExpr->add($pivot->expr()->gte($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
-                break;
-            case 'in':
-                $andExpr->add($pivot->expr()->in($searchField, '?' . $i));
-                $pivot->setParameter($i, explode(',', $searchValue));
-                break;
-            case 'notIn':
-                $andExpr->add($pivot->expr()->notIn($searchField, '?' . $i));
-                $pivot->setParameter($i, explode(",", $searchValue));
-                break;
-            case 'isNull':
-                $andExpr->add($pivot->expr()->isNull($searchField));
-                break;
-            case 'isNotNull':
-                $andExpr->add($pivot->expr()->isNotNull($searchField));
-                break;
-        }
-
+        $andExpr = $this->getAndExpression($andExpr, $pivot, $searchField, $searchValue, $i);
         $i++;
 
         return $andExpr;

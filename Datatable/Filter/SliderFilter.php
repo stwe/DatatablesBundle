@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * @package Sg\DatatablesBundle\Datatable\Filter
  */
-class SliderFilter extends TextFilter
+class SliderFilter extends AbstractFilter
 {
     /**
      * Minimum possible value.
@@ -198,16 +198,13 @@ class SliderFilter extends TextFilter
         if (true === $this->range) {
             $array = explode(',', $searchValue);
             list($searchMin, $searchMax) = $array;
-        } else {
-            $searchMin = $this->min;
-            $searchMax = $searchValue;
-        }
 
-        $k = $i + 1;
-        $andExpr->add($pivot->expr()->between($searchField, '?' . $i, '?' . $k));
-        $pivot->setParameter($i, $searchMin);
-        $pivot->setParameter($k, $searchMax);
-        $i += 2;
+            $andExpr = $this->getBetweenAndExpression($andExpr, $pivot, $searchField, $searchMin, $searchMax, $i);
+            $i += 2;
+        } else {
+            $andExpr = $this->getAndExpression($andExpr, $pivot, $searchField, $searchValue, $i);
+            $i++;
+        }
 
         return $andExpr;
     }
@@ -229,9 +226,11 @@ class SliderFilter extends TextFilter
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        parent::configureOptions($resolver);
-
         $resolver->setDefaults(array(
+            'search_type' => 'eq',
+            'property' => '',
+            'search_column' => '',
+            'class' => '',
             'min' => 0.0,
             'max' => 10.0,
             'step' => 1.0,
@@ -256,6 +255,10 @@ class SliderFilter extends TextFilter
             'labelledby' => null,
         ));
 
+        $resolver->setAllowedTypes('search_type', 'string');
+        $resolver->setAllowedTypes('property', 'string');
+        $resolver->setAllowedTypes('search_column', 'string');
+        $resolver->setAllowedTypes('class', 'string');
         $resolver->setAllowedTypes('min', 'float');
         $resolver->setAllowedTypes('max', 'float');
         $resolver->setAllowedTypes('step', 'float');
@@ -279,6 +282,7 @@ class SliderFilter extends TextFilter
         $resolver->setAllowedTypes('focus', 'bool');
         $resolver->setAllowedTypes('labelledby', array('string', 'array', 'null'));
 
+        $resolver->setAllowedValues('search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
         $resolver->setAllowedValues('orientation', array('vertical', 'horizontal'));
         $resolver->setAllowedValues('selection', array('before', 'after', 'none'));
         $resolver->setAllowedValues('tooltip', array('show', 'hide', 'always'));

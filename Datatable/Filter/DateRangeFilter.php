@@ -20,7 +20,7 @@ use Doctrine\ORM\Query\Expr\Andx;
  *
  * @package Sg\DatatablesBundle\Datatable\Filter
  */
-class DateRangeFilter extends TextFilter
+class DateRangeFilter extends AbstractFilter
 {
     //-------------------------------------------------
     // FilterInterface
@@ -44,10 +44,7 @@ class DateRangeFilter extends TextFilter
         $dateEnd = new \DateTime($_dateEnd);
         $dateEnd->setTime(23, 59, 59);
 
-        $k = $i + 1;
-        $andExpr->add($pivot->expr()->between($searchField, '?' . $i, '?' . $k));
-        $pivot->setParameter($i, $dateStart->format('Y-m-d H:i:s'));
-        $pivot->setParameter($k, $dateEnd->format('Y-m-d H:i:s'));
+        $andExpr = $this->getBetweenAndExpression($andExpr, $pivot, $searchField, $dateStart->format('Y-m-d H:i:s'), $dateEnd->format('Y-m-d H:i:s'), $i);
         $i += 2;
 
         return $andExpr;
@@ -70,7 +67,15 @@ class DateRangeFilter extends TextFilter
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        parent::configureOptions($resolver);
+        $resolver->setDefaults(array(
+            'property' => '',
+            'search_column' => '',
+            'class' => ''
+        ));
+
+        $resolver->setAllowedTypes('property', 'string');
+        $resolver->setAllowedTypes('search_column', 'string');
+        $resolver->setAllowedTypes('class', 'string');
 
         return $this;
     }
