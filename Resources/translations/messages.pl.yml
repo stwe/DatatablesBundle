@@ -1,7 +1,7 @@
 datatables:
     datatable:
-        processing: "Przetwarzanie"
-        lengthMenu: "Pokaż _MENU_ wpisy"
+        processing: "Przetwarzanie..."
+        lengthMenu: "Pokaż _MENU_ wpisów"
         zeroRecords: "Nie znaleziono pasujących rekordów"
         info: "Wyświetlam od _START_ do _END_ z _TOTAL_ rekordów"
         infoEmpty: "Wyświetlam od 0 do 0 z 0 rekordów"
@@ -22,14 +22,14 @@ datatables:
         show: "Pokaż"
         new: "Nowy"
         edit: "Edycja"
-        delete: "usuń"
-        toList: "Powrót to listy"
+        delete: "Usuń"
+        toList: "Wróć to listy"
         save: "Zapisz"
     dialog:
         close: "Zamknij"
 daterange:
-    apply: "Apply"
-    cancel: "Cancel"
-    format: "YYYY-MM-DD"
+    apply: "Zastosuj"
+    cancel: "Anuluj"
+    format: "DD.MM.YYYY"
 editable:
-    tableRedraw: "The changes relates multiple records. The table is redraw with the new data."
+    tableRedraw: "Zmiany dotyczą wielu rekordów. Tabela została przebudowana z nowymi danymi."
