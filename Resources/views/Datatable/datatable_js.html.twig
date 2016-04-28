@@ -110,13 +110,13 @@
                         }
 
                         oTable
-                                .column($(this).parent().index() + ':visible')
+                                .column($(event.currentTarget).data('filter-property-id'))
                                 .search(this.value)
                                 .draw();
                     },
                     options.searchDelay
                 );
-                
+
                 $(selector + "_wrapper").find("tr input.individual_filtering").on("keyup change", throttledSearch);
 
                 $(selector + "_wrapper" + " select.individual_filtering").on("keyup change", function(event) {
