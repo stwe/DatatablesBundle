@@ -42,7 +42,7 @@
             natural_arrow_keys: {{ column.filter.naturalArrowKeys ? 'true' : 'false' }},
             ticks: [{{ column.filter.ticks|join(', ') }}],
             ticks_positions: [{{ column.filter.ticksPositions|join(', ') }}],
-            ticks_labels: [{{ column.filter.tickslabels|join(', ') }}],
+            ticks_labels: ["{{ column.filter.tickslabels|join('","')|raw }}"],
             ticks_snap_bounds: {{ column.filter.ticksSnapBounds }},
             scale: "{{ column.filter.scale }}",
             focus: {{ column.filter.focus ? 'true' : 'false' }},
