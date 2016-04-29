@@ -123,6 +123,13 @@ class SliderFilter extends AbstractFilter
     protected $enabled;
 
     /**
+     * Formatter callback. Return the value wanted to be displayed in the tooltip.
+     *
+     * @var string
+     */
+    protected $formatter;
+
+    /**
      * The natural order is used for the arrow keys.
      *
      * @var boolean
@@ -245,6 +252,7 @@ class SliderFilter extends AbstractFilter
             'handle' => 'round',
             'reversed' => false,
             'enabled' => true,
+            'formatter' => '',
             'natural_arrow_keys' => false,
             'ticks' => array(),
             'ticks_positions' => array(),
@@ -273,6 +281,7 @@ class SliderFilter extends AbstractFilter
         $resolver->setAllowedTypes('handle', 'string');
         $resolver->setAllowedTypes('reversed', 'bool');
         $resolver->setAllowedTypes('enabled', 'bool');
+        $resolver->setAllowedTypes('formatter', 'string');
         $resolver->setAllowedTypes('natural_arrow_keys', 'bool');
         $resolver->setAllowedTypes('ticks', 'array');
         $resolver->setAllowedTypes('ticks_positions', 'array');
@@ -573,6 +582,26 @@ class SliderFilter extends AbstractFilter
     public function setEnabled($enabled)
     {
         $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFormatter()
+    {
+        return $this->formatter;
+    }
+
+    /**
+     * @param string $formatter
+     *
+     * @return $this
+     */
+    public function setFormatter($formatter)
+    {
+        $this->formatter = $formatter;
 
         return $this;
     }

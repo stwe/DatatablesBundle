@@ -98,7 +98,7 @@ class Callbacks extends AbstractViewOptions
     protected $stateLoaded;
 
     /**
-     * State loaded - data manipulation callback
+     * State loaded - data manipulation callback.
      *
      * @var string
      */
@@ -112,7 +112,7 @@ class Callbacks extends AbstractViewOptions
     protected $stateSaveCallback;
 
     /**
-     * State save - data manipulation callback
+     * State save - data manipulation callback.
      *
      * @var string
      */

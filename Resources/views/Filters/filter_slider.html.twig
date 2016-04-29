@@ -39,6 +39,9 @@
             handle: "{{ column.filter.handle }}",
             reversed: {{ column.filter.reversed ? 'true' : 'false' }},
             enabled: {{ column.filter.enabled ? 'true' : 'false' }},
+            {% if (column.filter.formatter) %}
+            formatter: {% include column.filter.formatter %},
+            {% endif %}
             natural_arrow_keys: {{ column.filter.naturalArrowKeys ? 'true' : 'false' }},
             ticks: [{{ column.filter.ticks|join(', ') }}],
             ticks_positions: [{{ column.filter.ticksPositions|join(', ') }}],
