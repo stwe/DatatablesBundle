@@ -1,8 +1,8 @@
 {
     "name": "sg/datatablesbundle",
     "type": "symfony-bundle",
-    "description": "Symfony2 Datatable Bundle For Doctrine2 Entities",
-    "keywords": ["symfony2", "datatable", "grid", "table", "datagrid", "pagination"],
+    "description": "Symfony Datatable Bundle For Doctrine2 Entities",
+    "keywords": ["symfony2", "symfony3", "datatable", "datatables", "grid", "table", "datagrid", "pagination", "admin"],
     "homepage": "https://github.com/stwe/DatatablesBundle",
     "license": "MIT",
     "authors": [
@@ -18,17 +18,20 @@
         "issues": "https://github.com/stwe/DatatablesBundle/issues"
     },
     "require": {
-        "php": ">=5.3.2",
-        "symfony/framework-bundle": "~2.6",
-        "friendsofsymfony/jsrouting-bundle": "@stable"
+        "php": ">=5.3.3",
+        "symfony/framework-bundle": "~2.6|~3.0",
+        "symfony/options-resolver": "~2.6|~3.0",
+        "symfony/property-access": "~2.6|~3.0",
+        "friendsofsymfony/jsrouting-bundle": "~1.6"
     },
     "require-dev": {
-        "sensio/generator-bundle": "~2.3"
+        "sensio/generator-bundle": "~2.3",
+        "doctrine/orm": "^2.2.3"
     },
     "suggest": {
-        "components/jquery": "1.11.3",
+        "components/jquery": "~1.12",
         "datatables/datatables": "1.10.10",
-        "moment/moment": "2.10.6",
+        "moment/moment": "~2.11",
         "liip/imagine-bundle": "^1.3"
     },
     "autoload": {

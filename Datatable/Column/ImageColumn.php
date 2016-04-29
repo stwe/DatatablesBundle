@@ -11,8 +11,11 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\Datatable\Data\DatatableQuery;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
+use Twig_Environment;
 
 /**
  * Class ImageColumn
@@ -95,6 +98,49 @@ class ImageColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
+    public function renderContent(&$item, DatatableQuery $datatableQuery = null)
+    {
+        if (true === $datatableQuery->getImagineBundle()) {
+            $item[$this->getDql()] = $this->renderImage($item[$this->getDql()], $datatableQuery->getTwig());
+        } else {
+            $item[$this->getDql()] = $datatableQuery->getTwig()->render(
+                'SgDatatablesBundle:Helper:render_image.html.twig',
+                array(
+                    'image_name' => $item[$this->getDql()],
+                    'path' => $this->getRelativePath()
+                )
+            );
+        }
+    }
+
+    /**
+     * Render image.
+     *
+     * @param string|null      $imageName
+     * @param Twig_Environment $twig
+     *
+     * @return string
+     */
+    protected function renderImage($imageName, Twig_Environment $twig)
+    {
+        return $twig->render(
+            'SgDatatablesBundle:Helper:ii_render_image.html.twig',
+            array(
+                'image_id' => 'sg_image_' . uniqid(rand(10000, 99999)),
+                'image_name' => $imageName,
+                'filter' => $this->getImagineFilter(),
+                'path' => $this->getRelativePath(),
+                'holder_url' => $this->getHolderUrl(),
+                'width' => $this->getHolderWidth(),
+                'height' => $this->getHolderHeight(),
+                'enlarge' => $this->getEnlarge()
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAlias()
     {
         return 'image';
@@ -121,11 +167,7 @@ class ImageColumn extends AbstractColumn
             'type' => '',
             'visible' => true,
             'width' => '',
-            'search_type' => 'like',
-            'filter_type' => 'text',
-            'filter_options' => array(),
-            'filter_property' => '',
-            'filter_search_column' => '',
+            'filter' => array('text', array()),
             'imagine_filter' => '',
             'holder_url' => '',
             'holder_width' => '50',
@@ -142,20 +184,13 @@ class ImageColumn extends AbstractColumn
         $resolver->setAllowedTypes('type', 'string');
         $resolver->setAllowedTypes('visible', 'bool');
         $resolver->setAllowedTypes('width', 'string');
-        $resolver->setAllowedTypes('search_type', 'string');
-        $resolver->setAllowedTypes('filter_type', 'string');
-        $resolver->setAllowedTypes('filter_options', 'array');
-        $resolver->setAllowedTypes('filter_property', 'string');
-        $resolver->setAllowedTypes('filter_search_column', 'string');
+        $resolver->setAllowedTypes('filter', 'array');
         $resolver->setAllowedTypes('imagine_filter', 'string');
         $resolver->setAllowedTypes('relative_path', 'string');
         $resolver->setAllowedTypes('holder_url', 'string');
         $resolver->setAllowedTypes('holder_width', 'string');
         $resolver->setAllowedTypes('holder_height', 'string');
         $resolver->setAllowedTypes('enlarge', 'bool');
-
-        $resolver->setAllowedValues('search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
-        $resolver->setAllowedValues('filter_type', array('text', 'select'));
 
         return $this;
     }

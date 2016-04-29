@@ -12,7 +12,6 @@
 namespace Sg\DatatablesBundle\Datatable\View;
 
 use Sg\DatatablesBundle\Datatable\Action\TopAction;
-use Sg\DatatablesBundle\OptionsResolver\BaseOptions;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -21,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * @package Sg\DatatablesBundle\Datatable\View
  */
-class TopActions extends BaseOptions
+class TopActions extends AbstractViewOptions
 {
     /**
      * Start HTML.
@@ -53,23 +52,17 @@ class TopActions extends BaseOptions
      */
     public function __construct()
     {
-        parent::__construct();
-
-        $this->configureOptions($this->resolver);
+        $this->options = array();
     }
 
     //-------------------------------------------------
-    // Setup TopActions
+    // OptionsInterface
     //-------------------------------------------------
 
     /**
-     * Configure Options.
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-    private function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(array('actions'));
 

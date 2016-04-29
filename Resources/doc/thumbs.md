@@ -522,7 +522,7 @@ class PostDatatable extends AbstractDatatableView
     /**
      * {@inheritdoc}
      */
-    public function buildDatatable($locale = null)
+    public function buildDatatable(array $options = array())
     {
         $this->options->set(array(
             // ...

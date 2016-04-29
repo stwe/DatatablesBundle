@@ -11,8 +11,6 @@
 
 namespace Sg\DatatablesBundle\Datatable\View;
 
-use Sg\DatatablesBundle\OptionsResolver\BaseOptions;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -20,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * @package Sg\DatatablesBundle\Datatable\View
  */
-class Ajax extends BaseOptions
+class Ajax extends AbstractViewOptions
 {
     /**
      * URL set as the Ajax data source for the table.
@@ -37,32 +35,13 @@ class Ajax extends BaseOptions
     protected $type;
 
     //-------------------------------------------------
-    // Ctor.
+    // OptionsInterface
     //-------------------------------------------------
 
     /**
-     * Ctor.
+     * {@inheritdoc}
      */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->configureOptions($this->resolver);
-        $this->set($this->options);
-    }
-
-    //-------------------------------------------------
-    // Setup Ajax
-    //-------------------------------------------------
-
-    /**
-     * Configure Options.
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return $this
-     */
-    private function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'url' => '',

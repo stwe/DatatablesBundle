@@ -1,6 +1,6 @@
 # Getting Started With SgDatatablesBundle
 
-This Bundle integrates the jQuery DataTables 1.10.x plugin into your Symfony2 application.
+This Bundle integrates the jQuery DataTables 1.10.x plugin into your Symfony application.
 
 ## Installation
 
@@ -8,23 +8,11 @@ This Bundle integrates the jQuery DataTables 1.10.x plugin into your Symfony2 ap
 
 This bundle requires the following additional packages:
 
-* Symfony 2.6.x
-* jQuery 1.11.x
+* Symfony 2.6.x or 3.0.x
+* jQuery 1.12.x
 * DataTables 1.10.x
-* Moment.js 2.10.x
-* FOSJsRoutingBundle @stable ***Please follow all steps described [here](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/index.md).***
-
-The `require` part of your composer.json might look like this:
-
-```js
-    "require": {
-        "symfony/symfony": "2.6.*",
-        "components/jquery": "1.11.3",
-        "datatables/datatables": "1.10.10",
-        "moment/moment": "2.10.6",
-        "friendsofsymfony/jsrouting-bundle": "@stable"
-    },
-```
+* Moment.js 2.11.x
+* FOSJsRoutingBundle 1.6 ***Please follow all steps described [here](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/installation.rst).***
 
 ### Translations
 
@@ -32,35 +20,19 @@ The `require` part of your composer.json might look like this:
 # app/config/config.yml
 
 framework:
-    translator: { fallback: %locale% }
+    translator: { fallbacks: ["%locale%"] }
 
     # ...
 
-    default_locale:  "%locale%"
+    default_locale: "%locale%"
 ```
 
 ### Step 1: Download SgDatatablesBundle using composer
 
-If not already done: add SgDatatablesBundle in your composer.json:
-
-```js
-{
-    "require": {
-        "sg/datatablesbundle": "dev-master"
-    }
-}
-```
-
-Now tell composer to download the bundle by running the command:
+Require the bundle with composer:
 
 ``` bash
-$ php composer.phar update sg/datatablesbundle
-```
-
-Or get all bundles:
-
-``` bash
-$ php composer.phar update
+$ composer require sg/datatablesbundle
 ```
 
 ### Step 2: Enable the bundle
@@ -82,7 +54,34 @@ public function registerBundles()
 
 ### Step 3: Assetic Configuration
 
-Include the jQuery, DataTables, Moment and FOSJsRoutingBundle javascript/css files in your layout.
+Include the jQuery, DataTables, Moment and FOSJsRoutingBundle javascript/css files in your base layout.
+
+CDN example with Bootstrap3, Daterangepicker and X-Editable:
+
+```html
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}SgDatatablesBundleDemo{% endblock %}</title>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/s/bs-3.3.5/jszip-2.5.0,pdfmake-0.1.18,dt-1.10.10,b-1.1.0,b-colvis-1.1.0,b-flash-1.1.0,b-html5-1.1.0,b-print-1.1.0,r-2.0.0/datatables.min.css">
+        <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+    {% endblock %}
+    {% block head_javascripts %}
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment-with-locales.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+        <script src="https://cdn.datatables.net/s/bs-3.3.5/jszip-2.5.0,pdfmake-0.1.18,dt-1.10.10,b-1.1.0,b-colvis-1.1.0,b-flash-1.1.0,b-html5-1.1.0,b-print-1.1.0,r-2.0.0/datatables.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+    {% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+</head>
+```
 
 ### Step 4: Create your Datatable class
 
@@ -93,10 +92,10 @@ $ php app/console sg:datatable:generate AppBundle:Post
 ### Step 5: Registering your Datatable class as a Service
 
 ```yaml
-app.datatable.post:
-    class: AppBundle\Datatables\PostDatatable
-    tags:
-        - { name: sg.datatable.view }
+services:
+    app.datatable.post:
+        class: AppBundle\Datatables\PostDatatable
+        parent: sg_datatables.datatable.abstract
 ```
 
 ### Step 6: Create your index.html.twig
@@ -113,20 +112,19 @@ app.datatable.post:
 
 ```php
 /**
- * @Route("/", name="post")
- * @Method("GET")
- * @Template(":post:index.html.twig")
+ * Lists all Post entities.
  *
- * @return array
+ * @Route("/", name="post_index")
+ * @Method("GET")
  */
 public function indexAction()
 {
     $datatable = $this->get('app.datatable.post');
     $datatable->buildDatatable();
 
-    return array(
+    return $this->render('post/index.html.twig', array(
         'datatable' => $datatable,
-    );
+    ));
 }
 
 /**
@@ -147,7 +145,7 @@ public function indexResultsAction()
 
 ### Step 8: Update route annotations for FOSJsRoutingBundle 
 
-Actions like `new`, `show` or `edit` should be updated. 
+Actions like `show` or `edit` should be updated. 
 
 Add `options`: 
 
@@ -158,12 +156,14 @@ options={"expose"=true}
 Example: 
 
 ```php
-    /**
-     * Displays a form to create a new Post entity.
-     *
-     * @Route("/new", name="post_new", options={"expose"=true})
-     * @Method("GET")
-     * @Template(":post:new.html.twig")
-     */
-    public function newAction()
+/**
+ * Displays a form to edit an existing Post entity.
+ *
+ * @Route("/{id}/edit", name="post_edit", options={"expose"=true})
+ * @Method({"GET", "POST"})
+ */
+public function editAction(Request $request, Post $post)
+{
+    // ...
+}
 ```

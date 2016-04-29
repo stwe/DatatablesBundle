@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\Datatable\Data\DatatableQuery;
+
 /**
  * Interface ColumnInterface
  *
@@ -51,9 +53,26 @@ interface ColumnInterface
     public function getTemplate();
 
     /**
+     * Render images or any other special content.
+     *
+     * @param mixed               $item
+     * @param DatatableQuery|null $datatableQuery
+     *
+     * @return mixed
+     */
+    public function renderContent(&$item, DatatableQuery $datatableQuery = null);
+
+    /**
      * Get alias.
      *
      * @return string
      */
     public function getAlias();
+
+    /**
+     * Check wether an association is given.
+     *
+     * @return boolean
+     */
+    public function isAssociation();
 }

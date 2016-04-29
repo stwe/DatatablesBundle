@@ -1,7 +1,7 @@
 {% if view_features.serverSide %}
     "serverSide": true,
     "ajax": {
-        "url": "{{ view_ajax.url }}",
+        "url": "{{ view_ajax.url|raw }}",
         "type": "{{ view_ajax.type }}"
     },
 {% else %}

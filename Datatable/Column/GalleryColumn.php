@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\Datatable\Data\DatatableQuery;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 
@@ -49,6 +51,31 @@ class GalleryColumn extends ImageColumn
         $this->data = $fields[0];
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function renderContent(&$item, DatatableQuery $datatableQuery = null)
+    {
+        $fields = explode('.', $this->getDql());
+
+        if (true === $datatableQuery->getImagineBundle()) {
+            $galleryImages = '';
+            $counter = 0;
+            $images = count($item[$fields[0]]);
+            if (0 === $images) {
+                $item[$fields[0]] = $this->renderImage(null, $datatableQuery->getTwig());
+            } else {
+                foreach ($item[$fields[0]] as $image) {
+                    $galleryImages = $galleryImages . $this->renderImage($image[$fields[1]], $datatableQuery->getTwig());
+                    if (++$counter == $this->getViewLimit()) break;
+                }
+                $item[$fields[0]] = $galleryImages;
+            }
+        } else {
+            throw new InvalidArgumentException('renderContent(): Bundle "LiipImagineBundle" does not exist or it is not enabled.');
+        }
     }
 
     /**

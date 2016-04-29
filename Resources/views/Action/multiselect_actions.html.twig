@@ -43,12 +43,15 @@ $(".{{ view_table_id }}_multiselect_action_click").on('click', function(event) {
             return;
         }
 
+        {% set token = csrf_token('multiselect') %}
+
         $.ajax({
             url: $(this).attr("href"),
             type: "POST",
             cache: false,
             data: {
-                'data': $("input:checkbox:checked.{{ view_table_id }}_multiselect_checkbox", oTable.rows().nodes()).serializeArray()
+                'data': $("input:checkbox:checked.{{ view_table_id }}_multiselect_checkbox", oTable.rows().nodes()).serializeArray(),
+                'token': '{{ token }}'
             },
             success: function(msg) {
                 oTable.draw();

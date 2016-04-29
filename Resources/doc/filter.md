@@ -12,7 +12,7 @@ class PostDatatable extends AbstractDatatableView
     /**
      * {@inheritdoc}
      */
-    public function buildDatatable($locale = null)
+    public function buildDatatable(array $options = array())
     {
         // ...
 
@@ -24,8 +24,16 @@ class PostDatatable extends AbstractDatatableView
     // ...
 }
 ```
+__
 
 ## 2. ServerSide individual column filtering
+
+[Example](#example)
+[Text Filter](#text-filter)
+[Select Filter](#select-filter)
+[DateRange Filter](#daterange-filter)
+
+### Example
 
 ```php
 class PostDatatable extends AbstractDatatableView
@@ -33,7 +41,7 @@ class PostDatatable extends AbstractDatatableView
     /**
      * {@inheritdoc}
      */
-    public function buildDatatable($locale = null)
+    public function buildDatatable(array $options = array())
     {
         // ...
 
@@ -45,17 +53,33 @@ class PostDatatable extends AbstractDatatableView
         $users = $this->em->getRepository('AppBundle:User')->findAll();
 
         $this->columnBuilder
-            ->add('visible', 'column', array(
+            ->add('title', 'column', array(
+                'title' => 'Title',
+                'filter' => array('text', array(
+                    'search_type' => 'eq',
+                    'class' => 'test1 test2'
+                ))
+            ))
+            ->add('visible', 'boolean', array(
                 'title' => 'Visible',
-                'filter_type' => 'select',
-                'filter_options' => array('' => 'Any', '0' => 'No', '1' => 'Yes'),
-                'filter_property' => 'visible',
+                'filter' => array('select', array(
+                    'search_type' => 'eq',
+                    'select_options' => array('' => 'Any', '1' => 'Yes', '0' => 'No'),
+                    'class' => 'test1 test2'
+                )),
             ))
             ->add('createdby.username', 'column', array(
                 'title' => 'Createdby',
-                'filter_type' => 'select', // Render the search input as a dropdown.
-                'filter_options' => array('' => 'All') + $this->getCollectionAsOptionsArray($users, 'username', 'username'), // Dropdown options list. This method should return all options as array [username => username].
-                'filter_property' => 'createdby.username', // You can set up another property, different with the current column, to search on.
+                'filter' => array('select', array(
+                    'search_type' => 'eq',
+                    'select_options' => array('' => 'All') + $this->getCollectionAsOptionsArray($users, 'username', 'username'),
+                ))
+            ))
+            ->add('publishedAt', 'datetime', array(
+                'title' => 'PublishedAt',
+                'filter' => array('daterange', array(
+                    'class' => 'test1 test2'
+                ))
             ))
         ;
     }
@@ -63,6 +87,91 @@ class PostDatatable extends AbstractDatatableView
     // ...
 }
 ```
+
+### Text Filter
+
+#### Default template
+
+SgDatatablesBundle:Filters:filter_text.html.twig
+
+#### Options
+
+| Option        | Type   | Default |
+|---------------|--------|---------|
+| search_type   | string | 'like'  |
+| property      | string | ''      |
+| search_column | string | ''      |
+| class         | string | ''      |
+
+#### Example
+
+```php
+$this->columnBuilder
+    ->add('title', 'column', array(
+        'title' => 'Title',
+        'filter' => array('text', array(
+            'search_type' => 'eq'
+        ))
+    ))
+;
+```
+
+### Select Filter
+
+#### Default template
+
+SgDatatablesBundle:Filters:filter_select.html.twig
+
+#### Options
+
+| Option         | Type   | Default |
+|----------------|--------|---------|
+| search_type    | string | 'like'  |
+| property       | string | ''      |
+| search_column  | string | ''      |
+| select_options | array  | array() |
+| class          | string | ''      |
+
+#### Example
+
+```php
+$this->columnBuilder
+    ->add('visible', 'boolean', array(
+        'title' => 'Visible',
+        'filter' => array('select', array(
+            'search_type' => 'eq',
+            'select_options' => array('' => 'Any', '1' => 'Yes', '0' => 'No')
+        )),
+    ))
+;
+```
+
+### DateRange Filter
+
+#### Default template
+
+SgDatatablesBundle:Filters:filter_daterange.html.twig
+
+#### Options
+
+| Option         | Type   | Default |
+|----------------|--------|---------|
+| search_type    | string | 'like'  |
+| property       | string | ''      |
+| search_column  | string | ''      |
+| class          | string | ''      |
+
+#### Example
+
+```php
+$this->columnBuilder
+    ->add('createdAt', 'datetime', array(
+        'title' => 'Created',
+        'filter' => array('daterange', array()),
+    ))
+;
+```
+__
 
 ## 3. Hide the global search box
 
@@ -76,7 +185,7 @@ class PostDatatable extends AbstractDatatableView
     /**
      * {@inheritdoc}
      */
-    public function buildDatatable($locale = null)
+    public function buildDatatable(array $options = array())
     {
         // ...
 

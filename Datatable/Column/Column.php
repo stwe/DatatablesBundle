@@ -28,6 +28,13 @@ class Column extends AbstractColumn
      */
     protected $default;
 
+    /**
+     * Editable flag.
+     *
+     * @var boolean
+     */
+    protected $editable;
+
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -82,12 +89,9 @@ class Column extends AbstractColumn
             'type' => '',
             'visible' => true,
             'width' => '',
-            'search_type' => 'like',
-            'filter_type' => 'text',
-            'filter_options' => array(),
-            'filter_property' => '',
-            'filter_search_column' => '',
-            'default' => ''
+            'filter' => array('text', array()),
+            'default' => '',
+            'editable' => false
         ));
 
         $resolver->setAllowedTypes('class', 'string');
@@ -100,15 +104,9 @@ class Column extends AbstractColumn
         $resolver->setAllowedTypes('type', 'string');
         $resolver->setAllowedTypes('visible', 'bool');
         $resolver->setAllowedTypes('width', 'string');
-        $resolver->setAllowedTypes('search_type', 'string');
-        $resolver->setAllowedTypes('filter_type', 'string');
-        $resolver->setAllowedTypes('filter_options', 'array');
-        $resolver->setAllowedTypes('filter_property', 'string');
-        $resolver->setAllowedTypes('filter_search_column', 'string');
+        $resolver->setAllowedTypes('filter', 'array');
         $resolver->setAllowedTypes('default', 'string');
-
-        $resolver->setAllowedValues('search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
-        $resolver->setAllowedValues('filter_type', array('text', 'select'));
+        $resolver->setAllowedTypes('editable', 'bool');
 
         return $this;
     }
@@ -139,5 +137,29 @@ class Column extends AbstractColumn
         $this->default = $default;
 
         return $this;
+    }
+
+    /**
+     * Set editable.
+     *
+     * @param boolean $editable
+     *
+     * @return $this
+     */
+    public function setEditable($editable)
+    {
+        $this->editable = $editable;
+
+        return $this;
+    }
+
+    /**
+     * Get editable.
+     *
+     * @return boolean
+     */
+    public function getEditable()
+    {
+        return $this->editable;
     }
 }

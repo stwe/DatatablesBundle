@@ -1,7 +1,0 @@
-{% extends datatable_admin_site_config().base_layout %}
-
-{% block main %}
-    {{ form(edit_form) }}
-    <hr>
-    <a href="{{ path(list_action) }}" class="btn btn-primary">{{ 'datatables.actions.toList'|trans({}, 'messages') }}</a>
-{% endblock %}

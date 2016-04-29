@@ -13,14 +13,15 @@ namespace Sg\DatatablesBundle\Command;
 
 use Sg\DatatablesBundle\Generator\DatatableGenerator;
 
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
 use RuntimeException;
 
 /**
@@ -28,8 +29,23 @@ use RuntimeException;
  *
  * @package Sg\DatatablesBundle\Command
  */
-class GenerateDatatableCommand extends GenerateDoctrineCommand
+class GenerateDatatableCommand extends ContainerAwareCommand
 {
+
+    /**
+     * @var
+     */
+    private $generator;
+
+    public function isEnabled()
+    {
+        return (
+            class_exists('Doctrine\\ORM\\Mapping\\ClassMetadataInfo')
+            &&
+            class_exists('Sensio\\Bundle\\GeneratorBundle\\Command\\GenerateDoctrineCommand')
+        );
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -42,8 +58,7 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
             ->addOption('fields', 'f', InputOption::VALUE_OPTIONAL, 'The fields.')
             ->addOption('client-side', 'c', InputOption::VALUE_NONE, 'The client-side flag.')
             ->addOption('bootstrap3', 'b', InputOption::VALUE_NONE, 'The Bootstrap3-Framework flag.')
-            ->addOption('admin', 'a', InputOption::VALUE_NONE, 'The admin flag.')
-            ->addOption('ajax-url', 'u', InputOption::VALUE_OPTIONAL, 'The ajax url.');
+            ->addOption('ajax-url', 'a', InputOption::VALUE_OPTIONAL, 'The ajax url.');
     }
 
     /**
@@ -58,7 +73,6 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
         $clientSide = $input->getOption('client-side');
         $ajaxUrl = $input->getOption('ajax-url');
         $bootstrap = $input->getOption('bootstrap3');
-        $admin = $input->getOption('admin');
 
         $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle) . "\\" . $entity;
         $metadata = $this->getEntityMetadata($entityClass);
@@ -75,7 +89,7 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
 
         /** @var \Sg\DatatablesBundle\Generator\DatatableGenerator $generator */
         $generator = $this->getGenerator($bundle);
-        $generator->generate($bundle, $entity, $fields, $clientSide, $ajaxUrl, $bootstrap, $admin);
+        $generator->generate($bundle, $entity, $fields, $clientSide, $ajaxUrl, $bootstrap);
 
         $output->writeln(
             sprintf(
@@ -171,4 +185,33 @@ class GenerateDatatableCommand extends GenerateDoctrineCommand
 
         return $fields;
     }
+
+    protected function parseShortcutNotation($shortcut)
+    {
+        $entity = str_replace('/', '\\', $shortcut);
+
+        if (false === $pos = strpos($entity, ':')) {
+            throw new \InvalidArgumentException(sprintf('The entity name must contain a : ("%s" given, expecting something like AcmeBlogBundle:Blog/Post)', $entity));
+        }
+
+        return array(substr($entity, 0, $pos), substr($entity, $pos + 1));
+    }
+
+    protected function getEntityMetadata($entity)
+    {
+        $factory = new DisconnectedMetadataFactory($this->getContainer()->get('doctrine'));
+
+        return $factory->getClassMetadata($entity)->getMetadata();
+    }
+
+    protected function getGenerator(BundleInterface $bundle = null)
+    {
+        if (null === $this->generator) {
+            $this->generator = $this->createGenerator();
+            $this->generator->setSkeletonDirs($this->getSkeletonDirs($bundle));
+        }
+
+        return $this->generator;
+    }
+
 }

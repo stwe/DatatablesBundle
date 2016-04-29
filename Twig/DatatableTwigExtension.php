@@ -13,7 +13,6 @@ namespace Sg\DatatablesBundle\Twig;
 
 use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
 use Sg\DatatablesBundle\Datatable\Column\AbstractColumn;
-use Sg\DatatablesBundle\Routing\DatatablesRoutingLoader;
 
 use Twig_Environment;
 use Twig_Extension;
@@ -34,16 +33,6 @@ class DatatableTwigExtension extends Twig_Extension
      */
     private $translator;
 
-    /**
-     * @var array
-     */
-    private $entities;
-
-    /**
-     * @var array
-     */
-    private $site;
-
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -52,14 +41,10 @@ class DatatableTwigExtension extends Twig_Extension
      * Ctor.
      *
      * @param TranslatorInterface $translator
-     * @param array               $entities
-     * @param array               $site
      */
-    public function __construct(TranslatorInterface $translator, array $entities, array $site)
+    public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
-        $this->entities = $entities;
-        $this->site = $site;
     }
 
     //-------------------------------------------------
@@ -84,9 +69,7 @@ class DatatableTwigExtension extends Twig_Extension
             new Twig_SimpleFunction('datatable_render_html', array($this, 'datatableRenderHtml'), array('is_safe' => array('all'))),
             new Twig_SimpleFunction('datatable_render_js', array($this, 'datatableRenderJs'), array('is_safe' => array('all'))),
             new Twig_SimpleFunction('datatable_filter_render', array($this, 'datatableFilterRender'), array('is_safe' => array('all'), 'needs_environment' => true)),
-            new Twig_SimpleFunction('datatable_icon', array($this, 'datatableIcon'), array('is_safe' => array('all'))),
-            new Twig_SimpleFunction('datatable_admin_navigation_links', array($this, 'datatableAdminNavigationLinks'), array('is_safe' => array('all'), 'needs_environment' => true)),
-            new Twig_SimpleFunction('datatable_admin_site_config', array($this, 'datatableAdminSiteConfig'), array('is_safe' => array('all'))),
+            new Twig_SimpleFunction('datatable_icon', array($this, 'datatableIcon'), array('is_safe' => array('all'), 'needs_environment' => true))
         );
     }
 
@@ -158,15 +141,18 @@ class DatatableTwigExtension extends Twig_Extension
      */
     public function datatableFilterRender(Twig_Environment $twig, AbstractDatatableView $datatable, AbstractColumn $column, $loopIndex)
     {
-        $filterType = $column->getFilterType() ?: 'text';
-
-        if ($filterProperty = $column->getFilterProperty()) {
+        if ($filterProperty = $column->getFilter()->getProperty()) {
             $filterColumnId = $datatable->getColumnIdByColumnName($filterProperty);
         } else {
             $filterColumnId = $loopIndex;
         }
 
-        return $twig->render('SgDatatablesBundle:Filters:filter_' . $filterType . '.html.twig', array('column' => $column, 'filterColumnId' => $filterColumnId));
+        return $twig->render($column->getFilter()->getTemplate(), array(
+            'column' => $column,
+            'filterColumnId' => $filterColumnId,
+            'tableId' => $datatable->getName()
+            )
+        );
     }
 
     /**
@@ -196,46 +182,19 @@ class DatatableTwigExtension extends Twig_Extension
     }
 
     /**
-     * Renders icon and label.
-     *
-     * @param string $icon
-     * @param string $label
-     *
-     * @return string
-     */
-    public function datatableIcon($icon, $label = '')
-    {
-        if ($icon)
-            return sprintf('<i class="%s"></i> %s', $icon, $label);
-        else
-            return $label;
-    }
-
-    /**
-     * Renders the admin navigation links.
+     * Renders icon && label.
      *
      * @param Twig_Environment $twig
+     * @param string           $icon
+     * @param string           $label
      *
      * @return string
      */
-    public function datatableAdminNavigationLinks(Twig_Environment $twig)
+    public function datatableIcon(Twig_Environment $twig, $icon, $label = '')
     {
-        $routes = array();
-
-        foreach ($this->entities as $key => $options) {
-            $routes[$options['label_group']][$options['label']] = DatatablesRoutingLoader::PREF . $key . '_index';
-        }
-
-        return $twig->render('SgDatatablesBundle:Crud:navigation.html.twig', array('routes' => $routes));
-    }
-
-    /**
-     * Pass the admin site config.
-     *
-     * @return array
-     */
-    public function datatableAdminSiteConfig()
-    {
-        return $this->site;
+        if ($icon)
+            return $twig->render('SgDatatablesBundle:Action:icon.html.twig', array('icon' => $icon, 'label' => $label));
+        else
+            return $label;
     }
 }

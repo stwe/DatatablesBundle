@@ -12,6 +12,7 @@
 namespace Sg\DatatablesBundle\Datatable\Action;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Closure;
 
 /**
  * Class Action
@@ -23,7 +24,7 @@ class Action extends AbstractAction
     /**
      * Render only if parameter / conditions are TRUE
      *
-     * @var array
+     * @var Closure|array
      */
     protected $renderIf;
 
@@ -39,7 +40,6 @@ class Action extends AbstractAction
         parent::configureOptions($resolver);
 
         $resolver->setDefault('render_if', array());
-        $resolver->setAllowedTypes('render_if', 'array');
 
         return $this;
     }
@@ -51,11 +51,11 @@ class Action extends AbstractAction
     /**
      * Set renderIf.
      *
-     * @param array $renderIf
+     * @param Closure|array $renderIf
      *
      * @return $this
      */
-    public function setRenderIf(array $renderIf)
+    public function setRenderIf($renderIf)
     {
         $this->renderIf = $renderIf;
 
@@ -65,10 +65,35 @@ class Action extends AbstractAction
     /**
      * Get renderIf.
      *
-     * @return array
+     * @return Closure|array
      */
     public function getRenderIf()
     {
         return $this->renderIf;
+    }
+
+    /**
+     * Is visible.
+     *
+     * @param array $data
+     *
+     * @return boolean
+     */
+    public function isVisible(array $data = array())
+    {
+        if (null !== $this->renderIf && !empty($this->renderIf) && !empty($data)) {
+            if (is_array($this->renderIf)) {
+                $result = false;
+                foreach ($this->renderIf as $key => $item) {
+                    $result = ($item == $data[$key]);
+                }
+
+                return $result;
+            } elseif ($this->renderIf instanceof Closure) {
+                    return call_user_func($this->renderIf, $data);
+            }
+        }
+
+        return true;
     }
 }

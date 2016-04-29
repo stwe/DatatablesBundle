@@ -1,0 +1,30 @@
+{% if (view_events.columnSizing) %}
+.on('column-sizing.dt', {% include view_events.columnSizing %})
+{% endif %}
+{% if (view_events.columnVisibility) %}
+.on('column-visibility.dt', {% include view_events.columnVisibility %})
+{% endif %}
+{% if (view_events.destroy) %}
+.on('destroy.dt', {% include view_events.destroy %})
+{% endif %}
+{% if (view_events.length) %}
+.on('length.dt', {% include view_events.length %})
+{% endif %}
+{% if (view_events.order) %}
+.on('order.dt', {% include view_events.order %})
+{% endif %}
+{% if (view_events.page) %}
+.on('page.dt', {% include view_events.page %})
+{% endif %}
+{% if (view_events.search) %}
+.on('search.dt', {% include view_events.search %})
+{% endif %}
+{% if (view_events.stateLoaded) %}
+.on('stateLoaded.dt', {% include view_events.stateLoaded %})
+{% endif %}
+{% if (view_events.stateLoadParams) %}
+.on('stateLoadParams.dt', {% include view_events.stateLoadParams %})
+{% endif %}
+{% if (view_events.stateSaveParams) %}
+.on('stateSaveParams.dt', {% include view_events.stateSaveParams %})
+{% endif %}

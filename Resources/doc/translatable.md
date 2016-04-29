@@ -217,13 +217,13 @@ class PostDatatable extends AbstractDatatableView
     /**
      * {@inheritdoc}
      */
-    public function buildDatatable($locale = null)
+    public function buildDatatable(array $options = array())
     {
         // ..
 
         // add _locale to the route
         $this->ajax->set(array(
-            'url' => $this->router->generate('post_results', array("_locale" => $locale)),
+            'url' => $this->router->generate('post_results', array("_locale" => $options['locale'])),
             'type' => 'GET'
         ));
         
@@ -288,8 +288,12 @@ class PostController extends Controller
      */
     public function indexAction($_locale)
     {
+        $options = array(
+            'locale' => $_locale
+        );
+    
         $datatable = $this->get('app.datatable.post');
-        $datatable->buildDatatable($_locale);
+        $datatable->buildDatatable($options);
 
         return array(
             'datatable' => $datatable,
@@ -305,8 +309,12 @@ class PostController extends Controller
      */
     public function indexResultsAction($_locale)
     {
+        $options = array(
+            'locale' => $_locale
+        );
+    
         $datatable = $this->get('app.datatable.post');
-        $datatable->buildDatatable($_locale);
+        $datatable->buildDatatable($options);
 
         $query = $this->get('sg_datatables.query')->getQueryFrom($datatable);
 

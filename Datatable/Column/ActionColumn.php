@@ -196,4 +196,21 @@ class ActionColumn extends AbstractColumn
     {
         return $this->actions;
     }
+
+    /**
+     * Check visibility.
+     *
+     * @param array $entity
+     */
+    public function checkVisibility(array &$entity)
+    {
+        $actionState = array();
+
+        /** @var Action $action */
+        foreach ($this->actions as $action) {
+            $actionState[$action->getRoute()] = $action->isVisible($entity);
+        }
+
+        $entity['actions'] = $actionState;
+    }
 }

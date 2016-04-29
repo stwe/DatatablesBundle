@@ -30,12 +30,6 @@ $ php app/console sg:datatable:generate AppBundle:Post --client-side
 $ php app/console sg:datatable:generate AppBundle:Post --bootstrap3
 ```
 
-- `--admin` (optional): The admin flag.
-
-``` bash
-$ php app/console sg:datatable:generate AppBundle:Post --admin
-```
-
 - `--ajax-url` (optional): The ajax url.
 
 ``` bash
