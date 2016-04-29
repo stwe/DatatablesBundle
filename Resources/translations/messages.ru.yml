@@ -30,6 +30,6 @@ datatables:
 daterange:
     apply: "Применить"
     cancel: "Отменить"
-    format: "YYYY-MM-DD"
+    format: "DD.MM.YYYY"
 editable:
-    tableRedraw: "The changes relates multiple records. The table is redraw with the new data."
+    tableRedraw: "Подчиненные записи изменены. Таблица обновляется."
