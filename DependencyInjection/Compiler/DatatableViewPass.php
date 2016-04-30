@@ -39,7 +39,6 @@ class DatatableViewPass implements CompilerPassInterface
             $def = $container->getDefinition($id);
             $def->addArgument(new Reference('security.authorization_checker'));
             $def->addArgument(new Reference('security.token_storage'));
-            $def->addArgument(new Reference('twig'));
             $def->addArgument(new Reference('translator.default'));
             $def->addArgument(new Reference('router'));
             $def->addArgument(new Reference('doctrine.orm.entity_manager'));

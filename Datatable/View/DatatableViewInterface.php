@@ -15,9 +15,6 @@ use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
-use Twig_Error;
-use Twig_Environment;
 
 /**
  * Interface DatatableViewInterface
@@ -32,24 +29,6 @@ interface DatatableViewInterface
      * @param array $options
      */
     public function buildDatatable(array $options = array());
-
-    /**
-     * Renders the datatable view.
-     *
-     * @param string $type
-     *
-     * @return mixed
-     * @throws Exception
-     * @throws Twig_Error
-     */
-    public function render($type = 'all');
-
-    /**
-     * Get the Twig_Environment service.
-     *
-     * @return Twig_Environment
-     */
-    public function getTwig();
 
     /**
      * Get entity manager.
@@ -85,6 +64,13 @@ interface DatatableViewInterface
      * @return Callbacks
      */
     public function getCallbacks();
+
+    /**
+     * Get Events.
+     *
+     * @return Events
+     */
+    public function getEvents();
 
     /**
      * Get ColumnBuilder.
