@@ -27,7 +27,6 @@ services:
             - '@translator.default'
             - '@router'
             - '@doctrine.orm.entity_manager'
-            - '%sg_datatables.datatable.templates%'
 
     sg_datatables.query:
         class: Sg\DatatablesBundle\Datatable\Data\DatatableDataManager

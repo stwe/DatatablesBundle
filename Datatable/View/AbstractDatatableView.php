@@ -132,13 +132,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     protected $data;
 
     /**
-     * The Twig templates.
-     *
-     * @var array
-     */
-    protected $templates;
-
-    /**
      * This variable stores the array of column names as keys and column ids as values
      * in order to perform search column id by name.
      *
@@ -166,7 +159,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @param TranslatorInterface           $translator
      * @param RouterInterface               $router
      * @param EntityManagerInterface        $em
-     * @param array                         $templates
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -174,8 +166,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         Twig_Environment $twig,
         TranslatorInterface $translator,
         RouterInterface $router,
-        EntityManagerInterface $em,
-        array $templates
+        EntityManagerInterface $em
     )
     {
         $this->assertTheNameOnlyContainsAllowedCharacters();
@@ -197,7 +188,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->ajax = new Ajax();
 
         $this->data = null;
-        $this->templates = $templates;
 
         $this->qb = null;
     }
@@ -242,13 +232,13 @@ abstract class AbstractDatatableView implements DatatableViewInterface
 
         switch ($type) {
             case 'html':
-                return $this->twig->render($this->templates['html'], $options);
+                return $this->twig->render('SgDatatablesBundle:Datatable:datatable.html.twig', $options);
                 break;
             case 'js':
-                return $this->twig->render($this->templates['js'], $options);
+                return $this->twig->render('SgDatatablesBundle:Datatable:datatable_js.html.twig', $options);
                 break;
             default:
-                return $this->twig->render($this->templates['base'], $options);
+                return $this->twig->render('SgDatatablesBundle:Datatable:datatable.html.twig', $options);
                 break;
         }
     }
@@ -359,30 +349,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getData()
     {
         return $this->data;
-    }
-
-    /**
-     * Set templates.
-     *
-     * @param array $templates
-     *
-     * @return $this
-     */
-    public function setTemplates(array $templates)
-    {
-        $this->templates = $templates;
-
-        return $this;
-    }
-
-    /**
-     * Get templates.
-     *
-     * @return array
-     */
-    public function getTemplates()
-    {
-        return $this->templates;
     }
 
     //-------------------------------------------------

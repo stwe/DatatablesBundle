@@ -43,7 +43,6 @@ class DatatableViewPass implements CompilerPassInterface
             $def->addArgument(new Reference('translator.default'));
             $def->addArgument(new Reference('router'));
             $def->addArgument(new Reference('doctrine.orm.entity_manager'));
-            $def->addArgument('%sg_datatables.datatable.templates%');
         }
     }
 }
