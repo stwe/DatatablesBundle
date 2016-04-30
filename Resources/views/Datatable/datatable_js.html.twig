@@ -142,6 +142,10 @@
 
 {% block sg_datatable_render_functions %}
 
-    {% include "SgDatatablesBundle:Datatable:render_functions.html.twig" %}
+    <script type="text/javascript">
+        if (typeof window.renderFunctionsAlreadyLoaded == 'undefined') {
+            {% include "SgDatatablesBundle:Datatable:render_functions.js.twig" %}
+        }
+    </script>
 
 {% endblock %}
