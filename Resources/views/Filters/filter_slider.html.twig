@@ -16,6 +16,7 @@
 
 {% block html %}
     <input type="text"
+        id="{{ tableId }}-sg-slider-{{ filterColumnId }}"
         class="individual_filtering sg-slider{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
         style="{% if column.width %} width:{{ column.width }};{% endif %}"
         placeholder="{{ column.title|striptags|trim }}"
@@ -25,7 +26,7 @@
 
 {% block javascript %}
     <script type="text/javascript">
-        var sliderField = $("#{{ tableId }} .sg-slider").slider({
+        var sliderField = $("#{{ tableId }}-sg-slider-{{ filterColumnId }}.sg-slider").slider({
             min: {{ column.filter.min }},
             max: {{ column.filter.max }},
             step: {{ column.filter.step }},

@@ -96,6 +96,18 @@ abstract class AbstractFilter implements FilterInterface, OptionsInterface
     }
 
     //-------------------------------------------------
+    // FilterInterface
+    //-------------------------------------------------
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProperty()
+    {
+        return $this->property;
+    }
+
+    //-------------------------------------------------
     // Helper
     //-------------------------------------------------
 
@@ -210,16 +222,6 @@ abstract class AbstractFilter implements FilterInterface, OptionsInterface
         $this->searchType = $searchType;
 
         return $this;
-    }
-
-    /**
-     * Get property.
-     *
-     * @return string
-     */
-    public function getProperty()
-    {
-        return $this->property;
     }
 
     /**

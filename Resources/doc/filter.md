@@ -32,6 +32,7 @@ __
 [Text Filter](#text-filter)
 [Select Filter](#select-filter)
 [DateRange Filter](#daterange-filter)
+[Slider Filter](#slider-filter)
 
 ### Example
 
@@ -81,6 +82,18 @@ class PostDatatable extends AbstractDatatableView
                     'class' => 'test1 test2'
                 ))
             ))
+            ->add('heat.heat', 'progress_bar', array(
+                'title' => 'Heat',
+                'filter' => array('slider', array(
+                    'min' => 1.0,
+                    'max' => 12.0,
+                    'property' => 'heat.id',
+                    'formatter' => ':chili:slider.js.twig'
+                )),
+                'value_min' => '0',
+                'value_max' => '10',
+                'multi_color' => true
+            ))
         ;
     }
     
@@ -129,8 +142,8 @@ SgDatatablesBundle:Filters:filter_select.html.twig
 | search_type    | string | 'like'  |
 | property       | string | ''      |
 | search_column  | string | ''      |
-| select_options | array  | array() |
 | class          | string | ''      |
+| select_options | array  | array() |
 
 #### Example
 
@@ -156,7 +169,6 @@ SgDatatablesBundle:Filters:filter_daterange.html.twig
 
 | Option         | Type   | Default |
 |----------------|--------|---------|
-| search_type    | string | 'like'  |
 | property       | string | ''      |
 | search_column  | string | ''      |
 | class          | string | ''      |
@@ -170,6 +182,83 @@ $this->columnBuilder
         'filter' => array('daterange', array()),
     ))
 ;
+```
+
+### Slider Filter
+
+#### Default template
+
+SgDatatablesBundle:Filters:filter_slider.html.twig
+
+#### Options
+
+| Option             | Type                  | Default      |
+|--------------------|-----------------------|--------------|
+| search_type        | string                | 'eq'         |
+| property           | string                | ''           |
+| search_column      | string                | ''           |
+| class              | string                | ''           |
+| min                | float                 | 0.0          |
+| max                | float                 | 10.0         |
+| step               | float                 | 1.0          |
+| precision          | float                 | 0.0          |
+| orientation        | string                | 'horizontal' |
+| value              | float or array        | 0.0          |
+| range              | bool                  | false        |
+| selection          | string                | 'before'     |
+| tooltip            | string                | 'show'       |
+| tooltip_split      | bool                  | false        |
+| tooltip_position   | string or null        | null         |
+| handle             | string                | 'round'      |
+| reversed           | bool                  | false        |
+| enabled            | bool                  | true         |
+| formatter          | string                | ''           |
+| natural_arrow_keys | bool                  | false        |
+| ticks              | array                 | array()      |
+| ticks_positions    | array                 | array()      |
+| ticks_labels       | array                 | array()      |
+| ticks_snap_bounds  | float                 | 0.0          |
+| scale              | string                | 'linear'     |
+| focus              | bool                  | false        |
+| labelledby         | string, array or null | null         |
+
+#### Example
+
+##### Datatable class
+
+```php
+$this->columnBuilder
+    ->add('heat.id', 'column', array(
+        'visible' => false,
+        'filter' => array('text', array(
+            'search_type' => 'eq'
+        ))
+    ))
+    ->add('heat.heat', 'progress_bar', array(
+        'title' => 'Heat',
+        'filter' => array('slider', array(
+            'min' => 1.0,
+            'max' => 12.0,
+            'property' => 'heat.id',
+            'formatter' => ':chili:slider.js.twig'
+        )),
+        'value_min' => '0',
+        'value_max' => '10',
+        'multi_color' => true
+    ))
+;
+```
+
+##### slider.js.twig
+
+```
+function formatTooltip(value) {
+    if (12 == value) {
+        return '10+'
+    }
+
+    return value - 1;
+}
 ```
 __
 

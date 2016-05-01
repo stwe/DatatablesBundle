@@ -22,6 +22,13 @@ use Doctrine\ORM\Query\Expr\Andx;
 interface FilterInterface
 {
     /**
+     * Get property.
+     *
+     * @return string
+     */
+    public function getProperty();
+
+    /**
      * Get template.
      *
      * @return string
