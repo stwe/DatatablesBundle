@@ -201,7 +201,7 @@ class Options extends AbstractViewOptions
             'stripe_classes' => array(),
             'class' => Style::BASE_STYLE,
             'individual_filtering' => false,
-            'individual_filtering_position' => 'foot',
+            'individual_filtering_position' => 'head',
             'use_integration_options' => false,
             'force_dom' => false
         ));

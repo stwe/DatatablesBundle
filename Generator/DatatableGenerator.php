@@ -77,13 +77,12 @@ class DatatableGenerator extends Generator
      * @param BundleInterface $bundle     The bundle in which to create the class
      * @param string          $entity     The entity relative class name
      * @param array           $fields     The datatable fields
-     * @param boolean         $clientSide The client side flag
      * @param string          $ajaxUrl    The ajax url
      * @param boolean         $bootstrap3 The bootstrap3 flag
      *
      * @throws RuntimeException
      */
-    public function generate(BundleInterface $bundle, $entity, array $fields, $clientSide, $ajaxUrl, $bootstrap3)
+    public function generate(BundleInterface $bundle, $entity, array $fields, $ajaxUrl, $bootstrap3)
     {
         $parts = explode("\\", $entity);
         $entityClass = array_pop($parts);
@@ -99,14 +98,10 @@ class DatatableGenerator extends Generator
         $parts = explode('\\', $entity);
         array_pop($parts);
 
-        // set ajaxUrl
-        if (false === $clientSide) {
-            // server-side
-            if (!$ajaxUrl) {
-                $this->ajaxUrl = strtolower($entityClass) . '_results';
-            } else {
-                $this->ajaxUrl = $ajaxUrl;
-            }
+        if (!$ajaxUrl) {
+            $this->ajaxUrl = strtolower($entityClass) . '_results';
+        } else {
+            $this->ajaxUrl = $ajaxUrl;
         }
 
         $routePref = strtolower($entityClass);
@@ -119,7 +114,6 @@ class DatatableGenerator extends Generator
             'datatable_class' => $this->className,
             'datatable_name' => strtolower($entityClass) . '_datatable',
             'fields' => $fields,
-            'client_side' => (boolean) $clientSide,
             'ajax_url' => $this->ajaxUrl,
             'bootstrap3' => (boolean) $bootstrap3,
             'route_pref' => $routePref

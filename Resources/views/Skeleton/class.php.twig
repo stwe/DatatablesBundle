@@ -52,19 +52,15 @@ class {{ datatable_class }} extends AbstractDatatableView
             'scroll_x' => false,
             'scroll_y' => '',
             'searching' => true,
-            'server_side' => {{ client_side ? 'false' : 'true' }},
             'state_save' => false,
             'delay' => 0,
             'extensions' => array()
         ));
 
-        {% if false == client_side -%}
         $this->ajax->set(array(
             'url' => $this->router->generate('{{ ajax_url }}'),
             'type' => 'GET'
         ));
-
-        {% endif -%}
 
         $this->options->set(array(
             'display_start' => 0,
@@ -87,7 +83,7 @@ class {{ datatable_class }} extends AbstractDatatableView
             'class' => Style::BASE_STYLE,
             {% endif -%}
             'individual_filtering' => false,
-            'individual_filtering_position' => 'foot',
+            'individual_filtering_position' => 'head',
             {% if true == bootstrap3 -%}
             'use_integration_options' => true,
             {% else -%}

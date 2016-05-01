@@ -45,7 +45,7 @@ class Features extends AbstractViewOptions
      * Use markup and classes for the table to be themed by jQuery UI ThemeRoller.
      *
      * @var boolean
-     * @deprecated in DataTables 1.10 will be removed in 1.11
+     * @deprecated since DataTables 1.10 (to be removed in DataTables 1.11)
      */
     protected $jQueryUi;
 
@@ -102,6 +102,7 @@ class Features extends AbstractViewOptions
      * Feature control DataTables server-side processing mode.
      *
      * @var boolean
+     * @deprecated since v0.11 (to be removed in v0.12)
      */
     protected $serverSide;
 
@@ -448,6 +449,7 @@ class Features extends AbstractViewOptions
      * @param boolean $serverSide
      *
      * @return $this
+     * @deprecated since v0.11 (to be removed in v0.12)
      */
     protected function setServerSide($serverSide)
     {
@@ -460,6 +462,7 @@ class Features extends AbstractViewOptions
      * Get ServerSide.
      *
      * @return boolean
+     * @deprecated since v0.11 (to be removed in v0.12)
      */
     public function getServerSide()
     {

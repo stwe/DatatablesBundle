@@ -212,7 +212,7 @@ function order() {
 | stripe_classes                | array  | array()                        |
 | class                         | string | Style::BASE_STYLE              |
 | individual_filtering          | bool   | false                          |
-| individual_filtering_position | string | 'foot'                         |
+| individual_filtering_position | string | 'head'                         |
 | use_integration_options       | bool   | false                          |
 | force_dom                     | bool   | false                          |
 

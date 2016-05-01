@@ -31,12 +31,14 @@ use RuntimeException;
  */
 class GenerateDatatableCommand extends ContainerAwareCommand
 {
-
     /**
-     * @var
+     * @var DatatableGenerator
      */
     private $generator;
 
+    /**
+     * {@inheritdoc}
+     */
     public function isEnabled()
     {
         return (
@@ -56,7 +58,6 @@ class GenerateDatatableCommand extends ContainerAwareCommand
             ->setDescription('Generates a new datatable class based on the given entity.')
             ->addArgument('entity', InputArgument::REQUIRED, 'The entity class name (shortcut notation).')
             ->addOption('fields', 'f', InputOption::VALUE_OPTIONAL, 'The fields.')
-            ->addOption('client-side', 'c', InputOption::VALUE_NONE, 'The client-side flag.')
             ->addOption('bootstrap3', 'b', InputOption::VALUE_NONE, 'The Bootstrap3-Framework flag.')
             ->addOption('ajax-url', 'a', InputOption::VALUE_OPTIONAL, 'The ajax url.');
     }
@@ -68,11 +69,9 @@ class GenerateDatatableCommand extends ContainerAwareCommand
     {
         $entity = Validators::validateEntityName($input->getArgument('entity'));
         list($bundle, $entity) = $this->parseShortcutNotation($entity);
-
         $fields = Fields::parseFields($input->getOption('fields'));
-        $clientSide = $input->getOption('client-side');
-        $ajaxUrl = $input->getOption('ajax-url');
         $bootstrap = $input->getOption('bootstrap3');
+        $ajaxUrl = $input->getOption('ajax-url');
 
         $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle) . "\\" . $entity;
         $metadata = $this->getEntityMetadata($entityClass);
@@ -87,9 +86,8 @@ class GenerateDatatableCommand extends ContainerAwareCommand
 
         $bundle = $this->getContainer()->get('kernel')->getBundle($bundle);
 
-        /** @var \Sg\DatatablesBundle\Generator\DatatableGenerator $generator */
         $generator = $this->getGenerator($bundle);
-        $generator->generate($bundle, $entity, $fields, $clientSide, $ajaxUrl, $bootstrap);
+        $generator->generate($bundle, $entity, $fields, $ajaxUrl, $bootstrap);
 
         $output->writeln(
             sprintf(
@@ -101,6 +99,8 @@ class GenerateDatatableCommand extends ContainerAwareCommand
     }
 
     /**
+     * Create generator.
+     *
      * @return DatatableGenerator
      */
     protected function createGenerator()
@@ -109,6 +109,8 @@ class GenerateDatatableCommand extends ContainerAwareCommand
     }
 
     /**
+     * Get skeleton dirs.
+     *
      * @param BundleInterface $bundle
      *
      * @return array
@@ -131,10 +133,6 @@ class GenerateDatatableCommand extends ContainerAwareCommand
 
         return $skeletonDirs;
     }
-
-    //-------------------------------------------------
-    // Private
-    //-------------------------------------------------
 
     /**
      * Returns an array of fields. Fields can be both column fields and
@@ -186,6 +184,13 @@ class GenerateDatatableCommand extends ContainerAwareCommand
         return $fields;
     }
 
+    /**
+     * Parse shortcut notation.
+     *
+     * @param $shortcut
+     *
+     * @return array
+     */
     protected function parseShortcutNotation($shortcut)
     {
         $entity = str_replace('/', '\\', $shortcut);
@@ -197,6 +202,14 @@ class GenerateDatatableCommand extends ContainerAwareCommand
         return array(substr($entity, 0, $pos), substr($entity, $pos + 1));
     }
 
+    /**
+     * Get entity metadata.
+     *
+     * @param $entity
+     *
+     * @return array
+     * @throws \Doctrine\ORM\Mapping\MappingException
+     */
     protected function getEntityMetadata($entity)
     {
         $factory = new DisconnectedMetadataFactory($this->getContainer()->get('doctrine'));
@@ -204,6 +217,13 @@ class GenerateDatatableCommand extends ContainerAwareCommand
         return $factory->getClassMetadata($entity)->getMetadata();
     }
 
+    /**
+     * Get generator.
+     *
+     * @param BundleInterface|null $bundle
+     *
+     * @return mixed|DatatableGenerator
+     */
     protected function getGenerator(BundleInterface $bundle = null)
     {
         if (null === $this->generator) {
@@ -213,5 +233,4 @@ class GenerateDatatableCommand extends ContainerAwareCommand
 
         return $this->generator;
     }
-
 }
