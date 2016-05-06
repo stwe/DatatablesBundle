@@ -854,7 +854,7 @@ class DatatableQuery
      */
     private function getTableName(ClassMetadata $metadata)
     {
-        return strtolower($metadata->getTableName());
+        return strtolower($metadata->getQuotedTableName());
     }
 
     /**
