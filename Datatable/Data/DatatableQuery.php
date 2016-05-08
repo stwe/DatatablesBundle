@@ -269,6 +269,7 @@ class DatatableQuery
      *
      * @author stwe <https://github.com/stwe>
      * @author Gaultier Boniface <https://github.com/wysow>
+     * @author greg-avanim <https://github.com/greg-avanim>
      *
      * @return $this
      */
@@ -295,52 +296,36 @@ class DatatableQuery
             $data = $column->getDql();
 
             if (true === $this->isSelectColumn($data)) {
-                if (false === $this->isAssociation($data)) {
-                    $this->addSearchOrderColumn($key, $this->tableName, $data);
-                    if ($data !== $this->rootEntityIdentifier) {
-                        $this->selectColumns[$this->tableName][] = $data;
-                    }
-                } else {
-                    $replaced = str_replace('.', '_', $data);
-                    $parts = explode('_', $replaced);
-                    $last = array_pop($parts);
 
-                    $previousPart = $this->tableName;
-                    $currentPart = null;
-                    $metadata = null;
-                    $select = null;
+                $parts = explode('.', $data);
 
-                    while (count($parts) > 0) {
-                        $select = implode('_', $parts);
+                $currentPart = $this->tableName;
+                $currentAlias = $currentPart;
 
-                        if (in_array($select, $this->selects)) {
-                            $select .= '_'.uniqid();
-                        }
+                $metadata = $this->metadata;
 
-                        $this->selects[] = $select;
-                        $currentPart = array_shift($parts);
+                while (count($parts) > 1) {
 
-                        if (!array_key_exists($previousPart.'.'.$currentPart, $this->joins)) {
-                            $this->joins[$previousPart.'.'.$currentPart] = $select;
-                        } else {
-                            $select = $this->joins[$previousPart.'.'.$currentPart];
-                        }
+                    $previousPart = $currentPart;
+                    $previousAlias = $currentAlias;
 
-                        if (false === array_key_exists($select, $this->selectColumns)) {
-                            $metadata = $this->setIdentifierFromAssociation($select, $currentPart, $metadata);
-                        }
+                    $currentPart = array_shift($parts);
+                    $currentAlias = ($previousPart == $this->tableName ? '' : $previousPart.'_') . $currentPart; // This condition keeps stable queries callbacks
 
-                        $previousPart = $select;
+                    if (!array_key_exists($previousAlias.'.'.$currentPart, $this->joins)) {
+                        $this->joins[$previousAlias.'.'.$currentPart] = $currentAlias;
                     }
 
-                    $this->selectColumns[$select][] = $last;
-                    $this->addSearchOrderColumn($key, $select, $last);
+                    $metadata = $this->setIdentifierFromAssociation($currentAlias, $currentPart, $metadata);
                 }
+
+                $this->selectColumns[$currentAlias][] = $this->getIdentifier($metadata);
+                $this->selectColumns[$currentAlias][] = $parts[0];
+                $this->addSearchOrderColumn($key, $currentAlias, $parts[0]);
             } else {
                 $this->orderColumns[] = null;
                 $this->searchColumns[] = null;
             }
-
         }
 
         return $this;
@@ -895,18 +880,6 @@ class DatatableQuery
         $this->selectColumns[$association][] = $this->getIdentifier($targetMetadata);
 
         return $targetMetadata;
-    }
-
-    /**
-     * Is association.
-     *
-     * @param string $data
-     *
-     * @return bool|int
-     */
-    private function isAssociation($data)
-    {
-        return strpos($data, '.');
     }
 
     /**
