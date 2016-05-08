@@ -3,7 +3,7 @@
 You can apply additional `where` conditions to your query.
 
 1. [WhereAll callback](#1-whereall-callback)
-2. [WhereResult callback](#2-whereresult-callback)
+2. [WhereResult callback (deprecated)](#2-whereresult-callback)
 3. [Get query](#3-get-query)
 4. [Response callback](#4-response-callback)
 

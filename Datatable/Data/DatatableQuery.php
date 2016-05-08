@@ -395,9 +395,10 @@ class DatatableQuery
     /**
      * Add the where-result function.
      *
-     * @param $callback
+     * @param callable $callback
      *
      * @return $this
+     * @deprecated since v0.11 (to be removed in v0.12)
      */
     public function addWhereResult(callable $callback)
     {
@@ -409,7 +410,7 @@ class DatatableQuery
     /**
      * Add the where-all function.
      *
-     * @param $callback
+     * @param callable $callback
      *
      * @return $this
      */
@@ -471,7 +472,7 @@ class DatatableQuery
     /**
      * Add response callback.
      *
-     * @param mixed $callback
+     * @param callable $callback
      *
      * @return $this
      */
