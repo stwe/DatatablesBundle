@@ -111,11 +111,6 @@ class DatatableQuery
     /**
      * @var array
      */
-    private $selects;
-
-    /**
-     * @var array
-     */
     private $callbacks;
 
     /**
@@ -205,7 +200,6 @@ class DatatableQuery
         $this->joins = array();
         $this->searchColumns = array();
         $this->orderColumns = array();
-        $this->selects = array();
         $this->callbacks = array();
         $this->columns = $datatableView->getColumnBuilder()->getColumns();
 
