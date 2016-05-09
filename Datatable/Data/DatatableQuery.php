@@ -380,12 +380,12 @@ class DatatableQuery
     /**
      * Add the where-result function.
      *
-     * @param callable $callback
+     * @param $callback
      *
      * @return $this
      * @deprecated since v0.11 (to be removed in v0.12)
      */
-    public function addWhereResult(callable $callback)
+    public function addWhereResult($callback)
     {
         $this->callbacks['WhereResult'][] = $callback;
 
@@ -395,11 +395,11 @@ class DatatableQuery
     /**
      * Add the where-all function.
      *
-     * @param callable $callback
+     * @param $callback
      *
      * @return $this
      */
-    public function addWhereAll(callable $callback)
+    public function addWhereAll($callback)
     {
         $this->callbacks['WhereAll'][] = $callback;
 
@@ -457,11 +457,11 @@ class DatatableQuery
     /**
      * Add response callback.
      *
-     * @param callable $callback
+     * @param $callback
      *
      * @return $this
      */
-    public function addResponseCallback(callable $callback)
+    public function addResponseCallback($callback)
     {
         $this->callbacks['Response'][] = $callback;
 
