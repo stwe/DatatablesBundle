@@ -182,4 +182,27 @@ class ColumnBuilder implements ColumnBuilderInterface
     {
         return (boolean) $this->multiselect;
     }
+
+    /**
+     * Set tableName
+     *
+     * @param string $tableName
+     * @return \Sg\DatatablesBundle\Datatable\Column\ColumnBuilder
+     */
+    public function setTableName($tableName)
+    {
+        $this->tableName = $tableName;
+
+        return $this;
+    }
+
+    /**
+     * Get tableName
+     *
+     * @return string
+     */
+    public function getTableName()
+    {
+        return $this->tableName;
+    }
 }
