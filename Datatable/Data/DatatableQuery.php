@@ -381,6 +381,10 @@ class DatatableQuery
      */
     public function addWhereResult($callback)
     {
+        if (!is_callable($callback)) {
+            throw new Exception(sprintf("Callable expected and %s given", gettype($callback)));
+        }
+
         $this->callbacks['WhereResult'][] = $callback;
 
         return $this;
@@ -395,6 +399,10 @@ class DatatableQuery
      */
     public function addWhereAll($callback)
     {
+        if (!is_callable($callback)) {
+            throw new Exception(sprintf("Callable expected and %s given", gettype($callback)));
+        }
+
         $this->callbacks['WhereAll'][] = $callback;
 
         return $this;
@@ -457,6 +465,10 @@ class DatatableQuery
      */
     public function addResponseCallback($callback)
     {
+        if (!is_callable($callback)) {
+            throw new Exception(sprintf("Callable expected and %s given", gettype($callback)));
+        }
+
         $this->callbacks['Response'][] = $callback;
 
         return $this;
