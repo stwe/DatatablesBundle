@@ -48,7 +48,7 @@ class PostDatatable extends AbstractDatatableView
 
         $this->options->set(array(
             'individual_filtering' => true, // default is false
-            'individual_filtering_position' => 'head', // or 'both', default is 'foot'
+            'individual_filtering_position' => 'foot', // or 'both', default is 'head'
         ));
         
         $users = $this->em->getRepository('AppBundle:User')->findAll();
