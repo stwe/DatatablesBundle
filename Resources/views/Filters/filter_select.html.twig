@@ -6,17 +6,25 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-<select
-    class="individual_filtering{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
-    style="{% if column.width %} width:{{ column.width }};{% endif %}"
-    {% if column.name %}name="{{ column.name }}"{% endif %}
-    data-filter-property-id="{{ filterColumnId }}"
-    >
-    {% for key, name in column.filter.selectOptions %}
-        {% if loop.first %}
-            <option value="{{ key }}" selected="selected">{{ name }}</option>
-        {% else %}
-            <option value="{{ key }}">{{ name }}</option>
-        {% endif %}
-    {% endfor %}
-</select>
+{% extends 'SgDatatablesBundle:Filters:filter.html.twig' %}
+
+{% block html %}
+    <select
+        id="{{ tableId }}-sg-filter-{{ filterColumnId }}"
+        class="individual_filtering{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
+        style="{% if column.width %} width:{{ column.width }};{% endif %}"
+        {% if column.name %}name="{{ column.name }}"{% endif %}
+        data-filter-property-id="{{ filterColumnId }}"
+        >
+        {% for key, name in column.filter.selectOptions %}
+            {% if loop.first %}
+                <option value="{{ key }}" selected="selected">{{ name }}</option>
+            {% else %}
+                <option value="{{ key }}">{{ name }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    {% if true == column.filter.cancelButton %}
+        {{ cancel_button_html }}
+    {% endif %}
+{% endblock %}

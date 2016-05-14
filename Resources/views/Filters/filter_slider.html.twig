@@ -6,6 +6,8 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
+{% extends 'SgDatatablesBundle:Filters:filter.html.twig' %}
+
 {% set filter_initial_value %}
     {% if column.filter.value is iterable %}
         [{{ column.filter.value|join(', ') }}]
@@ -14,19 +16,9 @@
     {% endif %}
 {% endset %}
 
-{% block html %}
-    <input type="text"
-        id="{{ tableId }}-sg-slider-{{ filterColumnId }}"
-        class="individual_filtering sg-slider{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
-        style="{% if column.width %} width:{{ column.width }};{% endif %}"
-        placeholder="{{ column.title|striptags|trim }}"
-        data-filter-property-id="{{ filterColumnId }}"
-        {% if column.name %}name="{{ column.name }}"{% endif %} />
-{% endblock %}
-
 {% block javascript %}
     <script type="text/javascript">
-        var sliderField = $("#{{ tableId }}-sg-slider-{{ filterColumnId }}.sg-slider").slider({
+        var sliderField = $("#{{ tableId }}-sg-filter-{{ filterColumnId }}").slider({
             min: {{ column.filter.min }},
             max: {{ column.filter.max }},
             step: {{ column.filter.step }},
@@ -53,8 +45,10 @@
             tooltip_position: "{{ column.filter.tooltipPosition }}",
             labelledby: "{{ column.filter.labelledby }}"
         });
-        sliderField.on("change", function(slideEvt) {
-            console.info(slideEvt.value);
+        $("#{{ tableId }}-sg-filter-cancel-button-{{ filterColumnId }}").click(function() {
+            $("#{{ tableId }}-sg-filter-{{ filterColumnId }}")
+                .val('')
+                .change();
         });
     </script>
 {% endblock %}

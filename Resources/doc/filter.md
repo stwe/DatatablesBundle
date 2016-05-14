@@ -88,7 +88,8 @@ class PostDatatable extends AbstractDatatableView
                     'min' => 1.0,
                     'max' => 12.0,
                     'property' => 'heat.id',
-                    'formatter' => ':chili:slider.js.twig'
+                    'formatter' => ':chili:slider.js.twig',
+                    'cancel_button' => true
                 )),
                 'value_min' => '0',
                 'value_max' => '10',
@@ -115,6 +116,7 @@ SgDatatablesBundle:Filters:filter_text.html.twig
 | property      | string | ''      |
 | search_column | string | ''      |
 | class         | string | ''      |
+| cancel_button | bool   | false   |
 
 #### Example
 
@@ -144,6 +146,7 @@ SgDatatablesBundle:Filters:filter_select.html.twig
 | search_column  | string | ''      |
 | class          | string | ''      |
 | select_options | array  | array() |
+| cancel_button  | bool   | false   |
 
 #### Example
 
@@ -198,6 +201,7 @@ SgDatatablesBundle:Filters:filter_slider.html.twig
 | property           | string                | ''           |
 | search_column      | string                | ''           |
 | class              | string                | ''           |
+| cancel_button      | bool                  | false        |
 | min                | float                 | 0.0          |
 | max                | float                 | 10.0         |
 | step               | float                 | 1.0          |
@@ -240,7 +244,8 @@ $this->columnBuilder
             'min' => 1.0,
             'max' => 12.0,
             'property' => 'heat.id',
-            'formatter' => ':chili:slider.js.twig'
+            'formatter' => ':chili:slider.js.twig',
+            'cancel_button' => true
         )),
         'value_min' => '0',
         'value_max' => '10',

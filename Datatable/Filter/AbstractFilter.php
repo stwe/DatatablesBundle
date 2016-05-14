@@ -59,6 +59,11 @@ abstract class AbstractFilter implements FilterInterface, OptionsInterface
      */
     protected $class;
 
+    /**
+     * @var boolean
+     */
+    protected $cancelButton;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -282,6 +287,30 @@ abstract class AbstractFilter implements FilterInterface, OptionsInterface
     public function setClass($class)
     {
         $this->class = $class;
+
+        return $this;
+    }
+
+    /**
+     * Get cancel button.
+     *
+     * @return boolean
+     */
+    public function getCancelButton()
+    {
+        return $this->cancelButton;
+    }
+
+    /**
+     * Set cancel button.
+     *
+     * @param boolean $cancelButton
+     *
+     * @return $this
+     */
+    public function setCancelButton($cancelButton)
+    {
+        $this->cancelButton = $cancelButton;
 
         return $this;
     }
