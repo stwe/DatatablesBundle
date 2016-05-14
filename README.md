@@ -24,6 +24,7 @@ services:
 - Datatable Events supported
 - some new translations
 - render_if Closure parameter in action column
+- cancel button for some filters added
 - outsourcing individual filter in new classes, see below example
 
 ```php

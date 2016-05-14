@@ -25,11 +25,13 @@
                     return params;
                 },
                 container: 'body',
-                {# many-to-one association needs a complete table redraw #}
-                {% if column.isAssociation %}
+                {# many-to-one associations and the Responsive-extension need a complete table redraw #}
+                {% if column.isAssociation or view_features.extensions.responsive is defined and true == view_features.extensions.responsive %}
                 success: function(response, newValue) {
                     oTable.draw();
-                    alert("{{ 'editable.tableRedraw'|trans({}, 'messages') }}");
+                    {% if column.isAssociation %}
+                        alert("{{ 'editable.tableRedraw'|trans({}, 'messages') }}");
+                    {% endif %}
                 }
                 {% endif %}
             });
