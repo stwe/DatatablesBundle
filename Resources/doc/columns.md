@@ -559,24 +559,25 @@ SgDatatablesBundle:Column:image.html.twig
 
 ### Options
 
-| Option               | Type           | Default                |          |
-|----------------------|----------------|------------------------|----------|
-| class                | string         | ''                     |          |
-| padding              | string         | ''                     |          |
-| name                 | string         | ''                     |          |
-| orderable            | boolean        | false                  |          |
-| searchable           | boolean        | false                  |          |
-| title                | string         | ''                     |          |
-| type                 | string         | ''                     |          |
-| visible              | boolean        | true                   |          |
-| width                | string         | ''                     |          |
-| filter               | array          | array('text', array()) |          |
-| imagine_filter       | string         | ''                     |          |
-| relative_path        | string         |                        | required |
-| holder_url           | string         | ''                     |          |
-| holder_width         | string         | '50'                   |          |
-| holder_height        | string         | '50'                   |          |
-| enlarge              | boolean        | false                  |          |
+| Option                   | Type           | Default                |          |
+|--------------------------|----------------|------------------------|----------|
+| class                    | string         | ''                     |          |
+| padding                  | string         | ''                     |          |
+| name                     | string         | ''                     |          |
+| orderable                | boolean        | false                  |          |
+| searchable               | boolean        | false                  |          |
+| title                    | string         | ''                     |          |
+| type                     | string         | ''                     |          |
+| visible                  | boolean        | true                   |          |
+| width                    | string         | ''                     |          |
+| filter                   | array          | array('text', array()) |          |
+| imagine_filter           | string         | ''                     |          |
+| imagine_filter_enlarged  | string         | ''                     |          |
+| relative_path            | string         |                        | required |
+| holder_url               | string         | ''                     |          |
+| holder_width             | string         | '50'                   |          |
+| holder_height            | string         | '50'                   |          |
+| enlarge                  | boolean        | false                  |          |
 
 ### Example
 
@@ -586,6 +587,7 @@ $this->columnBuilder
         'title' => 'Bild',
         'relative_path' => 'images/posts',
         //'imagine_filter' => 'my_thumb_40x40',
+        //'imagine_filter_enlarged' => 'my_thumb_500x500',
         //'holder_url' => 'https://placehold.it',
         //'holder_width' => '65',
         //'holder_height' => '65',

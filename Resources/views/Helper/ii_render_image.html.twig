@@ -33,7 +33,10 @@
             <script type="text/javascript">
                 $(function() {
                     $("#sg-enlarge_{{ image_id }}").on("click", function() {
-                        $("#sg-imageview_{{ image_id }}").attr("src", "{{ asset(path) }}");
+                        {% if enlarged_filter %}
+                            {% set enlargedPath = asset(path)|imagine_filter(enlarged_filter) %}
+                        {% endif %}
+                        $("#sg-imageview_{{ image_id }}").attr("src", "{{ enlargedPath|default(asset(path)) }}");
                         $("#sg-image-modal_{{ image_id }}").modal("show");
                     });
                 });
