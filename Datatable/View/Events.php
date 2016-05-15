@@ -42,25 +42,11 @@ class Events extends AbstractViewOptions
     protected $destroy;
 
     /**
-     * Fired once the table has completed a draw.
-     *
-     * @var string
-     */
-    protected $draw;
-
-    /**
      * An error has occurred during DataTables processing of data.
      *
      * @var string
      */
     protected $error;
-
-    /**
-     * Fired when DataTables has been fully initialised and data loaded.
-     *
-     * @var string
-     */
-    protected $init;
 
     /**
      * Fired when the page length is changed.
@@ -152,9 +138,7 @@ class Events extends AbstractViewOptions
             'column_sizing' => '',
             'column_visibility' => '',
             'destroy' => '',
-            //'draw' => '',
             'error' => '',
-            //'init' => '',
             'length' => '',
             'order' => '',
             'page' => '',
@@ -171,9 +155,7 @@ class Events extends AbstractViewOptions
         $resolver->setAllowedTypes('column_sizing', 'string');
         $resolver->setAllowedTypes('column_visibility', 'string');
         $resolver->setAllowedTypes('destroy', 'string');
-        //$resolver->setAllowedTypes('draw', 'string');
         $resolver->setAllowedTypes('error', 'string');
-        //$resolver->setAllowedTypes('init', 'string');
         $resolver->setAllowedTypes('length', 'string');
         $resolver->setAllowedTypes('order', 'string');
         $resolver->setAllowedTypes('page', 'string');
@@ -253,20 +235,6 @@ class Events extends AbstractViewOptions
         return $this;
     }
 
-    /*
-    public function getDraw()
-    {
-        return $this->draw;
-    }
-
-    protected function setDraw($draw)
-    {
-        $this->draw = $draw;
-
-        return $this;
-    }
-    */
-
     /**
      * @return string
      */
@@ -286,20 +254,6 @@ class Events extends AbstractViewOptions
 
         return $this;
     }
-
-    /*
-    public function getInit()
-    {
-        return $this->init;
-    }
-
-    protected function setInit($init)
-    {
-        $this->init = $init;
-
-        return $this;
-    }
-    */
 
     /**
      * @return string
