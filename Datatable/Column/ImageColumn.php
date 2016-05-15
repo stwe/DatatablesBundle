@@ -199,7 +199,7 @@ class ImageColumn extends AbstractColumn
         $resolver->setAllowedTypes('width', 'string');
         $resolver->setAllowedTypes('filter', 'array');
         $resolver->setAllowedTypes('imagine_filter', 'string');
-        $resolver->setAllowedTypes('imagine_filter_enlarged', 'string');
+        $resolver->setAllowedTypes('imagine_filter_enlarged', array('string', 'null'));
         $resolver->setAllowedTypes('relative_path', 'string');
         $resolver->setAllowedTypes('holder_url', 'string');
         $resolver->setAllowedTypes('holder_width', 'string');
