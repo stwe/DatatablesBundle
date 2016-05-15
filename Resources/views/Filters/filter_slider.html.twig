@@ -18,7 +18,7 @@
 
 {% block javascript %}
     <script type="text/javascript">
-        var sliderField = $("#{{ tableId }}-sg-filter-{{ filterColumnId }}").slider({
+        var sliderField = $("#{{ tableId }}-sg-filter-{{ selectorId }}").slider({
             min: {{ column.filter.min }},
             max: {{ column.filter.max }},
             step: {{ column.filter.step }},
@@ -45,8 +45,8 @@
             tooltip_position: "{{ column.filter.tooltipPosition }}",
             labelledby: "{{ column.filter.labelledby }}"
         });
-        $("#{{ tableId }}-sg-filter-cancel-button-{{ filterColumnId }}").click(function() {
-            $("#{{ tableId }}-sg-filter-{{ filterColumnId }}")
+        $("#{{ tableId }}-sg-filter-cancel-button-{{ selectorId }}").click(function() {
+            $("#{{ tableId }}-sg-filter-{{ selectorId }}")
                 .val('')
                 .change();
         });

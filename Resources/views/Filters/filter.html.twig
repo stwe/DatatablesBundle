@@ -8,16 +8,16 @@
  #}
 {% set cancel_button_html %}
     <button type="button"
-            id="{{ tableId }}-sg-filter-cancel-button-{{ filterColumnId }}"
+            id="{{ tableId }}-sg-filter-cancel-button-{{ selectorId }}"
             class="btn btn-default btn-sm"
     >&times;</button>
 {% endset %}
 
 {% set cancel_button_js %}
     <script>
-        $("#{{ tableId }}-sg-filter-cancel-button-{{ filterColumnId }}").click(function() {
-            if ('' != $("#{{ tableId }}-sg-filter-{{ filterColumnId }}").val()) {
-                $("#{{ tableId }}-sg-filter-{{ filterColumnId }}")
+        $("#{{ tableId }}-sg-filter-cancel-button-{{ selectorId }}").click(function() {
+            if ('' != $("#{{ tableId }}-sg-filter-{{ selectorId }}").val()) {
+                $("#{{ tableId }}-sg-filter-{{ selectorId }}")
                     .val('')
                     .change();
             }
@@ -27,7 +27,7 @@
 
 {% block html %}
     <input type="text"
-           id="{{ tableId }}-sg-filter-{{ filterColumnId }}"
+           id="{{ tableId }}-sg-filter-{{ selectorId }}"
            class="individual_filtering{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
            style="{% if column.width %} width:{{ column.width }};{% endif %}"
            placeholder="{{ column.title|striptags|trim }}"

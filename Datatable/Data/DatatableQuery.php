@@ -377,6 +377,7 @@ class DatatableQuery
      * @param $callback
      *
      * @return $this
+     * @throws Exception
      * @deprecated since v0.11 (to be removed in v0.12)
      */
     public function addWhereResult($callback)
@@ -396,6 +397,7 @@ class DatatableQuery
      * @param $callback
      *
      * @return $this
+     * @throws Exception
      */
     public function addWhereAll($callback)
     {
@@ -462,6 +464,7 @@ class DatatableQuery
      * @param $callback
      *
      * @return $this
+     * @throws Exception
      */
     public function addResponseCallback($callback)
     {

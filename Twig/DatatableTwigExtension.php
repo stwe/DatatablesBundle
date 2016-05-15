@@ -192,6 +192,7 @@ class DatatableTwigExtension extends Twig_Extension
         return $twig->render($column->getFilter()->getTemplate(), array(
             'column' => $column,
             'filterColumnId' => $filterColumnId,
+            'selectorId' => $loopIndex,
             'tableId' => $datatable->getName()
             )
         );
