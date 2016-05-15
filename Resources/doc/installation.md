@@ -2,6 +2,9 @@
 
 This Bundle integrates the jQuery DataTables 1.10.x plugin into your Symfony application.
 
+1. [Installation](#installation)
+2. [Your First Datatable](#your-first-datatable)
+
 ## Installation
 
 ### Prerequisites
@@ -27,32 +30,46 @@ framework:
     default_locale: "%locale%"
 ```
 
-### Step 1: Download SgDatatablesBundle using composer
+### Step 1: Download the Bundle
 
-Require the bundle with composer:
+Open a command console, enter your project directory and execute the following command to download the latest stable version of this bundle:
 
 ``` bash
 $ composer require sg/datatablesbundle
 ```
 
-### Step 2: Enable the bundle
+### Step 2: Enable the Bundle
 
-Enable the bundle in the kernel:
+Then, enable the bundle by adding it to the list of registered bundles in the `app/AppKernel.php` file of your project:
 
 ``` php
 <?php
 // app/AppKernel.php
 
-public function registerBundles()
+class AppKernel extends Kernel
 {
-    $bundles = array(
-        // ...
-        new Sg\DatatablesBundle\SgDatatablesBundle(),
-    );
+    public function registerBundles()
+    {
+        $bundles = array(
+            // ...
+            new Sg\DatatablesBundle\SgDatatablesBundle(),
+        );
+    }
 }
 ```
 
-### Step 3: Assetic Configuration
+### Step 3: Load the Routes of the Bundle
+
+Load the routes of the bundle by adding this configuration to the `app/config/routing.yml` file:
+
+```yaml
+# app/config/routing.yml
+sg_datatables_bundle:
+    resource: "@SgDatatablesBundle/Controller/"
+    type:     annotation
+```
+
+### Step 4: Assetic Configuration
 
 Include the jQuery, DataTables, Moment and FOSJsRoutingBundle javascript/css files in your base layout.
 
@@ -83,13 +100,21 @@ CDN example with Bootstrap3, Daterangepicker and X-Editable:
 </head>
 ```
 
-### Step 4: Create your Datatable class
+## Your First Datatable
+
+### Step 1: 
+
+The `sg:datatable:generate` command generates a datatable class for a given entity located in a given bundle.
+
+To activate the popular Bootstrap3 layout, use the --bootstrap3 option:
 
 ``` bash
-$ php app/console sg:datatable:generate AppBundle:Post
+$ php app/console sg:datatable:generate AppBundle:Post --bootstrap3
 ```
 
-### Step 5: Registering your Datatable class as a Service
+If your application is based on Symfony 3, replace `php app/console` by `php bin/console`.
+
+### Step 2: Registering your Datatable as a Service
 
 ```yaml
 services:
@@ -98,22 +123,10 @@ services:
         parent: sg_datatables.datatable.abstract
 ```
 
-### Step 6: Create your index.html.twig
-
-```html
-{% extends '::base.html.twig' %}
-
-{% block body %}
-    {{ datatable_render(datatable) }}
-{% endblock %}
-```
-
-### Step 7: Add controller actions
+### Step 3: Add controller actions
 
 ```php
 /**
- * Lists all Post entities.
- *
  * @Route("/", name="post_index")
  * @Method("GET")
  */
@@ -129,8 +142,6 @@ public function indexAction()
 
 /**
  * @Route("/results", name="post_results")
- *
- * @return \Symfony\Component\HttpFoundation\Response
  */
 public function indexResultsAction()
 {
@@ -143,7 +154,17 @@ public function indexResultsAction()
 }
 ```
 
-### Step 8: Update route annotations for FOSJsRoutingBundle 
+### Step 4: Create your index.html.twig
+
+```html
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    {{ datatable_render(datatable) }}
+{% endblock %}
+```
+
+### Step 5: Update your route annotations for the FOSJsRoutingBundle 
 
 Actions like `show` or `edit` should be updated. 
 
