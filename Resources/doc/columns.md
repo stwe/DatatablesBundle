@@ -180,7 +180,7 @@ SgDatatablesBundle:Column:boolean.html.twig
 | padding              | string         | ''                    |
 | name                 | string         | ''                    |
 | orderable            | boolean        | true                  |
-| render               | null or string | render_boolean        |
+| render               | null or string | 'render_boolean'      |
 | searchable           | boolean        | true                  |
 | title                | string         | ''                    |
 | type                 | string         | ''                    |
@@ -228,7 +228,7 @@ SgDatatablesBundle:Column:datetime.html.twig
 | padding              | string         | ''                     |
 | name                 | string         | ''                     |
 | orderable            | boolean        | true                   |
-| render               | null or string | render_datetime        |
+| render               | null or string | 'render_datetime'      |
 | searchable           | boolean        | true                   |
 | title                | string         | ''                     |
 | type                 | string         | ''                     |
@@ -267,7 +267,7 @@ SgDatatablesBundle:Column:timeago.html.twig
 | padding              | string         | ''                     |
 | name                 | string         | ''                     |
 | orderable            | boolean        | true                   |
-| render               | null or string | render_timeago         |
+| render               | null or string | 'render_timeago'       |
 | searchable           | boolean        | true                   |
 | title                | string         | ''                     |
 | type                 | string         | ''                     |
@@ -572,7 +572,7 @@ SgDatatablesBundle:Column:image.html.twig
 | width                    | string         | ''                     |          |
 | filter                   | array          | array('text', array()) |          |
 | imagine_filter           | string         | ''                     |          |
-| imagine_filter_enlarged  | string         | ''                     |          |
+| imagine_filter_enlarged  | null or string | null                   |          |
 | relative_path            | string         |                        | required |
 | holder_url               | string         | ''                     |          |
 | holder_width             | string         | '50'                   |          |
@@ -678,25 +678,26 @@ SgDatatablesBundle:Column:image.html.twig
 
 ### Options
 
-| Option               | Type           | Default                |          |
-|----------------------|----------------|------------------------|----------|
-| class                | string         | ''                     |          |
-| padding              | string         | ''                     |          |
-| name                 | string         | ''                     |          |
-| orderable            | boolean        | false                  |          |
-| searchable           | boolean        | false                  |          |
-| title                | string         | ''                     |          |
-| type                 | string         | ''                     |          |
-| visible              | boolean        | true                   |          |
-| width                | string         | ''                     |          |
-| filter               | array          | array('text', array()) |          |
-| imagine_filter       | string         |                        | required |
-| relative_path        | string         |                        | required |
-| holder_url           | string         | ''                     |          |
-| holder_width         | string         | '50'                   |          |
-| holder_height        | string         | '50'                   |          |
-| enlarge              | boolean        | false                  |          |
-| view_limit           | integer        | 4                      |          |
+| Option                  | Type           | Default                |          |
+|-------------------------|----------------|------------------------|----------|
+| class                   | string         | ''                     |          |
+| padding                 | string         | ''                     |          |
+| name                    | string         | ''                     |          |
+| orderable               | boolean        | false                  |          |
+| searchable              | boolean        | false                  |          |
+| title                   | string         | ''                     |          |
+| type                    | string         | ''                     |          |
+| visible                 | boolean        | true                   |          |
+| width                   | string         | ''                     |          |
+| filter                  | array          | array('text', array()) |          |
+| imagine_filter          | string         |                        | required |
+| imagine_filter_enlarged | null or string | null                   |          |
+| relative_path           | string         |                        | required |
+| holder_url              | string         | ''                     |          |
+| holder_width            | string         | '50'                   |          |
+| holder_height           | string         | '50'                   |          |
+| enlarge                 | boolean        | false                  |          |
+| view_limit              | integer        | 4                      |          |
 
 ### Example
 

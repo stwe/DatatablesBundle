@@ -3,6 +3,7 @@
 1. [Enable or disable the search abilities](#1-enable-or-disable-the-search-abilities)
 2. [Server-side individual column filtering](#2-serverside-individual-column-filtering)
 3. [Hide the global search box](#3-hide-the-global-search-box)
+4. [Searching on non visible columns](#4-searching-on-non-visible-columns)
 
 ## 1. Enable or disable the search abilities
 
@@ -87,8 +88,6 @@ class PostDatatable extends AbstractDatatableView
                 'filter' => array('slider', array(
                     'min' => 1.0,
                     'max' => 12.0,
-                    'property' => 'heat.id',
-                    'formatter' => ':chili:slider.js.twig',
                     'cancel_button' => true
                 )),
                 'value_min' => '0',
@@ -226,14 +225,24 @@ SgDatatablesBundle:Filters:filter_slider.html.twig
 | focus              | bool                  | false        |
 | labelledby         | string, array or null | null         |
 
-#### Example
+#### A More Complex Example
+
+##### config.yml
+
+```yaml
+# SgDatatablesBundle
+sg_datatables:
+    datatable:
+        query:
+            search_on_non_visible_columns: true
+```
 
 ##### Datatable class
 
 ```php
 $this->columnBuilder
-    ->add('heat.id', 'column', array(
-        'visible' => false,
+    ->add('heat.value', 'column', array(
+        'visible' => false, // searching on non visible columns must be configured
         'filter' => array('text', array(
             'search_type' => 'eq'
         ))
@@ -241,11 +250,11 @@ $this->columnBuilder
     ->add('heat.heat', 'progress_bar', array(
         'title' => 'Heat',
         'filter' => array('slider', array(
-            'min' => 1.0,
-            'max' => 12.0,
-            'property' => 'heat.id',
-            'formatter' => ':chili:slider.js.twig',
-            'cancel_button' => true
+            'min' => 0.0,
+            'max' => 11.0,
+            'cancel_button' => true,
+            'property' => 'heat.value',
+            'formatter' => ':chili:slider.js.twig'
         )),
         'value_min' => '0',
         'value_max' => '10',
@@ -258,11 +267,11 @@ $this->columnBuilder
 
 ```
 function formatTooltip(value) {
-    if (12 == value) {
+    if (11 == value) {
         return '10+'
     }
 
-    return value - 1;
+    return value;
 }
 ```
 __
@@ -294,3 +303,12 @@ class PostDatatable extends AbstractDatatableView
 }
 ```
 
+## 4. Searching on non visible columns
+
+```yaml
+# SgDatatablesBundle
+sg_datatables:
+    datatable:
+        query:
+            search_on_non_visible_columns: true
+```
