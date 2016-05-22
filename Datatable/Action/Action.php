@@ -72,6 +72,61 @@ class Action extends AbstractAction
         return $this->renderIf;
     }
 
+    //-------------------------------------------------
+    // Helper
+    //-------------------------------------------------
+
+    /**
+     * Assign array by path.
+     *
+     * @link http://stackoverflow.com/questions/9635968/convert-dot-syntax-like-this-that-other-to-multi-dimensional-array-in-php
+     *
+     * @param        $arr
+     * @param        $path
+     * @param        $value
+     * @param string $separator
+     */
+    private function assignArrayByPath(&$arr, $path, $value, $separator = '.')
+    {
+        $keys = explode($separator, $path);
+
+        foreach ($keys as $key) {
+            $arr = &$arr[$key];
+        }
+
+        $arr = $value;
+    }
+
+    /**
+     * array_intersect_assoc() recursively
+     *
+     * @param $arr1
+     * @param $arr2
+     *
+     * @see http://stackoverflow.com/questions/4627076/php-question-how-to-array-intersect-assoc-recursively
+     *
+     * @return array|bool
+     */
+    private function array_intersect_assoc_recursive($arr1, $arr2)
+    {
+        if (!is_array($arr1) || !is_array($arr2)) {
+            return (string)$arr1 == (string)$arr2;
+        }
+
+        $commonkeys = array_intersect(array_keys($arr1), array_keys($arr2));
+        $ret = array();
+
+        foreach ($commonkeys as $key) {
+            $res = $this->array_intersect_assoc_recursive($arr1[$key], $arr2[$key]);
+
+            if ($res) {
+                $ret[$key] = $arr1[$key];
+            }
+        }
+
+        return $ret;
+    }
+
     /**
      * Is visible.
      *
@@ -84,8 +139,15 @@ class Action extends AbstractAction
         if (null !== $this->renderIf && !empty($this->renderIf) && !empty($data)) {
             if (is_array($this->renderIf)) {
                 $result = false;
+
                 foreach ($this->renderIf as $key => $item) {
-                    $result = ($item == $data[$key]);
+                    if (strpos($key, '.') !== false) {
+                        $array = array();
+                        $this->assignArrayByPath($array, $key, $item);
+                        $result = (count($this->array_intersect_assoc_recursive($array, $data)) >= 1);
+                    } else {
+                        $result = ($item == $data[$key]);
+                    }
                 }
 
                 return $result;
