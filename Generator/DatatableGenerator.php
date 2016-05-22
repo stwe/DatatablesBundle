@@ -90,6 +90,7 @@ class DatatableGenerator extends Generator
     {
         $parts = explode("\\", $entity);
         $entityClass = array_pop($parts);
+        $routePref = $entityClassLowerCase = strtolower($entityClass);
 
         $this->className = $entityClass . 'Datatable';
         $dirPath = $bundle->getPath() . '/Datatables';
@@ -115,16 +116,11 @@ class DatatableGenerator extends Generator
         // set ajaxUrl
         if (false === $clientSide) {
             // server-side
-            if (!$ajaxUrl) {
-                $this->ajaxUrl = strtolower($entityClass) . '_results';
-            } else {
-                $this->ajaxUrl = $ajaxUrl;
-            }
+            $this->ajaxUrl = $ajaxUrl? $ajaxUrl : $entityClassLowerCase . '_results';
         }
 
-        $routePref = strtolower($entityClass);
         if (true === $admin) {
-            $routePref = DatatablesRoutingLoader::PREF . strtolower($entityClass);
+            $routePref = DatatablesRoutingLoader::PREF . $entityClassLowerCase;
             $bootstrap3 = true;
         }
 
@@ -134,7 +130,7 @@ class DatatableGenerator extends Generator
             'entity_class' => $entityClass,
             'bundle' => $bundle->getName(),
             'datatable_class' => $this->className,
-            'datatable_name' => $admin ? strtolower($entityClass) . '_admin_datatable' : strtolower($entityClass) . '_datatable',
+            'datatable_name' => $admin ? $entityClassLowerCase . '_admin_datatable' : $entityClassLowerCase . '_datatable',
             'fields' => $fields,
             'client_side' => (boolean) $clientSide,
             'ajax_url' => $admin ? DatatablesRoutingLoader::PREF . $this->ajaxUrl : $this->ajaxUrl,
