@@ -5,7 +5,6 @@ sudo: false
 php:
   - 5.3
   - 5.4
-  - 5.5
   - 5.6
   - 7.0
   - hhvm
@@ -35,6 +34,3 @@ before_install:
   - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
 
 install: composer update --prefer-dist --no-interaction $COMPOSER_FLAGS
-
-script:
-  - phpunit --coverage-text
