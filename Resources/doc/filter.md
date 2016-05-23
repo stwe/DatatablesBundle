@@ -125,6 +125,7 @@ $this->columnBuilder
         'title' => 'Title',
         'filter' => array('text', array(
             'search_type' => 'eq'
+            'search_column' => 'foo' // initial search example
         ))
     ))
 ;
