@@ -86,6 +86,7 @@ class DatatableGenerator extends Generator
     {
         $parts = explode("\\", $entity);
         $entityClass = array_pop($parts);
+        $entityClassLowerCase = strtolower($entityClass);
 
         $this->className = $entityClass . 'Datatable';
         $dirPath = $bundle->getPath() . '/Datatables';
@@ -98,13 +99,8 @@ class DatatableGenerator extends Generator
         $parts = explode('\\', $entity);
         array_pop($parts);
 
-        if (!$ajaxUrl) {
-            $this->ajaxUrl = strtolower($entityClass) . '_results';
-        } else {
-            $this->ajaxUrl = $ajaxUrl;
-        }
+        $this->ajaxUrl = $ajaxUrl? $ajaxUrl : $entityClassLowerCase . '_results';
 
-        $routePref = strtolower($entityClass);
 
         $this->renderFile('class.php.twig', $this->classPath, array(
             'namespace' => $bundle->getNamespace(),
@@ -112,11 +108,11 @@ class DatatableGenerator extends Generator
             'entity_class' => $entityClass,
             'bundle' => $bundle->getName(),
             'datatable_class' => $this->className,
-            'datatable_name' => strtolower($entityClass) . '_datatable',
+            'datatable_name' => $entityClassLowerCase . '_datatable',
             'fields' => $fields,
             'ajax_url' => $this->ajaxUrl,
             'bootstrap3' => (boolean) $bootstrap3,
-            'route_pref' => $routePref
+            'route_pref' => $entityClassLowerCase
         ));
     }
 }
