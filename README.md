@@ -69,11 +69,7 @@ services:
 
 ### Table with Bootstrap3 integration: 
 
-<div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/images/bs3.jpg"></div>
-
-### Table with default stylesheet (`display`): 
-
-<div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/images/display.jpg"></div>
+<div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/images/sc1.jpg"></div>
 
 ## Documentation
 

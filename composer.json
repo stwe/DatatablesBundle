@@ -30,7 +30,7 @@
     },
     "suggest": {
         "components/jquery": "~1.12",
-        "datatables/datatables": "1.10.10",
+        "datatables/datatables": "^1.10.10",
         "moment/moment": "~2.11",
         "liip/imagine-bundle": "^1.3"
     },
