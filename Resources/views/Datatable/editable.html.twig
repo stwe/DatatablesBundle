@@ -1,6 +1,12 @@
 {% for column in view_columns %}
-    {% if column.editable is defined %}
-        {% if true == column.editable %}
+    {% if column.editable is defined and true == column.editable %}
+        {% set permission = false %}
+        {% if column.editableRole is not null and column.editableRole is not empty %}
+            {% set permission = is_granted(column.editableRole) %}
+        {% elseif column.editableRole is null %}
+            {% set permission = true %}
+        {% endif %}
+        {% if true == permission %}
             {% set token = csrf_token('editable') %}
             var str = '{{ column.data }}'.split(".").join("_");
             str = 'span.sg-editable-' + str;

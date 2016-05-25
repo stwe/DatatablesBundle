@@ -55,7 +55,8 @@ Use the `editable` option.
 $this->columnBuilder
     ->add('title', 'column', array(
         'title' => 'Title',
-        'editable' => true
+        'editable' => true,
+        'editable_role' => 'ROLE_USER'
     ))
     ->add('publishedAt', 'datetime', array(
         'title' => 'Published at',
