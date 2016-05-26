@@ -125,6 +125,8 @@ The ClientSide mode is no longer supported by me.
 
 Issues and feature requests are tracked in the [Github issue tracker](https://github.com/stwe/DatatablesBundle/issues).
 
+**You must know that all the pull requests you are going to submit must be released under the MIT license.**
+
 ## Friendly License
 
 This bundle is available under the MIT license. See the complete license in the bundle:

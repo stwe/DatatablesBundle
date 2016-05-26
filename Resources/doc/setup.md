@@ -34,7 +34,13 @@
         ));
     
         $this->callbacks->set(array(
-            'init_complete' => ':callbacks:init.js.twig'
+            'row_callback' => array(
+                'template' => ':post:row_callback.js.twig',
+                'vars' => array('id' => '2')
+            ),
+            'init_complete' => array(
+                'template' => ':post:init.js.twig'
+            )
         ));
         
         $this->events->set(array(
@@ -88,22 +94,22 @@
 
 ## 3. Callbacks
 
-| Callback            | Type   | Default |
-|---------------------|--------|---------|
-| created_row         | string | ''      |
-| draw_callback       | string | ''      |
-| footer_callback     | string | ''      |
-| format_number       | string | ''      |
-| header_callback     | string | ''      |
-| info_callback       | string | ''      |
-| init_complete       | string | ''      |
-| pre_draw_callback   | string | ''      |
-| row_callback        | string | ''      |
-| state_load_callback | string | ''      |
-| state_loaded        | string | ''      |
-| state_load_params   | string | ''      |
-| state_save_callback | string | ''      |
-| state_save_params   | string | ''      |
+| Callback            | Type  | Default |
+|---------------------|-------|---------|
+| created_row         | array | array() |
+| draw_callback       | array | array() |
+| footer_callback     | array | array() |
+| format_number       | array | array() |
+| header_callback     | array | array() |
+| info_callback       | array | array() |
+| init_complete       | array | array() |
+| pre_draw_callback   | array | array() |
+| row_callback        | array | array() |
+| state_load_callback | array | array() |
+| state_loaded        | array | array() |
+| state_load_params   | array | array() |
+| state_save_callback | array | array() |
+| state_save_params   | array | array() |
 
 **Example**
 
@@ -111,15 +117,36 @@
 // Datatable class
 
 $this->callbacks->set(array(
-    'init_complete' => ':callbacks:init.js.twig'
+    'row_callback' => array(
+        'template' => ':post:row_callback.js.twig',
+        'vars' => array('id' => '2')
+    ),
+    'init_complete' => array(
+        'template' => ':post:init.js.twig'
+    )
 ));
+```
+
+```js
+// row_callback.js.twig
+
+function rowCallback(nRow, aData, index) {
+    var id = "{{ id }}";
+    var $nRow = $(nRow);
+
+    if (aData.id == id) {
+        $nRow.css({"background-color": "red"});
+    }
+
+    return nRow;
+}
 ```
 
 ```js
 // init.js.twig
 
-function initComplete(settings) {
-    alert('DataTables has redrawn the table.');
+function init(settings, json) {
+    alert('Init complete.');
 }
 ```
 
