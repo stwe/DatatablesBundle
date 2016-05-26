@@ -27,6 +27,7 @@
                 params: function (params) {
                     params.entity = '{{ datatable.entity|e('js') }}';
                     params.token = '{{ token }}';
+                    params.role = '{{ column.editableRole }}';
 
                     return params;
                 },
