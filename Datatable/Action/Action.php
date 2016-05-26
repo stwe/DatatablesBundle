@@ -144,7 +144,12 @@ class Action extends AbstractAction
                     if (strpos($key, '.') !== false) {
                         $array = array();
                         $this->assignArrayByPath($array, $key, $item);
-                        $result = (count($this->array_intersect_assoc_recursive($array, $data)) >= 1);
+                        if (empty($this->array_intersect_assoc_recursive($array, $data))) {
+                            $result = false;
+                            break;
+                        } else {
+                            $result = true;
+                        }
                     } else {
                         $result = ($item == $data[$key]);
                     }
