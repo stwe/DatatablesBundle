@@ -743,7 +743,7 @@ class DatatableQuery
      * @return Response
      * @throws Exception
      */
-    public function getResponse($buildQuery = true)
+    public function getResponse($buildQuery = true, $outputType="json")
     {
         false === $buildQuery ? : $this->buildQuery();
 
@@ -778,9 +778,21 @@ class DatatableQuery
         $fullOutput = array_merge($outputHeader, $output);
         $fullOutput = $this->applyResponseCallbacks($fullOutput);
 
-        $json = $this->serializer->serialize($fullOutput, 'json');
-        $response = new Response($json);
-        $response->headers->set('Content-Type', 'application/json');
+        switch ($outputType){
+            case "array":
+                if($fullOutput['recordsTotal']>0){
+                    $response=$fullOutput;
+                }else{
+                    throw new Exception('No existen registros suficientes para generar el reporte.');
+                }
+                break;
+            case "json":
+            default :
+                $json = $this->serializer->serialize($fullOutput, 'json');
+                $response = new Response($json);
+                $response->headers->set('Content-Type', 'application/json');
+                break;
+        }
 
         return $response;
     }
