@@ -152,25 +152,25 @@ function init(settings, json) {
 
 ## 4. Events
 
-| Event             | Type   | Default |
-|-------------------|--------|---------|
-| column_sizing     | string | ''      |
-| column_visibility | string | ''      |
-| destroy           | string | ''      |
-| draw              | string | ''      |
-| error             | string | ''      |
-| init              | string | ''      |
-| length            | string | ''      |
-| order             | string | ''      |
-| page              | string | ''      |
-| pre_init          | string | ''      |
-| pre_xhr           | string | ''      |
-| processing        | string | ''      |
-| search            | string | ''      |
-| state_loaded      | string | ''      |
-| state_load_params | string | ''      |
-| state_save_params | string | ''      |
-| xhr               | string | ''      |
+| Event             | Type  | Default |
+|-------------------|-------|---------|
+| column_sizing     | array | array() |
+| column_visibility | array | array() |
+| destroy           | array | array() |
+| draw              | array | array() |
+| error             | array | array() |
+| init              | array | array() |
+| length            | array | array() |
+| order             | array | array() |
+| page              | array | array() |
+| pre_init          | array | array() |
+| pre_xhr           | array | array() |
+| processing        | array | array() |
+| search            | array | array() |
+| state_loaded      | array | array() |
+| state_load_params | array | array() |
+| state_save_params | array | array() |
+| xhr               | array | array() |
 
 **Example**
 
@@ -178,8 +178,14 @@ function init(settings, json) {
 // Datatable class
 
 $this->events->set(array(
-    'processing' => ':events:processing.js.twig',
-    'order' => ':events:order.js.twig'
+    'processing' => array(
+        'template' => ':events:processing.js.twig',
+        'vars' => array('testStr' => 'processing test')
+    ),
+    'order' => array(
+        'template' => ':events:order.js.twig',
+        'vars' => array('testStr' => 'order test')
+    )
 ));
 ```
 
@@ -187,6 +193,8 @@ $this->events->set(array(
 // processing.js.twig
 
 function processing(e, settings, processing) {
+    var t = '{{ testStr }}';
+    console.info(t);
     console.info(processing);
 }
 
@@ -195,6 +203,8 @@ function processing(e, settings, processing) {
 
 function order() {
     var order = oTable.order();
+    var t = '{{ testStr }}';
+    console.info(t);
     console.info('Ordering on column '+order[0][0]+' ('+order[0][1]+')');
 }
 ```
