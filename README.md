@@ -72,7 +72,7 @@ Issues and feature requests are tracked in the [Github issue tracker](https://gi
 
 ## Friendly License
 
-This bundle is available under the MIT license. See the complete license in the bundle:
+This bundle is under the MIT license. See the complete license in the bundle:
 
     Resources/meta/LICENSE
 
