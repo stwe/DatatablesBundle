@@ -107,7 +107,7 @@ class Action extends AbstractAction
      *
      * @return array|bool
      */
-    private function array_intersect_assoc_recursive($arr1, $arr2)
+    private function arrayIntersectAssocRecursive($arr1, $arr2)
     {
         if (!is_array($arr1) || !is_array($arr2)) {
             return (string)$arr1 == (string)$arr2;
@@ -117,7 +117,7 @@ class Action extends AbstractAction
         $ret = array();
 
         foreach ($commonkeys as $key) {
-            $res = $this->array_intersect_assoc_recursive($arr1[$key], $arr2[$key]);
+            $res = $this->arrayIntersectAssocRecursive($arr1[$key], $arr2[$key]);
 
             if ($res) {
                 $ret[$key] = $arr1[$key];
@@ -144,7 +144,7 @@ class Action extends AbstractAction
                     if (strpos($key, '.') !== false) {
                         $array = array();
                         $this->assignArrayByPath($array, $key, $item);
-                        if (empty($this->array_intersect_assoc_recursive($array, $data))) {
+                        if (empty($this->arrayIntersectAssocRecursive($array, $data))) {
                             $result = false;
                             break;
                         } else {
