@@ -158,6 +158,31 @@ class Options extends AbstractViewOptions
      */
     protected $forceDom;
 
+    /**
+     * {@inheritdoc}
+     */
+    protected $options = array(
+        'display_start' => 0,
+        'defer_loading' => -1,
+        'dom' => 'lfrtip',
+        'length_menu' => array(10, 25, 50, 100),
+        'order_classes' => true,
+        'order' => array(array(0, 'asc')),
+        'order_multi' => true,
+        'page_length' => 10,
+        'paging_type' => Style::FULL_NUMBERS_PAGINATION,
+        'renderer' => '',
+        'scroll_collapse' => false,
+        'search_delay' => 0,
+        'state_duration' => 7200,
+        'stripe_classes' => array(),
+        'class' => Style::BASE_STYLE,
+        'individual_filtering' => false,
+        'individual_filtering_position' => 'head',
+        'use_integration_options' => false,
+        'force_dom' => false
+    );
+
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -184,28 +209,6 @@ class Options extends AbstractViewOptions
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'display_start' => 0,
-            'defer_loading' => -1,
-            'dom' => 'lfrtip',
-            'length_menu' => array(10, 25, 50, 100),
-            'order_classes' => true,
-            'order' => array(array(0, 'asc')),
-            'order_multi' => true,
-            'page_length' => 10,
-            'paging_type' => Style::FULL_NUMBERS_PAGINATION,
-            'renderer' => '',
-            'scroll_collapse' => false,
-            'search_delay' => 0,
-            'state_duration' => 7200,
-            'stripe_classes' => array(),
-            'class' => Style::BASE_STYLE,
-            'individual_filtering' => false,
-            'individual_filtering_position' => 'head',
-            'use_integration_options' => false,
-            'force_dom' => false
-        ));
-
         $resolver->setAllowedTypes('display_start', 'int');
         $resolver->setAllowedTypes('defer_loading', 'int');
         $resolver->setAllowedTypes('dom', 'string');
@@ -374,7 +377,7 @@ class Options extends AbstractViewOptions
                 throw new \Exception('setOrder(): Invalid array format.');
             }
         }
-        
+
         $this->order = $order;
 
         return $this;

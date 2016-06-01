@@ -34,6 +34,14 @@ class Ajax extends AbstractViewOptions
      */
     protected $type;
 
+    /**
+     * {@inheritdoc}
+     */
+    protected $options = array(
+        'url' => '',
+        'type' => 'GET'
+    );
+
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -43,11 +51,6 @@ class Ajax extends AbstractViewOptions
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'url' => '',
-            'type' => 'GET'
-        ));
-
         $resolver->setAllowedTypes('url', 'string');
         $resolver->setAllowedTypes('type', 'string');
 

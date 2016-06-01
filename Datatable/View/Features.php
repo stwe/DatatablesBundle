@@ -127,6 +127,27 @@ class Features extends AbstractViewOptions
      */
     protected $extensions;
 
+    /**
+     * {@inheritdoc}
+     */
+    protected $options = array(
+        'auto_width' => true,
+        'defer_render' => false,
+        'info' => true,
+        'jquery_ui' => false,
+        'length_change' => true,
+        'ordering' => true,
+        'paging' => true,
+        'processing' => true,
+        'scroll_x' => false,
+        'scroll_y' => '',
+        'searching' => true,
+        'server_side' => true,
+        'state_save' => false,
+        'delay' => 0,
+        'extensions' => array()
+    );
+
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -136,24 +157,6 @@ class Features extends AbstractViewOptions
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'auto_width' => true,
-            'defer_render' => false,
-            'info' => true,
-            'jquery_ui' => false,
-            'length_change' => true,
-            'ordering' => true,
-            'paging' => true,
-            'processing' => true,
-            'scroll_x' => false,
-            'scroll_y' => '',
-            'searching' => true,
-            'server_side' => true,
-            'state_save' => false,
-            'delay' => 0,
-            'extensions' => array()
-        ));
-
         $resolver->setAllowedTypes('auto_width', 'bool');
         $resolver->setAllowedTypes('defer_render', 'bool');
         $resolver->setAllowedTypes('info', 'bool');
