@@ -64,8 +64,8 @@ abstract class AbstractViewOptions implements OptionsInterface
     public function set(array $options)
     {
         $resolver = new OptionsResolver();
-        $this->configureOptions($resolver);
         $resolver->setDefaults($this->options);
+        $this->configureOptions($resolver);
 
         $this->options = $resolver->resolve($options);
 
