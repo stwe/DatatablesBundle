@@ -125,6 +125,27 @@ class Events extends AbstractViewOptions
      */
     protected $xhr;
 
+    /**
+     * {@inheritdoc}
+     */
+    protected $options = array(
+        'column_sizing' => array(),
+        'column_visibility' => array(),
+        'destroy' => array(),
+        'error' => array(),
+        'length' => array(),
+        'order' => array(),
+        'page' => array(),
+        'pre_init' => array(),
+        'pre_xhr' => array(),
+        'processing' => array(),
+        'search' => array(),
+        'state_loaded' => array(),
+        'state_load_params' => array(),
+        'state_save_params' => array(),
+        'xhr' => array(),
+    );
+
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -134,24 +155,6 @@ class Events extends AbstractViewOptions
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'column_sizing' => array(),
-            'column_visibility' => array(),
-            'destroy' => array(),
-            'error' => array(),
-            'length' => array(),
-            'order' => array(),
-            'page' => array(),
-            'pre_init' => array(),
-            'pre_xhr' => array(),
-            'processing' => array(),
-            'search' => array(),
-            'state_loaded' => array(),
-            'state_load_params' => array(),
-            'state_save_params' => array(),
-            'xhr' => array(),
-        ));
-
         $resolver->setAllowedTypes('column_sizing', 'array');
         $resolver->setAllowedTypes('column_visibility', 'array');
         $resolver->setAllowedTypes('destroy', 'array');
