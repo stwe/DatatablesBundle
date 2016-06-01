@@ -26,6 +26,10 @@ class PostDatatable extends AbstractDatatableView
      */
     public function buildDatatable(array $options = array())
     {
+        $this->topActions->set(array(
+            'actions' => array()
+        ));
+
         $this->features->set(array(
             'scroll_x' => true,
             'extensions' => array(
