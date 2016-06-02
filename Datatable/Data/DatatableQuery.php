@@ -298,6 +298,13 @@ class DatatableQuery
 
                 $metadata = $this->metadata;
 
+                // If it's an embedded class, we can query without JOIN
+                if(array_key_exists($parts[0], $metadata->embeddedClasses)) {
+                    $this->selectColumns[$currentAlias][] = $data;
+                    $this->addSearchOrderColumn($key, $currentAlias, $data);
+                    continue;
+                }
+
                 while (count($parts) > 1) {
 
                     $previousPart = $currentPart;
