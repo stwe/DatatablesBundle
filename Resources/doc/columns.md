@@ -38,6 +38,7 @@ SgDatatablesBundle:Column:column.html.twig
 | filter               | array          | array('text', array()) |
 | default              | string         | ''                     |
 | editable             | boolean        | false                  |
+| editable_role        | null or string | null                   |
 
 ### Example
 
@@ -192,6 +193,7 @@ SgDatatablesBundle:Column:boolean.html.twig
 | false_label          | string         | ''                    |
 | filter               | array          | see the below example |
 | editable             | boolean        | false                 |
+| editable_role        | null or string | null                  |
 
 ### Example
 
@@ -237,6 +239,7 @@ SgDatatablesBundle:Column:datetime.html.twig
 | filter               | array          | array('text', array()) |
 | date_format          | string         | 'lll'                  |
 | editable             | boolean        | false                  |
+| editable_role        | null or string | null                   |
 
 ### Example
 

@@ -23,105 +23,105 @@ class Events extends AbstractViewOptions
     /**
      * Fired when the column widths are recalculated.
      *
-     * @var string
+     * @var array
      */
     protected $columnSizing;
 
     /**
      * Fired when the visibility of a column changes.
      *
-     * @var string
+     * @var array
      */
     protected $columnVisibility;
 
     /**
      * Fired when a table is destroyed.
      *
-     * @var string
+     * @var array
      */
     protected $destroy;
 
     /**
      * An error has occurred during DataTables processing of data.
      *
-     * @var string
+     * @var array
      */
     protected $error;
 
     /**
      * Fired when the page length is changed.
      *
-     * @var string
+     * @var array
      */
     protected $length;
 
     /**
      * Fired when the data contained in the table is ordered.
      *
-     * @var string
+     * @var array
      */
     protected $order;
 
     /**
      * Fired when the table's paging is updated.
      *
-     * @var string
+     * @var array
      */
     protected $page;
 
     /**
      * Triggered immediately before data load.
      *
-     * @var string
+     * @var array
      */
     protected $preInit;
 
     /**
      * Fired before an Ajax request is made.
      *
-     * @var string
+     * @var array
      */
     protected $preXhr;
 
     /**
      * Fired when DataTables is processing data.
      *
-     * @var string
+     * @var array
      */
     protected $processing;
 
     /**
      * Fired when the table is filtered.
      *
-     * @var string
+     * @var array
      */
     protected $search;
 
     /**
      * Fired once state has been loaded and applied.
      *
-     * @var string
+     * @var array
      */
     protected $stateLoaded;
 
     /**
      * Fired when loading state from storage.
      *
-     * @var string
+     * @var array
      */
     protected $stateLoadParams;
 
     /**
      * Fired when saving table state information.
      *
-     * @var string
+     * @var array
      */
     protected $stateSaveParams;
 
     /**
      * Fired when an Ajax request is completed.
      *
-     * @var string
+     * @var array
      */
     protected $xhr;
 
@@ -135,38 +135,62 @@ class Events extends AbstractViewOptions
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'column_sizing' => '',
-            'column_visibility' => '',
-            'destroy' => '',
-            'error' => '',
-            'length' => '',
-            'order' => '',
-            'page' => '',
-            'pre_init' => '',
-            'pre_xhr' => '',
-            'processing' => '',
-            'search' => '',
-            'state_loaded' => '',
-            'state_load_params' => '',
-            'state_save_params' => '',
-            'xhr' => '',
+            'column_sizing' => array(),
+            'column_visibility' => array(),
+            'destroy' => array(),
+            'error' => array(),
+            'length' => array(),
+            'order' => array(),
+            'page' => array(),
+            'pre_init' => array(),
+            'pre_xhr' => array(),
+            'processing' => array(),
+            'search' => array(),
+            'state_loaded' => array(),
+            'state_load_params' => array(),
+            'state_save_params' => array(),
+            'xhr' => array(),
         ));
 
-        $resolver->setAllowedTypes('column_sizing', 'string');
-        $resolver->setAllowedTypes('column_visibility', 'string');
-        $resolver->setAllowedTypes('destroy', 'string');
-        $resolver->setAllowedTypes('error', 'string');
-        $resolver->setAllowedTypes('length', 'string');
-        $resolver->setAllowedTypes('order', 'string');
-        $resolver->setAllowedTypes('page', 'string');
-        $resolver->setAllowedTypes('pre_init', 'string');
-        $resolver->setAllowedTypes('pre_xhr', 'string');
-        $resolver->setAllowedTypes('processing', 'string');
-        $resolver->setAllowedTypes('search', 'string');
-        $resolver->setAllowedTypes('state_loaded', 'string');
-        $resolver->setAllowedTypes('state_load_params', 'string');
-        $resolver->setAllowedTypes('state_save_params', 'string');
-        $resolver->setAllowedTypes('xhr', 'string');
+        $resolver->setAllowedTypes('column_sizing', 'array');
+        $resolver->setAllowedTypes('column_visibility', 'array');
+        $resolver->setAllowedTypes('destroy', 'array');
+        $resolver->setAllowedTypes('error', 'array');
+        $resolver->setAllowedTypes('length', 'array');
+        $resolver->setAllowedTypes('order', 'array');
+        $resolver->setAllowedTypes('page', 'array');
+        $resolver->setAllowedTypes('pre_init', 'array');
+        $resolver->setAllowedTypes('pre_xhr', 'array');
+        $resolver->setAllowedTypes('processing', 'array');
+        $resolver->setAllowedTypes('search', 'array');
+        $resolver->setAllowedTypes('state_loaded', 'array');
+        $resolver->setAllowedTypes('state_load_params', 'array');
+        $resolver->setAllowedTypes('state_save_params', 'array');
+        $resolver->setAllowedTypes('xhr', 'array');
+
+        $this->nestedOptionsResolver = new OptionsResolver();
+
+        return $this;
+    }
+
+    /**
+     * Configure and resolve nested options.
+     *
+     * @param array $options
+     *
+     * @return $this
+     */
+    public function configureAndResolveNestedOptions(array $options)
+    {
+        $this->nestedOptionsResolver->setDefaults(array(
+            'template' => '',
+            'vars' => null,
+        ));
+
+        $this->nestedOptionsResolver->setAllowedTypes('template', 'string');
+        $this->nestedOptionsResolver->setAllowedTypes('vars', array('array', 'null'));
+
+        $this->nestedOptionsResolver->resolve($options);
 
         return $this;
     }
@@ -176,7 +200,7 @@ class Events extends AbstractViewOptions
     //-------------------------------------------------
 
     /**
-     * @return string
+     * @return array
      */
     public function getColumnSizing()
     {
@@ -184,11 +208,11 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @param string $columnSizing
+     * @param array $columnSizing
      *
      * @return $this
      */
-    protected function setColumnSizing($columnSizing)
+    protected function setColumnSizing(array $columnSizing)
     {
         $this->columnSizing = $columnSizing;
 
@@ -196,7 +220,7 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getColumnVisibility()
     {
@@ -204,11 +228,11 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @param string $columnVisibility
+     * @param array $columnVisibility
      *
      * @return $this
      */
-    protected function setColumnVisibility($columnVisibility)
+    protected function setColumnVisibility(array $columnVisibility)
     {
         $this->columnVisibility = $columnVisibility;
 
@@ -216,7 +240,7 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getDestroy()
     {
@@ -224,11 +248,11 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @param string $destroy
+     * @param array $destroy
      *
      * @return $this
      */
-    protected function setDestroy($destroy)
+    protected function setDestroy(array $destroy)
     {
         $this->destroy = $destroy;
 
@@ -236,7 +260,7 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getError()
     {
@@ -244,11 +268,11 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @param string $error
+     * @param array $error
      *
      * @return $this
      */
-    protected function setError($error)
+    protected function setError(array $error)
     {
         $this->error = $error;
 
@@ -256,7 +280,7 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getLength()
     {
@@ -264,11 +288,11 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @param string $length
+     * @param array $length
      *
      * @return $this
      */
-    protected function setLength($length)
+    protected function setLength(array $length)
     {
         $this->length = $length;
 
@@ -276,7 +300,7 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getOrder()
     {
@@ -284,11 +308,11 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @param string $order
+     * @param array $order
      *
      * @return $this
      */
-    protected function setOrder($order)
+    protected function setOrder(array $order)
     {
         $this->order = $order;
 
@@ -296,7 +320,7 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getPage()
     {
@@ -304,11 +328,11 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @param string $page
+     * @param array $page
      *
      * @return $this
      */
-    protected function setPage($page)
+    protected function setPage(array $page)
     {
         $this->page = $page;
 
@@ -316,7 +340,7 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getPreInit()
     {
@@ -324,11 +348,11 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @param string $preInit
+     * @param array $preInit
      *
      * @return $this
      */
-    protected function setPreInit($preInit)
+    protected function setPreInit(array $preInit)
     {
         $this->preInit = $preInit;
 
@@ -336,7 +360,7 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getPreXhr()
     {
@@ -344,11 +368,11 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @param string $preXhr
+     * @param array $preXhr
      *
      * @return $this
      */
-    protected function setPreXhr($preXhr)
+    protected function setPreXhr(array $preXhr)
     {
         $this->preXhr = $preXhr;
 
@@ -356,7 +380,7 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getProcessing()
     {
@@ -364,11 +388,11 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @param string $processing
+     * @param array $processing
      *
      * @return $this
      */
-    protected function setProcessing($processing)
+    protected function setProcessing(array $processing)
     {
         $this->processing = $processing;
 
@@ -376,7 +400,7 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getSearch()
     {
@@ -384,11 +408,11 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @param string $search
+     * @param array $search
      *
      * @return $this
      */
-    protected function setSearch($search)
+    protected function setSearch(array $search)
     {
         $this->search = $search;
 
@@ -396,7 +420,7 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getStateLoaded()
     {
@@ -404,11 +428,11 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @param string $stateLoaded
+     * @param array $stateLoaded
      *
      * @return $this
      */
-    protected function setStateLoaded($stateLoaded)
+    protected function setStateLoaded(array $stateLoaded)
     {
         $this->stateLoaded = $stateLoaded;
 
@@ -416,7 +440,7 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getStateLoadParams()
     {
@@ -424,11 +448,11 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @param string $stateLoadParams
+     * @param array $stateLoadParams
      *
      * @return $this
      */
-    protected function setStateLoadParams($stateLoadParams)
+    protected function setStateLoadParams(array $stateLoadParams)
     {
         $this->stateLoadParams = $stateLoadParams;
 
@@ -436,7 +460,7 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getStateSaveParams()
     {
@@ -444,11 +468,11 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @param string $stateSaveParams
+     * @param array $stateSaveParams
      *
      * @return $this
      */
-    protected function setStateSaveParams($stateSaveParams)
+    protected function setStateSaveParams(array $stateSaveParams)
     {
         $this->stateSaveParams = $stateSaveParams;
 
@@ -456,7 +480,7 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getXhr()
     {
@@ -464,11 +488,11 @@ class Events extends AbstractViewOptions
     }
 
     /**
-     * @param string $xhr
+     * @param array $xhr
      *
      * @return $this
      */
-    protected function setXhr($xhr)
+    protected function setXhr(array $xhr)
     {
         $this->xhr = $xhr;
 

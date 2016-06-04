@@ -8,63 +8,6 @@
 
 [![Latest Stable Version](https://poser.pugx.org/sg/datatablesbundle/v/stable)](https://packagist.org/packages/sg/datatablesbundle) [![Total Downloads](https://poser.pugx.org/sg/datatablesbundle/downloads)](https://packagist.org/packages/sg/datatablesbundle) [![Latest Unstable Version](https://poser.pugx.org/sg/datatablesbundle/v/unstable)](https://packagist.org/packages/sg/datatablesbundle) [![License](https://poser.pugx.org/sg/datatablesbundle/license)](https://packagist.org/packages/sg/datatablesbundle)
 
-## Recent Important Changes
-
-The ClientSide mode is no longer supported by me!
-
-- use parent service instead of tagging datatables view class
-
-```yml
-services:
-    app.datatable.post:
-        class: AppBundle\Datatables\PostDatatable
-        parent: sg_datatables.datatable.abstract
-```
-
-- unlimited nested association support and fix filtered counter when using a custom query
-- start for PostgreSql support
-- Datatable Events supported
-- some new translations
-- render_if Closure parameter in action column
-- cancel button for some filters added
-- outsourcing individual filter in new classes, see below example
-
-```php
-    public function buildDatatable(array $options = array())
-    {
-        // ...
-
-        $users = $this->em->getRepository('AppBundle:User')->findAll();
-
-        $this->columnBuilder
-            ->add('title', 'column', array(
-                'title' => 'Title',
-                'filter' => array('text', array(
-                    'search_type' => 'eq'
-                ))
-            ))
-            ->add('visible', 'boolean', array(
-                'title' => 'Visible',
-                'filter' => array('select', array(
-                    'search_type' => 'eq',
-                    'select_options' => array('' => 'All', '1' => 'Yes', '0' => 'No')
-                )),
-            ))
-            ->add('createdby.username', 'column', array(
-                'title' => 'Createdby User',
-                'filter' => array('select', array(
-                    'search_type' => 'eq',
-                    'select_options' => array('' => 'All') + $this->getCollectionAsOptionsArray($users, 'username', 'username'),
-                ))
-            ))
-            ->add('createdAt', 'datetime', array(
-                'title' => 'Created',
-                'filter' => array('daterange', array()),
-            ))
-        ;
-    }
-```
-
 ## Screenshots
 
 ### Table with Bootstrap3 integration: 
@@ -125,9 +68,11 @@ The ClientSide mode is no longer supported by me.
 
 Issues and feature requests are tracked in the [Github issue tracker](https://github.com/stwe/DatatablesBundle/issues).
 
+**You must know that all the pull requests you are going to submit must be released under the MIT license.**
+
 ## Friendly License
 
-This bundle is available under the MIT license. See the complete license in the bundle:
+This bundle is under the MIT license. See the complete license in the bundle:
 
     Resources/meta/LICENSE
 

@@ -56,6 +56,13 @@ class BooleanColumn extends AbstractColumn
      */
     protected $editable;
 
+    /**
+     * Role based editing permission.
+     *
+     * @var null|string
+     */
+    protected $editableRole;
+
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -118,7 +125,8 @@ class BooleanColumn extends AbstractColumn
             'false_icon' => '',
             'true_label' => '',
             'false_label' => '',
-            'editable' => false
+            'editable' => false,
+            'editable_role' => null
         ));
 
         $resolver->setAllowedTypes('class', 'string');
@@ -137,6 +145,7 @@ class BooleanColumn extends AbstractColumn
         $resolver->setAllowedTypes('true_label', 'string');
         $resolver->setAllowedTypes('false_label', 'string');
         $resolver->setAllowedTypes('editable', 'bool');
+        $resolver->setAllowedTypes('editable_role', array('string', 'null'));
 
         return $this;
     }
@@ -263,5 +272,29 @@ class BooleanColumn extends AbstractColumn
     public function getEditable()
     {
         return $this->editable;
+    }
+
+    /**
+     * Set editable role.
+     *
+     * @param null|string $editableRole
+     *
+     * @return $this
+     */
+    public function setEditableRole($editableRole)
+    {
+        $this->editableRole = $editableRole;
+
+        return $this;
+    }
+
+    /**
+     * Get editable role.
+     *
+     * @return null|string
+     */
+    public function getEditableRole()
+    {
+        return $this->editableRole;
     }
 }

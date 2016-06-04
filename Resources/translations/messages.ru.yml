@@ -11,7 +11,7 @@ datatables:
         first: "Первая"
         previous: "Предыдущая"
         next: "Следующая"
-        last: "Постедняя"
+        last: "Последняя"
         all: "Все"
     bulk:
         confirmMsg: "Вы уверены?"

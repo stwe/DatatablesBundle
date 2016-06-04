@@ -35,6 +35,13 @@ class Column extends AbstractColumn
      */
     protected $editable;
 
+    /**
+     * Role based editing permission.
+     *
+     * @var null|string
+     */
+    protected $editableRole;
+
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -91,7 +98,8 @@ class Column extends AbstractColumn
             'width' => '',
             'filter' => array('text', array()),
             'default' => '',
-            'editable' => false
+            'editable' => false,
+            'editable_role' => null
         ));
 
         $resolver->setAllowedTypes('class', 'string');
@@ -107,6 +115,7 @@ class Column extends AbstractColumn
         $resolver->setAllowedTypes('filter', 'array');
         $resolver->setAllowedTypes('default', 'string');
         $resolver->setAllowedTypes('editable', 'bool');
+        $resolver->setAllowedTypes('editable_role', array('string', 'null'));
 
         return $this;
     }
@@ -161,5 +170,29 @@ class Column extends AbstractColumn
     public function getEditable()
     {
         return $this->editable;
+    }
+
+    /**
+     * Set editable role.
+     *
+     * @param null|string $editableRole
+     *
+     * @return $this
+     */
+    public function setEditableRole($editableRole)
+    {
+        $this->editableRole = $editableRole;
+
+        return $this;
+    }
+
+    /**
+     * Get editable role.
+     *
+     * @return null|string
+     */
+    public function getEditableRole()
+    {
+        return $this->editableRole;
     }
 }
