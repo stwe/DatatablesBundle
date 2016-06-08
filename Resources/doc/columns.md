@@ -65,6 +65,16 @@ $this->columnBuilder
     ))
 ;
 ```
+
+For embeddables:
+
+``` php
+$this->columnBuilder
+    ->add('credentials.username', 'column', array(
+        'title' => 'Username'
+    ))
+;
+```
 ___
 
 ## 2. Array column
