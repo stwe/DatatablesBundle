@@ -295,7 +295,7 @@ class DatatableQuery
             $metadata = $this->metadata;
 
             if (true === $this->isSelectColumn($data)) {
-                $parts = explode('\\.', $data);
+                $parts = explode('\\\\.', $data);
 
                 if (count($parts) > 1) {
                     // If it's an embedded class, we can query without JOIN
