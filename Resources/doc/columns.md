@@ -70,7 +70,7 @@ For embeddables:
 
 ``` php
 $this->columnBuilder
-    ->add('credentials.username', 'column', array(
+    ->add('credentials\\.username', 'column', array(
         'title' => 'Username'
     ))
 ;
