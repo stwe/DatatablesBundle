@@ -66,7 +66,7 @@ $this->columnBuilder
 ;
 ```
 
-For embeddables:
+For Doctrine Embeddables:
 
 ``` php
 $this->columnBuilder
