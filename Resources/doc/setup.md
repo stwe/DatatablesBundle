@@ -211,23 +211,25 @@ function order() {
 
 ## 5. Features
 
-| Feature       | Type   | Default |
-|---------------|--------|---------|
-| auto_width    | bool   | true    |
-| defer_render  | bool   | false   |
-| info          | bool   | true    |
-| jquery_ui     | bool   | false   |
-| length_change | bool   | true    |
-| ordering      | bool   | true    |
-| paging        | bool   | true    |
-| processing    | bool   | true    |
-| scroll_x      | bool   | false   |
-| scroll_y      | string | ''      |
-| searching     | bool   | true    |
-| server_side   | bool   | true    |
-| state_save    | bool   | false   |
-| delay         | int    | 0       |
-| extensions    | array  | array() |
+| Feature         | Type   | Default |
+|-----------------|--------|---------|
+| auto_width      | bool   | true    |
+| defer_render    | bool   | false   |
+| info            | bool   | true    |
+| jquery_ui       | bool   | false   |
+| length_change   | bool   | true    |
+| ordering        | bool   | true    |
+| paging          | bool   | true    |
+| processing      | bool   | true    |
+| scroll_x        | bool   | false   |
+| scroll_y        | string | ''      |
+| searching       | bool   | true    |
+| server_side     | bool   | true    |
+| state_save      | bool   | false   |
+| delay           | int    | 0       |
+| extensions      | array  | array() |
+| highlight       | bool   | false   |
+| highlight_color | string | 'red'   |
 
 ## 6. Options
 

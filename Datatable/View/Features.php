@@ -127,6 +127,20 @@ class Features extends AbstractViewOptions
      */
     protected $extensions;
 
+    /**
+     * Search result highlighting.
+     *
+     * @var boolean
+     */
+    protected $highlight;
+
+    /**
+     * Search result highlighting color.
+     *
+     * @var string
+     */
+    protected $highlightColor;
+
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -151,7 +165,9 @@ class Features extends AbstractViewOptions
             'server_side' => true,
             'state_save' => false,
             'delay' => 0,
-            'extensions' => array()
+            'extensions' => array(),
+            'highlight' => false,
+            'highlight_color' => 'red'
         ));
 
         $resolver->setAllowedTypes('auto_width', 'bool');
@@ -169,6 +185,8 @@ class Features extends AbstractViewOptions
         $resolver->setAllowedTypes('state_save', 'bool');
         $resolver->setAllowedTypes('delay', 'int');
         $resolver->setAllowedTypes('extensions', 'array');
+        $resolver->setAllowedTypes('highlight', 'bool');
+        $resolver->setAllowedTypes('highlight_color', 'string');
 
         return $this;
     }
@@ -539,5 +557,53 @@ class Features extends AbstractViewOptions
     public function getExtensions()
     {
         return $this->extensions;
+    }
+
+    /**
+     * Set highlight.
+     *
+     * @param boolean $highlight
+     *
+     * @return $this
+     */
+    public function setHighlight($highlight)
+    {
+        $this->highlight = $highlight;
+
+        return $this;
+    }
+
+    /**
+     * Get highlight.
+     *
+     * @return boolean
+     */
+    public function getHighlight()
+    {
+        return $this->highlight;
+    }
+
+    /**
+     * Set highlight color.
+     *
+     * @param string $highlightColor
+     *
+     * @return $this
+     */
+    public function setHighlightColor($highlightColor)
+    {
+        $this->highlightColor = $highlightColor;
+
+        return $this;
+    }
+
+    /**
+     * Get highlight color.
+     *
+     * @return string
+     */
+    public function getHighlightColor()
+    {
+        return $this->highlightColor;
     }
 }

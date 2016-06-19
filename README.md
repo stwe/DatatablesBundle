@@ -8,6 +8,21 @@
 
 [![Latest Stable Version](https://poser.pugx.org/sg/datatablesbundle/v/stable)](https://packagist.org/packages/sg/datatablesbundle) [![Total Downloads](https://poser.pugx.org/sg/datatablesbundle/downloads)](https://packagist.org/packages/sg/datatablesbundle) [![Latest Unstable Version](https://poser.pugx.org/sg/datatablesbundle/v/unstable)](https://packagist.org/packages/sg/datatablesbundle) [![License](https://poser.pugx.org/sg/datatablesbundle/license)](https://packagist.org/packages/sg/datatablesbundle)
 
+## Recent Changes
+
+Search result highlighting.
+
+1. Include the [jQuery Highlight Plugin](http://bartaz.github.io/sandbox.js/jquery.highlight.html)
+2. Configure your Datatables-Class features
+
+```
+$this->features->set(array(
+    // ...
+    'highlight' => true,
+    'highlight_color' => 'red' // 'red' is the default value
+));
+```
+
 ## Screenshots
 
 ### Table with Bootstrap3 integration: 
