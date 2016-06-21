@@ -69,6 +69,9 @@
                 .DataTable(defaults)
                         .on('draw.dt', function() {
                             {% include "SgDatatablesBundle:Datatable:editable.html.twig" %}
+                            {% if true == view_features.highlight %}
+                                {% include "SgDatatablesBundle:Datatable:highlight.js.twig" %}
+                            {% endif %}
                         })
                         {% include "SgDatatablesBundle:Datatable:after_events.js.twig" %}
                         {% if view_features.extensions.responsive is defined %}
