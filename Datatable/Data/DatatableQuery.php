@@ -743,7 +743,7 @@ class DatatableQuery
      * @return Response
      * @throws Exception
      */
-    public function getResponse($buildQuery = true, $outputWalkers)
+    public function getResponse($buildQuery = true, $outputWalkers = false)
     {
         false === $buildQuery ? : $this->buildQuery();
 
