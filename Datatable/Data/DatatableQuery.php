@@ -743,12 +743,12 @@ class DatatableQuery
      * @return Response
      * @throws Exception
      */
-    public function getResponse($buildQuery = true)
+    public function getResponse($buildQuery = true, $outputWalkers)
     {
         false === $buildQuery ? : $this->buildQuery();
 
         $fresults = new Paginator($this->execute(), true);
-        $fresults->setUseOutputWalkers(false);
+        $fresults->setUseOutputWalkers($outputWalkers);
         $output = array('data' => array());
 
         foreach ($fresults as $item) {
