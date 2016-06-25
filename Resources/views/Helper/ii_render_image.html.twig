@@ -13,7 +13,7 @@
             {% if enlarged_filter %}
                 {% set enlargedPath = asset(path)|imagine_filter(enlarged_filter) %}
             {% endif %}
-            <a href="javascript:void(0);" data-featherlight="{{ enlargedPath|default(asset(path)) }}">
+            <a href="javascript:void(0);" data-featherlight="{{ enlargedPath | default(asset(path)) }}">
                 <img class="sg-thumbnail" src="{{ path | imagine_filter(filter) }}" />
             </a>
         {% else %}

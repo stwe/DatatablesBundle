@@ -137,7 +137,6 @@ class ImageColumn extends AbstractColumn
         return $twig->render(
             'SgDatatablesBundle:Helper:ii_render_image.html.twig',
             array(
-                'image_id' => 'sg_image_' . uniqid(rand(10000, 99999)),
                 'image_name' => $imageName,
                 'filter' => $this->getImagineFilter(),
                 'enlarged_filter' => $this->getImagineFilterEnlarged(),

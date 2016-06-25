@@ -8,11 +8,9 @@ Please follow all steps as described [here](https://github.com/dustin10/VichUplo
 
 Please follow all steps as described [here](http://symfony.com/doc/master/bundles/LiipImagineBundle/installation.html).
 
-## 3: Integrate Bootstrap3
+## 3: Integrate Featherlight
 
-The enlargement of thumbnails needs the Bootstrap3 framework. 
-
-Optional: Please follow all steps as described [here](\bootstrap3.md).
+The enlargement of thumbnails needs [Featherlight](http://noelboss.github.io/featherlight/). This is a very lightweight jQuery lightbox. 
 
 ## 4. Entity example
 
@@ -549,10 +547,11 @@ class PostDatatable extends AbstractDatatableView
             ->add('images.fileName', 'gallery', array(
                 'title' => 'Bilder',
                 'relative_path' => 'images/posts',
-                'imagine_filter' => 'my_thumb_40x40',
+                'imagine_filter' => 'my_thumb_50x50',
+                'imagine_filter_enlarged' => 'thumbnail_500_x_500',
                 'holder_url' => 'https://placehold.it',
-                'holder_width' => '65',
-                'holder_height' => '65',
+                'holder_width' => '50',
+                'holder_height' => '50',
                 'enlarge' => true
             ))
             // ...
