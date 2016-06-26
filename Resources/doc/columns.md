@@ -524,6 +524,10 @@ ___
 
 Shows an uploaded image.
 
+For proper display of images as thumbnails the LiipImagineBundle is required. Please follow all steps as described [here](http://symfony.com/doc/master/bundles/LiipImagineBundle/installation.html).
+
+To upload images, I recommend the VichUploaderBundle. You can follow all steps as described [here](https://github.com/dustin10/VichUploaderBundle/blob/master/Resources/doc/index.md).
+
 Example entity:
 
 ```php
@@ -603,6 +607,10 @@ ___
 ## 10. Gallery column
 
 This column shows a list of uploaded images.
+
+For proper display of images as thumbnails the LiipImagineBundle is required. Please follow all steps as described [here](http://symfony.com/doc/master/bundles/LiipImagineBundle/installation.html).
+
+To upload images, I recommend the VichUploaderBundle. You can follow all steps as described [here](https://github.com/dustin10/VichUploaderBundle/blob/master/Resources/doc/index.md).
 
 Example: Suppose you have an entity `Post`, and `Post` have one or more images associated.
 
@@ -721,7 +729,7 @@ $this->columnBuilder
 
 ## 11. Progress Bar column
 
-Progress bars. Bootstrap 3 is recommended.
+This Column relies on [Bootstrap3](http://getbootstrap.com/).
 
 ### Default template
 

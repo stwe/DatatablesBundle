@@ -17,6 +17,11 @@ This bundle requires the following additional packages:
 * Moment.js 2.11.x
 * FOSJsRoutingBundle 1.6 ***Please follow all steps described [here](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/installation.rst).***
 
+This bundle provides support for displaying uploaded images. For proper display of images as thumbnails the LiipImagineBundle is required.
+Please follow all steps as described [here](http://symfony.com/doc/master/bundles/LiipImagineBundle/installation.html).
+
+To upload images, I recommend the VichUploaderBundle. You can follow all steps as described [here](https://github.com/dustin10/VichUploaderBundle/blob/master/Resources/doc/index.md).
+
 ### Translations
 
 ``` yaml
@@ -71,9 +76,22 @@ sg_datatables_bundle:
 
 ### Step 4: Assetic Configuration
 
-Include the jQuery, DataTables, Moment and FOSJsRoutingBundle javascript/css files in your base layout.
+This Bundle has some 3rd Party css/javascript dependencies.
 
-CDN example with Bootstrap3, Daterangepicker and X-Editable:
+[DataTables](https://datatables.net/) is mandatory. This bundle is optimized for [Bootstrap3](http://getbootstrap.com/).
+
+| DatatablesBundle Feature | Plugin / Github-Link                                                                  | Relies on Bootstrap |
+|--------------------------|---------------------------------------------------------------------------------------|---------------------|
+| ProgressBar-Column       | [Bootstrap3](http://getbootstrap.com/)                                                | yes                 |
+| DateRange-Filter         | [Bootstrap-Daterangepicker](https://github.com/dangrossman/bootstrap-daterangepicker) | yes                 |
+| Slider-Filter            | [Bootstrap-Slider](https://github.com/seiyria/bootstrap-slider)                       | yes                 |
+| In-place editing         | [X-editable](https://github.com/vitalets/x-editable)                                  | no                  |
+| Enlarge thumbnails       | [Featherlight](https://github.com/noelboss/featherlight/)                             | no                  |
+| Highlight search results | [jQuery Highlight Plugin](https://github.com/bartaz/sandbox.js)                       | no                  |
+
+Load all files with your base layout.
+
+Full example with CDN:
 
 ```html
 <head>
@@ -85,6 +103,8 @@ CDN example with Bootstrap3, Daterangepicker and X-Editable:
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.20/daterangepicker.min.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/u/bs/jszip-2.5.0,pdfmake-0.1.18,dt-1.10.12,b-1.2.1,b-colvis-1.2.1,b-flash-1.2.1,b-html5-1.2.1,b-print-1.2.1,r-2.1.0/datatables.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.4.1/featherlight.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.1.0/css/bootstrap-slider.min.css">
     {% endblock %}
     {% block head_javascripts %}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -93,6 +113,9 @@ CDN example with Bootstrap3, Daterangepicker and X-Editable:
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.20/daterangepicker.min.js"></script>
         <script src="https://cdn.datatables.net/u/bs/jszip-2.5.0,pdfmake-0.1.18,dt-1.10.12,b-1.2.1,b-colvis-1.2.1,b-flash-1.2.1,b-html5-1.2.1,b-print-1.2.1,r-2.1.0/datatables.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.4.1/featherlight.min.js"></script>
+        <script src="https://raw.githubusercontent.com/bartaz/sandbox.js/master/jquery.highlight.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.1.0/bootstrap-slider.min.js"></script>
         <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
         <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
     {% endblock %}

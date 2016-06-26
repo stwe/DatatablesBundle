@@ -8,9 +8,9 @@ Please follow all steps as described [here](https://github.com/dustin10/VichUplo
 
 Please follow all steps as described [here](http://symfony.com/doc/master/bundles/LiipImagineBundle/installation.html).
 
-## 3: Integrate Featherlight
+## 3: Load Featherlight
 
-The enlargement of thumbnails needs [Featherlight](http://noelboss.github.io/featherlight/). This is a very lightweight jQuery lightbox. 
+Ensure to load all js and css files from [Featherlight](https://github.com/noelboss/featherlight/) with your base layout.
 
 ## 4. Entity example
 
