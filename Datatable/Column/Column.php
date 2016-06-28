@@ -97,6 +97,7 @@ class Column extends AbstractColumn
             'visible' => true,
             'width' => '',
             'filter' => array('text', array()),
+            'add_if' => null,
             'default' => '',
             'editable' => false,
             'editable_role' => null
@@ -113,6 +114,7 @@ class Column extends AbstractColumn
         $resolver->setAllowedTypes('visible', 'bool');
         $resolver->setAllowedTypes('width', 'string');
         $resolver->setAllowedTypes('filter', 'array');
+        $resolver->setAllowedTypes('add_if', array('Closure', 'null'));
         $resolver->setAllowedTypes('default', 'string');
         $resolver->setAllowedTypes('editable', 'bool');
         $resolver->setAllowedTypes('editable_role', array('string', 'null'));

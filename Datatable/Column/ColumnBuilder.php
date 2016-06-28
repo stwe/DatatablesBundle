@@ -83,9 +83,13 @@ class ColumnBuilder implements ColumnBuilderInterface
         $column->setDql($data);
         $column->setupOptionsResolver($options);
 
-        $this->columns[] = $column;
+        $addColumn = $column->checkAddColumn();
 
-        if ($column instanceof MultiselectColumn) {
+        if (true === $addColumn) {
+            $this->columns[] = $column;
+        }
+
+        if (true === $addColumn && $column instanceof MultiselectColumn) {
             if (false === $this->multiselect) {
                 $this->multiselect = true;
                 $this->multiselectColumn = $column;

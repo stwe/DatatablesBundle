@@ -121,6 +121,7 @@ class BooleanColumn extends AbstractColumn
                 'search_type' => 'eq',
                 'select_options' => array('' => 'Any', '1' => 'Yes', '0' => 'No')
             )),
+            'add_if' => null,
             'true_icon' => '',
             'false_icon' => '',
             'true_label' => '',
@@ -140,6 +141,7 @@ class BooleanColumn extends AbstractColumn
         $resolver->setAllowedTypes('visible', 'bool');
         $resolver->setAllowedTypes('width', 'string');
         $resolver->setAllowedTypes('filter', 'array');
+        $resolver->setAllowedTypes('add_if', array('Closure', 'null'));
         $resolver->setAllowedTypes('true_icon', 'string');
         $resolver->setAllowedTypes('false_icon', 'string');
         $resolver->setAllowedTypes('true_label', 'string');

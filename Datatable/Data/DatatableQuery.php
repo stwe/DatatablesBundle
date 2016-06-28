@@ -13,7 +13,6 @@ namespace Sg\DatatablesBundle\Datatable\Data;
 
 use Sg\DatatablesBundle\Datatable\View\DatatableViewInterface;
 use Sg\DatatablesBundle\Datatable\Column\AbstractColumn;
-use Sg\DatatablesBundle\Datatable\Column\ActionColumn;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Serializer;
@@ -124,6 +123,11 @@ class DatatableQuery
     private $columns;
 
     /**
+     * @var Paginator
+     */
+    private $paginator;
+
+    /**
      * @var array
      */
     private $configs;
@@ -202,6 +206,7 @@ class DatatableQuery
         $this->orderColumns = array();
         $this->callbacks = array();
         $this->columns = $datatableView->getColumnBuilder()->getColumns();
+        $this->paginator = null;
 
         $this->configs = $configs;
 
@@ -747,27 +752,11 @@ class DatatableQuery
     {
         false === $buildQuery ? : $this->buildQuery();
 
-        $fresults = new Paginator($this->execute(), true);
-        $fresults->setUseOutputWalkers(false);
-        $output = array('data' => array());
+        $this->paginator = new Paginator($this->execute(), true);
+        $this->paginator->setUseOutputWalkers(false);
 
-        foreach ($fresults as $item) {
-            if (is_callable($this->lineFormatter)) {
-                $callable = $this->lineFormatter;
-                $item = call_user_func($callable, $item);
-            }
-
-            foreach ($this->columns as $column) {
-                $column->renderContent($item, $this);
-
-                /** @var ActionColumn $column */
-                if ('action' === $column->getAlias()) {
-                    $column->checkVisibility($item);
-                }
-            }
-
-            $output['data'][] = $item;
-        }
+        $formatter = new DatatableFormatter($this);
+        $formatter->runFormatter();
 
         $outputHeader = array(
             'draw' => (int) $this->requestParams['draw'],
@@ -775,7 +764,7 @@ class DatatableQuery
             'recordsFiltered' => (int) $this->getCountFilteredResults($this->rootEntityIdentifier, $buildQuery)
         );
 
-        $fullOutput = array_merge($outputHeader, $output);
+        $fullOutput = array_merge($outputHeader, $formatter->getOutput());
         $fullOutput = $this->applyResponseCallbacks($fullOutput);
 
         $json = $this->serializer->serialize($fullOutput, 'json');
@@ -932,6 +921,36 @@ class DatatableQuery
     //-------------------------------------------------
     // Getters
     //-------------------------------------------------
+
+    /**
+     * Get lineFormatter.
+     *
+     * @return callable
+     */
+    public function getLineFormatter()
+    {
+        return $this->lineFormatter;
+    }
+
+    /**
+     * Get columns.
+     *
+     * @return AbstractColumn[]
+     */
+    public function getColumns()
+    {
+        return $this->columns;
+    }
+
+    /**
+     * Get paginator.
+     *
+     * @return Paginator|null
+     */
+    public function getPaginator()
+    {
+        return $this->paginator;
+    }
 
     /**
      * Get Twig Environment.

@@ -18,6 +18,7 @@ use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
 use Sg\DatatablesBundle\Datatable\Filter\FilterFactory;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Closure;
 
 /**
  * Class AbstractColumn
@@ -133,6 +134,13 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     protected $filter;
 
     /**
+     * Add column only if parameter / conditions are TRUE
+     *
+     * @var Closure
+     */
+    protected $addIf;
+
+    /**
      * Name of datatable view.
      *
      * @var string
@@ -176,9 +184,21 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     /**
      * {@inheritdoc}
      */
-    public function renderContent(&$item, DatatableQuery $datatableQuery = null)
+    public function renderContent(&$row, DatatableQuery $datatableQuery = null)
     {
         return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function checkAddColumn()
+    {
+        if ($this->addIf instanceof Closure) {
+            return call_user_func($this->addIf);
+        }
+
+        return true;
     }
 
     /**
@@ -522,6 +542,30 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     public function getFilter()
     {
         return $this->filter;
+    }
+
+    /**
+     * Set addIf.
+     *
+     * @param Closure|null $addIf
+     *
+     * @return $this
+     */
+    public function setAddIf($addIf)
+    {
+        $this->addIf = $addIf;
+
+        return $this;
+    }
+
+    /**
+     * Get addIf.
+     *
+     * @return Closure|null
+     */
+    public function getAddIf()
+    {
+        return $this->addIf;
     }
 
     /**

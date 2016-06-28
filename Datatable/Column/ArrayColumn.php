@@ -87,15 +87,16 @@ class ArrayColumn extends Column
         parent::configureOptions($resolver);
 
         $resolver->remove(array('editable'));
+        $resolver->remove(array('editable_role'));
 
         $resolver->setRequired(array('data'));
 
         $resolver->setDefault('count', false);
         $resolver->setDefault('count_action', array());
 
-        $resolver->addAllowedTypes('data', 'string');
+        $resolver->setAllowedTypes('data', 'string');
         $resolver->setAllowedTypes('count', 'bool');
-        $resolver->addAllowedTypes('count_action', 'array');
+        $resolver->setAllowedTypes('count_action', 'array');
 
         return $this;
     }
