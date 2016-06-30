@@ -76,6 +76,7 @@ class TimeagoColumn extends AbstractColumn
             'visible' => true,
             'width' => '',
             'filter' => array('text', array()),
+            'add_if' => null,
         ));
 
         $resolver->setAllowedTypes('class', 'string');
@@ -89,6 +90,7 @@ class TimeagoColumn extends AbstractColumn
         $resolver->setAllowedTypes('visible', 'bool');
         $resolver->setAllowedTypes('width', 'string');
         $resolver->setAllowedTypes('filter', 'array');
+        $resolver->setAllowedTypes('add_if', array('Closure', 'null'));
 
         return $this;
     }

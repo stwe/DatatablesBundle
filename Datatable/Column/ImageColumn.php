@@ -109,15 +109,15 @@ class ImageColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function renderContent(&$item, DatatableQuery $datatableQuery = null)
+    public function renderContent(&$row, DatatableQuery $datatableQuery = null)
     {
         if (true === $datatableQuery->getImagineBundle()) {
-            $item[$this->getDql()] = $this->renderImage($item[$this->getDql()], $datatableQuery->getTwig());
+            $row[$this->getDql()] = $this->renderImage($row[$this->getDql()], $datatableQuery->getTwig());
         } else {
             $item[$this->getDql()] = $datatableQuery->getTwig()->render(
                 'SgDatatablesBundle:Helper:render_image.html.twig',
                 array(
-                    'image_name' => $item[$this->getDql()],
+                    'image_name' => $row[$this->getDql()],
                     'path' => $this->getRelativePath()
                 )
             );
@@ -137,7 +137,6 @@ class ImageColumn extends AbstractColumn
         return $twig->render(
             'SgDatatablesBundle:Helper:ii_render_image.html.twig',
             array(
-                'image_id' => 'sg_image_' . uniqid(rand(10000, 99999)),
                 'image_name' => $imageName,
                 'filter' => $this->getImagineFilter(),
                 'enlarged_filter' => $this->getImagineFilterEnlarged(),
@@ -180,6 +179,7 @@ class ImageColumn extends AbstractColumn
             'visible' => true,
             'width' => '',
             'filter' => array('text', array()),
+            'add_if' => null,
             'imagine_filter' => '',
             'imagine_filter_enlarged' => null,
             'holder_url' => '',
@@ -198,6 +198,7 @@ class ImageColumn extends AbstractColumn
         $resolver->setAllowedTypes('visible', 'bool');
         $resolver->setAllowedTypes('width', 'string');
         $resolver->setAllowedTypes('filter', 'array');
+        $resolver->setAllowedTypes('add_if', array('Closure', 'null'));
         $resolver->setAllowedTypes('imagine_filter', 'string');
         $resolver->setAllowedTypes('imagine_filter_enlarged', array('string', 'null'));
         $resolver->setAllowedTypes('relative_path', 'string');

@@ -10,37 +10,12 @@
 {% if filter %}
     {% if image_name %}
         {% if enlarge %}
-            <a href="javascript:void(0);" id="sg-enlarge_{{ image_id }}">
+            {% if enlarged_filter %}
+                {% set enlargedPath = asset(path)|imagine_filter(enlarged_filter) %}
+            {% endif %}
+            <a href="javascript:void(0);" data-featherlight="{{ enlargedPath | default(asset(path)) }}">
                 <img class="sg-thumbnail" src="{{ path | imagine_filter(filter) }}" />
             </a>
-
-            <div class="modal fade" id="sg-image-modal_{{ image_id }}">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
-                        </div>
-                        <div class="modal-body">
-                            <img src="" id="sg-imageview_{{ image_id }}" style="width: 100%;">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">{{ 'datatables.dialog.close'|trans({}, 'messages') }}</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <script type="text/javascript">
-                $(function() {
-                    $("#sg-enlarge_{{ image_id }}").on("click", function() {
-                        {% if enlarged_filter %}
-                            {% set enlargedPath = asset(path)|imagine_filter(enlarged_filter) %}
-                        {% endif %}
-                        $("#sg-imageview_{{ image_id }}").attr("src", "{{ enlargedPath|default(asset(path)) }}");
-                        $("#sg-image-modal_{{ image_id }}").modal("show");
-                    });
-                });
-            </script>
         {% else %}
             <img class="sg-thumbnail" src="{{ path | imagine_filter(filter) }}" />
         {% endif %}

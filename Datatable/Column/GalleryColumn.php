@@ -56,22 +56,22 @@ class GalleryColumn extends ImageColumn
     /**
      * {@inheritdoc}
      */
-    public function renderContent(&$item, DatatableQuery $datatableQuery = null)
+    public function renderContent(&$row, DatatableQuery $datatableQuery = null)
     {
         $fields = explode('.', $this->getDql());
 
         if (true === $datatableQuery->getImagineBundle()) {
             $galleryImages = '';
             $counter = 0;
-            $images = count($item[$fields[0]]);
+            $images = count($row[$fields[0]]);
             if (0 === $images) {
-                $item[$fields[0]] = $this->renderImage(null, $datatableQuery->getTwig());
+                $row[$fields[0]] = $this->renderImage(null, $datatableQuery->getTwig());
             } else {
-                foreach ($item[$fields[0]] as $image) {
+                foreach ($row[$fields[0]] as $image) {
                     $galleryImages = $galleryImages . $this->renderImage($image[$fields[1]], $datatableQuery->getTwig());
                     if (++$counter == $this->getViewLimit()) break;
                 }
-                $item[$fields[0]] = $galleryImages;
+                $row[$fields[0]] = $galleryImages;
             }
         } else {
             throw new InvalidArgumentException('renderContent(): Bundle "LiipImagineBundle" does not exist or it is not enabled.');
