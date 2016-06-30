@@ -55,12 +55,19 @@ interface ColumnInterface
     /**
      * Render images or any other special content.
      *
-     * @param mixed               $item
+     * @param array               $row
      * @param DatatableQuery|null $datatableQuery
      *
      * @return mixed
      */
-    public function renderContent(&$item, DatatableQuery $datatableQuery = null);
+    public function renderContent(&$row, DatatableQuery $datatableQuery = null);
+
+    /**
+     * Checks whether the column may be added.
+     *
+     * @return boolean
+     */
+    public function checkAddColumn();
 
     /**
      * Get alias.

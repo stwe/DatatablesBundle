@@ -36,6 +36,7 @@ SgDatatablesBundle:Column:column.html.twig
 | visible              | boolean        | true                   |
 | width                | string         | ''                     |
 | filter               | array          | array('text', array()) |
+| add_if               | Closure        | null                   |
 | default              | string         | ''                     |
 | editable             | boolean        | false                  |
 | editable_role        | null or string | null                   |
@@ -48,7 +49,10 @@ $this->columnBuilder
         'title' => 'title',
         'searchable' => false,
         'orderable' => false,
-        'default' => 'default title value'
+        'default' => 'default title value',
+        'add_if' => function() {
+            return ($this->authorizationChecker->isGranted('ROLE_ADMIN'));
+        },
     ))
 ;
 ```
@@ -90,6 +94,7 @@ SgDatatablesBundle:Column:array.html.twig
 | visible              | boolean        | true                   |          |
 | width                | string         | ''                     |          |
 | filter               | array          | array('text', array()) |          |
+| add_if               | Closure        | null                   |          |
 | default              | string         | ''                     |          |
 | data                 | string         |                        | required |
 | count                | boolean        | false                  |          |
@@ -192,6 +197,7 @@ SgDatatablesBundle:Column:boolean.html.twig
 | true_label           | string         | ''                    |
 | false_label          | string         | ''                    |
 | filter               | array          | see the below example |
+| add_if               | Closure        | null                  |
 | editable             | boolean        | false                 |
 | editable_role        | null or string | null                  |
 
@@ -237,6 +243,7 @@ SgDatatablesBundle:Column:datetime.html.twig
 | visible              | boolean        | true                   |
 | width                | string         | ''                     |
 | filter               | array          | array('text', array()) |
+| add_if               | Closure        | null                   |
 | date_format          | string         | 'lll'                  |
 | editable             | boolean        | false                  |
 | editable_role        | null or string | null                   |
@@ -277,6 +284,7 @@ SgDatatablesBundle:Column:timeago.html.twig
 | visible              | boolean        | true                   |
 | width                | string         | ''                     |
 | filter               | array          | array('text', array()) |
+| add_if               | Closure        | null                   |
 
 ### Example
 
@@ -310,6 +318,7 @@ SgDatatablesBundle:Column:action.html.twig
 | width      | string      | ''      |          |
 | start_html | string      | ''      |          |
 | end_html   | string      | ''      |          |
+| add_if     | Closure     | null    |          |
 | actions    | array       |         | required |
 
 ### Action options
@@ -334,6 +343,9 @@ $this->columnBuilder
         'title' => 'Actions',
         'start_html' => '<div class="wrapper_example_class">',
         'end_html' => '</div>',
+        'add_if' => function() {
+            return ($this->authorizationChecker->isGranted('ROLE_ADMIN'));
+        },
         'actions' => array( // required option
             array(
                 'route' => 'post_edit',
@@ -370,7 +382,7 @@ $this->columnBuilder
                     'class' => 'btn btn-default btn-xs',
                     'role' => 'button'
                 ),
-                'role' => 'ROLE_USER',
+                'role' => 'ROLE_ADMIN',
                 'render_if' => array(
                     'id' => 1,
                     'username' => 'admin',
@@ -426,6 +438,7 @@ SgDatatablesBundle:Column:multiselect.html.twig
 | width      | string      | ''      |          |
 | start_html | string      | ''      |          |
 | end_html   | string      | ''      |          |
+| add_if     | Closure     | null    |          |
 | actions    | array       |         | required |
 | attributes | array       | array() |          |
 | value      | string      | 'id'    |          |
@@ -454,6 +467,9 @@ $this->getColumnBuilder()
             'class' => 'testclass',
             'name' => 'testname',
         ),
+        'add_if' => function() {
+            return ($this->authorizationChecker->isGranted('ROLE_ADMIN'));
+        },
         'actions' => array(
             array(
                 'route' => 'post_bulk_delete',
@@ -524,6 +540,10 @@ ___
 
 Shows an uploaded image.
 
+For proper display of images as thumbnails the LiipImagineBundle is required. Please follow all steps as described [here](http://symfony.com/doc/master/bundles/LiipImagineBundle/installation.html).
+
+To upload images, I recommend the VichUploaderBundle. You can follow all steps as described [here](https://github.com/dustin10/VichUploaderBundle/blob/master/Resources/doc/index.md).
+
 Example entity:
 
 ```php
@@ -574,6 +594,7 @@ SgDatatablesBundle:Column:image.html.twig
 | visible                  | boolean        | true                   |          |
 | width                    | string         | ''                     |          |
 | filter                   | array          | array('text', array()) |          |
+| add_if                   | Closure        | null                   |          |
 | imagine_filter           | string         | ''                     |          |
 | imagine_filter_enlarged  | null or string | null                   |          |
 | relative_path            | string         |                        | required |
@@ -603,6 +624,10 @@ ___
 ## 10. Gallery column
 
 This column shows a list of uploaded images.
+
+For proper display of images as thumbnails the LiipImagineBundle is required. Please follow all steps as described [here](http://symfony.com/doc/master/bundles/LiipImagineBundle/installation.html).
+
+To upload images, I recommend the VichUploaderBundle. You can follow all steps as described [here](https://github.com/dustin10/VichUploaderBundle/blob/master/Resources/doc/index.md).
 
 Example: Suppose you have an entity `Post`, and `Post` have one or more images associated.
 
@@ -693,6 +718,7 @@ SgDatatablesBundle:Column:image.html.twig
 | visible                 | boolean        | true                   |          |
 | width                   | string         | ''                     |          |
 | filter                  | array          | array('text', array()) |          |
+| add_if                  | Closure        | null                   |          |
 | imagine_filter          | string         |                        | required |
 | imagine_filter_enlarged | null or string | null                   |          |
 | relative_path           | string         |                        | required |
@@ -721,7 +747,7 @@ $this->columnBuilder
 
 ## 11. Progress Bar column
 
-Progress bars. Bootstrap 3 is recommended.
+This Column relies on [Bootstrap3](http://getbootstrap.com/).
 
 ### Default template
 
@@ -742,6 +768,7 @@ SgDatatablesBundle:Column:progress_bar.html.twig
 | visible              | boolean        | true                  |
 | width                | string         | ''                    |
 | filter               | array          | see the below example |
+| add_if               | Closure        | null                  |
 | bar_classes          | string         | ''                    |
 | value_min            | string         | '0'                   |
 | value_max            | string         | '100'                 |

@@ -103,6 +103,7 @@ class ProgressBarColumn extends AbstractColumn
             'filter' => array('text', array(
                 'search_type' => 'eq'
             )),
+            'add_if' => null,
             'bar_classes' => '',
             'value_min' => '0',
             'value_max' => '100',
@@ -110,11 +111,23 @@ class ProgressBarColumn extends AbstractColumn
             'multi_color' => false
         ));
 
-        $resolver->addAllowedTypes('bar_classes', 'string');
-        $resolver->addAllowedTypes('value_min', 'string');
+        $resolver->setAllowedTypes('class', 'string');
+        $resolver->setAllowedTypes('padding', 'string');
+        $resolver->setAllowedTypes('name', 'string');
+        $resolver->setAllowedTypes('orderable', 'bool');
+        $resolver->setAllowedTypes('render', array('string', 'null'));
+        $resolver->setAllowedTypes('searchable', 'bool');
+        $resolver->setAllowedTypes('title', 'string');
+        $resolver->setAllowedTypes('type', 'string');
+        $resolver->setAllowedTypes('visible', 'bool');
+        $resolver->setAllowedTypes('width', 'string');
+        $resolver->setAllowedTypes('filter', 'array');
+        $resolver->setAllowedTypes('add_if', array('Closure', 'null'));
+        $resolver->setAllowedTypes('bar_classes', 'string');
+        $resolver->setAllowedTypes('value_min', 'string');
         $resolver->setAllowedTypes('value_max', 'string');
-        $resolver->addAllowedTypes('label', 'bool');
-        $resolver->addAllowedTypes('multi_color', 'bool');
+        $resolver->setAllowedTypes('label', 'bool');
+        $resolver->setAllowedTypes('multi_color', 'bool');
 
         return $this;
     }

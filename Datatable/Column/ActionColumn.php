@@ -101,7 +101,8 @@ class ActionColumn extends AbstractColumn
             'visible' => true,
             'width' => '',
             'start_html' => '',
-            'end_html' => ''
+            'end_html' => '',
+            'add_if' => null
         ));
 
         $resolver->setAllowedTypes('class', 'string');
@@ -113,6 +114,7 @@ class ActionColumn extends AbstractColumn
         $resolver->setAllowedTypes('width', 'string');
         $resolver->setAllowedTypes('start_html', 'string');
         $resolver->setAllowedTypes('end_html', 'string');
+        $resolver->setAllowedTypes('add_if', array('Closure', 'null'));
         $resolver->setAllowedTypes('actions', 'array');
 
         return $this;

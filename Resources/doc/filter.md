@@ -29,11 +29,11 @@ __
 
 ## 2. ServerSide individual column filtering
 
-[Example](#example)
-[Text Filter](#text-filter)
-[Select Filter](#select-filter)
-[DateRange Filter](#daterange-filter)
-[Slider Filter](#slider-filter)
+* [Example](#example)
+* [Text Filter](#text-filter)
+* [Select Filter](#select-filter)
+* [DateRange Filter](#daterange-filter)
+* [Slider Filter](#slider-filter)
 
 ### Example
 
@@ -164,6 +164,8 @@ $this->columnBuilder
 
 ### DateRange Filter
 
+This Filter relies on the [Bootstrap-Daterangepicker](https://github.com/dangrossman/bootstrap-daterangepicker).
+
 #### Default template
 
 SgDatatablesBundle:Filters:filter_daterange.html.twig
@@ -188,6 +190,8 @@ $this->columnBuilder
 ```
 
 ### Slider Filter
+
+This Filter relies on the [Bootstrap-Slider](https://github.com/seiyria/bootstrap-slider).
 
 #### Default template
 

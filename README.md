@@ -10,7 +10,7 @@
 
 ## Recent Changes
 
-Search result highlighting.
+### Search result highlighting.
 
 1. Include the [jQuery Highlight Plugin](http://bartaz.github.io/sandbox.js/jquery.highlight.html)
 2. Configure your Datatables-Class features
@@ -22,6 +22,14 @@ $this->features->set(array(
     'highlight_color' => 'red' // 'red' is the default value
 ));
 ```
+
+### Enlargement of thumbnails with Featherlight
+
+see [#401](https://github.com/stwe/DatatablesBundle/issues/401)
+
+The Bootstrap modal window does not work properly in responsive mode.
+ 
+Load [Featherlight](https://github.com/noelboss/featherlight/) with your base layout.  
 
 ## Screenshots
 
