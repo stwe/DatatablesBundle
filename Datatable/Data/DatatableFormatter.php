@@ -56,11 +56,11 @@ class DatatableFormatter
             }
 
             // 2. Call columns renderContent method to format row items (e.g. for images)
-            foreach ($columns as $column) {
+            foreach ($columns as $index => $column) {
                 $column->renderContent($row, $this->datatableQuery);
 
                 if ('action' === $column->getAlias()) {
-                    $column->checkVisibility($row);
+                    $column->checkVisibility($row, $index);
                 }
             }
 

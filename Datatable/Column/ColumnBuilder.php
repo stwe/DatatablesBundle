@@ -86,6 +86,7 @@ class ColumnBuilder implements ColumnBuilderInterface
         $addColumn = $column->checkAddColumn();
 
         if (true === $addColumn) {
+            $column->setIndex(count($this->columns));
             $this->columns[] = $column;
         }
 

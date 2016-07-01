@@ -147,6 +147,14 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
      */
     protected $tableName;
 
+    /**
+     * Column index.
+     * Saves the position in the columns array.
+     *
+     * @var integer
+     */
+    protected $index;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -590,5 +598,29 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     public function getTableName()
     {
         return $this->tableName;
+    }
+
+    /**
+     * Set index.
+     *
+     * @param integer $index
+     *
+     * @return $this
+     */
+    public function setIndex($index)
+    {
+        $this->index = $index;
+
+        return $this;
+    }
+
+    /**
+     * Get index.
+     *
+     * @return integer
+     */
+    public function getIndex()
+    {
+        return $this->index;
     }
 }
