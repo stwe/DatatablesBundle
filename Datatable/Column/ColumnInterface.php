@@ -53,6 +53,16 @@ interface ColumnInterface
     public function getTemplate();
 
     /**
+     * Sometimes it is necessary to add some special data to the output array.
+     * For example, the visibility of actions.
+     *
+     * @param array $row
+     *
+     * @return $this
+     */
+    public function addDataToOutputArray(&$row);
+
+    /**
      * Render images or any other special content.
      *
      * @param array               $row

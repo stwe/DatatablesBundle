@@ -8,15 +8,13 @@
  #}
 routeParameters = new Array();
 attributes = "";
-roleFlag = true;
+role = true;
 
-{% if action.role %}
-    roleFlag = false;
-    {% if app.user is not null and is_granted(action.role) %}
-        roleFlag = true;
-    {% endif %}
+{% if (false == action.isRenderIfRoleClosure) %}
+    role = false;
 {% endif %}
-if (row.actions[{{ column.index }}]["{{ action.route }}"] && true == roleFlag) {
+
+if (row.actions[{{ column.index }}]["{{ action.route }}"] && true == role) {
     {% for key, value in action.routeParameters %}
         routeParameters["{{ key }}"] = row.{{ value }};
     {% endfor %}

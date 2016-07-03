@@ -192,6 +192,14 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     /**
      * {@inheritdoc}
      */
+    public function addDataToOutputArray(&$row)
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function renderContent(&$row, DatatableQuery $datatableQuery = null)
     {
         return null;

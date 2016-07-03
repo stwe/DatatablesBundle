@@ -55,13 +55,11 @@ class DatatableFormatter
                 $row = call_user_func($lineFormatter, $row);
             }
 
-            // 2. Call columns renderContent method to format row items (e.g. for images)
-            foreach ($columns as $index => $column) {
+            foreach ($columns as $column) {
+                // 2. Add some special data to the output array. For example, the visibility of actions.
+                $column->addDataToOutputArray($row);
+                // 3. Call columns renderContent method to format row items (e.g. for images)
                 $column->renderContent($row, $this->datatableQuery);
-
-                if ('action' === $column->getAlias()) {
-                    $column->checkVisibility($row, $index);
-                }
             }
 
             $this->output['data'][] = $row;

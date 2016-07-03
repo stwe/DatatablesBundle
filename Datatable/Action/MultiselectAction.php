@@ -12,14 +12,23 @@
 namespace Sg\DatatablesBundle\Datatable\Action;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Closure;
 
 /**
  * Class MultiselectAction
  *
  * @package Sg\DatatablesBundle\Datatable\Action
  */
-class MultiselectAction extends AbstractAction
+class MultiselectAction extends Action
 {
+    /**
+     * Render checkbox only if conditions are True.
+     * @todo: implement (need access to $row)
+     *
+     * @var Closure
+     */
+    protected $renderCheckboxIf;
+
     /**
      * Name of datatable view.
      *
@@ -36,22 +45,16 @@ class MultiselectAction extends AbstractAction
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(array('route'));
+        parent::configureOptions($resolver);
+
+        // @todo: implement (need access to $row)
+        //$resolver->remove(array('render_if'));
 
         $resolver->setDefaults(array(
-            'route_parameters' => array(),
-            'icon' => '',
-            'label' => '',
-            'attributes' => array(),
-            'role' => ''
+            'render_checkbox_if' => null
         ));
 
-        $resolver->setAllowedTypes('route', 'string');
-        $resolver->setAllowedTypes('route_parameters', 'array');
-        $resolver->setAllowedTypes('icon', 'string');
-        $resolver->setAllowedTypes('label', 'string');
-        $resolver->setAllowedTypes('attributes', 'array');
-        $resolver->setAllowedTypes('role', 'string');
+        $resolver->setAllowedTypes('render_checkbox_if', array('Closure', 'null'));
 
         $tableName = $this->tableName;
         $resolver->setNormalizer('attributes', function($options, $value) use($tableName) {
@@ -67,6 +70,30 @@ class MultiselectAction extends AbstractAction
     //-------------------------------------------------
     // Getters && Setters
     //-------------------------------------------------
+
+    /**
+     * Set renderCheckboxIf.
+     *
+     * @param Closure $renderCheckboxIf
+     *
+     * @return $this
+     */
+    public function setRenderCheckboxIf($renderCheckboxIf)
+    {
+        $this->renderCheckboxIf = $renderCheckboxIf;
+
+        return $this;
+    }
+
+    /**
+     * Get renderCheckboxIf.
+     *
+     * @return Closure
+     */
+    public function getRenderCheckboxIf()
+    {
+        return $this->renderCheckboxIf;
+    }
 
     /**
      * Set table name.

@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * @package Sg\DatatablesBundle\Datatable\Action
  */
-class TopAction extends AbstractAction
+class TopAction extends Action
 {
     //-------------------------------------------------
     // OptionsInterface
@@ -29,24 +29,9 @@ class TopAction extends AbstractAction
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(array('route'));
+        parent::configureOptions($resolver);
 
-        $resolver->setDefaults(array(
-            'icon' => '',
-            'label' => '',
-            'confirm' => false,
-            'confirm_message' => '',
-            'attributes' => array(),
-            'role' => ''
-        ));
-
-        $resolver->setAllowedTypes('route', 'string');
-        $resolver->setAllowedTypes('icon', 'string');
-        $resolver->setAllowedTypes('label', 'string');
-        $resolver->setAllowedTypes('confirm', 'bool');
-        $resolver->setAllowedTypes('confirm_message', 'string');
-        $resolver->setAllowedTypes('attributes', 'array');
-        $resolver->setAllowedTypes('role', 'string');
+        $resolver->remove(array('render_if'));
 
         return $this;
     }

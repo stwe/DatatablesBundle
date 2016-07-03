@@ -114,7 +114,7 @@ class ImageColumn extends AbstractColumn
         if (true === $datatableQuery->getImagineBundle()) {
             $row[$this->getDql()] = $this->renderImage($row[$this->getDql()], $datatableQuery->getTwig());
         } else {
-            $item[$this->getDql()] = $datatableQuery->getTwig()->render(
+            $row[$this->getDql()] = $datatableQuery->getTwig()->render(
                 'SgDatatablesBundle:Helper:render_image.html.twig',
                 array(
                     'image_name' => $row[$this->getDql()],

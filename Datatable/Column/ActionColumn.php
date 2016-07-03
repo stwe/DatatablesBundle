@@ -76,6 +76,21 @@ class ActionColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
+    public function addDataToOutputArray(&$row)
+    {
+        $actionRowItems = array();
+
+        /** @var Action $action */
+        foreach ($this->actions as $action) {
+            $actionRowItems[$action->getRoute()] = $action->isRenderIfClosure($row);
+        }
+
+        $row['actions'][$this->getIndex()] = $actionRowItems;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAlias()
     {
         return 'action';
@@ -197,23 +212,5 @@ class ActionColumn extends AbstractColumn
     public function getActions()
     {
         return $this->actions;
-    }
-
-    /**
-     * Check visibility.
-     *
-     * @param array   $row
-     * @param integer $index
-     */
-    public function checkVisibility(array &$row, $index)
-    {
-        $actionState = array();
-
-        /** @var Action $action */
-        foreach ($this->actions as $action) {
-            $actionState[$action->getRoute()] = $action->isVisible($row);
-        }
-
-        $row['actions'][$index] = $actionState;
     }
 }

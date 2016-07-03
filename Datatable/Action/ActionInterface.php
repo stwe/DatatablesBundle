@@ -33,4 +33,20 @@ interface ActionInterface
      * @return string
      */
     public function getRoute();
+
+    /**
+     * Checks whether the Action is visible by optional given row data.
+     *
+     * @param array $row
+     *
+     * @return boolean
+     */
+    public function isRenderIfClosure(array $row = array());
+
+    /**
+     * Checks whether the Action is visible.
+     *
+     * @return boolean
+     */
+    public function isRenderIfRoleClosure();
 }
