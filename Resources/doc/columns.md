@@ -69,6 +69,16 @@ $this->columnBuilder
     ))
 ;
 ```
+
+For Doctrine Embeddables:
+
+``` php
+$this->columnBuilder
+    ->add('credentials\\.username', 'column', array(
+        'title' => 'Username'
+    ))
+;
+```
 ___
 
 ## 2. Array column

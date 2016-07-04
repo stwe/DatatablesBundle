@@ -294,33 +294,42 @@ class DatatableQuery
         foreach ($this->columns as $key => $column) {
             $data = $column->getDql();
 
+            $currentPart = $this->tableName;
+            $currentAlias = $currentPart;
+
+            $metadata = $this->metadata;
+
             if (true === $this->isSelectColumn($data)) {
+                $parts = explode('\\\\.', $data);
 
-                $parts = explode('.', $data);
+                if (count($parts) > 1) {
+                    // If it's an embedded class, we can query without JOIN
+                    if (array_key_exists($parts[0], $metadata->embeddedClasses)) {
+                        $this->selectColumns[$currentAlias][] = str_replace('\\', '', $data);
+                        $this->addSearchOrderColumn($key, $currentAlias, $data);
+                        continue;
+                    }
+                } else {
+                    $parts = explode('.', $data);
 
-                $currentPart = $this->tableName;
-                $currentAlias = $currentPart;
+                    while (count($parts) > 1) {
+                        $previousPart = $currentPart;
+                        $previousAlias = $currentAlias;
 
-                $metadata = $this->metadata;
+                        $currentPart = array_shift($parts);
+                        $currentAlias = ($previousPart == $this->tableName ? '' : $previousPart.'_') . $currentPart; // This condition keeps stable queries callbacks
 
-                while (count($parts) > 1) {
+                        if (!array_key_exists($previousAlias.'.'.$currentPart, $this->joins)) {
+                            $this->joins[$previousAlias.'.'.$currentPart] = $currentAlias;
+                        }
 
-                    $previousPart = $currentPart;
-                    $previousAlias = $currentAlias;
-
-                    $currentPart = array_shift($parts);
-                    $currentAlias = ($previousPart == $this->tableName ? '' : $previousPart.'_') . $currentPart; // This condition keeps stable queries callbacks
-
-                    if (!array_key_exists($previousAlias.'.'.$currentPart, $this->joins)) {
-                        $this->joins[$previousAlias.'.'.$currentPart] = $currentAlias;
+                        $metadata = $this->setIdentifierFromAssociation($currentAlias, $currentPart, $metadata);
                     }
 
-                    $metadata = $this->setIdentifierFromAssociation($currentAlias, $currentPart, $metadata);
+                    $this->selectColumns[$currentAlias][] = $this->getIdentifier($metadata);
+                    $this->selectColumns[$currentAlias][] = $parts[0];
+                    $this->addSearchOrderColumn($key, $currentAlias, $parts[0]);
                 }
-
-                $this->selectColumns[$currentAlias][] = $this->getIdentifier($metadata);
-                $this->selectColumns[$currentAlias][] = $parts[0];
-                $this->addSearchOrderColumn($key, $currentAlias, $parts[0]);
             } else {
                 $this->orderColumns[] = null;
                 $this->searchColumns[] = null;

@@ -77,6 +77,12 @@ class ColumnBuilder implements ColumnBuilderInterface
         /**
          * @var AbstractColumn $column
          */
+         
+        // Support embeddables forcing the two backslashes in the column name
+        if (strpos($data, '\\') !== false) {
+            $data = str_replace('\\', '\\\\', $data);
+        }
+         
         $column = ColumnFactory::createColumnByAlias($alias);
         $column->setTableName($this->tableName);
         $column->setData($data);
