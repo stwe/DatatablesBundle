@@ -323,17 +323,17 @@ SgDatatablesBundle:Column:action.html.twig
 
 ### Action options
 
-| Option           | Type             | Default                      |          |
-|------------------|------------------|------------------------------|----------|
-| route            | string           |                              | required |
-| route_parameters | array            | array()                      |          |
-| icon             | string           | ''                           |          |
-| label            | string           | ''                           |          |
-| confirm          | boolean          | false                        |          |
-| confirm_message  | string           | 'datatables.bulk.confirmMsg' |          |
-| attributes       | array            | array()                      |          |
-| role             | string           | ''                           |          |
-| render_if        | Closure or array | array()                      |          |
+| Option           | Type    | Default                      |          |
+|------------------|---------|------------------------------|----------|
+| route            | string  |                              | required |
+| route_parameters | array   | array()                      |          |
+| icon             | string  | ''                           |          |
+| label            | string  | ''                           |          |
+| confirm          | boolean | false                        |          |
+| confirm_message  | string  | 'datatables.bulk.confirmMsg' |          |
+| attributes       | array   | array()                      |          |
+| render_if_role   | Closure | null                         |          |
+| render_if        | Closure | null                         |          |
 
 ### Example
 
@@ -361,13 +361,11 @@ $this->columnBuilder
                 ),
                 'confirm' => true,
                 'confirm_message' => 'Are you sure?',
-                'role' => 'ROLE_ADMIN',
-                'render_if' => function($rowEntity) {
-                    /**
-                     * Return a boolean variable or boolean condition
-                     * $rowEntity['columnName'] 
-                     */
-                    return ($rowEntity['title'] === 'Title 1');
+                'render_if_role' => function() {
+                    return ($this->authorizationChecker->isGranted('ROLE_ADMIN'));
+                },
+                'render_if' => function($row) {
+                    return ($row['title'] === 'Title 1');
                 },
             ),
             array(
@@ -382,40 +380,10 @@ $this->columnBuilder
                     'class' => 'btn btn-default btn-xs',
                     'role' => 'button'
                 ),
-                'role' => 'ROLE_ADMIN',
-                'render_if' => array(
-                    'id' => 1,
-                    'username' => 'admin',
-                    'enabled' => false,
-                    // ...
-                )
             )
         )
     ))
 ;
-```
-
-### Render_if
-
-The render_if option can be used with a Closure or array.
-
-```php
-'render_if' => array(
-    'id' => 1,
-    'username' => 'admin',
-    'enabled' => false,
-    // ...
-)
-```
-
-```php
-'render_if' => function($rowEntity) {
-    /**
-     * Return a boolean variable or boolean condition
-     * $rowEntity['columnName'] 
-     */
-    return ($rowEntity['title'] === 'Title 1');
-},
 ```
 ___
 
@@ -445,14 +413,17 @@ SgDatatablesBundle:Column:multiselect.html.twig
 
 ### Multiselect-Action options
 
-| Option           | Type        | Default |          |
-|------------------|-------------|---------|----------|
-| route            | string      |         | required |
-| route_parameters | array       | array() |          |
-| icon             | string      | ''      |          |
-| label            | string      | ''      |          |
-| attributes       | array       | array() |          |
-| role             | string      | ''      |          |
+| Option             | Type    | Default                      |          |
+|--------------------|---------|------------------------------|----------|
+| route              | string  |                              | required |
+| route_parameters   | array   | array()                      |          |
+| icon               | string  | ''                           |          |
+| label              | string  | ''                           |          |
+| confirm            | boolean | false                        |          |
+| confirm_message    | string  | 'datatables.bulk.confirmMsg' |          |
+| attributes         | array   | array()                      |          |
+| render_if_role     | Closure | null                         |          |
+| render_checkbox_if | Closure | null                         |          |
 
 ### Example
 
@@ -474,7 +445,9 @@ $this->getColumnBuilder()
             array(
                 'route' => 'post_bulk_delete',
                 'label' => 'Delete',
-                'role' => 'ROLE_ADMIN',
+                'render_if_role' => function() {
+                    return ($this->authorizationChecker->isGranted('ROLE_ADMIN'));
+                },
                 'icon' => 'fa fa-times',
                 'attributes' => array(
                     'rel' => 'tooltip',

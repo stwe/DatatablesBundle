@@ -22,7 +22,9 @@
                     'route' => $this->router->generate('post_new'),
                     'label' => $this->translator->trans('datatables.actions.new'),
                     'icon' => 'glyphicon glyphicon-plus',
-                    //'role' => 'ROLE_USER',
+                    'render_if_role' => function() {
+                        return ($this->authorizationChecker->isGranted('ROLE_ADMIN'));
+                    },
                     'attributes' => array(
                         'rel' => 'tooltip',
                         'title' => $this->translator->trans('datatables.actions.new'),
@@ -72,25 +74,27 @@
 
 ## 2. Top actions
 
-### Top actions Options
+### Options
 
-| Top action | Type   | Default |          |
-|------------|--------|---------|----------|
-| start_html | string | ''      |          |
-| end_html   | string | ''      |          |
-| actions    | array  |         | required |
+| Top action | Type    | Default |          |
+|------------|---------|---------|----------|
+| start_html | string  | ''      |          |
+| end_html   | string  | ''      |          |
+| add_if     | Closure | null    |          |
+| actions    | array   |         | required |
 
 ### Action options
 
 | Option           | Type        | Default                      |          |
 |------------------|-------------|------------------------------|----------|
 | route            | string      |                              | required |
+| route_parameters | array       | array()                      |          |
 | icon             | string      | ''                           |          |
 | label            | string      | ''                           |          |
 | confirm          | boolean     | false                        |          |
 | confirm_message  | string      | 'datatables.bulk.confirmMsg' |          |
 | attributes       | array       | array()                      |          |
-| role             | string      | ''                           |          |
+| render_if_role   | Closure     | null                         |          |
 
 ## 3. Callbacks
 
