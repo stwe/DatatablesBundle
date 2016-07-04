@@ -31,6 +31,105 @@ The Bootstrap modal window does not work properly in responsive mode.
  
 Load [Featherlight](https://github.com/noelboss/featherlight/) with your base layout.  
 
+### `add_if` Closure for all Columns and TopActions
+
+```
+$this->columnBuilder
+    ->add('title', 'column', array(
+        // ...
+        'add_if' => function() {
+            return ($this->authorizationChecker->isGranted('ROLE_ADMIN'));
+        },
+    ))
+;
+```
+
+```
+$this->topActions->set(array(
+    // ...
+    'add_if' => function() {
+        return ($this->authorizationChecker->isGranted('ROLE_ADMIN'));
+    },
+    'actions' => array(
+        // ...
+    )
+));
+```
+
+### Render Actions
+
+#### Action Column
+
+**before**
+
+```
+'actions' => array(
+    array(
+        'route' => 'post_edit',
+        'route_parameters' => array(
+            'id' => 'id'
+        ),
+        'role' => 'ROLE_ADMIN',
+        'render_if' => function($row) {
+            return ($row['title'] === 'Title 1');
+        },
+    ),
+    // ...
+```
+
+**after**
+
+```
+'actions' => array(
+    array(
+        'route' => 'post_edit',
+        'route_parameters' => array(
+            'id' => 'id'
+        ),
+        'render_if' => function($row) {
+            return ($row['user']['username'] == $this->getUser()->getUsername());
+        },
+        'render_if_role' => function() {
+            return ($this->authorizationChecker->isGranted('ROLE_USER'));
+        },
+        // or only with render_if
+        /*
+        'render_if' => function($row) {
+            return (
+                $this->authorizationChecker->isGranted('ROLE_USER') &&
+                $row['user']['username'] == $this->getUser()->getUsername()
+            );
+        },
+        */
+    ),
+    // ...
+```
+
+#### Top Action && Multiselect Action Column
+
+**before**
+
+```
+'actions' => array(
+    array(
+        'route' => 'post_new',
+        'role' => 'ROLE_ADMIN',
+    ),
+```
+
+**after**
+
+```
+'actions' => array(
+    array(
+        'route' => 'post_new',
+        'render_if_role' => function() {
+            return ($this->authorizationChecker->isGranted('ROLE_ADMIN'));
+        },
+    ),
+```
+
+
 ## Screenshots
 
 ### Table with Bootstrap3 integration: 

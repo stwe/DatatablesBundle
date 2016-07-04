@@ -48,7 +48,7 @@ class MultiselectAction extends Action
         parent::configureOptions($resolver);
 
         // @todo: implement (need access to $row)
-        //$resolver->remove(array('render_if'));
+        $resolver->remove(array('render_if'));
 
         $resolver->setDefaults(array(
             'render_checkbox_if' => null
