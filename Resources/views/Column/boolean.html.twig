@@ -10,7 +10,13 @@
 
 {% block data %}
     "data": "{{ column.data }}",
-    "render": function(data, type, row, meta) {
-        return {{ column.render }}(data, type, row, meta, "{{ column.trueIcon }}", "{{ column.falseIcon }}", "{{ column.trueLabel }}", "{{ column.falseLabel }}");
-    },
+    {% if column.editable %}
+        "render": function(data, type, row, meta) {
+            return render_editable_boolean(data, type, row, meta, '{{ column.data }}', '{{ column.trueLabel }}', '{{ column.falseLabel }}');
+        },
+    {% else %}
+        "render": function(data, type, row, meta) {
+            return {{ column.render }}(data, type, row, meta, "{{ column.trueIcon }}", "{{ column.falseIcon }}", "{{ column.trueLabel }}", "{{ column.falseLabel }}");
+        },
+    {% endif %}
 {% endblock %}

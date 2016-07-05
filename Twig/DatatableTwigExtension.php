@@ -65,11 +65,11 @@ class DatatableTwigExtension extends Twig_Extension
     public function getFunctions()
     {
         return array(
-            new Twig_SimpleFunction('datatable_render', array($this, 'datatableRender'), array('is_safe' => array('all'))),
-            new Twig_SimpleFunction('datatable_render_html', array($this, 'datatableRenderHtml'), array('is_safe' => array('all'))),
-            new Twig_SimpleFunction('datatable_render_js', array($this, 'datatableRenderJs'), array('is_safe' => array('all'))),
+            new Twig_SimpleFunction('datatable_render', array($this, 'datatableRender'), array('is_safe' => array('all'), 'needs_environment' => true)),
+            new Twig_SimpleFunction('datatable_render_html', array($this, 'datatableRenderHtml'), array('is_safe' => array('all'), 'needs_environment' => true)),
+            new Twig_SimpleFunction('datatable_render_js', array($this, 'datatableRenderJs'), array('is_safe' => array('all'), 'needs_environment' => true)),
             new Twig_SimpleFunction('datatable_filter_render', array($this, 'datatableFilterRender'), array('is_safe' => array('all'), 'needs_environment' => true)),
-            new Twig_SimpleFunction('datatable_icon', array($this, 'datatableIcon'), array('is_safe' => array('all')))
+            new Twig_SimpleFunction('datatable_icon', array($this, 'datatableIcon'), array('is_safe' => array('all'), 'needs_environment' => true))
         );
     }
 
@@ -86,6 +86,134 @@ class DatatableTwigExtension extends Twig_Extension
     //-------------------------------------------------
     // Functions && Filters
     //-------------------------------------------------
+
+    /**
+     * Get options.
+     *
+     * @param AbstractDatatableView $datatable
+     *
+     * @return array
+     * @throws Exception
+     */
+    private function getOptions(AbstractDatatableView $datatable)
+    {
+        $options = array();
+
+        if (true === $datatable->getFeatures()->getServerSide()) {
+            if ('' === $datatable->getAjax()->getUrl()) {
+                throw new Exception('render(): The ajax url parameter must be given.');
+            }
+        } else {
+            if (null === $datatable->getData()) {
+                throw new Exception('render(): Call setData() in your controller.');
+            } else {
+                $options['view_data'] = $datatable->getData();
+            }
+        }
+
+        $options['view_actions'] = $datatable->getTopActions();
+        $options['view_features'] = $datatable->getFeatures();
+        $options['view_options'] = $datatable->getOptions();
+        $options['view_callbacks'] = $datatable->getCallbacks();
+        $options['view_events'] = $datatable->getEvents();
+        $options['view_columns'] = $datatable->getColumnBuilder()->getColumns();
+        $options['view_ajax'] = $datatable->getAjax();
+
+        $options['view_multiselect'] = $datatable->getColumnBuilder()->isMultiselect();
+        $options['view_multiselect_column'] = $datatable->getColumnBuilder()->getMultiselectColumn();
+
+        $options['view_table_id'] = $datatable->getName();
+
+        $options['datatable'] = $datatable;
+
+        return $options;
+    }
+
+    /**
+     * Renders the template.
+     *
+     * @param Twig_Environment      $twig
+     * @param AbstractDatatableView $datatable
+     *
+     * @return mixed|string
+     * @throws Exception
+     */
+    public function datatableRender(Twig_Environment $twig, AbstractDatatableView $datatable)
+    {
+        return $twig->render('SgDatatablesBundle:Datatable:datatable.html.twig', $this->getOptions($datatable));
+    }
+
+    /**
+     * Renders the html template.
+     *
+     * @param Twig_Environment      $twig
+     * @param AbstractDatatableView $datatable
+     *
+     * @return mixed|string
+     * @throws Exception
+     */
+    public function datatableRenderHtml(Twig_Environment $twig, AbstractDatatableView $datatable)
+    {
+        return $twig->render('SgDatatablesBundle:Datatable:datatable_html.html.twig', $this->getOptions($datatable));
+    }
+
+    /**
+     * Renders the js template.
+     *
+     * @param Twig_Environment      $twig
+     * @param AbstractDatatableView $datatable
+     *
+     * @return mixed|string
+     * @throws Exception
+     */
+    public function datatableRenderJs(Twig_Environment $twig, AbstractDatatableView $datatable)
+    {
+        return $twig->render('SgDatatablesBundle:Datatable:datatable_js.html.twig', $this->getOptions($datatable));
+    }
+
+    /**
+     * Renders the custom datatable filter.
+     *
+     * @param Twig_Environment      $twig
+     * @param AbstractDatatableView $datatable
+     * @param AbstractColumn        $column
+     * @param integer               $loopIndex
+     *
+     * @return mixed|string|void
+     */
+    public function datatableFilterRender(Twig_Environment $twig, AbstractDatatableView $datatable, AbstractColumn $column, $loopIndex)
+    {
+        if ($filterProperty = $column->getFilter()->getProperty()) {
+            $filterColumnId = $datatable->getColumnIdByColumnName($filterProperty);
+        } else {
+            $filterColumnId = $loopIndex;
+        }
+
+        return $twig->render($column->getFilter()->getTemplate(), array(
+            'column' => $column,
+            'filterColumnId' => $filterColumnId,
+            'selectorId' => $loopIndex,
+            'tableId' => $datatable->getName()
+            )
+        );
+    }
+
+    /**
+     * Renders icon && label.
+     *
+     * @param Twig_Environment $twig
+     * @param string           $icon
+     * @param string           $label
+     *
+     * @return string
+     */
+    public function datatableIcon(Twig_Environment $twig, $icon, $label = '')
+    {
+        if ($icon)
+            return $twig->render('SgDatatablesBundle:Action:icon.html.twig', array('icon' => $icon, 'label' => $label));
+        else
+            return $label;
+    }
 
     /**
      * Creates the lengthMenu parameter.
@@ -114,83 +242,5 @@ class DatatableTwigExtension extends Twig_Extension
         }
 
         return $result;
-    }
-
-    /**
-     * Renders the template.
-     *
-     * @param AbstractDatatableView $datatable
-     *
-     * @return mixed|string|void
-     * @throws Exception
-     */
-    public function datatableRender(AbstractDatatableView $datatable)
-    {
-        return $datatable->render();
-    }
-
-    /**
-     * Renders the custom datatable filter.
-     *
-     * @param Twig_Environment      $twig
-     * @param AbstractDatatableView $datatable
-     * @param AbstractColumn        $column
-     * @param integer               $loopIndex
-     *
-     * @return mixed|string|void
-     */
-    public function datatableFilterRender(Twig_Environment $twig, AbstractDatatableView $datatable, AbstractColumn $column, $loopIndex)
-    {
-        $filterType = $column->getFilterType() ?: 'text';
-
-        if ($filterProperty = $column->getFilterProperty()) {
-            $filterColumnId = $datatable->getColumnIdByColumnName($filterProperty);
-        } else {
-            $filterColumnId = $loopIndex;
-        }
-
-        return $twig->render('SgDatatablesBundle:Filters:filter_' . $filterType . '.html.twig', ['column' => $column, 'filterColumnId' => $filterColumnId]);
-    }
-
-    /**
-     * Renders the html template.
-     *
-     * @param AbstractDatatableView $datatable
-     *
-     * @return mixed|string|void
-     * @throws Exception
-     */
-    public function datatableRenderHtml(AbstractDatatableView $datatable)
-    {
-        return $datatable->render('html');
-    }
-
-    /**
-     * Renders the js template.
-     *
-     * @param AbstractDatatableView $datatable
-     *
-     * @return mixed|string|void
-     * @throws Exception
-     */
-    public function datatableRenderJs(AbstractDatatableView $datatable)
-    {
-        return $datatable->render('js');
-    }
-
-    /**
-     * Renders icon and label.
-     *
-     * @param string $icon
-     * @param string $label
-     *
-     * @return string
-     */
-    public function datatableIcon($icon, $label = '')
-    {
-        if ($icon)
-            return sprintf('<i class="%s"></i> %s', $icon, $label);
-        else
-            return $label;
     }
 }

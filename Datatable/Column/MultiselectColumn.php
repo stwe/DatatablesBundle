@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\Datatable\Action\MultiselectAction;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 
@@ -71,8 +73,8 @@ class MultiselectColumn extends ActionColumn
             'value' => 'id',
         ));
 
-        $resolver->addAllowedTypes('attributes', 'array');
-        $resolver->addAllowedTypes('value', 'string');
+        $resolver->setAllowedTypes('attributes', 'array');
+        $resolver->setAllowedTypes('value', 'string');
 
         return $this;
     }
@@ -92,6 +94,7 @@ class MultiselectColumn extends ActionColumn
     {
         foreach ($actions as $action) {
             $newAction = new MultiselectAction();
+            $newAction->setTableName($this->tableName);
             $this->actions[] = $newAction->setupOptionsResolver($action);
         }
 
@@ -106,7 +109,7 @@ class MultiselectColumn extends ActionColumn
      * @throws InvalidArgumentException
      * @return $this
      */
-    public function setAttributes($attributes)
+    public function setAttributes(array $attributes)
     {
         $this->attributes = $attributes;
 
@@ -117,14 +120,14 @@ class MultiselectColumn extends ActionColumn
             throw new InvalidArgumentException('The value attribute is not supported.');
         }
         if (array_key_exists('name', $this->attributes)) {
-            $this->attributes['name'] = 'multiselect_checkbox ' . $this->attributes['name'];
+            $this->attributes['name'] = $this->tableName . '_multiselect_checkbox ' . $this->attributes['name'];
         } else {
-            $this->attributes['name'] = 'multiselect_checkbox';
+            $this->attributes['name'] = $this->tableName . '_multiselect_checkbox';
         }
         if (array_key_exists('class', $this->attributes)) {
-            $this->attributes['class'] = 'multiselect_checkbox ' . $this->attributes['class'];
+            $this->attributes['class'] = $this->tableName . '_multiselect_checkbox ' . $this->attributes['class'];
         } else {
-            $this->attributes['class'] = 'multiselect_checkbox';
+            $this->attributes['class'] = $this->tableName . '_multiselect_checkbox';
         }
 
         return $this;

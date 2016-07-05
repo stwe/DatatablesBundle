@@ -1,7 +1,7 @@
-datatables: # the bundle name
-    datatable: # jQuery plugin
-        processing: "Przetwarzanie"
-        lengthMenu: "Pokaż _MENU_ wpisy"
+datatables:
+    datatable:
+        processing: "Przetwarzanie..."
+        lengthMenu: "Pokaż _MENU_ wpisów"
         zeroRecords: "Nie znaleziono pasujących rekordów"
         info: "Wyświetlam od _START_ do _END_ z _TOTAL_ rekordów"
         infoEmpty: "Wyświetlam od 0 do 0 z 0 rekordów"
@@ -17,3 +17,19 @@ datatables: # the bundle name
         confirmMsg: "Jesteś pewien?"
         selectError: "Musisz wybrać przynajmniej jeden element"
         ok: "Ok"
+    actions:
+        title: "Akcje"
+        show: "Pokaż"
+        new: "Nowy"
+        edit: "Edycja"
+        delete: "Usuń"
+        toList: "Wróć to listy"
+        save: "Zapisz"
+    dialog:
+        close: "Zamknij"
+daterange:
+    apply: "Zastosuj"
+    cancel: "Anuluj"
+    format: "DD.MM.YYYY"
+editable:
+    tableRedraw: "Zmiany dotyczą wielu rekordów. Tabela została przebudowana z nowymi danymi."

@@ -6,7 +6,7 @@ $ php app/console sg:datatable:generate AppBundle:Post
 
 ## Available Options
 
-- `entity` (required): The entity name given as a shortcut notation containing the bundle name in which the entity is located and the name of the entity. For example: AppBundle:Post
+- `entity` (required): The entity name given as a shortcut notation containing the bundle name in which the entity is located and the name of the entity.
 
 ``` bash
 $ php app/console sg:datatable:generate AppBundle:Post
@@ -18,10 +18,10 @@ $ php app/console sg:datatable:generate AppBundle:Post
 $ php app/console sg:datatable:generate AppBundle:Post --fields="id name createdAt:timeago"
 ```
 
-- `--client-side` (optional): The client-side flag.
+- `--bootstrap3` (optional): The Bootstrap3-Framework flag.
 
 ``` bash
-$ php app/console sg:datatable:generate AppBundle:Post --client-side
+$ php app/console sg:datatable:generate AppBundle:Post --bootstrap3
 ```
 
 - `--ajax-url` (optional): The ajax url.

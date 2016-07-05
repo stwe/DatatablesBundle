@@ -1,0 +1,26 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{% set link %}
+    <a href="{{action.route }}"
+        {% for key, value in action.attributes %}
+            {{ key }}="{{ value }}"
+        {% endfor %}
+        {% if action.confirm %}
+            {% if action.confirmMessage %}
+                onclick="return confirm('{{ action.confirmMessage }}');"
+            {% else %}
+                onclick="return confirm('{{ 'datatables.bulk.confirmMsg'|trans({}, 'messages') }}');"
+            {% endif %}
+        {% endif %}
+    >{{ datatable_icon(action.icon, action.label) }}</a>
+{% endset %}
+
+{% if action.isRenderIfRoleClosure %}
+    {{ link }}
+{% endif %}

@@ -18,7 +18,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Twig_Environment;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -31,6 +30,8 @@ use Exception;
  */
 abstract class AbstractDatatableView implements DatatableViewInterface
 {
+    const NAME_REGEX = '/[a-zA-Z0-9\-\_]+/';
+
     /**
      * The AuthorizationChecker service.
      *
@@ -44,13 +45,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @var TokenStorageInterface
      */
     protected $securityToken;
-
-    /**
-     * The Twig_Environment service.
-     *
-     * @var Twig_Environment
-     */
-    protected $twig;
 
     /**
      * The Translator service.
@@ -74,6 +68,13 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     protected $em;
 
     /**
+     * Actions on the top of the table (e.g. 'New' button).
+     *
+     * @var TopActions
+     */
+    protected $topActions;
+
+    /**
      * A Features instance.
      *
      * @var Features
@@ -95,6 +96,13 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     protected $callbacks;
 
     /**
+     * An Events instance.
+     *
+     * @var Events
+     */
+    protected $events;
+
+    /**
      * A ColumnBuilder instance.
      *
      * @var ColumnBuilder
@@ -114,13 +122,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      * @var mixed
      */
     protected $data;
-
-    /**
-     * The Twig templates.
-     *
-     * @var array
-     */
-    protected $templates;
 
     /**
      * This variable stores the array of column names as keys and column ids as values
@@ -146,41 +147,36 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      *
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param TokenStorageInterface         $securityToken
-     * @param Twig_Environment              $twig
      * @param TranslatorInterface           $translator
      * @param RouterInterface               $router
      * @param EntityManagerInterface        $em
-     * @param array                         $defaultLayoutOptions
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $securityToken,
-        Twig_Environment $twig,
         TranslatorInterface $translator,
         RouterInterface $router,
-        EntityManagerInterface $em,
-        array $defaultLayoutOptions
+        EntityManagerInterface $em
     )
     {
+        $this->assertTheNameOnlyContainsAllowedCharacters();
+
         $this->authorizationChecker = $authorizationChecker;
         $this->securityToken = $securityToken;
-        $this->twig = $twig;
         $this->translator = $translator;
         $this->router = $router;
         $this->em = $em;
 
+        $this->topActions = new TopActions();
         $this->features = new Features();
         $this->options = new Options();
         $this->callbacks = new Callbacks();
-        $this->columnBuilder = new ColumnBuilder();
+        $this->events = new Events();
+        $this->columnBuilder = new ColumnBuilder($this->getName());
         $this->ajax = new Ajax();
 
         $this->data = null;
-        $this->templates = $defaultLayoutOptions['templates'];
-
         $this->qb = null;
-
-        $this->buildDatatableView();
     }
 
     //-------------------------------------------------
@@ -190,62 +186,25 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * {@inheritdoc}
      */
-    public function render($type = "all")
+    public function getEntityManager()
     {
-        $options = array();
-
-        if (true === $this->features->getServerSide()) {
-            if ('' === $this->ajax->getUrl()) {
-                throw new Exception('render(): The ajax url parameter must be given.');
-            }
-        } else {
-            if (null === $this->data) {
-                throw new Exception('render(): Call setData() in your controller.');
-            } else {
-                $options['view_data'] = $this->data;
-            }
-        }
-
-        $options['view_features'] = $this->features;
-        $options['view_options'] = $this->options;
-        $options["view_callbacks"] = $this->callbacks;
-        $options['view_columns'] = $this->columnBuilder->getColumns();
-        $options['view_ajax'] = $this->ajax;
-
-        $options['view_multiselect'] = $this->columnBuilder->isMultiselect();
-        $options['view_multiselect_column'] = $this->columnBuilder->getMultiselectColumn();
-
-        $options['view_table_id'] = $this->getName();
-
-        $options['datatable'] = $this;
-
-        switch ($type) {
-            case 'html':
-                return $this->twig->render($this->templates['html'], $options);
-                break;
-            case 'js':
-                return $this->twig->render($this->templates['js'], $options);
-                break;
-            default:
-                return $this->twig->render($this->templates['base'], $options);
-                break;
-        }
+        return $this->em;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAjax()
+    public function getTopActions()
     {
-        return $this->ajax;
+        return $this->topActions;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getColumnBuilder()
+    public function getFeatures()
     {
-        return $this->columnBuilder;
+        return $this->features;
     }
 
     /**
@@ -259,17 +218,41 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     /**
      * {@inheritdoc}
      */
-    public function getLineFormatter()
+    public function getCallbacks()
     {
-        return null;
+        return $this->callbacks;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getEntityManager()
+    public function getEvents()
     {
-        return $this->em;
+        return $this->events;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getColumnBuilder()
+    {
+        return $this->columnBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAjax()
+    {
+        return $this->ajax;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLineFormatter()
+    {
+        return null;
     }
 
     /**
@@ -306,30 +289,6 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getData()
     {
         return $this->data;
-    }
-
-    /**
-     * Set templates.
-     *
-     * @param array $templates
-     *
-     * @return $this
-     */
-    public function setTemplates(array $templates)
-    {
-        $this->templates = $templates;
-
-        return $this;
-    }
-
-    /**
-     * Get templates.
-     *
-     * @return array
-     */
-    public function getTemplates()
-    {
-        return $this->templates;
     }
 
     //-------------------------------------------------
@@ -385,7 +344,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
      */
     public function getCollectionAsOptionsArray($entitiesCollection, $keyPropertyName = 'id', $valuePropertyName = 'name')
     {
-        $options = [];
+        $options = array();
 
         foreach ($entitiesCollection as $entity) {
             $keyPropertyName = Container::camelize($keyPropertyName);
@@ -396,5 +355,17 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         }
 
         return $options;
+    }
+
+    /**
+     * Checks the name only contains letters, numbers, underscores or dashes.
+     *
+     * @throws Exception
+     */
+    private function assertTheNameOnlyContainsAllowedCharacters()
+    {
+        if (1 !== preg_match(self::NAME_REGEX, $this->getName())) {
+            throw new Exception('The result of the getName method can only contain letters, numbers, underscore and dashes.');
+        }
     }
 }

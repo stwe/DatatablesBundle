@@ -33,6 +33,20 @@ class DateTimeColumn extends TimeagoColumn
      */
     protected $dateFormat;
 
+    /**
+     * Editable flag.
+     *
+     * @var boolean
+     */
+    protected $editable;
+
+    /**
+     * Role based editing permission.
+     *
+     * @var null|string
+     */
+    protected $editableRole;
+
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -66,10 +80,14 @@ class DateTimeColumn extends TimeagoColumn
 
         $resolver->setDefaults(array(
             'render' => 'render_datetime',
-            "date_format" => 'lll',
+            'date_format' => 'lll',
+            'editable' => false,
+            'editable_role' => null
         ));
 
-        $resolver->addAllowedTypes('date_format', 'string');
+        $resolver->setAllowedTypes('date_format', 'string');
+        $resolver->setAllowedTypes('editable', 'bool');
+        $resolver->setAllowedTypes('editable_role', array('string', 'null'));
 
         return $this;
     }
@@ -104,5 +122,53 @@ class DateTimeColumn extends TimeagoColumn
     public function getDateFormat()
     {
         return $this->dateFormat;
+    }
+
+    /**
+     * Set editable.
+     *
+     * @param boolean $editable
+     *
+     * @return $this
+     */
+    public function setEditable($editable)
+    {
+        $this->editable = $editable;
+
+        return $this;
+    }
+
+    /**
+     * Get editable.
+     *
+     * @return boolean
+     */
+    public function getEditable()
+    {
+        return $this->editable;
+    }
+
+    /**
+     * Set editable role.
+     *
+     * @param null|string $editableRole
+     *
+     * @return $this
+     */
+    public function setEditableRole($editableRole)
+    {
+        $this->editableRole = $editableRole;
+
+        return $this;
+    }
+
+    /**
+     * Get editable role.
+     *
+     * @return null|string
+     */
+    public function getEditableRole()
+    {
+        return $this->editableRole;
     }
 }

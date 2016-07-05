@@ -1,0 +1,80 @@
+{% if (view_events.columnSizing) %}
+    {% if (view_events.columnSizing['vars'] is defined) %}
+        {% set vars = view_events.columnSizing['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('column-sizing.dt', {% include view_events.columnSizing['template'] with vars %})
+{% endif %}
+{% if (view_events.columnVisibility) %}
+    {% if (view_events.columnVisibility['vars'] is defined) %}
+        {% set vars = view_events.columnVisibility['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('column-visibility.dt', {% include view_events.columnVisibility['template'] with vars %})
+{% endif %}
+{% if (view_events.destroy) %}
+    {% if (view_events.destroy['vars'] is defined) %}
+        {% set vars = view_events.destroy['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('destroy.dt', {% include view_events.destroy['template'] with vars %})
+{% endif %}
+{% if (view_events.length) %}
+    {% if (view_events.length['vars'] is defined) %}
+        {% set vars = view_events.length['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('length.dt', {% include view_events.length['template'] with vars %})
+{% endif %}
+{% if (view_events.order) %}
+    {% if (view_events.order['vars'] is defined) %}
+        {% set vars = view_events.order['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('order.dt', {% include view_events.order['template'] with vars %})
+{% endif %}
+{% if (view_events.page) %}
+    {% if (view_events.page['vars'] is defined) %}
+        {% set vars = view_events.page['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('page.dt', {% include view_events.page['template'] with vars %})
+{% endif %}
+{% if (view_events.search) %}
+    {% if (view_events.search['vars'] is defined) %}
+        {% set vars = view_events.search['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('search.dt', {% include view_events.search['template'] with vars %})
+{% endif %}
+{% if (view_events.stateLoaded) %}
+    {% if (view_events.stateLoaded['vars'] is defined) %}
+        {% set vars = view_events.stateLoaded['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('stateLoaded.dt', {% include view_events.stateLoaded['template'] with vars %})
+{% endif %}
+{% if (view_events.stateLoadParams) %}
+    {% if (view_events.stateLoadParams['vars'] is defined) %}
+        {% set vars = view_events.stateLoadParams['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('stateLoadParams.dt', {% include view_events.stateLoadParams['template'] with vars %})
+{% endif %}
+{% if (view_events.stateSaveParams) %}
+    {% if (view_events.stateSaveParams['vars'] is defined) %}
+        {% set vars = view_events.stateSaveParams['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('stateSaveParams.dt', {% include view_events.stateSaveParams['template'] with vars %})
+{% endif %}

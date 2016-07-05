@@ -14,7 +14,7 @@
     "name": "{{ column.name }}",
     "orderable": false,
     "searchable": false,
-    "title": "<input type='checkbox' name='multiselect_checkall' class='multiselect_checkall' />",
+    "title": "<input type='checkbox' name='{{ view_table_id }}_multiselect_checkall' class='{{ view_table_id }}_multiselect_checkall' />",
     {% if column.type %}
         "type": "{{ column.type }}",
     {% endif %}
@@ -31,7 +31,6 @@
 {% block data %}
     "data": null,
     "render": function(data, type, row, meta) {
-        var checkbox = "<input type='checkbox' name='multiselect_checkbox' value='" + first + "' class='multiselect_checkbox' />";
         var output = "";
         var startHtml = "";
         var endHtml = "";
@@ -59,22 +58,12 @@
         }
 
         {# return html #}
-        if ("" != attributes) {
-            var custom = "";
-
-            custom += startHtml;
-            custom += "<input type='checkbox' value='";
-            custom += first;
-            custom += "'";
-            custom += attributes;
-            custom += "/>"
-            custom += endHtml;
-
-            return custom;
-        }
-
         output += startHtml;
-        output += checkbox;
+        output += "<input type='checkbox' value='";
+        output += first;
+        output += "'";
+        output += attributes;
+        output += "/>"
         output += endHtml;
 
         return output;

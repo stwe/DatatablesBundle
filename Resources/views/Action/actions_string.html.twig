@@ -1,0 +1,52 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+routeParameters = new Array();
+attributes = "";
+role = true;
+
+{% if (false == action.isRenderIfRoleClosure) %}
+    role = false;
+{% endif %}
+
+if (row.actions[{{ column.index }}]["{{ action.route }}"] && true == role) {
+    {% for key, value in action.routeParameters %}
+        routeParameters["{{ key }}"] = row.{{ value }};
+    {% endfor %}
+
+    var route  = Routing.generate("{{ action.route }}", routeParameters);
+
+    {% for key, value in action.attributes %}
+        attributes += '{{ key }}="{{ value }}" ';
+    {% endfor %}
+
+    var url  = "<a ";
+    url += 'href="' + route + '" ';
+    url += attributes;
+    {% if action.confirm %}
+        url += 'onclick="';
+        {% if action.confirmMessage %}
+            url += "return confirm('{{ action.confirmMessage }}')" + '" ';
+        {% else %}
+            url += "return confirm('{{ 'datatables.bulk.confirmMsg'|trans({}, 'messages') }}')" + '" ';
+        {% endif %}
+    {% endif %}
+    url += ">";
+
+    {# count - for ArrayColumn #}
+    {% if 'array' == column.alias %}
+        if (count !== 'undefined') {
+            url += count + ' ';
+        }
+    {% endif %}
+
+    url += '{{ datatable_icon(action.icon, action.label) }}';
+    url += "</a>";
+
+    actionsString += url;
+}

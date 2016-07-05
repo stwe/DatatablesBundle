@@ -1,5 +1,4 @@
 <script type="text/javascript">
-
     $(document).ready(function () {
 
         var selector = "#{{ view_table_id }}";
@@ -24,6 +23,10 @@
             {% include "SgDatatablesBundle:Datatable:ajax.html.twig" %}
         };
 
+        var searchCols = {
+            {% include "SgDatatablesBundle:Datatable:search_columns.html.twig" %}
+        };
+
         setTimeout(function() {
             var columns = {
                 {% include "SgDatatablesBundle:Datatable:columns.html.twig" %}
@@ -34,42 +37,92 @@
             $.extend(defaults, callbacks);
             $.extend(defaults, ajax);
             $.extend(defaults, columns);
+            $.extend(defaults, searchCols);
 
-            if ( $.fn.dataTable.isDataTable( selector ) ) {
+            if ($.fn.DataTable.isDataTable(selector)) {
                 {#
                     to check if datatable already exists
                 #}
             } else {
-                var oTable = $(selector).DataTable(defaults);
+                var oTable = $(selector)
+                {# Use the Button-Extension with integration options #}
+                {% if view_features.extensions.buttons is defined %}
+                    {% if true == view_options.useIntegrationOptions and false == view_options.getForceDom %}
+                        .on('init.dt',
+                            function() {
+                                if ('bootstrap' == oTable.context[0].renderer) {
+                                    oTable.buttons().container().appendTo('#' + oTable.table().container().id + ' .col-sm-6:eq(0)');
+                                }
+
+                                if ('foundation' == oTable.context[0].renderer) {
+                                    oTable.buttons().container().appendTo('#' + oTable.table().container().id + ' .small-6.columns:eq(0)');
+                                }
+
+                                if ('jqueryui' == oTable.context[0].renderer) {
+                                    oTable.buttons().container().appendTo('#' + oTable.table().container().id);
+                                }
+                            }
+                        )
+                    {% endif %}
+                {% endif %}
+                {% include "SgDatatablesBundle:Datatable:before_events.js.twig" %}
+                .DataTable(defaults)
+                        .on('draw.dt', function() {
+                            {% include "SgDatatablesBundle:Datatable:editable.html.twig" %}
+                            {% if true == view_features.highlight %}
+                                {% include "SgDatatablesBundle:Datatable:highlight.js.twig" %}
+                            {% endif %}
+                        })
+                        {% include "SgDatatablesBundle:Datatable:after_events.js.twig" %}
+                        {% if view_features.extensions.responsive is defined %}
+                            {% if true == view_features.extensions.responsive %}
+                                .on( 'responsive-display', function ( e, datatable, row, showHide, update ) {
+                                    if (showHide) {
+                                        {% include "SgDatatablesBundle:Datatable:editable.html.twig" %}
+                                    }
+                                });
+                            {% endif %}
+                        {% endif %}
             }
 
             {% if view_options.individualFiltering %}
 
                 {% if "head" == view_options.individualFilteringPosition %}
-                    $(selector + '_wrapper tfoot tr').insertAfter($(selector + '_wrapper thead tr'));
+                    $(selector + '_wrapper tfoot tr').insertAfter($(selector + '_wrapper thead tr').first());
                 {% endif %}
 
                 {% if "both" == view_options.individualFilteringPosition %}
-                    $(selector + '_wrapper tfoot tr').clone().insertAfter($(selector + '_wrapper thead tr'));
+                    $(selector + '_wrapper tfoot tr').clone().insertAfter($(selector + '_wrapper thead tr').first());
                 {% endif %}
-
-                var daterange = $('input[name="daterange"]');
-                try {
-                    $(daterange).daterangepicker();
-                } catch (e) {
-                    console.log(e.message);
-                }
 
                 {# "foot" position -> datatable_html.html.twig #}
 
-                $(selector + "_wrapper").find("tr input.individual_filtering").on("keyup change", function() {
-                    oTable
-                        .column( $(this).parent().index()+':visible' )
-                        .search( this.value )
-                        .draw();
-                });
+                var throttledSearch = $.fn.DataTable.util.throttle(
+                    function (event) {
+                        if (event.type == "keyup") {
+                            if (
+                                    event.keyCode == 37 ||
+                                    event.keyCode == 38 ||
+                                    event.keyCode == 39 ||
+                                    event.keyCode == 40 ||
+                                    event.keyCode == 16 ||
+                                    event.keyCode == 17 ||
+                                    event.keyCode == 18
+                            )
+                                return;
+                        }
 
-                $("select.individual_filtering").on("keyup change", function(event) {
+                        oTable
+                                .column($(event.currentTarget).data('filter-property-id'))
+                                .search(this.value)
+                                .draw();
+                    },
+                    options.searchDelay
+                );
+
+                $(selector + "_wrapper").find("tr input.individual_filtering").on("keyup change", throttledSearch);
+
+                $(selector + "_wrapper" + " select.individual_filtering").on("keyup change", function(event) {
                     var searchFieldId = $(event.currentTarget).data('filter-property-id');
                     var searchValue = $(this).val();
                     searchValue = searchValue ? searchValue.toString() : '';
@@ -82,7 +135,7 @@
             {% endif %}
 
             {% if view_multiselect %}
-                {% include "SgDatatablesBundle:Datatable:multiselect_actions.html.twig" with {'column': view_multiselect_column} %}
+                {% include "SgDatatablesBundle:Action:multiselect_actions.html.twig" with {'column': view_multiselect_column} %}
             {% endif %}
 
         }, features.delay);
@@ -92,6 +145,10 @@
 
 {% block sg_datatable_render_functions %}
 
-    {% include "SgDatatablesBundle:Datatable:render_functions.html.twig" %}
+    <script type="text/javascript">
+        if (typeof window.renderFunctionsAlreadyLoaded == 'undefined') {
+            {% include "SgDatatablesBundle:Datatable:render_functions.js.twig" %}
+        }
+    </script>
 
 {% endblock %}

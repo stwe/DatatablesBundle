@@ -1,3 +1,11 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
 "autoWidth": {{ view_features.autoWidth ? 'true' : 'false' }},
 "deferRender": {{ view_features.deferRender ? 'true' : 'false' }},
 "info": {{ view_features.info ? 'true' : 'false' }},
@@ -7,10 +15,29 @@
 "paging": {{ view_features.paging ? 'true' : 'false' }},
 "processing": {{ view_features.processing ? 'true' : 'false' }},
 "scrollX": {{ view_features.scrollX ? 'true' : 'false' }},
-"scrollY": {{ view_features.scrollY ? 'true' : 'false' }},
+"scrollY": "{{ view_features.scrollY }}",
 "searching": {{ view_features.searching ? 'true' : 'false' }},
 
 {# "serverSide" -> Ajax.html.twig #}
 
 "stateSave": {{ view_features.stateSave ? 'true' : 'false' }},
 "delay": {{ view_features.delay }},
+
+{% for extension, options in view_features.extensions %}
+    {% if 'buttons' == extension %}
+        "buttons": [
+            {% for option in options %}
+                {% if option.action is defined %}
+                {
+                    "text": "{{ option.text }}",
+                    "action": {{ include(option.action|raw) }}
+                },
+                {% else %}
+                    {{ option|json_encode|raw }},
+                {% endif %}
+            {% endfor %}
+        ],
+    {% else %}
+        "{{ extension }}": {{ options|json_encode|raw }},
+    {% endif %}
+{% endfor %}

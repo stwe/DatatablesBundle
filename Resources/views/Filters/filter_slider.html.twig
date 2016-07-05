@@ -1,0 +1,54 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{% extends 'SgDatatablesBundle:Filters:filter.html.twig' %}
+
+{% set filter_initial_value %}
+    {% if column.filter.value is iterable %}
+        [{{ column.filter.value|join(', ') }}]
+    {% else %}
+        {{ column.filter.value }}
+    {% endif %}
+{% endset %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        var sliderField = $("#{{ tableId }}-sg-filter-{{ selectorId }}").slider({
+            min: {{ column.filter.min }},
+            max: {{ column.filter.max }},
+            step: {{ column.filter.step }},
+            precision: {{ column.filter.precision }},
+            orientation: "{{ column.filter.orientation }}",
+            value: {{ filter_initial_value }},
+            range: {{ column.filter.range ? 'true' : 'false' }},
+            selection: "{{ column.filter.selection }}",
+            tooltip: "{{ column.filter.tooltip }}",
+            tooltip_split: {{ column.filter.tooltipSplit ? 'true' : 'false' }},
+            handle: "{{ column.filter.handle }}",
+            reversed: {{ column.filter.reversed ? 'true' : 'false' }},
+            enabled: {{ column.filter.enabled ? 'true' : 'false' }},
+            {% if (column.filter.formatter) %}
+            formatter: {% include column.filter.formatter %},
+            {% endif %}
+            natural_arrow_keys: {{ column.filter.naturalArrowKeys ? 'true' : 'false' }},
+            ticks: [{{ column.filter.ticks|join(', ') }}],
+            ticks_positions: [{{ column.filter.ticksPositions|join(', ') }}],
+            ticks_labels: ["{{ column.filter.tickslabels|join('","')|raw }}"],
+            ticks_snap_bounds: {{ column.filter.ticksSnapBounds }},
+            scale: "{{ column.filter.scale }}",
+            focus: {{ column.filter.focus ? 'true' : 'false' }},
+            tooltip_position: "{{ column.filter.tooltipPosition }}",
+            labelledby: "{{ column.filter.labelledby }}"
+        });
+        $("#{{ tableId }}-sg-filter-cancel-button-{{ selectorId }}").click(function() {
+            $("#{{ tableId }}-sg-filter-{{ selectorId }}")
+                .val('')
+                .change();
+        });
+    </script>
+{% endblock %}

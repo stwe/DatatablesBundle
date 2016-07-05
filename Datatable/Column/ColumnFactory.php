@@ -18,81 +18,63 @@ use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-class ColumnFactory implements ColumnFactoryInterface
+class ColumnFactory
 {
     /**
-     * A ColumnInterface.
+     * Create Column by alias.
      *
-     * @var ColumnInterface
+     * @param string $alias
+     *
+     * @return ColumnInterface
      */
-    private $column;
-
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Ctor.
-     */
-    public function __construct()
+    public static function createColumnByAlias($alias)
     {
-        $this->column = null;
-    }
-
-    //-------------------------------------------------
-    // ColumnFactoryInterface
-    //-------------------------------------------------
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createColumnByName($name)
-    {
-        if (empty($name) || !is_string($name) && !$name instanceof ColumnInterface) {
-            throw new InvalidArgumentException('createColumnByName(): String or ColumnInterface expected.');
+        if (empty($alias) || !is_string($alias) && !$alias instanceof ColumnInterface) {
+            throw new InvalidArgumentException('createColumnByAlias(): String or ColumnInterface expected.');
         }
 
-        if ($name instanceof ColumnInterface) {
-            return $name;
+        if ($alias instanceof ColumnInterface) {
+            return $alias;
         }
 
-        $name = strtolower($name);
-
-        $this->column = null;
-
-        switch ($name) {
+        switch (strtolower($alias)) {
             case 'action':
-                $this->column = new ActionColumn();
+                $column = new ActionColumn();
                 break;
             case 'array':
-                $this->column = new ArrayColumn();
+                $column = new ArrayColumn();
                 break;
             case 'boolean':
-                $this->column = new BooleanColumn();
+                $column = new BooleanColumn();
                 break;
             case 'column':
-                $this->column = new Column();
+                $column = new Column();
                 break;
             case 'datetime':
-                $this->column = new DateTimeColumn();
+                $column = new DateTimeColumn();
                 break;
             case 'timeago':
-                $this->column = new TimeagoColumn();
+                $column = new TimeagoColumn();
                 break;
             case 'multiselect':
-                $this->column = new MultiselectColumn();
+                $column = new MultiselectColumn();
                 break;
             case 'virtual':
-                $this->column = new VirtualColumn();
+                $column = new VirtualColumn();
+                break;
+            case 'image':
+                $column = new ImageColumn();
+                break;
+            case 'gallery':
+                $column = new GalleryColumn();
+                break;
+            case 'progress_bar':
+                $column = new ProgressBarColumn();
                 break;
             default:
                 throw new InvalidArgumentException('createColumnByName(): The column is not supported.');
         }
 
-        if (null === $this->column) {
-            throw new InvalidArgumentException('createColumnByName(): The column could not be created.');
-        }
-
-        return $this->column;
+        return $column;
     }
 }

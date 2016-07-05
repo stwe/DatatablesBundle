@@ -1,0 +1,35 @@
+datatables:
+    datatable:
+        processing: "Загрузка..."
+        lengthMenu: "Показано _MENU_ записей"
+        zeroRecords: "Записи не найдены"
+        info: "Отображается с _START_ по _END_ из _TOTAL_ записей"
+        infoEmpty: "Отображается с 0 по 0 из 0 записей"
+        infoFiltered: "(отфильтровано из _MAX_ записей)"
+        infoPostFix: ""
+        search: "Поиск"
+        first: "Первая"
+        previous: "Предыдущая"
+        next: "Следующая"
+        last: "Последняя"
+        all: "Все"
+    bulk:
+        confirmMsg: "Вы уверены?"
+        selectError: "Вы должны выбрать хотя бы один элемент"
+        ok: "Ok"
+    actions:
+        title: "Действия"
+        show: "Показать"
+        new: "Новый"
+        edit: "Редактировать"
+        delete: "Удалить"
+        toList: "Вернуться к списку"
+        save: "Сохранить"
+    dialog:
+        close: "Закрыть"
+daterange:
+    apply: "Применить"
+    cancel: "Отменить"
+    format: "DD.MM.YYYY"
+editable:
+    tableRedraw: "Подчиненные записи изменены. Таблица обновляется."

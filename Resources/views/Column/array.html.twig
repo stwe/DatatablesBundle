@@ -1,0 +1,38 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{% extends 'SgDatatablesBundle:Column:column.html.twig' %}
+
+{% block data %}
+    "data": "{{ column.data }}",
+    {% if column.default and column.render is null %}
+        "render": function(data) {
+            if ("" == data) {
+                return "{{ column.default }}";
+            } else {
+                return data;
+            }
+        },
+    {% endif %}
+    {% if column.count and column.render is null %}
+        "render": function(data, type, row, meta) {
+            var array = data.split(',');
+            var count = (data == '') ? 0 : array.length;
+            {% if (column.countAction) %}
+                {% include 'SgDatatablesBundle:Action:action.html.twig' with { 'actions': column.countAction } %}
+            {% else %}
+                return count;
+            {% endif %}
+        },
+    {% endif %}
+    {% if column.render %}
+        "render": function(data, type, row, meta) {
+            return {{ column.render }}(data, type, row, meta);
+        },
+    {% endif %}
+{% endblock %}

@@ -13,8 +13,10 @@ namespace Sg\DatatablesBundle\Datatable\Data;
 
 use Sg\DatatablesBundle\Datatable\View\DatatableViewInterface;
 
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Serializer;
+use Twig_Environment;
 
 /**
  * Class DatatableDataManager
@@ -24,7 +26,7 @@ use Symfony\Component\Serializer\Serializer;
 class DatatableDataManager
 {
     /**
-     * The request service.
+     * The request.
      *
      * @var Request
      */
@@ -37,6 +39,41 @@ class DatatableDataManager
      */
     private $serializer;
 
+    /**
+     * The Twig Environment service.
+     *
+     * @var Twig_Environment
+     */
+    private $twig;
+
+    /**
+     * Configuration settings.
+     *
+     * @var array
+     */
+    private $configs;
+
+    /**
+     * True if the LiipImagineBundle is installed.
+     *
+     * @var boolean
+     */
+    private $imagineBundle;
+
+    /**
+     * True if GedmoDoctrineExtensions installed.
+     *
+     * @var boolean
+     */
+    private $doctrineExtensions;
+
+    /**
+     * The locale.
+     *
+     * @var string
+     */
+    private $locale;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -44,13 +81,30 @@ class DatatableDataManager
     /**
      * Ctor.
      *
-     * @param Request    $request    The request service
-     * @param Serializer $serializer The serializer service
+     * @param RequestStack     $requestStack
+     * @param Serializer       $serializer
+     * @param Twig_Environment $twig
+     * @param array            $configs
+     * @param array            $bundles
      */
-    public function __construct(Request $request, Serializer $serializer)
+    public function __construct(RequestStack $requestStack, Serializer $serializer, Twig_Environment $twig, array $configs, array $bundles)
     {
-        $this->request = $request;
+        $this->request = $requestStack->getCurrentRequest();
         $this->serializer = $serializer;
+        $this->twig = $twig;
+        $this->configs = $configs;
+        $this->imagineBundle = false;
+        $this->doctrineExtensions = false;
+
+        if (true === class_exists('Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker')) {
+            $this->doctrineExtensions = true;
+        }
+
+        if (true === array_key_exists('LiipImagineBundle', $bundles)) {
+            $this->imagineBundle = true;
+        }
+
+        $this->locale = $this->request->getLocale();
     }
 
     //-------------------------------------------------
@@ -78,7 +132,16 @@ class DatatableDataManager
         }
 
         $params = $parameterBag->all();
-        $query = new DatatableQuery($this->serializer, $params, $datatableView);
+        $query = new DatatableQuery(
+            $this->serializer,
+            $params,
+            $datatableView,
+            $this->configs,
+            $this->twig,
+            $this->imagineBundle,
+            $this->doctrineExtensions,
+            $this->locale
+        );
 
         return $query;
     }
