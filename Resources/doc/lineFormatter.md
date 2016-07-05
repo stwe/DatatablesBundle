@@ -30,7 +30,7 @@ class UserDatatable extends AbstractDatatableView
     public function getLineFormatter()
     {
         $formatter = function($line){
-            $line["name"] = $line["firstName"] . ", " . $line["lastName"];
+            $line['name'] = $line['firstName'] . ', ' . $line['lastName'];
 
             return $line;
         };
@@ -41,14 +41,14 @@ class UserDatatable extends AbstractDatatableView
     /**
      * {@inheritdoc}
      */
-    public function buildDatatableView()
+    public function buildDatatable(array $options = array())
     {
         //...
 
         $this->columnBuilder
-            ->add("firstName", "column", array("visible" => false))
-            ->add("lastName", "column", array("visible" => false))
-            ->add("name", "virtual")
+            ->add('firstName', 'column', array('visible' => false))
+            ->add('lastName', 'column', array('visible' => false))
+            ->add('name', 'virtual')
 
             //....
         ;

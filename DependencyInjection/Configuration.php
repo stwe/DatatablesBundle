@@ -11,6 +11,7 @@
 
 namespace Sg\DatatablesBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -29,21 +30,39 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('sg_datatables');
 
+        $this->addDatatableSection($rootNode);
+
+        return $treeBuilder;
+    }
+
+    //-------------------------------------------------
+    // Datatable section
+    //-------------------------------------------------
+
+    /**
+     * Add datatable section.
+     *
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addDatatableSection(ArrayNodeDefinition $rootNode)
+    {
         $rootNode
             ->children()
-                ->arrayNode('default_layout')->addDefaultsIfNotSet()
+                ->arrayNode('datatable')->addDefaultsIfNotSet()
                     ->children()
-                        ->arrayNode('templates')->addDefaultsIfNotSet()
+                        ->arrayNode('query')->addDefaultsIfNotSet()
                             ->children()
-                                ->scalarNode('base')->defaultValue('SgDatatablesBundle:Datatable:datatable.html.twig')->end()
-                                ->scalarNode('html')->defaultValue('SgDatatablesBundle:Datatable:datatable_html.html.twig')->end()
-                                ->scalarNode('js')->defaultValue('SgDatatablesBundle:Datatable:datatable_js.html.twig')->end()
+                                ->booleanNode('search_on_non_visible_columns')
+                                    ->defaultFalse()
+                                ->end()
+                                ->booleanNode('translation_query_hints')
+                                    ->defaultFalse()
+                                ->end()
                             ->end()
                         ->end()
                     ->end()
                 ->end()
-            ->end();
-
-        return $treeBuilder;
+            ->end()
+        ;
     }
 }

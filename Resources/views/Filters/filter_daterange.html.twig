@@ -1,0 +1,44 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{% block html %}
+    <input type="text"
+        class="individual_filtering sg-daterange{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
+        style="{% if column.width %} width:{{ column.width }};{% endif %}"
+        placeholder="{{ column.title|striptags|trim }}"
+        data-filter-property-id="{{ filterColumnId }}"
+        {% if column.name %}name="{{ column.name }}"{% endif %} />
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        try {
+            moment.locale("{{ app.request.locale }}");
+            $("#{{ tableId }} .sg-daterange").daterangepicker({
+                autoUpdateInput: false,
+                locale: {
+                    format: "{{ 'daterange.format'|trans({}, 'messages') }}",
+                    applyLabel: "{{ 'daterange.apply'|trans({}, 'messages') }}",
+                    cancelLabel: "{{ 'daterange.cancel'|trans({}, 'messages') }}",
+                    daysOfWeek: moment.weekdaysMin(),
+                    monthNames: moment.monthsShort(),
+                    firstDay: moment.localeData().firstDayOfWeek()
+                }
+            }).on('cancel.daterangepicker', function(ev, picker) {
+                        $(this).val('');
+                        $(this).change();
+                    })
+                    .on('apply.daterangepicker', function(ev, picker) {
+                        $(this).val(picker.startDate.format("{{ 'daterange.format'|trans({}, 'messages') }}") + ' - ' + picker.endDate.format("{{ 'daterange.format'|trans({}, 'messages') }}"));
+                        $(this).change();
+                    });
+        } catch (e) {
+            console.log(e.message);
+        }
+    </script>
+{% endblock %}

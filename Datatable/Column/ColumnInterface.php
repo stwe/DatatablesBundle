@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\Datatable\Data\DatatableQuery;
+
 /**
  * Interface ColumnInterface
  *
@@ -37,6 +39,13 @@ interface ColumnInterface
     public function setDql($data);
 
     /**
+     * Get dql.
+     *
+     * @return null|string
+     */
+    public function getDql();
+
+    /**
      * Get template.
      *
      * @return string
@@ -44,9 +53,43 @@ interface ColumnInterface
     public function getTemplate();
 
     /**
+     * Sometimes it is necessary to add some special data to the output array.
+     * For example, the visibility of actions.
+     *
+     * @param array $row
+     *
+     * @return $this
+     */
+    public function addDataToOutputArray(&$row);
+
+    /**
+     * Render images or any other special content.
+     *
+     * @param array               $row
+     * @param DatatableQuery|null $datatableQuery
+     *
+     * @return mixed
+     */
+    public function renderContent(&$row, DatatableQuery $datatableQuery = null);
+
+    /**
+     * Checks whether the column may be added.
+     *
+     * @return boolean
+     */
+    public function checkAddColumn();
+
+    /**
      * Get alias.
      *
      * @return string
      */
     public function getAlias();
+
+    /**
+     * Check wether an association is given.
+     *
+     * @return boolean
+     */
+    public function isAssociation();
 }

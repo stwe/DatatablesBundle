@@ -12,30 +12,14 @@
 namespace Sg\DatatablesBundle\Datatable\View;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\DependencyInjection\Container;
-use Exception;
 
 /**
  * Class Features
  *
  * @package Sg\DatatablesBundle\Datatable\View
  */
-class Features
+class Features extends AbstractViewOptions
 {
-    /**
-     * Features container.
-     *
-     * @var array
-     */
-    protected $features;
-
-    /**
-     * An OptionsResolver instance.
-     *
-     * @var OptionsResolver
-     */
-    protected $resolver;
-
     /**
      * Feature control DataTables smart column width handling.
      *
@@ -61,7 +45,7 @@ class Features
      * Use markup and classes for the table to be themed by jQuery UI ThemeRoller.
      *
      * @var boolean
-     * @deprecated in DataTables 1.10 will be removed in 1.11
+     * @deprecated since DataTables 1.10 (to be removed in DataTables 1.11)
      */
     protected $jQueryUi;
 
@@ -118,6 +102,7 @@ class Features
      * Feature control DataTables server-side processing mode.
      *
      * @var boolean
+     * @deprecated since v0.11 (to be removed in v0.12)
      */
     protected $serverSide;
 
@@ -135,48 +120,35 @@ class Features
      */
     protected $delay;
 
+    /**
+     * Extensions array.
+     *
+     * @var array
+     */
+    protected $extensions;
+
+    /**
+     * Search result highlighting.
+     *
+     * @var boolean
+     */
+    protected $highlight;
+
+    /**
+     * Search result highlighting color.
+     *
+     * @var string
+     */
+    protected $highlightColor;
+
     //-------------------------------------------------
-    // Ctor.
+    // OptionsInterface
     //-------------------------------------------------
 
     /**
-     * Ctor.
+     * {@inheritdoc}
      */
-    public function __construct()
-    {
-        $this->features = array();
-        $this->resolver = new OptionsResolver();
-        $this->configureOptions($this->resolver);
-        $this->setFeatures($this->features);
-    }
-
-    //-------------------------------------------------
-    // Setup Features
-    //-------------------------------------------------
-
-    /**
-     * Set features.
-     *
-     * @param array $features
-     *
-     * @return $this
-     */
-    public function setFeatures(array $features)
-    {
-        $this->features = $this->resolver->resolve($features);
-        $this->callingSettersWithOptions($this->features);
-
-        return $this;
-    }
-
-    /**
-     * Configure Options.
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return $this
-     */
-    private function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'auto_width' => true,
@@ -192,7 +164,10 @@ class Features
             'searching' => true,
             'server_side' => true,
             'state_save' => false,
-            'delay' => 0
+            'delay' => 0,
+            'extensions' => array(),
+            'highlight' => false,
+            'highlight_color' => 'red'
         ));
 
         $resolver->setAllowedTypes('auto_width', 'bool');
@@ -209,31 +184,9 @@ class Features
         $resolver->setAllowedTypes('server_side', 'bool');
         $resolver->setAllowedTypes('state_save', 'bool');
         $resolver->setAllowedTypes('delay', 'int');
-
-        return $this;
-    }
-
-    /**
-     * Calling setters with options.
-     *
-     * @param array $options
-     *
-     * @return $this
-     * @throws Exception
-     */
-    private function callingSettersWithOptions(array $options)
-    {
-        $methods = get_class_methods($this);
-
-        foreach ($options as $key => $value) {
-            $key = Container::camelize($key);
-            $method = 'set' . ucfirst($key);
-            if (in_array($method, $methods)) {
-                $this->$method($value);
-            } else {
-                throw new Exception('callingSettersWithOptions(): ' . $method . ' invalid method name');
-            }
-        }
+        $resolver->setAllowedTypes('extensions', 'array');
+        $resolver->setAllowedTypes('highlight', 'bool');
+        $resolver->setAllowedTypes('highlight_color', 'string');
 
         return $this;
     }
@@ -514,6 +467,7 @@ class Features
      * @param boolean $serverSide
      *
      * @return $this
+     * @deprecated since v0.11 (to be removed in v0.12)
      */
     protected function setServerSide($serverSide)
     {
@@ -526,6 +480,7 @@ class Features
      * Get ServerSide.
      *
      * @return boolean
+     * @deprecated since v0.11 (to be removed in v0.12)
      */
     public function getServerSide()
     {
@@ -578,5 +533,77 @@ class Features
     public function getDelay()
     {
         return $this->delay;
+    }
+
+    /**
+     * Set extensions.
+     *
+     * @param array $extensions
+     *
+     * @return $this
+     */
+    protected function setExtensions(array $extensions)
+    {
+        $this->extensions = $extensions;
+
+        return $this;
+    }
+
+    /**
+     * Get extensions.
+     *
+     * @return array
+     */
+    public function getExtensions()
+    {
+        return $this->extensions;
+    }
+
+    /**
+     * Set highlight.
+     *
+     * @param boolean $highlight
+     *
+     * @return $this
+     */
+    public function setHighlight($highlight)
+    {
+        $this->highlight = $highlight;
+
+        return $this;
+    }
+
+    /**
+     * Get highlight.
+     *
+     * @return boolean
+     */
+    public function getHighlight()
+    {
+        return $this->highlight;
+    }
+
+    /**
+     * Set highlight color.
+     *
+     * @param string $highlightColor
+     *
+     * @return $this
+     */
+    public function setHighlightColor($highlightColor)
+    {
+        $this->highlightColor = $highlightColor;
+
+        return $this;
+    }
+
+    /**
+     * Get highlight color.
+     *
+     * @return string
+     */
+    public function getHighlightColor()
+    {
+        return $this->highlightColor;
     }
 }

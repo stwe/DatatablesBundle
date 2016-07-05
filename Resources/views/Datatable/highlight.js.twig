@@ -1,0 +1,17 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+try {
+    $(selector).highlight(oTable.search());
+    $(selector + "_wrapper").find("tr .individual_filtering").not("input[style='display: none;']").each(function() {
+        $(selector).highlight($(this).val());
+    });
+    $(".highlight").css({ backgroundColor: "{{ view_features.highlightColor }}" });
+} catch(e) {
+    console.log(e.message + ': Make sure that jquery.highlight.js is loaded.');
+}

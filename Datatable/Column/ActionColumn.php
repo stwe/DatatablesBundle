@@ -14,6 +14,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\Datatable\Action\Action;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 
@@ -74,6 +76,21 @@ class ActionColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
+    public function addDataToOutputArray(&$row)
+    {
+        $actionRowItems = array();
+
+        /** @var Action $action */
+        foreach ($this->actions as $action) {
+            $actionRowItems[$action->getRoute()] = $action->isRenderIfClosure($row);
+        }
+
+        $row['actions'][$this->getIndex()] = $actionRowItems;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAlias()
     {
         return 'action';
@@ -99,7 +116,8 @@ class ActionColumn extends AbstractColumn
             'visible' => true,
             'width' => '',
             'start_html' => '',
-            'end_html' => ''
+            'end_html' => '',
+            'add_if' => null
         ));
 
         $resolver->setAllowedTypes('class', 'string');
@@ -111,6 +129,7 @@ class ActionColumn extends AbstractColumn
         $resolver->setAllowedTypes('width', 'string');
         $resolver->setAllowedTypes('start_html', 'string');
         $resolver->setAllowedTypes('end_html', 'string');
+        $resolver->setAllowedTypes('add_if', array('Closure', 'null'));
         $resolver->setAllowedTypes('actions', 'array');
 
         return $this;

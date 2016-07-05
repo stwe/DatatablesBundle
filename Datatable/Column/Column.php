@@ -28,6 +28,20 @@ class Column extends AbstractColumn
      */
     protected $default;
 
+    /**
+     * Editable flag.
+     *
+     * @var boolean
+     */
+    protected $editable;
+
+    /**
+     * Role based editing permission.
+     *
+     * @var null|string
+     */
+    protected $editableRole;
+
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -82,11 +96,11 @@ class Column extends AbstractColumn
             'type' => '',
             'visible' => true,
             'width' => '',
+            'filter' => array('text', array()),
+            'add_if' => null,
             'default' => '',
-            'search_type' => 'like',
-            'filter_type' => 'text',
-            'filter_options' => [],
-            'filter_property' => '',
+            'editable' => false,
+            'editable_role' => null
         ));
 
         $resolver->setAllowedTypes('class', 'string');
@@ -99,14 +113,11 @@ class Column extends AbstractColumn
         $resolver->setAllowedTypes('type', 'string');
         $resolver->setAllowedTypes('visible', 'bool');
         $resolver->setAllowedTypes('width', 'string');
+        $resolver->setAllowedTypes('filter', 'array');
+        $resolver->setAllowedTypes('add_if', array('Closure', 'null'));
         $resolver->setAllowedTypes('default', 'string');
-        $resolver->setAllowedTypes('search_type', 'string');
-        $resolver->setAllowedTypes('filter_type', 'string');
-        $resolver->setAllowedTypes('filter_options', 'array');
-        $resolver->setAllowedTypes('filter_property', 'string');
-
-        $resolver->setAllowedValues('search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
-        $resolver->setAllowedValues('filter_type', array('text', 'select'));
+        $resolver->setAllowedTypes('editable', 'bool');
+        $resolver->setAllowedTypes('editable_role', array('string', 'null'));
 
         return $this;
     }
@@ -137,5 +148,53 @@ class Column extends AbstractColumn
         $this->default = $default;
 
         return $this;
+    }
+
+    /**
+     * Set editable.
+     *
+     * @param boolean $editable
+     *
+     * @return $this
+     */
+    public function setEditable($editable)
+    {
+        $this->editable = $editable;
+
+        return $this;
+    }
+
+    /**
+     * Get editable.
+     *
+     * @return boolean
+     */
+    public function getEditable()
+    {
+        return $this->editable;
+    }
+
+    /**
+     * Set editable role.
+     *
+     * @param null|string $editableRole
+     *
+     * @return $this
+     */
+    public function setEditableRole($editableRole)
+    {
+        $this->editableRole = $editableRole;
+
+        return $this;
+    }
+
+    /**
+     * Get editable role.
+     *
+     * @return null|string
+     */
+    public function getEditableRole()
+    {
+        return $this->editableRole;
     }
 }

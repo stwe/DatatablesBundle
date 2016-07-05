@@ -1,5 +1,5 @@
-datatables: # the bundle name
-    datatable: # jQuery plugin
+datatables:
+    datatable:
         processing: "Bitte warten..."
         lengthMenu: "_MENU_ Einträge anzeigen"
         zeroRecords: "Keine Einträge vorhanden."
@@ -17,3 +17,19 @@ datatables: # the bundle name
         confirmMsg: "Sind sie sicher?"
         selectError: "Sie müssen mindestens ein Element auswählen."
         ok: "Ok"
+    actions:
+        title: "Aktionen"
+        show: "Anzeigen"
+        new: "Neu"
+        edit: "Ändern"
+        delete: "Löschen"
+        toList: "Zurück zur Übersicht"
+        save: "Speichern"
+    dialog:
+        close: "Schließen"
+daterange:
+    apply: "Übernehmen"
+    cancel: "Löschen"
+    format: "DD.MM.YYYY"
+editable:
+    tableRedraw: "Die Änderung betrifft mehrere Einträge. Die Tabelle wird mit den neuen Daten aktualisiert."

@@ -1,5 +1,9 @@
-<input type="text"
-       class="individual_filtering"
-       style="{% if column.width %} width:{{ column.width }};{% endif %}"
-       placeholder="{{ column.title|striptags|trim }}"
-       {% if column.name %}name="{{ column.name }}"{% endif %} />
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{% extends 'SgDatatablesBundle:Filters:filter.html.twig' %}

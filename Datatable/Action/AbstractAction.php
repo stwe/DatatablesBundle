@@ -9,17 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Sg\DatatablesBundle\Datatable\Column;
+namespace Sg\DatatablesBundle\Datatable\Action;
+
+use Sg\DatatablesBundle\OptionsResolver\OptionsInterface;
+use Sg\DatatablesBundle\Datatable\View\AbstractViewOptions;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\DependencyInjection\Container;
+use Closure;
 
 /**
- * Class Action
+ * Class AbstractAction
  *
- * @package Sg\DatatablesBundle\Datatable\Column
+ * @package Sg\DatatablesBundle\Datatable\Action
  */
-class Action implements OptionsInterface
+abstract class AbstractAction implements ActionInterface, OptionsInterface
 {
     /**
      * Options container.
@@ -78,37 +81,80 @@ class Action implements OptionsInterface
     protected $attributes;
 
     /**
-     * Check the specified role.
+     * Render only if conditions are True.
      *
-     * @var string
-     */
-    protected $role;
-
-    /**
-     * Render only if parameter / conditions are TRUE
-     *
-     * @var array
+     * @var Closure
      */
     protected $renderIf;
 
+    /**
+     * Render only if User has Role.
+     *
+     * @var Closure
+     */
+    protected $renderIfRole;
+
     //-------------------------------------------------
-    // OptionsInterface
+    // Ctor.
+    //-------------------------------------------------
+
+    /**
+     * Ctor.
+     */
+    public function __construct()
+    {
+        $this->options = array();
+    }
+
+    //-------------------------------------------------
+    // ActionInterface
     //-------------------------------------------------
 
     /**
      * {@inheritdoc}
      */
-    public function setupOptionsResolver(array $options)
+    public function setRoute($route)
     {
-        $resolver = new OptionsResolver();
-        $this->configureOptions($resolver);
-
-        $this->options = $resolver->resolve($options);
-
-        $this->setOptions($this->options);
+        $this->route = $route;
 
         return $this;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRoute()
+    {
+        return $this->route;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRenderIfClosure(array $row = array())
+    {
+        if ($this->renderIf instanceof Closure) {
+            return call_user_func($this->renderIf, $row);
+        }
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRenderIfRoleClosure()
+    {
+        if ($this->renderIfRole instanceof Closure) {
+            return call_user_func($this->renderIfRole);
+        }
+
+        return true;
+    }
+
+    //-------------------------------------------------
+    // OptionsInterface
+    //-------------------------------------------------
 
     /**
      * {@inheritdoc}
@@ -124,8 +170,8 @@ class Action implements OptionsInterface
             'confirm' => false,
             'confirm_message' => '',
             'attributes' => array(),
-            'role' => '',
-            'render_if' => array()
+            'render_if' => null,
+            'render_if_role' => null
         ));
 
         $resolver->setAllowedTypes('route', 'string');
@@ -135,28 +181,32 @@ class Action implements OptionsInterface
         $resolver->setAllowedTypes('confirm', 'bool');
         $resolver->setAllowedTypes('confirm_message', 'string');
         $resolver->setAllowedTypes('attributes', 'array');
-        $resolver->setAllowedTypes('role', 'string');
-        $resolver->setAllowedTypes('render_if', 'array');
+        $resolver->setAllowedTypes('render_if', array('Closure', 'null'));
+        $resolver->setAllowedTypes('render_if_role', array('Closure', 'null'));
 
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setOptions(array $options)
-    {
-        $methods = get_class_methods($this);
+    //-------------------------------------------------
+    // OptionsResolver
+    //-------------------------------------------------
 
-        foreach ($options as $key => $value) {
-            $key = Container::camelize($key);
-            $method = 'set' . ucfirst($key);
-            if (in_array($method, $methods)) {
-                $this->$method($value);
-            } else {
-                throw new \Exception('setOptions(): ' . $method . ' invalid method name');
-            }
-        }
+    /**
+     * Setup options resolver.
+     *
+     * @param array $options
+     *
+     * @return $this
+     * @throws \Exception
+     */
+    public function setupOptionsResolver(array $options)
+    {
+        $resolver = new OptionsResolver();
+        $this->configureOptions($resolver);
+
+        $this->options = $resolver->resolve($options);
+
+        AbstractViewOptions::callingSettersWithOptions($this->options, $this);
 
         return $this;
     }
@@ -164,30 +214,6 @@ class Action implements OptionsInterface
     //-------------------------------------------------
     // Getters && Setters
     //-------------------------------------------------
-
-    /**
-     * Set route.
-     *
-     * @param string $route
-     *
-     * @return $this
-     */
-    public function setRoute($route)
-    {
-        $this->route = $route;
-
-        return $this;
-    }
-
-    /**
-     * Get route.
-     *
-     * @return string
-     */
-    public function getRoute()
-    {
-        return $this->route;
-    }
 
     /**
      * Set route parameters.
@@ -334,37 +360,13 @@ class Action implements OptionsInterface
     }
 
     /**
-     * Set role.
-     *
-     * @param string $role
-     *
-     * @return $this
-     */
-    public function setRole($role)
-    {
-        $this->role = $role;
-
-        return $this;
-    }
-
-    /**
-     * Get role.
-     *
-     * @return string
-     */
-    public function getRole()
-    {
-        return $this->role;
-    }
-
-    /**
      * Set renderIf.
      *
-     * @param array $renderIf
+     * @param Closure|null $renderIf
      *
      * @return $this
      */
-    public function setRenderIf(array $renderIf)
+    public function setRenderIf($renderIf)
     {
         $this->renderIf = $renderIf;
 
@@ -374,10 +376,34 @@ class Action implements OptionsInterface
     /**
      * Get renderIf.
      *
-     * @return array
+     * @return Closure|null
      */
     public function getRenderIf()
     {
         return $this->renderIf;
+    }
+
+    /**
+     * Set renderIfRole.
+     *
+     * @param Closure $renderIfRole
+     *
+     * @return $this
+     */
+    public function setRenderIfRole($renderIfRole)
+    {
+        $this->renderIfRole = $renderIfRole;
+
+        return $this;
+    }
+
+    /**
+     * Get renderIfRole.
+     *
+     * @return Closure
+     */
+    public function getRenderIfRole()
+    {
+        return $this->renderIfRole;
     }
 }

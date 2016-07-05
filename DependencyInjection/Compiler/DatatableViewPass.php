@@ -19,6 +19,8 @@ use Symfony\Component\DependencyInjection\Reference;
  * Class DatatableViewPass
  *
  * @package Sg\DatatablesBundle\DependencyInjection\Compiler
+ *
+ * @deprecated since v0.11 (to be removed in v0.12)
  */
 class DatatableViewPass implements CompilerPassInterface
 {
@@ -29,19 +31,17 @@ class DatatableViewPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $taggedServices = $container->findTaggedServiceIds(
-            'sg.datatable.view'
-        );
+        $taggedServices = $container->findTaggedServiceIds('sg.datatable.view');
 
-        foreach ($taggedServices as $id => $tagAttributes) {
+        foreach ($taggedServices as $id => $tags) {
+            @trigger_error("Tagging datatables view services is deprecated since v0.11 and will be removed in v0.12. Use 'sg_datatables.datatable.abstract' as parent service", E_USER_DEPRECATED);
+
             $def = $container->getDefinition($id);
             $def->addArgument(new Reference('security.authorization_checker'));
             $def->addArgument(new Reference('security.token_storage'));
-            $def->addArgument(new Reference('twig'));
             $def->addArgument(new Reference('translator.default'));
             $def->addArgument(new Reference('router'));
             $def->addArgument(new Reference('doctrine.orm.entity_manager'));
-            $def->addArgument('%sg_datatables.default.layout.options%');
         }
     }
 }

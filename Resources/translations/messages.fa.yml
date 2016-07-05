@@ -1,5 +1,5 @@
-datatables: # the bundle name
-    datatable: # jQuery plugin
+datatables:
+    datatable:
         processing: "در حال پردازش..."
         lengthMenu: "نمایش _MENU_ سطر"
         zeroRecords: "هیچ سطری با مشخصات داده شده یافت نشد"
@@ -17,3 +17,19 @@ datatables: # the bundle name
         confirmMsg: "آیا مطمئن هستید؟"
         selectError: "شما می‌بایست حداقل یک سطر را انتخاب کنید."
         ok: "تایید"
+    actions:
+        title: "Actions"
+        show: "Show"
+        new: "New"
+        edit: "Edit"
+        delete: "Delete"
+        toList: "Back to the list"
+        save: "Save"
+    dialog:
+        close: "Close"
+daterange:
+    apply: "Apply"
+    cancel: "Cancel"
+    format: "YYYY-MM-DD"
+editable:
+    tableRedraw: "The changes relates multiple records. The table is redraw with the new data."

@@ -49,6 +49,20 @@ class BooleanColumn extends AbstractColumn
      */
     protected $falseLabel;
 
+    /**
+     * Editable flag.
+     *
+     * @var boolean
+     */
+    protected $editable;
+
+    /**
+     * Role based editing permission.
+     *
+     * @var null|string
+     */
+    protected $editableRole;
+
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -103,14 +117,17 @@ class BooleanColumn extends AbstractColumn
             'type' => '',
             'visible' => true,
             'width' => '',
+            'filter' => array('select', array(
+                'search_type' => 'eq',
+                'select_options' => array('' => 'Any', '1' => 'Yes', '0' => 'No')
+            )),
+            'add_if' => null,
             'true_icon' => '',
             'false_icon' => '',
             'true_label' => '',
             'false_label' => '',
-            'search_type' => 'like',
-            'filter_type' => 'select',
-            'filter_options' => ['' => 'Any', '1' => 'Yes', '0' => 'No'],
-            'filter_property' => ''
+            'editable' => false,
+            'editable_role' => null
         ));
 
         $resolver->setAllowedTypes('class', 'string');
@@ -123,17 +140,14 @@ class BooleanColumn extends AbstractColumn
         $resolver->setAllowedTypes('type', 'string');
         $resolver->setAllowedTypes('visible', 'bool');
         $resolver->setAllowedTypes('width', 'string');
-        $resolver->setAllowedTypes('search_type', 'string');
-        $resolver->setAllowedTypes('filter_type', 'string');
-        $resolver->setAllowedTypes('filter_options', 'array');
-        $resolver->setAllowedTypes('filter_property', 'string');
+        $resolver->setAllowedTypes('filter', 'array');
+        $resolver->setAllowedTypes('add_if', array('Closure', 'null'));
         $resolver->setAllowedTypes('true_icon', 'string');
         $resolver->setAllowedTypes('false_icon', 'string');
         $resolver->setAllowedTypes('true_label', 'string');
         $resolver->setAllowedTypes('false_label', 'string');
-
-        $resolver->setAllowedValues('search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
-        $resolver->setAllowedValues('filter_type', array('text', 'select'));
+        $resolver->setAllowedTypes('editable', 'bool');
+        $resolver->setAllowedTypes('editable_role', array('string', 'null'));
 
         return $this;
     }
@@ -236,5 +250,53 @@ class BooleanColumn extends AbstractColumn
     public function getTrueLabel()
     {
         return $this->trueLabel;
+    }
+
+    /**
+     * Set editable.
+     *
+     * @param boolean $editable
+     *
+     * @return $this
+     */
+    public function setEditable($editable)
+    {
+        $this->editable = $editable;
+
+        return $this;
+    }
+
+    /**
+     * Get editable.
+     *
+     * @return boolean
+     */
+    public function getEditable()
+    {
+        return $this->editable;
+    }
+
+    /**
+     * Set editable role.
+     *
+     * @param null|string $editableRole
+     *
+     * @return $this
+     */
+    public function setEditableRole($editableRole)
+    {
+        $this->editableRole = $editableRole;
+
+        return $this;
+    }
+
+    /**
+     * Get editable role.
+     *
+     * @return null|string
+     */
+    public function getEditableRole()
+    {
+        return $this->editableRole;
     }
 }

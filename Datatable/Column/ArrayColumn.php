@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\Datatable\Action\Action;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 
@@ -21,6 +23,20 @@ use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
  */
 class ArrayColumn extends Column
 {
+    /**
+     * Count array elements.
+     *
+     * @var boolean
+     */
+    protected $count;
+
+    /**
+     * The counter represents a link.
+     *
+     * @var Action
+     */
+    protected $countAction;
+
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -46,6 +62,14 @@ class ArrayColumn extends Column
     /**
      * {@inheritdoc}
      */
+    public function getTemplate()
+    {
+        return 'SgDatatablesBundle:Column:array.html.twig';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAlias()
     {
         return 'array';
@@ -62,9 +86,73 @@ class ArrayColumn extends Column
     {
         parent::configureOptions($resolver);
 
+        $resolver->remove(array('editable'));
+        $resolver->remove(array('editable_role'));
+
         $resolver->setRequired(array('data'));
-        $resolver->addAllowedTypes('data', 'string');
+
+        $resolver->setDefault('count', false);
+        $resolver->setDefault('count_action', array());
+
+        $resolver->setAllowedTypes('data', 'string');
+        $resolver->setAllowedTypes('count', 'bool');
+        $resolver->setAllowedTypes('count_action', 'array');
 
         return $this;
+    }
+
+    //-------------------------------------------------
+    // Getters && Setters
+    //-------------------------------------------------
+
+    /**
+     * Set count.
+     *
+     * @param boolean $count
+     *
+     * @return $this
+     */
+    public function setCount($count)
+    {
+        $this->count = (boolean) $count;
+
+        return $this;
+    }
+
+    /**
+     * Get count.
+     *
+     * @return boolean
+     */
+    public function getCount()
+    {
+        return (boolean) $this->count;
+    }
+
+    /**
+     * Set count action.
+     *
+     * @param array $countAction
+     *
+     * @return $this
+     */
+    public function setCountAction(array $countAction)
+    {
+        if ($countAction) {
+            $this->countAction = new Action();
+            $this->countAction->setupOptionsResolver($countAction);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get count action.
+     *
+     * @return Action
+     */
+    public function getCountAction()
+    {
+        return $this->countAction;
     }
 }

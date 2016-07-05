@@ -1,5 +1,5 @@
-datatables: # the bundle name
-    datatable: # jQuery plugin
+datatables:
+    datatable:
         processing: "Processing..."
         lengthMenu: "Show _MENU_ entries"
         zeroRecords: "No matching records found"
@@ -17,3 +17,19 @@ datatables: # the bundle name
         confirmMsg: "Are you sure?"
         selectError: "You need to select at least one element."
         ok: "Ok"
+    actions:
+        title: "Actions"
+        show: "Show"
+        new: "New"
+        edit: "Edit"
+        delete: "Delete"
+        toList: "Back to the list"
+        save: "Save"
+    dialog:
+        close: "Close"
+daterange:
+    apply: "Apply"
+    cancel: "Cancel"
+    format: "YYYY-MM-DD"
+editable:
+    tableRedraw: "The changes relates multiple records. The table is redraw with the new data."

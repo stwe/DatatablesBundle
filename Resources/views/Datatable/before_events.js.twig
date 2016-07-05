@@ -1,0 +1,40 @@
+{% if (view_events.processing) %}
+    {% if (view_events.processing['vars'] is defined) %}
+        {% set vars = view_events.processing['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('processing.dt', {% include view_events.processing['template'] with vars %})
+{% endif %}
+{% if (view_events.error) %}
+    {% if (view_events.error['vars'] is defined) %}
+        {% set vars = view_events.error['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('error.dt', {% include view_events.error['template'] with vars %})
+{% endif %}
+{% if (view_events.preInit) %}
+    {% if (view_events.preInit['vars'] is defined) %}
+        {% set vars = view_events.preInit['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('preInit.dt', {% include view_events.preInit['template'] with vars %})
+{% endif %}
+{% if (view_events.preXhr) %}
+    {% if (view_events.preXhr['vars'] is defined) %}
+        {% set vars = view_events.preXhr['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('preXhr.dt', {% include view_events.preXhr['template'] with vars %})
+{% endif %}
+{% if (view_events.xhr) %}
+    {% if (view_events.xhr['vars'] is defined) %}
+        {% set vars = view_events.xhr['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('xhr.dt', {% include view_events.xhr['template'] with vars %})
+{% endif %}
