@@ -1,0 +1,247 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+var renderFunctionsAlreadyLoaded = true;
+
+function render_boolean(data, type, row, meta, trueIcon, falseIcon, trueLabel, falseLabel) {
+    if ("" == trueIcon && "" == trueLabel) {
+        trueLabel = "true";
+    }
+
+    if ("" == falseIcon && "" == falseLabel) {
+        falseLabel = "false";
+    }
+
+    if (data == true) {
+        return "<span class='" + trueIcon + "'></span> " + trueLabel;
+    } else {
+        return "<span class='" + falseIcon + "'></span> " + falseLabel;
+    }
+}
+
+function render_datetime(data, type, row, meta, dateFormat) {
+    if (data != null && typeof data.timestamp != "undefined") {
+        moment.locale("{{ app.request.locale }}");
+        return moment.unix(data.timestamp).format(dateFormat);
+    } else {
+        return null;
+    }
+}
+
+function render_timeago(data, type, row, meta) {
+    if (data != null && typeof data.timestamp != "undefined") {
+        moment.locale("{{ app.request.locale }}");
+        return moment.unix(data.timestamp).fromNow();
+    } else {
+        return null;
+    }
+}
+
+function render_progress_bar(data, type, row, meta, barClasses, min, max, label, multi) {
+    if (!data) {
+        return '';
+    }
+
+    var valueNow = 'aria-valuenow="' + data + '"';
+    var valueMin = 'aria-valuemin="' + min + '"';
+    var valueMax = 'aria-valuemax="' + max + '"';
+    var intData = parseInt(data, 10);
+    var size = (intData-min)*100/(max-min);
+    var classNames = 'class="progress-bar ';
+
+    if (true == multi) {
+        if (size <= 35) {
+            classNames += 'progress-bar-success' + '"';
+        }
+        if (size > 35 && size <= 70) {
+            classNames += 'progress-bar-warning' + '"';
+        }
+        if (size > 70) {
+            classNames += 'progress-bar-danger' + '"';
+        }
+    } else {
+        classNames += barClasses + '"';
+    }
+
+    var style = 'style="width:' + size +  '%; color: black;"';
+    var result = '<div class="progress">';
+        result += '<div ' + classNames;
+        result += 'role="progressbar"' + valueNow + ' ' + valueMin + ' ' + valueMax + ' ' + style + '>';
+        if (true == label) {
+            result += data;
+        }
+        result += '</div></div>';
+
+    return result;
+}
+
+function render_editable_text(data, type, row, meta, colData) {
+    if (data != null) {
+        var str = colData.split(".").join("_");
+        var spanClass = "sg-editable-" + str;
+        var result = '<span class="' + spanClass + '"';
+        result += 'data-pk="' + row.id + '"data-type="text"' + '>' + data + '</span>';
+
+        return result;
+    } else {
+        return null;
+    }
+}
+
+function render_editable_datetime(data, type, row, meta, colData, dateFormat) {
+    if (data != null && typeof data.timestamp != "undefined") {
+        moment.locale("{{ app.request.locale }}");
+        var spanClass = "sg-editable-" + colData;
+        var result = '<span class="' + spanClass + '"';
+            result += 'data-pk="' + row.id + '"data-type="combodate"' + '>';
+            result += moment.unix(data.timestamp).format(dateFormat);
+            result += '</span>';
+
+        return result;
+    } else {
+        return null;
+    }
+}
+
+function render_editable_boolean(data, type, row, meta, colData, trueLabel, falseLabel) {
+    if ("" == trueLabel) {
+        trueLabel = "true";
+    }
+
+    if ("" == falseLabel) {
+        falseLabel = "false";
+    }
+
+    var spanClass = "sg-editable-" + colData;
+    var result = '<span class="' + spanClass + '"';
+        result += 'data-pk="' + row.id + '"data-type="select"' + 'data-value="' + data + '"' + '>';
+
+    if (data == true) {
+        result += trueLabel;
+    } else {
+        result += falseLabel;
+    }
+
+    result += '</span>';
+
+    return result;
+}
+
+$.fn.dataTable.pipeline = function ( opts ) {
+
+    // Configuration options
+    var conf = $.extend( {
+        pages: 5,     // number of pages to cache
+        url: '',      // script url
+        data: null,   // function or object with parameters to send to the server
+                      // matching how `ajax.data` works in DataTables
+        method: 'GET' // Ajax HTTP method
+    }, opts );
+
+    // Private variables for storing the cache
+    var cacheLower = -1;
+    var cacheUpper = null;
+    var cacheLastRequest = null;
+    var cacheLastJson = null;
+
+    return function ( request, drawCallback, settings ) {
+        var ajax          = false;
+        var requestStart  = request.start;
+        var drawStart     = request.start;
+        var requestLength = request.length;
+        var requestEnd    = requestStart + requestLength;
+
+        if ( settings.clearCache ) {
+            // API requested that the cache be cleared
+            ajax = true;
+            settings.clearCache = false;
+        }
+        else if ( cacheLower < 0 || requestStart < cacheLower || requestEnd > cacheUpper ) {
+            // outside cached data - need to make a request
+            ajax = true;
+        }
+        else if ( JSON.stringify( request.order )   !== JSON.stringify( cacheLastRequest.order ) ||
+                JSON.stringify( request.columns ) !== JSON.stringify( cacheLastRequest.columns ) ||
+                JSON.stringify( request.search )  !== JSON.stringify( cacheLastRequest.search )
+        ) {
+            // properties changed (ordering, columns, searching)
+            ajax = true;
+        }
+
+        // Store the request for checking next time around
+        cacheLastRequest = $.extend( true, {}, request );
+
+        if ( ajax ) {
+            // Need data from the server
+            if ( requestStart < cacheLower ) {
+                requestStart = requestStart - (requestLength*(conf.pages-1));
+
+                if ( requestStart < 0 ) {
+                    requestStart = 0;
+                }
+            }
+
+            cacheLower = requestStart;
+            cacheUpper = requestStart + (requestLength * conf.pages);
+
+            request.start = requestStart;
+            request.length = requestLength*conf.pages;
+
+            // Provide the same `data` options as DataTables.
+            if ( $.isFunction ( conf.data ) ) {
+                // As a function it is executed with the data object as an arg
+                // for manipulation. If an object is returned, it is used as the
+                // data object to submit
+                var d = conf.data( request );
+                if ( d ) {
+                    $.extend( request, d );
+                }
+            }
+            else if ( $.isPlainObject( conf.data ) ) {
+                // As an object, the data given extends the default
+                $.extend( request, conf.data );
+            }
+
+            settings.jqXHR = $.ajax( {
+                "type":     conf.method,
+                "url":      conf.url,
+                "data":     request,
+                "dataType": "json",
+                "cache":    false,
+                "success":  function ( json ) {
+                    cacheLastJson = $.extend(true, {}, json);
+
+                    if ( cacheLower != drawStart ) {
+                        json.data.splice( 0, drawStart-cacheLower );
+                    }
+                    if ( requestLength >= -1 ) {
+                        json.data.splice( requestLength, json.data.length );
+                    }
+
+                    drawCallback( json );
+                }
+            } );
+        }
+        else {
+            json = $.extend( true, {}, cacheLastJson );
+            json.draw = request.draw; // Update the echo for each response
+            json.data.splice( 0, requestStart-cacheLower );
+            json.data.splice( requestLength, json.data.length );
+
+            drawCallback(json);
+        }
+    }
+};
+
+// Register an API method that will empty the pipelined data, forcing an Ajax
+// fetch on the next draw (i.e. `table.clearPipeline().draw()`)
+$.fn.dataTable.Api.register( 'clearPipeline()', function () {
+    return this.iterator( 'table', function ( settings ) {
+        settings.clearCache = true;
+    } );
+} );

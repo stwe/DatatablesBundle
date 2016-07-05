@@ -747,9 +747,14 @@ class DatatableQuery
 
         $outputHeader = array(
             'draw' => (int) $this->requestParams['draw'],
-            'recordsTotal' => (int) $this->getCountAllResults($this->rootEntityIdentifier),
-            'recordsFiltered' => (int) $this->getCountFilteredResults($this->rootEntityIdentifier, $buildQuery)
+            'recordsTotal' => (int) $this->getCountAllResults($this->rootEntityIdentifier)
         );
+
+        if ($this->getQuery()->getDQLPart('where') === null) {
+            $outputHeader['recordsFiltered'] = $outputHeader['recordsTotal'];
+        } else {
+            $outputHeader['recordsFiltered'] = (int) $this->getCountFilteredResults($this->rootEntityIdentifier, $buildQuery);
+        }
 
         $json = $this->serializer->serialize(array_merge($outputHeader, $output), 'json');
         $response = new Response($json);
