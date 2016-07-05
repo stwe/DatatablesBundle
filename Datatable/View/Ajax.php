@@ -50,6 +50,15 @@ class Ajax
      */
     protected $type;
 
+    /**
+     * Use Datatables' Pipeline.
+     *
+     * @see https://datatables.net/examples/server_side/pipeline.html
+     *
+     * @var int number of pages to cache. Set to zero to disable feature
+     */
+    protected $pipeline;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -95,11 +104,13 @@ class Ajax
     {
         $resolver->setDefaults(array(
             'url' => '',
-            'type' => 'GET'
+            'type' => 'GET',
+            'pipeline' => 0
         ));
 
         $resolver->setAllowedTypes('url', 'string');
         $resolver->setAllowedTypes('type', 'string');
+        $resolver->setAllowedTypes('pipeline', 'int');
 
         $resolver->setAllowedValues('type', array('GET', 'POST', 'get', 'post'));
 
@@ -181,5 +192,21 @@ class Ajax
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPipeline()
+    {
+        return $this->pipeline;
+    }
+
+    /**
+     * @param int $pipeline
+     */
+    public function setPipeline($pipeline)
+    {
+        $this->pipeline = $pipeline;
     }
 }

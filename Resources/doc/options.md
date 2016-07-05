@@ -16,7 +16,8 @@
 
         $this->ajax->setOptions(array(
             'url' => $this->getRouter()->generate('post_results'),
-            'type' => 'GET' // default
+            'type' => 'GET', // default
+            'pipeline' => 10
         ));
 
         $this->options->setOptions(array(
@@ -96,7 +97,8 @@
 
 # Ajax options
 
-| Option | Type   | Default |
-|------  |--------|---------|
-| url    | string | ''      |
-| type   | string | 'GET'   |
+| Option   | Type   | Default |
+|----------|--------|---------|
+| url      | string | ''      |
+| type     | string | 'GET'   |
+| pipeline | int    | 0       |
