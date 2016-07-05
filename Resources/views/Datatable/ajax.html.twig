@@ -8,11 +8,11 @@
  #}
 {% if view_features.serverSide %}
     "serverSide": true,
-    {% if view_ajax.serverSidePipeline > 0 %}
-    "ajax": $.fn.dataTable.pipeline( {
+    {% if view_ajax.pipeline > 0 %}
+    "ajax": $.fn.dataTable.pipeline({
         "url": "{{ view_ajax.url|raw }}",
         "method": "{{ view_ajax.type }}",
-        "pages": {{ view_features.serverSidePipeline }}
+        "pages": {{ view_ajax.pipeline }}
     }),
     {% else %}
     "ajax": {
