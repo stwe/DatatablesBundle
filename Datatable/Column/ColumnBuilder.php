@@ -74,15 +74,14 @@ class ColumnBuilder implements ColumnBuilderInterface
      */
     public function add($data, $alias, array $options = array())
     {
-        /**
-         * @var AbstractColumn $column
-         */
-         
         // Support embeddables forcing the two backslashes in the column name
         if (strpos($data, '\\') !== false) {
             $data = str_replace('\\', '\\\\', $data);
         }
-         
+
+        /**
+         * @var AbstractColumn $column
+         */
         $column = ColumnFactory::createColumnByAlias($alias);
         $column->setTableName($this->tableName);
         $column->setData($data);

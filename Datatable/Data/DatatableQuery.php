@@ -776,7 +776,7 @@ class DatatableQuery
             $outputHeader['recordsFiltered'] = $outputHeader['recordsTotal'];
             
         } else {
-            $outputHeader['recordsFiltered'] =  (int) $this->getCountFilteredResults($this->rootEntityIdentifier);
+            $outputHeader['recordsFiltered'] = (int) $this->getCountFilteredResults($this->rootEntityIdentifier, $buildQuery);
         }
 
         $fullOutput = array_merge($outputHeader, $formatter->getOutput());
