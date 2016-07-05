@@ -158,6 +158,13 @@ class Options extends AbstractViewOptions
      */
     protected $forceDom;
 
+    /**
+     * Load table on $(document).ready().
+     *
+     * @var boolean
+     */
+    protected $loadOnDocumentReady;
+
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -203,7 +210,8 @@ class Options extends AbstractViewOptions
             'individual_filtering' => false,
             'individual_filtering_position' => 'head',
             'use_integration_options' => false,
-            'force_dom' => false
+            'force_dom' => false,
+            'load_on_document_ready' => true
         ));
 
         $resolver->setAllowedTypes('display_start', 'int');
@@ -225,6 +233,7 @@ class Options extends AbstractViewOptions
         $resolver->setAllowedTypes('individual_filtering_position', 'string');
         $resolver->setAllowedTypes('use_integration_options', 'bool');
         $resolver->setAllowedTypes('force_dom', 'bool');
+        $resolver->setAllowedTypes('load_on_document_ready', 'bool');
 
         $resolver->setAllowedValues('individual_filtering_position', array('head', 'foot', 'both'));
 
@@ -700,5 +709,21 @@ class Options extends AbstractViewOptions
     public function getForceDom()
     {
         return $this->forceDom;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isLoadOnDocumentReady()
+    {
+        return $this->loadOnDocumentReady;
+    }
+
+    /**
+     * @param boolean $loadOnDocumentReady
+     */
+    public function setLoadOnDocumentReady($loadOnDocumentReady)
+    {
+        $this->loadOnDocumentReady = $loadOnDocumentReady;
     }
 }
