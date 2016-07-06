@@ -772,9 +772,8 @@ class DatatableQuery
             'recordsTotal' => (int) $this->getCountAllResults($this->rootEntityIdentifier)
         );
 
-        if ($this->getQuery()->getDQLPart('where') === null) {
+        if (empty($this->callbacks['WhereResult'])) {
             $outputHeader['recordsFiltered'] = $outputHeader['recordsTotal'];
-            
         } else {
             $outputHeader['recordsFiltered'] = (int) $this->getCountFilteredResults($this->rootEntityIdentifier, $buildQuery);
         }
