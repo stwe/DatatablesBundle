@@ -769,15 +769,9 @@ class DatatableQuery
 
         $outputHeader = array(
             'draw' => (int) $this->requestParams['draw'],
-            'recordsTotal' => (int) $this->getCountAllResults($this->rootEntityIdentifier)
+            'recordsTotal' => (int) $this->getCountAllResults($this->rootEntityIdentifier),
+            'recordsFiltered' => (int) $this->getCountFilteredResults($this->rootEntityIdentifier, $buildQuery)
         );
-
-        if ($this->getQuery()->getDQLPart('where') === null) {
-            $outputHeader['recordsFiltered'] = $outputHeader['recordsTotal'];
-            
-        } else {
-            $outputHeader['recordsFiltered'] = (int) $this->getCountFilteredResults($this->rootEntityIdentifier, $buildQuery);
-        }
 
         $fullOutput = array_merge($outputHeader, $formatter->getOutput());
         $fullOutput = $this->applyResponseCallbacks($fullOutput);
