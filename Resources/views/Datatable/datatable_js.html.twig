@@ -69,6 +69,9 @@
                 .DataTable(defaults)
                         .on('draw.dt', function() {
                             {% include "SgDatatablesBundle:Datatable:editable.html.twig" %}
+                            {% if true == view_features.highlight %}
+                                {% include "SgDatatablesBundle:Datatable:highlight.js.twig" %}
+                            {% endif %}
                         })
                         {% include "SgDatatablesBundle:Datatable:after_events.js.twig" %}
                         {% if view_features.extensions.responsive is defined %}
@@ -110,13 +113,13 @@
                         }
 
                         oTable
-                                .column($(this).parent().index() + ':visible')
+                                .column($(event.currentTarget).data('filter-property-id'))
                                 .search(this.value)
                                 .draw();
                     },
                     options.searchDelay
                 );
-                
+
                 $(selector + "_wrapper").find("tr input.individual_filtering").on("keyup change", throttledSearch);
 
                 $(selector + "_wrapper" + " select.individual_filtering").on("keyup change", function(event) {
@@ -143,7 +146,9 @@
 {% block sg_datatable_render_functions %}
 
     <script type="text/javascript">
-    {% include "SgDatatablesBundle:Datatable:render_functions.js.twig" %}
+        if (typeof window.renderFunctionsAlreadyLoaded == 'undefined') {
+            {% include "SgDatatablesBundle:Datatable:render_functions.js.twig" %}
+        }
     </script>
 
 {% endblock %}
