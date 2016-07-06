@@ -10,6 +10,15 @@
 
 ## Recent Changes
 
+### Pipelining to reduce Ajax calls
+
+```
+$this->ajax->set(array(
+    'url' => $this->router->generate('chili_private_results'),
+    'pipeline' => 6
+));
+```
+
 ### Search result highlighting.
 
 1. Include the [jQuery Highlight Plugin](http://bartaz.github.io/sandbox.js/jquery.highlight.html)
