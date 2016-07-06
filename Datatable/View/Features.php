@@ -45,7 +45,7 @@ class Features extends AbstractViewOptions
      * Use markup and classes for the table to be themed by jQuery UI ThemeRoller.
      *
      * @var boolean
-     * @deprecated in DataTables 1.10 will be removed in 1.11
+     * @deprecated since DataTables 1.10 (to be removed in DataTables 1.11)
      */
     protected $jQueryUi;
 
@@ -102,6 +102,7 @@ class Features extends AbstractViewOptions
      * Feature control DataTables server-side processing mode.
      *
      * @var boolean
+     * @deprecated since v0.11 (to be removed in v0.12)
      */
     protected $serverSide;
 
@@ -125,6 +126,20 @@ class Features extends AbstractViewOptions
      * @var array
      */
     protected $extensions;
+
+    /**
+     * Search result highlighting.
+     *
+     * @var boolean
+     */
+    protected $highlight;
+
+    /**
+     * Search result highlighting color.
+     *
+     * @var string
+     */
+    protected $highlightColor;
 
     //-------------------------------------------------
     // OptionsInterface
@@ -150,7 +165,9 @@ class Features extends AbstractViewOptions
             'server_side' => true,
             'state_save' => false,
             'delay' => 0,
-            'extensions' => array()
+            'extensions' => array(),
+            'highlight' => false,
+            'highlight_color' => 'red'
         ));
 
         $resolver->setAllowedTypes('auto_width', 'bool');
@@ -168,6 +185,8 @@ class Features extends AbstractViewOptions
         $resolver->setAllowedTypes('state_save', 'bool');
         $resolver->setAllowedTypes('delay', 'int');
         $resolver->setAllowedTypes('extensions', 'array');
+        $resolver->setAllowedTypes('highlight', 'bool');
+        $resolver->setAllowedTypes('highlight_color', 'string');
 
         return $this;
     }
@@ -448,6 +467,7 @@ class Features extends AbstractViewOptions
      * @param boolean $serverSide
      *
      * @return $this
+     * @deprecated since v0.11 (to be removed in v0.12)
      */
     protected function setServerSide($serverSide)
     {
@@ -460,6 +480,7 @@ class Features extends AbstractViewOptions
      * Get ServerSide.
      *
      * @return boolean
+     * @deprecated since v0.11 (to be removed in v0.12)
      */
     public function getServerSide()
     {
@@ -536,5 +557,53 @@ class Features extends AbstractViewOptions
     public function getExtensions()
     {
         return $this->extensions;
+    }
+
+    /**
+     * Set highlight.
+     *
+     * @param boolean $highlight
+     *
+     * @return $this
+     */
+    public function setHighlight($highlight)
+    {
+        $this->highlight = $highlight;
+
+        return $this;
+    }
+
+    /**
+     * Get highlight.
+     *
+     * @return boolean
+     */
+    public function getHighlight()
+    {
+        return $this->highlight;
+    }
+
+    /**
+     * Set highlight color.
+     *
+     * @param string $highlightColor
+     *
+     * @return $this
+     */
+    public function setHighlightColor($highlightColor)
+    {
+        $this->highlightColor = $highlightColor;
+
+        return $this;
+    }
+
+    /**
+     * Get highlight color.
+     *
+     * @return string
+     */
+    public function getHighlightColor()
+    {
+        return $this->highlightColor;
     }
 }
