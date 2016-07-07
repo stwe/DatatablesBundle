@@ -753,6 +753,7 @@ class DatatableQuery
      * Get response.
      *
      * @param bool $buildQuery
+     * @param bool $outputWalkers
      *
      * @return Response
      * @throws Exception

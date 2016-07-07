@@ -40,10 +40,14 @@
                     return params;
                 },
                 container: 'body',
-                {# many-to-one associations and the Responsive-extension need a complete table redraw #}
-                {% if column.isAssociation or view_features.extensions.responsive is defined and true == view_features.extensions.responsive %}
+                {# many-to-one associations, Pipelining and the Responsive-extension need a complete table redraw #}
+                {% if view_ajax.pipeline or column.isAssociation or view_features.extensions.responsive is defined and true == view_features.extensions.responsive %}
                 success: function(response, newValue) {
-                    oTable.draw();
+                    {% if true == view_ajax.pipeline %}
+                        oTable.clearPipeline().draw();
+                    {% else %}
+                        oTable.draw();
+                    {% endif %}
                     {% if column.isAssociation %}
                         alert("{{ 'editable.tableRedraw'|trans({}, 'messages') }}");
                     {% endif %}
