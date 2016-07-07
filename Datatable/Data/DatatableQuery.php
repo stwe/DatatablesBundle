@@ -757,12 +757,12 @@ class DatatableQuery
      * @return Response
      * @throws Exception
      */
-    public function getResponse($buildQuery = true)
+    public function getResponse($buildQuery = true, $outputWalkers = false)
     {
         false === $buildQuery ? : $this->buildQuery();
 
         $this->paginator = new Paginator($this->execute(), true);
-        $this->paginator->setUseOutputWalkers(false);
+        $this->paginator->setUseOutputWalkers($outputWalkers);
 
         $formatter = new DatatableFormatter($this);
         $formatter->runFormatter();
