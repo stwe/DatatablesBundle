@@ -1,9 +1,11 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-        {% if view_ajax.pipeline > 0 %}
-            {% include "SgDatatablesBundle:Datatable:pipeline.js.twig" %}
-        {% endif %}
+        if (typeof window.pipelineFunctionAlreadyLoaded == 'undefined') {
+            {% if view_ajax.pipeline > 0 %}
+               {% include "SgDatatablesBundle:Datatable:pipeline.js.twig" %}
+            {% endif %}
+        }
 
         var selector = "#{{ view_table_id }}";
 
