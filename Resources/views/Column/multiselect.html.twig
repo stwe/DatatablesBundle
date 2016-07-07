@@ -59,11 +59,13 @@
 
         {# return html #}
         output += startHtml;
-        output += "<input type='checkbox' value='";
-        output += first;
-        output += "'";
-        output += attributes;
-        output += "/>"
+        if (true == row.sg_datatables_cbox) {
+            output += "<input type='checkbox' value='";
+            output += first;
+            output += "'";
+            output += attributes;
+            output += "/>"
+        }
         output += endHtml;
 
         return output;

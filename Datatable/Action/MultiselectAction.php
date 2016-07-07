@@ -12,7 +12,6 @@
 namespace Sg\DatatablesBundle\Datatable\Action;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Closure;
 
 /**
  * Class MultiselectAction
@@ -21,14 +20,6 @@ use Closure;
  */
 class MultiselectAction extends Action
 {
-    /**
-     * Render checkbox only if conditions are True.
-     * @todo: implement (need access to $row)
-     *
-     * @var Closure
-     */
-    protected $renderCheckboxIf;
-
     /**
      * Name of datatable view.
      *
@@ -50,12 +41,6 @@ class MultiselectAction extends Action
         // @todo: implement (need access to $row)
         $resolver->remove(array('render_if'));
 
-        $resolver->setDefaults(array(
-            'render_checkbox_if' => null
-        ));
-
-        $resolver->setAllowedTypes('render_checkbox_if', array('Closure', 'null'));
-
         $tableName = $this->tableName;
         $resolver->setNormalizer('attributes', function($options, $value) use($tableName) {
             $baseClass = $tableName . '_multiselect_action_click';
@@ -70,30 +55,6 @@ class MultiselectAction extends Action
     //-------------------------------------------------
     // Getters && Setters
     //-------------------------------------------------
-
-    /**
-     * Set renderCheckboxIf.
-     *
-     * @param Closure $renderCheckboxIf
-     *
-     * @return $this
-     */
-    public function setRenderCheckboxIf($renderCheckboxIf)
-    {
-        $this->renderCheckboxIf = $renderCheckboxIf;
-
-        return $this;
-    }
-
-    /**
-     * Get renderCheckboxIf.
-     *
-     * @return Closure
-     */
-    public function getRenderCheckboxIf()
-    {
-        return $this->renderCheckboxIf;
-    }
 
     /**
      * Set table name.

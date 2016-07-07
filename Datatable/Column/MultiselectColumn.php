@@ -15,6 +15,7 @@ use Sg\DatatablesBundle\Datatable\Action\MultiselectAction;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
+use Closure;
 
 /**
  * Class MultiselectColumn
@@ -37,6 +38,13 @@ class MultiselectColumn extends ActionColumn
      */
     protected $value;
 
+    /**
+     * Render checkbox only if conditions are True.
+     *
+     * @var Closure
+     */
+    protected $renderCheckboxIf;
+
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -47,6 +55,14 @@ class MultiselectColumn extends ActionColumn
     public function getTemplate()
     {
         return 'SgDatatablesBundle:Column:multiselect.html.twig';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addDataToOutputArray(&$row)
+    {
+        $row['sg_datatables_cbox'] = $this->checkAddCheckbox($row);
     }
 
     /**
@@ -71,12 +87,34 @@ class MultiselectColumn extends ActionColumn
         $resolver->setDefaults(array(
             'attributes' => array(),
             'value' => 'id',
+            'render_checkbox_if' => null
         ));
 
         $resolver->setAllowedTypes('attributes', 'array');
         $resolver->setAllowedTypes('value', 'string');
+        $resolver->setAllowedTypes('render_checkbox_if', array('Closure', 'null'));
 
         return $this;
+    }
+
+    //-------------------------------------------------
+    // Helper
+    //-------------------------------------------------
+
+    /**
+     * Check add checkbox.
+     *
+     * @param array $row
+     *
+     * @return boolean
+     */
+    public function checkAddCheckbox(array $row)
+    {
+        if ($this->renderCheckboxIf instanceof Closure) {
+            return call_user_func($this->renderCheckboxIf, $row);
+        }
+
+        return true;
     }
 
     //-------------------------------------------------
@@ -165,5 +203,29 @@ class MultiselectColumn extends ActionColumn
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * Set renderCheckboxIf.
+     *
+     * @param Closure $renderCheckboxIf
+     *
+     * @return $this
+     */
+    public function setRenderCheckboxIf($renderCheckboxIf)
+    {
+        $this->renderCheckboxIf = $renderCheckboxIf;
+
+        return $this;
+    }
+
+    /**
+     * Get renderCheckboxIf.
+     *
+     * @return Closure
+     */
+    public function getRenderCheckboxIf()
+    {
+        return $this->renderCheckboxIf;
     }
 }
