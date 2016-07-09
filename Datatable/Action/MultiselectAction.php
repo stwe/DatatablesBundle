@@ -38,9 +38,6 @@ class MultiselectAction extends Action
     {
         parent::configureOptions($resolver);
 
-        // @todo: implement (need access to $row)
-        $resolver->remove(array('render_if'));
-
         $tableName = $this->tableName;
         $resolver->setNormalizer('attributes', function($options, $value) use($tableName) {
             $baseClass = $tableName . '_multiselect_action_click';

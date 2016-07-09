@@ -22,7 +22,7 @@
                     'route' => $this->router->generate('post_new'),
                     'label' => $this->translator->trans('datatables.actions.new'),
                     'icon' => 'glyphicon glyphicon-plus',
-                    'render_if_role' => function() {
+                    'render_if' => function() {
                         return ($this->authorizationChecker->isGranted('ROLE_ADMIN'));
                     },
                     'attributes' => array(
@@ -94,7 +94,7 @@
 | confirm          | boolean     | false                        |          |
 | confirm_message  | string      | 'datatables.bulk.confirmMsg' |          |
 | attributes       | array       | array()                      |          |
-| render_if_role   | Closure     | null                         |          |
+| render_if        | Closure     | null                         |          |
 
 ## 3. Callbacks
 

@@ -9,7 +9,7 @@
 {% set multiple_actions %}
     <div>
         {% for action in column.actions %}
-            {% if action.isRenderIfRoleClosure %}
+            {% if action.isRenderIfClosure %}
                 {% set route = action.route ? path(action.route, action.routeParameters) : '' %}
                 {% set attributes %}
                     {% for key, value in action.attributes %} {{ key }}='{{ value }}'{% endfor %}

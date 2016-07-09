@@ -31,7 +31,7 @@ class ArrayColumn extends Column
     protected $count;
 
     /**
-     * The counter represents a link.
+     * The counter is a link.
      *
      * @var Action
      */
@@ -65,6 +65,21 @@ class ArrayColumn extends Column
     public function getTemplate()
     {
         return 'SgDatatablesBundle:Column:array.html.twig';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addDataToOutputArray(&$row)
+    {
+        $actionRowItem = array();
+
+        if (!empty($this->countAction)) {
+            $actionRowItem[$this->countAction->getRoute()] = $this->countAction->isRenderIfClosure($row);
+            $row['sg_datatables_actions'][$this->getIndex()] = $actionRowItem;
+        } else {
+            return null;
+        }
     }
 
     /**

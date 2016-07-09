@@ -112,17 +112,16 @@ SgDatatablesBundle:Column:array.html.twig
 
 ### Count Action options
 
-| Option           | Type             | Default                      |          |
-|------------------|------------------|------------------------------|----------|
-| route            | string           |                              | required |
-| route_parameters | array            | array()                      |          |
-| icon             | string           | ''                           |          |
-| label            | string           | ''                           |          |
-| confirm          | boolean          | false                        |          |
-| confirm_message  | string           | 'datatables.bulk.confirmMsg' |          |
-| attributes       | array            | array()                      |          |
-| role             | string           | ''                           |          |
-| render_if        | Closure or array | array()                      |          |
+| Option           | Type    | Default                      |          |
+|------------------|---------|------------------------------|----------|
+| route            | string  |                              | required |
+| route_parameters | array   | array()                      |          |
+| icon             | string  | ''                           |          |
+| label            | string  | ''                           |          |
+| confirm          | boolean | false                        |          |
+| confirm_message  | string  | 'datatables.bulk.confirmMsg' |          |
+| attributes       | array   | array()                      |          |
+| render_if        | Closure | null                         |          |
 
 ### Example
 
@@ -342,7 +341,6 @@ SgDatatablesBundle:Column:action.html.twig
 | confirm          | boolean | false                        |          |
 | confirm_message  | string  | 'datatables.bulk.confirmMsg' |          |
 | attributes       | array   | array()                      |          |
-| render_if_role   | Closure | null                         |          |
 | render_if        | Closure | null                         |          |
 
 ### Example
@@ -371,11 +369,11 @@ $this->columnBuilder
                 ),
                 'confirm' => true,
                 'confirm_message' => 'Are you sure?',
-                'render_if_role' => function() {
-                    return ($this->authorizationChecker->isGranted('ROLE_ADMIN'));
-                },
                 'render_if' => function($row) {
-                    return ($row['title'] === 'Title 1');
+                    return (
+                        $this->authorizationChecker->isGranted('ROLE_ADMIN') &&
+                        $row['title'] === 'Title 1'
+                    );
                 },
             ),
             array(
@@ -405,35 +403,35 @@ SgDatatablesBundle:Column:multiselect.html.twig
 
 ### Options
 
-| Option     | Type        | Default |          |
-|------------|-------------|---------|----------|
-| class      | string      | ''      |          |
-| padding    | string      | ''      |          |
-| name       | string      | ''      |          |
-| title      | string      | ''      |          |
-| type       | string      | ''      |          |
-| visible    | boolean     | true    |          |
-| width      | string      | ''      |          |
-| start_html | string      | ''      |          |
-| end_html   | string      | ''      |          |
-| add_if     | Closure     | null    |          |
-| actions    | array       |         | required |
-| attributes | array       | array() |          |
-| value      | string      | 'id'    |          |
+| Option             | Type        | Default |          |
+|--------------------|-------------|---------|----------|
+| class              | string      | ''      |          |
+| padding            | string      | ''      |          |
+| name               | string      | ''      |          |
+| title              | string      | ''      |          |
+| type               | string      | ''      |          |
+| visible            | boolean     | true    |          |
+| width              | string      | ''      |          |
+| start_html         | string      | ''      |          |
+| end_html           | string      | ''      |          |
+| add_if             | Closure     | null    |          |
+| actions            | array       |         | required |
+| attributes         | array       | array() |          |
+| value              | string      | 'id'    |          |
+| render_checkbox_if | Closure     | null    |          |
 
 ### Multiselect-Action options
 
-| Option             | Type    | Default                      |          |
-|--------------------|---------|------------------------------|----------|
-| route              | string  |                              | required |
-| route_parameters   | array   | array()                      |          |
-| icon               | string  | ''                           |          |
-| label              | string  | ''                           |          |
-| confirm            | boolean | false                        |          |
-| confirm_message    | string  | 'datatables.bulk.confirmMsg' |          |
-| attributes         | array   | array()                      |          |
-| render_if_role     | Closure | null                         |          |
-| render_checkbox_if | Closure | null                         |          |
+| Option           | Type    | Default                      |          |
+|------------------|---------|------------------------------|----------|
+| route            | string  |                              | required |
+| route_parameters | array   | array()                      |          |
+| icon             | string  | ''                           |          |
+| label            | string  | ''                           |          |
+| confirm          | boolean | false                        |          |
+| confirm_message  | string  | 'datatables.bulk.confirmMsg' |          |
+| attributes       | array   | array()                      |          |
+| render_if        | Closure | null                         |          |
 
 ### Example
 
@@ -451,11 +449,14 @@ $this->getColumnBuilder()
         'add_if' => function() {
             return ($this->authorizationChecker->isGranted('ROLE_ADMIN'));
         },
+        'render_checkbox_if' => function($row) {
+            return ($row['public'] == true);
+        },
         'actions' => array(
             array(
                 'route' => 'post_bulk_delete',
                 'label' => 'Delete',
-                'render_if_role' => function() {
+                'render_if' => function() {
                     return ($this->authorizationChecker->isGranted('ROLE_ADMIN'));
                 },
                 'icon' => 'fa fa-times',

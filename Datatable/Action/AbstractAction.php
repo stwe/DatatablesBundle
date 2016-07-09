@@ -87,13 +87,6 @@ abstract class AbstractAction implements ActionInterface, OptionsInterface
      */
     protected $renderIf;
 
-    /**
-     * Render only if User has Role.
-     *
-     * @var Closure
-     */
-    protected $renderIfRole;
-
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -140,18 +133,6 @@ abstract class AbstractAction implements ActionInterface, OptionsInterface
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isRenderIfRoleClosure()
-    {
-        if ($this->renderIfRole instanceof Closure) {
-            return call_user_func($this->renderIfRole);
-        }
-
-        return true;
-    }
-
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -170,8 +151,7 @@ abstract class AbstractAction implements ActionInterface, OptionsInterface
             'confirm' => false,
             'confirm_message' => '',
             'attributes' => array(),
-            'render_if' => null,
-            'render_if_role' => null
+            'render_if' => null
         ));
 
         $resolver->setAllowedTypes('route', 'string');
@@ -182,7 +162,6 @@ abstract class AbstractAction implements ActionInterface, OptionsInterface
         $resolver->setAllowedTypes('confirm_message', 'string');
         $resolver->setAllowedTypes('attributes', 'array');
         $resolver->setAllowedTypes('render_if', array('Closure', 'null'));
-        $resolver->setAllowedTypes('render_if_role', array('Closure', 'null'));
 
         return $this;
     }
@@ -381,29 +360,5 @@ abstract class AbstractAction implements ActionInterface, OptionsInterface
     public function getRenderIf()
     {
         return $this->renderIf;
-    }
-
-    /**
-     * Set renderIfRole.
-     *
-     * @param Closure $renderIfRole
-     *
-     * @return $this
-     */
-    public function setRenderIfRole($renderIfRole)
-    {
-        $this->renderIfRole = $renderIfRole;
-
-        return $this;
-    }
-
-    /**
-     * Get renderIfRole.
-     *
-     * @return Closure
-     */
-    public function getRenderIfRole()
-    {
-        return $this->renderIfRole;
     }
 }

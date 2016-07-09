@@ -11,7 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable\View;
 
-use Sg\DatatablesBundle\Datatable\Action\TopAction;
+use Sg\DatatablesBundle\Datatable\Action\Action;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Closure;
@@ -175,7 +175,7 @@ class TopActions extends AbstractViewOptions
     protected function setActions(array $actions)
     {
         foreach ($actions as $action) {
-            $newAction = new TopAction();
+            $newAction = new Action();
             $this->actions[] = $newAction->setupOptionsResolver($action);
         }
 
@@ -201,7 +201,7 @@ class TopActions extends AbstractViewOptions
      *
      * @return boolean
      */
-    public function checkAddActionBar()
+    public function isAddIfClosure()
     {
         if ($this->addIf instanceof Closure) {
             return call_user_func($this->addIf);

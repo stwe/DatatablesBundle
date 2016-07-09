@@ -85,7 +85,7 @@ class ActionColumn extends AbstractColumn
             $actionRowItems[$action->getRoute()] = $action->isRenderIfClosure($row);
         }
 
-        $row['actions'][$this->getIndex()] = $actionRowItems;
+        $row['sg_datatables_actions'][$this->getIndex()] = $actionRowItems;
     }
 
     /**

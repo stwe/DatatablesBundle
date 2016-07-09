@@ -8,13 +8,8 @@
  #}
 routeParameters = new Array();
 attributes = "";
-role = true;
 
-{% if (false == action.isRenderIfRoleClosure) %}
-    role = false;
-{% endif %}
-
-if (row.actions[{{ column.index }}]["{{ action.route }}"] && true == role) {
+if (true == row.sg_datatables_actions[{{ column.index }}]["{{ action.route }}"]) {
     {% for key, value in action.routeParameters %}
         routeParameters["{{ key }}"] = row.{{ value }};
     {% endfor %}

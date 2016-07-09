@@ -42,11 +42,4 @@ interface ActionInterface
      * @return boolean
      */
     public function isRenderIfClosure(array $row = array());
-
-    /**
-     * Checks whether the Action is visible.
-     *
-     * @return boolean
-     */
-    public function isRenderIfRoleClosure();
 }

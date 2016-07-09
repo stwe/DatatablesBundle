@@ -88,7 +88,7 @@ class ColumnBuilder implements ColumnBuilderInterface
         $column->setDql($data);
         $column->setupOptionsResolver($options);
 
-        $addColumn = $column->checkAddColumn();
+        $addColumn = $column->isAddIfClosure();
 
         if (true === $addColumn) {
             $column->setIndex(count($this->columns));

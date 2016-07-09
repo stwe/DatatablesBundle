@@ -208,7 +208,7 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     /**
      * {@inheritdoc}
      */
-    public function checkAddColumn()
+    public function isAddIfClosure()
     {
         if ($this->addIf instanceof Closure) {
             return call_user_func($this->addIf);

@@ -67,8 +67,6 @@ $this->topActions->set(array(
 
 ### Render Actions
 
-#### Action Column
-
 **before**
 
 ```
@@ -96,48 +94,27 @@ $this->topActions->set(array(
             'id' => 'id'
         ),
         'render_if' => function($row) {
-            return ($row['user']['username'] == $this->getUser()->getUsername());
-        },
-        'render_if_role' => function() {
-            return ($this->authorizationChecker->isGranted('ROLE_USER'));
-        },
-        // or only with render_if
-        /*
-        'render_if' => function($row) {
             return (
                 $this->authorizationChecker->isGranted('ROLE_USER') &&
                 $row['user']['username'] == $this->getUser()->getUsername()
             );
         },
-        */
     ),
     // ...
 ```
 
-#### Top Action && Multiselect Action Column
-
-**before**
+### Multiselect: render checkboxes only if conditions are True
 
 ```
-'actions' => array(
-    array(
-        'route' => 'post_new',
-        'role' => 'ROLE_ADMIN',
-    ),
-```
-
-**after**
-
-```
-'actions' => array(
-    array(
-        'route' => 'post_new',
-        'render_if_role' => function() {
-            return ($this->authorizationChecker->isGranted('ROLE_ADMIN'));
+$this->columnBuilder
+    ->add('title', 'multiselect', array(
+        // ...
+        'render_checkbox_if' => function($row) {
+            return ($row['public'] == true);
         },
-    ),
+    ))
+;
 ```
-
 
 ## Screenshots
 

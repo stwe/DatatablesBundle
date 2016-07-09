@@ -62,7 +62,7 @@ class MultiselectColumn extends ActionColumn
      */
     public function addDataToOutputArray(&$row)
     {
-        $row['sg_datatables_cbox'] = $this->checkAddCheckbox($row);
+        $row['sg_datatables_cbox'] = $this->isRenderCheckboxIf($row);
     }
 
     /**
@@ -102,13 +102,13 @@ class MultiselectColumn extends ActionColumn
     //-------------------------------------------------
 
     /**
-     * Check add checkbox.
+     * Is renderCheckboxIf.
      *
      * @param array $row
      *
      * @return boolean
      */
-    public function checkAddCheckbox(array $row)
+    public function isRenderCheckboxIf(array $row = array())
     {
         if ($this->renderCheckboxIf instanceof Closure) {
             return call_user_func($this->renderCheckboxIf, $row);

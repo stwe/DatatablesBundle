@@ -77,7 +77,7 @@ interface ColumnInterface
      *
      * @return boolean
      */
-    public function checkAddColumn();
+    public function isAddIfClosure();
 
     /**
      * Get alias.
