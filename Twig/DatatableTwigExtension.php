@@ -99,18 +99,6 @@ class DatatableTwigExtension extends Twig_Extension
     {
         $options = array();
 
-        if (true === $datatable->getFeatures()->getServerSide()) {
-            if ('' === $datatable->getAjax()->getUrl()) {
-                throw new Exception('render(): The ajax url parameter must be given.');
-            }
-        } else {
-            if (null === $datatable->getData()) {
-                throw new Exception('render(): Call setData() in your controller.');
-            } else {
-                $options['view_data'] = $datatable->getData();
-            }
-        }
-
         $options['view_actions'] = $datatable->getTopActions();
         $options['view_features'] = $datatable->getFeatures();
         $options['view_options'] = $datatable->getOptions();
