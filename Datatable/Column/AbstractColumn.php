@@ -66,7 +66,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
      * Set default, static, content for a column.
      *
      * @var string
-     * @deprecated
      */
     protected $defaultContent;
 
@@ -314,8 +313,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     /**
      * Set default content.
      *
-     * @deprecated
-     *
      * @param string $defaultContent
      *
      * @return $this
@@ -329,8 +326,6 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
 
     /**
      * Get default content.
-     *
-     * @deprecated
      *
      * @return string
      */

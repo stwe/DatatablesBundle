@@ -349,7 +349,6 @@ class DatatableQuery
         $this->setSelectFrom();
         $this->setLeftJoins($this->qb);
         $this->setWhere($this->qb);
-        $this->setWhereResultCallback($this->qb);
         $this->setWhereAllCallback($this->qb);
         $this->setOrderBy();
         $this->setLimit();
@@ -386,26 +385,6 @@ class DatatableQuery
     //-------------------------------------------------
 
     /**
-     * Add the where-result function.
-     *
-     * @param $callback
-     *
-     * @return $this
-     * @throws Exception
-     * @deprecated since v0.11 (to be removed in v0.12)
-     */
-    public function addWhereResult($callback)
-    {
-        if (!is_callable($callback)) {
-            throw new Exception(sprintf("Callable expected and %s given", gettype($callback)));
-        }
-
-        $this->callbacks['WhereResult'][] = $callback;
-
-        return $this;
-    }
-
-    /**
      * Add the where-all function.
      *
      * @param $callback
@@ -432,24 +411,6 @@ class DatatableQuery
     private function setLineFormatter()
     {
         $this->lineFormatter = $this->datatableView->getLineFormatter();
-
-        return $this;
-    }
-
-    /**
-     * Set where result callback.
-     *
-     * @param QueryBuilder $qb
-     *
-     * @return $this
-     */
-    private function setWhereResultCallback(QueryBuilder $qb)
-    {
-        if (!empty($this->callbacks['WhereResult'])) {
-            foreach ($this->callbacks['WhereResult'] as $callback) {
-                $callback($qb);
-            }
-        }
 
         return $this;
     }
@@ -794,7 +755,6 @@ class DatatableQuery
     {
         $this->setSelectFrom();
         $this->setLeftJoins($this->qb);
-        $this->setWhereResultCallback($this->qb);
         $this->setWhereAllCallback($this->qb);
         $this->setOrderBy();
 
