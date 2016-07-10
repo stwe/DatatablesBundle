@@ -10,6 +10,22 @@
 
 ## Recent Changes
 
+### In-place editing callback (#372)
+
+```
+$this->columnBuilder
+    ->add('name', 'column', array(
+        'title' => 'Name',
+        'editable' => true,
+        'editable_if' => function($row) {
+            return (
+                $this->authorizationChecker->isGranted('ROLE_USER') &&
+                $row['public'] == true
+            );
+        }
+    ))
+```
+
 ### Pipelining to reduce Ajax calls
 
 ```

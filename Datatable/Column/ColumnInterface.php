@@ -80,6 +80,15 @@ interface ColumnInterface
     public function isAddIfClosure();
 
     /**
+     * Checks whether the column may be editable.
+     *
+     * @param array $row
+     *
+     * @return boolean
+     */
+    public function isEditableIfClosure(array $row = array());
+
+    /**
      * Get alias.
      *
      * @return string

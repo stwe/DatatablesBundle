@@ -61,7 +61,12 @@ $this->columnBuilder
     ->add('title', 'column', array(
         'title' => 'Title',
         'editable' => true,
-        'editable_role' => 'ROLE_USER'
+        'editable_if' => function($row) {
+            return (
+                $this->authorizationChecker->isGranted('ROLE_USER') &&
+                $row['public'] == true
+            );
+        }
     ))
     ->add('publishedAt', 'datetime', array(
         'title' => 'Published at',

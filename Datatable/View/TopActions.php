@@ -40,7 +40,7 @@ class TopActions extends AbstractViewOptions
     /**
      * Add Top-Action-Bar only if parameter / conditions are TRUE
      *
-     * @var Closure
+     * @var Closure|null
      */
     protected $addIf;
 

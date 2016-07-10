@@ -39,14 +39,6 @@ class EditableController extends Controller
     public function editAction(Request $request)
     {
         if ($request->isXmlHttpRequest()) {
-
-            $role = $request->request->get('role');
-            if (!empty($role)) {
-                if (false === $this->get('security.authorization_checker')->isGranted($role)) {
-                    throw new AccessDeniedException('Access denied!');
-                }
-            }
-
             $entityName = $request->request->get('entity');
             $field = $request->request->get('name');
             $id = $request->request->get('pk');

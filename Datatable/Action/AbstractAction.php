@@ -83,7 +83,7 @@ abstract class AbstractAction implements ActionInterface, OptionsInterface
     /**
      * Render only if conditions are True.
      *
-     * @var Closure
+     * @var Closure|null
      */
     protected $renderIf;
 

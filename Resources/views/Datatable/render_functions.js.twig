@@ -80,7 +80,11 @@ function render_progress_bar(data, type, row, meta, barClasses, min, max, label,
     return result;
 }
 
-function render_editable_text(data, type, row, meta, colData) {
+function render_editable_text(data, type, row, meta, colData, colIndex) {
+    if (false == row.sg_datatables_editable[colIndex]) {
+        return data;
+    }
+
     if (data != null) {
         var str = colData.split(".").join("_");
         var spanClass = "sg-editable-" + str;
@@ -93,7 +97,11 @@ function render_editable_text(data, type, row, meta, colData) {
     }
 }
 
-function render_editable_datetime(data, type, row, meta, colData, dateFormat) {
+function render_editable_datetime(data, type, row, meta, colData, dateFormat, colIndex) {
+    if (false == row.sg_datatables_editable[colIndex]) {
+        return data;
+    }
+
     if (data != null && typeof data.timestamp != "undefined") {
         moment.locale("{{ app.request.locale }}");
         var spanClass = "sg-editable-" + colData;
@@ -108,7 +116,11 @@ function render_editable_datetime(data, type, row, meta, colData, dateFormat) {
     }
 }
 
-function render_editable_boolean(data, type, row, meta, colData, trueLabel, falseLabel) {
+function render_editable_boolean(data, type, row, meta, colData, trueLabel, falseLabel, colIndex) {
+    if (false == row.sg_datatables_editable[colIndex]) {
+        return data;
+    }
+
     if ("" == trueLabel) {
         trueLabel = "true";
     }

@@ -23,23 +23,23 @@ SgDatatablesBundle:Column:column.html.twig
 
 ### Options
 
-| Option               | Type           | Default                |
-|----------------------|----------------|------------------------|
-| class                | string         | ''                     |
-| padding              | string         | ''                     |
-| name                 | string         | ''                     |
-| orderable            | boolean        | true                   |
-| render               | null or string | null                   |
-| searchable           | boolean        | true                   |
-| title                | string         | ''                     |
-| type                 | string         | ''                     |
-| visible              | boolean        | true                   |
-| width                | string         | ''                     |
-| filter               | array          | array('text', array()) |
-| add_if               | Closure        | null                   |
-| default              | string         | ''                     |
-| editable             | boolean        | false                  |
-| editable_role        | null or string | null                   |
+| Option      | Type           | Default                |
+|-------------|----------------|------------------------|
+| class       | string         | ''                     |
+| padding     | string         | ''                     |
+| name        | string         | ''                     |
+| orderable   | boolean        | true                   |
+| render      | null or string | null                   |
+| searchable  | boolean        | true                   |
+| title       | string         | ''                     |
+| type        | string         | ''                     |
+| visible     | boolean        | true                   |
+| width       | string         | ''                     |
+| filter      | array          | array('text', array()) |
+| add_if      | Closure        | null                   |
+| default     | string         | ''                     |
+| editable    | boolean        | false                  |
+| editable_if | Closure        | null                   |
 
 ### Example
 
@@ -189,26 +189,26 @@ SgDatatablesBundle:Column:boolean.html.twig
 
 ### Options
 
-| Option               | Type           | Default               |
-|----------------------|----------------|-----------------------|
-| class                | string         | ''                    |
-| padding              | string         | ''                    |
-| name                 | string         | ''                    |
-| orderable            | boolean        | true                  |
-| render               | null or string | 'render_boolean'      |
-| searchable           | boolean        | true                  |
-| title                | string         | ''                    |
-| type                 | string         | ''                    |
-| visible              | boolean        | true                  |
-| width                | string         | ''                    |
-| true_icon            | string         | ''                    |
-| false_icon           | string         | ''                    |
-| true_label           | string         | ''                    |
-| false_label          | string         | ''                    |
-| filter               | array          | see the below example |
-| add_if               | Closure        | null                  |
-| editable             | boolean        | false                 |
-| editable_role        | null or string | null                  |
+| Option      | Type           | Default               |
+|-------------|----------------|-----------------------|
+| class       | string         | ''                    |
+| padding     | string         | ''                    |
+| name        | string         | ''                    |
+| orderable   | boolean        | true                  |
+| render      | null or string | 'render_boolean'      |
+| searchable  | boolean        | true                  |
+| title       | string         | ''                    |
+| type        | string         | ''                    |
+| visible     | boolean        | true                  |
+| width       | string         | ''                    |
+| true_icon   | string         | ''                    |
+| false_icon  | string         | ''                    |
+| true_label  | string         | ''                    |
+| false_label | string         | ''                    |
+| filter      | array          | see the below example |
+| add_if      | Closure        | null                  |
+| editable    | boolean        | false                 |
+| editable_if | Closure        | null                  |
 
 ### Example
 
@@ -239,23 +239,23 @@ SgDatatablesBundle:Column:datetime.html.twig
 
 ### Options
 
-| Option               | Type           | Default                |
-|----------------------|----------------|------------------------|
-| class                | string         | ''                     |
-| padding              | string         | ''                     |
-| name                 | string         | ''                     |
-| orderable            | boolean        | true                   |
-| render               | null or string | 'render_datetime'      |
-| searchable           | boolean        | true                   |
-| title                | string         | ''                     |
-| type                 | string         | ''                     |
-| visible              | boolean        | true                   |
-| width                | string         | ''                     |
-| filter               | array          | array('text', array()) |
-| add_if               | Closure        | null                   |
-| date_format          | string         | 'lll'                  |
-| editable             | boolean        | false                  |
-| editable_role        | null or string | null                   |
+| Option      | Type           | Default                |
+|-------------|----------------|------------------------|
+| class       | string         | ''                     |
+| padding     | string         | ''                     |
+| name        | string         | ''                     |
+| orderable   | boolean        | true                   |
+| render      | null or string | 'render_datetime'      |
+| searchable  | boolean        | true                   |
+| title       | string         | ''                     |
+| type        | string         | ''                     |
+| visible     | boolean        | true                   |
+| width       | string         | ''                     |
+| filter      | array          | array('text', array()) |
+| add_if      | Closure        | null                   |
+| date_format | string         | 'lll'                  |
+| editable    | boolean        | false                  |
+| editable_if | Closure        | null                   |
 
 ### Example
 
