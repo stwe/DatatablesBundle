@@ -49,20 +49,6 @@ class BooleanColumn extends AbstractColumn
      */
     protected $falseLabel;
 
-    /**
-     * Editable flag.
-     *
-     * @var boolean
-     */
-    protected $editable;
-
-    /**
-     * Role based editing permission.
-     *
-     * @var null|string
-     */
-    protected $editableRole;
-
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -127,7 +113,7 @@ class BooleanColumn extends AbstractColumn
             'true_label' => '',
             'false_label' => '',
             'editable' => false,
-            'editable_role' => null
+            'editable_if' => null
         ));
 
         $resolver->setAllowedTypes('class', 'string');
@@ -147,7 +133,7 @@ class BooleanColumn extends AbstractColumn
         $resolver->setAllowedTypes('true_label', 'string');
         $resolver->setAllowedTypes('false_label', 'string');
         $resolver->setAllowedTypes('editable', 'bool');
-        $resolver->setAllowedTypes('editable_role', array('string', 'null'));
+        $resolver->setAllowedTypes('editable_if', array('string', 'null'));
 
         return $this;
     }
@@ -250,53 +236,5 @@ class BooleanColumn extends AbstractColumn
     public function getTrueLabel()
     {
         return $this->trueLabel;
-    }
-
-    /**
-     * Set editable.
-     *
-     * @param boolean $editable
-     *
-     * @return $this
-     */
-    public function setEditable($editable)
-    {
-        $this->editable = $editable;
-
-        return $this;
-    }
-
-    /**
-     * Get editable.
-     *
-     * @return boolean
-     */
-    public function getEditable()
-    {
-        return $this->editable;
-    }
-
-    /**
-     * Set editable role.
-     *
-     * @param null|string $editableRole
-     *
-     * @return $this
-     */
-    public function setEditableRole($editableRole)
-    {
-        $this->editableRole = $editableRole;
-
-        return $this;
-    }
-
-    /**
-     * Get editable role.
-     *
-     * @return null|string
-     */
-    public function getEditableRole()
-    {
-        return $this->editableRole;
     }
 }

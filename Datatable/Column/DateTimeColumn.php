@@ -73,7 +73,7 @@ class DateTimeColumn extends TimeagoColumn
 
         $resolver->setAllowedTypes('date_format', 'string');
         $resolver->setAllowedTypes('editable', 'bool');
-        $resolver->setAllowedTypes('editable_role', array('Closure', 'null'));
+        $resolver->setAllowedTypes('editable_if', array('Closure', 'null'));
 
         return $this;
     }
