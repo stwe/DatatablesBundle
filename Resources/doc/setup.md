@@ -228,7 +228,6 @@ function order() {
 | scroll_x        | bool   | false   |                                                                 |
 | scroll_y        | string | ''      |                                                                 |
 | searching       | bool   | true    |                                                                 |
-| server_side     | bool   | true    |                                                                 |
 | state_save      | bool   | false   |                                                                 |
 | delay           | int    | 0       |                                                                 |
 | extensions      | array  | array() |                                                                 |

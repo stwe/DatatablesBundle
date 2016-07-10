@@ -162,15 +162,9 @@ $this->columnBuilder
 
 Much like every other piece of software `SgDatatablesBundle` is not perfect and far from feature complete.
 
-### Use this Bundle in ServerSide mode
-
-The ClientSide mode is no longer supported by me.
-
-### Other limitations
-
-- This bundle does not support multiple Ids
-- Searching and filtering on a virtual column not yet implemented and disabled by default
-- PostgreSql is currently not fully supported
+- This bundle does not support multiple Ids.
+- Searching and filtering on a virtual column not yet implemented and disabled by default.
+- PostgreSql is currently not fully supported.
 
 ## Reporting an issue or a feature request
 
