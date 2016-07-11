@@ -105,6 +105,11 @@ class DatatableTwigExtension extends Twig_Extension
         $options['view_callbacks'] = $datatable->getCallbacks();
         $options['view_events'] = $datatable->getEvents();
         $options['view_columns'] = $datatable->getColumnBuilder()->getColumns();
+
+        if ('' === $datatable->getAjax()->getUrl()) {
+            throw new Exception('getOptions(): Specify an ajax url.');
+        }
+
         $options['view_ajax'] = $datatable->getAjax();
 
         $options['view_multiselect'] = $datatable->getColumnBuilder()->isMultiselect();
