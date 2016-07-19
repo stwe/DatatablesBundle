@@ -50,7 +50,11 @@ $(".{{ view_table_id }}_multiselect_action_click").on('click', function(event) {
                 'token': '{{ token }}'
             },
             success: function(msg) {
-                oTable.draw();
+                {% if view_ajax.pipeline > 0 %}
+                    oTable.clearPipeline().draw();
+                {% else %}
+                    oTable.draw();
+                {% endif %}
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(XMLHttpRequest + ' ' + textStatus + ' ' +errorThrown);

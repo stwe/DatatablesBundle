@@ -33,9 +33,9 @@
             },
             container: 'body',
             {# many-to-one associations, Pipelining and the Responsive-extension need a complete table redraw #}
-            {% if view_ajax.pipeline or column.isAssociation or view_features.extensions.responsive is defined and true == view_features.extensions.responsive %}
+            {% if view_ajax.pipeline > 0 or column.isAssociation or view_features.extensions.responsive is defined and true == view_features.extensions.responsive %}
             success: function(response, newValue) {
-                {% if true == view_ajax.pipeline %}
+                {% if view_ajax.pipeline > 0 %}
                     oTable.clearPipeline().draw();
                 {% else %}
                     oTable.draw();
