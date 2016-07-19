@@ -7,7 +7,10 @@ Used in thinking that to alter data couldn't change originals orders or filters.
 This function permit by example to centralize datatables operations and to
 securize request by removing id and transform it in a slug.
 
-## Example
+1. [Example](#1-example)
+2. [Using repositories](#2-using-repositories)
+
+## 1. Example
 
 ```php
 <?php
@@ -55,5 +58,40 @@ class UserDatatable extends AbstractDatatableView
         // ...
     }
 
+}
+```
+
+## 2. Using repositories
+
+### Repository function
+
+```
+public function getPlantSum($seasonId)
+{
+    return $this->createQueryBuilder('p')
+        ->select('SUM(p.quantity)')
+        ->join('p.season', 's')
+        ->where('s = :seasonId')
+        ->setParameter('seasonId', $seasonId)
+        ->getQuery()
+        ->getSingleScalarResult();
+}
+```
+
+### Line Formatter function
+
+```
+public function getLineFormatter()
+{
+    $repository = $this->em->getRepository('AppBundle:Plant');
+
+    $formatter = function($line) use ($repository) {
+        $sum = $repository->getPlantSum($line['id']);
+        null === $sum ? $line['allPlants'] = 0 : $line['allPlants'] = $sum;
+
+        return $line;
+    };
+
+    return $formatter;
 }
 ```
