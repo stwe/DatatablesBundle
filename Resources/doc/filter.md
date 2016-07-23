@@ -32,6 +32,7 @@ __
 * [Example](#example)
 * [Text Filter](#text-filter)
 * [Select Filter](#select-filter)
+* [Multiselect Filter](#multiselect-filter)
 * [DateRange Filter](#daterange-filter)
 * [Slider Filter](#slider-filter)
 
@@ -157,6 +158,39 @@ $this->columnBuilder
         'filter' => array('select', array(
             'search_type' => 'eq',
             'select_options' => array('' => 'Any', '1' => 'Yes', '0' => 'No')
+        )),
+    ))
+;
+```
+
+### Multiselect Filter
+
+#### Default template
+
+SgDatatablesBundle:Filters:filter_multiselect.html.twig
+
+#### Options
+
+| Option         | Type   | Default |
+|----------------|--------|---------|
+| search_type    | string | 'like'  |
+| property       | string | ''      |
+| search_column  | string | ''      |
+| class          | string | ''      |
+| select_options | array  | array() |
+| cancel_button  | bool   | false   |
+
+#### Example
+
+```php
+$fruitcolor = $this->em->getRepository('AppBundle:Fruitcolor')->findAll();
+
+$this->columnBuilder
+    ->add('fruitcolor.color', 'column', array(
+        'title' => 'Fruitcolor',
+        'filter' => array('multiselect', array(
+            'select_options' => array('' => 'All') + $this->getCollectionAsOptionsArray($fruitcolor, 'color', 'color'),
+            'search_type' => 'eq'
         )),
     ))
 ;

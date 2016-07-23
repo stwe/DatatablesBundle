@@ -44,6 +44,8 @@ class FilterFactory
             case 'select':
                 return new SelectFilter();
                 break;
+            case 'multiselect':
+                return new MultiSelectFilter();
             case 'daterange':
                 return new DateRangeFilter();
                 break;
