@@ -8,6 +8,7 @@ datatables:
         infoFiltered: "(_MAX_ маалыматтан фильтрленген)"
         infoPostFix: ""
         search: "Издөө"
+        searchPlaceholder: ""
         first: "Биринчи"
         previous: "Мурунку"
         next: "Кийинки"

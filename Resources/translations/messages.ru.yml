@@ -8,6 +8,7 @@ datatables:
         infoFiltered: "(отфильтровано из _MAX_ записей)"
         infoPostFix: ""
         search: "Поиск"
+        searchPlaceholder: ""
         first: "Первая"
         previous: "Предыдущая"
         next: "Следующая"

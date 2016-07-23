@@ -8,6 +8,7 @@ datatables:
         infoFiltered: "(gefilterd van in totaal _MAX_ resultaten)"
         infoPostFix: ""
         search: "Zoeken"
+        searchPlaceholder: ""
         first: "Eerste"
         previous: "Vorige"
         next: "Volgende"
