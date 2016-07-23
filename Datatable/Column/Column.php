@@ -81,6 +81,7 @@ class Column extends AbstractColumn
     {
         $resolver->setDefaults(array(
             'class' => '',
+            'default_content' => null,
             'padding' => '',
             'name' => '',
             'orderable' => true,
@@ -98,6 +99,7 @@ class Column extends AbstractColumn
         ));
 
         $resolver->setAllowedTypes('class', 'string');
+        $resolver->setAllowedTypes('default_content', array('string', 'null'));
         $resolver->setAllowedTypes('padding', 'string');
         $resolver->setAllowedTypes('name', 'string');
         $resolver->setAllowedTypes('orderable', 'bool');

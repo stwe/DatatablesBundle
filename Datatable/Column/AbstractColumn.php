@@ -65,7 +65,7 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     /**
      * Set default, static, content for a column.
      *
-     * @var string
+     * @var string|null
      */
     protected $defaultContent;
 
@@ -343,7 +343,7 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     /**
      * Set default content.
      *
-     * @param string $defaultContent
+     * @param string|null $defaultContent
      *
      * @return $this
      */
@@ -357,7 +357,7 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     /**
      * Get default content.
      *
-     * @return string
+     * @return string|null
      */
     public function getDefaultContent()
     {
