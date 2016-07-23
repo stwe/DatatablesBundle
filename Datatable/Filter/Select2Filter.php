@@ -15,13 +15,11 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Andx;
 
 /**
- * Class MultiSelectFilter
- *
- * @author benedyktbla <https://github.com/benedyktbla>
+ * Class Select2Filter
  *
  * @package Sg\DatatablesBundle\Datatable\Filter
  */
-class MultiSelectFilter extends SelectFilter
+class Select2Filter extends SelectFilter
 {
     //-------------------------------------------------
     // FilterInterface
@@ -32,7 +30,7 @@ class MultiSelectFilter extends SelectFilter
      */
     public function getTemplate()
     {
-        return 'SgDatatablesBundle:Filters:filter_multiselect.html.twig';
+        return 'SgDatatablesBundle:Filters:filter_select2.html.twig';
     }
 
     /**
@@ -40,14 +38,7 @@ class MultiSelectFilter extends SelectFilter
      */
     public function addAndExpression(Andx $andExpr, QueryBuilder $pivot, $searchField, $searchValue, &$i)
     {
-        $orExpr = $pivot->expr()->orX();
 
-        foreach (explode(',', $searchValue) as $searchItem) {
-            $orExpr->add($this->getAndExpression($pivot->expr()->andX(), $pivot, $searchField, $searchItem, $i));
-            $i++;
-        }
-
-        return $andExpr->add($orExpr);
     }
 
     /**
@@ -55,6 +46,6 @@ class MultiSelectFilter extends SelectFilter
      */
     public function getAlias()
     {
-        return 'multiselect';
+        return 'select2';
     }
 }
