@@ -21,6 +21,36 @@ use Doctrine\ORM\Query\Expr\Andx;
  */
 class Select2Filter extends SelectFilter
 {
+    /**
+     * @var string
+     */
+    protected $placeholder;
+
+    /**
+     * @var boolean
+     */
+    protected $allowClear;
+
+    /**
+     * @var boolean
+     */
+    protected $tags;
+
+    /**
+     * @var string
+     */
+    protected $lang;
+
+    /**
+     * @var string
+     */
+    protected $url;
+
+    /**
+     * @var integer
+     */
+    protected $delay;
+
     //-------------------------------------------------
     // FilterInterface
     //-------------------------------------------------
@@ -38,7 +68,14 @@ class Select2Filter extends SelectFilter
      */
     public function addAndExpression(Andx $andExpr, QueryBuilder $pivot, $searchField, $searchValue, &$i)
     {
+        $orExpr = $pivot->expr()->orX();
 
+        foreach (explode(',', $searchValue) as $searchItem) {
+            $orExpr->add($this->getAndExpression($pivot->expr()->andX(), $pivot, $searchField, $searchItem, $i));
+            $i++;
+        }
+
+        return $andExpr->add($orExpr);
     }
 
     /**

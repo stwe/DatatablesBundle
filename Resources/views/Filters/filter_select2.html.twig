@@ -9,4 +9,27 @@
 {% extends 'SgDatatablesBundle:Filters:filter.html.twig' %}
 
 {% block html %}
+    <select
+        multiple="multiple"
+        id="{{ tableId }}-sg-filter-{{ selectorId }}"
+        class="individual_filtering{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
+        style="{% if column.width %} width:{{ column.width }};{% endif %}"
+        {% if column.name %}name="{{ column.name }}"{% endif %}
+        data-filter-property-id="{{ filterColumnId }}"
+    >
+        {% for key, name in column.filter.selectOptions %}
+            <option value="{{ key }}">{{ name }}</option>
+        {% endfor %}
+    </select>
+    {% if true == column.filter.cancelButton %}
+        {{ cancel_button_html }}
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+
+    <script>
+        $('#{{ tableId }}-sg-filter-{{ selectorId }}').select2();
+    </script>
 {% endblock %}
