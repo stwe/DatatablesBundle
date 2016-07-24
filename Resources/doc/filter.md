@@ -32,6 +32,7 @@ __
 * [Example](#example)
 * [Text Filter](#text-filter)
 * [Select Filter](#select-filter)
+* [Select2 Filter](#select2-filter)
 * [Multiselect Filter](#multiselect-filter)
 * [DateRange Filter](#daterange-filter)
 * [Slider Filter](#slider-filter)
@@ -161,6 +162,106 @@ $this->columnBuilder
         )),
     ))
 ;
+```
+
+### Select2 Filter
+
+#### Default template
+
+SgDatatablesBundle:Filters:filter_select2.html.twig
+
+#### Options
+
+| Option         | Type             | Default |
+|----------------|------------------|---------|
+| search_type    | string           | 'like'  |
+| property       | string           | ''      |
+| search_column  | string           | ''      |
+| class          | string           | ''      |
+| select_options | array            | array() |
+| cancel_button  | bool             | false   |
+| multiple       | bool             | true    |
+| placeholder    | string or null   | null    |
+| allow_clear    | bool             | true    |
+| tags           | bool             | true    |
+| language       | string           | 'en'    |
+| url            | string or null   | null    |
+| delay          | integer          | 250     |
+| cache          | bool             | true    |
+
+#### Examples
+
+##### Example
+
+```
+$fruitcolor = $this->em->getRepository('AppBundle:Fruitcolor')->findAll();
+$this->columnBuilder
+    ->add('fruitcolor.color', 'column', array(
+        'title' => 'Fruchtfarbe',
+        'filter' => array('select2', array(
+            'select_options' => array('' => 'Alle') + $this->getCollectionAsOptionsArray($fruitcolor, 'color', 'color'),
+            'search_type' => 'eq',
+            'multiple' => true,
+            'placeholder' => null,
+            'allow_clear' => true,
+            'tags' => true,
+            'language' => 'de',
+            //'url' => 'select2_color',
+            //'delay' => 250,
+            //'cache' => true
+        )),
+    ))
+;
+```
+
+##### Remote Example
+
+```php
+$this->columnBuilder
+    ->add('fruitcolor.color', 'column', array(
+        'title' => 'Fruchtfarbe',
+        'filter' => array('select2', array(
+            //'select_options' => array('' => 'Alle') + $this->getCollectionAsOptionsArray($fruitcolor, 'color', 'color'),
+            'search_type' => 'eq',
+            'multiple' => true,
+            'placeholder' => null,
+            'allow_clear' => true,
+            'tags' => true,
+            'language' => 'de',
+            'url' => 'select2_color',
+            'delay' => 250,
+            'cache' => true
+        )),
+    ))
+;
+```
+
+```php
+/**
+ * @param Request $request
+ *
+ * @Route("/ajax/select2-color", name="select2_color")
+ *
+ * @return JsonResponse|Response
+ */
+public function select2Color(Request $request)
+{
+    if ($request->isXmlHttpRequest()) {
+        $em = $this->getDoctrine()->getManager();
+        $colors = $em->getRepository('AppBundle:Fruitcolor')->findAll();
+
+        $result = array();
+
+        /** @var \AppBundle\Entity\Fruitcolor $color */
+        foreach ($colors as $color) {
+            $result[$color->getId()] = $color->getColor();
+        }
+
+        return new JsonResponse($result);
+    }
+
+    return new Response('Bad request.', 400);
+}
 ```
 
 ### Multiselect Filter

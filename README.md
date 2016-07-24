@@ -10,6 +10,58 @@
 
 ## Recent Changes
 
+### Select2 support / Multiple select filter (#287)
+
+#### Remote example from the Docs
+
+```php
+$this->columnBuilder
+    ->add('fruitcolor.color', 'column', array(
+        'title' => 'Fruchtfarbe',
+        'filter' => array('select2', array(
+            //'select_options' => array('' => 'Alle') + $this->getCollectionAsOptionsArray($fruitcolor, 'color', 'color'),
+            'search_type' => 'eq',
+            'multiple' => true,
+            'placeholder' => null,
+            'allow_clear' => true,
+            'tags' => true,
+            'language' => 'de',
+            'url' => 'select2_color',
+            'delay' => 250,
+            'cache' => true
+        )),
+    ))
+;
+```
+
+```php
+/**
+ * @param Request $request
+ *
+ * @Route("/ajax/select2-color", name="select2_color")
+ *
+ * @return JsonResponse|Response
+ */
+public function select2Color(Request $request)
+{
+    if ($request->isXmlHttpRequest()) {
+        $em = $this->getDoctrine()->getManager();
+        $colors = $em->getRepository('AppBundle:Fruitcolor')->findAll();
+
+        $result = array();
+
+        /** @var \AppBundle\Entity\Fruitcolor $color */
+        foreach ($colors as $color) {
+            $result[$color->getId()] = $color->getColor();
+        }
+
+        return new JsonResponse($result);
+    }
+
+    return new Response('Bad request.', 400);
+}
+```
+
 ### In-place editing callback (#372)
 
 ```
