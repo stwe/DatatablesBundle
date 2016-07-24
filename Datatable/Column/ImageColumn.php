@@ -112,13 +112,15 @@ class ImageColumn extends AbstractColumn
     public function renderContent(&$row, DatatableQuery $datatableQuery = null)
     {
         if (true === $datatableQuery->getImagineBundle()) {
-            $row[$this->getDql()] = $this->renderImage($row[$this->getDql()], $datatableQuery->getTwig());
+            $this->getAccessor()->setValue($row, $this->getDqlProperty(), $this->renderImage($this->getAccessor()->getValue($row, $this->getDqlProperty()), $datatableQuery->getTwig()));
         } else {
-            $row[$this->getDql()] = $datatableQuery->getTwig()->render(
-                'SgDatatablesBundle:Helper:render_image.html.twig',
-                array(
-                    'image_name' => $row[$this->getDql()],
-                    'path' => $this->getRelativePath()
+            $this->getAccessor()->setValue(
+                $row, $this->getDqlProperty(), $datatableQuery->getTwig()->render(
+                    'SgDatatablesBundle:Helper:render_image.html.twig',
+                    array(
+                        'image_name' => $this->getAccessor()->getValue($row, $this->getDqlProperty()),
+                        'path' => $this->getRelativePath()
+                    )
                 )
             );
         }

@@ -18,6 +18,7 @@ use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
 use Sg\DatatablesBundle\Datatable\Filter\FilterFactory;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Closure;
 
 /**
@@ -47,6 +48,13 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
      * @var null|string
      */
     protected $dql;
+
+    /**
+     * Property accessor.
+     *
+     * @var PropertyAccess
+     */
+    protected $accessor;
 
     /**
      * Class to assign to each cell in the column.
@@ -178,6 +186,7 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     public function __construct()
     {
         $this->options = array();
+        $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
     //-------------------------------------------------
@@ -703,5 +712,24 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     public function getIndex()
     {
         return $this->index;
+    }
+
+    /**
+     * Get dql property.
+     *
+     * @return null|string
+     */
+    public function getDqlProperty()
+    {
+        return '['.str_replace('.','][',$this->dql).']';
+    }
+
+    /**
+     * Get property accessor
+     *
+     */
+    public function getAccessor()
+    {
+        return $this->accessor;
     }
 }
