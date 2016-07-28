@@ -32,8 +32,8 @@
     <script>
         $('#{{ tableId }}-sg-filter-{{ selectorId }}').select2({
             {% if column.filter.placeholder %}placeholder: "{{ column.filter.placeholder }}",{% endif %}
-            tags: {{ column.filter.tags }},
-            allowClear: {{ column.filter.allowClear }},
+            tags: {{ column.filter.tags ? 'true' : 'false' }},
+            allowClear: {{ column.filter.allowClear ? 'true' : 'false' }},
             language: "{{ column.filter.language }}",
             dropdownAutoWidth : true,
             {% if column.filter.url %}
@@ -41,7 +41,7 @@
                 url: "{{ path(column.filter.url) }}",
                 dataType: 'json',
                 delay: {{ column.filter.delay }},
-                cache: {{ column.filter.cache }},
+                cache: {{ column.filter.cache ? 'true' : 'false' }},
                 data: function (params) {
                     return {
                         q: params.term,
