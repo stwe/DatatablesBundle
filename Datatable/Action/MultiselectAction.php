@@ -26,6 +26,12 @@ class MultiselectAction extends Action
      * @var string
      */
     protected $tableName;
+    /**
+     * Name of success callback script template.
+     *
+     * @var string
+     */
+    protected $successCallback;
 
     //-------------------------------------------------
     // OptionsInterface
@@ -37,6 +43,10 @@ class MultiselectAction extends Action
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
+        $resolver->setDefaults(array(
+            'success_callback' => '',
+        ));
+        $resolver->setAllowedTypes('success_callback', array('string'));
 
         $tableName = $this->tableName;
         $resolver->setNormalizer('attributes', function($options, $value) use($tableName) {
@@ -75,5 +85,21 @@ class MultiselectAction extends Action
     public function getTableName()
     {
         return $this->tableName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSuccessCallback()
+    {
+        return $this->successCallback;
+    }
+
+    /**
+     * @param string $successCallback
+     */
+    public function setSuccessCallback($successCallback)
+    {
+        $this->successCallback = $successCallback;
     }
 }
