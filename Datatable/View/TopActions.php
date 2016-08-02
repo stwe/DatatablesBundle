@@ -51,19 +51,6 @@ class TopActions extends AbstractViewOptions
      */
     protected $actions;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Ctor.
-     */
-    public function __construct()
-    {
-        $this->options = array();
-        $this->nestedOptionsResolver = null;
-    }
-
     /**
      * {@inheritdoc}
      */

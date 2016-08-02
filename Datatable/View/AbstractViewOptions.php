@@ -45,7 +45,7 @@ abstract class AbstractViewOptions implements OptionsInterface
      */
     public function __construct()
     {
-        $this->set(array());
+        self::callingSettersWithOptions($this->options, $this);
     }
 
     //-------------------------------------------------
