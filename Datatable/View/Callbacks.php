@@ -118,6 +118,26 @@ class Callbacks extends AbstractViewOptions
      */
     protected $stateSaveParams;
 
+    /**
+     * {@inheritdoc}
+     */
+    protected $options = array(
+        'created_row' => array(),
+        'draw_callback' => array(),
+        'footer_callback' => array(),
+        'format_number' => array(),
+        'header_callback' => array(),
+        'info_callback' => array(),
+        'init_complete' => array(),
+        'pre_draw_callback' => array(),
+        'row_callback' => array(),
+        'state_load_callback' => array(),
+        'state_loaded' => array(),
+        'state_load_params' => array(),
+        'state_save_callback' => array(),
+        'state_save_params' => array(),
+    );
+
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -127,22 +147,7 @@ class Callbacks extends AbstractViewOptions
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'created_row' => array(),
-            'draw_callback' => array(),
-            'footer_callback' => array(),
-            'format_number' => array(),
-            'header_callback' => array(),
-            'info_callback' => array(),
-            'init_complete' => array(),
-            'pre_draw_callback' => array(),
-            'row_callback' => array(),
-            'state_load_callback' => array(),
-            'state_loaded' => array(),
-            'state_load_params' => array(),
-            'state_save_callback' => array(),
-            'state_save_params' => array(),
-        ));
+        $resolver->setDefaults($this->options);
 
         $resolver->setAllowedTypes('created_row', 'array');
         $resolver->setAllowedTypes('draw_callback', 'array');

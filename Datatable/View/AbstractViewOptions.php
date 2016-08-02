@@ -29,7 +29,7 @@ abstract class AbstractViewOptions implements OptionsInterface
      *
      * @var array
      */
-    protected $options;
+    protected $options = array();
 
     /**
      * @var null|OptionsResolver
@@ -45,9 +45,7 @@ abstract class AbstractViewOptions implements OptionsInterface
      */
     public function __construct()
     {
-        $this->options = array();
-        $this->nestedOptionsResolver = null;
-        $this->set($this->options);
+        $this->set(array());
     }
 
     //-------------------------------------------------

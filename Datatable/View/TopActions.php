@@ -64,6 +64,15 @@ class TopActions extends AbstractViewOptions
         $this->nestedOptionsResolver = null;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    protected $options = array(
+        'start_html' => '',
+        'end_html' => '',
+        'add_if' => null
+    );
+
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -75,11 +84,7 @@ class TopActions extends AbstractViewOptions
     {
         $resolver->setRequired(array('actions'));
 
-        $resolver->setDefaults(array(
-            'start_html' => '',
-            'end_html' => '',
-            'add_if' => null
-        ));
+        $resolver->setDefaults($this->options);
 
         $resolver->setAllowedTypes('start_html', 'string');
         $resolver->setAllowedTypes('end_html', 'string');
