@@ -41,5 +41,7 @@ class DatatableTest extends \PHPUnit_Framework_TestCase
         $table = new $tableClass($authorizationChecker, $securityToken, $translator, $router, $em);
 
         $this->assertEquals('post_datatable', $table->getName());
+
+        $table->buildDatatable();
     }
 }
