@@ -14,7 +14,10 @@
                 {% set attributes %}
                     {% for key, value in action.attributes %} {{ key }}='{{ value }}'{% endfor %}
                 {% endset %}
-                <a id="datatable-multiselect-action-button-{{ loop.index }}" href="{{ route }}" {{ attributes }}>{{ datatable_icon(action.icon, action.label) }}</a>
+                <a data-confirm="{{ action.confirm ? 'true' : 'false' }}"
+                   data-confirm-message="{{ action.confirmMessage is defined ? action.confirmMessage : 'datatables.bulk.confirmMsg'|trans({}, 'messages') }}"
+                   id="datatable-multiselect-action-button-{{ loop.index }}"
+                   href="{{ route }}" {{ attributes }}>{{ datatable_icon(action.icon, action.label) }}</a>
                 <script>
                         $('#datatable-multiselect-action-button-{{ loop.index }}').data('success-callback',
                                 {% if action.successCallback is not empty %}
@@ -45,13 +48,13 @@ $(".{{ view_table_id }}_multiselect_action_click").on('click', function(event) {
     event.preventDefault();
 
     if (length > 0) {
-        if (!confirm( "{{ 'datatables.bulk.confirmMsg'|trans({}, 'messages') }}" )) {
+        var that = $(this);
+
+        if (that.attr('data-confirm') == 'true' && !confirm( that.attr('data-confirm-message') )) {
             return;
         }
 
         {% set token = csrf_token('multiselect') %}
-
-        var that = $(this);
 
         $.ajax({
             url: $(this).attr("href"),
