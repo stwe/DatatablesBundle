@@ -43,6 +43,15 @@ class Ajax extends AbstractViewOptions
      */
     protected $pipeline;
 
+    /**
+     * {@inheritdoc}
+     */
+    protected $options = array(
+        'url' => '',
+        'type' => 'GET',
+        'pipeline' => 0
+    );
+
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -52,11 +61,7 @@ class Ajax extends AbstractViewOptions
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'url' => '',
-            'type' => 'GET',
-            'pipeline' => 0
-        ));
+        $resolver->setDefaults($this->options);
 
         $resolver->setAllowedTypes('url', 'string');
         $resolver->setAllowedTypes('type', 'string');

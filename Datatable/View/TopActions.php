@@ -51,18 +51,14 @@ class TopActions extends AbstractViewOptions
      */
     protected $actions;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
     /**
-     * Ctor.
+     * {@inheritdoc}
      */
-    public function __construct()
-    {
-        $this->options = array();
-        $this->nestedOptionsResolver = null;
-    }
+    protected $options = array(
+        'start_html' => '',
+        'end_html' => '',
+        'add_if' => null
+    );
 
     //-------------------------------------------------
     // OptionsInterface
@@ -75,11 +71,7 @@ class TopActions extends AbstractViewOptions
     {
         $resolver->setRequired(array('actions'));
 
-        $resolver->setDefaults(array(
-            'start_html' => '',
-            'end_html' => '',
-            'add_if' => null
-        ));
+        $resolver->setDefaults($this->options);
 
         $resolver->setAllowedTypes('start_html', 'string');
         $resolver->setAllowedTypes('end_html', 'string');
