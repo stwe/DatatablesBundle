@@ -6,12 +6,40 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-try {
-    $(selector).highlight(oTable.search());
-    $(selector + "_wrapper").find("tr .individual_filtering").not("input[style='display: none;']").each(function() {
-        $(selector).highlight($(this).val());
-    });
-    $(".highlight").css({ backgroundColor: "{{ view_features.highlightColor }}" });
-} catch(e) {
-    console.log(e.message + ': Make sure that jquery.highlight.js is loaded.');
+
+function highlightTable(v) {
+    try {
+        $(selector).not(".select2-selection__rendered").highlight(v);
+        $(".highlight").css({ backgroundColor: "{{ view_features.highlightColor }}" });
+    } catch(e) {
+        console.log(e.message + ': Make sure that jquery.highlight.js is loaded.');
+    }
 }
+
+{# global search #}
+highlightTable(oTable.search());
+
+{# individual filtering #}
+$(selector + "_wrapper").find("tr .individual_filtering").not("input[style='display: none;']").each(function() {
+    {# select2 field #}
+    if ($(this).data('select2')) {
+        var val = $(this).select2('val');
+        if (val) {
+            {# 'multiple' => true #}
+            if (val.isArray) {
+                for (var index = 0; index < val.length; ++index) {
+                    highlightTable(val[index]);
+                }
+            } else {
+                {# 'multiple' => false #}
+                highlightTable(val);
+            }
+        }
+    } else {
+        {# normal field #}
+        val = $(this).val();
+        if (val) {
+            highlightTable(val);
+        }
+    }
+});
