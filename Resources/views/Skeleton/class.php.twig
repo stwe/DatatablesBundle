@@ -92,7 +92,8 @@ class {{ datatable_class }} extends AbstractDatatableView
             {% else -%}
             'use_integration_options' => false,
             {% endif -%}
-            'force_dom' => false
+            'force_dom' => false,
+            'row_id' => '{{ primary_key }}'
         ));
 
         $this->columnBuilder
