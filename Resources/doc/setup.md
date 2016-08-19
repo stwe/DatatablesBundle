@@ -257,6 +257,7 @@ function order() {
 | individual_filtering_position | string | 'head'                         |
 | use_integration_options       | bool   | false                          |
 | force_dom                     | bool   | false                          |
+| row_id                        | string | ''                             |
 
 ## 7. Ajax
 

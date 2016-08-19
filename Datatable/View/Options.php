@@ -158,6 +158,13 @@ class Options extends AbstractViewOptions
      */
     protected $forceDom;
 
+    /**
+     * Data property name that DataTables will use to set tr element DOM IDs.
+     *
+     * @var string
+     */
+    protected $rowId;
+
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -203,7 +210,8 @@ class Options extends AbstractViewOptions
             'individual_filtering' => false,
             'individual_filtering_position' => 'head',
             'use_integration_options' => false,
-            'force_dom' => false
+            'force_dom' => false,
+            'row_id' => ''
         ));
 
         $resolver->setAllowedTypes('display_start', 'int');
@@ -225,6 +233,7 @@ class Options extends AbstractViewOptions
         $resolver->setAllowedTypes('individual_filtering_position', 'string');
         $resolver->setAllowedTypes('use_integration_options', 'bool');
         $resolver->setAllowedTypes('force_dom', 'bool');
+        $resolver->setAllowedTypes('row_id', 'string');
 
         $resolver->setAllowedValues('individual_filtering_position', array('head', 'foot', 'both'));
 
@@ -700,5 +709,29 @@ class Options extends AbstractViewOptions
     public function getForceDom()
     {
         return $this->forceDom;
+    }
+
+    /**
+     * Set rowId.
+     *
+     * @param string $rowId
+     *
+     * @return $this
+     */
+    public function setRowId($rowId)
+    {
+        $this->rowId = $rowId;
+
+        return $this;
+    }
+
+    /**
+     * Get rowId.
+     *
+     * @return string
+     */
+    public function getRowId()
+    {
+        return $this->rowId;
     }
 }
