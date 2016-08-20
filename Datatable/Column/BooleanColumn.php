@@ -135,7 +135,7 @@ class BooleanColumn extends AbstractColumn
         $resolver->setAllowedTypes('true_label', 'string');
         $resolver->setAllowedTypes('false_label', 'string');
         $resolver->setAllowedTypes('editable', 'bool');
-        $resolver->setAllowedTypes('editable_if', array('string', 'null'));
+        $resolver->setAllowedTypes('editable_if', array('Closure', 'null'));
 
         return $this;
     }
