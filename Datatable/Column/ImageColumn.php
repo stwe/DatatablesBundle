@@ -166,20 +166,17 @@ class ImageColumn extends AbstractColumn
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        parent::configureOptions($resolver);
+
+        $resolver->remove('default_content');
+        $resolver->remove('render');
+
         $resolver->setRequired(array('relative_path'));
 
         $resolver->setDefaults(array(
-            'class' => '',
-            'padding' => '',
-            'name' => '',
             'orderable' => false,
             'searchable' => false,
-            'title' => '',
-            'type' => '',
-            'visible' => true,
-            'width' => '',
             'filter' => array('text', array()),
-            'add_if' => null,
             'imagine_filter' => '',
             'imagine_filter_enlarged' => null,
             'holder_url' => '',
@@ -188,17 +185,7 @@ class ImageColumn extends AbstractColumn
             'enlarge' => false
         ));
 
-        $resolver->setAllowedTypes('class', 'string');
-        $resolver->setAllowedTypes('padding', 'string');
-        $resolver->setAllowedTypes('name', 'string');
-        $resolver->setAllowedTypes('orderable', 'bool');
-        $resolver->setAllowedTypes('searchable', 'bool');
-        $resolver->setAllowedTypes('title', 'string');
-        $resolver->setAllowedTypes('type', 'string');
-        $resolver->setAllowedTypes('visible', 'bool');
-        $resolver->setAllowedTypes('width', 'string');
         $resolver->setAllowedTypes('filter', 'array');
-        $resolver->setAllowedTypes('add_if', array('Closure', 'null'));
         $resolver->setAllowedTypes('imagine_filter', 'string');
         $resolver->setAllowedTypes('imagine_filter_enlarged', array('string', 'null'));
         $resolver->setAllowedTypes('relative_path', 'string');

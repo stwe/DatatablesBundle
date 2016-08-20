@@ -255,6 +255,47 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     }
 
     //-------------------------------------------------
+    // OptionsInterface
+    //-------------------------------------------------
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        // most common column options
+        $resolver->setDefaults(array(
+            'class' => '',
+            'default_content' => null,
+            'padding' => '',
+            'name' => '',
+            'orderable' => true,
+            'render' => null,
+            'searchable' => true,
+            'title' => '',
+            'type' => '',
+            'visible' => true,
+            'width' => '',
+            'add_if' => null,
+        ));
+
+        $resolver->setAllowedTypes('class', 'string');
+        $resolver->setAllowedTypes('default_content', array('string', 'null'));
+        $resolver->setAllowedTypes('padding', 'string');
+        $resolver->setAllowedTypes('name', 'string');
+        $resolver->setAllowedTypes('orderable', 'bool');
+        $resolver->setAllowedTypes('render', array('string', 'null'));
+        $resolver->setAllowedTypes('searchable', 'bool');
+        $resolver->setAllowedTypes('title', 'string');
+        $resolver->setAllowedTypes('type', 'string');
+        $resolver->setAllowedTypes('visible', 'bool');
+        $resolver->setAllowedTypes('width', 'string');
+        $resolver->setAllowedTypes('add_if', array('Closure', 'null'));
+
+        return $this;
+    }
+
+    //-------------------------------------------------
     // OptionsResolver
     //-------------------------------------------------
 
