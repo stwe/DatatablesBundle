@@ -338,7 +338,6 @@ SgDatatablesBundle:Filters:filter_slider.html.twig
 |--------------------|-----------------------|--------------|
 | search_type        | string                | 'eq'         |
 | property           | string                | ''           |
-| search_column      | string                | ''           |
 | class              | string                | ''           |
 | cancel_button      | bool                  | false        |
 | min                | float                 | 0.0          |
