@@ -557,6 +557,16 @@ class DatatableQuery
                         }
 
                         $andExpr = $filter->addAndExpression($andExpr, $qb, $searchField, $searchValue, $i);
+                        
+                        switch ($column->getName()) {
+                            case 'auction.bids.bidder.employer.longName':
+                                $andExpr->add($qb->expr()->eq('auction_bids.isWinner', 1));
+                                break;
+                            default:
+
+                                break;
+                        }
+                        
                     }
                 }
             }
