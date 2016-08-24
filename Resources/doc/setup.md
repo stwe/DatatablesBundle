@@ -95,6 +95,7 @@
 | confirm_message  | string      | 'datatables.bulk.confirmMsg' |          |
 | attributes       | array       | array()                      |          |
 | render_if        | Closure     | null                         |          |
+| role             | string      | ''                           |          |
 
 ## 3. Callbacks
 
