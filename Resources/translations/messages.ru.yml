@@ -33,3 +33,5 @@ daterange:
     format: "DD.MM.YYYY"
 editable:
     tableRedraw: "Подчиненные записи изменены. Таблица обновляется."
+filter:
+    default: "default"

@@ -16,30 +16,69 @@ function highlightTable(v) {
     }
 }
 
+function removeHighlight() {
+    $(selector).removeClass("highlight");
+}
+
+function storageValue(field, value) {
+    localStorage.setItem(field, value);
+}
+
+function getStorageValue(field) {
+    var myValue = null;
+    if (localStorage.getItem(field)) {
+        myValue = localStorage.getItem(field);
+    }
+
+    return myValue;
+}
+
+function getValue(t) {
+    return $(t).val();
+}
+
+function setupHighlight(fieldId, searchValue, val) {
+    if (getStorageValue(fieldId) == null && val == searchValue) {
+        removeHighlight();
+    }
+
+    if (getStorageValue(fieldId) && val == searchValue) {
+        highlightTable(getStorageValue(fieldId));
+    }
+
+    storageValue(fieldId, val);
+}
+
 {# global search #}
 highlightTable(oTable.search());
 
 {# individual filtering #}
 $(selector + "_wrapper").find("tr .individual_filtering").not("input[style='display: none;']").each(function() {
-    {# select2 field #}
-    if ($(this).data('select2')) {
-        var val = $(this).select2('val');
-        if (val) {
-            {# 'multiple' => true #}
-            if (val.isArray) {
-                for (var index = 0; index < val.length; ++index) {
-                    highlightTable(val[index]);
-                }
-            } else {
-                {# 'multiple' => false #}
-                highlightTable(val);
+    var searchValue = $(this).data('search-column');
+    var fieldId = $(this).data('filter-property-id');
+
+    var val = getValue(this);
+
+    {# multiselect #}
+    if (val) {
+        if (val.constructor == Array) {
+            for (var index = 0; index < val.length; ++index) {
+                highlightTable(val[index]);
             }
         }
-    } else {
-        {# normal field #}
-        val = $(this).val();
-        if (val) {
-            highlightTable(val);
+    }
+
+    {# select2 multiselect #}
+    if ($(this).data('select2')) {
+        var s2 = $(this).select2('val');
+        if (s2) {
+            if (s2.constructor == Array) {
+                for (var index = 0; index < s2.length; ++index) {
+                    highlightTable(s2[index]);
+                }
+            }
         }
     }
+
+    setupHighlight(fieldId, searchValue, val);
 });

@@ -33,3 +33,5 @@ daterange:
     format: "YYYY-MM-DD"
 editable:
     tableRedraw: "De wijzigingen betreffen meerdere rijen. De tabel is vernieuwd met nieuwe gegevens."
+filter:
+    default: "default"

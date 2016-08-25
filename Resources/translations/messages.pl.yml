@@ -33,3 +33,5 @@ daterange:
     format: "DD.MM.YYYY"
 editable:
     tableRedraw: "Zmiany dotyczą wielu rekordów. Tabela została przebudowana z nowymi danymi."
+filter:
+    default: "default"
