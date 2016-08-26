@@ -89,6 +89,8 @@ $this->ajax->set(array(
 
 ### Search result highlighting.
 
+**Caution: For the `highlight` feature you must set `individual_filtering_position` option to 'head'!**
+
 1. Include the [jQuery Highlight Plugin](http://bartaz.github.io/sandbox.js/jquery.highlight.html)
 2. Configure your Datatables-Class features
 

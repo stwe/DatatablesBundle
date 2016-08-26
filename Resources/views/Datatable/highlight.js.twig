@@ -49,16 +49,6 @@ function setupHighlight(fieldId, searchValue, val) {
     storageValue(fieldId, val);
 }
 
-{% for column in view_columns %}
-    {% if column.filter.searchColumn is defined  %}
-        {% if column.filter.searchColumn|length > 0 %}
-            console.log('{{ column.filter.searchColumn }}');
-        {% else %}
-            console.log('nischt');
-        {% endif %}
-    {% endif %}
-{% endfor %}
-
 {# global search #}
 highlightTable(oTable.search());
 
