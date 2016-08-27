@@ -165,6 +165,13 @@ class Options extends AbstractViewOptions
      */
     protected $rowId;
 
+    /**
+     * Count and show all results.
+     *
+     * @var boolean
+     */
+    protected $countAllResults;
+
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -211,7 +218,8 @@ class Options extends AbstractViewOptions
             'individual_filtering_position' => 'head',
             'use_integration_options' => false,
             'force_dom' => false,
-            'row_id' => ''
+            'row_id' => '',
+            'count_all_results' => true
         ));
 
         $resolver->setAllowedTypes('display_start', 'int');
@@ -234,6 +242,7 @@ class Options extends AbstractViewOptions
         $resolver->setAllowedTypes('use_integration_options', 'bool');
         $resolver->setAllowedTypes('force_dom', 'bool');
         $resolver->setAllowedTypes('row_id', 'string');
+        $resolver->setAllowedTypes('count_all_results', 'bool');
 
         $resolver->setAllowedValues('individual_filtering_position', array('head', 'foot', 'both'));
 
@@ -718,7 +727,7 @@ class Options extends AbstractViewOptions
      *
      * @return $this
      */
-    public function setRowId($rowId)
+    protected function setRowId($rowId)
     {
         $this->rowId = $rowId;
 
@@ -733,5 +742,29 @@ class Options extends AbstractViewOptions
     public function getRowId()
     {
         return $this->rowId;
+    }
+
+    /**
+     * Set count all results.
+     *
+     * @param boolean $countAllResults
+     *
+     * @return $this
+     */
+    protected function setCountAllResults($countAllResults)
+    {
+        $this->countAllResults = $countAllResults;
+
+        return $this;
+    }
+
+    /**
+     * Get count all results.
+     *
+     * @return boolean
+     */
+    public function getCountAllResults()
+    {
+        return $this->countAllResults;
     }
 }

@@ -35,3 +35,5 @@ editable:
     tableRedraw: "Die Änderung betrifft mehrere Einträge. Die Tabelle wird mit den neuen Daten aktualisiert."
 filter:
     default: "Standard"
+query:
+    filtered: "(gefiltert)"

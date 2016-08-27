@@ -35,3 +35,5 @@ editable:
     tableRedraw: "Zmiany dotyczą wielu rekordów. Tabela została przebudowana z nowymi danymi."
 filter:
     default: "default"
+query:
+    filtered: "(filtered)"

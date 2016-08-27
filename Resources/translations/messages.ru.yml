@@ -35,3 +35,5 @@ editable:
     tableRedraw: "Подчиненные записи изменены. Таблица обновляется."
 filter:
     default: "default"
+query:
+    filtered: "(filtered)"

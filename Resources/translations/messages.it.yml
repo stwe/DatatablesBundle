@@ -35,3 +35,5 @@ editable:
     tableRedraw: "I cambiamenti riguardano record multipli. La tabella è ridisegnata con i nuovi dati."
 filter:
     default: "default"
+query:
+    filtered: "(filtered)"

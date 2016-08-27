@@ -35,3 +35,5 @@ editable:
     tableRedraw: "Les changements liés à plusieurs enregistrements. Le tableau est redessiné avec les nouvelles données."
 filter:
     default: "default"
+query:
+    filtered: "(filtered)"

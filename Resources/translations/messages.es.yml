@@ -35,3 +35,5 @@ editable:
     tableRedraw: "Los cambios afectan a varios registros. La tabla se recargará con los nuevos datos."
 filter:
     default: "default"
+query:
+    filtered: "(filtered)"

@@ -260,6 +260,7 @@ function order() {
 | use_integration_options       | bool   | false                          |
 | force_dom                     | bool   | false                          |
 | row_id                        | string | ''                             |
+| count_all_results             | bool   | true                           |
 
 ## 7. Ajax
 
