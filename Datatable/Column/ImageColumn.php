@@ -112,15 +112,54 @@ class ImageColumn extends AbstractColumn
     public function renderContent(&$row, DatatableQuery $datatableQuery = null)
     {
         if (true === $datatableQuery->getImagineBundle()) {
-            $row[$this->getDql()] = $this->renderImage($row[$this->getDql()], $datatableQuery->getTwig());
+            if ($this->isAssociation()) {
+                $fields = explode('.', $this->getDql());
+                $field = $fields[0];
+
+                if (array_key_exists($field, $row) && null === $row[$field]) {
+                    $row[$field] = $this->renderImage(null, $datatableQuery->getTwig());
+                } else {
+                    $this->getAccessor()->setValue($row, $this->getDqlProperty(), $this->renderImage($this->getAccessor()->getValue($row, $this->getDqlProperty()), $datatableQuery->getTwig()));
+                }
+            } else {
+                $row[$this->getDql()] = $this->renderImage($row[$this->getDql()], $datatableQuery->getTwig());
+            }
         } else {
-            $row[$this->getDql()] = $datatableQuery->getTwig()->render(
-                'SgDatatablesBundle:Helper:render_image.html.twig',
-                array(
-                    'image_name' => $row[$this->getDql()],
-                    'path' => $this->getRelativePath()
-                )
-            );
+            if ($this->isAssociation()) {
+                $fields = explode('.', $this->getDql());
+                $field = $fields[0];
+
+                if (array_key_exists($field, $row) && null === $row[$field]) {
+                    $row[$field] = $datatableQuery->getTwig()->render(
+                        'SgDatatablesBundle:Helper:render_image.html.twig',
+                        array(
+                            'image_name' => null,
+                            'path' => $this->getRelativePath(),
+                        )
+                    );
+                } else {
+                    $render = $datatableQuery->getTwig()->render(
+                        'SgDatatablesBundle:Helper:render_image.html.twig',
+                        array(
+                            'image_name' => $this->getAccessor()->getValue($row, $this->getDqlProperty()),
+                            'path' => $this->getRelativePath(),
+                        )
+                    );
+                    $this->getAccessor()->setValue($row, $this->getDqlProperty(), $render);
+                }
+            } else {
+                $this->getAccessor()->setValue(
+                    $row,
+                    $this->getDqlProperty(),
+                    $datatableQuery->getTwig()->render(
+                        'SgDatatablesBundle:Helper:render_image.html.twig',
+                        array(
+                            'image_name' => $this->getAccessor()->getValue($row, $this->getDqlProperty()),
+                            'path' => $this->getRelativePath(),
+                        )
+                    )
+                );
+            }
         }
     }
 
