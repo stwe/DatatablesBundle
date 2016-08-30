@@ -127,6 +127,13 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     protected $width;
 
     /**
+     * Order direction application sequence.
+     *
+     * @var array
+     */
+    protected $orderSequence;
+
+    /**
      * A Filter instance.
      *
      * @var FilterInterface
@@ -285,6 +292,7 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
             'type' => '',
             'visible' => true,
             'width' => '',
+            'order_sequence' => null,
             'add_if' => null,
         ));
 
@@ -299,6 +307,7 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
         $resolver->setAllowedTypes('type', 'string');
         $resolver->setAllowedTypes('visible', 'bool');
         $resolver->setAllowedTypes('width', 'string');
+        $resolver->setAllowedTypes('order_sequence', array('array', 'null'));
         $resolver->setAllowedTypes('add_if', array('Closure', 'null'));
 
         return $this;
@@ -604,6 +613,30 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     public function getWidth()
     {
         return $this->width;
+    }
+
+    /**
+     * Set orderSequence.
+     *
+     * @param array|null $orderSequence
+     *
+     * @return $this
+     */
+    public function setOrderSequence($orderSequence)
+    {
+        $this->orderSequence = $orderSequence;
+
+        return $this;
+    }
+
+    /**
+     * Get orderSequence.
+     *
+     * @return array|null
+     */
+    public function getOrderSequence()
+    {
+        return $this->orderSequence;
     }
 
     /**

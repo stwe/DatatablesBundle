@@ -36,6 +36,7 @@ SgDatatablesBundle:Column:column.html.twig
 | type            | string         | ''                     |
 | visible         | boolean        | true                   |
 | width           | string         | ''                     |
+| order_sequence  | null or array  | null                   |
 | filter          | array          | array('text', array()) |
 | add_if          | Closure        | null                   |
 | default         | string         | ''                     |
@@ -105,6 +106,7 @@ SgDatatablesBundle:Column:array.html.twig
 | type                 | string         | ''                     |          |
 | visible              | boolean        | true                   |          |
 | width                | string         | ''                     |          |
+| order_sequence       | null or array  | null                   |          |
 | filter               | array          | array('text', array()) |          |
 | add_if               | Closure        | null                   |          |
 | default              | string         | ''                     |          |
@@ -204,6 +206,7 @@ SgDatatablesBundle:Column:boolean.html.twig
 | type            | string         | ''                    |
 | visible         | boolean        | true                  |
 | width           | string         | ''                    |
+| order_sequence  | null or array  | null                  |
 | true_icon       | string         | ''                    |
 | false_icon      | string         | ''                    |
 | true_label      | string         | ''                    |
@@ -255,6 +258,7 @@ SgDatatablesBundle:Column:datetime.html.twig
 | type            | string         | ''                     |
 | visible         | boolean        | true                   |
 | width           | string         | ''                     |
+| order_sequence  | null or array  | null                   |
 | filter          | array          | array('text', array()) |
 | add_if          | Closure        | null                   |
 | date_format     | string         | 'lll'                  |
@@ -297,6 +301,7 @@ SgDatatablesBundle:Column:timeago.html.twig
 | type                 | string         | ''                     |
 | visible              | boolean        | true                   |
 | width                | string         | ''                     |
+| order_sequence       | null or array  | null                   |
 | filter               | array          | array('text', array()) |
 | add_if               | Closure        | null                   |
 
@@ -582,6 +587,7 @@ SgDatatablesBundle:Column:image.html.twig
 | type                     | string         | ''                     |          |
 | visible                  | boolean        | true                   |          |
 | width                    | string         | ''                     |          |
+| order_sequence           | null or array  | null                   |          |
 | filter                   | array          | array('text', array()) |          |
 | add_if                   | Closure        | null                   |          |
 | imagine_filter           | string         | ''                     |          |
@@ -706,6 +712,7 @@ SgDatatablesBundle:Column:image.html.twig
 | type                    | string         | ''                     |          |
 | visible                 | boolean        | true                   |          |
 | width                   | string         | ''                     |          |
+| order_sequence          | null or array  | null                   |          |
 | filter                  | array          | array('text', array()) |          |
 | add_if                  | Closure        | null                   |          |
 | imagine_filter          | string         |                        | required |
@@ -756,6 +763,7 @@ SgDatatablesBundle:Column:progress_bar.html.twig
 | type                 | string         | ''                    |
 | visible              | boolean        | true                  |
 | width                | string         | ''                    |
+| order_sequence       | null or array  | null                  |
 | filter               | array          | see the below example |
 | add_if               | Closure        | null                  |
 | bar_classes          | string         | ''                    |
@@ -796,7 +804,6 @@ use it in the Datatable class:
         ->add('client.name', new MyOtherOwnColumn(), [...])
     ...
 ```
-.
 
 - Define `getTemplate` to talk to datatables api : (ex. `SgDatatablesBundle:Column:column.html.twig`)
 - Implement the `renderContent` function to render complexe contents

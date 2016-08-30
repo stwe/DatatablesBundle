@@ -111,6 +111,7 @@ class ActionColumn extends AbstractColumn
         $resolver->remove('orderable');
         $resolver->remove('render');
         $resolver->remove('searchable');
+        $resolver->remove('order_sequence');
 
         $resolver->setRequired(array('actions'));
 
