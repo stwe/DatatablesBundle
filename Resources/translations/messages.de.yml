@@ -8,6 +8,7 @@ datatables:
         infoFiltered: "(gefiltert von _MAX_ Einträgen)"
         infoPostFix: ""
         search: "Suchen"
+        searchPlaceholder: ""
         first: "Erster"
         previous: "Zurück"
         next: "Nächster"
