@@ -748,19 +748,25 @@ class DatatableQuery
     }
 
     /**
-     * Simple function to get results for export to PHPExcel.
-     *
-     * @return array
-     * @throws Exception
+     *  This function return filtered data without pagination.
+     *  If $returnArray is FALSE the function return a Doctrine\ORM\Query
+     *	@author Mauro Cerone <cerone.m@stesi.eu>
+     *  @param string $returnArray
+     *  @throws Exceptions
      */
-    public function getDataForExport()
+    public function getDataForExport($returnArray = true)
     {
         $this->setSelectFrom();
         $this->setLeftJoins($this->qb);
+        $this->setWhere($this->qb);
         $this->setWhereAllCallback($this->qb);
-        $this->setOrderBy();
-
-        return $this->execute()->getArrayResult();
+        $this->setOrderBy();       
+        if($returnArray){
+        	return $this->execute()->getArrayResult();
+        }
+        else{
+        	return $this->execute();
+        }
     }
 
     //-------------------------------------------------
