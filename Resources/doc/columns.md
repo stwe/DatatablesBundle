@@ -170,7 +170,23 @@ SgDatatablesBundle:Column:column.html.twig
 
 ### Options
 
-see: Column
+| Option          | Type           | Default                |
+|-----------------|----------------|------------------------|
+| class           | string         | ''                     |
+| default_content | null or string | null                   |
+| padding         | string         | ''                     |
+| name            | string         | ''                     |
+| orderable       | boolean        | false                  |
+| render          | null or string | null                   |
+| searchable      | boolean        | false                  |
+| title           | string         | ''                     |
+| type            | string         | ''                     |
+| visible         | boolean        | true                   |
+| width           | string         | ''                     |
+| order_sequence  | null or array  | null                   |
+| filter          | array          | array('text', array()) |
+| add_if          | Closure        | null                   |
+| default         | string         | ''                     |
 
 ### Example
 
