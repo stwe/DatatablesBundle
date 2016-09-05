@@ -565,6 +565,14 @@ class DatatableQuery
                             $orExpr->add($qb->expr()->like('un.date', '?' . $key));
                             $qb->setParameter($key, '%' . $globalSearch . '%');
                             break;
+                        case 'itinerary.loading.referenceNumber':
+                            $orExpr->add($qb->expr()->like('lo.referenceNumber', '?' . $key));
+                            $qb->setParameter($key, '%' . $globalSearch . '%');
+                            break;
+                        case 'itinerary.unloading.referenceNumber':
+                            $orExpr->add($qb->expr()->like('un.referenceNumber', '?' . $key));
+                            $qb->setParameter($key, '%' . $globalSearch . '%');
+                            break;
                         default:
                             $orExpr->add($qb->expr()->like($searchField, '?' . $key));
                             $qb->setParameter($key, '%' . $globalSearch . '%');
@@ -617,6 +625,12 @@ class DatatableQuery
                                 break;
                             case 'itinerary.unloading.address':
                                 $andExpr = $filter->addAndExpression($andExpr, $qb, 'un.address', $searchValue, $i);
+                                break;
+                            case 'itinerary.loading.referenceNumber':
+                                $andExpr = $filter->addAndExpression($andExpr, $qb, 'lo.referenceNumber', $searchValue, $i);
+                                break;
+                            case 'itinerary.unloading.referenceNumber':
+                                $andExpr = $filter->addAndExpression($andExpr, $qb, 'un.referenceNumber', $searchValue, $i);
                                 break;
                             default:
                                 $andExpr = $filter->addAndExpression($andExpr, $qb, $searchField, $searchValue, $i);
