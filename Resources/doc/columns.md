@@ -176,9 +176,7 @@ SgDatatablesBundle:Column:column.html.twig
 | default_content | null or string | null                   |
 | padding         | string         | ''                     |
 | name            | string         | ''                     |
-| orderable       | boolean        | false                  |
 | render          | null or string | null                   |
-| searchable      | boolean        | false                  |
 | title           | string         | ''                     |
 | type            | string         | ''                     |
 | visible         | boolean        | true                   |
