@@ -510,14 +510,14 @@ class DatatableQuery
     private function setWhere(QueryBuilder $qb)
     {
         $globalSearch = $this->requestParams['search']['value'];
-        
+
         /* nima jmen */
         $qb->leftJoin('shipment.itinerary', 'lo', \Doctrine\ORM\Query\Expr\Join::WITH, 'lo.shipmentId = shipment.id AND lo.type= :loadingPoint ')
                 ->leftJoin('shipment.itinerary', 'un', \Doctrine\ORM\Query\Expr\Join::WITH, 'un.shipmentId = shipment.id AND un.type= :unloadingPoint ')
                 ->setParameter("loadingPoint", \Smart\Bundle\AdminBundle\Entity\Itinerary::LOADING_POINT)
                 ->setParameter('unloadingPoint', \Smart\Bundle\AdminBundle\Entity\Itinerary::UNLOADING_POINT);
         /* end of jmen */
-        
+
         // global filtering
         if ('' != $globalSearch) {
 
@@ -530,10 +530,12 @@ class DatatableQuery
                     if (true === $this->isPostgreSQLConnection) {
                         $searchField = $this->cast($searchField, $column);
                     }
-                    
+
                     /* nima jmen */
                     switch ($column->getName()) {
                         case 'winner':
+                        case 'winner.driver_name':
+                        case 'winner.truck':
                             $andExpr = $qb->expr()->andX();
                             $andExpr->add($qb->expr()->like($searchField, '?' . $key));
                             $andExpr->add($qb->expr()->eq('auction_bids.isWinner', 1));
@@ -601,10 +603,12 @@ class DatatableQuery
                         if (true === $this->isPostgreSQLConnection) {
                             $searchField = $this->cast($searchField, $column);
                         }
-                        
+
                         /* nima jmen */
                         switch ($column->getName()) {
                             case 'winner':
+                            case 'winner.driver_name':
+                            case 'winner.truck':
                                 $andExpr = $filter->addAndExpression($andExpr, $qb, $searchField, $searchValue, $i);
                                 $andExpr->add($qb->expr()->eq('auction_bids.isWinner', 1));
                                 break;
