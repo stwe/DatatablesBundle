@@ -92,23 +92,14 @@ class BooleanColumn extends AbstractColumn
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        parent::configureOptions($resolver);
+
         $resolver->setDefaults(array(
-            'class' => '',
-            'default_content' => null,
-            'padding' => '',
-            'name' => '',
-            'orderable' => true,
             'render' => 'render_boolean',
-            'searchable' => true,
-            'title' => '',
-            'type' => '',
-            'visible' => true,
-            'width' => '',
             'filter' => array('select', array(
                 'search_type' => 'eq',
                 'select_options' => array('' => 'Any', '1' => 'Yes', '0' => 'No')
             )),
-            'add_if' => null,
             'true_icon' => '',
             'false_icon' => '',
             'true_label' => '',
@@ -117,25 +108,13 @@ class BooleanColumn extends AbstractColumn
             'editable_if' => null
         ));
 
-        $resolver->setAllowedTypes('class', 'string');
-        $resolver->setAllowedTypes('default_content', array('string', 'null'));
-        $resolver->setAllowedTypes('padding', 'string');
-        $resolver->setAllowedTypes('name', 'string');
-        $resolver->setAllowedTypes('orderable', 'bool');
-        $resolver->setAllowedTypes('render', 'string');
-        $resolver->setAllowedTypes('searchable', 'bool');
-        $resolver->setAllowedTypes('title', 'string');
-        $resolver->setAllowedTypes('type', 'string');
-        $resolver->setAllowedTypes('visible', 'bool');
-        $resolver->setAllowedTypes('width', 'string');
         $resolver->setAllowedTypes('filter', 'array');
-        $resolver->setAllowedTypes('add_if', array('Closure', 'null'));
         $resolver->setAllowedTypes('true_icon', 'string');
         $resolver->setAllowedTypes('false_icon', 'string');
         $resolver->setAllowedTypes('true_label', 'string');
         $resolver->setAllowedTypes('false_label', 'string');
         $resolver->setAllowedTypes('editable', 'bool');
-        $resolver->setAllowedTypes('editable_if', array('string', 'null'));
+        $resolver->setAllowedTypes('editable_if', array('Closure', 'null'));
 
         return $this;
     }

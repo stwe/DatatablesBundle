@@ -16,7 +16,13 @@
         style="width:100%;"
         {% if column.name %}name="{{ column.name }}"{% endif %}
         data-filter-property-id="{{ filterColumnId }}"
+        data-search-column="{{ column.filter.searchColumn }}"
     >
+        {% if column.filter.searchColumn %}
+            <option value="{{ column.filter.searchColumn }}">
+                {{ column.filter.searchColumn }} ({{ 'filter.default'|trans({}, 'messages') }})
+            </option>
+        {% endif %}
         {% for key, name in column.filter.selectOptions %}
             <option value="{{ key }}">{{ name }}</option>
         {% endfor %}
@@ -32,8 +38,8 @@
     <script>
         $('#{{ tableId }}-sg-filter-{{ selectorId }}').select2({
             {% if column.filter.placeholder %}placeholder: "{{ column.filter.placeholder }}",{% endif %}
-            tags: {{ column.filter.tags }},
-            allowClear: {{ column.filter.allowClear }},
+            tags: {{ column.filter.tags ? 'true' : 'false' }},
+            allowClear: {{ column.filter.allowClear ? 'true' : 'false' }},
             language: "{{ column.filter.language }}",
             dropdownAutoWidth : true,
             {% if column.filter.url %}
@@ -41,7 +47,7 @@
                 url: "{{ path(column.filter.url) }}",
                 dataType: 'json',
                 delay: {{ column.filter.delay }},
-                cache: {{ column.filter.cache }},
+                cache: {{ column.filter.cache ? 'true' : 'false' }},
                 data: function (params) {
                     return {
                         q: params.term,
@@ -69,5 +75,8 @@
             },
             {% endif %}
         });
+        {% if column.filter.searchColumn %}
+            $('#{{ tableId }}-sg-filter-{{ selectorId }}').val($('#{{ tableId }}-sg-filter-{{ selectorId }} option:first-child').val()).trigger('change');
+        {% endif %}
     </script>
 {% endblock %}

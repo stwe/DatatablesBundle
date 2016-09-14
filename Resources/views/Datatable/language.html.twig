@@ -6,15 +6,24 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
+{% set filtered %}
+    {% if view_options.countAllResults %}
+        {{ 'datatables.datatable.infoFiltered'|trans({}, 'messages') -}}
+    {% else %}
+        {{ 'query.filtered'|trans({}, 'messages') -}}
+    {% endif %}
+{% endset %}
+
 "language": {
     "processing": "{{ 'datatables.datatable.processing'|trans({}, 'messages') }}",
     "lengthMenu": "{{ 'datatables.datatable.lengthMenu'|trans({}, 'messages') }}",
     "zeroRecords": "{{ 'datatables.datatable.zeroRecords'|trans({}, 'messages') }}",
     "info": "{{ 'datatables.datatable.info'|trans({}, 'messages') }}",
     "infoEmpty": "{{ 'datatables.datatable.infoEmpty'|trans({}, 'messages') }}",
-    "sInfoFiltered": "{{ 'datatables.datatable.infoFiltered'|trans({}, 'messages') }}",
+    "sInfoFiltered": "{{ filtered }}",
     "infoPostFix": "{{ 'datatables.datatable.infoPostFix'|trans({}, 'messages') }}",
     "search": "{{ 'datatables.datatable.search'|trans({}, 'messages') }}",
+    "searchPlaceholder": "{{ 'datatables.datatable.searchPlaceholder'|trans({}, 'messages') }}",
     "url": "",
     "paginate": {
         "first": "{{ 'datatables.datatable.first'|trans({}, 'messages') }}",

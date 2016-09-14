@@ -14,6 +14,7 @@ namespace Sg\DatatablesBundle\Datatable\Filter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Andx;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Exception;
 
 /**
  * Class Select2Filter
@@ -33,7 +34,7 @@ class Select2Filter extends SelectFilter
      * A placeholder value can be defined and will be displayed until a selection is made.
      * Requires IE 10+
      *
-     * @var string
+     * @var string|null
      */
     protected $placeholder;
 
@@ -61,7 +62,7 @@ class Select2Filter extends SelectFilter
     /**
      * URL to get the results from.
      *
-     * @var string
+     * @var string|null
      */
     protected $url;
 
@@ -129,7 +130,7 @@ class Select2Filter extends SelectFilter
         $resolver->setDefaults(array(
             'multiple' => true,
             'placeholder' => null,
-            'allow_clear' => true,
+            'allow_clear' => false, // allow_clear will only work if a placeholder is set
             'tags' => true,
             'language' => 'en',
             'url' => null,
@@ -207,9 +208,14 @@ class Select2Filter extends SelectFilter
      * @param boolean $allowClear
      *
      * @return $this
+     * @throws Exception
      */
     public function setAllowClear($allowClear)
     {
+        if (null === $this->placeholder && true === $allowClear) {
+            throw new Exception('setAllowClear: The allow_clear option will only work if a placeholder is set.');
+        }
+
         $this->allowClear = $allowClear;
 
         return $this;

@@ -18,6 +18,7 @@ use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
 use Sg\DatatablesBundle\Datatable\Filter\FilterFactory;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Closure;
 
 /**
@@ -126,6 +127,13 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     protected $width;
 
     /**
+     * Order direction application sequence.
+     *
+     * @var array
+     */
+    protected $orderSequence;
+
+    /**
      * A Filter instance.
      *
      * @var FilterInterface
@@ -168,6 +176,13 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
      */
     protected $index;
 
+    /**
+     * Property accessor.
+     *
+     * @var PropertyAccess
+     */
+    protected $accessor;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -178,6 +193,7 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     public function __construct()
     {
         $this->options = array();
+        $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
     //-------------------------------------------------
@@ -252,6 +268,49 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     public function isAssociation()
     {
         return (false === strstr($this->data, '.') ? false : true);
+    }
+
+    //-------------------------------------------------
+    // OptionsInterface
+    //-------------------------------------------------
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        // most common column options
+        $resolver->setDefaults(array(
+            'class' => '',
+            'default_content' => null,
+            'padding' => '',
+            'name' => '',
+            'orderable' => true,
+            'render' => null,
+            'searchable' => true,
+            'title' => '',
+            'type' => '',
+            'visible' => true,
+            'width' => '',
+            'order_sequence' => null,
+            'add_if' => null,
+        ));
+
+        $resolver->setAllowedTypes('class', 'string');
+        $resolver->setAllowedTypes('default_content', array('string', 'null'));
+        $resolver->setAllowedTypes('padding', 'string');
+        $resolver->setAllowedTypes('name', 'string');
+        $resolver->setAllowedTypes('orderable', 'bool');
+        $resolver->setAllowedTypes('render', array('string', 'null'));
+        $resolver->setAllowedTypes('searchable', 'bool');
+        $resolver->setAllowedTypes('title', 'string');
+        $resolver->setAllowedTypes('type', 'string');
+        $resolver->setAllowedTypes('visible', 'bool');
+        $resolver->setAllowedTypes('width', 'string');
+        $resolver->setAllowedTypes('order_sequence', array('array', 'null'));
+        $resolver->setAllowedTypes('add_if', array('Closure', 'null'));
+
+        return $this;
     }
 
     //-------------------------------------------------
@@ -557,6 +616,30 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     }
 
     /**
+     * Set orderSequence.
+     *
+     * @param array|null $orderSequence
+     *
+     * @return $this
+     */
+    public function setOrderSequence($orderSequence)
+    {
+        $this->orderSequence = $orderSequence;
+
+        return $this;
+    }
+
+    /**
+     * Get orderSequence.
+     *
+     * @return array|null
+     */
+    public function getOrderSequence()
+    {
+        return $this->orderSequence;
+    }
+
+    /**
      * Set Filter instance.
      *
      * @param array $filter
@@ -703,5 +786,25 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     public function getIndex()
     {
         return $this->index;
+    }
+
+    /**
+     * Get dqlProperty.
+     *
+     * @return string
+     */
+    public function getDqlProperty()
+    {
+        return '['.str_replace('.','][',$this->dql).']';
+    }
+
+    /**
+     * Get accessor.
+     *
+     * @return PropertyAccess|\Symfony\Component\PropertyAccess\PropertyAccessor
+     */
+    public function getAccessor()
+    {
+        return $this->accessor;
     }
 }

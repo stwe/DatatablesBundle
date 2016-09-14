@@ -15,13 +15,15 @@
         style="{% if column.width %} width:{{ column.width }};{% endif %}"
         {% if column.name %}name="{{ column.name }}"{% endif %}
         data-filter-property-id="{{ filterColumnId }}"
-        >
+        data-search-column="{{ column.filter.searchColumn }}"
+    >
+        {% if column.filter.searchColumn %}
+            <option value="{{ column.filter.searchColumn }}">
+                {{ column.filter.searchColumn }} ({{ 'filter.default'|trans({}, 'messages') }})
+            </option>
+        {% endif %}
         {% for key, name in column.filter.selectOptions %}
-            {% if loop.first %}
-                <option value="{{ key }}" selected="selected">{{ name }}</option>
-            {% else %}
-                <option value="{{ key }}">{{ name }}</option>
-            {% endif %}
+            <option value="{{ key }}">{{ name }}</option>
         {% endfor %}
     </select>
     {% if true == column.filter.cancelButton %}

@@ -79,10 +79,9 @@ class DatatableGenerator extends Generator
      * @param array           $fields     The datatable fields
      * @param string          $ajaxUrl    The ajax url
      * @param boolean         $bootstrap3 The bootstrap3 flag
-     *
-     * @throws RuntimeException
+     * @param mixed           $primaryKey
      */
-    public function generate(BundleInterface $bundle, $entity, array $fields, $ajaxUrl, $bootstrap3)
+    public function generate(BundleInterface $bundle, $entity, array $fields, $ajaxUrl, $bootstrap3, $primaryKey)
     {
         $parts = explode("\\", $entity);
         $entityClass = array_pop($parts);
@@ -101,7 +100,6 @@ class DatatableGenerator extends Generator
 
         $this->ajaxUrl = $ajaxUrl? $ajaxUrl : $entityClassLowerCase . '_results';
 
-
         $this->renderFile('class.php.twig', $this->classPath, array(
             'namespace' => $bundle->getNamespace(),
             'entity_namespace' => implode('\\', $parts),
@@ -112,7 +110,8 @@ class DatatableGenerator extends Generator
             'fields' => $fields,
             'ajax_url' => $this->ajaxUrl,
             'bootstrap3' => (boolean) $bootstrap3,
-            'route_pref' => $entityClassLowerCase
+            'route_pref' => $entityClassLowerCase,
+            'primary_key' => $primaryKey
         ));
     }
 }

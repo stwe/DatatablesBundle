@@ -80,6 +80,8 @@ class GenerateDatatableCommand extends ContainerAwareCommand
             throw new RuntimeException('The datatable class generator does not support entities with multiple primary keys.');
         }
 
+        $primaryKey = $metadata[0]->identifier;
+
         if (0 == count($fields)) {
             $fields = $this->getFieldsFromMetadata($metadata[0]);
         }
@@ -87,7 +89,7 @@ class GenerateDatatableCommand extends ContainerAwareCommand
         $bundle = $this->getContainer()->get('kernel')->getBundle($bundle);
 
         $generator = $this->getGenerator($bundle);
-        $generator->generate($bundle, $entity, $fields, $ajaxUrl, $bootstrap);
+        $generator->generate($bundle, $entity, $fields, $ajaxUrl, $bootstrap, $primaryKey[0]);
 
         $output->writeln(
             sprintf(

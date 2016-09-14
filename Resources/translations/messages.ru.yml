@@ -8,6 +8,7 @@ datatables:
         infoFiltered: "(отфильтровано из _MAX_ записей)"
         infoPostFix: ""
         search: "Поиск"
+        searchPlaceholder: ""
         first: "Первая"
         previous: "Предыдущая"
         next: "Следующая"
@@ -33,3 +34,7 @@ daterange:
     format: "DD.MM.YYYY"
 editable:
     tableRedraw: "Подчиненные записи изменены. Таблица обновляется."
+filter:
+    default: "default"
+query:
+    filtered: "(filtered)"

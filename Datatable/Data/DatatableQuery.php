@@ -729,9 +729,11 @@ class DatatableQuery
         $formatter = new DatatableFormatter($this);
         $formatter->runFormatter();
 
+        $countAllResults = $this->datatableView->getOptions()->getCountAllResults();
+
         $outputHeader = array(
             'draw' => (int) $this->requestParams['draw'],
-            'recordsTotal' => (int) $this->getCountAllResults($this->rootEntityIdentifier),
+            'recordsTotal' => true === $countAllResults ? (int) $this->getCountAllResults($this->rootEntityIdentifier) : 0,
             'recordsFiltered' => (int) $this->getCountFilteredResults($this->rootEntityIdentifier, $buildQuery)
         );
 

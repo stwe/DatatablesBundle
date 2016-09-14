@@ -112,15 +112,54 @@ class ImageColumn extends AbstractColumn
     public function renderContent(&$row, DatatableQuery $datatableQuery = null)
     {
         if (true === $datatableQuery->getImagineBundle()) {
-            $row[$this->getDql()] = $this->renderImage($row[$this->getDql()], $datatableQuery->getTwig());
+            if ($this->isAssociation()) {
+                $fields = explode('.', $this->getDql());
+                $field = $fields[0];
+
+                if (array_key_exists($field, $row) && null === $row[$field]) {
+                    $row[$field] = $this->renderImage(null, $datatableQuery->getTwig());
+                } else {
+                    $this->getAccessor()->setValue($row, $this->getDqlProperty(), $this->renderImage($this->getAccessor()->getValue($row, $this->getDqlProperty()), $datatableQuery->getTwig()));
+                }
+            } else {
+                $row[$this->getDql()] = $this->renderImage($row[$this->getDql()], $datatableQuery->getTwig());
+            }
         } else {
-            $row[$this->getDql()] = $datatableQuery->getTwig()->render(
-                'SgDatatablesBundle:Helper:render_image.html.twig',
-                array(
-                    'image_name' => $row[$this->getDql()],
-                    'path' => $this->getRelativePath()
-                )
-            );
+            if ($this->isAssociation()) {
+                $fields = explode('.', $this->getDql());
+                $field = $fields[0];
+
+                if (array_key_exists($field, $row) && null === $row[$field]) {
+                    $row[$field] = $datatableQuery->getTwig()->render(
+                        'SgDatatablesBundle:Helper:render_image.html.twig',
+                        array(
+                            'image_name' => null,
+                            'path' => $this->getRelativePath(),
+                        )
+                    );
+                } else {
+                    $render = $datatableQuery->getTwig()->render(
+                        'SgDatatablesBundle:Helper:render_image.html.twig',
+                        array(
+                            'image_name' => $this->getAccessor()->getValue($row, $this->getDqlProperty()),
+                            'path' => $this->getRelativePath(),
+                        )
+                    );
+                    $this->getAccessor()->setValue($row, $this->getDqlProperty(), $render);
+                }
+            } else {
+                $this->getAccessor()->setValue(
+                    $row,
+                    $this->getDqlProperty(),
+                    $datatableQuery->getTwig()->render(
+                        'SgDatatablesBundle:Helper:render_image.html.twig',
+                        array(
+                            'image_name' => $this->getAccessor()->getValue($row, $this->getDqlProperty()),
+                            'path' => $this->getRelativePath(),
+                        )
+                    )
+                );
+            }
         }
     }
 
@@ -166,20 +205,17 @@ class ImageColumn extends AbstractColumn
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        parent::configureOptions($resolver);
+
+        $resolver->remove('default_content');
+        $resolver->remove('render');
+
         $resolver->setRequired(array('relative_path'));
 
         $resolver->setDefaults(array(
-            'class' => '',
-            'padding' => '',
-            'name' => '',
             'orderable' => false,
             'searchable' => false,
-            'title' => '',
-            'type' => '',
-            'visible' => true,
-            'width' => '',
             'filter' => array('text', array()),
-            'add_if' => null,
             'imagine_filter' => '',
             'imagine_filter_enlarged' => null,
             'holder_url' => '',
@@ -188,17 +224,7 @@ class ImageColumn extends AbstractColumn
             'enlarge' => false
         ));
 
-        $resolver->setAllowedTypes('class', 'string');
-        $resolver->setAllowedTypes('padding', 'string');
-        $resolver->setAllowedTypes('name', 'string');
-        $resolver->setAllowedTypes('orderable', 'bool');
-        $resolver->setAllowedTypes('searchable', 'bool');
-        $resolver->setAllowedTypes('title', 'string');
-        $resolver->setAllowedTypes('type', 'string');
-        $resolver->setAllowedTypes('visible', 'bool');
-        $resolver->setAllowedTypes('width', 'string');
         $resolver->setAllowedTypes('filter', 'array');
-        $resolver->setAllowedTypes('add_if', array('Closure', 'null'));
         $resolver->setAllowedTypes('imagine_filter', 'string');
         $resolver->setAllowedTypes('imagine_filter_enlarged', array('string', 'null'));
         $resolver->setAllowedTypes('relative_path', 'string');

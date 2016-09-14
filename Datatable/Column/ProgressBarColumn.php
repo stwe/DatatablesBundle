@@ -89,21 +89,15 @@ class ProgressBarColumn extends AbstractColumn
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        parent::configureOptions($resolver);
+
+        $resolver->remove('default_content');
+
         $resolver->setDefaults(array(
-            'class' => '',
-            'padding' => '',
-            'name' => '',
-            'orderable' => true,
             'render' => 'render_progress_bar',
-            'searchable' => true,
-            'title' => '',
-            'type' => '',
-            'visible' => true,
-            'width' => '',
             'filter' => array('text', array(
                 'search_type' => 'eq'
             )),
-            'add_if' => null,
             'bar_classes' => '',
             'value_min' => '0',
             'value_max' => '100',
@@ -111,18 +105,7 @@ class ProgressBarColumn extends AbstractColumn
             'multi_color' => false
         ));
 
-        $resolver->setAllowedTypes('class', 'string');
-        $resolver->setAllowedTypes('padding', 'string');
-        $resolver->setAllowedTypes('name', 'string');
-        $resolver->setAllowedTypes('orderable', 'bool');
-        $resolver->setAllowedTypes('render', array('string', 'null'));
-        $resolver->setAllowedTypes('searchable', 'bool');
-        $resolver->setAllowedTypes('title', 'string');
-        $resolver->setAllowedTypes('type', 'string');
-        $resolver->setAllowedTypes('visible', 'bool');
-        $resolver->setAllowedTypes('width', 'string');
         $resolver->setAllowedTypes('filter', 'array');
-        $resolver->setAllowedTypes('add_if', array('Closure', 'null'));
         $resolver->setAllowedTypes('bar_classes', 'string');
         $resolver->setAllowedTypes('value_min', 'string');
         $resolver->setAllowedTypes('value_max', 'string');

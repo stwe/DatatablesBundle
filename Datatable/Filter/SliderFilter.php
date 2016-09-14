@@ -236,7 +236,6 @@ class SliderFilter extends AbstractFilter
         $resolver->setDefaults(array(
             'search_type' => 'eq',
             'property' => '',
-            'search_column' => '',
             'class' => '',
             'cancel_button' => false,
             'min' => 0.0,
@@ -266,7 +265,6 @@ class SliderFilter extends AbstractFilter
 
         $resolver->setAllowedTypes('search_type', 'string');
         $resolver->setAllowedTypes('property', 'string');
-        $resolver->setAllowedTypes('search_column', 'string');
         $resolver->setAllowedTypes('class', 'string');
         $resolver->setAllowedTypes('cancel_button', 'bool');
         $resolver->setAllowedTypes('min', 'float');
