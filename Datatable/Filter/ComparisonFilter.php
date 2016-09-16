@@ -65,7 +65,9 @@ class ComparisonFilter extends AbstractFilter
             'property' => '',
             'search_column' => '',
             'class' => '',
-            'cancel_button' => false
+            'cancel_button' => false,
+            'select_options' => array(),
+
         ));
 
         $resolver->setAllowedTypes('search_type', 'string');
@@ -73,6 +75,7 @@ class ComparisonFilter extends AbstractFilter
         $resolver->setAllowedTypes('search_column', 'string');
         $resolver->setAllowedTypes('class', 'string');
         $resolver->setAllowedTypes('cancel_button', 'bool');
+        $resolver->setAllowedTypes('select_options', 'array');
 
         $resolver->setAllowedValues('search_type', array('like', 'eq','lt', 'gt'));
 

@@ -29,3 +29,16 @@
         {{ cancel_button_html }}
     {% endif %}
 {% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        try {
+            $( "#{{ tableId }}-sg-filter-{{ selectorId }}" ).on('change',function() {
+                $( "#{{ tableId }}-sg-filter-{{ selectorId }} option:selected" ).val();
+
+            });
+        } catch (e) {
+            console.log(e.message);
+        }
+    </script>
+{% endblock %}
