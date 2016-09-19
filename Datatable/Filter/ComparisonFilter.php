@@ -37,10 +37,32 @@ class ComparisonFilter extends AbstractFilter
      */
     public function addAndExpression(Andx $andExpr, QueryBuilder $pivot, $searchField, $searchValue, &$i)
     {
-        $andExpr = $this->getAndExpression($andExpr, $pivot, $searchField, $searchValue, $i);
-        $i++;
 
+        if ($searchField == "shipment.originalDistance" && ($searchValue[0] == ">" || $searchValue[0] == "<" || $searchValue[0] == "=")) {
+            $operator = $searchValue[0];
+            $searchValue = substr($searchValue, 1);
+            switch ($operator) {
+                case '=':
+                    $andExpr->add($pivot->expr()->eq($searchField, '?' . $i));
+                    $pivot->setParameter($i, $searchValue);
+                    break;
+                case '>':
+                    $andExpr->add($pivot->expr()->gt($searchField, '?' . $i));
+                    $pivot->setParameter($i, $searchValue);
+                    break;
+                case '<':
+                    $andExpr->add($pivot->expr()->lt($searchField, '?' . $i));
+                    $pivot->setParameter($i, $searchValue);
+                    break;
+            }
+        } else {
+
+            $andExpr = $this->getAndExpression($andExpr, $pivot, $searchField, $searchValue, $i);
+        }
+
+        $i++;
         return $andExpr;
+
     }
 
     /**
@@ -77,7 +99,7 @@ class ComparisonFilter extends AbstractFilter
         $resolver->setAllowedTypes('cancel_button', 'bool');
         $resolver->setAllowedTypes('select_options', 'array');
 
-        $resolver->setAllowedValues('search_type', array('like', 'eq','lt', 'gt'));
+        $resolver->setAllowedValues('search_type', array('like', 'eq', 'lt', 'gt'));
 
         return $this;
     }

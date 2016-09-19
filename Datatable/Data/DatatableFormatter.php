@@ -60,6 +60,7 @@ class DatatableFormatter
                 $column->addDataToOutputArray($row);
                 // 3. Call columns renderContent method to format row items (e.g. for images)
                 $column->renderContent($row, $this->datatableQuery);
+                dump($this->datatableQuery);
             }
 
             $this->output['data'][] = $row;
