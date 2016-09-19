@@ -1,12 +1,11 @@
 {% extends 'SgDatatablesBundle:Filters:filter.html.twig' %}
 
 {% block html %}
-    <select
-            id="{{ tableId }}-sg-select-{{ selectorId }}"
+    <select id="{{ tableId }}-sg-select-{{ selectorId }}"
             class="individual_filtering{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
             style="{% if column.width %} width:{{ column.width }};{% endif %}"
             {% if column.name %}name="{{ column.name }}"{% endif %}
-            data-filter-property-id="{{ filterColumnId }}" >
+            data-filter-property-id="{{ filterColumnId }}">
         {% for key, name in column.filter.selectOptions %}
             {% if loop.first %}
                 <option value="{{ key }}" selected="selected">{{ name }}</option>
@@ -42,11 +41,11 @@
 {% block javascript %}
     <script type="text/javascript">
         try {
-            $( "#{{ tableId }}-sg-select-{{ selectorId }}" ).on('change',function() {
+            $("#{{ tableId }}-sg-select-{{ selectorId }}").on('change', function () {
                 $('#{{ tableId }}-sg-filter-{{ selectorId }}').val('');
                 var option = $('#{{ tableId }}-sg-select-{{ selectorId }}').find(":selected").text();
                 var text = $('#{{ tableId }}-sg-text-{{ selectorId }}').val();
-                $('#{{ tableId }}-sg-filter-{{ selectorId }}').val(option+text);
+                $('#{{ tableId }}-sg-filter-{{ selectorId }}').val(option + text);
                 $('#{{ tableId }}-sg-filter-{{ selectorId }}').trigger("change");
 
             });
@@ -55,14 +54,14 @@
         }
         try {
 
-        $("#{{ tableId }}-sg-text-{{ selectorId }}"  ).on('keypress keyup blur click',function() {
-            $('#{{ tableId }}-sg-filter-{{ selectorId }}').val('');
-            var option = $('#{{ tableId }}-sg-select-{{ selectorId }}').find(":selected").text();
-            var text = $('#{{ tableId }}-sg-text-{{ selectorId }}').val();
-            $('#{{ tableId }}-sg-filter-{{ selectorId }}').val(option+text);
-            $('#{{ tableId }}-sg-filter-{{ selectorId }}').trigger("change");
+            $("#{{ tableId }}-sg-text-{{ selectorId }}").on('keypress keyup blur click', function () {
+                $('#{{ tableId }}-sg-filter-{{ selectorId }}').val('');
+                var option = $('#{{ tableId }}-sg-select-{{ selectorId }}').find(":selected").text();
+                var text = $('#{{ tableId }}-sg-text-{{ selectorId }}').val();
+                $('#{{ tableId }}-sg-filter-{{ selectorId }}').val(option + text);
+                $('#{{ tableId }}-sg-filter-{{ selectorId }}').trigger("change");
 
-        });
+            });
         } catch (e) {
             console.log(e.message);
         }

@@ -636,6 +636,9 @@ class DatatableQuery
                             case 'itinerary.unloading.referenceNumber':
                                 $andExpr = $filter->addAndExpression($andExpr, $qb, 'un.referenceNumber', $searchValue, $i);
                                 break;
+                            case 'originalDistance':
+                                $andExpr = $this->customDistanceAndExpression($andExpr, $qb, 'distance'-'originalDistance', $searchValue, $i);
+                                break;
                             default:
                                 $andExpr = $filter->addAndExpression($andExpr, $qb, $searchField, $searchValue, $i);
                                 break;
@@ -652,6 +655,28 @@ class DatatableQuery
 
         return $this;
     }
+
+    private  function customDistanceAndExpression(Query\Expr\Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, $i){
+        $operator = $searchValue[0];
+        $searchValue = substr($searchValue, 1);
+        switch ($operator) {
+            case '=':
+                $andExpr->add($qb->expr()->eq($searchField, '?' . $i));
+                $qb->setParameter($i, $searchValue);
+                break;
+            case '>':
+                $andExpr->add($qb->expr()->gt($searchField, '?' . $i));
+                $qb->setParameter($i, $searchValue);
+                break;
+            case '<':
+                $andExpr->add($qb->expr()->lt($searchField, '?' . $i));
+                $qb->setParameter($i, $searchValue);
+                break;
+        }
+
+        return $andExpr;
+    }
+
 
     /**
      * Ordering.
@@ -1021,5 +1046,8 @@ class DatatableQuery
     {
         return $this->imagineBundle;
     }
+
+
+
 
 }

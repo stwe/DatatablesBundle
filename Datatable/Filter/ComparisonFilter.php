@@ -38,7 +38,7 @@ class ComparisonFilter extends AbstractFilter
     public function addAndExpression(Andx $andExpr, QueryBuilder $pivot, $searchField, $searchValue, &$i)
     {
 
-        if ($searchField == "shipment.originalDistance" && ($searchValue[0] == ">" || $searchValue[0] == "<" || $searchValue[0] == "=")) {
+        if ($searchValue[0] == ">" || $searchValue[0] == "<" || $searchValue[0] == "=") {
             $operator = $searchValue[0];
             $searchValue = substr($searchValue, 1);
             switch ($operator) {
