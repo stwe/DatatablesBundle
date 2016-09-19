@@ -56,8 +56,8 @@ class ComparisonFilter extends AbstractFilter
                     break;
             }
         } else {
-
-            $andExpr = $this->getAndExpression($andExpr, $pivot, $searchField, $searchValue, $i);
+            $andExpr->add($pivot->expr()->like($searchField, '?' . $i));
+            $pivot->setParameter($i, '%' . $searchValue . '%');
         }
 
         $i++;

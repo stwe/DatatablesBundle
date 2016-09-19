@@ -6,8 +6,7 @@
             class="individual_filtering{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
             style="{% if column.width %} width:{{ column.width }};{% endif %}"
             {% if column.name %}name="{{ column.name }}"{% endif %}
-            data-filter-property-id="{{ filterColumnId }}"
-    >
+            data-filter-property-id="{{ filterColumnId }}" >
         {% for key, name in column.filter.selectOptions %}
             {% if loop.first %}
                 <option value="{{ key }}" selected="selected">{{ name }}</option>
@@ -17,7 +16,17 @@
         {% endfor %}
     </select>
 
+
     <input type="text"
+           id="{{ tableId }}-sg-text-{{ selectorId }}"
+           class="individual_filtering{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
+           style="{% if column.width %} width:{{ column.width }};{% endif %}"
+           placeholder="{{ column.title|striptags|trim }}"
+           data-filter-property-id="{{ filterColumnId }}"
+           {% if column.name %}name="{{ column.name }}"{% endif %} />
+
+
+    <input type="text" style="display: none"
            id="{{ tableId }}-sg-filter-{{ selectorId }}"
            class="individual_filtering{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
            style="{% if column.width %} width:{{ column.width }};{% endif %}"
@@ -36,9 +45,24 @@
             $( "#{{ tableId }}-sg-select-{{ selectorId }}" ).on('change',function() {
                 $('#{{ tableId }}-sg-filter-{{ selectorId }}').val('');
                 var option = $('#{{ tableId }}-sg-select-{{ selectorId }}').find(":selected").text();
-                var text = $('#{{ tableId }}-sg-filter-{{ selectorId }}').val();
+                var text = $('#{{ tableId }}-sg-text-{{ selectorId }}').val();
                 $('#{{ tableId }}-sg-filter-{{ selectorId }}').val(option+text);
+                $('#{{ tableId }}-sg-filter-{{ selectorId }}').trigger("change");
+
             });
+        } catch (e) {
+            console.log(e.message);
+        }
+        try {
+
+        $("#{{ tableId }}-sg-text-{{ selectorId }}"  ).on('keypress keyup blur click',function() {
+            $('#{{ tableId }}-sg-filter-{{ selectorId }}').val('');
+            var option = $('#{{ tableId }}-sg-select-{{ selectorId }}').find(":selected").text();
+            var text = $('#{{ tableId }}-sg-text-{{ selectorId }}').val();
+            $('#{{ tableId }}-sg-filter-{{ selectorId }}').val(option+text);
+            $('#{{ tableId }}-sg-filter-{{ selectorId }}').trigger("change");
+
+        });
         } catch (e) {
             console.log(e.message);
         }
