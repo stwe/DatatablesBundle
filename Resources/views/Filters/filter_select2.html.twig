@@ -56,13 +56,15 @@
                 },
                 processResults: function (data, params) {
                     params.page = params.page || 1;
-
+                    
                     var resultArray = [];
                     for (var id in data) {
+                        {# nima jmen #}
                         resultArray.push({
-                            id : data[id],
+                            id : id,
                             text : data[id]
                         });
+                        {# end of nima jmen #}
                     }
 
                     return {

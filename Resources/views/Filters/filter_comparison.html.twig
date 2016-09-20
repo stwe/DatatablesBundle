@@ -1,0 +1,71 @@
+{% extends 'SgDatatablesBundle:Filters:filter.html.twig' %}
+
+{% block html %}
+    <select id="select-{{ selectorId }}"
+            class="{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
+            style="{% if column.width %} width:{{ column.width }};{% endif %}"
+            {% if column.name %}name="{{ column.name }}"{% endif %}
+            >
+        {% for key, name in column.filter.selectOptions %}
+            {% if loop.first %}
+                <option value="{{ key }}" selected="selected">{{ name }}</option>
+            {% else %}
+                <option value="{{ key }}">{{ name }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+
+
+    <input type="text"
+           id="text-{{ selectorId }}"
+           class="{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
+           style="{% if column.width %} width:{{ column.width }};{% endif %}"
+           placeholder="{{ column.title|striptags|trim }}"
+
+           {% if column.name %}name="{{ column.name }}"{% endif %} />
+
+
+    <input type="text" style="display: none"
+           id="{{ tableId }}-sg-filter-{{ selectorId }}"
+           class="individual_filtering{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
+           style="{% if column.width %} width:{{ column.width }};{% endif %}"
+           placeholder="{{ column.title|striptags|trim }}"
+           data-filter-property-id="{{ filterColumnId }}"
+           {% if column.name %}name="{{ column.name }}"{% endif %} />
+
+    {% if true == column.filter.cancelButton %}
+        {{ cancel_button_html }}
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        try {
+            $("#select-{{ selectorId }}").on('change', function () {
+                {#$('#{{ tableId }}-sg-filter-{{ selectorId }}').val('');#}
+                var option = $(this).val();
+                var text = $('#text-{{ selectorId }}').val();
+                var newVal = option + '' + text;
+                $('#{{ tableId }}-sg-filter-{{ selectorId }}').val(newVal);
+                $('#{{ tableId }}-sg-filter-{{ selectorId }}').trigger("change");
+
+            });
+        } catch (e) {
+            console.log(e.message);
+        }
+        try {
+
+            $("#text-{{ selectorId }}").on('keyup click', function () {
+
+                var option = $('#select-{{ selectorId }}').val();
+                var text = $(this).val();
+                var newVal = option + '' + text;
+                $('#{{ tableId }}-sg-filter-{{ selectorId }}').val(newVal);
+                $('#{{ tableId }}-sg-filter-{{ selectorId }}').trigger("change");
+
+            });
+        } catch (e) {
+            console.log(e.message);
+        }
+    </script>
+{% endblock %}

@@ -56,6 +56,9 @@ class FilterFactory
             case 'slider':
                 return new SliderFilter();
                 break;
+            case 'comparison':
+                return new ComparisonFilter();
+                break;
             default:
                 throw new InvalidArgumentException('createFilterByType(): The filter-type is not supported.');
         }

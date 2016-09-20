@@ -13,7 +13,6 @@ namespace Sg\DatatablesBundle\Datatable\Data;
 
 use Sg\DatatablesBundle\Datatable\View\DatatableViewInterface;
 use Sg\DatatablesBundle\Datatable\Column\AbstractColumn;
-
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Serializer;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -32,6 +31,7 @@ use Twig_Environment;
  */
 class DatatableQuery
 {
+
     /**
      * @var Serializer
      */
@@ -176,14 +176,7 @@ class DatatableQuery
      * @throws Exception
      */
     public function __construct(
-        Serializer $serializer,
-        array $requestParams,
-        DatatableViewInterface $datatableView,
-        array $configs,
-        Twig_Environment $twig,
-        $imagineBundle,
-        $doctrineExtensions,
-        $locale
+    Serializer $serializer, array $requestParams, DatatableViewInterface $datatableView, array $configs, Twig_Environment $twig, $imagineBundle, $doctrineExtensions, $locale
     )
     {
         $this->serializer = $serializer;
@@ -253,7 +246,7 @@ class DatatableQuery
     private function cast($searchField, AbstractColumn $column)
     {
         if ('datetime' === $column->getAlias() || 'boolean' === $column->getAlias() || 'column' === $column->getAlias()) {
-            return 'CAST('.$searchField.' AS text)';
+            return 'CAST(' . $searchField . ' AS text)';
         }
 
         return $searchField;
@@ -275,18 +268,18 @@ class DatatableQuery
     private function setupColumnArrays()
     {
         /* Example:
-              SELECT
-                  partial fos_user.{id},
-                  partial posts_comments.{title,id},
-                  partial posts.{id,title}
-              FROM
-                  AppBundle\Entity\User fos_user
-              LEFT JOIN
-                  fos_user.posts posts
-              LEFT JOIN
-                  posts.comments posts_comments
-              ORDER BY
-                  posts_comments.title asc
+          SELECT
+          partial fos_user.{id},
+          partial posts_comments.{title,id},
+          partial posts.{id,title}
+          FROM
+          AppBundle\Entity\User fos_user
+          LEFT JOIN
+          fos_user.posts posts
+          LEFT JOIN
+          posts.comments posts_comments
+          ORDER BY
+          posts_comments.title asc
          */
 
         $this->selectColumns[$this->tableName][] = $this->rootEntityIdentifier;
@@ -317,10 +310,10 @@ class DatatableQuery
                         $previousAlias = $currentAlias;
 
                         $currentPart = array_shift($parts);
-                        $currentAlias = ($previousPart == $this->tableName ? '' : $previousPart.'_') . $currentPart; // This condition keeps stable queries callbacks
+                        $currentAlias = ($previousPart == $this->tableName ? '' : $previousPart . '_') . $currentPart; // This condition keeps stable queries callbacks
 
-                        if (!array_key_exists($previousAlias.'.'.$currentPart, $this->joins)) {
-                            $this->joins[$previousAlias.'.'.$currentPart] = $currentAlias;
+                        if (!array_key_exists($previousAlias . '.' . $currentPart, $this->joins)) {
+                            $this->joins[$previousAlias . '.' . $currentPart] = $currentAlias;
                         }
 
                         $metadata = $this->setIdentifierFromAssociation($currentAlias, $currentPart, $metadata);
@@ -518,6 +511,13 @@ class DatatableQuery
     {
         $globalSearch = $this->requestParams['search']['value'];
 
+        /* nima jmen */
+        $qb->leftJoin('shipment.itinerary', 'lo', \Doctrine\ORM\Query\Expr\Join::WITH, 'lo.shipmentId = shipment.id AND lo.type= :loadingPoint ')
+                ->leftJoin('shipment.itinerary', 'un', \Doctrine\ORM\Query\Expr\Join::WITH, 'un.shipmentId = shipment.id AND un.type= :unloadingPoint ')
+                ->setParameter("loadingPoint", \Smart\Bundle\AdminBundle\Entity\Itinerary::LOADING_POINT)
+                ->setParameter('unloadingPoint', \Smart\Bundle\AdminBundle\Entity\Itinerary::UNLOADING_POINT);
+        /* end of jmen */
+
         // global filtering
         if ('' != $globalSearch) {
 
@@ -530,9 +530,56 @@ class DatatableQuery
                     if (true === $this->isPostgreSQLConnection) {
                         $searchField = $this->cast($searchField, $column);
                     }
+                    /* nima jmen */
+                    switch ($column->getName()) {
+                        case 'winner':
+                        case 'winner.driver_name':
+                        case 'winner.truck':
+                            $andExpr = $qb->expr()->andX();
+                            $andExpr->add($qb->expr()->like($searchField, '?' . $key));
+                            $andExpr->add($qb->expr()->eq('auction_bids.isWinner', 1));
 
-                    $orExpr->add($qb->expr()->like($searchField, '?' . $key));
-                    $qb->setParameter($key, '%' . $globalSearch . '%');
+                            $orExpr->add($andExpr);
+                            $qb->setParameter($key, '%' . $globalSearch . '%');
+                            break;
+                        case 'itinerary.loading.country':
+                            $orExpr->add($qb->expr()->like('lo.country', '?' . $key));
+                            $qb->setParameter($key, '%' . $globalSearch . '%');
+                            break;
+                        case 'itinerary.loading.address':
+                            $orExpr->add($qb->expr()->like('lo.address', '?' . $key));
+                            $qb->setParameter($key, '%' . $globalSearch . '%');
+                            break;
+                        case 'itinerary.unloading.country':
+                            $orExpr->add($qb->expr()->like('un.country', '?' . $key));
+                            $qb->setParameter($key, '%' . $globalSearch . '%');
+                            break;
+                        case 'itinerary.unloading.address':
+                            $orExpr->add($qb->expr()->like('un.address', '?' . $key));
+                            $qb->setParameter($key, '%' . $globalSearch . '%');
+                            break;
+                        case 'itinerary.loading.date':
+                            $orExpr->add($qb->expr()->like('lo.date', '?' . $key));
+                            $qb->setParameter($key, '%' . $globalSearch . '%');
+                            break;
+                        case 'itinerary.unloading.date':
+                            $orExpr->add($qb->expr()->like('un.date', '?' . $key));
+                            $qb->setParameter($key, '%' . $globalSearch . '%');
+                            break;
+                        case 'itinerary.loading.referenceNumber':
+                            $orExpr->add($qb->expr()->like('lo.referenceNumber', '?' . $key));
+                            $qb->setParameter($key, '%' . $globalSearch . '%');
+                            break;
+                        case 'itinerary.unloading.referenceNumber':
+                            $orExpr->add($qb->expr()->like('un.referenceNumber', '?' . $key));
+                            $qb->setParameter($key, '%' . $globalSearch . '%');
+                            break;
+                        default:
+                            $orExpr->add($qb->expr()->like($searchField, '?' . $key));
+                            $qb->setParameter($key, '%' . $globalSearch . '%');
+                            break;
+                    }
+                    /* end of jmen */
                 }
             }
 
@@ -551,12 +598,53 @@ class DatatableQuery
                     $filter = $column->getFilter();
                     $searchField = $this->searchColumns[$key];
                     $searchValue = $this->requestParams['columns'][$key]['search']['value'];
+
                     if ('' != $searchValue && 'null' != $searchValue) {
                         if (true === $this->isPostgreSQLConnection) {
                             $searchField = $this->cast($searchField, $column);
                         }
 
-                        $andExpr = $filter->addAndExpression($andExpr, $qb, $searchField, $searchValue, $i);
+                        /* nima jmen */
+                        switch ($column->getName()) {
+                            case 'winner':
+                            case 'winner.driver_name':
+                            case 'winner.truck':
+                                $andExpr = $filter->addAndExpression($andExpr, $qb, $searchField, $searchValue, $i);
+                                $andExpr->add($qb->expr()->eq('auction_bids.isWinner', 1));
+                                break;
+                            case 'itinerary.loading.country':
+                                $andExpr = $filter->addAndExpression($andExpr, $qb, 'lo.country', $searchValue, $i);
+                                break;
+                            case 'itinerary.loading.address':
+                                $andExpr = $filter->addAndExpression($andExpr, $qb, 'lo.address', $searchValue, $i);
+                                break;
+                            case 'itinerary.loading.date':
+                                $andExpr = $filter->addAndExpression($andExpr, $qb, 'lo.date', $searchValue, $i);
+                                break;
+                            case 'itinerary.unloading.country':
+                                $andExpr = $filter->addAndExpression($andExpr, $qb, 'un.country', $searchValue, $i);
+                                break;
+                            case 'itinerary.unloading.date':
+                                $andExpr = $filter->addAndExpression($andExpr, $qb, 'un.date', $searchValue, $i);
+                                break;
+                            case 'itinerary.unloading.address':
+                                $andExpr = $filter->addAndExpression($andExpr, $qb, 'un.address', $searchValue, $i);
+                                break;
+                            case 'itinerary.loading.referenceNumber':
+                                $andExpr = $filter->addAndExpression($andExpr, $qb, 'lo.referenceNumber', $searchValue, $i);
+                                break;
+                            case 'originalDistance':
+                                $andExpr = $this->customDistanceAndExpression($andExpr, $qb, 'shipment.distance - shipment.originalDistance', $searchValue, $i);
+                                break;
+                            case 'itinerary.unloading.referenceNumber':
+                                $andExpr = $filter->addAndExpression($andExpr, $qb, 'un.referenceNumber', $searchValue, $i);
+                                break;
+
+                            default:
+                                $andExpr = $filter->addAndExpression($andExpr, $qb, $searchField, $searchValue, $i);
+                                break;
+                        }
+                        /* end of jmen */
                     }
                 }
             }
@@ -568,6 +656,37 @@ class DatatableQuery
 
         return $this;
     }
+
+    private  function customDistanceAndExpression(Query\Expr\Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, $i){
+
+        $operator = substr($searchValue, 0, 2);
+        $searchValue = substr($searchValue, 2);
+
+        if($searchValue == '' ){
+            return $andExpr;
+        }
+
+        switch ($operator) {
+            case 'eq':
+                $andExpr->add($qb->expr()->eq($searchField, '?' . $i));
+                $qb->setParameter($i, $searchValue);
+                break;
+            case 'gt':
+                $andExpr->add($qb->expr()->gt($searchField, '?' . $i));
+                $qb->setParameter($i, $searchValue);
+                break;
+            case 'lt':
+                $andExpr->add($qb->expr()->lt($searchField, '?' . $i));
+                $qb->setParameter($i, $searchValue);
+                break;
+            default:
+                //do nothing
+                break;
+        }
+
+        return $andExpr;
+    }
+
 
     /**
      * Ordering.
@@ -587,8 +706,7 @@ class DatatableQuery
 
                 if ('true' == $requestColumn['orderable']) {
                     $this->qb->addOrderBy(
-                        $this->orderColumns[$columnIdx],
-                        $this->requestParams['order'][$i]['dir']
+                            $this->orderColumns[$columnIdx], $this->requestParams['order'][$i]['dir']
                     );
                 }
             }
@@ -657,10 +775,10 @@ class DatatableQuery
             return (int) $qb->getQuery()->getSingleScalarResult();
         } else {
             $this
-                ->qb
-                ->setFirstResult(null)
-                ->setMaxResults(null)
-                ->select('count(distinct ' . $this->tableName . '.' . $rootEntityIdentifier . ')');
+                    ->qb
+                    ->setFirstResult(null)
+                    ->setMaxResults(null)
+                    ->select('count(distinct ' . $this->tableName . '.' . $rootEntityIdentifier . ')');
             if (true === $this->isPostgreSQLConnection) {
                 $this->qb->groupBy($this->tableName . '.' . $rootEntityIdentifier);
                 return count($this->qb->getQuery()->getResult());
@@ -683,18 +801,15 @@ class DatatableQuery
         if (true === $this->configs['translation_query_hints']) {
             if (true === $this->doctrineExtensions) {
                 $query->setHint(
-                    \Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER,
-                    'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker'
+                        \Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker'
                 );
 
                 $query->setHint(
-                    \Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE,
-                    $this->locale
+                        \Gedmo\Translatable\TranslatableListener::HINT_TRANSLATABLE_LOCALE, $this->locale
                 );
 
                 $query->setHint(
-                    \Gedmo\Translatable\TranslatableListener::HINT_FALLBACK,
-                    1
+                        \Gedmo\Translatable\TranslatableListener::HINT_FALLBACK, 1
                 );
             } else {
                 throw new Exception('execute(): "DoctrineExtensions" does not exist.');
@@ -725,7 +840,6 @@ class DatatableQuery
 
         $this->paginator = new Paginator($this->execute(), true);
         $this->paginator->setUseOutputWalkers($outputWalkers);
-
         $formatter = new DatatableFormatter($this);
         $formatter->runFormatter();
 
@@ -739,11 +853,9 @@ class DatatableQuery
 
         $fullOutput = array_merge($outputHeader, $formatter->getOutput());
         $fullOutput = $this->applyResponseCallbacks($fullOutput);
-
         $json = $this->serializer->serialize($fullOutput, 'json');
         $response = new Response($json);
         $response->headers->set('Content-Type', 'application/json');
-
         return $response;
     }
 
@@ -943,4 +1055,8 @@ class DatatableQuery
     {
         return $this->imagineBundle;
     }
+
+
+
+
 }

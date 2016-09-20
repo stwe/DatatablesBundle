@@ -132,7 +132,7 @@ class Features extends AbstractViewOptions
      * @var string
      */
     protected $highlightColor;
-
+    
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -158,7 +158,7 @@ class Features extends AbstractViewOptions
             'delay' => 0,
             'extensions' => array(),
             'highlight' => false,
-            'highlight_color' => 'red'
+            'highlight_color' => 'red',
         ));
 
         $resolver->setAllowedTypes('auto_width', 'bool');
@@ -440,7 +440,7 @@ class Features extends AbstractViewOptions
 
         return $this;
     }
-
+    
     /**
      * Get Searching.
      *
