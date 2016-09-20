@@ -530,7 +530,6 @@ class DatatableQuery
                     if (true === $this->isPostgreSQLConnection) {
                         $searchField = $this->cast($searchField, $column);
                     }
-
                     /* nima jmen */
                     switch ($column->getName()) {
                         case 'winner':
@@ -599,6 +598,7 @@ class DatatableQuery
                     $filter = $column->getFilter();
                     $searchField = $this->searchColumns[$key];
                     $searchValue = $this->requestParams['columns'][$key]['search']['value'];
+
                     if ('' != $searchValue && 'null' != $searchValue) {
                         if (true === $this->isPostgreSQLConnection) {
                             $searchField = $this->cast($searchField, $column);
@@ -633,12 +633,13 @@ class DatatableQuery
                             case 'itinerary.loading.referenceNumber':
                                 $andExpr = $filter->addAndExpression($andExpr, $qb, 'lo.referenceNumber', $searchValue, $i);
                                 break;
+                            case 'originalDistance':
+                                $andExpr = $this->customDistanceAndExpression($andExpr, $qb, 'shipment.distance - shipment.originalDistance', $searchValue, $i);
+                                break;
                             case 'itinerary.unloading.referenceNumber':
                                 $andExpr = $filter->addAndExpression($andExpr, $qb, 'un.referenceNumber', $searchValue, $i);
                                 break;
-                            case 'originalDistance':
-                                $andExpr = $this->customDistanceAndExpression($andExpr, $qb, 'distance'-'originalDistance', $searchValue, $i);
-                                break;
+
                             default:
                                 $andExpr = $filter->addAndExpression($andExpr, $qb, $searchField, $searchValue, $i);
                                 break;
@@ -657,20 +658,29 @@ class DatatableQuery
     }
 
     private  function customDistanceAndExpression(Query\Expr\Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, $i){
-        $operator = $searchValue[0];
-        $searchValue = substr($searchValue, 1);
+
+        $operator = substr($searchValue, 0, 2);
+        $searchValue = substr($searchValue, 2);
+
+        if($searchValue == '' ){
+            return $andExpr;
+        }
+
         switch ($operator) {
-            case '=':
+            case 'eq':
                 $andExpr->add($qb->expr()->eq($searchField, '?' . $i));
                 $qb->setParameter($i, $searchValue);
                 break;
-            case '>':
+            case 'gt':
                 $andExpr->add($qb->expr()->gt($searchField, '?' . $i));
                 $qb->setParameter($i, $searchValue);
                 break;
-            case '<':
+            case 'lt':
                 $andExpr->add($qb->expr()->lt($searchField, '?' . $i));
                 $qb->setParameter($i, $searchValue);
+                break;
+            default:
+                //do nothing
                 break;
         }
 
@@ -830,7 +840,6 @@ class DatatableQuery
 
         $this->paginator = new Paginator($this->execute(), true);
         $this->paginator->setUseOutputWalkers($outputWalkers);
-
         $formatter = new DatatableFormatter($this);
         $formatter->runFormatter();
 
@@ -842,11 +851,9 @@ class DatatableQuery
 
         $fullOutput = array_merge($outputHeader, $formatter->getOutput());
         $fullOutput = $this->applyResponseCallbacks($fullOutput);
-
         $json = $this->serializer->serialize($fullOutput, 'json');
         $response = new Response($json);
         $response->headers->set('Content-Type', 'application/json');
-
         return $response;
     }
 

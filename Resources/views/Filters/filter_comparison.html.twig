@@ -1,11 +1,11 @@
 {% extends 'SgDatatablesBundle:Filters:filter.html.twig' %}
 
 {% block html %}
-    <select id="{{ tableId }}-sg-select-{{ selectorId }}"
-            class="individual_filtering{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
+    <select id="select-{{ selectorId }}"
+            class="{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
             style="{% if column.width %} width:{{ column.width }};{% endif %}"
             {% if column.name %}name="{{ column.name }}"{% endif %}
-            data-filter-property-id="{{ filterColumnId }}">
+            >
         {% for key, name in column.filter.selectOptions %}
             {% if loop.first %}
                 <option value="{{ key }}" selected="selected">{{ name }}</option>
@@ -17,11 +17,11 @@
 
 
     <input type="text"
-           id="{{ tableId }}-sg-text-{{ selectorId }}"
-           class="individual_filtering{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
+           id="text-{{ selectorId }}"
+           class="{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
            style="{% if column.width %} width:{{ column.width }};{% endif %}"
            placeholder="{{ column.title|striptags|trim }}"
-           data-filter-property-id="{{ filterColumnId }}"
+
            {% if column.name %}name="{{ column.name }}"{% endif %} />
 
 
@@ -41,11 +41,12 @@
 {% block javascript %}
     <script type="text/javascript">
         try {
-            $("#{{ tableId }}-sg-select-{{ selectorId }}").on('change', function () {
-                $('#{{ tableId }}-sg-filter-{{ selectorId }}').val('');
-                var option = $('#{{ tableId }}-sg-select-{{ selectorId }}').find(":selected").text();
-                var text = $('#{{ tableId }}-sg-text-{{ selectorId }}').val();
-                $('#{{ tableId }}-sg-filter-{{ selectorId }}').val(option + text);
+            $("#select-{{ selectorId }}").on('change', function () {
+                {#$('#{{ tableId }}-sg-filter-{{ selectorId }}').val('');#}
+                var option = $(this).val();
+                var text = $('#text-{{ selectorId }}').val();
+                var newVal = option + '' + text;
+                $('#{{ tableId }}-sg-filter-{{ selectorId }}').val(newVal);
                 $('#{{ tableId }}-sg-filter-{{ selectorId }}').trigger("change");
 
             });
@@ -54,11 +55,12 @@
         }
         try {
 
-            $("#{{ tableId }}-sg-text-{{ selectorId }}").on('keypress keyup blur click', function () {
-                $('#{{ tableId }}-sg-filter-{{ selectorId }}').val('');
-                var option = $('#{{ tableId }}-sg-select-{{ selectorId }}').find(":selected").text();
-                var text = $('#{{ tableId }}-sg-text-{{ selectorId }}').val();
-                $('#{{ tableId }}-sg-filter-{{ selectorId }}').val(option + text);
+            $("#text-{{ selectorId }}").on('keyup click', function () {
+
+                var option = $('#select-{{ selectorId }}').val();
+                var text = $(this).val();
+                var newVal = option + '' + text;
+                $('#{{ tableId }}-sg-filter-{{ selectorId }}').val(newVal);
                 $('#{{ tableId }}-sg-filter-{{ selectorId }}').trigger("change");
 
             });

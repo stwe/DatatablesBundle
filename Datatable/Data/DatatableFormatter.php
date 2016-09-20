@@ -49,18 +49,15 @@ class DatatableFormatter
         $lineFormatter = $this->datatableQuery->getLineFormatter();
 
         foreach ($paginator as $row) {
-
             // 1. Call the the lineFormatter to format row items
             if (is_callable($lineFormatter)) {
                 $row = call_user_func($lineFormatter, $row);
             }
-
             foreach ($columns as $column) {
                 // 2. Add some special data to the output array. For example, the visibility of actions.
                 $column->addDataToOutputArray($row);
                 // 3. Call columns renderContent method to format row items (e.g. for images)
                 $column->renderContent($row, $this->datatableQuery);
-                dump($this->datatableQuery);
             }
 
             $this->output['data'][] = $row;
