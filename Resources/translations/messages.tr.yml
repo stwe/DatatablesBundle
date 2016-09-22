@@ -1,0 +1,40 @@
+datatables:
+    datatable:
+        processing: "İşleniyor..."
+        lengthMenu: " _MENU_ kayıt göster"
+        zeroRecords: "Eşleşen Kayıt Bulunamadı"
+        info: "_TOTAL_ kaydın  _START_ - _END_ arası kayıtlar gösteriliyor. "
+        infoEmpty: "0 kaydın 0 dan 0 a kadarı gösteriliyor"
+        infoFiltered: "( Toplam _MAX_ kayıttan filtrelendi)"
+        infoPostFix: ""
+        search: "Arama"
+        searchPlaceholder: "Ara ..."
+        first: "Birinci"
+        previous: "Önceki"
+        next: "Sonraki"
+        last: "Son"
+        all: "hepsi"
+    bulk:
+        confirmMsg: "Emin misiniz?"
+        selectError: "En az bir eleman seçmelisiniz."
+        ok: "Ok"
+    actions:
+        title: "İşlemler"
+        show: "Göster"
+        new: "Yeni"
+        edit: "Düzenle"
+        delete: "Sil"
+        toList: "Listeye Geri Dön"
+        save: "Kaydet"
+    dialog:
+        close: "Kapat"
+daterange:
+    apply: "Uygula"
+    cancel: "Vazgeç"
+    format: "DD-MM-YYYY"
+editable:
+    tableRedraw: "Bu değişiklikler birden fazla kaydı etkiledi. Bu tablo yeni verilerle yeniden oluşturuldu."
+filter:
+    default: "varsayılan"
+query:
+    filtered: "(filtrelendi)"
