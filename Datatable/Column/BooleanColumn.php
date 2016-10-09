@@ -12,7 +12,6 @@
 namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 
 /**
  * Class BooleanColumn
@@ -21,31 +20,33 @@ use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
  */
 class BooleanColumn extends AbstractColumn
 {
+    use EditableTrait;
+
     /**
      * The icon for a value that is true.
      *
-     * @var string
+     * @var null|string
      */
     protected $trueIcon;
 
     /**
      * The icon for a value that is false.
      *
-     * @var string
+     * @var null|string
      */
     protected $falseIcon;
 
     /**
      * The label for a value that is true.
      *
-     * @var string
+     * @var null|string
      */
     protected $trueLabel;
 
     /**
      * The label for a value that is false.
      *
-     * @var string
+     * @var null|string
      */
     protected $falseLabel;
 
@@ -56,65 +57,42 @@ class BooleanColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function setData($data)
-    {
-        if (empty($data) || !is_string($data)) {
-            throw new InvalidArgumentException('setData(): Expecting non-empty string.');
-        }
-
-        $this->data = $data;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getTemplate()
     {
-        return 'SgDatatablesBundle:Column:boolean.html.twig';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAlias()
-    {
-        return 'boolean';
+        return 'SgDatatablesBundle:column:boolean.html.twig';
     }
 
     //-------------------------------------------------
-    // OptionsInterface
+    // Options
     //-------------------------------------------------
 
     /**
-     * {@inheritdoc}
+     * Config options.
+     *
+     * @param OptionsResolver $resolver
+     *
+     * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
 
         $resolver->setDefaults(array(
-            'render' => 'render_boolean',
-            'filter' => array('select', array(
-                'search_type' => 'eq',
-                'select_options' => array('' => 'Any', '1' => 'Yes', '0' => 'No')
-            )),
-            'true_icon' => '',
-            'false_icon' => '',
-            'true_label' => '',
-            'false_label' => '',
+            'render_function' => 'render_boolean',
+            'true_icon' => null,
+            'false_icon' => null,
+            'true_label' => null,
+            'false_label' => null,
             'editable' => false,
-            'editable_if' => null
+            'editable_if' => null,
         ));
 
-        $resolver->setAllowedTypes('filter', 'array');
-        $resolver->setAllowedTypes('true_icon', 'string');
-        $resolver->setAllowedTypes('false_icon', 'string');
-        $resolver->setAllowedTypes('true_label', 'string');
-        $resolver->setAllowedTypes('false_label', 'string');
+        $resolver->setAllowedTypes('true_icon', array('null', 'string'));
+        $resolver->setAllowedTypes('false_icon', array('null', 'string'));
+        $resolver->setAllowedTypes('true_label', array('null', 'string'));
+        $resolver->setAllowedTypes('false_label', array('null', 'string'));
         $resolver->setAllowedTypes('editable', 'bool');
-        $resolver->setAllowedTypes('editable_if', array('Closure', 'null'));
+        $resolver->setAllowedTypes('editable_if', array('null', 'Closure'));
 
         return $this;
     }
@@ -124,33 +102,19 @@ class BooleanColumn extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Set false icon.
+     * Get trueIcon.
      *
-     * @param string $falseIcon
-     *
-     * @return $this
+     * @return null|string
      */
-    public function setFalseIcon($falseIcon)
+    public function getTrueIcon()
     {
-        $this->falseIcon = $falseIcon;
-
-        return $this;
+        return $this->trueIcon;
     }
 
     /**
-     * Get false icon.
+     * Set trueIcon.
      *
-     * @return string
-     */
-    public function getFalseIcon()
-    {
-        return $this->falseIcon;
-    }
-
-    /**
-     * Set true icon.
-     *
-     * @param string $trueIcon
+     * @param null|string $trueIcon
      *
      * @return $this
      */
@@ -162,43 +126,43 @@ class BooleanColumn extends AbstractColumn
     }
 
     /**
-     * Get true icon.
+     * Get falseIcon.
      *
-     * @return string
+     * @return null|string
      */
-    public function getTrueIcon()
+    public function getFalseIcon()
     {
-        return $this->trueIcon;
+        return $this->falseIcon;
     }
 
     /**
-     * Set false label.
+     * Set falseIcon.
      *
-     * @param string $falseLabel
+     * @param null|string $falseIcon
      *
      * @return $this
      */
-    public function setFalseLabel($falseLabel)
+    public function setFalseIcon($falseIcon)
     {
-        $this->falseLabel = $falseLabel;
+        $this->falseIcon = $falseIcon;
 
         return $this;
     }
 
     /**
-     * Get false label.
+     * Get trueLabel.
      *
-     * @return string
+     * @return null|string
      */
-    public function getFalseLabel()
+    public function getTrueLabel()
     {
-        return $this->falseLabel;
+        return $this->trueLabel;
     }
 
     /**
-     * Set true label.
+     * Set trueLabel.
      *
-     * @param string $trueLabel
+     * @param null|string $trueLabel
      *
      * @return $this
      */
@@ -210,12 +174,26 @@ class BooleanColumn extends AbstractColumn
     }
 
     /**
-     * Get false label.
+     * Get falseLabel.
      *
-     * @return string
+     * @return null|string
      */
-    public function getTrueLabel()
+    public function getFalseLabel()
     {
-        return $this->trueLabel;
+        return $this->falseLabel;
+    }
+
+    /**
+     * Set falseLabel.
+     *
+     * @param null|string $falseLabel
+     *
+     * @return $this
+     */
+    public function setFalseLabel($falseLabel)
+    {
+        $this->falseLabel = $falseLabel;
+
+        return $this;
     }
 }

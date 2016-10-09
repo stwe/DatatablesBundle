@@ -7,9 +7,6 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @author nicodmf
- * @author stwe
  */
 
 namespace Sg\DatatablesBundle\Datatable\Column;
@@ -24,30 +21,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class VirtualColumn extends Column
 {
     //-------------------------------------------------
-    // ColumnInterface
+    // Options
     //-------------------------------------------------
 
     /**
-     * {@inheritdoc}
-     */
-    public function getAlias()
-    {
-        return 'virtual';
-    }
-
-    //-------------------------------------------------
-    // OptionsInterface
-    //-------------------------------------------------
-
-    /**
-     * {@inheritdoc}
+     * Config options.
+     *
+     * @param OptionsResolver $resolver
+     *
+     * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
-
-        $resolver->remove('editable');
-        $resolver->remove('editable_if');
 
         $resolver->setDefaults(array(
             'orderable' => false,

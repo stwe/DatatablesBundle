@@ -14,25 +14,18 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class Column
+ * Class CollectionColumn
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-class Column extends AbstractColumn
+class CollectionColumn extends Column
 {
-    use EditableTrait;
-
-    //-------------------------------------------------
-    // ColumnInterface
-    //-------------------------------------------------
-
     /**
-     * {@inheritdoc}
+     * Count elements.
+     *
+     * @var bool
      */
-    public function getTemplate()
-    {
-        return 'SgDatatablesBundle:column:column.html.twig';
-    }
+    protected $count;
 
     //-------------------------------------------------
     // Options
@@ -49,13 +42,42 @@ class Column extends AbstractColumn
     {
         parent::configureOptions($resolver);
 
+        $resolver->setRequired('data');
+
         $resolver->setDefaults(array(
-            'editable' => false,
-            'editable_if' => null,
+            'count' => false,
         ));
 
-        $resolver->setAllowedTypes('editable', 'bool');
-        $resolver->setAllowedTypes('editable_if', array('null', 'Closure'));
+        $resolver->setAllowedTypes('data', 'string');
+        $resolver->setAllowedTypes('count', 'bool');
+
+        return $this;
+    }
+
+    //-------------------------------------------------
+    // Getters && Setters
+    //-------------------------------------------------
+
+    /**
+     * Get count.
+     *
+     * @return bool
+     */
+    public function isCount()
+    {
+        return $this->count;
+    }
+
+    /**
+     * Set count.
+     *
+     * @param bool $count
+     *
+     * @return $this
+     */
+    public function setCount($count)
+    {
+        $this->count = $count;
 
         return $this;
     }

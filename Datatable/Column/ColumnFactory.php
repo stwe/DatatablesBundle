@@ -11,7 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
+use Exception;
 
 /**
  * Class ColumnFactory
@@ -21,60 +21,32 @@ use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 class ColumnFactory
 {
     /**
-     * Create Column by alias.
+     * Create Column.
      *
-     * @param string $alias
+     * @param string|ColumnInterface $class
      *
      * @return ColumnInterface
+     * @throws Exception
      */
-    public static function createColumnByAlias($alias)
+    public static function createColumn($class)
     {
-        if (empty($alias) || !is_string($alias) && !$alias instanceof ColumnInterface) {
-            throw new InvalidArgumentException('createColumnByAlias(): String or ColumnInterface expected.');
+        if (empty($class) || !is_string($class) && !$class instanceof ColumnInterface) {
+            throw new Exception('ColumnFactory::createColumn(): String or ColumnInterface expected.');
         }
 
-        if ($alias instanceof ColumnInterface) {
-            return $alias;
+        if ($class instanceof ColumnInterface) {
+            return $class;
         }
 
-        switch (strtolower($alias)) {
-            case 'action':
-                $column = new ActionColumn();
-                break;
-            case 'array':
-                $column = new ArrayColumn();
-                break;
-            case 'boolean':
-                $column = new BooleanColumn();
-                break;
-            case 'column':
-                $column = new Column();
-                break;
-            case 'datetime':
-                $column = new DateTimeColumn();
-                break;
-            case 'timeago':
-                $column = new TimeagoColumn();
-                break;
-            case 'multiselect':
-                $column = new MultiselectColumn();
-                break;
-            case 'virtual':
-                $column = new VirtualColumn();
-                break;
-            case 'image':
-                $column = new ImageColumn();
-                break;
-            case 'gallery':
-                $column = new GalleryColumn();
-                break;
-            case 'progress_bar':
-                $column = new ProgressBarColumn();
-                break;
-            default:
-                throw new InvalidArgumentException('createColumnByName(): The column is not supported.');
+        if (is_string($class)) {
+            $column = new $class;
+            if (!$column instanceof ColumnInterface) {
+                throw new Exception('ColumnFactory::createColumn(): ColumnInterface expected.');
+            } else {
+                return $column;
+            }
         }
 
-        return $column;
+        return null;
     }
 }

@@ -35,10 +35,6 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    //-------------------------------------------------
-    // Datatable section
-    //-------------------------------------------------
-
     /**
      * Add datatable section.
      *

@@ -11,14 +11,9 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Datatable\Data\DatatableQuery;
-use Sg\DatatablesBundle\Datatable\View\AbstractViewOptions;
-use Sg\DatatablesBundle\OptionsResolver\OptionsInterface;
-use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
-use Sg\DatatablesBundle\Datatable\Filter\FilterFactory;
+use Sg\DatatablesBundle\Datatable\OptionsTrait;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Closure;
 
 /**
@@ -26,174 +21,215 @@ use Closure;
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-abstract class AbstractColumn implements ColumnInterface, OptionsInterface
+abstract class AbstractColumn implements ColumnInterface
 {
+    use OptionsTrait;
+
+    //-------------------------------------------------
+    // DataTables - Columns Options
+    //-------------------------------------------------
+
     /**
-     * Column options.
+     * Change the cell type created for the column - either TD cells or TH cells.
+     * DataTables default: td
      *
-     * @var array
+     * @var null|string
      */
-    protected $options;
+    protected $cellType;
+
+    /**
+     * Adds a class to each cell in a column.
+     *
+     * @var null|string
+     */
+    protected $className;
+
+    /**
+     * Add padding to the text content used when calculating the optimal with for a table.
+     *
+     * @var null|string
+     */
+    protected $contentPadding;
 
     /**
      * Set the data source for the column from the rows data object / array.
+     * DataTables default: Takes the index value of the column automatically.
      *
      * @var null|string
      */
     protected $data;
 
     /**
-     * Data source copy.
-     *
-     * @var null|string
-     */
-    protected $dql;
-
-    /**
-     * Class to assign to each cell in the column.
-     *
-     * @var string
-     */
-    protected $class;
-
-    /**
-     * Add padding to the text content used when calculating the optimal with for a table.
-     *
-     * @var string
-     */
-    protected $padding;
-
-    /**
      * Set default, static, content for a column.
      *
-     * @var string|null
+     * @var null|string
      */
     protected $defaultContent;
 
     /**
      * Set a descriptive name for a column.
      *
-     * @var string
+     * @var null|string
      */
     protected $name;
 
     /**
      * Enable or disable ordering on this column.
+     * DataTables default: true
      *
-     * @var boolean
+     * @var null|bool
      */
     protected $orderable;
 
     /**
+     * Define multiple column ordering as the default order for a column.
+     * DataTables default: Takes the index value of the column automatically.
+     *
+     * @var null|int|array
+     */
+    protected $orderData;
+
+    /**
+     * Order direction application sequence.
+     * DataTables default: ['asc', 'desc']
+     *
+     * @var null|array
+     */
+    protected $orderSequence;
+
+    /**
      * Render (process) the data for use in the table.
+     * Read an object property from the data source.
+     * For example: name[, ] would provide a comma-space separated list from the source array.
      *
      * @var null|string
      */
-    protected $render;
+    protected $renderString;
+
+    /**
+     * Render (process) the data for use in the table.
+     * Use different data for the different data types requested by DataTables (filter, display, type or sort).
+     *
+     * @var null|array
+     */
+    protected $renderObject;
+
+    /**
+     * Render (process) the data for use in the table.
+     * If a function is given, it will be executed whenever DataTables needs to get the data for a cell in the column.
+     *
+     * @var null|string
+     */
+    protected $renderFunction;
 
     /**
      * Enable or disable filtering on the data in this column.
+     * DataTables default: true
      *
-     * @var boolean
+     * @var null|bool
      */
     protected $searchable;
 
     /**
      * Set the column title.
+     * DataTables default: Value read from the column's header cell.
      *
-     * @var string
+     * @var null|string
      */
     protected $title;
 
     /**
-     * Set the column type - used for filtering and sorting string processing.
-     *
-     * @var string
-     */
-    protected $type;
-
-    /**
      * Enable or disable the display of this column.
+     * DataTables default: true
      *
-     * @var boolean
+     * @var null|bool
      */
     protected $visible;
 
     /**
      * Column width assignment.
+     * DataTables default: Auto-detected from the table's content.
      *
-     * @var string
+     * @var null|string
      */
     protected $width;
 
-    /**
-     * Order direction application sequence.
-     *
-     * @var array
-     */
-    protected $orderSequence;
-
-    /**
-     * A Filter instance.
-     *
-     * @var FilterInterface
-     */
-    protected $filter;
+    //-------------------------------------------------
+    // Custom Options
+    //-------------------------------------------------
 
     /**
      * Add column only if parameter / conditions are TRUE
      *
-     * @var Closure|null
+     * @var null|Closure
      */
     protected $addIf;
-
-    /**
-     * Editable flag.
-     *
-     * @var boolean
-     */
-    protected $editable;
-
-    /**
-     * Editable only if conditions are True.
-     *
-     * @var Closure|null
-     */
-    protected $editableIf;
-
-    /**
-     * Name of datatable view.
-     *
-     * @var string
-     */
-    protected $tableName;
-
-    /**
-     * Column index.
-     * Saves the position in the columns array.
-     *
-     * @var integer
-     */
-    protected $index;
-
-    /**
-     * Property accessor.
-     *
-     * @var PropertyAccess
-     */
-    protected $accessor;
 
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
 
     /**
-     * Ctor.
+     * AbstractColumn constructor.
      */
     public function __construct()
     {
-        $this->options = array();
-        $this->accessor = PropertyAccess::createPropertyAccessor();
+        $this->initOptions();
+    }
+
+    //-------------------------------------------------
+    // Options
+    //-------------------------------------------------
+
+    /**
+     * Config options.
+     *
+     * @param OptionsResolver $resolver
+     *
+     * @return $this
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'cell_type' => null,
+            'class_name' => null,
+            'content_padding' => null,
+            'default_content' => null,
+            'name' => null,
+            'orderable' => null,
+            'order_data' => null,
+            'order_sequence' => null,
+            'render_string' => null,
+            'render_object' => null,
+            'render_function' => null,
+            'searchable' => null,
+            'title' => null,
+            'visible' => null,
+            'width' => null,
+            'add_if' => null,
+        ));
+
+        $resolver->setAllowedTypes('cell_type', array('null', 'string'));
+        $resolver->setAllowedTypes('class_name', array('null', 'string'));
+        $resolver->setAllowedTypes('content_padding', array('null', 'string'));
+        $resolver->setAllowedTypes('default_content', array('null', 'string'));
+        $resolver->setAllowedTypes('name', array('null', 'string'));
+        $resolver->setAllowedTypes('orderable', array('null', 'bool'));
+        $resolver->setAllowedTypes('order_data', array('null', 'array', 'int'));
+        $resolver->setAllowedTypes('order_sequence', array('null', 'array'));
+        $resolver->setAllowedTypes('render_string', array('null', 'string'));
+        $resolver->setAllowedTypes('render_object', array('null', 'array'));
+        $resolver->setAllowedTypes('render_function', array('null', 'string'));
+        $resolver->setAllowedTypes('searchable', array('null', 'bool'));
+        $resolver->setAllowedTypes('title', array('null', 'string'));
+        $resolver->setAllowedTypes('visible', array('null', 'bool'));
+        $resolver->setAllowedTypes('width', array('null', 'string'));
+        $resolver->setAllowedTypes('add_if', array('null', 'Closure'));
+
+        $resolver->setAllowedValues('cell_type', array(null, 'th', 'td'));
+
+
+        return $this;
     }
 
     //-------------------------------------------------
@@ -203,41 +239,7 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     /**
      * {@inheritdoc}
      */
-    public function setDql($dql)
-    {
-        $this->dql = $dql;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDql()
-    {
-        return $this->dql;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addDataToOutputArray(&$row)
-    {
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function renderContent(&$row, DatatableQuery $datatableQuery = null)
-    {
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isAddIfClosure()
+    public function callAddIfClosure()
     {
         if ($this->addIf instanceof Closure) {
             return call_user_func($this->addIf);
@@ -249,97 +251,86 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     /**
      * {@inheritdoc}
      */
-    public function isEditableIfClosure(array $row = array())
+    public function getUnique()
     {
-        if (true === $this->editable) {
-            if ($this->editableIf instanceof Closure) {
-                return call_user_func($this->editableIf, $row);
-            }
-
-            return true;
-        }
-
         return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isAssociation()
-    {
-        return (false === strstr($this->data, '.') ? false : true);
-    }
-
-    //-------------------------------------------------
-    // OptionsInterface
-    //-------------------------------------------------
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        // most common column options
-        $resolver->setDefaults(array(
-            'class' => '',
-            'default_content' => null,
-            'padding' => '',
-            'name' => '',
-            'orderable' => true,
-            'render' => null,
-            'searchable' => true,
-            'title' => '',
-            'type' => '',
-            'visible' => true,
-            'width' => '',
-            'order_sequence' => null,
-            'add_if' => null,
-        ));
-
-        $resolver->setAllowedTypes('class', 'string');
-        $resolver->setAllowedTypes('default_content', array('string', 'null'));
-        $resolver->setAllowedTypes('padding', 'string');
-        $resolver->setAllowedTypes('name', 'string');
-        $resolver->setAllowedTypes('orderable', 'bool');
-        $resolver->setAllowedTypes('render', array('string', 'null'));
-        $resolver->setAllowedTypes('searchable', 'bool');
-        $resolver->setAllowedTypes('title', 'string');
-        $resolver->setAllowedTypes('type', 'string');
-        $resolver->setAllowedTypes('visible', 'bool');
-        $resolver->setAllowedTypes('width', 'string');
-        $resolver->setAllowedTypes('order_sequence', array('array', 'null'));
-        $resolver->setAllowedTypes('add_if', array('Closure', 'null'));
-
-        return $this;
-    }
-
-    //-------------------------------------------------
-    // OptionsResolver
-    //-------------------------------------------------
-
-    /**
-     * Setup options resolver.
-     *
-     * @param array $options
-     *
-     * @return $this
-     * @throws \Exception
-     */
-    public function setupOptionsResolver(array $options)
-    {
-        $resolver = new OptionsResolver();
-        $this->configureOptions($resolver);
-
-        $this->options = $resolver->resolve($options);
-
-        AbstractViewOptions::callingSettersWithOptions($this->options, $this);
-
-        return $this;
     }
 
     //-------------------------------------------------
     // Getters && Setters
     //-------------------------------------------------
+
+    /**
+     * Get cellType.
+     *
+     * @return null|string
+     */
+    public function getCellType()
+    {
+        return $this->cellType;
+    }
+
+    /**
+     * Set cellType.
+     *
+     * @param null|string $cellType
+     *
+     * @return $this
+     */
+    public function setCellType($cellType)
+    {
+        $this->cellType = $cellType;
+
+        return $this;
+    }
+
+    /**
+     * Get className.
+     *
+     * @return null|string
+     */
+    public function getClassName()
+    {
+        return $this->className;
+    }
+
+    /**
+     * Set className.
+     *
+     * @param null|string $className
+     *
+     * @return $this
+     */
+    public function setClassName($className)
+    {
+        $this->className = $className;
+
+        return $this;
+    }
+
+    /**
+     * Get contentPadding.
+     *
+     * @return null|string
+     */
+    public function getContentPadding()
+    {
+        return $this->contentPadding;
+    }
+
+    /**
+     * Set contentPadding.
+     *
+     * @param null|string $contentPadding
+     *
+     * @return $this
+     */
+    public function setContentPadding($contentPadding)
+    {
+        $this->contentPadding = $contentPadding;
+
+        return $this;
+    }
 
     /**
      * Get data.
@@ -352,57 +343,33 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     }
 
     /**
-     * Set class.
+     * Set data.
      *
-     * @param string $class
+     * @param null|string $data
      *
      * @return $this
      */
-    public function setClass($class)
+    public function setData($data)
     {
-        $this->class = $class;
+        $this->data = $data;
 
         return $this;
     }
 
     /**
-     * Get class.
+     * Get defaultContent.
      *
-     * @return string
+     * @return null|string
      */
-    public function getClass()
+    public function getDefaultContent()
     {
-        return $this->class;
+        return $this->defaultContent;
     }
 
     /**
-     * Set padding.
+     * Set defaultContent.
      *
-     * @param string $padding
-     *
-     * @return $this
-     */
-    public function setPadding($padding)
-    {
-        $this->padding = $padding;
-
-        return $this;
-    }
-
-    /**
-     * Get padding.
-     *
-     * @return string
-     */
-    public function getPadding()
-    {
-        return $this->padding;
-    }
-
-    /**
-     * Set default content.
-     *
-     * @param string|null $defaultContent
+     * @param null|string $defaultContent
      *
      * @return $this
      */
@@ -414,19 +381,19 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     }
 
     /**
-     * Get default content.
+     * Get name.
      *
-     * @return string|null
+     * @return null|string
      */
-    public function getDefaultContent()
+    public function getName()
     {
-        return $this->defaultContent;
+        return $this->name;
     }
 
     /**
      * Set name.
      *
-     * @param string $name
+     * @param null|string $name
      *
      * @return $this
      */
@@ -438,33 +405,9 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     }
 
     /**
-     * Get name.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set orderable.
-     *
-     * @param boolean $orderable
-     *
-     * @return $this
-     */
-    public function setOrderable($orderable)
-    {
-        $this->orderable = (boolean) $orderable;
-
-        return $this;
-    }
-
-    /**
      * Get orderable.
      *
-     * @return boolean
+     * @return bool|null
      */
     public function getOrderable()
     {
@@ -472,159 +415,43 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
     }
 
     /**
-     * Set render.
+     * Set orderable.
      *
-     * @param string $render
+     * @param bool|null $orderable
      *
      * @return $this
      */
-    public function setRender($render)
+    public function setOrderable($orderable)
     {
-        $this->render = $render;
+        $this->orderable = $orderable;
 
         return $this;
     }
 
     /**
-     * Get render.
+     * Get orderData.
      *
-     * @return null|string
+     * @return array|int|null
      */
-    public function getRender()
+    public function getOrderData()
     {
-        return $this->render;
+        if (is_array($this->orderData)) {
+            return $this->getOptionAsJsonPrettyPrint($this->orderData);
+        }
+
+        return $this->orderData;
     }
 
     /**
-     * Set searchable.
+     * Set orderData.
      *
-     * @param boolean $searchable
+     * @param array|int|null $orderData
      *
      * @return $this
      */
-    public function setSearchable($searchable)
+    public function setOrderData($orderData)
     {
-        $this->searchable = (boolean) $searchable;
-
-        return $this;
-    }
-
-    /**
-     * Get searchable.
-     *
-     * @return boolean
-     */
-    public function getSearchable()
-    {
-        return $this->searchable;
-    }
-
-    /**
-     * Set title.
-     *
-     * @param string $title
-     *
-     * @return $this
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * Get title.
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * Set type.
-     *
-     * @param string $type
-     *
-     * @return $this
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type.
-     *
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * Set visible.
-     *
-     * @param boolean $visible
-     *
-     * @return $this
-     */
-    public function setVisible($visible)
-    {
-        $this->visible = (boolean) $visible;
-
-        return $this;
-    }
-
-    /**
-     * Get visible.
-     *
-     * @return boolean
-     */
-    public function getVisible()
-    {
-        return $this->visible;
-    }
-
-    /**
-     * Set width.
-     *
-     * @param string $width
-     *
-     * @return $this
-     */
-    public function setWidth($width)
-    {
-        $this->width = $width;
-
-        return $this;
-    }
-
-    /**
-     * Get width.
-     *
-     * @return string
-     */
-    public function getWidth()
-    {
-        return $this->width;
-    }
-
-    /**
-     * Set orderSequence.
-     *
-     * @param array|null $orderSequence
-     *
-     * @return $this
-     */
-    public function setOrderSequence($orderSequence)
-    {
-        $this->orderSequence = $orderSequence;
+        $this->orderData = $orderData;
 
         return $this;
     }
@@ -636,42 +463,221 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
      */
     public function getOrderSequence()
     {
+        if (is_array($this->orderSequence)) {
+            return $this->getOptionAsJsonPrettyPrint($this->orderSequence);
+        }
+
         return $this->orderSequence;
     }
 
     /**
-     * Set Filter instance.
+     * Set orderSequence.
      *
-     * @param array $filter
+     * @param array|null $orderSequence
      *
      * @return $this
      */
-    public function setFilter(array $filter)
+    public function setOrderSequence($orderSequence)
     {
-        $filterType = $filter[0];
-        $options = $filter[1];
+        if (is_array($orderSequence)) {
+            $this->checkOptions($orderSequence, array('asc', 'desc'));
+        }
 
-        /** @var \Sg\DatatablesBundle\Datatable\Filter\AbstractFilter $newFilter */
-        $newFilter = FilterFactory::createFilterByType($filterType);
-        $this->filter = $newFilter->setupOptionsResolver($options);
+        $this->orderSequence = $orderSequence;
 
         return $this;
     }
 
     /**
-     * Get Filter instance.
+     * Get renderString.
      *
-     * @return FilterInterface
+     * @return null|string
      */
-    public function getFilter()
+    public function getRenderString()
     {
-        return $this->filter;
+        return $this->renderString;
+    }
+
+    /**
+     * Set renderString.
+     *
+     * @param null|string $renderString
+     *
+     * @return $this
+     */
+    public function setRenderString($renderString)
+    {
+        $this->renderString = $renderString;
+
+        return $this;
+    }
+
+    /**
+     * Get renderObject.
+     *
+     * @return null|array
+     */
+    public function getRenderObject()
+    {
+        if (is_array($this->renderObject)) {
+            return $this->getOptionAsJsonPrettyPrint($this->renderObject);
+        }
+
+        return $this->renderObject;
+    }
+
+    /**
+     * Set renderObject.
+     *
+     * @param null|array $renderObject
+     *
+     * @return $this
+     */
+    public function setRenderObject($renderObject)
+    {
+        if (is_array($renderObject)) {
+            $this->checkOptions($renderObject, array('_', 'filter', 'display', 'type', 'sort'));
+        }
+
+        $this->renderObject = $renderObject;
+
+        return $this;
+    }
+
+    /**
+     * Get renderFunction.
+     *
+     * @return null|string
+     */
+    public function getRenderFunction()
+    {
+        return $this->renderFunction;
+    }
+
+    /**
+     * Set renderFunction.
+     *
+     * @param null|string $renderFunction
+     *
+     * @return $this
+     */
+    public function setRenderFunction($renderFunction)
+    {
+        $this->renderFunction = $renderFunction;
+
+        return $this;
+    }
+
+    /**
+     * Get searchable.
+     *
+     * @return bool|null
+     */
+    public function getSearchable()
+    {
+        return $this->searchable;
+    }
+
+    /**
+     * Set searchable.
+     *
+     * @param bool|null $searchable
+     *
+     * @return $this
+     */
+    public function setSearchable($searchable)
+    {
+        $this->searchable = $searchable;
+
+        return $this;
+    }
+
+    /**
+     * Get title.
+     *
+     * @return null|string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set title.
+     *
+     * @param null|string $title
+     *
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get visible.
+     *
+     * @return bool|null
+     */
+    public function getVisible()
+    {
+        return $this->visible;
+    }
+
+    /**
+     * Set visible.
+     *
+     * @param bool|null $visible
+     *
+     * @return $this
+     */
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
+
+        return $this;
+    }
+
+    /**
+     * Get width.
+     *
+     * @return null|string
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+    /**
+     * Set width.
+     *
+     * @param null|string $width
+     *
+     * @return $this
+     */
+    public function setWidth($width)
+    {
+        $this->width = $width;
+
+        return $this;
+    }
+
+    /**
+     * Get addIf.
+     *
+     * @return null|Closure
+     */
+    public function getAddIf()
+    {
+        return $this->addIf;
     }
 
     /**
      * Set addIf.
      *
-     * @param Closure|null $addIf
+     * @param null|Closure $addIf
      *
      * @return $this
      */
@@ -680,131 +686,5 @@ abstract class AbstractColumn implements ColumnInterface, OptionsInterface
         $this->addIf = $addIf;
 
         return $this;
-    }
-
-    /**
-     * Get addIf.
-     *
-     * @return Closure|null
-     */
-    public function getAddIf()
-    {
-        return $this->addIf;
-    }
-
-    /**
-     * Set editable.
-     *
-     * @param boolean $editable
-     *
-     * @return $this
-     */
-    public function setEditable($editable)
-    {
-        $this->editable = $editable;
-
-        return $this;
-    }
-
-    /**
-     * Get editable.
-     *
-     * @return boolean
-     */
-    public function getEditable()
-    {
-        return $this->editable;
-    }
-
-    /**
-     * Set editableIf.
-     *
-     * @param Closure|null $editableIf
-     *
-     * @return $this
-     */
-    public function setEditableIf($editableIf)
-    {
-        $this->editableIf = $editableIf;
-
-        return $this;
-    }
-
-    /**
-     * Get editableIf.
-     *
-     * @return Closure|null
-     */
-    public function getEditableIf()
-    {
-        return $this->editableIf;
-    }
-
-    /**
-     * Set table name.
-     *
-     * @param string $tableName
-     *
-     * @return $this
-     */
-    public function setTableName($tableName)
-    {
-        $this->tableName = $tableName;
-
-        return $this;
-    }
-
-    /**
-     * Get table name.
-     *
-     * @return string
-     */
-    public function getTableName()
-    {
-        return $this->tableName;
-    }
-
-    /**
-     * Set index.
-     *
-     * @param integer $index
-     *
-     * @return $this
-     */
-    public function setIndex($index)
-    {
-        $this->index = $index;
-
-        return $this;
-    }
-
-    /**
-     * Get index.
-     *
-     * @return integer
-     */
-    public function getIndex()
-    {
-        return $this->index;
-    }
-
-    /**
-     * Get dqlProperty.
-     *
-     * @return string
-     */
-    public function getDqlProperty()
-    {
-        return '['.str_replace('.','][',$this->dql).']';
-    }
-
-    /**
-     * Get accessor.
-     *
-     * @return PropertyAccess|\Symfony\Component\PropertyAccess\PropertyAccessor
-     */
-    public function getAccessor()
-    {
-        return $this->accessor;
     }
 }
