@@ -1,0 +1,70 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{
+    {% block common %}
+        {% if column.cellType is not null %}
+            "cellType": "{{ column.cellType }}",
+        {% endif %}
+        {% if column.contentPadding is not null %}
+            "contentPadding": "{{ column.contentPadding }}",
+        {% endif %}
+        {% if column.defaultContent is not null %}
+            "defaultContent": "{{ column.defaultContent }}",
+        {% endif %}
+        {% if column.name is not null %}
+            "name": "{{ column.name }}",
+        {% endif %}
+        {% if column.width is not null %}
+            "width": "{{ column.width }}",
+        {% endif %}
+        {% if column.title is not null %}
+            "title": "{{ column.title|raw }}",
+        {% endif %}
+        {% if column.searchable is not null %}
+            "searchable": {{ column.searchable|sg_datatable_bool_var }},
+        {% endif %}
+        {% if column.visible is same as(true) %}
+            "visible": true,
+            {% if column.className is not null %}
+                "className": "{{ column.className }}",
+            {% endif %}
+        {% endif %}
+        {% if column.visible is same as(false) %}
+            "visible": false,
+            "className": "never {% if column.className is not null %}{{ column.className }}{% endif %}",
+        {% endif %}
+        {% if column.orderable is same as(true) %}
+            "orderable": true,
+            {% if column.orderSequence is not null %}
+                "orderSequence": {{ column.orderSequence }},
+            {% endif %}
+            {% if column.orderData is not null %}
+                "orderData": {{ column.orderData }},
+            {% endif %}
+        {% endif %}
+        {% if column.orderable is same as(false) %}
+            "orderable": false,
+        {% endif %}
+    {% endblock %}
+
+    {% block data %}
+        "data": "{{ column.data }}",
+        {% if column.renderString is not null %}
+            "render": "{{ column.renderString }}",
+        {% endif %}
+        {% if column.renderObject is not null %}
+            "render": {{ column.renderObject|raw }},
+        {% endif %}
+        {% if column.renderFunction is not null %}
+            "render": function(data, type, row, meta) {
+                return {{ column.renderFunction }}(data, type, row, meta);
+            },
+        {% endif %}
+    {% endblock %}
+},
