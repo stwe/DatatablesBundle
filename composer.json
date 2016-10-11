@@ -27,7 +27,7 @@
     "require-dev": {
         "sensio/generator-bundle": "~2.5|~3.0",
         "doctrine/orm": "^2.2.3",
-        "phpunit/phpunit": "^5.6",
+        "phpunit/phpunit": "4.8.0",
         "twig/twig": "^1.26"
     },
     "suggest": {
