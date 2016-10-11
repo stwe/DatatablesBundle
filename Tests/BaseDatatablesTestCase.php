@@ -50,14 +50,6 @@ class BaseDatatablesTestCase extends \PHPUnit_Framework_TestCase
             ->method('getIdentifierFieldNames')
             ->willReturn(array());
 
-        $metadataFactory = $this->getMockBuilder('Doctrine\Common\Persistence\Mapping\ClassMetadataFactory')
-            ->getMock();
-
-        $metadataFactory
-            ->expects($this->any())
-            ->method('getMetadataFor')
-            ->willReturn($classMetadata);
-
         $driver = $this->getMockBuilder('Doctrine\DBAL\Driver')
             ->getMock();
 
@@ -73,12 +65,16 @@ class BaseDatatablesTestCase extends \PHPUnit_Framework_TestCase
         $em = $this->getMockBuilder('Doctrine\ORM\EntityManagerInterface')
             ->getMock();
 
-        $queryBuilder = new \Doctrine\ORM\QueryBuilder($em);
+        $emInstance = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $queryBuilder = new \Doctrine\ORM\QueryBuilder($emInstance);
 
         $em
             ->expects($this->any())
-            ->method('getMetadataFactory')
-            ->willReturn($metadataFactory);
+            ->method('getClassMetadata')
+            ->willReturn($classMetadata);
 
         $em
             ->expects($this->any())

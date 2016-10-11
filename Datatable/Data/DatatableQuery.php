@@ -835,7 +835,7 @@ class DatatableQuery
     private function getMetadata($entity)
     {
         try {
-            $metadata = $this->em->getMetadataFactory()->getMetadataFor($entity);
+            $metadata = $this->em->getClassMetadata($entity);
         } catch (MappingException $e) {
             throw new Exception('getMetadata(): Given object ' . $entity . ' is not a Doctrine Entity.');
         }
