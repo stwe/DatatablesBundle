@@ -16,32 +16,49 @@ namespace Sg\DatatablesBundle\Tests;
  *
  * @package Sg\DatatablesBundle\Tests
  */
-class DatatableTest extends \PHPUnit_Framework_TestCase
+class DatatableTest extends BaseDatatablesTestCase
 {
     public function testCreate()
     {
-        $tableClass = 'Sg\DatatablesBundle\Tests\Datatables\PostDatatable';
-
-        $authorizationChecker = $this->getMockBuilder('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface')
-            ->getMock();
-
-        $securityToken = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')
-            ->getMock();
-
-        $translator = $this->getMockBuilder('Symfony\Component\Translation\TranslatorInterface')
-            ->getMock();
-
-        $router = $this->getMockBuilder('Symfony\Component\Routing\RouterInterface')
-            ->getMock();
-
-        $em = $this->getMockBuilder('Doctrine\ORM\EntityManagerInterface')
-            ->getMock();
-
-        /** @var \Sg\DatatablesBundle\Tests\Datatables\PostDatatable $table */
-        $table = new $tableClass($authorizationChecker, $securityToken, $translator, $router, $em);
+        $table = $this->createDummyDatatable();
 
         $this->assertEquals('post_datatable', $table->getName());
 
         $table->buildDatatable();
+    }
+
+    public function testCreateDatatableChecksOptions()
+    {
+        $table = $this->createDummyDatatable();
+        $table->buildDatatable();
+
+        $this->assertNotEmpty($table->getTopActions());
+        $this->assertNotEmpty($table->getFeatures());
+        $this->assertNotEmpty($table->getAjax());
+        $this->assertNotEmpty($table->getOptions());
+    }
+
+    public function testCreateDatatableCheckColumns()
+    {
+        $table = $this->createDummyDatatable();
+        $table->buildDatatable();
+
+        /**
+         * @var \Sg\DatatablesBundle\Datatable\Column\AbstractColumn[] $columns
+         */
+        $columns = $table->getColumnBuilder()->getColumns();
+
+        $this->assertNotEmpty($columns);
+        $this->assertCount(2, $columns);
+
+        $columnOneOptions = $this->getPrivateProperty($columns[0], 'options');
+
+        $this->assertEquals('id', $columns[0]->getData());
+        $this->assertEquals('Id', $columnOneOptions['title']);
+
+        $columnTwoOptions = $this->getPrivateProperty($columns[1], 'options');
+
+        $this->assertEquals('title', $columns[1]->getData());
+        $this->assertEquals('Title', $columnTwoOptions['title']);
     }
 }
