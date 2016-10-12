@@ -1,16 +1,4 @@
 services:
-    sg_datatables.serializer.method:
-        class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
-
-    sg_datatables.serializer.encoder.json:
-        class: Symfony\Component\Serializer\Encoder\JsonEncoder
-
-    sg_datatables.serializer:
-        class: Symfony\Component\Serializer\Serializer
-        arguments:
-            - ['@sg_datatables.serializer.method']
-            - ['@sg_datatables.serializer.encoder.json']
-
     sg_datatables.twig.extension:
         class: Sg\DatatablesBundle\Twig\DatatableTwigExtension
         public: false
@@ -25,4 +13,10 @@ services:
             - '@security.token_storage'
             - '@translator.default'
             - '@router'
+            - '@doctrine.orm.entity_manager'
+
+    sg_datatables.response:
+        class: Sg\DatatablesBundle\Response\Response
+        arguments:
+            - '@request_stack'
             - '@doctrine.orm.entity_manager'

@@ -407,7 +407,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Get orderable.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getOrderable()
     {
@@ -417,7 +417,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Set orderable.
      *
-     * @param bool|null $orderable
+     * @param null|bool $orderable
      *
      * @return $this
      */
@@ -431,12 +431,12 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Get orderData.
      *
-     * @return array|int|null
+     * @return null|array|int
      */
     public function getOrderData()
     {
         if (is_array($this->orderData)) {
-            return $this->getOptionAsJsonPrettyPrint($this->orderData);
+            return $this->optionToJson($this->orderData);
         }
 
         return $this->orderData;
@@ -445,7 +445,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Set orderData.
      *
-     * @param array|int|null $orderData
+     * @param null|array|int $orderData
      *
      * @return $this
      */
@@ -459,12 +459,12 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Get orderSequence.
      *
-     * @return array|null
+     * @return null|array
      */
     public function getOrderSequence()
     {
         if (is_array($this->orderSequence)) {
-            return $this->getOptionAsJsonPrettyPrint($this->orderSequence);
+            return $this->optionToJson($this->orderSequence);
         }
 
         return $this->orderSequence;
@@ -473,7 +473,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Set orderSequence.
      *
-     * @param array|null $orderSequence
+     * @param null|array $orderSequence
      *
      * @return $this
      */
@@ -520,7 +520,7 @@ abstract class AbstractColumn implements ColumnInterface
     public function getRenderObject()
     {
         if (is_array($this->renderObject)) {
-            return $this->getOptionAsJsonPrettyPrint($this->renderObject);
+            return $this->optionToJson($this->renderObject);
         }
 
         return $this->renderObject;
@@ -571,7 +571,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Get searchable.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getSearchable()
     {
@@ -581,7 +581,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Set searchable.
      *
-     * @param bool|null $searchable
+     * @param null|bool $searchable
      *
      * @return $this
      */
@@ -619,7 +619,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Get visible.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function getVisible()
     {
@@ -629,7 +629,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Set visible.
      *
-     * @param bool|null $visible
+     * @param null|bool $visible
      *
      * @return $this
      */

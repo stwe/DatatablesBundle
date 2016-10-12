@@ -1,0 +1,16 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+"serverSide": true,
+"ajax": {
+    "url": "{{ sg_datatable_view.ajax.url|raw }}",
+    "type": "{{ sg_datatable_view.ajax.type }}",
+    "data": {
+        "sg_datatable_columns": {{ sg_datatable_view_columns_json|raw }}
+    },
+},

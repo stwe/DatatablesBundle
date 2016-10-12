@@ -17,11 +17,16 @@
             }
         };
 
+        var ajax = {
+            {% include "SgDatatablesBundle:datatable:ajax.html.twig" %}
+        };
+
         var columns = {
             {% include "SgDatatablesBundle:datatable:columns.html.twig" %}
         };
 
         function createDatatable() {
+            $.extend(defaults, ajax);
             $.extend(defaults, columns);
             if (!$.fn.DataTable.isDataTable(selector)) {
                 oTable = $(selector)

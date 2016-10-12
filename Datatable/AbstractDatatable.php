@@ -71,6 +71,13 @@ abstract class AbstractDatatable implements DatatableInterface
      */
     protected $columnBuilder;
 
+    /**
+     * An Ajax instance.
+     *
+     * @var Ajax
+     */
+    protected $ajax;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -101,6 +108,8 @@ abstract class AbstractDatatable implements DatatableInterface
         $this->em = $em;
 
         $this->columnBuilder = new ColumnBuilder();
+
+        $this->ajax = new Ajax();
     }
 
     //-------------------------------------------------
@@ -113,6 +122,14 @@ abstract class AbstractDatatable implements DatatableInterface
     public function getColumns()
     {
         return $this->columnBuilder->getColumns();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAjax()
+    {
+        return $this->ajax;
     }
 
     //-------------------------------------------------

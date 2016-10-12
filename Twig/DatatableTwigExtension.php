@@ -13,6 +13,9 @@ namespace Sg\DatatablesBundle\Twig;
 
 use Sg\DatatablesBundle\Datatable\AbstractDatatable;
 
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Twig_Environment;
 use Twig_Extension;
 use Twig_SimpleFunction;
@@ -25,6 +28,26 @@ use Twig_SimpleFilter;
  */
 class DatatableTwigExtension extends Twig_Extension
 {
+    /**
+     * @var Serializer
+     */
+    private $serializer;
+
+    //-------------------------------------------------
+    // Ctor.
+    //-------------------------------------------------
+
+    /**
+     * DatatableTwigExtension constructor.
+     */
+    public function __construct()
+    {
+        $encoder = array(new JsonEncoder());
+        $normalizer = array(new ObjectNormalizer());
+
+        $this->serializer = new Serializer($normalizer, $encoder);
+    }
+
     //-------------------------------------------------
     // Twig_ExtensionInterface
     //-------------------------------------------------
@@ -76,6 +99,7 @@ class DatatableTwigExtension extends Twig_Extension
             'SgDatatablesBundle:datatable:datatable.html.twig',
             array(
                 'sg_datatable_view' => $datatable,
+                'sg_datatable_view_columns_json' => $this->objectIntoJson($datatable->getColumns())
             )
         );
     }
@@ -94,6 +118,7 @@ class DatatableTwigExtension extends Twig_Extension
             'SgDatatablesBundle:datatable:datatable_html.html.twig',
             array(
                 'sg_datatable_view' => $datatable,
+                'sg_datatable_view_columns_json' => $this->objectIntoJson($datatable->getColumns())
             )
         );
     }
@@ -112,6 +137,7 @@ class DatatableTwigExtension extends Twig_Extension
             'SgDatatablesBundle:datatable:datatable_js.html.twig',
             array(
                 'sg_datatable_view' => $datatable,
+                'sg_datatable_view_columns_json' => $this->objectIntoJson($datatable->getColumns())
             )
         );
     }
@@ -135,4 +161,21 @@ class DatatableTwigExtension extends Twig_Extension
             return 'false';
         }
     }
+
+    //-------------------------------------------------
+    // Private
+    //-------------------------------------------------
+
+    /**
+     * Object into JSON.
+     *
+     * @param $object
+     *
+     * @return mixed
+     */
+    private function objectIntoJson($object)
+    {
+        return $this->serializer->serialize($object, 'json');
+    }
+
 }

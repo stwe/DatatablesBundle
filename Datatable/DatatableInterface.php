@@ -33,6 +33,13 @@ interface DatatableInterface
     public function getColumns();
 
     /**
+     * Get Ajax instance.
+     *
+     * @return Ajax
+     */
+    public function getAjax();
+
+    /**
      * Returns the name of the entity.
      *
      * @return string

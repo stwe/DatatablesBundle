@@ -38,15 +38,16 @@ class ColumnFactory
             return $class;
         }
 
-        if (is_string($class)) {
+        if (is_string($class) && class_exists($class)) {
             $column = new $class;
+
             if (!$column instanceof ColumnInterface) {
                 throw new Exception('ColumnFactory::createColumn(): ColumnInterface expected.');
             } else {
                 return $column;
             }
+        } else {
+            throw new Exception("ColumnFactory::createColumn(): $class is not callable.");
         }
-
-        return null;
     }
 }

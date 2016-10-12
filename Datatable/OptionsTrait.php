@@ -29,18 +29,9 @@ trait OptionsTrait
      */
     protected $options;
 
-    /**
-     * Init optionsTrait.
-     *
-     * @return $this
-     */
-    private function initOptions()
-    {
-        $this->options = array();
-        $this->set($this->options);
-
-        return $this;
-    }
+    //-------------------------------------------------
+    // Public
+    //-------------------------------------------------
 
     /**
      * Set options.
@@ -57,6 +48,23 @@ trait OptionsTrait
 
         $this->options = $resolver->resolve($options);
         $this->callingSettersWithOptions($this->options);
+
+        return $this;
+    }
+
+    //-------------------------------------------------
+    // Private
+    //-------------------------------------------------
+
+    /**
+     * Init optionsTrait.
+     *
+     * @return $this
+     */
+    private function initOptions()
+    {
+        $this->options = array();
+        $this->set($this->options);
 
         return $this;
     }
@@ -84,16 +92,16 @@ trait OptionsTrait
     }
 
     /**
-     * Get option as json pretty print.
+     * Option to JSON.
      *
      * @param mixed $value
      *
      * @return mixed
      */
-    private function getOptionAsJsonPrettyPrint($value)
+    private function optionToJson($value)
     {
         if (is_array($value) && !empty($value)) {
-            return json_encode($value, JSON_PRETTY_PRINT);
+            return json_encode($value);
         }
 
         return $value;
@@ -106,7 +114,7 @@ trait OptionsTrait
      * @param array $options
      *
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     private function checkOptions(array $array, array $options)
     {
