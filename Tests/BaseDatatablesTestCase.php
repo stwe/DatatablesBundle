@@ -41,12 +41,14 @@ class BaseDatatablesTestCase extends \PHPUnit_Framework_TestCase
      */
     protected function getEntityManagerMock()
     {
+        // NOTICE: we need this to properly test in PHP v5.3
+        $self = $this;
+
         $classMetadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadata')
             ->disableOriginalConstructor()
             ->getMock();
 
         $classMetadata
-            ->expects($this->any())
             ->method('getIdentifierFieldNames')
             ->willReturn(array());
 
@@ -58,9 +60,11 @@ class BaseDatatablesTestCase extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $connection
-            ->expects($this->any())
             ->method('getDriver')
             ->willReturn($driver);
+
+        $configuration = $this->getMockBuilder('Doctrine\ORM\Configuration')
+            ->getMock();
 
         $em = $this->getMockBuilder('Doctrine\ORM\EntityManagerInterface')
             ->getMock();
@@ -69,20 +73,44 @@ class BaseDatatablesTestCase extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $emInstance
+            ->method('getExpressionBuilder')
+            ->willReturnCallback(function () {
+                return new \Doctrine\ORM\Query\Expr();
+            });
+
+        $emInstance
+            ->method('createQuery')
+            ->willReturnCallback(function () use ($self, $emInstance) {
+                $query = new \Doctrine\ORM\Query($emInstance);
+                $self->setPrivateProperty($query, '_hints', array());
+
+                if (!empty($dql)) {
+                    $query->setDql($dql);
+                }
+
+                return $query;
+            });
+
+        $emInstance
+            ->method('getConfiguration')
+            ->willReturn($configuration);
+
+        $emInstance
+            ->method('getConnection')
+            ->willReturn($connection);
+
         $queryBuilder = new \Doctrine\ORM\QueryBuilder($emInstance);
 
         $em
-            ->expects($this->any())
             ->method('getClassMetadata')
             ->willReturn($classMetadata);
 
         $em
-            ->expects($this->any())
             ->method('getConnection')
             ->willReturn($connection);
 
         $em
-            ->expects($this->any())
             ->method('createQueryBuilder')
             ->willReturn($queryBuilder);
 
@@ -126,11 +154,18 @@ class BaseDatatablesTestCase extends \PHPUnit_Framework_TestCase
      * @param object $object
      * @param string $propertyName
      * @param array  $value
+     * @param bool   $recursive Merge array content recursive/deeply.
      */
-    protected function extendPrivateArrayProperty($object, $propertyName, array $value)
+    protected function extendPrivateArrayProperty($object, $propertyName, array $value, $recursive = false)
     {
         $data = (array)$this->getPrivateProperty($object, $propertyName);
-        $data = array_merge_recursive($data, $value);
+
+        if ($recursive === false) {
+            $data = array_merge($data, $value);
+        } else {
+            $data = array_merge_recursive($data, $value);
+        }
+
         $this->setPrivateProperty($object, $propertyName, $data);
     }
 
