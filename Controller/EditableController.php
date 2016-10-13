@@ -76,7 +76,7 @@ class EditableController extends Controller
                     $value = new \DateTime($value);
                     break;
                 case 'boolean':
-                    $value = (bool) $value;
+                    $value = $this->strToBool($value);
                     break;
                 case 'string':
                     break;
