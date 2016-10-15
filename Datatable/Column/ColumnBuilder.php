@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Exception;
+
 /**
  * Class ColumnBuilder
  *
@@ -49,7 +51,7 @@ class ColumnBuilder
      * @param array                  $options
      *
      * @return $this
-     * @throws \Exception
+     * @throws Exception
      */
     public function add($data, $class, array $options = array())
     {
@@ -57,14 +59,16 @@ class ColumnBuilder
          * @var AbstractColumn $column
          */
         $column = ColumnFactory::createColumn($class);
+        $column->initOptions(false);
         $column->setData($data);
+        $column->setDql($data);
         $column->set($options);
 
         if (true === $column->callAddIfClosure()) {
             $this->columns[] = $column;
         }
 
-        if (true === $column->getUnique()) {
+        if (true === $column->isUnique()) {
             // array_count_values(ex.: MultiselectColumn)
             // throw new Exception('add(): There is only one column allowed.')
         }

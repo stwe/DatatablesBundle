@@ -19,18 +19,35 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 interface ColumnInterface
 {
     /**
-     * Checks whether the column may be added.
+     * Validates $data. Normally a non-empty string is expected.
+     *
+     * @param mixed $data
      *
      * @return bool
      */
-    public function callAddIfClosure();
+    public function dataConstraint($data);
 
     /**
-     * Specifies whether only a single column of this type is allowed.
+     * Specifies whether only a single column of this type is allowed (example: MultiselectColumn).
      *
      * @return bool
      */
-    public function getUnique();
+    public function isUnique();
+
+    /**
+     * Checks wether an association is given.
+     *
+     * @return bool
+     */
+    public function isAssociation();
+
+    /**
+     * Use the column data value in SELECT statement.
+     * Normally is it true. In case of virtual Column, multi select column or data is null is it false.
+     *
+     * @return bool
+     */
+    public function isSelectColumn();
 
     /**
      * Get template.

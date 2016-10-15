@@ -1,3 +1,11 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -18,11 +26,11 @@
         };
 
         var ajax = {
-            {% include "SgDatatablesBundle:datatable:ajax.html.twig" %}
+            {% include 'SgDatatablesBundle:datatable:ajax.html.twig' %}
         };
 
         var columns = {
-            {% include "SgDatatablesBundle:datatable:columns.html.twig" %}
+            {% include 'SgDatatablesBundle:datatable:columns.html.twig' %}
         };
 
         function createDatatable() {

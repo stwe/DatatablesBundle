@@ -14,14 +14,16 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use JsonSerializable;
 use Closure;
+use Exception;
 
 /**
  * Class AbstractColumn
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-abstract class AbstractColumn implements ColumnInterface
+abstract class AbstractColumn implements ColumnInterface, JsonSerializable
 {
     use OptionsTrait;
 
@@ -77,7 +79,7 @@ abstract class AbstractColumn implements ColumnInterface
      * Enable or disable ordering on this column.
      * DataTables default: true
      *
-     * @var null|bool
+     * @var bool
      */
     protected $orderable;
 
@@ -126,7 +128,7 @@ abstract class AbstractColumn implements ColumnInterface
      * Enable or disable filtering on the data in this column.
      * DataTables default: true
      *
-     * @var null|bool
+     * @var bool
      */
     protected $searchable;
 
@@ -166,16 +168,15 @@ abstract class AbstractColumn implements ColumnInterface
     protected $addIf;
 
     //-------------------------------------------------
-    // Ctor.
+    // Other Properties
     //-------------------------------------------------
 
     /**
-     * AbstractColumn constructor.
+     * Data source ($this->data) copy.
+     *
+     * @var null|string
      */
-    public function __construct()
-    {
-        $this->initOptions();
-    }
+    protected $dql;
 
     //-------------------------------------------------
     // Options
@@ -196,13 +197,13 @@ abstract class AbstractColumn implements ColumnInterface
             'content_padding' => null,
             'default_content' => null,
             'name' => null,
-            'orderable' => null,
+            'orderable' => true,
             'order_data' => null,
             'order_sequence' => null,
             'render_string' => null,
             'render_object' => null,
             'render_function' => null,
-            'searchable' => null,
+            'searchable' => true,
             'title' => null,
             'visible' => null,
             'width' => null,
@@ -214,13 +215,13 @@ abstract class AbstractColumn implements ColumnInterface
         $resolver->setAllowedTypes('content_padding', array('null', 'string'));
         $resolver->setAllowedTypes('default_content', array('null', 'string'));
         $resolver->setAllowedTypes('name', array('null', 'string'));
-        $resolver->setAllowedTypes('orderable', array('null', 'bool'));
+        $resolver->setAllowedTypes('orderable', 'bool');
         $resolver->setAllowedTypes('order_data', array('null', 'array', 'int'));
         $resolver->setAllowedTypes('order_sequence', array('null', 'array'));
         $resolver->setAllowedTypes('render_string', array('null', 'string'));
         $resolver->setAllowedTypes('render_object', array('null', 'array'));
         $resolver->setAllowedTypes('render_function', array('null', 'string'));
-        $resolver->setAllowedTypes('searchable', array('null', 'bool'));
+        $resolver->setAllowedTypes('searchable', 'bool');
         $resolver->setAllowedTypes('title', array('null', 'string'));
         $resolver->setAllowedTypes('visible', array('null', 'bool'));
         $resolver->setAllowedTypes('width', array('null', 'string'));
@@ -239,6 +240,67 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * {@inheritdoc}
      */
+    public function dataConstraint($data)
+    {
+        return preg_match('/^[a-zA-Z0-9_\\-\\.]+$/', $data) ? true : false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isUnique()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAssociation()
+    {
+        return (false === strstr($this->data, '.') ? false : true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isSelectColumn()
+    {
+        return true;
+    }
+
+    //-------------------------------------------------
+    // JsonSerializable
+    //-------------------------------------------------
+
+    /**
+     * JsonSerialize.
+     *
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+
+        unset($vars['options']);
+        unset($vars['accessor']);
+
+        $vars['unique'] = $this->isUnique();
+        $vars['association'] = $this->isAssociation();
+        $vars['selectColumn'] = $this->isSelectColumn();
+
+        return $vars;
+    }
+
+    //-------------------------------------------------
+    // Helper
+    //-------------------------------------------------
+
+    /**
+     * Checks whether the column may be added.
+     *
+     * @return bool
+     */
     public function callAddIfClosure()
     {
         if ($this->addIf instanceof Closure) {
@@ -246,14 +308,6 @@ abstract class AbstractColumn implements ColumnInterface
         }
 
         return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getUnique()
-    {
-        return false;
     }
 
     //-------------------------------------------------
@@ -348,10 +402,15 @@ abstract class AbstractColumn implements ColumnInterface
      * @param null|string $data
      *
      * @return $this
+     * @throws Exception
      */
     public function setData($data)
     {
-        $this->data = $data;
+        if (true === $this->dataConstraint($data)) {
+            $this->data = $data;
+        } else {
+            throw new Exception("AbstractColumn::setData(): $data is not a valid.");
+        }
 
         return $this;
     }
@@ -407,7 +466,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Get orderable.
      *
-     * @return null|bool
+     * @return bool
      */
     public function getOrderable()
     {
@@ -417,7 +476,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Set orderable.
      *
-     * @param null|bool $orderable
+     * @param bool $orderable
      *
      * @return $this
      */
@@ -571,7 +630,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Get searchable.
      *
-     * @return null|bool
+     * @return bool
      */
     public function getSearchable()
     {
@@ -581,7 +640,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Set searchable.
      *
-     * @param null|bool $searchable
+     * @param bool $searchable
      *
      * @return $this
      */
@@ -684,6 +743,30 @@ abstract class AbstractColumn implements ColumnInterface
     public function setAddIf($addIf)
     {
         $this->addIf = $addIf;
+
+        return $this;
+    }
+
+    /**
+     * Get dql.
+     *
+     * @return null|string
+     */
+    public function getDql()
+    {
+        return $this->dql;
+    }
+
+    /**
+     * Set dql.
+     *
+     * @param null|string $dql
+     *
+     * @return $this
+     */
+    public function setDql($dql)
+    {
+        $this->dql = $dql;
 
         return $this;
     }

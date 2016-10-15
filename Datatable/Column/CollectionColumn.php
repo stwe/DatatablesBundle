@@ -55,6 +55,22 @@ class CollectionColumn extends Column
     }
 
     //-------------------------------------------------
+    // ColumnInterface
+    //-------------------------------------------------
+
+    /**
+     * {@inheritdoc}
+     */
+    public function dataConstraint($data)
+    {
+        if (preg_match('/^[a-zA-Z0-9_\\-\\.]+$/', $data) && strstr($data, '.')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //-------------------------------------------------
     // Getters && Setters
     //-------------------------------------------------
 

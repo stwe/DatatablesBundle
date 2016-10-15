@@ -42,4 +42,16 @@ class VirtualColumn extends Column
 
         return $this;
     }
+
+    //-------------------------------------------------
+    // ColumnInterface
+    //-------------------------------------------------
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isSelectColumn()
+    {
+        return false;
+    }
 }

@@ -6,11 +6,5 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-"serverSide": true,
-"ajax": {
-    "url": "{{ sg_datatable_view.ajax.url|raw }}",
-    "type": "{{ sg_datatable_view.ajax.type }}",
-    "data": {
-        {% include 'SgDatatablesBundle:datatable:request_data.html.twig' %}
-    },
-},
+"sg_datatable_request_data_columns": "{{ sg_datatable_view_columns_as_json|e('js') }}",
+"sg_datatable_request_data_entity": "{{ sg_datatable_view.entity|e('js') }}"

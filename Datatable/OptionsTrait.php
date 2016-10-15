@@ -11,8 +11,9 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Exception;
 
 /**
@@ -29,9 +30,35 @@ trait OptionsTrait
      */
     protected $options;
 
+    /**
+     * The PropertyAccessor.
+     *
+     * @var PropertyAccessor
+     */
+    protected $accessor;
+
     //-------------------------------------------------
     // Public
     //-------------------------------------------------
+
+    /**
+     * Init optionsTrait.
+     *
+     * @param bool $callSetOptions
+     *
+     * @return $this
+     */
+    public function initOptions($callSetOptions = true)
+    {
+        $this->options = array();
+        $this->accessor = PropertyAccess::createPropertyAccessor();
+
+        if (true === $callSetOptions) {
+            $this->set($this->options);
+        }
+
+        return $this;
+    }
 
     /**
      * Set options.
@@ -57,38 +84,19 @@ trait OptionsTrait
     //-------------------------------------------------
 
     /**
-     * Init optionsTrait.
-     *
-     * @return $this
-     */
-    private function initOptions()
-    {
-        $this->options = array();
-        $this->set($this->options);
-
-        return $this;
-    }
-
-    /**
      * Calls the setters.
      *
      * @param array $options
      *
-     * @throws Exception
+     * @return $this
      */
     private function callingSettersWithOptions(array $options)
     {
-        $methods = get_class_methods($this);
-
-        foreach ($options as $key => $value) {
-            $key = Container::camelize($key);
-            $method = 'set' . ucfirst($key);
-            if (in_array($method, $methods)) {
-                $this->$method($value);
-            } else {
-                throw new Exception("OptionsTrait::callingSettersWithOptions(): $method invalid method name.");
-            }
+        foreach ($options as $setter => $value) {
+            $this->accessor->setValue($this, $setter, $value);
         }
+
+        return $this;
     }
 
     /**
