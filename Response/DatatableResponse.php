@@ -17,11 +17,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
 /**
- * Class Response
+ * Class DatatableResponse
  *
  * @package Sg\DatatablesBundle\Response
  */
-class Response
+class DatatableResponse
 {
     /**
      * @var Request
@@ -97,18 +97,20 @@ class Response
     //-------------------------------------------------
 
     /**
-     * Get jsonResponse.
+     * Get query.
+     *
+     * @return DatatableQuery
      */
     public function getQuery()
     {
         $requestParams = $this->getRequestParams();
 
-        $query = new DatatableQuery(
+        $datatableQuery = new DatatableQuery(
             $requestParams,
             $this->em
         );
 
-        return $query;
+        return $datatableQuery;
     }
 
     //-------------------------------------------------

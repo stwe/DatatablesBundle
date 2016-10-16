@@ -16,7 +16,7 @@ services:
             - '@doctrine.orm.entity_manager'
 
     sg_datatables.response:
-        class: Sg\DatatablesBundle\Response\Response
+        class: Sg\DatatablesBundle\Response\DatatableResponse
         arguments:
             - '@request_stack'
             - '@doctrine.orm.entity_manager'
