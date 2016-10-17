@@ -100,6 +100,7 @@ class DatatableTwigExtension extends Twig_Extension
         $options = array();
 
         $options['view_actions'] = $datatable->getTopActions();
+        $options['view_tabs'] = $datatable->getTabs();
         $options['view_features'] = $datatable->getFeatures();
         $options['view_options'] = $datatable->getOptions();
         $options['view_callbacks'] = $datatable->getCallbacks();

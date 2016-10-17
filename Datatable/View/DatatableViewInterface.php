@@ -45,6 +45,13 @@ interface DatatableViewInterface
     public function getTopActions();
 
     /**
+     * Get Tabs.
+     *
+     * @return Tabs
+     */
+    public function getTabs();
+
+    /**
      * Get Features.
      *
      * @return Features

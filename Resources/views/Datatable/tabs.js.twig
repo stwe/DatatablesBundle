@@ -1,0 +1,8 @@
+$('a.sg-tab.{{ view_table_id }}').on('click', function (e) {
+    e.preventDefault()
+    $(this).tab('show');
+});
+
+$('a.sg-tab.{{ view_table_id }}').on('shown.bs.tab', function (e) {
+    oTable.ajax.url($(e.target).attr("data-ajax")).load();
+});

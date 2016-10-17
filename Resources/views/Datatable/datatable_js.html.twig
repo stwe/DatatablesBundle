@@ -144,6 +144,9 @@
                 {% include "SgDatatablesBundle:Action:multiselect_actions.html.twig" with {'column': view_multiselect_column} %}
             {% endif %}
 
+            {% if view_tabs.actions|length %}
+                {% include "SgDatatablesBundle:Datatable:tabs.js.twig" %}
+            {% endif %}
         }, features.delay);
     });
 

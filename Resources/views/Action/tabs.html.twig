@@ -1,0 +1,21 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{% set link %}
+    <li class="{% if loop.first %}active{% endif %}">
+        <a href="#" data-ajax="{{tab.route }}" class="sg-tab {{ view_table_id }}"
+        {% for key, value in tab.attributes %}
+            {{ key }}="{{ value }}"
+        {% endfor %}
+        >{{ datatable_icon(tab.icon, tab.label) }}</a>
+    </li>
+{% endset %}
+
+{% if tab.isRenderIfClosure %}
+    {{ link }}
+{% endif %}

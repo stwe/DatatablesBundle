@@ -75,6 +75,13 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     protected $topActions;
 
     /**
+     * A Tab filters
+     *
+     * @var Tabs
+     */
+    protected $tabs;
+
+    /**
      * A Features instance.
      *
      * @var Features
@@ -168,6 +175,7 @@ abstract class AbstractDatatableView implements DatatableViewInterface
         $this->em = $em;
 
         $this->topActions = new TopActions();
+        $this->tabs = new Tabs();
         $this->features = new Features();
         $this->options = new Options();
         $this->callbacks = new Callbacks();
@@ -197,6 +205,14 @@ abstract class AbstractDatatableView implements DatatableViewInterface
     public function getTopActions()
     {
         return $this->topActions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTabs()
+    {
+        return $this->tabs;
     }
 
     /**
