@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Closure;
 
 /**
- * Class TopActions
+ * Class Tabs
  *
  * @package Sg\DatatablesBundle\Datatable\View
  */
@@ -38,7 +38,7 @@ class Tabs extends AbstractViewOptions
     protected $endHtml;
 
     /**
-     * Add Top-Action-Bar only if parameter / conditions are TRUE
+     * Add Tabs only if parameter / conditions are TRUE
      *
      * @var Closure|null
      */
