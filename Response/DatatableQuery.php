@@ -90,6 +90,11 @@ class DatatableQuery
     private $orderColumns;
 
     /**
+     * @var array
+     */
+    private $joins;
+
+    /**
      * @var Paginator
      */
     private $paginator;
@@ -125,6 +130,7 @@ class DatatableQuery
         $this->selectColumns = array();
         $this->searchColumns = array();
         $this->orderColumns = array();
+        $this->joins = array();
 
         $this->paginator = null;
 
@@ -152,16 +158,14 @@ class DatatableQuery
 
                 while (count($parts) > 1) {
                     $previousPart = $currentPart;
-                    //$previousAlias = $currentAlias;
+                    $previousAlias = $currentAlias;
 
                     $currentPart = array_shift($parts);
                     $currentAlias = ($previousPart === $this->tableName ? '' : $previousPart . '_') . $currentPart;
 
-                    /*
-                    if (!array_key_exists($previousAlias.'.'.$currentPart, $this->joins)) {
-                        $this->joins[$previousAlias.'.'.$currentPart] = $currentAlias;
+                    if (!array_key_exists($previousAlias . '.' . $currentPart, $this->joins)) {
+                        $this->addJoin($previousAlias . '.' . $currentPart, $currentAlias, $this->accessor->getValue($column, 'joinType'));
                     }
-                    */
 
                     $metadata = $this->setIdentifierFromAssociation($currentAlias, $currentPart, $metadata);
                 }
@@ -190,8 +194,9 @@ class DatatableQuery
     public function buildQuery()
     {
         $this->setSelectFrom();
+        $this->setJoins($this->qb);
+
         /*
-        $this->setLeftJoins($this->qb);
         $this->setWhere($this->qb);
         $this->setWhereAllCallback($this->qb);
         $this->setOrderBy();
@@ -279,6 +284,22 @@ class DatatableQuery
     }
 
     /**
+     * Set joins.
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return $this
+     */
+    private function setJoins(QueryBuilder $qb)
+    {
+        foreach ($this->joins as $key => $value) {
+            $qb->$value['type']($key, $value['alias']);
+        }
+
+        return $this;
+    }
+
+    /**
      * Constructs a Query instance.
      *
      * @return Query
@@ -354,6 +375,25 @@ class DatatableQuery
     {
         true === $this->accessor->getValue($column, 'orderable') ? $this->orderColumns[] = $columnTableName . '.' . $data : $this->orderColumns[] = null;
         true === $this->accessor->getValue($column, 'searchable') ? $this->searchColumns[] = $columnTableName . '.' . $data : $this->searchColumns[] = null;
+
+        return $this;
+    }
+
+    /**
+     * Add join.
+     *
+     * @param string $columnTableName
+     * @param string $alias
+     * @param string $type
+     *
+     * @return $this
+     */
+    private function addJoin($columnTableName, $alias, $type)
+    {
+        $this->joins[$columnTableName] = array(
+            'alias' => $alias,
+            'type' => $type
+        );
 
         return $this;
     }
