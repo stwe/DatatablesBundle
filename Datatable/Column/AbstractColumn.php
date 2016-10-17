@@ -167,6 +167,13 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
      */
     protected $addIf;
 
+    /**
+     * Join type (default: 'leftJoin'), if the column represents an association.
+     *
+     * @var string
+     */
+    protected $joinType;
+
     //-------------------------------------------------
     // Other Properties
     //-------------------------------------------------
@@ -208,6 +215,7 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
             'visible' => null,
             'width' => null,
             'add_if' => null,
+            'join_type' => 'leftJoin'
         ));
 
         $resolver->setAllowedTypes('cell_type', array('null', 'string'));
@@ -226,9 +234,10 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
         $resolver->setAllowedTypes('visible', array('null', 'bool'));
         $resolver->setAllowedTypes('width', array('null', 'string'));
         $resolver->setAllowedTypes('add_if', array('null', 'Closure'));
+        $resolver->setAllowedTypes('join_type', 'string');
 
         $resolver->setAllowedValues('cell_type', array(null, 'th', 'td'));
-
+        $resolver->setAllowedValues('join_type', array(null, 'join', 'leftJoin', 'innerJoin'));
 
         return $this;
     }
@@ -767,6 +776,30 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
     public function setDql($dql)
     {
         $this->dql = $dql;
+
+        return $this;
+    }
+
+    /**
+     * Get join type.
+     *
+     * @return string
+     */
+    public function getJoinType()
+    {
+        return $this->joinType;
+    }
+
+    /**
+     * Set join type.
+     *
+     * @param string $joinType
+     *
+     * @return $this
+     */
+    public function setJoinType($joinType)
+    {
+        $this->joinType = $joinType;
 
         return $this;
     }
