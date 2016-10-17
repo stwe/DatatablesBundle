@@ -42,7 +42,7 @@ class PostDatatable extends AbstractDatatableView
         ));
 
         $this->ajax->set(array(
-            'url' => $this->router->generate('post_results'),
+            'url' => '',
             'type' => 'GET'
         ));
 
@@ -54,7 +54,7 @@ class PostDatatable extends AbstractDatatableView
 
         $this->columnBuilder
             ->add('id', 'column', array(
-                'id' => 'Id',
+                'title' => 'Id',
             ))
             ->add('title', 'column', array(
                 'title' => 'Title',

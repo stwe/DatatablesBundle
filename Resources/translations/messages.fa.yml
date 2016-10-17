@@ -8,6 +8,7 @@ datatables:
         infoFiltered: "(فیلتر شده از مجموع _MAX_ سطر)"
         infoPostFix: ""
         search: "جستجو"
+        searchPlaceholder: ""
         first: "نخستین"
         previous: "قبلی"
         next: "بعدی"
@@ -33,3 +34,7 @@ daterange:
     format: "YYYY-MM-DD"
 editable:
     tableRedraw: "The changes relates multiple records. The table is redraw with the new data."
+filter:
+    default: "default"
+query:
+    filtered: "(filtered)"

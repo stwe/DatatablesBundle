@@ -86,16 +86,13 @@ function render_editable_text(data, type, row, meta, colData, colIndex) {
         return data;
     }
 
-    if (data != null) {
-        var str = colData.split(".").join("_");
-        var spanClass = "sg-editable-" + str;
-        var result = '<span class="' + spanClass + '"';
-        result += 'data-pk="' + row.id + '"data-type="text"' + '>' + data + '</span>';
+    var editText = null == data ? '' : data;
+    var str = colData.split(".").join("_");
+    var spanClass = "sg-editable-" + str;
+    var result = '<span class="' + spanClass + '"';
+    result += 'data-pk="' + row.id + '"data-type="text"' + '>' + editText + '</span>';
 
-        return result;
-    } else {
-        return null;
-    }
+    return result;
 }
 
 function render_editable_datetime(data, type, row, meta, colData, dateFormat, colIndex) {

@@ -550,7 +550,13 @@ class DatatableQuery
                 if (true === $this->isSearchColumn($column)) {
                     $filter = $column->getFilter();
                     $searchField = $this->searchColumns[$key];
+                    
+                    if (array_key_exists($key, $this->requestParams['columns']) === false) {
+                        continue;
+                    }
+                    
                     $searchValue = $this->requestParams['columns'][$key]['search']['value'];
+                    
                     if ('' != $searchValue && 'null' != $searchValue) {
                         if (true === $this->isPostgreSQLConnection) {
                             $searchField = $this->cast($searchField, $column);
@@ -729,9 +735,11 @@ class DatatableQuery
         $formatter = new DatatableFormatter($this);
         $formatter->runFormatter();
 
+        $countAllResults = $this->datatableView->getOptions()->getCountAllResults();
+
         $outputHeader = array(
             'draw' => (int) $this->requestParams['draw'],
-            'recordsTotal' => (int) $this->getCountAllResults($this->rootEntityIdentifier),
+            'recordsTotal' => true === $countAllResults ? (int) $this->getCountAllResults($this->rootEntityIdentifier) : 0,
             'recordsFiltered' => (int) $this->getCountFilteredResults($this->rootEntityIdentifier, $buildQuery)
         );
 

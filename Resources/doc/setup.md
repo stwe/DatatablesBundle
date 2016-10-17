@@ -234,6 +234,8 @@ function order() {
 | highlight       | bool   | false   | [jQuery Highlight Plugin](https://github.com/bartaz/sandbox.js) |
 | highlight_color | string | 'red'   |                                                                 |
 
+**Caution: For the `highlight` feature you must set `individual_filtering_position` option to 'head'.**
+
 ## 6. Options
 
 | Option                        | Type   | Default                        |
@@ -257,6 +259,8 @@ function order() {
 | individual_filtering_position | string | 'head'                         |
 | use_integration_options       | bool   | false                          |
 | force_dom                     | bool   | false                          |
+| row_id                        | string | ''                             |
+| count_all_results             | bool   | true                           |
 
 ## 7. Ajax
 

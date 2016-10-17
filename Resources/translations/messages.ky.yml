@@ -8,6 +8,7 @@ datatables:
         infoFiltered: "(_MAX_ маалыматтан фильтрленген)"
         infoPostFix: ""
         search: "Издөө"
+        searchPlaceholder: ""
         first: "Биринчи"
         previous: "Мурунку"
         next: "Кийинки"
@@ -33,3 +34,7 @@ daterange:
     format: "DD.MM.YYYY"
 editable:
     tableRedraw: "Таблица жаңыланууда."
+filter:
+    default: "default"
+query:
+    filtered: "(filtered)"

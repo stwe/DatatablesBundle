@@ -10,4 +10,15 @@
 
 {% block data %}
     "data": "{{ column.data }}",
+    {% if column.isAssociation %}
+        "render": function(data, type, row, meta) {
+            if (data === undefined) {
+                var str = "{{ column.data }}";
+                var res = str.split(".");
+                return row[res[0]];
+            } else {
+                return data;
+            }
+        },
+    {% endif %}
 {% endblock %}

@@ -88,6 +88,7 @@ This Bundle has some 3rd Party css/javascript dependencies.
 | In-place editing         | [X-editable](https://github.com/vitalets/x-editable)                                  | no                  |
 | Enlarge thumbnails       | [Featherlight](https://github.com/noelboss/featherlight/)                             | no                  |
 | Highlight search results | [jQuery Highlight Plugin](https://github.com/bartaz/sandbox.js)                       | no                  |
+| Select2-Filter           | [Select2](https://github.com/select2/select2)                                         | no                  |
 
 Load all files with your base layout.
 
@@ -105,6 +106,7 @@ Full example with CDN:
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.4.1/featherlight.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.1.0/css/bootstrap-slider.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" />
     {% endblock %}
     {% block head_javascripts %}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -116,6 +118,7 @@ Full example with CDN:
         <script src="https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.4.1/featherlight.min.js"></script>
         <script src="https://raw.githubusercontent.com/bartaz/sandbox.js/master/jquery.highlight.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.1.0/bootstrap-slider.min.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js'></script>
         <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
         <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
     {% endblock %}

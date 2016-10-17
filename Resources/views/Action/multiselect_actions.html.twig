@@ -29,6 +29,10 @@ $(".{{ view_table_id }}_multiselect_checkall").click(function(event) {
     });
 });
 
+$(selector).on('click', 'input.{{ view_table_id }}_multiselect_checkbox', function(event) {
+    updateCheckAll();
+});
+
 $(".{{ view_table_id }}_multiselect_action_click").on('click', function(event) {
     var length = $("input.{{ view_table_id }}_multiselect_checkbox:checkbox:checked").length;
 
@@ -64,3 +68,20 @@ $(".{{ view_table_id }}_multiselect_action_click").on('click', function(event) {
         alert("{{ 'datatables.bulk.selectError'|trans({}, 'messages') }}");
     }
 });
+
+function updateCheckAll(){
+    var $individual_all        = $("input.{{ view_table_id }}_multiselect_checkbox:checkbox");
+    var $individual_checked    = $("input.{{ view_table_id }}_multiselect_checkbox:checkbox:checked");
+    var $all                   = $(".{{ view_table_id }}_multiselect_checkall");
+
+    if($individual_checked.length === 0){
+        $all.prop('checked', false);
+        $all.prop('indeterminate', false);
+    } else if ($individual_checked.length === $individual_all.length){
+        $all.prop('checked', true);
+        $all.prop('indeterminate', false);
+    } else {
+        $all.prop('checked', false);
+        $all.prop('indeterminate', true);
+    }
+}
