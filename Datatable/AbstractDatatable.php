@@ -107,7 +107,8 @@ abstract class AbstractDatatable implements DatatableInterface
         $this->router = $router;
         $this->em = $em;
 
-        $this->columnBuilder = new ColumnBuilder();
+        $metadata = $em->getClassMetadata($this->getEntity());
+        $this->columnBuilder = new ColumnBuilder($em, $metadata);
 
         $this->ajax = new Ajax();
     }

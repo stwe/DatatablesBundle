@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Exception;
 
 /**
@@ -21,8 +23,16 @@ use Exception;
 class ColumnBuilder
 {
     /**
-     * The columns.
-     *
+     * @var EntityManagerInterface
+     */
+    private $em;
+
+    /**
+     * @var ClassMetadata
+     */
+    private $metadata;
+
+    /**
      * @var array
      */
     private $columns;
@@ -33,9 +43,14 @@ class ColumnBuilder
 
     /**
      * ColumnBuilder constructor.
+     *
+     * @param EntityManagerInterface $em
+     * @param ClassMetadata          $metadata
      */
-    public function __construct()
+    public function __construct(EntityManagerInterface $em, ClassMetadata $metadata)
     {
+        $this->em = $em;
+        $this->metadata = $metadata;
         $this->columns = array();
     }
 
@@ -62,6 +77,18 @@ class ColumnBuilder
         $column->initOptions(false);
         $column->setData($data);
         $column->setDql($data);
+
+        if (true === $column->isSelectColumn()) {
+            if (true === $column->isAssociation()) {
+                // @todo: set type of field for association
+                $column->setTypeOfField(null);
+            } else {
+                $column->setTypeOfField($this->metadata->getTypeOfField($data));
+            }
+        } else {
+            $column->setTypeOfField(null);
+        }
+
         $column->set($options);
 
         if (true === $column->callAddIfClosure()) {
@@ -69,6 +96,7 @@ class ColumnBuilder
         }
 
         if (true === $column->isUnique()) {
+            // @todo
             // array_count_values(ex.: MultiselectColumn)
             // throw new Exception('add(): There is only one column allowed.')
         }

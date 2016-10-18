@@ -199,7 +199,11 @@ class DatatableQuery
         /*
         $this->setWhere($this->qb);
         $this->setWhereAllCallback($this->qb);
+        */
+
         $this->setOrderBy();
+
+        /*
         $this->setLimit();
         */
 
@@ -294,6 +298,71 @@ class DatatableQuery
     {
         foreach ($this->joins as $key => $value) {
             $qb->$value['type']($key, $value['alias']);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Ordering.
+     * Construct the ORDER BY clause for server-side processing SQL query.
+     *
+     * @return $this
+     */
+    private function setOrderBy()
+    {
+        if (isset($this->requestParams['order']) && count($this->requestParams['order'])) {
+
+            $counter = count($this->requestParams['order']);
+
+            for ($i = 0; $i < $counter; $i++) {
+                $columnIdx = (integer) $this->requestParams['order'][$i]['column'];
+                $requestColumn = $this->requestParams['columns'][$columnIdx];
+
+                if ('true' == $requestColumn['orderable']) {
+                    $columnName = $this->orderColumns[$columnIdx];
+                    $orderDirection = $this->requestParams['order'][$i]['dir'];
+
+                    // @todo: json_decode column property
+                    $columns = json_decode($this->columns);
+                    $columnType = $this->accessor->getValue($columns[$columnIdx], 'typeOfField');
+
+                    $this->createOrderBy($columnName, $orderDirection, $columnType);
+                }
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Create order by statements.
+     * In some case we want to order string/varchar database fields as numbers.
+     *
+     * @see http://stackoverflow.com/questions/22993336/how-to-order-varchar-as-int-in-symfony2-doctrine2#23071353
+     *
+     * @param string $columnName
+     * @param string $orderDirection
+     * @param string $columnType
+     *
+     * @return $this
+     */
+    private function createOrderBy($columnName, $orderDirection, $columnType)
+    {
+        switch ($columnType) {
+            case 'integer':
+                $tempOrderColumnName = str_replace('.', '_', $columnName) . '_order_as_int';
+                $this->qb
+                    ->addSelect(sprintf(
+                        'ABS(%s) AS HIDDEN %s',
+                        $columnName,
+                        $tempOrderColumnName
+                    ))
+                    ->addOrderBy($tempOrderColumnName, $orderDirection);
+                break;
+            default:
+                $this->qb->addOrderBy($columnName, $orderDirection);
+                break;
         }
 
         return $this;

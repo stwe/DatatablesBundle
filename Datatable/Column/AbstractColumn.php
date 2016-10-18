@@ -185,6 +185,14 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
      */
     protected $dql;
 
+    /**
+     * The data type of the column.
+     * Currently auto detected in ColumnBuilder.
+     *
+     * @var null|string
+     */
+    protected $typeOfField;
+
     //-------------------------------------------------
     // Options
     //-------------------------------------------------
@@ -757,6 +765,30 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
     }
 
     /**
+     * Get join type.
+     *
+     * @return string
+     */
+    public function getJoinType()
+    {
+        return $this->joinType;
+    }
+
+    /**
+     * Set join type.
+     *
+     * @param string $joinType
+     *
+     * @return $this
+     */
+    public function setJoinType($joinType)
+    {
+        $this->joinType = $joinType;
+
+        return $this;
+    }
+
+    /**
      * Get dql.
      *
      * @return null|string
@@ -781,25 +813,25 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
     }
 
     /**
-     * Get join type.
+     * Get type of field.
      *
-     * @return string
+     * @return null|string
      */
-    public function getJoinType()
+    public function getTypeOfField()
     {
-        return $this->joinType;
+        return $this->typeOfField;
     }
 
     /**
-     * Set join type.
+     * Set type of field.
      *
-     * @param string $joinType
+     * @param null|string $typeOfField
      *
      * @return $this
      */
-    public function setJoinType($joinType)
+    public function setTypeOfField($typeOfField)
     {
-        $this->joinType = $joinType;
+        $this->typeOfField = $typeOfField;
 
         return $this;
     }
