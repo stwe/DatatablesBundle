@@ -11,12 +11,11 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Datatable\OptionsTrait;
-
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use JsonSerializable;
 use Closure;
 use Exception;
+use JsonSerializable;
+use Sg\DatatablesBundle\Datatable\OptionsTrait;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class AbstractColumn
@@ -174,6 +173,13 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
      */
     protected $joinType;
 
+    /**
+     * The data type of the column.
+     *
+     * @var null|string
+     */
+    protected $typeOfField;
+
     //-------------------------------------------------
     // Other Properties
     //-------------------------------------------------
@@ -184,14 +190,6 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
      * @var null|string
      */
     protected $dql;
-
-    /**
-     * The data type of the column.
-     * Currently auto detected in ColumnBuilder.
-     *
-     * @var null|string
-     */
-    protected $typeOfField;
 
     //-------------------------------------------------
     // Options
@@ -223,7 +221,8 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
             'visible' => null,
             'width' => null,
             'add_if' => null,
-            'join_type' => 'leftJoin'
+            'join_type' => 'leftJoin',
+            'type_of_field' => null,
         ));
 
         $resolver->setAllowedTypes('cell_type', array('null', 'string'));
@@ -243,9 +242,11 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
         $resolver->setAllowedTypes('width', array('null', 'string'));
         $resolver->setAllowedTypes('add_if', array('null', 'Closure'));
         $resolver->setAllowedTypes('join_type', 'string');
+        $resolver->setAllowedTypes('type_of_field', array('null', 'string'));
 
         $resolver->setAllowedValues('cell_type', array(null, 'th', 'td'));
         $resolver->setAllowedValues('join_type', array(null, 'join', 'leftJoin', 'innerJoin'));
+        // @todo: $resolver->setAllowedValues('type_of_field', array(null, 'string', 'integer', 'boolean'));
 
         return $this;
     }
@@ -789,30 +790,6 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
     }
 
     /**
-     * Get dql.
-     *
-     * @return null|string
-     */
-    public function getDql()
-    {
-        return $this->dql;
-    }
-
-    /**
-     * Set dql.
-     *
-     * @param null|string $dql
-     *
-     * @return $this
-     */
-    public function setDql($dql)
-    {
-        $this->dql = $dql;
-
-        return $this;
-    }
-
-    /**
      * Get type of field.
      *
      * @return null|string
@@ -832,6 +809,30 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
     public function setTypeOfField($typeOfField)
     {
         $this->typeOfField = $typeOfField;
+
+        return $this;
+    }
+
+    /**
+     * Get dql.
+     *
+     * @return null|string
+     */
+    public function getDql()
+    {
+        return $this->dql;
+    }
+
+    /**
+     * Set dql.
+     *
+     * @param null|string $dql
+     *
+     * @return $this
+     */
+    public function setDql($dql)
+    {
+        $this->dql = $dql;
 
         return $this;
     }

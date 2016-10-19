@@ -12,15 +12,15 @@
 namespace Sg\DatatablesBundle\Response;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\MappingException;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Exception;
 
 /**
  * Class DatatableQuery
@@ -126,7 +126,7 @@ class DatatableQuery
         $this->qb = $this->em->createQueryBuilder();
         $this->accessor = PropertyAccess::createPropertyAccessor();
 
-        $this->columns = $this->requestParams['sg_datatable_request_data_columns'];
+        $this->columns = json_decode($this->requestParams['sg_datatable_request_data_columns']);
         $this->selectColumns = array();
         $this->searchColumns = array();
         $this->orderColumns = array();
@@ -144,9 +144,7 @@ class DatatableQuery
      */
     private function initColumnArrays()
     {
-        $columns = json_decode($this->columns);
-
-        foreach ($columns as $key => $column) {
+        foreach ($this->columns as $key => $column) {
             $data = $this->accessor->getValue($column, 'dql');
 
             $currentPart = $this->tableName;
@@ -322,10 +320,7 @@ class DatatableQuery
                 if ('true' == $requestColumn['orderable']) {
                     $columnName = $this->orderColumns[$columnIdx];
                     $orderDirection = $this->requestParams['order'][$i]['dir'];
-
-                    // @todo: json_decode column property
-                    $columns = json_decode($this->columns);
-                    $columnType = $this->accessor->getValue($columns[$columnIdx], 'typeOfField');
+                    $columnType = $this->accessor->getValue($this->columns[$columnIdx], 'typeOfField');
 
                     $this->createOrderBy($columnName, $orderDirection, $columnType);
                 }

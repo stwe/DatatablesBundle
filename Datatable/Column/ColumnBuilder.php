@@ -77,19 +77,16 @@ class ColumnBuilder
         $column->initOptions(false);
         $column->setData($data);
         $column->setDql($data);
+        $column->set($options);
 
-        if (true === $column->isSelectColumn()) {
+        if (null === $column->getTypeOfField() && true === $column->isSelectColumn()) {
             if (true === $column->isAssociation()) {
                 // @todo: set type of field for association
                 $column->setTypeOfField(null);
             } else {
                 $column->setTypeOfField($this->metadata->getTypeOfField($data));
             }
-        } else {
-            $column->setTypeOfField(null);
         }
-
-        $column->set($options);
 
         if (true === $column->callAddIfClosure()) {
             $this->columns[] = $column;
