@@ -29,6 +29,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  */
 class DatatableQuery
 {
+    const DISABLE_PAGINATION = -1;
+
     /**
      * @var array
      */
@@ -200,10 +202,7 @@ class DatatableQuery
         */
 
         $this->setOrderBy();
-
-        /*
         $this->setLimit();
-        */
 
         return $this;
     }
@@ -358,6 +357,21 @@ class DatatableQuery
             default:
                 $this->qb->addOrderBy($columnName, $orderDirection);
                 break;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Paging.
+     * Construct the LIMIT clause for server-side processing SQL query.
+     *
+     * @return $this
+     */
+    private function setLimit()
+    {
+        if (isset($this->requestParams['start']) && DatatableQuery::DISABLE_PAGINATION != $this->requestParams['length']) {
+            $this->qb->setFirstResult($this->requestParams['start'])->setMaxResults($this->requestParams['length']);
         }
 
         return $this;
