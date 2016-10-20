@@ -13,6 +13,8 @@ namespace Sg\DatatablesBundle\Response;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
@@ -29,6 +31,11 @@ class DatatableResponse
     private $request;
 
     /**
+     * @var array
+     */
+    private $requestParams;
+
+    /**
      * @var EntityManagerInterface
      */
     private $em;
@@ -37,6 +44,11 @@ class DatatableResponse
      * @var string
      */
     private $type;
+
+    /**
+     * @var DatatableQuery
+     */
+    private $datatableQuery;
 
     //-------------------------------------------------
     // Ctor.
@@ -55,7 +67,6 @@ class DatatableResponse
     {
         $this->request = $requestStack->getCurrentRequest();
         $this->em = $em;
-
         $this->setType('GET');
     }
 
@@ -92,25 +103,55 @@ class DatatableResponse
         return $this;
     }
 
+    /**
+     * Get a new DatatableQuery instance.
+     *
+     * @return DatatableQuery
+     */
+    public function getDatatableQuery()
+    {
+        $this->requestParams = $this->getRequestParams();
+        $this->datatableQuery = new DatatableQuery($this->requestParams, $this->em);
+
+        return $this->datatableQuery;
+    }
+
     //-------------------------------------------------
     // Response
     //-------------------------------------------------
 
     /**
-     * Get query.
+     * Get response.
      *
-     * @return DatatableQuery
+     * @param bool $countAllResults
+     * @param bool $outputWalkers
+     *
+     * @return JsonResponse
      */
-    public function getQuery()
+    public function getResponse($countAllResults = true, $outputWalkers = false)
     {
-        $requestParams = $this->getRequestParams();
+        $paginator = new Paginator($this->datatableQuery->execute(), true);
+        $paginator->setUseOutputWalkers($outputWalkers);
 
-        $datatableQuery = new DatatableQuery(
-            $requestParams,
-            $this->em
+        /*
+        $formatter = new DatatableFormatter($this);
+        $formatter->runFormatter();
+
+        $countAllResults = $this->datatableView->getOptions()->getCountAllResults();
+        */
+
+        $outputHeader = array(
+            'draw' => (int) $this->requestParams['draw'],
+            'recordsTotal' => true === $countAllResults ? (int) $this->datatableQuery->getCountAllResults() : 0,
+            'recordsFiltered' => (int) $this->datatableQuery->getCountFilteredResults()
         );
 
-        return $datatableQuery;
+        $output = array();
+        foreach ($paginator as $row) {
+            $output['data'][] = $row;
+        }
+
+        return new JsonResponse(array_merge($outputHeader, $output));
     }
 
     //-------------------------------------------------

@@ -16,11 +16,9 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Tools\Pagination\Paginator;
-use Exception;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Exception;
 
 /**
  * Class DatatableQuery
@@ -96,11 +94,6 @@ class DatatableQuery
      */
     private $joins;
 
-    /**
-     * @var Paginator
-     */
-    private $paginator;
-
     //-------------------------------------------------
     // Ctor. && Init column arrays
     //-------------------------------------------------
@@ -133,8 +126,6 @@ class DatatableQuery
         $this->searchColumns = array();
         $this->orderColumns = array();
         $this->joins = array();
-
-        $this->paginator = null;
 
         $this->initColumnArrays();
     }
@@ -198,7 +189,6 @@ class DatatableQuery
 
         /*
         $this->setWhere($this->qb);
-        $this->setWhereAllCallback($this->qb);
         */
 
         $this->setOrderBy();
@@ -231,41 +221,8 @@ class DatatableQuery
         return $this;
     }
 
-    /**
-     * Get response.
-     *
-     * @param bool $outputWalkers
-     *
-     * @return JsonResponse
-     */
-    public function getResponse($outputWalkers = false)
-    {
-        $this->paginator = new Paginator($this->execute(), true);
-        $this->paginator->setUseOutputWalkers($outputWalkers);
-
-        /*
-        $formatter = new DatatableFormatter($this);
-        $formatter->runFormatter();
-
-        $countAllResults = $this->datatableView->getOptions()->getCountAllResults();
-        */
-
-        $outputHeader = array(
-            'draw' => (int) $this->requestParams['draw'],
-            'recordsTotal' => 100,
-            'recordsFiltered' => 100
-        );
-
-        $output = array();
-        foreach ($this->paginator as $row) {
-            $output['data'][] = $row;
-        }
-
-        return new JsonResponse(array_merge($outputHeader, $output));
-    }
-
     //-------------------------------------------------
-    // Private - Setup query
+    // Private/Public - Setup query
     //-------------------------------------------------
 
     /**
@@ -382,12 +339,55 @@ class DatatableQuery
      *
      * @return Query
      */
-    private function execute()
+    public function execute()
     {
         $query = $this->qb->getQuery();
         $query->setHydrationMode(Query::HYDRATE_ARRAY);
 
         return $query;
+    }
+
+    /**
+     * Query results before filtering.
+     *
+     * @return int
+     */
+    public function getCountAllResults()
+    {
+        $qb = $this->em->createQueryBuilder();
+        $qb->select('count(distinct ' . $this->tableName . '.' . $this->rootEntityIdentifier . ')');
+        $qb->from($this->entityName, $this->tableName);
+
+        /*
+        $this->setJoins($qb);
+        $this->setWhereAllCallback($qb);
+        */
+
+        return !$qb->getDQLPart('groupBy') ?
+            (int)$qb->getQuery()->getSingleScalarResult()
+            : count($qb->getQuery()->getResult());
+    }
+
+    /**
+     * Query results after filtering.
+     *
+     * @return int
+     */
+    public function getCountFilteredResults()
+    {
+        $qb = $this->em->createQueryBuilder();
+        $qb->select('count(distinct ' . $this->tableName . '.' . $this->rootEntityIdentifier . ')');
+        $qb->from($this->entityName, $this->tableName);
+
+        /*
+        $this->setJoins($qb);
+        $this->setWhere($qb);
+        $this->setWhereAllCallback($qb);
+        */
+
+        return !$qb->getDQLPart('groupBy') ?
+            (int)$qb->getQuery()->getSingleScalarResult()
+            : count($qb->getQuery()->getResult());
     }
 
     //-------------------------------------------------
