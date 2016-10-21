@@ -176,6 +176,16 @@ abstract class AbstractFilter implements FilterInterface, OptionsInterface
             case 'isNotNull':
                 $andExpr->add($pivot->expr()->isNotNull($searchField));
                 break;
+            case 'isNullOrNotNull':
+                switch ($searchValue) {
+                    case 'isNull':
+                        $andExpr->add($pivot->expr()->isNull($searchField));
+                        break;
+                    case 'isNotNull':
+                        $andExpr->add($pivot->expr()->isNotNull($searchField));
+                        break;
+                }
+                break;
         }
 
         return $andExpr;
