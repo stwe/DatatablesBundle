@@ -11,11 +11,12 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\Datatable\OptionsTrait;
+
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use JsonSerializable;
 use Closure;
 use Exception;
-use JsonSerializable;
-use Sg\DatatablesBundle\Datatable\OptionsTrait;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class AbstractColumn

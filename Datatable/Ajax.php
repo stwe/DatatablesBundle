@@ -22,6 +22,10 @@ class Ajax
 {
     use OptionsTrait;
 
+    //-------------------------------------------------
+    // DataTables - Ajax/Data
+    //-------------------------------------------------
+
     /**
      * URL set as the Ajax data source for the table.
      *

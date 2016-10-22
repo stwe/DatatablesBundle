@@ -40,6 +40,13 @@ interface DatatableInterface
     public function getAjax();
 
     /**
+     * Get Options instance.
+     *
+     * @return Options
+     */
+    public function getOptions();
+
+    /**
      * Returns the name of the entity.
      *
      * @return string
