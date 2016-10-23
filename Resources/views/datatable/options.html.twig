@@ -22,7 +22,7 @@
     "order": {{ sg_datatable_view.options.order|raw }},
 {% endif %}
 {% if sg_datatable_view.options.orderCellsTop is not null %}
-    "orderCellsTop": {{ sg_datatable_view.options.orderCellsTop|sg_datatable_bool_var }}
+    "orderCellsTop": {{ sg_datatable_view.options.orderCellsTop|sg_datatable_bool_var }},
 {% endif %}
 {% if sg_datatable_view.options.orderClasses is not null %}
     "orderClasses": {{ sg_datatable_view.options.orderClasses|sg_datatable_bool_var }},

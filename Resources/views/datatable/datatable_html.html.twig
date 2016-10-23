@@ -8,7 +8,41 @@
  #}
 <table id="{{ sg_datatable_view.name }}" class="{# sg_datatable_view.class #}" cellspacing="0" width="100%">
     <thead>
+        {% if sg_datatable_view.options.individualFiltering %}
+            {% if 'head' == sg_datatable_view.options.individualFilteringPosition or 'both' == sg_datatable_view.options.individualFilteringPosition%}
+                <tr>
+                    {% for column in sg_datatable_view.columns %}
+                        <th>{{ column.title }}</th>
+                    {% endfor %}
+                </tr>
+                <tr id="sg-datatables-{{ sg_datatable_view.name }}-filterrow">
+                    {% for column in sg_datatable_view.columns %}
+                        <th>
+                            {% if column.searchable %}
+                                <input type="text" placeholder="search {{ column.title }}">
+                            {% endif %}
+                        </th>
+                    {% endfor %}
+                </tr>
+            {% endif %}
+        {% endif %}
     </thead>
+        {% if sg_datatable_view.options.individualFiltering %}
+            {% if 'foot' == sg_datatable_view.options.individualFilteringPosition or 'both' == sg_datatable_view.options.individualFilteringPosition%}
+            <tfoot>
+                    <tr>
+                        {% for column in sg_datatable_view.columns %}
+                            <td>
+                                {% if column.searchable %}
+                                    <input type="text" placeholder="search {{ column.title }}">
+                                    {# datatable_filter_render(datatable, column, loop.index0) #}
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                </tfoot>
+            {% endif %}
+        {% endif %}
     <tbody>
     </tbody>
 </table>
