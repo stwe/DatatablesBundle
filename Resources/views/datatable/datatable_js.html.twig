@@ -29,12 +29,17 @@
             {% include 'SgDatatablesBundle:datatable:ajax.html.twig' %}
         };
 
+        var options = {
+            {% include 'SgDatatablesBundle:datatable:options.html.twig' %}
+        };
+
         var columns = {
             {% include 'SgDatatablesBundle:datatable:columns.html.twig' %}
         };
 
         function createDatatable() {
             $.extend(defaults, ajax);
+            $.extend(defaults, options);
             $.extend(defaults, columns);
             if (!$.fn.DataTable.isDataTable(selector)) {
                 oTable = $(selector)
