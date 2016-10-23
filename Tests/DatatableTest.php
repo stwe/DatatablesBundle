@@ -11,6 +11,14 @@
 
 namespace Sg\DatatablesBundle\Tests;
 
+use Sg\DatatablesBundle\Tests\Datatables\PostDatatable;
+
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Doctrine\ORM\EntityManager;
+
 /**
  * Class DatatableTest
  *
@@ -20,22 +28,23 @@ class DatatableTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreate()
     {
-        $tableClass = 'Sg\DatatablesBundle\Tests\Datatables\PostDatatable';
+        $tableClass = PostDatatable::class;
 
-        $authorizationChecker = $this->getMockBuilder('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface')
+        $authorizationChecker = $this->getMock(AuthorizationCheckerInterface::class);
+        $securityToken = $this->getMock(TokenStorageInterface::class);
+        $translator = $this->getMock(TranslatorInterface::class);
+        $router = $this->getMock(RouterInterface::class);
+
+        $em = $this->getMockBuilder(EntityManager::class)
+            ->disableOriginalConstructor()
+            ->setMethods(
+                array('getClassMetadata')
+            )
             ->getMock();
 
-        $securityToken = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')
-            ->getMock();
-
-        $translator = $this->getMockBuilder('Symfony\Component\Translation\TranslatorInterface')
-            ->getMock();
-
-        $router = $this->getMockBuilder('Symfony\Component\Routing\RouterInterface')
-            ->getMock();
-
-        $em = $this->getMockBuilder('Doctrine\ORM\EntityManagerInterface')
-            ->getMock();
+        $em->expects($this->any())
+            ->method('getClassMetadata')
+            ->will($this->returnValue($this->getClassMetadataMock()));
 
         /** @var \Sg\DatatablesBundle\Tests\Datatables\PostDatatable $table */
         $table = new $tableClass($authorizationChecker, $securityToken, $translator, $router, $em);
@@ -43,5 +52,19 @@ class DatatableTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('post_datatable', $table->getName());
 
         $table->buildDatatable();
+    }
+
+    public function getClassMetadataMock()
+    {
+        $mock = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadata')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getTableName'))
+            ->getMock();
+
+        $mock->expects($this->any())
+            ->method('getTableName')
+            ->will($this->returnValue('{tableName}'));
+
+        return $mock;
     }
 }

@@ -232,12 +232,12 @@ class Options
             'renderer' => '',
             'retrieve' => false,
             'row_id' => 'id',
-            'scoll_collapse' => false,
+            'scroll_collapse' => false,
             'search_delay' => null,
             'state_duration' => 7200,
             'stripe_classes' => array(),
-            'inidividual_filtering' => false,
-            'inidividual_filtering_position' => 'head'
+            'individual_filtering' => false,
+            'individual_filtering_position' => 'head'
         ));
 
         $resolver->setAllowedTypes('defer_loading', array('null', 'int', 'array'));
@@ -254,12 +254,12 @@ class Options
         $resolver->setAllowedTypes('renderer', 'string');
         $resolver->setAllowedTypes('retrieve', 'bool');
         $resolver->setAllowedTypes('row_id', 'string');
-        $resolver->setAllowedTypes('scoll_collapse', 'bool');
+        $resolver->setAllowedTypes('scroll_collapse', 'bool');
         $resolver->setAllowedTypes('search_delay', array('null', 'int'));
         $resolver->setAllowedTypes('state_duration', 'int');
         $resolver->setAllowedTypes('stripe_classes', 'array');
-        $resolver->setAllowedTypes('inidividual_filtering', 'bool');
-        $resolver->setAllowedTypes('inidividual_filtering_position', 'string');
+        $resolver->setAllowedTypes('individual_filtering', 'bool');
+        $resolver->setAllowedTypes('individual_filtering_position', 'string');
 
         $resolver->setAllowedValues('individual_filtering_position', array('head', 'foot', 'both'));
 

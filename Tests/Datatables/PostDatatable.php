@@ -32,7 +32,7 @@ class PostDatatable extends AbstractDatatable
         ));
 
         $this->options->set(array(
-            'inidividual_filtering' => true,
+            'individual_filtering' => true,
         ));
 
         $this->columnBuilder
