@@ -89,7 +89,8 @@ class DatatableTwigExtension extends Twig_Extension
             'SgDatatablesBundle:datatable:datatable.html.twig',
             array(
                 'sg_datatable_view' => $datatable,
-                'sg_datatable_view_columns_as_json' => json_encode($datatable->getColumns())
+                'sg_datatable_view_columns_as_json' => json_encode($datatable->getColumns()),
+                'sg_datatable_view_options_as_json' => json_encode($datatable->getOptions())
             )
         );
     }
@@ -108,7 +109,8 @@ class DatatableTwigExtension extends Twig_Extension
             'SgDatatablesBundle:datatable:datatable_html.html.twig',
             array(
                 'sg_datatable_view' => $datatable,
-                'sg_datatable_view_columns_as_json' => json_encode($datatable->getColumns())
+                'sg_datatable_view_columns_as_json' => json_encode($datatable->getColumns()),
+                'sg_datatable_view_options_as_json' => json_encode($datatable->getOptions())
             )
         );
     }
@@ -127,7 +129,8 @@ class DatatableTwigExtension extends Twig_Extension
             'SgDatatablesBundle:datatable:datatable_js.html.twig',
             array(
                 'sg_datatable_view' => $datatable,
-                'sg_datatable_view_columns_as_json' => json_encode($datatable->getColumns())
+                'sg_datatable_view_columns_as_json' => json_encode($datatable->getColumns()),
+                'sg_datatable_view_options_as_json' => json_encode($datatable->getOptions())
             )
         );
     }

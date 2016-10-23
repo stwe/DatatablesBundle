@@ -27,6 +27,9 @@ use Exception;
  */
 class DatatableQuery
 {
+    /**
+     * @internal
+     */
     const DISABLE_PAGINATION = -1;
 
     /**
@@ -94,6 +97,11 @@ class DatatableQuery
      */
     private $joins;
 
+    /**
+     * @var array
+     */
+    private $options;
+
     //-------------------------------------------------
     // Ctor. && Init column arrays
     //-------------------------------------------------
@@ -126,6 +134,7 @@ class DatatableQuery
         $this->searchColumns = array();
         $this->orderColumns = array();
         $this->joins = array();
+        $this->options = json_decode($this->requestParams['sg_datatable_request_data_options']);
 
         $this->initColumnArrays();
     }
@@ -186,11 +195,7 @@ class DatatableQuery
     {
         $this->setSelectFrom();
         $this->setJoins($this->qb);
-
-        /*
         $this->setWhere($this->qb);
-        */
-
         $this->setOrderBy();
         $this->setLimit();
 
@@ -258,6 +263,69 @@ class DatatableQuery
     }
 
     /**
+     * Searching / Filtering.
+     * Construct the WHERE clause for server-side processing SQL query.
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return $this
+     */
+    private function setWhere(QueryBuilder $qb)
+    {
+        // global filtering
+        if (isset($this->requestParams['search']) && '' != $this->requestParams['search']['value']) {
+
+            $globalSearch = $this->requestParams['search']['value'];
+
+            $orExpr = $qb->expr()->orX();
+
+            foreach ($this->columns as $key => $column) {
+                // @todo: isSearchColumn function
+                if (true === $this->accessor->getValue($column, 'searchable') && null !== $this->accessor->getValue($column, 'dql')) {
+                    $searchField = $this->searchColumns[$key];
+                    $orExpr->add($qb->expr()->like($searchField, '?' . $key));
+                    $qb->setParameter($key, '%' . $globalSearch . '%');
+                }
+            }
+
+            $qb->where($orExpr);
+        }
+
+        // individual filtering
+        if (true === $this->accessor->getValue($this->options, 'individualFiltering')) {
+            $andExpr = $qb->expr()->andX();
+
+            $i = 100;
+
+            foreach ($this->columns as $key => $column) {
+
+                /*
+                if (true === $this->isSearchColumn($column)) {
+                    $filter = $column->getFilter();
+                    $searchField = $this->searchColumns[$key];
+
+                    if (array_key_exists($key, $this->requestParams['columns']) === false) {
+                        continue;
+                    }
+
+                    $searchValue = $this->requestParams['columns'][$key]['search']['value'];
+
+                    if ('' != $searchValue && 'null' != $searchValue) {
+                        $andExpr = $filter->addAndExpression($andExpr, $qb, $searchField, $searchValue, $i);
+                    }
+                }
+                */
+            }
+
+            if ($andExpr->count() > 0) {
+                $qb->andWhere($andExpr);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * Ordering.
      * Construct the ORDER BY clause for server-side processing SQL query.
      *
@@ -270,7 +338,7 @@ class DatatableQuery
             $counter = count($this->requestParams['order']);
 
             for ($i = 0; $i < $counter; $i++) {
-                $columnIdx = (integer) $this->requestParams['order'][$i]['column'];
+                $columnIdx = (int)$this->requestParams['order'][$i]['column'];
                 $requestColumn = $this->requestParams['columns'][$columnIdx];
 
                 if ('true' == $requestColumn['orderable']) {

@@ -12,13 +12,14 @@
 namespace Sg\DatatablesBundle\Datatable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use JsonSerializable;
 
 /**
  * Class Options
  *
  * @package Sg\DatatablesBundle\Datatable
  */
-class Options
+class Options implements JsonSerializable
 {
     use OptionsTrait;
 
@@ -264,6 +265,26 @@ class Options
         $resolver->setAllowedValues('individual_filtering_position', array('head', 'foot', 'both'));
 
         return $this;
+    }
+
+    //-------------------------------------------------
+    // JsonSerializable
+    //-------------------------------------------------
+
+    /**
+     * JsonSerialize.
+     *
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $vars = array();
+        //$vars = get_object_vars($this);
+
+        $vars['individualFiltering'] = $this->isIndividualFiltering();
+        $vars['individualFilteringPosition'] = $this->getIndividualFilteringPosition();
+
+        return $vars;
     }
 
     //-------------------------------------------------
