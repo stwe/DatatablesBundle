@@ -49,9 +49,11 @@ class VirtualColumn extends Column
         $resolver->remove('editable');
         $resolver->remove('editable_if');
 
+        $resolver->setAllowedTypes('filter', 'array');
         $resolver->setDefaults(array(
             'orderable' => false,
-            'searchable' => false,
+            'filter' => array('text', array()),
+            'default' => '',
         ));
 
         return $this;

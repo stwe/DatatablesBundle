@@ -508,6 +508,16 @@ class DatatableQuery
     }
 
     /**
+     * @param AbstractColumn $column
+     *
+     * @return bool
+     */
+    private function isVirtualColumn($column)
+    {
+        return $column->getAlias() == 'virtual';
+    }
+
+    /**
      * Searching / Filtering.
      * Construct the WHERE clause for server-side processing SQL query.
      *
@@ -530,6 +540,12 @@ class DatatableQuery
 
                     if (true === $this->isPostgreSQLConnection) {
                         $searchField = $this->cast($searchField, $column);
+                    }
+                    if ($this->isVirtualColumn($column) && $column->getFilter()->getProperty() !== '') {
+                        $searchField = $column->getFilter()->getProperty();
+                    }
+                    if ($this->isVirtualColumn($column) && $column->getFilter()->getProperty() === '') {
+                        continue;
                     }
 
                     $orExpr->add($qb->expr()->like($searchField, '?' . $key));
