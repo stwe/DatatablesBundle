@@ -26,20 +26,20 @@ SgDatatablesBundle:Column:column.html.twig
 | Option          | Type           | Default                | Required | Description |
 |-----------------|----------------|------------------------|----------|-------------|
 | class           | string         | ''                     |          | Class to assign to each cell in the column. |
-| default_content | null or string | null                   |          | Display this default content if value is empty. |
+| default_content | null or string | null                   |          | Default content for a field that can have a null or undefined value. |
 | padding         | string         | ''                     |          | Add padding to the text content used when calculating the optimal width for a table. |
 | name            | string         | ''                     |          | Set a descriptive name for a column. |
 | orderable       | boolean        | true                   |          | Enable or disable ordering on this column. |
-| render          | null or string | null                   |          | **TODO**: is this still used? I can't find any references. |
+| render          | null or string | null                   |          | This property will modify the data that is used by DataTables. |
 | searchable      | boolean        | true                   |          | Enable or disable filtering on the data in this column. |
 | title           | string         | ''                     |          | The displayed column title. This value is not translated automatically. |
 | type            | string         | ''                     |          | Set the column type - used for filtering and sorting string processing. |
 | visible         | boolean        | true                   |          | Display or hide this column completly so no data will be displayed in the browser. |
 | width           | string         | ''                     |          | Adjust the column's width. This value will set the element attribute `style="width: XXXpx;`. |
-| order_sequence  | null or array  | null                   |          | **TODO**: is this value still used? |
+| order_sequence  | null or array  | null                   |          | Control the default ordering direction. |
 | filter          | array          | array('text', array()) |          | See [Filtering](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filter.md#2-serverside-individual-column-filtering) for more information. |
 | add_if          | Closure        | null                   |          | Add a closure to check e.g. the current user's permissions and display a column depending on that result. |
-| default         | string         | ''                     |          | Default content. **TODO**: what is the difference to `default_content`? |
+| default         | string         | ''                     |          | Default content for a field that can have an empty string. |
 | editable        | boolean        | false                  |          | Enable edit mode for this column. |
 | editable_if     | Closure        | null                   |          | Enable edit mode for this column depending on a closure condition e.g. permissions. |
 
@@ -96,20 +96,20 @@ SgDatatablesBundle:Column:array.html.twig
 | Option               | Type           | Default                | Required | Description |
 |----------------------|----------------|------------------------|----------|-------------|
 | class                | string         | ''                     |          | Class to assign to each cell in the column. |
-| default_content      | null or string | null                   |          | Display this default content if value is empty. |
+| default_content      | null or string | null                   |          | Default content for a field that can have a null or undefined value. |
 | padding              | string         | ''                     |          | Add padding to the text content used when calculating the optimal width for a table. |
 | name                 | string         | ''                     |          | Set a descriptive name for a column. |
 | orderable            | boolean        | true                   |          | Enable or disable ordering on this column. |
-| render               | null or string | null                   |          | **TODO**: is this still used? |
+| render               | null or string | null                   |          | This property will modify the data that is used by DataTables. |
 | searchable           | boolean        | true                   |          | Enable or disable filtering on the data in this column. |
 | title                | string         | ''                     |          | The displayed column title. This value is not translated automatically. |
 | type                 | string         | ''                     |          | Set the column type - used for filtering and sorting string processing. |
 | visible              | boolean        | true                   |          | Display or hide this column completly so no data will be displayed in the browser. |
 | width                | string         | ''                     |          | Adjust the column's width. This value will set the element attribute `style="width: XXXpx;`. |
-| order_sequence       | null or array  | null                   |          | **TODO**: is this value still used? |
+| order_sequence       | null or array  | null                   |          | Control the default ordering direction. |
 | filter               | array          | array('text', array()) |          | See [Filtering](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filter.md#2-serverside-individual-column-filtering) for more information. |
 | add_if               | Closure        | null                   |          | Add a closure to check e.g. the current user's permissions and display a column depending on that result. |
-| default              | string         | ''                     |          | Default content. **TODO**: what is the difference to `default_content`? |
+| default              | string         | ''                     |          | Default content for a field that can have an empty string. |
 | data                 | string         |                        | ✔        | Fetch array data from this entity attribute. You can define sub elements e.g. "foo.bar".|
 | count                | boolean        | false                  |          | Count array elements. |
 | count_action         | array          | array()                |          | The counter represents a link, see [Count Action options](#count-action-options). |
@@ -173,20 +173,20 @@ SgDatatablesBundle:Column:column.html.twig
 | Option          | Type           | Default                | Required | Description |
 |-----------------|----------------|------------------------|----------|-------------|
 | class           | string         | ''                     |          | Class to assign to each cell in the column. |
-| default_content | null or string | null                   |          | Display this default content if value is empty. |
+| default_content | null or string | null                   |          | Default content for a field that can have a null or undefined value. |
 | padding         | string         | ''                     |          | Add padding to the text content used when calculating the optimal width for a table. |
 | name            | string         | ''                     |          | Set a descriptive name for a column. |
 | orderable       | boolean        | false                  |          | Enable or disable ordering on this column. |
-| render          | null or string | null                   |          | **TODO**: is this still used? I can't find any references. |
+| render          | null or string | null                   |          | This property will modify the data that is used by DataTables. |
 | searchable      | boolean        | false                  |          | Enable or disable filtering on the data in this column. |
 | title           | string         | ''                     |          | The displayed column title. This value is not translated automatically. |
 | type            | string         | ''                     |          | Set the column type - used for filtering and sorting string processing. |
 | visible         | boolean        | true                   |          | Display or hide this column completly so no data will be displayed in the browser. |
 | width           | string         | ''                     |          | Adjust the column's width. This value will set the element attribute `style="width: XXXpx;`. |
-| order_sequence  | null or array  | null                   |          | **TODO**: is this value still used? |
+| order_sequence  | null or array  | null                   |          | Control the default ordering direction. |
 | filter          | array          | array('text', array()) |          | See [Filtering](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filter.md#2-serverside-individual-column-filtering) for more information. |
 | add_if          | Closure        | null                   |          | Add a closure to check e.g. the current user's permissions and display a column depending on that result. |
-| default         | string         | ''                     |          | Default content. **TODO**: what is the difference to `default_content`? |
+| default         | string         | ''                     |          | Default content for a field that can have an empty string. |
 
 ### Example
 
@@ -212,17 +212,17 @@ SgDatatablesBundle:Column:boolean.html.twig
 | Option          | Type           | Default                | Required | Description |
 |-----------------|----------------|------------------------|----------|-------------|
 | class           | string         | ''                     |          | Class to assign to each cell in the column. |
-| default_content | null or string | null                   |          | Display this default content if value is empty. |
+| default_content | null or string | null                   |          | Default content for a field that can have a null or undefined value. |
 | padding         | string         | ''                     |          | Add padding to the text content used when calculating the optimal width for a table. |
 | name            | string         | ''                     |          | Set a descriptive name for a column. |
 | orderable       | boolean        | true                   |          | Enable or disable ordering on this column. |
-| render          | null or string | 'render_boolean'       |          | **TODO**: is this still used? I can't find any references. |
+| render          | null or string | 'render_boolean'       |          | This property will modify the data that is used by DataTables. |
 | searchable      | boolean        | true                   |          | Enable or disable filtering on the data in this column. |
 | title           | string         | ''                     |          | The displayed column title. This value is not translated automatically. |
 | type            | string         | ''                     |          | Set the column type - used for filtering and sorting string processing. |
 | visible         | boolean        | true                   |          | Display or hide this column completly so no data will be displayed in the browser. |
 | width           | string         | ''                     |          | Adjust the column's width. This value will set the element attribute `style="width: XXXpx;`. |
-| order_sequence  | null or array  | null                   |          | **TODO**: is this value still used? |
+| order_sequence  | null or array  | null                   |          | Control the default ordering direction. |
 | true_icon       | string         | ''                     |          | Display a icon if the boolean condition is true e.g. `glyphicon glyphicon-ok`. |
 | false_icon      | string         | ''                     |          | Display a icon if the boolean condition is false e.g. `glyphicon glyphicon-remove`. |
 | true_label      | string         | ''                     |          | Display text if the boolean condition is true e.g. `yes`. |
@@ -264,17 +264,17 @@ SgDatatablesBundle:Column:datetime.html.twig
 | Option          | Type           | Default                | Required | Description |
 |-----------------|----------------|------------------------|----------|-------------|
 | class           | string         | ''                     |          | Class to assign to each cell in the column. |
-| default_content | null or string | null                   |          | Display this default content if value is empty. |
+| default_content | null or string | null                   |          | Default content for a field that can have a null or undefined value. |
 | padding         | string         | ''                     |          | Add padding to the text content used when calculating the optimal width for a table. |
 | name            | string         | ''                     |          | Set a descriptive name for a column. |
 | orderable       | boolean        | true                   |          | Enable or disable ordering on this column. |
-| render          | null or string | 'render_datetime'      |          | **TODO**: is this still used? I can't find any references. |
+| render          | null or string | 'render_datetime'      |          | This property will modify the data that is used by DataTables. |
 | searchable      | boolean        | true                   |          | Enable or disable filtering on the data in this column. |
 | title           | string         | ''                     |          | The displayed column title. This value is not translated automatically. |
 | type            | string         | ''                     |          | Set the column type - used for filtering and sorting string processing. |
 | visible         | boolean        | true                   |          | Display or hide this column completly so no data will be displayed in the browser. |
 | width           | string         | ''                     |          | Adjust the column's width. This value will set the element attribute `style="width: XXXpx;`. |
-| order_sequence  | null or array  | null                   |          | **TODO**: is this value still used? |
+| order_sequence  | null or array  | null                   |          | Control the default ordering direction. |
 | filter          | array          | array('text', array()) |          | See [Filtering](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filter.md#2-serverside-individual-column-filtering) for more information. |
 | add_if          | Closure        | null                   |          | Add a closure to check e.g. the current user's permissions and display a column depending on that result. |
 | date_format     | string         | 'lll'                  |          | Format date, see [Date Parameteres](http://php.net/manual/de/function.date.php#refsect1-function.date-parameters). |
@@ -307,17 +307,17 @@ SgDatatablesBundle:Column:timeago.html.twig
 | Option          | Type           | Default                | Required | Description |
 |-----------------|----------------|------------------------|----------|-------------|
 | class           | string         | ''                     |          | Class to assign to each cell in the column. |
-| default_content | null or string | null                   |          | Display this default content if value is empty. |
+| default_content | null or string | null                   |          | Default content for a field that can have a null or undefined value. |
 | padding         | string         | ''                     |          | Add padding to the text content used when calculating the optimal width for a table. |
 | name            | string         | ''                     |          | Set a descriptive name for a column. |
 | orderable       | boolean        | true                   |          | Enable or disable ordering on this column. |
-| render          | null or string | 'render_timeago'       |          | **TODO**: is this still used? I can't find any references. |
+| render          | null or string | 'render_timeago'       |          | This property will modify the data that is used by DataTables. |
 | searchable      | boolean        | true                   |          | Enable or disable filtering on the data in this column. |
 | title           | string         | ''                     |          | The displayed column title. This value is not translated automatically. |
 | type            | string         | ''                     |          | Set the column type - used for filtering and sorting string processing. |
 | visible         | boolean        | true                   |          | Display or hide this column completly so no data will be displayed in the browser. |
 | width           | string         | ''                     |          | Adjust the column's width. This value will set the element attribute `style="width: XXXpx;`. |
-| order_sequence  | null or array  | null                   |          | **TODO**: is this value still used? |
+| order_sequence  | null or array  | null                   |          | Control the default ordering direction. |
 | filter          | array          | array('text', array()) |          | See [Filtering](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filter.md#2-serverside-individual-column-filtering) for more information. |
 | add_if          | Closure        | null                   |          | Add a closure to check e.g. the current user's permissions and display a column depending on that result. |
 
@@ -603,7 +603,7 @@ SgDatatablesBundle:Column:image.html.twig
 | type                     | string         | ''                     |          | Set the column type - used for filtering and sorting string processing. |
 | visible                  | boolean        | true                   |          | Display or hide this column completly so no data will be displayed in the browser. |
 | width                    | string         | ''                     |          | Adjust the column's width. This value will set the element attribute `style="width: XXXpx;`. |
-| order_sequence           | null or array  | null                   |          | **TODO**: is this value still used? |
+| order_sequence           | null or array  | null                   |          | Control the default ordering direction. |
 | filter                   | array          | array('text', array()) |          | See [Filtering](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filter.md#2-serverside-individual-column-filtering) for more information. |
 | add_if                   | Closure        | null                   |          | Add a closure to check e.g. the current user's permissions and display a column depending on that result. |
 | imagine_filter           | string         | ''                     |          | The imagine filter used to display image preview, see (LiipImagineBundle)[https://github.com/liip/LiipImagineBundle#basic-usage]. |
@@ -728,7 +728,7 @@ SgDatatablesBundle:Column:image.html.twig
 | type                    | string         | ''                     |          | Set the column type - used for filtering and sorting string processing. |
 | visible                 | boolean        | true                   |          | Display or hide this column completly so no data will be displayed in the browser. |
 | width                   | string         | ''                     |          | Adjust the column's width. This value will set the element attribute `style="width: XXXpx;`. |
-| order_sequence          | null or array  | null                   |          | **TODO**: is this value still used? |
+| order_sequence          | null or array  | null                   |          | Control the default ordering direction. |
 | filter                  | array          | array('text', array()) |          | See [Filtering](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filter.md#2-serverside-individual-column-filtering) for more information. |
 | add_if                  | Closure        | null                   |          | Add a closure to check e.g. the current user's permissions and display a column depending on that result. |
 | imagine_filter          | string         |                        | ✔        | The imagine filter used to display image preview, see (LiipImagineBundle)[https://github.com/liip/LiipImagineBundle#basic-usage]. |
@@ -773,13 +773,13 @@ SgDatatablesBundle:Column:progress_bar.html.twig
 | padding              | string         | ''                    |          | Add padding to the text content used when calculating the optimal width for a table. |
 | name                 | string         | ''                    |          | Set a descriptive name for a column. |
 | orderable            | boolean        | true                  |          | Enable or disable ordering on this column. |
-| render               | null or string | render_progress_bar   |          | **TODO**: is this still used? I can't find any references. |
+| render               | null or string | render_progress_bar   |          | This property will modify the data that is used by DataTables. |
 | searchable           | boolean        | true                  |          | Enable or disable filtering on the data in this column. |
 | title                | string         | ''                    |          | The displayed column title. This value is not translated automatically. |
 | type                 | string         | ''                    |          | Set the column type - used for filtering and sorting string processing. |
 | visible              | boolean        | true                  |          | Display or hide this column completly so no data will be displayed in the browser. |
 | width                | string         | ''                    |          | Adjust the column's width. This value will set the element attribute `style="width: XXXpx;`. |
-| order_sequence       | null or array  | null                  |          | **TODO**: is this value still used? |
+| order_sequence       | null or array  | null                  |          | Control the default ordering direction. |
 | filter               | array          | see the below example |          | See [Filtering](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filter.md#2-serverside-individual-column-filtering) for more information. |
 | add_if               | Closure        | null                  |          | Add a closure to check e.g. the current user's permissions and display a column depending on that result. |
 | bar_classes          | string         | ''                    |          | |

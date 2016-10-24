@@ -85,16 +85,16 @@
 
 ### Action options
 
-| Option           | Type        | Default                      |          |
-|------------------|-------------|------------------------------|----------|
-| route            | string      |                              | required |
-| route_parameters | array       | array()                      |          |
-| icon             | string      | ''                           |          |
-| label            | string      | ''                           |          |
-| confirm          | boolean     | false                        |          |
-| confirm_message  | string      | 'datatables.bulk.confirmMsg' |          |
-| attributes       | array       | array()                      |          |
-| render_if        | Closure     | null                         |          |
+| Option           | Type        | Default                      |                       |
+|------------------|-------------|------------------------------|-----------------------|
+| route            | string      |                              | required              |
+| route_parameters | array       | array()                      | Is currently not used |
+| icon             | string      | ''                           |                       |
+| label            | string      | ''                           |                       |
+| confirm          | boolean     | false                        |                       |
+| confirm_message  | string      | 'datatables.bulk.confirmMsg' |                       |
+| attributes       | array       | array()                      |                       |
+| render_if        | Closure     | null                         |                       |
 
 ## 3. Callbacks
 
