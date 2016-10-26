@@ -638,6 +638,7 @@ class DatatableQuery
 
         $this->setLeftJoins($qb);
         $this->setWhereAllCallback($qb);
+        $qb->resetDQLPart('groupBy');
 
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
@@ -660,6 +661,7 @@ class DatatableQuery
             $this->setLeftJoins($qb);
             $this->setWhere($qb);
             $this->setWhereAllCallback($qb);
+            $qb->resetDQLPart('groupBy');
 
             return (int) $qb->getQuery()->getSingleScalarResult();
         } else {
@@ -672,6 +674,7 @@ class DatatableQuery
                 $this->qb->groupBy($this->tableName . '.' . $rootEntityIdentifier);
                 return count($this->qb->getQuery()->getResult());
             } else {
+                $this->qb->resetDQLPart('groupBy');
                 return (int) $this->qb->getQuery()->getSingleScalarResult();
             }
         }
