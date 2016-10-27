@@ -174,8 +174,29 @@ class DatatableQuery
                 $this->addSelectColumn($currentAlias, $parts[0]);
                 $this->addSearchOrderColumn($column, $currentAlias, $parts[0]);
             } else {
-                $this->orderColumns[] = null;
-                $this->searchColumns[] = null;
+                // Add Order-Field for VirtualColumn
+                if ($this->accessor->isReadable($column, 'orderColumn') && true === $this->accessor->getValue($column, 'orderable')) {
+                    $orderColumn = $this->accessor->getValue($column, 'orderColumn');
+                    $orderParts = explode('.', $orderColumn);
+                    if(count($orderParts) < 2) {
+                        $orderColumn = $this->tableName . '.' . $orderColumn;
+                    }
+                    $this->orderColumns[] = $orderColumn;
+                } else {
+                    $this->orderColumns[] = null;
+                }
+
+                // Add Search-Field for VirtualColumn
+                if ($this->accessor->isReadable($column, 'searchColumn') && true === $this->accessor->getValue($column, 'searchable')) {
+                    $searchColumn = $this->accessor->getValue($column, 'searchColumn');
+                    $searchParts = explode('.', $searchColumn);
+                    if(count($searchParts) < 2) {
+                        $searchColumn = $this->tableName . '.' . $searchColumn;
+                    }
+                    $this->searchColumns[] = $searchColumn;
+                } else {
+                    $this->searchColumns[] = null;
+                }
             }
         }
 

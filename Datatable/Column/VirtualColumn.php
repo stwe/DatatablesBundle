@@ -20,6 +20,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class VirtualColumn extends Column
 {
+    /**
+     * Order field.
+     *
+     * @var null|string
+     */
+    protected $orderColumn;
+
+    /**
+     * Search field.
+     *
+     * @var null|string
+     */
+    protected $searchColumn;
+
     //-------------------------------------------------
     // Options
     //-------------------------------------------------
@@ -38,7 +52,12 @@ class VirtualColumn extends Column
         $resolver->setDefaults(array(
             'orderable' => false,
             'searchable' => false,
+            'order_column' => null,
+            'search_column' => null
         ));
+
+        $resolver->setAllowedTypes('order_column', array('null', 'string'));
+        $resolver->setAllowedTypes('search_column', array('null', 'string'));
 
         return $this;
     }
@@ -53,5 +72,57 @@ class VirtualColumn extends Column
     public function isSelectColumn()
     {
         return false;
+    }
+
+    //-------------------------------------------------
+    // Getters && Setters
+    //-------------------------------------------------
+
+    /**
+     * Get orderColumn.
+     *
+     * @return null|string
+     */
+    public function getOrderColumn()
+    {
+        return $this->orderColumn;
+    }
+
+    /**
+     * Set orderColumn.
+     *
+     * @param null|string $orderColumn
+     *
+     * @return $this
+     */
+    public function setOrderColumn($orderColumn)
+    {
+        $this->orderColumn = $orderColumn;
+
+        return $this;
+    }
+
+    /**
+     * Get searchColumn.
+     *
+     * @return null|string
+     */
+    public function getSearchColumn()
+    {
+        return $this->searchColumn;
+    }
+
+    /**
+     * Set searchColumn.
+     *
+     * @param null|string $searchColumn
+     *
+     * @return $this
+     */
+    public function setSearchColumn($searchColumn)
+    {
+        $this->searchColumn = $searchColumn;
+
+        return $this;
     }
 }

@@ -187,6 +187,7 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
 
     /**
      * Data source ($this->data) copy.
+     * The DatatableQuery class works with this copy.
      *
      * @var null|string
      */
