@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * Class EditableController
@@ -44,11 +45,9 @@ class EditableController extends Controller
             $id = $request->request->get('pk');
             $value = $request->request->get('value');
             $token = $request->request->get('token');
+            $accessor = PropertyAccess::createPropertyAccessor();
 
-            $supportedFieldType = false;
             $fieldType = null;
-            $getter = null;
-            $setter = null;
 
             if (!$this->isCsrfTokenValid('editable', $token)) {
                 throw new AccessDeniedException('The CSRF token is invalid.');
@@ -58,48 +57,46 @@ class EditableController extends Controller
             $metadata = $em->getClassMetadata($entityName);
 
             if (false === strstr($field, '.')) {
-                $setter = 'set' . ucfirst($field);
                 $fieldType = $metadata->getTypeOfField($field);
             } else {
                 $parts = explode('.', $field);
-                $getter = 'get' . ucfirst($parts[0]);
-                $setter = 'set' . ucfirst($parts[1]);
                 $targetClass = $metadata->getAssociationTargetClass($parts[0]);
                 $targetMeta = $em->getClassMetadata($targetClass);
                 $fieldType = $targetMeta->getTypeOfField($parts[1]);
             }
 
             $entity = $em->getRepository($entityName)->find($id);
+
             if (!$entity) {
                 throw $this->createNotFoundException('The entity does not exist.');
             }
 
             switch ($fieldType) {
                 case 'datetime':
-                    $dateTime = new \DateTime($value);
-                    null === $getter ? $entity->$setter($dateTime) : $entity->$getter()->$setter($dateTime);
-                    $supportedFieldType = true;
+                    $value = new \DateTime($value);
                     break;
                 case 'boolean':
-                    null === $getter ? $entity->$setter($this->strToBool($value)) : $entity->$getter()->$setter($this->strToBool($value));
-                    $supportedFieldType = true;
+                    $value = $this->strToBool($value);
                     break;
                 case 'string':
-                    null === $getter ? $entity->$setter($value) : $entity->$getter()->$setter($value);
-                    $supportedFieldType = true;
                     break;
+                case 'smallint':
                 case 'integer':
-                    null === $getter ? $entity->$setter((int) $value) : $entity->$getter()->$setter((int) $value);
-                    $supportedFieldType = true;
+                case 'bigint':
+                    $value = (int) $value;
+                    break;
+                case 'float':
+                case 'decimal':
+                    $value = (float) $value;
                     break;
                 default:
                     throw new \Exception("editAction(): The field type {$fieldType} is not supported.");
             }
 
-            if (true === $supportedFieldType) {
-                $em->persist($entity);
-                $em->flush();
-            }
+            $accessor->setValue($entity, $field, $value);
+
+            $em->persist($entity);
+            $em->flush();
 
             return new Response('Success', 200);
         }
