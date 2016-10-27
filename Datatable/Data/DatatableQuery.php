@@ -639,7 +639,11 @@ class DatatableQuery
         $this->setLeftJoins($qb);
         $this->setWhereAllCallback($qb);
 
-        return (int) $qb->getQuery()->getSingleScalarResult();
+        if (count($qb->getDQLPart('groupBy')) > 0) {
+            return count($qb->getQuery()->getResult());
+        } else {
+            return (int) $qb->getQuery()->getSingleScalarResult();
+        }
     }
 
     /**
@@ -670,6 +674,8 @@ class DatatableQuery
                 ->select('count(distinct ' . $this->tableName . '.' . $rootEntityIdentifier . ')');
             if (true === $this->isPostgreSQLConnection) {
                 $this->qb->groupBy($this->tableName . '.' . $rootEntityIdentifier);
+                return count($this->qb->getQuery()->getResult());
+            } elseif (count($this->qb->getDQLPart('groupBy')) > 0) {
                 return count($this->qb->getQuery()->getResult());
             } else {
                 return (int) $this->qb->getQuery()->getSingleScalarResult();
