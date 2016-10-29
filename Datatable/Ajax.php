@@ -28,6 +28,7 @@ class Ajax
 
     /**
      * URL set as the Ajax data source for the table.
+     * Default: null
      *
      * @var string
      */
@@ -35,6 +36,7 @@ class Ajax
 
     /**
      * Send request as POST or GET.
+     * Default: null
      *
      * @var string
      */
@@ -42,6 +44,7 @@ class Ajax
 
     /**
      * Data to be sent.
+     * Default: null
      *
      * @var null|array
      */
@@ -49,6 +52,7 @@ class Ajax
 
     /**
      * Use Datatables' Pipeline.
+     * Default: 0 (disable)
      *
      * @see https://datatables.net/examples/server_side/pipeline.html
      *
@@ -82,18 +86,18 @@ class Ajax
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'url' => '',
-            'type' => 'GET',
+            'url' => null,
+            'type' => null,
             'data' => null,
             'pipeline' => 0
         ));
 
-        $resolver->setAllowedTypes('url', 'string');
-        $resolver->setAllowedTypes('type', 'string');
+        $resolver->setAllowedTypes('url', array('null', 'string'));
+        $resolver->setAllowedTypes('type', array('null', 'string'));
         $resolver->setAllowedTypes('data', array('null', 'array'));
         $resolver->setAllowedTypes('pipeline', 'int');
 
-        $resolver->setAllowedValues('type', array('GET', 'POST'));
+        $resolver->setAllowedValues('type', array(null, 'GET', 'POST'));
 
         return $this;
     }
@@ -105,7 +109,7 @@ class Ajax
     /**
      * Get url.
      *
-     * @return string
+     * @return null|string
      */
     public function getUrl()
     {
@@ -115,7 +119,7 @@ class Ajax
     /**
      * Set url.
      *
-     * @param string $url
+     * @param null|string $url
      *
      * @return $this
      */
@@ -129,7 +133,7 @@ class Ajax
     /**
      * Get type.
      *
-     * @return string
+     * @return null|string
      */
     public function getType()
     {
@@ -139,7 +143,7 @@ class Ajax
     /**
      * Set type.
      *
-     * @param string $type
+     * @param null|string $type
      *
      * @return $this
      */

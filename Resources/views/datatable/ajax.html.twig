@@ -6,11 +6,29 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-"serverSide": true,
-"ajax": {
-    "url": "{{ sg_datatable_view.ajax.url|raw }}",
-    "type": "{{ sg_datatable_view.ajax.type }}",
+{% set ajax_vars %}
+    {% if sg_datatable_view.ajax.url is not null %}
+        "url": "{{ sg_datatable_view.ajax.url|raw }}",
+    {% endif %}
+    {% if sg_datatable_view.ajax.type is not null %}
+        "type": "{{ sg_datatable_view.ajax.type }}",
+    {% endif %}
     {% if sg_datatable_view.ajax.data is not null %}
         "data": {{ sg_datatable_view.ajax.data|raw }},
     {% endif %}
-},
+{% endset %}
+
+"serverSide": true,
+{% if sg_datatable_view.ajax.pipeline > 0 %}
+    "ajax": $.fn.dataTable.pipeline({
+        {{ ajax_vars }}
+        "pages": {{ sg_datatable_view.ajax.pipeline }}
+    }),
+{% else %}
+    "ajax": {
+        {{ ajax_vars }}
+    },
+{% endif %}
+
+
+
