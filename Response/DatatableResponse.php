@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Response;
 
+use Sg\DatatablesBundle\Datatable\DatatableInterface;
+
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,29 +28,51 @@ use Exception;
 class DatatableResponse
 {
     /**
+     * The current Request.
+     *
      * @var Request
      */
     private $request;
 
     /**
+     * $_GET or $_POST parameters.
+     *
      * @var array
      */
     private $requestParams;
 
     /**
+     * The EntityManager.
+     *
      * @var EntityManagerInterface
      */
     private $em;
 
     /**
+     * Specifies the request type (GET or POST).
+     * Default: 'GET'
+     *
      * @var string
      */
     private $type;
 
     /**
-     * @var DatatableQuery
+     * A DatatableInterface instance.
+     * Needed, for example, to use the LineFormatter.
+     * Default: null
+     *
+     * @var null|DatatableInterface
      */
-    private $datatableQuery;
+    private $datatable;
+
+    /**
+     * A DatatableQueryBuilder instance.
+     * This class generates a Query by given Columns.
+     * Default: null
+     *
+     * @var null|DatatableQueryBuilder
+     */
+    private $datatableQueryBuilder;
 
     //-------------------------------------------------
     // Ctor.
@@ -68,6 +92,8 @@ class DatatableResponse
         $this->request = $requestStack->getCurrentRequest();
         $this->em = $em;
         $this->setType('GET');
+        $this->datatable = null;
+        $this->datatableQueryBuilder = null;
     }
 
     //-------------------------------------------------
@@ -94,7 +120,9 @@ class DatatableResponse
      */
     public function setType($type)
     {
-        if ('GET' === strtoupper($type) || 'POST' === strtoupper($type)) {
+        $type = strtoupper($type);
+
+        if ('GET' === $type || 'POST' === $type) {
             $this->type = $type;
         } else {
             throw new Exception("Response::setType(): unsupported type $type");
@@ -104,16 +132,40 @@ class DatatableResponse
     }
 
     /**
-     * Get a new DatatableQuery instance.
+     * Get datatable.
      *
-     * @return DatatableQuery
+     * @return null|DatatableInterface
      */
-    public function getDatatableQuery()
+    public function getDatatable()
+    {
+        return $this->datatable;
+    }
+
+    /**
+     * Set datatable.
+     *
+     * @param DatatableInterface $datatable
+     *
+     * @return $this
+     */
+    public function setDatatable(DatatableInterface $datatable)
+    {
+        $this->datatable = $datatable;
+
+        return $this;
+    }
+
+    /**
+     * Create a new DatatableQueryBuilder instance.
+     *
+     * @return DatatableQueryBuilder
+     */
+    public function getDatatableQueryBuilder()
     {
         $this->requestParams = $this->getRequestParams();
-        $this->datatableQuery = new DatatableQuery($this->requestParams, $this->em);
+        $this->datatableQueryBuilder = new DatatableQueryBuilder($this->requestParams, $this->em);
 
-        return $this->datatableQuery;
+        return $this->datatableQueryBuilder;
     }
 
     //-------------------------------------------------
@@ -127,31 +179,31 @@ class DatatableResponse
      * @param bool $outputWalkers
      *
      * @return JsonResponse
+     * @throws Exception
      */
     public function getResponse($countAllResults = true, $outputWalkers = false)
     {
-        $paginator = new Paginator($this->datatableQuery->execute(), true);
+        if (null === $this->datatable) {
+            throw new Exception('DatatableResponse::getResponse(): Set a Datatable class with setDatatable().');
+        }
+
+        if (null === $this->datatableQueryBuilder) {
+            throw new Exception('DatatableResponse::getResponse(): A DatatableQueryBuilder instance is needed. Call getDatatableQueryBuilder().');
+        }
+
+        $paginator = new Paginator($this->datatableQueryBuilder->execute(), true);
         $paginator->setUseOutputWalkers($outputWalkers);
 
-        /*
-        $formatter = new DatatableFormatter($this);
-        $formatter->runFormatter();
-
-        $countAllResults = $this->datatableView->getOptions()->getCountAllResults();
-        */
+        $formatter = new DatatableFormatter();
+        $formatter->runFormatter($paginator, $this->datatable);
 
         $outputHeader = array(
             'draw' => (int) $this->requestParams['draw'],
-            'recordsTotal' => true === $countAllResults ? (int) $this->datatableQuery->getCountAllResults() : 0,
-            'recordsFiltered' => (int) $this->datatableQuery->getCountFilteredResults()
+            'recordsTotal' => true === $countAllResults ? (int) $this->datatableQueryBuilder->getCountAllResults() : 0,
+            'recordsFiltered' => (int) $this->datatableQueryBuilder->getCountFilteredResults()
         );
 
-        $output = array();
-        foreach ($paginator as $row) {
-            $output['data'][] = $row;
-        }
-
-        return new JsonResponse(array_merge($outputHeader, $output));
+        return new JsonResponse(array_merge($outputHeader, $formatter->getOutput()));
     }
 
     //-------------------------------------------------

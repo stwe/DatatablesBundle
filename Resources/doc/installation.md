@@ -8,48 +8,41 @@ This Bundle integrates the jQuery DataTables 1.10.x plugin into your Symfony app
 
 ### Step 2: Registering your Datatable as a Service
 
-### Step 3: Add controller actions
+### Step 3: Add controller action
 
 ```php
 /**
+ * Lists all Post entities.
+ *
+ * @param Request $request
+ *
  * @Route("/", name="post_index")
  * @Method("GET")
  *
  * @return Response
  */
-public function indexAction()
-{
-    $datatable = $this->get('app.datatable.post');
-    $datatable->buildDatatable();
-
-    return $this->render('post/index.html.twig', array(
-        'datatable' => $datatable,
-    ));
-}
-
-/**
- * @param Request $request
- *
- * @Route("/results", name="post_results")
- * @Method("GET")
- *
- * @return \Symfony\Component\HttpFoundation\JsonResponse|Response
- */
-public function indexResultsAction(Request $request)
+public function indexAction(Request $request)
 {
     $isAjax = $request->isXmlHttpRequest();
+
+    $datatable = $this->get('app.datatable.post');
+    $datatable->buildDatatable();
 
     if ($isAjax) {
         $responseService = $this->get('sg_datatables.response');
         // change now to POST request type if needed; default: 'GET'
         //$responseService->setType('POST');
-        $datatableQuery = $responseService->getDatatableQuery();
-        $datatableQuery->buildQuery();
+        $responseService->setDatatable($datatable);
+
+        $datatableQueryBuilder = $responseService->getDatatableQueryBuilder();
+        $datatableQueryBuilder->buildQuery();
 
         return $responseService->getResponse();
     }
 
-    return new Response('Bad request.', 400);
+    return $this->render('post/index.html.twig', array(
+        'datatable' => $datatable,
+    ));
 }
 ```
 

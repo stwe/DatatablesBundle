@@ -128,6 +128,14 @@ abstract class AbstractDatatable implements DatatableInterface
     /**
      * {@inheritdoc}
      */
+    public function getLineFormatter()
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getColumns()
     {
         return $this->columnBuilder->getColumns();

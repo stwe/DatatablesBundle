@@ -26,6 +26,13 @@ interface DatatableInterface
     public function buildDatatable(array $options = array());
 
     /**
+     * Returns a callable that modify the data row.
+     *
+     * @return callable
+     */
+    public function getLineFormatter();
+
+    /**
      * Get all generated Columns.
      *
      * @return array
