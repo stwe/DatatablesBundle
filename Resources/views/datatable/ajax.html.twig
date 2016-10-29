@@ -10,7 +10,7 @@
 "ajax": {
     "url": "{{ sg_datatable_view.ajax.url|raw }}",
     "type": "{{ sg_datatable_view.ajax.type }}",
-    "data": {
-        {% include 'SgDatatablesBundle:datatable:request_data.html.twig' %}
-    },
+    {% if sg_datatable_view.ajax.data is not null %}
+        "data": {{ sg_datatable_view.ajax.data|raw }},
+    {% endif %}
 },

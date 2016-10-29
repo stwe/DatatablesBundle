@@ -157,6 +157,14 @@ abstract class AbstractDatatable implements DatatableInterface
         return $this->options;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getEntityManager()
+    {
+        return $this->em;
+    }
+
     //-------------------------------------------------
     // Private
     //-------------------------------------------------

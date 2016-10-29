@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 /**
  * Interface DatatableInterface
  *
@@ -52,6 +54,13 @@ interface DatatableInterface
      * @return Options
      */
     public function getOptions();
+
+    /**
+     * Get the EntityManager.
+     *
+     * @return EntityManagerInterface
+     */
+    public function getEntityManager();
 
     /**
      * Returns the name of the entity.

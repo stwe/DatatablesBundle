@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
 /**
@@ -42,13 +41,6 @@ class DatatableResponse
     private $requestParams;
 
     /**
-     * The EntityManager.
-     *
-     * @var EntityManagerInterface
-     */
-    private $em;
-
-    /**
      * Specifies the request type (GET or POST).
      * Default: 'GET'
      *
@@ -58,7 +50,6 @@ class DatatableResponse
 
     /**
      * A DatatableInterface instance.
-     * Needed, for example, to use the LineFormatter.
      * Default: null
      *
      * @var null|DatatableInterface
@@ -81,16 +72,11 @@ class DatatableResponse
     /**
      * Response constructor.
      *
-     * @param RequestStack           $requestStack
-     * @param EntityManagerInterface $em
+     * @param RequestStack $requestStack
      */
-    public function __construct(
-        RequestStack $requestStack,
-        EntityManagerInterface $em
-    )
+    public function __construct(RequestStack $requestStack)
     {
         $this->request = $requestStack->getCurrentRequest();
-        $this->em = $em;
         $this->setType('GET');
         $this->datatable = null;
         $this->datatableQueryBuilder = null;
@@ -159,11 +145,16 @@ class DatatableResponse
      * Create a new DatatableQueryBuilder instance.
      *
      * @return DatatableQueryBuilder
+     * @throws Exception
      */
     public function getDatatableQueryBuilder()
     {
+        if (null === $this->datatable) {
+            throw new Exception('DatatableResponse::getResponse(): Set a Datatable class with setDatatable().');
+        }
+
         $this->requestParams = $this->getRequestParams();
-        $this->datatableQueryBuilder = new DatatableQueryBuilder($this->requestParams, $this->em);
+        $this->datatableQueryBuilder = new DatatableQueryBuilder($this->requestParams, $this->datatable);
 
         return $this->datatableQueryBuilder;
     }

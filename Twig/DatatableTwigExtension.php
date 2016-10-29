@@ -11,7 +11,7 @@
 
 namespace Sg\DatatablesBundle\Twig;
 
-use Sg\DatatablesBundle\Datatable\AbstractDatatable;
+use Sg\DatatablesBundle\Datatable\DatatableInterface;
 
 use Twig_Environment;
 use Twig_Extension;
@@ -78,19 +78,17 @@ class DatatableTwigExtension extends Twig_Extension
     /**
      * Renders the template.
      *
-     * @param Twig_Environment  $twig
-     * @param AbstractDatatable $datatable
+     * @param Twig_Environment   $twig
+     * @param DatatableInterface $datatable
      *
      * @return string
      */
-    public function datatableRender(Twig_Environment $twig, AbstractDatatable $datatable)
+    public function datatableRender(Twig_Environment $twig, DatatableInterface $datatable)
     {
         return $twig->render(
             'SgDatatablesBundle:datatable:datatable.html.twig',
             array(
-                'sg_datatable_view' => $datatable,
-                'sg_datatable_view_columns_as_json' => json_encode($datatable->getColumns()),
-                'sg_datatable_view_options_as_json' => json_encode($datatable->getOptions())
+                'sg_datatable_view' => $datatable
             )
         );
     }
@@ -98,19 +96,17 @@ class DatatableTwigExtension extends Twig_Extension
     /**
      * Renders the html template.
      *
-     * @param Twig_Environment  $twig
-     * @param AbstractDatatable $datatable
+     * @param Twig_Environment   $twig
+     * @param DatatableInterface $datatable
      *
      * @return string
      */
-    public function datatableRenderHtml(Twig_Environment $twig, AbstractDatatable $datatable)
+    public function datatableRenderHtml(Twig_Environment $twig, DatatableInterface $datatable)
     {
         return $twig->render(
             'SgDatatablesBundle:datatable:datatable_html.html.twig',
             array(
                 'sg_datatable_view' => $datatable,
-                'sg_datatable_view_columns_as_json' => json_encode($datatable->getColumns()),
-                'sg_datatable_view_options_as_json' => json_encode($datatable->getOptions())
             )
         );
     }
@@ -118,19 +114,17 @@ class DatatableTwigExtension extends Twig_Extension
     /**
      * Renders the js template.
      *
-     * @param Twig_Environment  $twig
-     * @param AbstractDatatable $datatable
+     * @param Twig_Environment   $twig
+     * @param DatatableInterface $datatable
      *
      * @return string
      */
-    public function datatableRenderJs(Twig_Environment $twig, AbstractDatatable $datatable)
+    public function datatableRenderJs(Twig_Environment $twig, DatatableInterface $datatable)
     {
         return $twig->render(
             'SgDatatablesBundle:datatable:datatable_js.html.twig',
             array(
                 'sg_datatable_view' => $datatable,
-                'sg_datatable_view_columns_as_json' => json_encode($datatable->getColumns()),
-                'sg_datatable_view_options_as_json' => json_encode($datatable->getOptions())
             )
         );
     }

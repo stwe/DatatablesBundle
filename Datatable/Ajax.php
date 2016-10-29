@@ -41,6 +41,13 @@ class Ajax
     protected $type;
 
     /**
+     * Data to be sent.
+     *
+     * @var null|array
+     */
+    protected $data;
+
+    /**
      * Use Datatables' Pipeline.
      *
      * @see https://datatables.net/examples/server_side/pipeline.html
@@ -77,11 +84,13 @@ class Ajax
         $resolver->setDefaults(array(
             'url' => '',
             'type' => 'GET',
+            'data' => null,
             'pipeline' => 0
         ));
 
         $resolver->setAllowedTypes('url', 'string');
         $resolver->setAllowedTypes('type', 'string');
+        $resolver->setAllowedTypes('data', array('null', 'array'));
         $resolver->setAllowedTypes('pipeline', 'int');
 
         $resolver->setAllowedValues('type', array('GET', 'POST'));
@@ -137,6 +146,34 @@ class Ajax
     public function setType($type)
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get data.
+     *
+     * @return null|array
+     */
+    public function getData()
+    {
+        if (is_array($this->data)) {
+            return $this->optionToJson($this->data);
+        }
+
+        return $this->data;
+    }
+
+    /**
+     * Set data.
+     *
+     * @param null|array $data
+     *
+     * @return $this
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
 
         return $this;
     }

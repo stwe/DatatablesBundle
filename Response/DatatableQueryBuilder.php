@@ -11,6 +11,9 @@
 
 namespace Sg\DatatablesBundle\Response;
 
+use Sg\DatatablesBundle\Datatable\DatatableInterface;
+use Sg\DatatablesBundle\Datatable\Options;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\MappingException;
@@ -21,11 +24,11 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Exception;
 
 /**
- * Class DatatableQuery
+ * Class DatatableQueryBuilder
  *
  * @package Sg\DatatablesBundle\Response
  */
-class DatatableQuery
+class DatatableQueryBuilder
 {
     /**
      * @internal
@@ -33,72 +36,106 @@ class DatatableQuery
     const DISABLE_PAGINATION = -1;
 
     /**
+     * $_GET or $_POST parameters.
+     *
      * @var array
      */
     private $requestParams;
 
     /**
+     * @var DatatableInterface
+     */
+    private $datatable;
+
+    /**
+     * The EntityManager.
+     *
      * @var EntityManagerInterface
      */
     private $em;
 
     /**
+     * The name of the entity.
+     *
      * @var string
      */
     private $entityName;
 
     /**
+     * The class metadata for $entityName.
+     *
      * @var ClassMetadata
      */
     private $metadata;
 
     /**
+     * The table name for $entityName.
+     *
      * @var string
      */
     private $tableName;
 
     /**
+     * The root ID of the entity.
+     *
      * @var mixed
      */
     private $rootEntityIdentifier;
 
     /**
+     * The QueryBuilder.
+     *
      * @var QueryBuilder
      */
     private $qb;
 
     /**
+     * The PropertyAccessor.
+     * Provides functions to read and write from/to an object or array using a simple string notation.
+     *
      * @var PropertyAccessor
      */
     private $accessor;
 
     /**
+     * All Columns of the Datatable.
+     *
      * @var array
      */
     private $columns;
 
     /**
+     * Contains all Columns to create a SELECT FROM statement.
+     *
      * @var array
      */
     private $selectColumns;
 
     /**
+     * Contains an information for each Column, whether to search in it.
+     *
      * @var array
      */
     private $searchColumns;
 
     /**
+     * Contains an information about each column, whether it is sortable.
+     *
      * @var array
      */
     private $orderColumns;
 
     /**
+     * Contains all informations to create joins.
+     *
      * @var array
      */
     private $joins;
 
     /**
-     * @var array
+     * The Datatable Options.
+     *
+     * @var Options
      */
     private $options;
 
@@ -109,18 +146,18 @@ class DatatableQuery
     /**
      * DatatableQuery constructor.
      *
-     * @param array                  $requestParams
-     * @param EntityManagerInterface $em
+     * @param array              $requestParams
+     * @param DatatableInterface $datatable
+     *
+     * @throws Exception
      */
-    public function __construct(
-        array $requestParams,
-        EntityManagerInterface $em
-    )
+    public function __construct(array $requestParams, DatatableInterface $datatable)
     {
         $this->requestParams = $requestParams;
-        $this->em = $em;
+        $this->datatable = $datatable;
 
-        $this->entityName = $this->requestParams['sg_datatable_request_data_entity'];
+        $this->em = $datatable->getEntityManager();
+        $this->entityName = $datatable->getEntity();
 
         $this->metadata = $this->getMetadata($this->entityName);
         $this->tableName = $this->getTableName($this->metadata);
@@ -129,18 +166,20 @@ class DatatableQuery
         $this->qb = $this->em->createQueryBuilder();
         $this->accessor = PropertyAccess::createPropertyAccessor();
 
-        $this->columns = json_decode($this->requestParams['sg_datatable_request_data_columns']);
+        $this->columns = $datatable->getColumns();
+
         $this->selectColumns = array();
         $this->searchColumns = array();
         $this->orderColumns = array();
         $this->joins = array();
-        $this->options = json_decode($this->requestParams['sg_datatable_request_data_options']);
+
+        $this->options = $datatable->getOptions();
 
         $this->initColumnArrays();
     }
 
     /**
-     * Init column arrays for select, order, search.
+     * Init column arrays for select, search, order and joins.
      *
      * @return $this
      */
@@ -416,7 +455,7 @@ class DatatableQuery
      */
     private function setLimit()
     {
-        if (isset($this->requestParams['start']) && DatatableQuery::DISABLE_PAGINATION != $this->requestParams['length']) {
+        if (isset($this->requestParams['start']) && DatatableQueryBuilder::DISABLE_PAGINATION != $this->requestParams['length']) {
             $this->qb->setFirstResult($this->requestParams['start'])->setMaxResults($this->requestParams['length']);
         }
 
