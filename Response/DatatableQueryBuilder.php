@@ -11,6 +11,7 @@
 
 namespace Sg\DatatablesBundle\Response;
 
+use Sg\DatatablesBundle\Datatable\Column\ColumnInterface;
 use Sg\DatatablesBundle\Datatable\DatatableInterface;
 use Sg\DatatablesBundle\Datatable\Options;
 
@@ -18,6 +19,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -338,13 +340,12 @@ class DatatableQueryBuilder
             $globalSearch = $this->requestParams['search']['value'];
 
             $orExpr = $qb->expr()->orX();
+            $searchType = $this->options->getGlobalSearchType();
 
             foreach ($this->columns as $key => $column) {
-                // @todo: isSearchColumn function
-                if (true === $this->accessor->getValue($column, 'searchable') && null !== $this->accessor->getValue($column, 'dql')) {
+                if ($this->isSearchableColumn($column)) {
                     $searchField = $this->searchColumns[$key];
-                    $orExpr->add($qb->expr()->like($searchField, '?' . $key));
-                    $qb->setParameter($key, '%' . $globalSearch . '%');
+                    $this->setOrExpression($orExpr, $qb, $searchType, $searchField, $globalSearch, $key);
                 }
             }
 
@@ -647,5 +648,89 @@ class DatatableQueryBuilder
         $identifiers = $metadata->getIdentifierFieldNames();
 
         return array_shift($identifiers);
+    }
+
+    /**
+     * Is searchable column.
+     *
+     * @param ColumnInterface $column
+     *
+     * @return bool
+     */
+    private function isSearchableColumn(ColumnInterface $column)
+    {
+        $searchColumn = null !== $this->accessor->getValue($column, 'dql') && true === $this->accessor->getValue($column, 'searchable');
+
+        if (false === $this->options->isSearchInNonVisibleColumns()) {
+            return $searchColumn && true === $this->accessor->getValue($column, 'visible');
+        }
+
+        return $searchColumn;
+    }
+
+    /**
+     * Set Orx Expression.
+     *
+     * @param Orx          $orExpr
+     * @param QueryBuilder $qb
+     * @param string       $searchType
+     * @param string       $searchField
+     * @param mixed        $searchValue
+     * @param integer      $key
+     *
+     * @return $this
+     */
+    private function setOrExpression(Orx $orExpr, QueryBuilder $qb, $searchType, $searchField, $searchValue, $key)
+    {
+        switch ($searchType) {
+            case 'like':
+                $orExpr->add($qb->expr()->like($searchField, '?' . $key));
+                $qb->setParameter($key, '%' . $searchValue . '%');
+                break;
+            case 'notLike':
+                $orExpr->add($qb->expr()->notLike($searchField, '?' . $key));
+                $qb->setParameter($key, '%' . $searchValue . '%');
+                break;
+            case 'eq':
+                $orExpr->add($qb->expr()->eq($searchField, '?' . $key));
+                $qb->setParameter($key, $searchValue);
+                break;
+            case 'neq':
+                $orExpr->add($qb->expr()->neq($searchField, '?' . $key));
+                $qb->setParameter($key, $searchValue);
+                break;
+            case 'lt':
+                $orExpr->add($qb->expr()->lt($searchField, '?' . $key));
+                $qb->setParameter($key, $searchValue);
+                break;
+            case 'lte':
+                $orExpr->add($qb->expr()->lte($searchField, '?' . $key));
+                $qb->setParameter($key, $searchValue);
+                break;
+            case 'gt':
+                $orExpr->add($qb->expr()->gt($searchField, '?' . $key));
+                $qb->setParameter($key, $searchValue);
+                break;
+            case 'gte':
+                $orExpr->add($qb->expr()->gte($searchField, '?' . $key));
+                $qb->setParameter($key, $searchValue);
+                break;
+            case 'in':
+                $orExpr->add($qb->expr()->in($searchField, '?' . $key));
+                $qb->setParameter($key, explode(',', $searchValue));
+                break;
+            case 'notIn':
+                $orExpr->add($qb->expr()->notIn($searchField, '?' . $key));
+                $qb->setParameter($key, explode(',', $searchValue));
+                break;
+            case 'isNull':
+                $orExpr->add($qb->expr()->isNull($searchField));
+                break;
+            case 'isNotNull':
+                $orExpr->add($qb->expr()->isNotNull($searchField));
+                break;
+        }
+
+        return $this;
     }
 }

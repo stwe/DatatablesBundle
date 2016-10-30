@@ -12,14 +12,13 @@
 namespace Sg\DatatablesBundle\Datatable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use JsonSerializable;
 
 /**
  * Class Options
  *
  * @package Sg\DatatablesBundle\Datatable
  */
-class Options implements JsonSerializable
+class Options
 {
     use OptionsTrait;
 
@@ -181,17 +180,32 @@ class Options implements JsonSerializable
 
     /**
      * Enable or disable individual filtering.
+     * Default: false
      *
      * @var bool
      */
     protected $individualFiltering;
 
     /**
-     * Position of individual search filter ("head", "foot" or "both").
+     * Position of individual search filter ('head', 'foot' or 'both').
+     * Default: 'head'
      *
      * @var string
      */
     protected $individualFilteringPosition;
+
+    /**
+     * Determines whether to search in non-visible columns.
+     * Default: false
+     *
+     * @var bool
+     */
+    protected $searchInNonVisibleColumns;
+
+    /**
+     * @var string
+     */
+    protected $globalSearchType;
 
     //-------------------------------------------------
     // Ctor.
@@ -238,7 +252,9 @@ class Options implements JsonSerializable
             'state_duration' => null,
             'stripe_classes' => null,
             'individual_filtering' => false,
-            'individual_filtering_position' => 'head'
+            'individual_filtering_position' => 'head',
+            'search_in_non_visible_columns' => false,
+            'global_search_type' => 'like'
         ));
 
         $resolver->setAllowedTypes('defer_loading', array('null', 'int', 'array'));
@@ -261,30 +277,13 @@ class Options implements JsonSerializable
         $resolver->setAllowedTypes('stripe_classes', array('null', 'array'));
         $resolver->setAllowedTypes('individual_filtering', 'bool');
         $resolver->setAllowedTypes('individual_filtering_position', 'string');
+        $resolver->setAllowedTypes('search_in_non_visible_columns', 'bool');
+        $resolver->setAllowedTypes('global_search_type', 'string');
 
         $resolver->setAllowedValues('individual_filtering_position', array('head', 'foot', 'both'));
+        $resolver->setAllowedValues('global_search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
 
         return $this;
-    }
-
-    //-------------------------------------------------
-    // JsonSerializable
-    //-------------------------------------------------
-
-    /**
-     * JsonSerialize.
-     *
-     * @return array
-     */
-    public function jsonSerialize()
-    {
-        $vars = array();
-        //$vars = get_object_vars($this);
-
-        $vars['individualFiltering'] = $this->isIndividualFiltering();
-        $vars['individualFilteringPosition'] = $this->getIndividualFilteringPosition();
-
-        return $vars;
     }
 
     //-------------------------------------------------
@@ -787,6 +786,54 @@ class Options implements JsonSerializable
     public function setIndividualFilteringPosition($individualFilteringPosition)
     {
         $this->individualFilteringPosition = $individualFilteringPosition;
+
+        return $this;
+    }
+
+    /**
+     * Get searchInNonVisibleColumns.
+     *
+     * @return boolean
+     */
+    public function isSearchInNonVisibleColumns()
+    {
+        return $this->searchInNonVisibleColumns;
+    }
+
+    /**
+     * Set searchInNonVisibleColumns.
+     *
+     * @param boolean $searchInNonVisibleColumns
+     *
+     * @return $this
+     */
+    public function setSearchInNonVisibleColumns($searchInNonVisibleColumns)
+    {
+        $this->searchInNonVisibleColumns = $searchInNonVisibleColumns;
+
+        return $this;
+    }
+
+    /**
+     * Get globalSearchType.
+     *
+     * @return string
+     */
+    public function getGlobalSearchType()
+    {
+        return $this->globalSearchType;
+    }
+
+    /**
+     * Set globalSearchType.
+     *
+     * @param string $globalSearchType
+     *
+     * @return $this
+     */
+    public function setGlobalSearchType($globalSearchType)
+    {
+        $this->globalSearchType = $globalSearchType;
 
         return $this;
     }
