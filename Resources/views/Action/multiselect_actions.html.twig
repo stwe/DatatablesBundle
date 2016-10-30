@@ -14,7 +14,20 @@
                 {% set attributes %}
                     {% for key, value in action.attributes %} {{ key }}='{{ value }}'{% endfor %}
                 {% endset %}
-                <a href="{{ route }}" {{ attributes }}>{{ datatable_icon(action.icon, action.label) }}</a>
+                <a data-confirm="{{ action.confirm ? 'true' : 'false' }}"
+                   data-confirm-message="{{ action.confirmMessage is defined ? action.confirmMessage : 'datatables.bulk.confirmMsg'|trans({}, 'messages') }}"
+                   id="datatable-multiselect-action-button-{{ loop.index }}"
+                   href="{{ route }}" {{ attributes }}>{{ datatable_icon(action.icon, action.label) }}</a>
+                <script>
+                        $('#datatable-multiselect-action-button-{{ loop.index }}').data('success-callback',
+                                {% if action.successCallback is not empty %}
+                                    {% include action.successCallback %}
+                                {% else %}
+                                    function(){}
+                                {% endif %}
+                        );
+
+                </script>
             {% endif %}
         {% endfor %}
     </div>
@@ -29,17 +42,15 @@ $(".{{ view_table_id }}_multiselect_checkall").click(function(event) {
     });
 });
 
-$(selector).on('click', 'input.{{ view_table_id }}_multiselect_checkbox', function(event) {
-    updateCheckAll();
-});
-
 $(".{{ view_table_id }}_multiselect_action_click").on('click', function(event) {
     var length = $("input.{{ view_table_id }}_multiselect_checkbox:checkbox:checked").length;
 
     event.preventDefault();
 
     if (length > 0) {
-        if (!confirm( "{{ 'datatables.bulk.confirmMsg'|trans({}, 'messages') }}" )) {
+        var that = $(this);
+
+        if (that.attr('data-confirm') == 'true' && !confirm( that.attr('data-confirm-message') )) {
             return;
         }
 
@@ -53,12 +64,9 @@ $(".{{ view_table_id }}_multiselect_action_click").on('click', function(event) {
                 'data': $("input:checkbox:checked.{{ view_table_id }}_multiselect_checkbox", oTable.rows().nodes()).serializeArray(),
                 'token': '{{ token }}'
             },
-            success: function(msg) {
-                {% if view_ajax.pipeline > 0 %}
-                    oTable.clearPipeline().draw();
-                {% else %}
-                    oTable.draw();
-                {% endif %}
+            success: function(data, textStatus) {
+                that.data('success-callback')(data, textStatus);
+                oTable.draw(data);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(XMLHttpRequest + ' ' + textStatus + ' ' +errorThrown);
@@ -68,20 +76,3 @@ $(".{{ view_table_id }}_multiselect_action_click").on('click', function(event) {
         alert("{{ 'datatables.bulk.selectError'|trans({}, 'messages') }}");
     }
 });
-
-function updateCheckAll(){
-    var $individual_all        = $("input.{{ view_table_id }}_multiselect_checkbox:checkbox");
-    var $individual_checked    = $("input.{{ view_table_id }}_multiselect_checkbox:checkbox:checked");
-    var $all                   = $(".{{ view_table_id }}_multiselect_checkall");
-
-    if($individual_checked.length === 0){
-        $all.prop('checked', false);
-        $all.prop('indeterminate', false);
-    } else if ($individual_checked.length === $individual_all.length){
-        $all.prop('checked', true);
-        $all.prop('indeterminate', false);
-    } else {
-        $all.prop('checked', false);
-        $all.prop('indeterminate', true);
-    }
-}
