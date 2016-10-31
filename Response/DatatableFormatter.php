@@ -11,6 +11,7 @@
 
 namespace Sg\DatatablesBundle\Response;
 
+use Sg\DatatablesBundle\Datatable\Column\ColumnInterface;
 use Sg\DatatablesBundle\Datatable\DatatableInterface;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -54,11 +55,21 @@ class DatatableFormatter
     public function runFormatter(Paginator $paginator, DatatableInterface $datatable)
     {
         $lineFormatter = $datatable->getLineFormatter();
+        $columns = $datatable->getColumns();
 
         foreach ($paginator as $row) {
 
+            // 1. Call the the lineFormatter to format row items
             if (null !== $lineFormatter && is_callable($lineFormatter)) {
                 $row = call_user_func($datatable->getLineFormatter(), $row);
+            }
+
+            /** @var ColumnInterface $column */
+            foreach ($columns as $column) {
+                // 2. Add some special data to the output array. For example, the visibility of actions.
+                $column->addDataToOutputArray($row);
+                // 3. Call Columns renderContent method to format row items (e.g. for images or boolean values)
+                $column->renderContent($row);
             }
 
             $this->output['data'][] = $row;

@@ -70,7 +70,7 @@ class DatatableResponse
     //-------------------------------------------------
 
     /**
-     * Response constructor.
+     * DatatableResponse constructor.
      *
      * @param RequestStack $requestStack
      */

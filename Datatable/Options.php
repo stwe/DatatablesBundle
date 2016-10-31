@@ -22,9 +22,12 @@ class Options
 {
     use OptionsTrait;
 
-    //-------------------------------------------------
+    //--------------------------------------------------------------------------------------------------
     // DataTables - Options
-    //-------------------------------------------------
+    // --------------------
+    // All DataTables Options are initialized with 'null'.
+    // These 'null' initialized options uses the default value of the DataTables plugin.
+    //--------------------------------------------------------------------------------------------------
 
     /**
      * Delay the loading of server-side data until second draw.

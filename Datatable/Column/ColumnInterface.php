@@ -55,4 +55,24 @@ interface ColumnInterface
      * @return string
      */
     public function getTemplate();
+
+    /**
+     * Sometimes it is necessary to add some special data to the output array.
+     * For example, the visibility of actions.
+     *
+     * @param array $row
+     *
+     * @return $this
+     */
+    public function addDataToOutputArray(array &$row);
+
+    /**
+     * Render images or any other special content.
+     * This function works similar to the DataTables Plugin 'columns.render'.
+     *
+     * @param array $row
+     *
+     * @return $this
+     */
+    public function renderContent(array &$row);
 }

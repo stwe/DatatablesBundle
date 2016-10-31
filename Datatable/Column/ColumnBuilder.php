@@ -13,6 +13,7 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Twig_Environment;
 use Exception;
 
 /**
@@ -33,6 +34,11 @@ class ColumnBuilder
     private $metadata;
 
     /**
+     * @var Twig_Environment
+     */
+    private $twig;
+
+    /**
      * @var array
      */
     private $columns;
@@ -46,11 +52,13 @@ class ColumnBuilder
      *
      * @param EntityManagerInterface $em
      * @param ClassMetadata          $metadata
+     * @param Twig_Environment       $twig
      */
-    public function __construct(EntityManagerInterface $em, ClassMetadata $metadata)
+    public function __construct(EntityManagerInterface $em, ClassMetadata $metadata, Twig_Environment $twig)
     {
         $this->em = $em;
         $this->metadata = $metadata;
+        $this->twig = $twig;
         $this->columns = array();
     }
 
@@ -77,6 +85,7 @@ class ColumnBuilder
         $column->initOptions(false);
         $column->setData($data);
         $column->setDql($data);
+        $column->setTwig($this->twig);
         $column->set($options);
 
         if (null === $column->getTypeOfField() && true === $column->isSelectColumn()) {
@@ -100,6 +109,10 @@ class ColumnBuilder
 
         return $this;
     }
+
+    //-------------------------------------------------
+    // Getters && Setters
+    //-------------------------------------------------
 
     /**
      * Get columns.

@@ -18,6 +18,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Twig_Environment;
 use Exception;
 
 /**
@@ -65,6 +66,13 @@ abstract class AbstractDatatable implements DatatableInterface
     protected $em;
 
     /**
+     * The Twig Environment.
+     *
+     * @var Twig_Environment
+     */
+    protected $twig;
+
+    /**
      * A ColumnBuilder instance.
      *
      * @var ColumnBuilder
@@ -97,13 +105,17 @@ abstract class AbstractDatatable implements DatatableInterface
      * @param TranslatorInterface           $translator
      * @param RouterInterface               $router
      * @param EntityManagerInterface        $em
+     * @param Twig_Environment              $twig
+     *
+     * @throws Exception
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $securityToken,
         TranslatorInterface $translator,
         RouterInterface $router,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        Twig_Environment $twig
     )
     {
         $this->validateName();
@@ -113,9 +125,10 @@ abstract class AbstractDatatable implements DatatableInterface
         $this->translator = $translator;
         $this->router = $router;
         $this->em = $em;
+        $this->twig = $twig;
 
         $metadata = $em->getClassMetadata($this->getEntity());
-        $this->columnBuilder = new ColumnBuilder($em, $metadata);
+        $this->columnBuilder = new ColumnBuilder($em, $metadata, $twig);
 
         $this->ajax = new Ajax();
         $this->options = new Options();

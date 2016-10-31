@@ -24,6 +24,7 @@ class BooleanColumn extends AbstractColumn
 
     /**
      * The icon for a value that is true.
+     * Default: null
      *
      * @var null|string
      */
@@ -31,6 +32,7 @@ class BooleanColumn extends AbstractColumn
 
     /**
      * The icon for a value that is false.
+     * Default: null
      *
      * @var null|string
      */
@@ -38,6 +40,7 @@ class BooleanColumn extends AbstractColumn
 
     /**
      * The label for a value that is true.
+     * Default: null
      *
      * @var null|string
      */
@@ -45,6 +48,7 @@ class BooleanColumn extends AbstractColumn
 
     /**
      * The label for a value that is false.
+     * Default: null
      *
      * @var null|string
      */
@@ -60,6 +64,31 @@ class BooleanColumn extends AbstractColumn
     public function getTemplate()
     {
         return 'SgDatatablesBundle:column:boolean.html.twig';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function renderContent(array &$row)
+    {
+        if (null === $this->trueIcon && null === $this->trueLabel) {
+            $this->trueLabel = 'true';
+        }
+
+        if (null === $this->falseIcon && null === $this->falseLabel) {
+            $this->falseLabel = 'false';
+        }
+
+        $row[$this->dql] = $this->twig->render(
+            'SgDatatablesBundle:render:boolean.html.twig',
+            array(
+                'data' => $row[$this->dql],
+                'trueLabel' => $this->trueLabel,
+                'trueIcon' => $this->trueIcon,
+                'falseLabel' => $this->falseLabel,
+                'falseIcon' => $this->falseIcon,
+            )
+        );
     }
 
     //-------------------------------------------------
@@ -78,7 +107,6 @@ class BooleanColumn extends AbstractColumn
         parent::configureOptions($resolver);
 
         $resolver->setDefaults(array(
-            'render_function' => 'render_boolean',
             'true_icon' => null,
             'false_icon' => null,
             'true_label' => null,

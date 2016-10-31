@@ -349,7 +349,9 @@ class DatatableQueryBuilder
                 }
             }
 
-            $qb->where($orExpr);
+            if ($orExpr->count() > 0) {
+                $qb->where($orExpr);
+            }
         }
 
         // individual filtering

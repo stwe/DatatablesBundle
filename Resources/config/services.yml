@@ -14,6 +14,7 @@ services:
             - '@translator.default'
             - '@router'
             - '@doctrine.orm.entity_manager'
+            - '@twig'
 
     sg_datatables.response:
         class: Sg\DatatablesBundle\Response\DatatableResponse

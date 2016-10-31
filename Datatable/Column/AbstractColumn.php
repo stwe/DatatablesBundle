@@ -14,7 +14,7 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use JsonSerializable;
+use Twig_Environment;
 use Closure;
 use Exception;
 
@@ -23,13 +23,18 @@ use Exception;
  *
  * @package Sg\DatatablesBundle\Datatable\Column
  */
-abstract class AbstractColumn implements ColumnInterface, JsonSerializable
+abstract class AbstractColumn implements ColumnInterface
 {
     use OptionsTrait;
 
-    //-------------------------------------------------
+    //--------------------------------------------------------------------------------------------------
     // DataTables - Columns Options
-    //-------------------------------------------------
+    // ----------------------------
+    // All Column Options are initialized with 'null' - except 'searchable', 'orderable', and 'visible'.
+    // These 'null' initialized options uses the default value of the DataTables plugin.
+    // 'searchable', 'orderable', and 'visible' are required in the QueryBuilder and are therefore
+    // pre-assigned with a value (true or false).
+    //--------------------------------------------------------------------------------------------------
 
     /**
      * Change the cell type created for the column - either TD cells or TH cells.
@@ -78,6 +83,7 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
     /**
      * Enable or disable ordering on this column.
      * DataTables default: true
+     * Default: true
      *
      * @var bool
      */
@@ -127,6 +133,7 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
     /**
      * Enable or disable filtering on the data in this column.
      * DataTables default: true
+     * Default: true
      *
      * @var bool
      */
@@ -143,8 +150,9 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
     /**
      * Enable or disable the display of this column.
      * DataTables default: true
+     * Default: true
      *
-     * @var null|bool
+     * @var bool
      */
     protected $visible;
 
@@ -161,7 +169,8 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
     //-------------------------------------------------
 
     /**
-     * Add column only if parameter / conditions are TRUE
+     * Add column only if parameter / conditions are TRUE.
+     * Default: null
      *
      * @var null|Closure
      */
@@ -169,6 +178,7 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
 
     /**
      * Join type (default: 'leftJoin'), if the column represents an association.
+     * Default: 'leftJoin'
      *
      * @var string
      */
@@ -176,6 +186,7 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
 
     /**
      * The data type of the column.
+     * Default: null
      *
      * @var null|string
      */
@@ -192,6 +203,13 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
      * @var null|string
      */
     protected $dql;
+
+    /**
+     * The Twig Environment to render Twig templates in Column rowes.
+     *
+     * @var Twig_Environment
+     */
+    protected $twig;
 
     //-------------------------------------------------
     // Options
@@ -220,7 +238,7 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
             'render_function' => null,
             'searchable' => true,
             'title' => null,
-            'visible' => null,
+            'visible' => true,
             'width' => null,
             'add_if' => null,
             'join_type' => 'leftJoin',
@@ -240,7 +258,7 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
         $resolver->setAllowedTypes('render_function', array('null', 'string'));
         $resolver->setAllowedTypes('searchable', 'bool');
         $resolver->setAllowedTypes('title', array('null', 'string'));
-        $resolver->setAllowedTypes('visible', array('null', 'bool'));
+        $resolver->setAllowedTypes('visible', 'bool');
         $resolver->setAllowedTypes('width', array('null', 'string'));
         $resolver->setAllowedTypes('add_if', array('null', 'Closure'));
         $resolver->setAllowedTypes('join_type', 'string');
@@ -289,27 +307,20 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
         return true;
     }
 
-    //-------------------------------------------------
-    // JsonSerializable
-    //-------------------------------------------------
+    /**
+     * {@inheritdoc}
+     */
+    public function addDataToOutputArray(array &$row)
+    {
+        return null;
+    }
 
     /**
-     * JsonSerialize.
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function jsonSerialize()
+    public function renderContent(array &$row)
     {
-        $vars = get_object_vars($this);
-
-        unset($vars['options']);
-        unset($vars['accessor']);
-
-        $vars['unique'] = $this->isUnique();
-        $vars['association'] = $this->isAssociation();
-        $vars['selectColumn'] = $this->isSelectColumn();
-
-        return $vars;
+        return null;
     }
 
     //-------------------------------------------------
@@ -698,7 +709,7 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
     /**
      * Get visible.
      *
-     * @return null|bool
+     * @return bool
      */
     public function getVisible()
     {
@@ -708,7 +719,7 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
     /**
      * Set visible.
      *
-     * @param null|bool $visible
+     * @param bool $visible
      *
      * @return $this
      */
@@ -835,6 +846,30 @@ abstract class AbstractColumn implements ColumnInterface, JsonSerializable
     public function setDql($dql)
     {
         $this->dql = $dql;
+
+        return $this;
+    }
+
+    /**
+     * Get Twig.
+     *
+     * @return Twig_Environment
+     */
+    public function getTwig()
+    {
+        return $this->twig;
+    }
+
+    /**
+     * Set Twig.
+     *
+     * @param Twig_Environment $twig
+     *
+     * @return $this
+     */
+    public function setTwig(Twig_Environment $twig)
+    {
+        $this->twig = $twig;
 
         return $this;
     }
