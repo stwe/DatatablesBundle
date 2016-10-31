@@ -206,6 +206,9 @@ class Options
     protected $searchInNonVisibleColumns;
 
     /**
+     * The global search type.
+     * Default: 'like'
+     *
      * @var string
      */
     protected $globalSearchType;

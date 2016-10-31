@@ -18,6 +18,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Doctrine\ORM\EntityManager;
+use Twig_Environment;
 
 /**
  * Class DatatableTest
@@ -34,6 +35,7 @@ class DatatableTest extends \PHPUnit_Framework_TestCase
         $securityToken = $this->getMock(TokenStorageInterface::class);
         $translator = $this->getMock(TranslatorInterface::class);
         $router = $this->getMock(RouterInterface::class);
+        $twig = $this->getMock(Twig_Environment::class);
 
         $em = $this->getMockBuilder(EntityManager::class)
             ->disableOriginalConstructor()
@@ -47,7 +49,7 @@ class DatatableTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->getClassMetadataMock()));
 
         /** @var \Sg\DatatablesBundle\Tests\Datatables\PostDatatable $table */
-        $table = new $tableClass($authorizationChecker, $securityToken, $translator, $router, $em);
+        $table = new $tableClass($authorizationChecker, $securityToken, $translator, $router, $em, $twig);
 
         $this->assertEquals('post_datatable', $table->getName());
 
