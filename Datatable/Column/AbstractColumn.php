@@ -62,6 +62,9 @@ abstract class AbstractColumn implements ColumnInterface
      * Set the data source for the column from the rows data object / array.
      * DataTables default: Takes the index value of the column automatically.
      *
+     * This property is normally not changeable and has the same value as $this->dql.
+     * In CollectionColumn for example it is a required option.
+     *
      * @var null|string
      */
     protected $data;
@@ -197,8 +200,8 @@ abstract class AbstractColumn implements ColumnInterface
     //-------------------------------------------------
 
     /**
-     * Data source ($this->data) copy.
-     * The DatatableQuery class works with this copy.
+     * The first argument of ColumnBuilders 'add' function.
+     * The DatatableQuery class works with this property.
      *
      * @var null|string
      */
@@ -278,9 +281,9 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function dataConstraint($data)
+    public function dqlConstraint($dql)
     {
-        return preg_match('/^[a-zA-Z0-9_\\-\\.]+$/', $data) ? true : false;
+        return preg_match('/^[a-zA-Z0-9_\\-\\.]+$/', $dql) ? true : false;
     }
 
     /**
@@ -433,15 +436,10 @@ abstract class AbstractColumn implements ColumnInterface
      * @param null|string $data
      *
      * @return $this
-     * @throws Exception
      */
     public function setData($data)
     {
-        if (true === $this->dataConstraint($data)) {
-            $this->data = $data;
-        } else {
-            throw new Exception("AbstractColumn::setData(): $data is not a valid.");
-        }
+        $this->data = $data;
 
         return $this;
     }
@@ -842,10 +840,15 @@ abstract class AbstractColumn implements ColumnInterface
      * @param null|string $dql
      *
      * @return $this
+     * @throws Exception
      */
     public function setDql($dql)
     {
-        $this->dql = $dql;
+        if (true === $this->dqlConstraint($dql)) {
+            $this->dql = $dql;
+        } else {
+            throw new Exception("AbstractColumn::setDql(): $dql is not a valid.");
+        }
 
         return $this;
     }

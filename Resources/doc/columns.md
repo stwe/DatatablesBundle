@@ -48,7 +48,7 @@ $this->columnBuilder
         'title' => 'title',
         'searchable' => true, // default
         'orderable' => true, // default
-        'type_of_field' => 'integer' // Example: If numbers are stored as a string, try  this option for a better ordering.
+        'type_of_field' => 'integer' // Example: If numbers are stored as a string, try this option for a better ordering.
         'add_if' => function() {
             return ($this->authorizationChecker->isGranted('ROLE_ADMIN'));
         },

@@ -61,9 +61,9 @@ class CollectionColumn extends Column
     /**
      * {@inheritdoc}
      */
-    public function dataConstraint($data)
+    public function dqlConstraint($dql)
     {
-        if (preg_match('/^[a-zA-Z0-9_\\-\\.]+$/', $data) && strstr($data, '.')) {
+        if (preg_match('/^[a-zA-Z0-9_\\-\\.]+$/', $dql) && strstr($dql, '.')) {
             return true;
         } else {
             return false;

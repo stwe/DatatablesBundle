@@ -3,7 +3,9 @@
 ## Documentation
 
 [Installation](https://github.com/stwe/DatatablesBundle/blob/1.0/Resources/doc/installation.md)
+
 [Columns](https://github.com/stwe/DatatablesBundle/blob/1.0/Resources/doc/columns.md)
+
 [Options](https://github.com/stwe/DatatablesBundle/blob/1.0/Resources/doc/options.md)
 
 ## Friendly License

@@ -69,22 +69,22 @@ class ColumnBuilder
     /**
      * Add Column.
      *
-     * @param null|string            $data
+     * @param null|string            $dql
      * @param string|ColumnInterface $class
      * @param array                  $options
      *
      * @return $this
      * @throws Exception
      */
-    public function add($data, $class, array $options = array())
+    public function add($dql, $class, array $options = array())
     {
         /**
          * @var AbstractColumn $column
          */
         $column = ColumnFactory::createColumn($class);
         $column->initOptions(false);
-        $column->setData($data);
-        $column->setDql($data);
+        $column->setDql($dql);
+        $column->setData($dql);
         $column->setTwig($this->twig);
         $column->set($options);
 
@@ -93,7 +93,7 @@ class ColumnBuilder
                 // @todo: set type of field for association
                 $column->setTypeOfField(null);
             } else {
-                $column->setTypeOfField($this->metadata->getTypeOfField($data));
+                $column->setTypeOfField($this->metadata->getTypeOfField($dql));
             }
         }
 

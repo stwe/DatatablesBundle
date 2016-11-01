@@ -19,13 +19,13 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 interface ColumnInterface
 {
     /**
-     * Validates $data. Normally a non-empty string is expected.
+     * Validates $dql. Normally a non-empty string is expected.
      *
-     * @param mixed $data
+     * @param mixed $dql
      *
      * @return bool
      */
-    public function dataConstraint($data);
+    public function dqlConstraint($dql);
 
     /**
      * Specifies whether only a single column of this type is allowed (example: MultiselectColumn).
