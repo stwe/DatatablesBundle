@@ -277,7 +277,7 @@ SgDatatablesBundle:Column:datetime.html.twig
 | order_sequence  | null or array  | null                   |          | Control the default ordering direction. |
 | filter          | array          | array('text', array()) |          | See [Filtering](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filter.md#2-serverside-individual-column-filtering) for more information. |
 | add_if          | Closure        | null                   |          | Add a closure to check e.g. the current user's permissions and display a column depending on that result. |
-| date_format     | string         | 'lll'                  |          | Format date, see [Date Parameteres](http://php.net/manual/de/function.date.php#refsect1-function.date-parameters). |
+| date_format     | string         | 'lll'                  |          | Format date, see [Date Parameteres](http://momentjs.com/). |
 | editable        | boolean        | false                  |          | Enable edit mode for this column. |
 | editable_if     | Closure        | null                   |          | Enable edit mode for this column depending on a closure condition e.g. permissions. |
 
