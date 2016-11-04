@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -50,10 +52,12 @@ class Column extends AbstractColumn
         parent::configureOptions($resolver);
 
         $resolver->setDefaults(array(
+            'filter' => array(TextFilter::class, array()),
             'editable' => false,
             'editable_if' => null,
         ));
 
+        $resolver->setAllowedTypes('filter', 'array');
         $resolver->setAllowedTypes('editable', 'bool');
         $resolver->setAllowedTypes('editable_if', array('null', 'Closure'));
 

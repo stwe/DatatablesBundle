@@ -12,6 +12,8 @@
 namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
+use Sg\DatatablesBundle\Datatable\Filter\FilterFactory;
+use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig_Environment;
@@ -109,31 +111,6 @@ abstract class AbstractColumn implements ColumnInterface
     protected $orderSequence;
 
     /**
-     * Render (process) the data for use in the table.
-     * Read an object property from the data source.
-     * For example: name[, ] would provide a comma-space separated list from the source array.
-     *
-     * @var null|string
-     */
-    protected $renderString;
-
-    /**
-     * Render (process) the data for use in the table.
-     * Use different data for the different data types requested by DataTables (filter, display, type or sort).
-     *
-     * @var null|array
-     */
-    protected $renderObject;
-
-    /**
-     * Render (process) the data for use in the table.
-     * If a function is given, it will be executed whenever DataTables needs to get the data for a cell in the column.
-     *
-     * @var null|string
-     */
-    protected $renderFunction;
-
-    /**
      * Enable or disable filtering on the data in this column.
      * DataTables default: true
      * Default: true
@@ -195,6 +172,14 @@ abstract class AbstractColumn implements ColumnInterface
      */
     protected $typeOfField;
 
+    /**
+     * A Filter instance for individual filtering.
+     * Default: See the different column types.
+     *
+     * @var FilterInterface
+     */
+    protected $filter;
+
     //-------------------------------------------------
     // Other Properties
     //-------------------------------------------------
@@ -202,6 +187,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * The first argument of ColumnBuilders 'add' function.
      * The DatatableQuery class works with this property.
+     * Is set in the ColumnBuilder.
      *
      * @var null|string
      */
@@ -209,6 +195,7 @@ abstract class AbstractColumn implements ColumnInterface
 
     /**
      * The Twig Environment to render Twig templates in Column rowes.
+     * Is set in the ColumnBuilder.
      *
      * @var Twig_Environment
      */
@@ -236,9 +223,6 @@ abstract class AbstractColumn implements ColumnInterface
             'orderable' => true,
             'order_data' => null,
             'order_sequence' => null,
-            'render_string' => null,
-            'render_object' => null,
-            'render_function' => null,
             'searchable' => true,
             'title' => null,
             'visible' => true,
@@ -256,9 +240,6 @@ abstract class AbstractColumn implements ColumnInterface
         $resolver->setAllowedTypes('orderable', 'bool');
         $resolver->setAllowedTypes('order_data', array('null', 'array', 'int'));
         $resolver->setAllowedTypes('order_sequence', array('null', 'array'));
-        $resolver->setAllowedTypes('render_string', array('null', 'string'));
-        $resolver->setAllowedTypes('render_object', array('null', 'array'));
-        $resolver->setAllowedTypes('render_function', array('null', 'string'));
         $resolver->setAllowedTypes('searchable', 'bool');
         $resolver->setAllowedTypes('title', array('null', 'string'));
         $resolver->setAllowedTypes('visible', 'bool');
@@ -577,86 +558,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get renderString.
-     *
-     * @return null|string
-     */
-    public function getRenderString()
-    {
-        return $this->renderString;
-    }
-
-    /**
-     * Set renderString.
-     *
-     * @param null|string $renderString
-     *
-     * @return $this
-     */
-    public function setRenderString($renderString)
-    {
-        $this->renderString = $renderString;
-
-        return $this;
-    }
-
-    /**
-     * Get renderObject.
-     *
-     * @return null|array
-     */
-    public function getRenderObject()
-    {
-        if (is_array($this->renderObject)) {
-            return $this->optionToJson($this->renderObject);
-        }
-
-        return $this->renderObject;
-    }
-
-    /**
-     * Set renderObject.
-     *
-     * @param null|array $renderObject
-     *
-     * @return $this
-     */
-    public function setRenderObject($renderObject)
-    {
-        if (is_array($renderObject)) {
-            $this->checkOptions($renderObject, array('_', 'filter', 'display', 'type', 'sort'));
-        }
-
-        $this->renderObject = $renderObject;
-
-        return $this;
-    }
-
-    /**
-     * Get renderFunction.
-     *
-     * @return null|string
-     */
-    public function getRenderFunction()
-    {
-        return $this->renderFunction;
-    }
-
-    /**
-     * Set renderFunction.
-     *
-     * @param null|string $renderFunction
-     *
-     * @return $this
-     */
-    public function setRenderFunction($renderFunction)
-    {
-        $this->renderFunction = $renderFunction;
-
-        return $this;
-    }
-
-    /**
      * Get searchable.
      *
      * @return bool
@@ -822,6 +723,45 @@ abstract class AbstractColumn implements ColumnInterface
         $this->typeOfField = $typeOfField;
 
         return $this;
+    }
+
+    /**
+     * Set Filter instance.
+     *
+     * @param array $filterClassAndOptions
+     *
+     * @return $this
+     * @throws Exception
+     */
+    public function setFilter(array $filterClassAndOptions)
+    {
+        if (count($filterClassAndOptions) != 2) {
+            throw new Exception('AbstractColumn::setFilter(): Two arguments expected.');
+        }
+
+        if (!isset($filterClassAndOptions[0]) || !is_string($filterClassAndOptions[0]) && !$filterClassAndOptions[0] instanceof FilterInterface) {
+            throw new Exception('AbstractColumn::setFilter(): Set a Filter class.');
+        }
+
+        if (!isset($filterClassAndOptions[1]) || !is_array($filterClassAndOptions[1])) {
+            throw new Exception('AbstractColumn::setFilter(): Set an options array.');
+        }
+
+        /** @var \Sg\DatatablesBundle\Datatable\Filter\AbstractFilter $newFilter */
+        $newFilter = FilterFactory::createFilter($filterClassAndOptions[0]);
+        $this->filter = $newFilter->set($filterClassAndOptions[1]);
+
+        return $this;
+    }
+
+    /**
+     * Get Filter instance.
+     *
+     * @return FilterInterface
+     */
+    public function getFilter()
+    {
+        return $this->filter;
     }
 
     /**

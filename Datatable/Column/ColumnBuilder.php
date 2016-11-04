@@ -43,6 +43,14 @@ class ColumnBuilder
      */
     private $columns;
 
+    /**
+     * This variable stores the array of column names as keys and column ids as values
+     * in order to perform search column id by name.
+     *
+     * @var array
+     */
+    private $columnNames;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -60,6 +68,7 @@ class ColumnBuilder
         $this->metadata = $metadata;
         $this->twig = $twig;
         $this->columns = array();
+        $this->columnNames = array();
     }
 
     //-------------------------------------------------
@@ -99,6 +108,7 @@ class ColumnBuilder
 
         if (true === $column->callAddIfClosure()) {
             $this->columns[] = $column;
+            $this->columnNames[$dql] = count($this->columns) - 1;
         }
 
         if (true === $column->isUnique()) {
@@ -122,5 +132,15 @@ class ColumnBuilder
     public function getColumns()
     {
         return $this->columns;
+    }
+
+    /**
+     * Get columnNames.
+     *
+     * @return array
+     */
+    public function getColumnNames()
+    {
+        return $this->columnNames;
     }
 }

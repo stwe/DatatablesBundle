@@ -42,6 +42,13 @@ interface DatatableInterface
     public function getColumns();
 
     /**
+     * Get an array of Column names as keys and Column ids as values.
+     *
+     * @return array
+     */
+    public function getColumnNames();
+
+    /**
      * Get Ajax instance.
      *
      * @return Ajax

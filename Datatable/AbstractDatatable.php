@@ -157,6 +157,14 @@ abstract class AbstractDatatable implements DatatableInterface
     /**
      * {@inheritdoc}
      */
+    public function getColumnNames()
+    {
+        return $this->columnBuilder->getColumnNames();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAjax()
     {
         return $this->ajax;
