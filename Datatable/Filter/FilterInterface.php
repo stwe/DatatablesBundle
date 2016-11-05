@@ -35,9 +35,9 @@ interface FilterInterface
      * @param QueryBuilder $qb
      * @param string       $searchField
      * @param mixed        $searchValue
-     * @param integer      $i
+     * @param int          $parameterCounter
      *
      * @return Andx
      */
-    public function addAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, &$i);
+    public function addAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, &$parameterCounter);
 }

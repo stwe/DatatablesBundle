@@ -38,6 +38,11 @@ class DatatableQueryBuilder
     const DISABLE_PAGINATION = -1;
 
     /**
+     * @internal
+     */
+    const INIT_PARAMETER_COUNTER = 100;
+
+    /**
      * $_GET or $_POST parameters.
      *
      * @var array
@@ -343,7 +348,7 @@ class DatatableQueryBuilder
             $searchType = $this->options->getGlobalSearchType();
 
             foreach ($this->columns as $key => $column) {
-                if ($this->isSearchableColumn($column)) {
+                if (true === $this->isSearchableColumn($column)) {
                     $searchField = $this->searchColumns[$key];
                     $this->setOrExpression($orExpr, $qb, $searchType, $searchField, $globalSearch, $key);
                 }
@@ -358,26 +363,22 @@ class DatatableQueryBuilder
         if (true === $this->accessor->getValue($this->options, 'individualFiltering')) {
             $andExpr = $qb->expr()->andX();
 
-            $i = 100;
+            $parameterCounter = DatatableQueryBuilder::INIT_PARAMETER_COUNTER;
 
             foreach ($this->columns as $key => $column) {
-
-                /*
-                if (true === $this->isSearchColumn($column)) {
-                    $filter = $column->getFilter();
-                    $searchField = $this->searchColumns[$key];
-
-                    if (array_key_exists($key, $this->requestParams['columns']) === false) {
+                if (true === $this->isSearchableColumn($column)) {
+                    if (false === array_key_exists($key, $this->requestParams['columns'])) {
                         continue;
                     }
 
                     $searchValue = $this->requestParams['columns'][$key]['search']['value'];
 
                     if ('' != $searchValue && 'null' != $searchValue) {
-                        $andExpr = $filter->addAndExpression($andExpr, $qb, $searchField, $searchValue, $i);
+                        $filter = $this->accessor->getValue($column, 'filter');
+                        $searchField = $this->searchColumns[$key];
+                        $andExpr = $filter->addAndExpression($andExpr, $qb, $searchField, $searchValue, $parameterCounter);
                     }
                 }
-                */
             }
 
             if ($andExpr->count() > 0) {

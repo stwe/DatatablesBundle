@@ -32,10 +32,10 @@ class TextFilter extends AbstractFilter
     /**
      * {@inheritdoc}
      */
-    public function addAndExpression(Andx $andExpr, QueryBuilder $pivot, $searchField, $searchValue, &$i)
+    public function addAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, &$parameterCounter)
     {
-        $andExpr = $this->getAndExpression($andExpr, $pivot, $searchField, $searchValue, $i);
-        $i++;
+        $andExpr = $this->getAndExpression($andExpr, $qb, $searchField, $searchValue, $parameterCounter);
+        $parameterCounter++;
 
         return $andExpr;
     }

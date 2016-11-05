@@ -138,61 +138,61 @@ abstract class AbstractFilter implements FilterInterface
      * Get a condition.
      *
      * @param Andx         $andExpr
-     * @param QueryBuilder $pivot
+     * @param QueryBuilder $qb
      * @param string       $searchField
      * @param mixed        $searchValue
-     * @param integer      $i
+     * @param int          $parameterCounter
      *
      * @return Andx
      */
-    protected function getAndExpression(Andx $andExpr, QueryBuilder $pivot, $searchField, $searchValue, $i)
+    protected function getAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, $parameterCounter)
     {
         switch ($this->searchType) {
             case 'like':
-                $andExpr->add($pivot->expr()->like($searchField, '?' . $i));
-                $pivot->setParameter($i, '%' . $searchValue . '%');
+                $andExpr->add($qb->expr()->like($searchField, '?' . $parameterCounter));
+                $qb->setParameter($parameterCounter, '%' . $searchValue . '%');
                 break;
             case 'notLike':
-                $andExpr->add($pivot->expr()->notLike($searchField, '?' . $i));
-                $pivot->setParameter($i, '%' . $searchValue . '%');
+                $andExpr->add($qb->expr()->notLike($searchField, '?' . $parameterCounter));
+                $qb->setParameter($parameterCounter, '%' . $searchValue . '%');
                 break;
             case 'eq':
-                $andExpr->add($pivot->expr()->eq($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
+                $andExpr->add($qb->expr()->eq($searchField, '?' . $parameterCounter));
+                $qb->setParameter($parameterCounter, $searchValue);
                 break;
             case 'neq':
-                $andExpr->add($pivot->expr()->neq($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
+                $andExpr->add($qb->expr()->neq($searchField, '?' . $parameterCounter));
+                $qb->setParameter($parameterCounter, $searchValue);
                 break;
             case 'lt':
-                $andExpr->add($pivot->expr()->lt($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
+                $andExpr->add($qb->expr()->lt($searchField, '?' . $parameterCounter));
+                $qb->setParameter($parameterCounter, $searchValue);
                 break;
             case 'lte':
-                $andExpr->add($pivot->expr()->lte($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
+                $andExpr->add($qb->expr()->lte($searchField, '?' . $parameterCounter));
+                $qb->setParameter($parameterCounter, $searchValue);
                 break;
             case 'gt':
-                $andExpr->add($pivot->expr()->gt($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
+                $andExpr->add($qb->expr()->gt($searchField, '?' . $parameterCounter));
+                $qb->setParameter($parameterCounter, $searchValue);
                 break;
             case 'gte':
-                $andExpr->add($pivot->expr()->gte($searchField, '?' . $i));
-                $pivot->setParameter($i, $searchValue);
+                $andExpr->add($qb->expr()->gte($searchField, '?' . $parameterCounter));
+                $qb->setParameter($parameterCounter, $searchValue);
                 break;
             case 'in':
-                $andExpr->add($pivot->expr()->in($searchField, '?' . $i));
-                $pivot->setParameter($i, explode(',', $searchValue));
+                $andExpr->add($qb->expr()->in($searchField, '?' . $parameterCounter));
+                $qb->setParameter($parameterCounter, explode(',', $searchValue));
                 break;
             case 'notIn':
-                $andExpr->add($pivot->expr()->notIn($searchField, '?' . $i));
-                $pivot->setParameter($i, explode(',', $searchValue));
+                $andExpr->add($qb->expr()->notIn($searchField, '?' . $parameterCounter));
+                $qb->setParameter($parameterCounter, explode(',', $searchValue));
                 break;
             case 'isNull':
-                $andExpr->add($pivot->expr()->isNull($searchField));
+                $andExpr->add($qb->expr()->isNull($searchField));
                 break;
             case 'isNotNull':
-                $andExpr->add($pivot->expr()->isNotNull($searchField));
+                $andExpr->add($qb->expr()->isNotNull($searchField));
                 break;
         }
 
@@ -201,20 +201,20 @@ abstract class AbstractFilter implements FilterInterface
 
     /**
      * @param Andx         $andExpr
-     * @param QueryBuilder $pivot
+     * @param QueryBuilder $qb
      * @param string       $searchField
      * @param mixed        $from
      * @param mixed        $to
-     * @param integer      $i
+     * @param int          $parameterCounter
      *
      * @return Andx
      */
-    protected function getBetweenAndExpression(Andx $andExpr, QueryBuilder $pivot, $searchField, $from, $to, $i)
+    protected function getBetweenAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $from, $to, $parameterCounter)
     {
-        $k = $i + 1;
-        $andExpr->add($pivot->expr()->between($searchField, '?' . $i, '?' . $k));
-        $pivot->setParameter($i, $from);
-        $pivot->setParameter($k, $to);
+        $k = $parameterCounter + 1;
+        $andExpr->add($qb->expr()->between($searchField, '?' . $parameterCounter, '?' . $k));
+        $qb->setParameter($parameterCounter, $from);
+        $qb->setParameter($k, $to);
 
         return $andExpr;
     }

@@ -37,10 +37,15 @@
             {% include 'SgDatatablesBundle:datatable:columns.html.twig' %}
         };
 
+        var initialSearch = {
+            {% include 'SgDatatablesBundle:datatable:initial_search.html.twig' %}
+        };
+
         function createDatatable() {
             $.extend(defaults, ajax);
             $.extend(defaults, options);
             $.extend(defaults, columns);
+            $.extend(defaults, initialSearch);
 
             if (!$.fn.DataTable.isDataTable(selector)) {
                 oTable = $(selector)
