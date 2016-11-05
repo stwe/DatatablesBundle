@@ -12,7 +12,11 @@
 namespace Sg\DatatablesBundle\Twig;
 
 use Sg\DatatablesBundle\Datatable\DatatableInterface;
+use Sg\DatatablesBundle\Datatable\Column\ColumnInterface;
+use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
 
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Twig_Environment;
 use Twig_Extension;
 use Twig_SimpleFunction;
@@ -25,6 +29,25 @@ use Twig_SimpleFilter;
  */
 class DatatableTwigExtension extends Twig_Extension
 {
+    /**
+     * The PropertyAccessor.
+     *
+     * @var PropertyAccessor
+     */
+    protected $accessor;
+
+    //-------------------------------------------------
+    // Ctor.
+    //-------------------------------------------------
+
+    /**
+     * DatatableTwigExtension constructor.
+     */
+    public function __construct()
+    {
+        $this->accessor = PropertyAccess::createPropertyAccessor();
+    }
+
     //-------------------------------------------------
     // Twig_ExtensionInterface
     //-------------------------------------------------
@@ -57,7 +80,12 @@ class DatatableTwigExtension extends Twig_Extension
                 'sg_datatable_render_js',
                 array($this, 'datatableRenderJs'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
-            )
+            ),
+            new Twig_SimpleFunction(
+                'sg_datatable_render_filter',
+                array($this, 'datatableRenderFilter'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
         );
     }
 
@@ -125,6 +153,39 @@ class DatatableTwigExtension extends Twig_Extension
             'SgDatatablesBundle:datatable:datatable_js.html.twig',
             array(
                 'sg_datatable_view' => $datatable,
+            )
+        );
+    }
+
+    /**
+     * Renders a Filter template.
+     *
+     * @param Twig_Environment   $twig
+     * @param DatatableInterface $datatable
+     * @param ColumnInterface    $column
+     * @param string             $position
+     *
+     * @return string
+     */
+    public function datatableRenderFilter(Twig_Environment $twig, DatatableInterface $datatable, ColumnInterface $column, $position)
+    {
+        /** @var FilterInterface $filter */
+        $filter = $this->accessor->getValue($column, 'filter');
+        $index = $this->accessor->getValue($column, 'index');
+        $searchColumn = $this->accessor->getValue($filter, 'searchColumn');
+
+        if (null !== $searchColumn) {
+            $columns = $datatable->getColumnNames();
+            $searchColumnIndex = $columns[$searchColumn];
+        } else {
+            $searchColumnIndex = $index;
+        }
+
+        return $twig->render($filter->getTemplate(), array(
+                'column' => $column,
+                'search_column_index' => $searchColumnIndex,
+                'datatable_name' => $datatable->getName(),
+                'position' => $position
             )
         );
     }

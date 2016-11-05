@@ -1,0 +1,56 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{%- set filter_selector -%}
+    sg-datatables-{{ datatable_name }}-{{ position }}-filter-{{ column.index }}
+{%- endset -%}
+
+{%- set cancel_button_selector -%}
+    sg-datatables-{{ datatable_name }}-{{ position }}-filter-cancel-{{ column.index }}
+{%- endset -%}
+
+{% set cancel_button_html %}
+    <button type="button"
+            id="{{ cancel_button_selector }}"
+            class="btn btn-default btn-xs"
+    >&times;</button>
+{% endset %}
+
+{% set cancel_button_js %}
+    <script>
+        $("#{{ cancel_button_selector }}").click(function() {
+            if ('' != $("#{{ filter_selector }}").val()) {
+                $("#{{ filter_selector }}")
+                        .val('')
+                        .change();
+            }
+        });
+    </script>
+{% endset %}
+
+{% block html %}
+    <input type="text"
+           id="{{ filter_selector }}"
+           class="sg-datatables-individual-filtering{% if column.filter.classes %} {{ column.filter.classes }}{% endif %}"
+           {% if column.width %}style="width:{{ column.width }};"{% endif %}
+           {% if true == column.filter.placeholder %}
+               placeholder="{% if column.filter.placeholderText is not null %}{{ column.filter.placeholderText }}{% else %}{{ column.title|striptags|trim }}{% endif %}"
+           {% endif %}
+           data-search-column-index="{{ search_column_index }}"
+           {% if column.name %}name="{{ column.name }}"{% endif %}
+           {% if column.filter.initialSearch %}value="{{ column.filter.initialSearch }}"{% endif %} />
+    {% if true == column.filter.cancelButton %}
+        {{ cancel_button_html }}
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    {% if true == column.filter.cancelButton %}
+        {{ cancel_button_js }}
+    {% endif %}
+{% endblock %}

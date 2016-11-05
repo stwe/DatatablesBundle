@@ -108,7 +108,9 @@ class ColumnBuilder
 
         if (true === $column->callAddIfClosure()) {
             $this->columns[] = $column;
-            $this->columnNames[$dql] = count($this->columns) - 1;
+            $index = count($this->columns) - 1;
+            $this->columnNames[$dql] = $index;
+            $column->setIndex($index);
         }
 
         if (true === $column->isUnique()) {

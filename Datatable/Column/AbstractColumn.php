@@ -201,6 +201,14 @@ abstract class AbstractColumn implements ColumnInterface
      */
     protected $twig;
 
+    /**
+     * The position in the Columns array.
+     * Is set in the ColumnBuilder.
+     *
+     * @var int
+     */
+    protected $index;
+
     //-------------------------------------------------
     // Options
     //-------------------------------------------------
@@ -813,6 +821,30 @@ abstract class AbstractColumn implements ColumnInterface
     public function setTwig(Twig_Environment $twig)
     {
         $this->twig = $twig;
+
+        return $this;
+    }
+
+    /**
+     * Get index.
+     *
+     * @return int
+     */
+    public function getIndex()
+    {
+        return $this->index;
+    }
+
+    /**
+     * Set index.
+     *
+     * @param int $index
+     *
+     * @return $this
+     */
+    public function setIndex($index)
+    {
+        $this->index = $index;
 
         return $this;
     }

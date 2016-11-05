@@ -53,16 +53,5 @@
 
     {% block data %}
         "data": "{{ column.data }}",
-        {% if column.renderString is not null %}
-            "render": "{{ column.renderString }}",
-        {% endif %}
-        {% if column.renderObject is not null %}
-            "render": {{ column.renderObject|raw }},
-        {% endif %}
-        {% if column.renderFunction is not null %}
-            "render": function(data, type, row, meta) {
-                return {{ column.renderFunction }}(data, type, row, meta);
-            },
-        {% endif %}
     {% endblock %}
 },

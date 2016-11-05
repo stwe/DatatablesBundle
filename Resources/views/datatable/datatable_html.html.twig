@@ -6,7 +6,7 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-<table id="{{ sg_datatable_view.name }}" class="{# sg_datatable_view.class #}" cellspacing="0" width="100%">
+<table id="sg-datatables-{{ sg_datatable_view.name }}" class="{# sg_datatable_view.class #}" cellspacing="0" width="100%">
     <thead>
         {% if sg_datatable_view.options.individualFiltering %}
             {% if 'head' == sg_datatable_view.options.individualFilteringPosition or 'both' == sg_datatable_view.options.individualFilteringPosition%}
@@ -19,7 +19,7 @@
                     {% for column in sg_datatable_view.columns %}
                         <th>
                             {% if column.searchable %}
-                                <input type="text" placeholder="search {{ column.title }}">
+                                {{ sg_datatable_render_filter(sg_datatable_view, column, 'head') }}
                             {% endif %}
                         </th>
                     {% endfor %}
@@ -34,8 +34,7 @@
                         {% for column in sg_datatable_view.columns %}
                             <td>
                                 {% if column.searchable %}
-                                    <input type="text" placeholder="search {{ column.title }}">
-                                    {# datatable_filter_render(datatable, column, loop.index0) #}
+                                    {{ sg_datatable_render_filter(sg_datatable_view, column, 'foot') }}
                                 {% endif %}
                             </td>
                         {% endfor %}
