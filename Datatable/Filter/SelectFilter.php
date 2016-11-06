@@ -54,6 +54,10 @@ class SelectFilter extends TextFilter
     {
         parent::configureOptions($resolver);
 
+        // placeholder is not a valid attribute on a <select> input
+        $resolver->remove('placeholder');
+        $resolver->remove('placeholder_text');
+
         $resolver->setDefaults(array(
             'select_options' => array(),
         ));

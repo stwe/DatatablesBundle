@@ -6,51 +6,59 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-{%- set filter_selector -%}
+{%- set filter_selector_name -%}
     sg-datatables-{{ datatable_name }}-{{ position }}-filter-{{ column.index }}
 {%- endset -%}
 
-{%- set cancel_button_selector -%}
+{%- set cancel_button_selector_name -%}
     sg-datatables-{{ datatable_name }}-{{ position }}-filter-cancel-{{ column.index }}
 {%- endset -%}
 
+{%- set filter_selector -%}
+    id="{{ filter_selector_name }}"
+{%- endset -%}
+
+{% set filter_classes %}
+    class="sg-datatables-individual-filtering{% if column.filter.classes is not null %} {{ column.filter.classes }}{% endif %}"
+{% endset %}
+
+{% set filter_width %}
+    {% if column.width is not null %}style="width:{{ column.width }};"{% endif %}
+{% endset %}
+
+{% set filter_search_column_index %}
+    data-search-column-index="{{ search_column_index }}"
+{% endset %}
+
+{% set filter_column_name %}
+    {% if column.name is not null %}name="{{ column.name }}"{% endif %}
+{% endset %}
+
 {% set cancel_button_html %}
-    <button type="button"
-            id="{{ cancel_button_selector }}"
-            class="btn btn-default btn-xs"
-    >&times;</button>
+    {% if true == column.filter.cancelButton %}
+        <button type="button"
+                id="{{ cancel_button_selector_name }}"
+                class="btn btn-default btn-xs"
+        >&times;</button>
+    {% endif %}
 {% endset %}
 
 {% set cancel_button_js %}
-    <script>
-        $("#{{ cancel_button_selector }}").click(function() {
-            if ('' != $("#{{ filter_selector }}").val()) {
-                $("#{{ filter_selector }}")
-                        .val('')
-                        .change();
-            }
-        });
-    </script>
+    {% if true == column.filter.cancelButton %}
+        <script>
+            $("#{{ cancel_button_selector_name }}").click(function() {
+                if ('' != $("#{{ filter_selector_name }}").val()) {
+                    $("#{{ filter_selector_name }}")
+                            .val('')
+                            .change();
+                }
+            });
+        </script>
+    {% endif %}
 {% endset %}
 
 {% block html %}
-    <input type="text"
-           id="{{ filter_selector }}"
-           class="sg-datatables-individual-filtering{% if column.filter.classes %} {{ column.filter.classes }}{% endif %}"
-           {% if column.width %}style="width:{{ column.width }};"{% endif %}
-           {% if true == column.filter.placeholder %}
-               placeholder="{% if column.filter.placeholderText is not null %}{{ column.filter.placeholderText }}{% else %}{{ column.title|striptags|trim }}{% endif %}"
-           {% endif %}
-           data-search-column-index="{{ search_column_index }}"
-           {% if column.name %}name="{{ column.name }}"{% endif %}
-           {% if column.filter.initialSearch %}value="{{ column.filter.initialSearch }}"{% endif %} />
-    {% if true == column.filter.cancelButton %}
-        {{ cancel_button_html }}
-    {% endif %}
 {% endblock %}
 
 {% block javascript %}
-    {% if true == column.filter.cancelButton %}
-        {{ cancel_button_js }}
-    {% endif %}
 {% endblock %}

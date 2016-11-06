@@ -8,19 +8,34 @@
  #}
 {% extends 'SgDatatablesBundle:filter:filter.html.twig' %}
 
+{% set filter_select_initial_search %}
+    {% if column.filter.initialSearch is not null %}
+        <option value="{{ column.filter.initialSearch }}">
+            {{ column.filter.searchColumn }}
+        </option>
+    {% endif %}
+{% endset %}
+
+{% set filter_select_select_options %}
+    {% for key, name in column.filter.selectOptions %}
+        <option value="{{ key }}">{{ name }}</option>
+    {% endfor %}
+{% endset %}
+
 {% block html %}
     <select
-            id="{{ filter_selector }}"
-            class="sg-datatables-individual-filtering{% if column.filter.classes %} {{ column.filter.classes }}{% endif %}"
-            {% if column.width %}style="width:{{ column.width }};"{% endif %}
-            data-search-column-index="{{ search_column_index }}"
-            {% if column.name %}name="{{ column.name }}"{% endif %}
+            {{ filter_selector }}
+            {{ filter_classes }}
+            {{ filter_width }}
+            {{ filter_search_column_index }}
+            {{ filter_column_name }}
     >
-        {% for key, name in column.filter.selectOptions %}
-            <option value="{{ key }}">{{ name }}</option>
-        {% endfor %}
+        {{ filter_select_initial_search }}
+        {{ filter_select_select_options }}
     </select>
-    {% if true == column.filter.cancelButton %}
-        {{ cancel_button_html }}
-    {% endif %}
+    {{ cancel_button_html }}
+{% endblock %}
+
+{% block javascript %}
+    {{ cancel_button_js }}
 {% endblock %}
