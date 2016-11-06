@@ -21,6 +21,10 @@ use Doctrine\ORM\Query\Expr\Andx;
  */
 class TextFilter extends AbstractFilter
 {
+    //-------------------------------------------------
+    // FilterInterface
+    //-------------------------------------------------
+
     /**
      * {@inheritdoc}
      */

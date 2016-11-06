@@ -7,7 +7,7 @@
  # file that was distributed with this source code.
  #}
 var search = $.fn.DataTable.util.throttle(
-        function (event) {
+        function(event) {
             if (event.type == "keyup") {
                 if (
                         event.keyCode == 37 ||
@@ -23,10 +23,19 @@ var search = $.fn.DataTable.util.throttle(
 
             oTable
                     .column($(event.currentTarget).data("search-column-index"))
-                    .search(this.value)
+                    .search($(this).val())
                     .draw();
         },
         options.searchDelay
 );
 
 $(selector).find("tr input.sg-datatables-individual-filtering").on("keyup change", search);
+
+$(selector).find("tr select.sg-datatables-individual-filtering").on("keyup change", function(event) {
+    var searchValue = $(this).val();
+    searchValue = searchValue ? searchValue.toString() : '';
+    oTable
+            .column($(event.currentTarget).data("search-column-index"))
+            .search(searchValue)
+            .draw();
+});

@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\Datatable\Filter\SelectFilter;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -107,6 +109,10 @@ class BooleanColumn extends AbstractColumn
         parent::configureOptions($resolver);
 
         $resolver->setDefaults(array(
+            'filter' => array(SelectFilter::class, array(
+                'search_type' => 'eq',
+                'select_options' => array('' => 'Any', '1' => 'Yes', '0' => 'No')
+            )),
             'true_icon' => null,
             'false_icon' => null,
             'true_label' => null,
@@ -115,6 +121,7 @@ class BooleanColumn extends AbstractColumn
             'editable_if' => null,
         ));
 
+        $resolver->setAllowedTypes('filter', 'array');
         $resolver->setAllowedTypes('true_icon', array('null', 'string'));
         $resolver->setAllowedTypes('false_icon', array('null', 'string'));
         $resolver->setAllowedTypes('true_label', array('null', 'string'));
