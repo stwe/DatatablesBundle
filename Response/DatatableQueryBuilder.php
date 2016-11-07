@@ -12,6 +12,7 @@
 namespace Sg\DatatablesBundle\Response;
 
 use Sg\DatatablesBundle\Datatable\Column\ColumnInterface;
+use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
 use Sg\DatatablesBundle\Datatable\DatatableInterface;
 use Sg\DatatablesBundle\Datatable\Options;
 
@@ -374,6 +375,7 @@ class DatatableQueryBuilder
                     $searchValue = $this->requestParams['columns'][$key]['search']['value'];
 
                     if ('' != $searchValue && 'null' != $searchValue) {
+                        /** @var FilterInterface $filter */
                         $filter = $this->accessor->getValue($column, 'filter');
                         $searchField = $this->searchColumns[$key];
                         $andExpr = $filter->addAndExpression($andExpr, $qb, $searchField, $searchValue, $parameterCounter);
@@ -511,10 +513,11 @@ class DatatableQueryBuilder
         $qb->select('count(distinct ' . $this->tableName . '.' . $this->rootEntityIdentifier . ')');
         $qb->from($this->entityName, $this->tableName);
 
+        $this->setWhere($qb);
+
         /*
         $this->setJoins($qb);
         $this->setWhere($qb);
-        $this->setWhereAllCallback($qb);
         */
 
         return !$qb->getDQLPart('groupBy') ?

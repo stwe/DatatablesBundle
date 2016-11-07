@@ -39,7 +39,7 @@ class DatatableFormatter
      */
     public function __construct()
     {
-        $this->output = array();
+        $this->output = array('data' => array());
     }
 
     //-------------------------------------------------

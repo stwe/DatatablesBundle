@@ -12,6 +12,9 @@
 namespace Sg\DatatablesBundle\Datatable\Filter;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query\Expr\Andx;
+use Exception;
 
 /**
  * Class SelectFilter
@@ -21,7 +24,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class SelectFilter extends TextFilter
 {
     /**
+     * This allows to define a search type (e.g. 'like' or 'isNull') for each item in 'selectOptions'.
+     * Default: array() - The default value of searchType is used.
+     *
+     * @var array
+     */
+    protected $selectSearchTypes;
+
+    /**
      * Select options for this filter type (e.g. for boolean column: '1' => 'Yes', '0' => 'No').
+     * Default: array()
      *
      * @var array
      */
@@ -37,6 +49,25 @@ class SelectFilter extends TextFilter
     public function getTemplate()
     {
         return 'SgDatatablesBundle:filter:select.html.twig';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, &$parameterCounter)
+    {
+        $searchTypesCount = count($this->selectSearchTypes);
+
+        if ($searchTypesCount > 0 && $searchTypesCount === count($this->selectOptions)) {
+            $this->searchType = $this->selectSearchTypes[$searchValue];
+        } else {
+            throw new Exception('SelectFilter::addAndExpression(): The search types array is not valid.');
+        }
+
+        $andExpr = $this->getAndExpression($andExpr, $qb, $searchField, $searchValue, $parameterCounter);
+        $parameterCounter++;
+
+        return $andExpr;
     }
 
     //-------------------------------------------------
@@ -59,9 +90,11 @@ class SelectFilter extends TextFilter
         $resolver->remove('placeholder_text');
 
         $resolver->setDefaults(array(
+            'select_search_types' => array(),
             'select_options' => array(),
         ));
 
+        $resolver->setAllowedTypes('select_search_types', 'array');
         $resolver->setAllowedTypes('select_options', 'array');
 
         return $this;
@@ -70,6 +103,30 @@ class SelectFilter extends TextFilter
     //-------------------------------------------------
     // Getters && Setters
     //-------------------------------------------------
+
+    /**
+     * Get selectSearchTypes.
+     *
+     * @return array
+     */
+    public function getSelectSearchTypes()
+    {
+        return $this->selectSearchTypes;
+    }
+
+    /**
+     * Set selectSearchTypes.
+     *
+     * @param array $selectSearchTypes
+     *
+     * @return $this
+     */
+    public function setSelectSearchTypes(array $selectSearchTypes)
+    {
+        $this->selectSearchTypes = $selectSearchTypes;
+
+        return $this;
+    }
 
     /**
      * Get selectOptions.
@@ -88,7 +145,7 @@ class SelectFilter extends TextFilter
      *
      * @return $this
      */
-    public function setSelectOptions($selectOptions)
+    public function setSelectOptions(array $selectOptions)
     {
         $this->selectOptions = $selectOptions;
 
