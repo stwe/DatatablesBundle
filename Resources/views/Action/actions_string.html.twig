@@ -7,6 +7,11 @@
  # file that was distributed with this source code.
  #}
 routeParameters = new Array();
+
+{% if app.request.locale is defined and app.request.locale is not null %}
+    routeParameters["_locale"] = "{{ app.request.locale }}";
+{% endif %}
+
 attributes = "";
 
 if (true == row.sg_datatables_actions[{{ column.index }}]["{{ action.route }}"]) {
