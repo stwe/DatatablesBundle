@@ -6,6 +6,14 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
+function drawTable() {
+    {% if sg_datatable_view.ajax.pipeline > 0 %}
+        oTable.clearPipeline().draw();
+    {% else %}
+        oTable.draw();
+    {% endif %}
+}
+
 var search = $.fn.DataTable.util.throttle(
         function(event) {
             if (event.type == "keyup") {
@@ -23,8 +31,8 @@ var search = $.fn.DataTable.util.throttle(
 
             oTable
                     .column($(event.currentTarget).data("search-column-index"))
-                    .search($(this).val())
-                    .draw();
+                    .search($(this).val());
+            drawTable();
         },
         options.searchDelay
 );
@@ -36,6 +44,6 @@ $(selector).find("tr select.sg-datatables-individual-filtering").on("keyup chang
     searchValue = searchValue ? searchValue.toString() : '';
     oTable
             .column($(event.currentTarget).data("search-column-index"))
-            .search(searchValue)
-            .draw();
+            .search(searchValue);
+    drawTable();
 });
