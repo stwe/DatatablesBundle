@@ -64,8 +64,7 @@ abstract class AbstractColumn implements ColumnInterface
      * Set the data source for the column from the rows data object / array.
      * DataTables default: Takes the index value of the column automatically.
      *
-     * This property is normally not changeable and has the same value as $this->dql.
-     * In CollectionColumn for example it is a required option.
+     * This property has normally the same value as $this->dql.
      *
      * @var null|string
      */

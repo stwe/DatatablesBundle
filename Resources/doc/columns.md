@@ -6,7 +6,7 @@
 
 ## 1. Column
 
-Represents the most basic column, including many-to-one and one-to-one relations.
+Represents the most basic column.
 
 ### Default template
 
@@ -26,9 +26,6 @@ With 'null' initialized options uses the default value of the DataTables plugin.
 | orderable       | bool               | true              |          | Enable or disable ordering on this column. |
 | order_data      | null, array or int | null              |          | Define multiple column ordering as the default order for a column. |
 | order_sequence  | null or array      | null              |          | Order direction application sequence. |
-| render_string   | null or string     | null              |          | Render (process) the data for use in the table. |
-| render_object   | null or array      | null              |          | |
-| render_function | null or string     | null              |          | |
 | searchable      | bool               | true              |          | Enable or disable filtering on the data in this column. |
 | title           | null or string     | null              |          | Set the column title. |
 | visible         | bool               | true              |          | Enable or disable the display of this column. |
@@ -36,6 +33,8 @@ With 'null' initialized options uses the default value of the DataTables plugin.
 | add_if          | null or Closure    | null              |          | Add column only if conditions are TRUE. |
 | join_type       | string             | 'leftJoin'        |          | Join type (default: 'leftJoin'), if the column represents an association. |
 | type_of_field   | null or string     | null (autodetect) |          | Set the data type itself for ordering (example: integer instead string). |
+| filter          | array              | TextFilter        |          | A Filter instance for individual filtering. |
+| data            | null or string     | null              |          | The data source for the column. |
 | editable        | bool               | false             |          | Enable edit mode for this column. |
 | editable_if     | null or Closure    | null              |          | Enable edit mode for this column only if conditions are TRUE. |
 
@@ -68,6 +67,10 @@ $this->columnBuilder
     ))
 ;
 ```
+
+**For one-to-many associations:**
+
+
 ___
 
 ## 2. Boolean column
@@ -84,12 +87,13 @@ All options of [Column](#1-column).
 
 **Additional:**
 
-| Option      | Type               | Default | Required | Description     |
-|-------------|--------------------|---------|----------|-----------------|
-| true_icon   | null or string     | null    |          | Icon for true   |
-| false_icon  | null or string     | null    |          | Icon for false  |
-| true_label  | null or string     | null    |          | Label for true  |
-| false_label | null or string     | null    |          | Label for false |
+| Option      | Type               | Default      | Required | Description                                 |
+|-------------|--------------------|--------------|----------|---------------------------------------------|
+| filter      | array              | SelectFilter |          | A Filter instance for individual filtering. |
+| true_icon   | null or string     | null         |          | Icon for true                               |
+| false_icon  | null or string     | null         |          | Icon for false                              |
+| true_label  | null or string     | null         |          | Label for true                              |
+| false_label | null or string     | null         |          | Label for false                             |
 
 ### Example
 

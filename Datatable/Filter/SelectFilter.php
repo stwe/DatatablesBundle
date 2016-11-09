@@ -58,10 +58,12 @@ class SelectFilter extends TextFilter
     {
         $searchTypesCount = count($this->selectSearchTypes);
 
-        if ($searchTypesCount > 0 && $searchTypesCount === count($this->selectOptions)) {
-            $this->searchType = $this->selectSearchTypes[$searchValue];
-        } else {
-            throw new Exception('SelectFilter::addAndExpression(): The search types array is not valid.');
+        if ($searchTypesCount > 0) {
+            if ($searchTypesCount === count($this->selectOptions)) {
+                $this->searchType = $this->selectSearchTypes[$searchValue];
+            } else {
+                throw new Exception('SelectFilter::addAndExpression(): The search types array is not valid.');
+            }
         }
 
         $andExpr = $this->getAndExpression($andExpr, $qb, $searchField, $searchValue, $parameterCounter);

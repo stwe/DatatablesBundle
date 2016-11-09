@@ -133,9 +133,8 @@ The easiest way is to load all files with your base layout with CDN.
 namespace AppBundle\Datatables;
 
 use Sg\DatatablesBundle\Datatable\AbstractDatatable;
-use Sg\DatatablesBundle\Datatable\Column\BooleanColumn;
-use Sg\DatatablesBundle\Datatable\Column\CollectionColumn;
 use Sg\DatatablesBundle\Datatable\Column\Column;
+use Sg\DatatablesBundle\Datatable\Column\BooleanColumn;
 use Sg\DatatablesBundle\Datatable\Column\VirtualColumn;
 
 /**
