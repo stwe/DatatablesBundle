@@ -22,8 +22,15 @@
     {% endfor %}
 {% endset %}
 
+{% set filter_select_multiple %}
+    {% if true == column.filter.multiple %}
+        multiple="multiple"
+    {% endif %}
+{% endset %}
+
 {% block html %}
     <select
+            {{ filter_select_multiple }}
             {{ filter_selector }}
             {{ filter_classes }}
             {{ filter_width }}

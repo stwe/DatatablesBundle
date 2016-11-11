@@ -190,8 +190,8 @@ class DatatableResponse
 
         $outputHeader = array(
             'draw' => (int) $this->requestParams['draw'],
-            'recordsTotal' => true === $countAllResults ? (int) $this->datatableQueryBuilder->getCountAllResults() : 0,
-            'recordsFiltered' => (int) $this->datatableQueryBuilder->getCountFilteredResults()
+            'recordsFiltered' => (int) $this->datatableQueryBuilder->getCountFilteredResults(),
+            'recordsTotal' => true === $countAllResults ? (int) $this->datatableQueryBuilder->getCountAllResults() : 0
         );
 
         return new JsonResponse(array_merge($outputHeader, $formatter->getOutput()));

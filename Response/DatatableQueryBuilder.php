@@ -493,9 +493,8 @@ class DatatableQueryBuilder
         $qb->from($this->entityName, $this->tableName);
 
         /*
-        $this->setJoins($qb);
-        $this->setWhereAllCallback($qb);
-        */
+         * @todo: $this->setJoins($qb);
+         */
 
         return !$qb->getDQLPart('groupBy') ?
             (int)$qb->getQuery()->getSingleScalarResult()
@@ -516,9 +515,9 @@ class DatatableQueryBuilder
         $this->setWhere($qb);
 
         /*
-        $this->setJoins($qb);
-        $this->setWhere($qb);
-        */
+         * @todo: $this->setJoins($qb);
+         * $this->setWhere($qb);
+         */
 
         return !$qb->getDQLPart('groupBy') ?
             (int)$qb->getQuery()->getSingleScalarResult()

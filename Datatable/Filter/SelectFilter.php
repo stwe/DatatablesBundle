@@ -39,6 +39,14 @@ class SelectFilter extends TextFilter
      */
     protected $selectOptions;
 
+    /**
+     * Lets the user select more than one option in the select list.
+     * Default: false
+     *
+     * @var bool
+     */
+    protected $multiple;
+
     //-------------------------------------------------
     // FilterInterface
     //-------------------------------------------------
@@ -56,16 +64,20 @@ class SelectFilter extends TextFilter
      */
     public function addAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, &$parameterCounter)
     {
-        $searchTypesCount = count($this->selectSearchTypes);
+        $searchValues = explode(',', $searchValue);
+        if (true === $this->multiple && is_array($searchValues) && count($searchValues) > 1) {
+            $orExpr = $qb->expr()->orX();
 
-        if ($searchTypesCount > 0) {
-            if ($searchTypesCount === count($this->selectOptions)) {
-                $this->searchType = $this->selectSearchTypes[$searchValue];
-            } else {
-                throw new Exception('SelectFilter::addAndExpression(): The search types array is not valid.');
+            foreach ($searchValues as $searchItem) {
+                $this->setSelectSearchType($searchItem);
+                $orExpr->add($this->getAndExpression($qb->expr()->andX(), $qb, $searchField, $searchItem, $parameterCounter));
+                $parameterCounter++;
             }
+
+            return $andExpr->add($orExpr);
         }
 
+        $this->setSelectSearchType($searchValue);
         $andExpr = $this->getAndExpression($andExpr, $qb, $searchField, $searchValue, $parameterCounter);
         $parameterCounter++;
 
@@ -94,10 +106,12 @@ class SelectFilter extends TextFilter
         $resolver->setDefaults(array(
             'select_search_types' => array(),
             'select_options' => array(),
+            'multiple' => false
         ));
 
         $resolver->setAllowedTypes('select_search_types', 'array');
         $resolver->setAllowedTypes('select_options', 'array');
+        $resolver->setAllowedTypes('multiple', 'bool');
 
         return $this;
     }
@@ -152,5 +166,53 @@ class SelectFilter extends TextFilter
         $this->selectOptions = $selectOptions;
 
         return $this;
+    }
+
+    /**
+     * Get multiple.
+     *
+     * @return bool
+     */
+    public function isMultiple()
+    {
+        return $this->multiple;
+    }
+
+    /**
+     * Set multiple.
+     *
+     * @param bool $multiple
+     *
+     * @return $this
+     */
+    public function setMultiple($multiple)
+    {
+        $this->multiple = $multiple;
+
+        return $this;
+    }
+
+    //-------------------------------------------------
+    // Private
+    //-------------------------------------------------
+
+    /**
+     * Set selectSearchType.
+     *
+     * @param string $searchValue
+     *
+     * @throws Exception
+     */
+    private function setSelectSearchType($searchValue)
+    {
+        $searchTypesCount = count($this->selectSearchTypes);
+
+        if ($searchTypesCount > 0) {
+            if ($searchTypesCount === count($this->selectOptions)) {
+                $this->searchType = $this->selectSearchTypes[$searchValue];
+            } else {
+                throw new Exception('SelectFilter::setSelectSearchType(): The search types array is not valid.');
+            }
+        }
     }
 }
