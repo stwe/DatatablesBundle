@@ -6,16 +6,16 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-{%- set filter_selector_name -%}
+{%- set filter_id_selector -%}
     sg-datatables-{{ datatable_name }}-{{ position }}-filter-{{ column.index }}
 {%- endset -%}
 
-{%- set cancel_button_selector_name -%}
+{%- set cancel_button_id_selector -%}
     sg-datatables-{{ datatable_name }}-{{ position }}-filter-cancel-{{ column.index }}
 {%- endset -%}
 
 {%- set filter_selector -%}
-    id="{{ filter_selector_name }}"
+    id="{{ filter_id_selector }}"
 {%- endset -%}
 
 {% set filter_classes %}
@@ -37,7 +37,7 @@
 {% set cancel_button_html %}
     {% if true == column.filter.cancelButton %}
         <button type="button"
-                id="{{ cancel_button_selector_name }}"
+                id="{{ cancel_button_id_selector }}"
                 class="btn btn-default btn-xs"
         >&times;</button>
     {% endif %}
@@ -46,9 +46,9 @@
 {% set cancel_button_js %}
     {% if true == column.filter.cancelButton %}
         <script>
-            $("#{{ cancel_button_selector_name }}").click(function() {
-                if ('' != $("#{{ filter_selector_name }}").val()) {
-                    $("#{{ filter_selector_name }}")
+            $("#{{ cancel_button_id_selector }}").click(function() {
+                if ('' != $("#{{ filter_id_selector }}").val()) {
+                    $("#{{ filter_id_selector }}")
                             .val('')
                             .change();
                 }

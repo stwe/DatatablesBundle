@@ -21,7 +21,7 @@ use Exception;
  *
  * @package Sg\DatatablesBundle\Datatable\Filter
  */
-class SelectFilter extends TextFilter
+class SelectFilter extends AbstractFilter
 {
     /**
      * This allows to define a search type (e.g. 'like' or 'isNull') for each item in 'selectOptions'.

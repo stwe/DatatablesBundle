@@ -1,0 +1,75 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{% extends 'SgDatatablesBundle:filter:filter.html.twig' %}
+
+{%- set filter_id_selector -%}
+    sg-datatables-{{ datatable_name }}-{{ position }}-filter-{{ column.index }}
+{%- endset -%}
+
+{% set filter_input_initial_search %}
+    {% if column.filter.initialSearch %}value="{{ column.filter.initialSearch }}"{% endif %}
+{% endset %}
+
+{% set filter_input_placeholder %}
+    {% if true == column.filter.placeholder %}
+        placeholder="{% if column.filter.placeholderText is not null %}{{ column.filter.placeholderText }}{% else %}{{ column.title|striptags|trim }}{% endif %}"
+    {% endif %}
+{% endset %}
+
+{% set filter_input_type %}
+    type="{{ column.filter.type }}"
+{% endset %}
+
+{% set filter_input_minmax %}
+    {% if 'number' == column.filter.type or 'range' == column.filter.type %}
+        min="{{ column.filter.min }}" max="{{ column.filter.max }}" step="{{ column.filter.step }}"
+    {% endif %}
+{% endset %}
+
+{% set filter_input_range_label_html %}
+    {% if 'number' == column.filter.type or 'range' == column.filter.type %}
+        <span id="{{ filter_id_selector }}-range-label"></span>
+    {% endif %}
+{% endset %}
+
+{% set filter_input_range_label_js %}
+    <script>
+        var interval;
+
+        $("#{{ filter_id_selector }}").mousedown(function(event) {
+            interval = setInterval(function() {
+                $("#{{ filter_id_selector }}-range-label").html($("#{{ filter_id_selector }}").val());
+            }, 15);
+        });
+
+        $("#{{ filter_id_selector }}").mouseup(function(event) {
+            clearInterval(interval);
+        });
+    </script>
+{% endset %}
+
+{% block html %}
+    <input {{ filter_input_type }}
+            {{ filter_selector }}
+            {{ filter_classes }}
+            {{ filter_width }}
+            {{ filter_input_placeholder }}
+            {{ filter_search_column_index }}
+            {{ filter_column_name }}
+            {{ filter_input_minmax }}
+            {{ filter_input_initial_search }}
+    />
+    {{ cancel_button_html }}
+    {{ filter_input_range_label_html }}
+{% endblock %}
+
+{% block javascript %}
+    {{ cancel_button_js }}
+    {{ filter_input_range_label_js }}
+{% endblock %}

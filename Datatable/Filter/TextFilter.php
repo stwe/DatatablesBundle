@@ -30,7 +30,7 @@ class TextFilter extends AbstractFilter
      */
     public function getTemplate()
     {
-        return 'SgDatatablesBundle:filter:text.html.twig';
+        return 'SgDatatablesBundle:filter:input.html.twig';
     }
 
     /**
@@ -42,5 +42,19 @@ class TextFilter extends AbstractFilter
         $parameterCounter++;
 
         return $andExpr;
+    }
+
+    //-------------------------------------------------
+    // Helper
+    //-------------------------------------------------
+
+    /**
+     * Returns the type for the <input> element.
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return 'text';
     }
 }
