@@ -42,6 +42,8 @@
     <script>
         var interval;
 
+        $("#{{ filter_id_selector }}-range-label").html($("#{{ filter_id_selector }}").val());
+
         $("#{{ filter_id_selector }}").mousedown(function(event) {
             interval = setInterval(function() {
                 $("#{{ filter_id_selector }}-range-label").html($("#{{ filter_id_selector }}").val());
@@ -50,6 +52,10 @@
 
         $("#{{ filter_id_selector }}").mouseup(function(event) {
             clearInterval(interval);
+        });
+
+        $("#{{ filter_id_selector }}").change(function(event) {
+            $("#{{ filter_id_selector }}-range-label").html($("#{{ filter_id_selector }}").val());
         });
     </script>
 {% endset %}
