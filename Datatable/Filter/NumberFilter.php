@@ -45,6 +45,22 @@ class NumberFilter extends TextFilter
     protected $step;
 
     /**
+     * Determines whether a label with the current value is displayed.
+     * Default: false
+     *
+     * @var bool
+     */
+    protected $showLabel;
+
+    /**
+     * Pre-defined values.
+     * Default: null
+     *
+     * @var null|array
+     */
+    protected $datalist;
+
+    /**
      * The <input> type.
      * Default: 'number'
      *
@@ -74,12 +90,16 @@ class NumberFilter extends TextFilter
             'min' => '0',
             'max' => '100',
             'step' => '1',
+            'show_label' => false,
+            'datalist' => null,
             'type' => 'number'
         ));
 
         $resolver->setAllowedTypes('min', 'string');
         $resolver->setAllowedTypes('max', 'string');
         $resolver->setAllowedTypes('step', 'string');
+        $resolver->setAllowedTypes('show_label', 'bool');
+        $resolver->setAllowedTypes('datalist', array('null', 'array'));
         $resolver->setAllowedTypes('type', 'string');
 
         $resolver->addAllowedValues('type', array('number', 'range'));
@@ -159,6 +179,54 @@ class NumberFilter extends TextFilter
     public function setStep($step)
     {
         $this->step = $step;
+
+        return $this;
+    }
+
+    /**
+     * Get showLabel.
+     *
+     * @return bool
+     */
+    public function isShowLabel()
+    {
+        return $this->showLabel;
+    }
+
+    /**
+     * Set showLabel.
+     *
+     * @param bool $showLabel
+     *
+     * @return $this
+     */
+    public function setShowLabel($showLabel)
+    {
+        $this->showLabel = $showLabel;
+
+        return $this;
+    }
+
+    /**
+     * Get datalist.
+     *
+     * @return null|array
+     */
+    public function getDatalist()
+    {
+        return $this->datalist;
+    }
+
+    /**
+     * Set datalist.
+     *
+     * @param null|array $datalist
+     *
+     * @return $this
+     */
+    public function setDatalist($datalist)
+    {
+        $this->datalist = $datalist;
 
         return $this;
     }

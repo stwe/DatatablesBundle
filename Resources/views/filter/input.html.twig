@@ -32,32 +32,59 @@
     {% endif %}
 {% endset %}
 
+{% set filter_input_datalist %}
+    {% if 'number' == column.filter.type or 'range' == column.filter.type %}
+        {% if column.filter.datalist is not null %}
+            list="{{ filter_id_selector }}-datalist"
+        {% endif %}
+    {% endif %}
+{% endset %}
+
+{% set filter_input_datalist_values %}
+    {% if 'number' == column.filter.type or 'range' == column.filter.type %}
+        {% if column.filter.datalist is not null %}
+            <datalist id="{{ filter_id_selector }}-datalist">
+                {{ dump(column.filter.datalist) }}
+                {% for key, name in column.filter.datalist %}
+                    <option>{{ name }}</option>
+                {% endfor %}
+            </datalist>
+        {% endif %}
+    {% endif %}
+{% endset %}
+
 {% set filter_input_range_label_html %}
     {% if 'number' == column.filter.type or 'range' == column.filter.type %}
-        <span id="{{ filter_id_selector }}-range-label"></span>
+        {% if true == column.filter.showLabel %}
+            <span id="{{ filter_id_selector }}-range-label"></span>
+        {% endif %}
     {% endif %}
 {% endset %}
 
 {% set filter_input_range_label_js %}
-    <script>
-        var interval;
+    {% if 'number' == column.filter.type or 'range' == column.filter.type %}
+        {% if true == column.filter.showLabel %}
+            <script>
+                var interval;
 
-        $("#{{ filter_id_selector }}-range-label").html($("#{{ filter_id_selector }}").val());
-
-        $("#{{ filter_id_selector }}").mousedown(function(event) {
-            interval = setInterval(function() {
                 $("#{{ filter_id_selector }}-range-label").html($("#{{ filter_id_selector }}").val());
-            }, 15);
-        });
 
-        $("#{{ filter_id_selector }}").mouseup(function(event) {
-            clearInterval(interval);
-        });
+                $("#{{ filter_id_selector }}").mousedown(function(event) {
+                    interval = setInterval(function() {
+                        $("#{{ filter_id_selector }}-range-label").html($("#{{ filter_id_selector }}").val());
+                    }, 15);
+                });
 
-        $("#{{ filter_id_selector }}").change(function(event) {
-            $("#{{ filter_id_selector }}-range-label").html($("#{{ filter_id_selector }}").val());
-        });
-    </script>
+                $("#{{ filter_id_selector }}").mouseup(function(event) {
+                    clearInterval(interval);
+                });
+
+                $("#{{ filter_id_selector }}").change(function(event) {
+                    $("#{{ filter_id_selector }}-range-label").html($("#{{ filter_id_selector }}").val());
+                });
+            </script>
+        {% endif %}
+    {% endif %}
 {% endset %}
 
 {% block html %}
@@ -69,8 +96,10 @@
             {{ filter_search_column_index }}
             {{ filter_column_name }}
             {{ filter_input_minmax }}
+            {{ filter_input_datalist }}
             {{ filter_input_initial_search }}
     />
+    {{ filter_input_datalist_values }}
     {{ cancel_button_html }}
     {{ filter_input_range_label_html }}
 {% endblock %}
