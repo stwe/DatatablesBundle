@@ -593,15 +593,48 @@ class DatatableQuery
                 $requestColumn = $this->requestParams['columns'][$columnIdx];
 
                 if ('true' == $requestColumn['orderable']) {
-                    $this->qb->addOrderBy(
-                        $this->orderColumns[$columnIdx],
-                        $this->requestParams['order'][$i]['dir']
-                    );
+                    $this->prepareOrderBy($columnIdx, $i);
                 }
             }
         }
 
         return $this;
+    }
+
+    /**
+     * Prepare order by statements. In some case we want to order string/varchar database fields as numbers.
+     *
+     * @param int $columnIdx
+     * @param int $i
+     *
+     * @see http://stackoverflow.com/questions/22993336/how-to-order-varchar-as-int-in-symfony2-doctrine2#23071353
+     */
+    private function prepareOrderBy($columnIdx, $i)
+    {
+        $columnType = $this->columns[$columnIdx]->getType();
+        $columnName = $this->orderColumns[$columnIdx];
+        $orderDirection = $this->requestParams['order'][$i]['dir'];
+
+        switch ($columnType) {
+            // Order by number which is stored as string/varchar in the database.
+            case 'num':
+            case 'int':
+            case 'integer':
+                $tempOrderColumnName = str_replace('.', '_', $columnName) . '_order_as_int';
+
+                $this->qb
+                    ->addSelect(sprintf(
+                        'ABS(%s) AS HIDDEN %s',
+                        $columnName,
+                        $tempOrderColumnName
+                    ))
+                    ->addOrderBy($tempOrderColumnName, $orderDirection);
+                break;
+
+            default:
+                $this->qb->addOrderBy($columnName, $orderDirection);
+                break;
+        }
     }
 
     /**
@@ -663,16 +696,19 @@ class DatatableQuery
 
             return (int) $qb->getQuery()->getSingleScalarResult();
         } else {
-            $this
-                ->qb
+            $qb = clone $this->qb;
+            
+            $qb
+                // Reset orderBy part - where might be a special orderBy syntax previously set to order strings as numbers.
+                ->resetDQLPart('orderBy')
                 ->setFirstResult(null)
                 ->setMaxResults(null)
                 ->select('count(distinct ' . $this->tableName . '.' . $rootEntityIdentifier . ')');
             if (true === $this->isPostgreSQLConnection) {
-                $this->qb->groupBy($this->tableName . '.' . $rootEntityIdentifier);
-                return count($this->qb->getQuery()->getResult());
+                $qb->groupBy($this->tableName . '.' . $rootEntityIdentifier);
+                return count($qb->getQuery()->getResult());
             } else {
-                return (int) $this->qb->getQuery()->getSingleScalarResult();
+                return (int) $qb->getQuery()->getSingleScalarResult();
             }
         }
     }
@@ -800,7 +836,7 @@ class DatatableQuery
     private function getMetadata($entity)
     {
         try {
-            $metadata = $this->em->getMetadataFactory()->getMetadataFor($entity);
+            $metadata = $this->em->getClassMetadata($entity);
         } catch (MappingException $e) {
             throw new Exception('getMetadata(): Given object ' . $entity . ' is not a Doctrine Entity.');
         }
