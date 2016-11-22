@@ -71,6 +71,7 @@ trait OptionsTrait
     public function set(array $options)
     {
         $resolver = new OptionsResolver();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->configureOptions($resolver);
 
         $this->options = $resolver->resolve($options);
@@ -127,7 +128,7 @@ trait OptionsTrait
     private function checkOptions(array $array, array $options)
     {
         foreach($array as $key => $value) {
-            if (!in_array($key, $options, true)) {
+            if (!in_array(strtolower($key), array_map('strtolower', $options), true)) {
                 throw new Exception("OptionsTrait::checkOptions(): $key is not a valid option.");
             }
         }

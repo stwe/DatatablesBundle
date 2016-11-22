@@ -65,7 +65,7 @@ class BooleanColumn extends AbstractColumn
      */
     public function getTemplate()
     {
-        return 'SgDatatablesBundle:column:boolean.html.twig';
+        return 'SgDatatablesBundle:column:column.html.twig';
     }
 
     /**
