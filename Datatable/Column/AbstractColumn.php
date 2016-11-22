@@ -287,7 +287,7 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function isAssociation()
     {
-        return (false === strstr($this->data, '.') ? false : true);
+        return (false === strstr($this->dql, '.') ? false : true);
     }
 
     /**
@@ -794,7 +794,7 @@ abstract class AbstractColumn implements ColumnInterface
         if (true === $this->dqlConstraint($dql)) {
             $this->dql = $dql;
         } else {
-            throw new Exception("AbstractColumn::setDql(): $dql is not a valid.");
+            throw new Exception("AbstractColumn::setDql(): $dql is not a valid for this Column.");
         }
 
         return $this;
