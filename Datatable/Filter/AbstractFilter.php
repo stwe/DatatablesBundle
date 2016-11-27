@@ -91,7 +91,7 @@ abstract class AbstractFilter implements FilterInterface
      */
     public function __construct()
     {
-        $this->initOptions();
+        $this->initOptions(false);
     }
 
     //-------------------------------------------------

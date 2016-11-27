@@ -41,14 +41,6 @@ class DatatableResponse
     private $requestParams;
 
     /**
-     * Specifies the request type (GET or POST).
-     * Default: 'GET'
-     *
-     * @var string
-     */
-    private $type;
-
-    /**
      * A DatatableInterface instance.
      * Default: null
      *
@@ -77,7 +69,6 @@ class DatatableResponse
     public function __construct(RequestStack $requestStack)
     {
         $this->request = $requestStack->getCurrentRequest();
-        $this->setType('GET');
         $this->datatable = null;
         $this->datatableQueryBuilder = null;
     }
@@ -85,47 +76,6 @@ class DatatableResponse
     //-------------------------------------------------
     // Getters && Setters
     //-------------------------------------------------
-
-    /**
-     * Get type.
-     *
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * Set type.
-     *
-     * @param string $type
-     *
-     * @return $this
-     * @throws Exception
-     */
-    public function setType($type)
-    {
-        $type = strtoupper($type);
-
-        if ('GET' === $type || 'POST' === $type) {
-            $this->type = $type;
-        } else {
-            throw new Exception("Response::setType(): unsupported type $type");
-        }
-
-        return $this;
-    }
-
-    /**
-     * Get datatable.
-     *
-     * @return null|DatatableInterface
-     */
-    public function getDatatable()
-    {
-        return $this->datatable;
-    }
 
     /**
      * Set datatable.
@@ -150,7 +100,7 @@ class DatatableResponse
     public function getDatatableQueryBuilder()
     {
         if (null === $this->datatable) {
-            throw new Exception('DatatableResponse::getResponse(): Set a Datatable class with setDatatable().');
+            throw new Exception('DatatableResponse::getDatatableQueryBuilder(): Set a Datatable class with setDatatable().');
         }
 
         $this->requestParams = $this->getRequestParams();
@@ -209,12 +159,13 @@ class DatatableResponse
     private function getRequestParams()
     {
         $parameterBag = null;
+        $type = $this->datatable->getAjax()->getType();
 
-        if ('GET' === strtoupper($this->getType())) {
+        if ('GET' === strtoupper($type)) {
             $parameterBag = $this->request->query;
         }
 
-        if ('POST' === strtoupper($this->getType())) {
+        if ('POST' === strtoupper($type)) {
             $parameterBag = $this->request->request;
         }
 

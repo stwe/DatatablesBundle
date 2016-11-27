@@ -30,13 +30,13 @@ class Ajax
      * URL set as the Ajax data source for the table.
      * Default: null
      *
-     * @var string
+     * @var null|string
      */
     protected $url;
 
     /**
      * Send request as POST or GET.
-     * Default: null
+     * Default: 'GET'
      *
      * @var string
      */
@@ -69,7 +69,7 @@ class Ajax
      */
     public function __construct()
     {
-        $this->initOptions();
+        $this->initOptions(false);
     }
 
     //-------------------------------------------------
@@ -87,17 +87,17 @@ class Ajax
     {
         $resolver->setDefaults(array(
             'url' => null,
-            'type' => null,
+            'type' => 'GET',
             'data' => null,
             'pipeline' => 0
         ));
 
         $resolver->setAllowedTypes('url', array('null', 'string'));
-        $resolver->setAllowedTypes('type', array('null', 'string'));
+        $resolver->setAllowedTypes('type', 'string');
         $resolver->setAllowedTypes('data', array('null', 'array'));
         $resolver->setAllowedTypes('pipeline', 'int');
 
-        $resolver->setAllowedValues('type', array(null, 'GET', 'POST'));
+        $resolver->setAllowedValues('type', array('GET', 'POST'));
 
         return $this;
     }
@@ -133,7 +133,7 @@ class Ajax
     /**
      * Get type.
      *
-     * @return null|string
+     * @return string
      */
     public function getType()
     {
@@ -143,7 +143,7 @@ class Ajax
     /**
      * Set type.
      *
-     * @param null|string $type
+     * @param string $type
      *
      * @return $this
      */
@@ -183,7 +183,7 @@ class Ajax
     }
 
     /**
-     * Get pipeline
+     * Get pipeline.
      *
      * @return int
      */

@@ -10,9 +10,7 @@
     {% if sg_datatable_view.ajax.url is not null %}
         "url": "{{ sg_datatable_view.ajax.url|raw }}",
     {% endif %}
-    {% if sg_datatable_view.ajax.type is not null %}
-        "type": "{{ sg_datatable_view.ajax.type }}",
-    {% endif %}
+    "type": "{{ sg_datatable_view.ajax.type }}",
     {% if sg_datatable_view.ajax.data is not null %}
         "data": {{ sg_datatable_view.ajax.data|raw }},
     {% endif %}
