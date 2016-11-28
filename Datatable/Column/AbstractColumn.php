@@ -41,6 +41,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Change the cell type created for the column - either TD cells or TH cells.
      * DataTables default: td
+     * Default: null
      *
      * @var null|string
      */
@@ -48,6 +49,7 @@ abstract class AbstractColumn implements ColumnInterface
 
     /**
      * Adds a class to each cell in a column.
+     * Default: null
      *
      * @var null|string
      */
@@ -55,6 +57,7 @@ abstract class AbstractColumn implements ColumnInterface
 
     /**
      * Add padding to the text content used when calculating the optimal with for a table.
+     * Default: null
      *
      * @var null|string
      */
@@ -65,6 +68,7 @@ abstract class AbstractColumn implements ColumnInterface
      * DataTables default: Takes the index value of the column automatically.
      *
      * This property has normally the same value as $this->dql.
+     * Is set in the ColumnBuilder.
      *
      * @var null|string
      */
@@ -72,6 +76,7 @@ abstract class AbstractColumn implements ColumnInterface
 
     /**
      * Set default, static, content for a column.
+     * Default: null
      *
      * @var null|string
      */
@@ -79,6 +84,7 @@ abstract class AbstractColumn implements ColumnInterface
 
     /**
      * Set a descriptive name for a column.
+     * Default: null
      *
      * @var null|string
      */
@@ -96,6 +102,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Define multiple column ordering as the default order for a column.
      * DataTables default: Takes the index value of the column automatically.
+     * Default: null
      *
      * @var null|int|array
      */
@@ -104,6 +111,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Order direction application sequence.
      * DataTables default: ['asc', 'desc']
+     * Default: null
      *
      * @var null|array
      */
@@ -121,6 +129,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Set the column title.
      * DataTables default: Value read from the column's header cell.
+     * Default: null
      *
      * @var null|string
      */
@@ -138,6 +147,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Column width assignment.
      * DataTables default: Auto-detected from the table's content.
+     * Default: null
      *
      * @var null|string
      */

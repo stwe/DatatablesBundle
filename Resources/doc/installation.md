@@ -253,8 +253,6 @@ public function indexAction(Request $request)
 
     if ($isAjax) {
         $responseService = $this->get('sg_datatables.response');
-        // change now to POST request type if needed; default: 'GET'
-        //$responseService->setType('POST');
         $responseService->setDatatable($datatable);
 
         $datatableQueryBuilder = $responseService->getDatatableQueryBuilder();

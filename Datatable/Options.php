@@ -32,6 +32,7 @@ class Options
     /**
      * Delay the loading of server-side data until second draw.
      * DataTables default: null
+     * Default: null
      *
      * @var null|int|array
      */
@@ -40,6 +41,7 @@ class Options
     /**
      * Initial paging start point.
      * DataTables default: 0
+     * Default: null
      *
      * @var null|int
      */
@@ -48,6 +50,7 @@ class Options
     /**
      * Define the table control elements to appear on the page and in what order.
      * DataTables default: lfrtip
+     * Default: null
      *
      * @var null|string
      */
@@ -56,6 +59,7 @@ class Options
     /**
      * Change the options in the page length select list.
      * DataTables default: [10, 25, 50, 100]
+     * Default: null
      *
      * @var null|array
      */
@@ -64,6 +68,7 @@ class Options
     /**
      * Initial order (sort) to apply to the table.
      * DataTables default: [[0, 'asc']]
+     * Default: null
      *
      * @var null|array
      */
@@ -72,6 +77,7 @@ class Options
     /**
      * Control which cell the order event handler will be applied to in a column.
      * DataTables default: false
+     * Default: null
      *
      * @var null|bool
      */
@@ -80,6 +86,7 @@ class Options
     /**
      * Highlight the columns being ordered in the table's body.
      * DataTables default: true
+     * Default: null
      *
      * @var null|bool
      */
@@ -87,6 +94,7 @@ class Options
 
     /**
      * Ordering to always be applied to the table.
+     * Default: null
      *
      * @var null|array
      */
@@ -95,6 +103,7 @@ class Options
     /**
      * Multiple column ordering ability control.
      * DataTables default: true
+     * Default: null
      *
      * @var null|bool
      */
@@ -103,6 +112,7 @@ class Options
     /**
      * Change the initial page length (number of rows per page).
      * DataTables default: 10
+     * Default: null
      *
      * @var null|int
      */
@@ -118,6 +128,7 @@ class Options
      *     full_numbers   - 'First', 'Previous', 'Next' and 'Last' buttons, plus page numbers
      *
      * DataTables default: simple_numbers
+     * Default: null
      *
      * @var null|string
      */
@@ -125,6 +136,7 @@ class Options
 
     /**
      * Display component renderer types.
+     * Default: null
      *
      * @var null|string
      */
@@ -133,6 +145,7 @@ class Options
     /**
      * Retrieve an existing DataTables instance.
      * DataTables default: false
+     * Default: null
      *
      * @var null|bool
      */
@@ -141,6 +154,7 @@ class Options
     /**
      * Data property name that DataTables will use to set tr element DOM IDs.
      * DataTables default: DT_RowId
+     * Default: null
      *
      * @var null|string
      */
@@ -149,6 +163,7 @@ class Options
     /**
      * Allow the table to reduce in height when a limited number of rows are shown.
      * DataTables default: false
+     * Default: null
      *
      * @var null|bool
      */
@@ -157,6 +172,7 @@ class Options
     /**
      * Set a throttle frequency for searching.
      * DataTables default: null (400mS)
+     * Default: null
      *
      * @var null|int
      */
@@ -165,6 +181,7 @@ class Options
     /**
      * Saved state validity duration.
      * DataTables default: 7200
+     * Default: null
      *
      * @var null|int
      */
@@ -172,6 +189,7 @@ class Options
 
     /**
      * Set the zebra stripe class names for the rows in the table.
+     * Default: null
      *
      * @var null|array
      */
@@ -222,7 +240,7 @@ class Options
      */
     public function __construct()
     {
-        $this->initOptions();
+        $this->initOptions(false);
     }
 
     //-------------------------------------------------
