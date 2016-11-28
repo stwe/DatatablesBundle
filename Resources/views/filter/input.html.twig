@@ -44,7 +44,6 @@
     {% if 'number' == column.filter.type or 'range' == column.filter.type %}
         {% if column.filter.datalist is not null %}
             <datalist id="{{ filter_id_selector }}-datalist">
-                {{ dump(column.filter.datalist) }}
                 {% for key, name in column.filter.datalist %}
                     <option>{{ name }}</option>
                 {% endfor %}
