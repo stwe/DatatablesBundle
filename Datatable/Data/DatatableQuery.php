@@ -195,7 +195,15 @@ class DatatableQuery
         $this->entity = $this->datatableView->getEntity();
         $this->em = $this->datatableView->getEntityManager();
         $this->metadata = $this->getMetadata($this->entity);
-        $this->tableName = $this->getTableName($this->metadata);
+        
+        $keyName=$this->getTableName($metadata);
+        if(strpos($keyName, ".")){
+            $tableName = substr($keyName, strpos($keyName, ".") + 1);
+            $this->tableName = $tableName;
+        }else{
+            $this->tableName =$keyName;ge
+        }
+        
         $this->rootEntityIdentifier = $this->getIdentifier($this->metadata);
         $this->qb = $this->em->createQueryBuilder();
 
@@ -483,7 +491,13 @@ class DatatableQuery
     private function setSelectFrom()
     {
         foreach ($this->selectColumns as $key => $value) {
-            $this->qb->addSelect('partial ' . $key . '.{' . implode(',', $this->selectColumns[$key]) . '}');
+            if(strpos($key, ".")){
+                $tableName = substr($key, strpos($key, ".") + 1);
+            }else{
+                $tableName=$key;
+            }
+            
+            $this->qb->addSelect('partial ' . $tableName . '.{' . implode(',', $this->selectColumns[$key]) . '}');
         }
 
         $this->qb->from($this->entity, $this->tableName);
