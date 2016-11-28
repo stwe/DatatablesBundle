@@ -29,6 +29,11 @@
 {% for action in actions %}
     {% if true == add_if_actions[action.route] %}
         {% if action.routeParameters is not null %}
+            {% if app.request.locale is defined and app.request.locale is not null %}
+                {% if '_locale' in set_route_parameters|keys %}
+                    {% set set_route_parameters = set_route_parameters|merge({ '_locale': app.request.locale }) %}
+                {% endif %}
+            {% endif %}
             {{ start_html|raw }}
             <a href="{{ path(action.route, set_route_parameters) }}" {{ _self.attributes(action) }} {{ _self.confirm_dialog(action) }}>
                 {{ _self.link_title(action) }}
