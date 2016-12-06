@@ -193,8 +193,9 @@ class PostTranslation extends AbstractPersonalTranslation
 # config.yml
 
 sg_datatables:
-    query:
-        translation_query_hints: true
+    datatable:
+        query:
+            translation_query_hints: true
 ```
 
 ### PostDatatable
