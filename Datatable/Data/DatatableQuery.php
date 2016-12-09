@@ -195,7 +195,7 @@ class DatatableQuery
         $this->entity = $this->datatableView->getEntity();
         $this->em = $this->datatableView->getEntityManager();
         $this->metadata = $this->getMetadata($this->entity);
-        $this->tableName = $this->getTableName($this->metadata);
+        $this->tableName = str_replace('.','',$this->getTableName($this->metadata));
         $this->rootEntityIdentifier = $this->getIdentifier($this->metadata);
         $this->qb = $this->em->createQueryBuilder();
 
