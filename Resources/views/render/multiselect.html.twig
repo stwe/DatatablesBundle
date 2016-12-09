@@ -6,8 +6,12 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-"searchCols": [
-    {% for column in sg_datatables_view.columns %}
-        {% if column.filter.initialSearch is defined and column.filter.initialSearch|length > 0 %}{"search" : "{{ column.filter.initialSearch }}"}{% else %}null{% endif %},
+{% macro attributes(attributes) %}
+    {% for key, value in attributes %}
+        {{ key }}="{{ value }}"
     {% endfor %}
-]
+{% endmacro %}
+
+{{ start_html|raw }}
+<input type="checkbox" {{ _self.attributes(attributes) }} value="{{ value }}" />
+{{ end_html|raw }}

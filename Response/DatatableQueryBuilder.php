@@ -626,6 +626,7 @@ class DatatableQueryBuilder
             throw new Exception('DatatableQuery::getMetadata(): Given object ' . $entityName . ' is not a Doctrine Entity.');
         }
 
+        // @todo:
         return $metadata;
     }
 

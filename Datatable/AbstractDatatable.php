@@ -28,8 +28,6 @@ use Exception;
  */
 abstract class AbstractDatatable implements DatatableInterface
 {
-    const NAME_REGEX = '/[a-zA-Z0-9\-\_]+/';
-
     /**
      * The AuthorizationChecker service.
      *

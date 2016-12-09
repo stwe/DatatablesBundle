@@ -274,6 +274,6 @@ public function indexAction(Request $request)
 
 {% block body %}
     <h2>Posts</h2>
-    {{ sg_datatable_render(datatable) }}
+    {{ sg_datatables_render(datatable) }}
 {% endblock %}
 ```

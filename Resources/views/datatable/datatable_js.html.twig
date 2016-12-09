@@ -16,7 +16,7 @@
         language['en'] = "http://cdn.datatables.net/plug-ins/1.10.12/i18n/English.json";
         language['fr'] = "http://cdn.datatables.net/plug-ins/1.10.12/i18n/French.json";
 
-        var selector = "#sg-datatables-{{ sg_datatable_view.name }}";
+        var selector = "#sg-datatables-{{ sg_datatables_view.name }}";
         var oTable;
 
         var defaults = {
@@ -51,7 +51,7 @@
                 oTable = $(selector)
                         .DataTable(defaults);
 
-                {% if true == sg_datatable_view.options.individualFiltering %}
+                {% if true == sg_datatables_view.options.individualFiltering %}
                     {% include 'SgDatatablesBundle:datatable:search.js.twig' %}
                 {% endif %}
             }

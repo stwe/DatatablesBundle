@@ -12,9 +12,10 @@
 namespace Sg\DatatablesBundle\Datatable\Action;
 
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
+use Sg\DatatablesBundle\Datatable\AddIfTrait;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Closure;
+use Exception;
 
 /**
  * Class Action
@@ -24,6 +25,7 @@ use Closure;
 class Action
 {
     use OptionsTrait;
+    use AddIfTrait;
 
     /**
      * The name of the Action route.
@@ -81,14 +83,6 @@ class Action
      */
     protected $attributes;
 
-    /**
-     * Add Action only if parameter / conditions are TRUE.
-     * Default: null
-     *
-     * @var null|Closure
-     */
-    protected $addIf;
-
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -136,24 +130,6 @@ class Action
         $resolver->setAllowedTypes('add_if', array('null', 'Closure'));
 
         return $this;
-    }
-
-    //-------------------------------------------------
-    // Helper
-    //-------------------------------------------------
-
-    /**
-     * Checks whether the Action may be added.
-     *
-     * @return bool
-     */
-    public function callAddIfClosure()
-    {
-        if ($this->addIf instanceof Closure) {
-            return call_user_func($this->addIf);
-        }
-
-        return true;
     }
 
     //-------------------------------------------------
@@ -320,34 +296,17 @@ class Action
      * @param null|array $attributes
      *
      * @return $this
+     * @throws Exception
      */
     public function setAttributes($attributes)
     {
+        if (is_array($attributes)) {
+            if (array_key_exists('href', $attributes)) {
+                throw new Exception('Action::setAttributes(): The href attribute is not supported.');
+            }
+        }
+
         $this->attributes = $attributes;
-
-        return $this;
-    }
-
-    /**
-     * Get addIf.
-     *
-     * @return null|Closure
-     */
-    public function getAddIf()
-    {
-        return $this->addIf;
-    }
-
-    /**
-     * Set addIf.
-     *
-     * @param null|Closure $addIf
-     *
-     * @return $this
-     */
-    public function setAddIf($addIf)
-    {
-        $this->addIf = $addIf;
 
         return $this;
     }

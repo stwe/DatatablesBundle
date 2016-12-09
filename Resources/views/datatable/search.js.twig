@@ -7,7 +7,7 @@
  # file that was distributed with this source code.
  #}
 function drawTable() {
-    {% if sg_datatable_view.ajax.pipeline > 0 %}
+    {% if sg_datatables_view.ajax.pipeline > 0 %}
         oTable.clearPipeline().draw();
     {% else %}
         oTable.draw();

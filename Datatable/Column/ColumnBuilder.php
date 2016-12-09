@@ -24,21 +24,29 @@ use Exception;
 class ColumnBuilder
 {
     /**
+     * The doctrine orm entity manager service.
+     *
      * @var EntityManagerInterface
      */
     private $em;
 
     /**
+     * The class metadata.
+     *
      * @var ClassMetadata
      */
     private $metadata;
 
     /**
+     * The Twig Environment.
+     *
      * @var Twig_Environment
      */
     private $twig;
 
     /**
+     * The generated Columns.
+     *
      * @var array
      */
     private $columns;
@@ -50,6 +58,13 @@ class ColumnBuilder
      * @var array
      */
     private $columnNames;
+
+    /**
+     * True when a unique Column was created.
+     *
+     * @var bool
+     */
+    private $uniqueFlag;
 
     //-------------------------------------------------
     // Ctor.
@@ -69,6 +84,7 @@ class ColumnBuilder
         $this->twig = $twig;
         $this->columns = array();
         $this->columnNames = array();
+        $this->uniqueFlag = false;
     }
 
     //-------------------------------------------------
@@ -91,10 +107,14 @@ class ColumnBuilder
          * @var AbstractColumn $column
          */
         $column = ColumnFactory::createColumn($class);
+        // creates the empty Column Options array and the Property Accessor
         $column->initOptions(false);
+        // the Column 'data' property has normally the same value as 'dql'
         $column->setDql($dql);
         $column->setData($dql);
+        // inject twig for rendering special Column content
         $column->setTwig($this->twig);
+        // resolve options
         $column->set($options);
 
         if (null === $column->getTypeOfField() && true === $column->isSelectColumn()) {
@@ -111,12 +131,19 @@ class ColumnBuilder
             $index = count($this->columns) - 1;
             $this->columnNames[$dql] = $index;
             $column->setIndex($index);
+
+            // if after the options resolve 'data' still null, set the data to index
+            if (null === $column->getDql() && null === $column->getData()) {
+                $column->setData($index);
+            }
         }
 
         if (true === $column->isUnique()) {
-            // @todo
-            // array_count_values(ex.: MultiselectColumn)
-            // throw new Exception('add(): There is only one column allowed.')
+            if (false === $this->uniqueFlag) {
+                $this->uniqueFlag = true;
+            } else {
+                throw new Exception('ColumnBuilder::add(): There is only one unique Column allowed. Check the Column with index: ' . $column->getIndex() . '.');
+            }
         }
 
         return $this;

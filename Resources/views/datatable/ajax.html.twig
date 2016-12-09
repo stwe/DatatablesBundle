@@ -7,20 +7,20 @@
  # file that was distributed with this source code.
  #}
 {% set ajax_vars %}
-    {% if sg_datatable_view.ajax.url is not null %}
-        "url": "{{ sg_datatable_view.ajax.url|raw }}",
+    {% if sg_datatables_view.ajax.url is not null %}
+        "url": "{{ sg_datatables_view.ajax.url|raw }}",
     {% endif %}
-    "type": "{{ sg_datatable_view.ajax.type }}",
-    {% if sg_datatable_view.ajax.data is not null %}
-        "data": {{ sg_datatable_view.ajax.data|raw }},
+    "type": "{{ sg_datatables_view.ajax.type }}",
+    {% if sg_datatables_view.ajax.data is not null %}
+        "data": {{ sg_datatables_view.ajax.data|raw }},
     {% endif %}
 {% endset %}
 
 "serverSide": true,
-{% if sg_datatable_view.ajax.pipeline > 0 %}
+{% if sg_datatables_view.ajax.pipeline > 0 %}
     "ajax": $.fn.dataTable.pipeline({
         {{ ajax_vars }}
-        "pages": {{ sg_datatable_view.ajax.pipeline }}
+        "pages": {{ sg_datatables_view.ajax.pipeline }}
     }),
 {% else %}
     "ajax": {

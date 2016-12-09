@@ -12,12 +12,12 @@
 namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
+use Sg\DatatablesBundle\Datatable\AddIfTrait;
 use Sg\DatatablesBundle\Datatable\Filter\FilterFactory;
 use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig_Environment;
-use Closure;
 use Exception;
 
 /**
@@ -28,6 +28,7 @@ use Exception;
 abstract class AbstractColumn implements ColumnInterface
 {
     use OptionsTrait;
+    use AddIfTrait;
 
     //--------------------------------------------------------------------------------------------------
     // DataTables - Columns Options
@@ -156,14 +157,6 @@ abstract class AbstractColumn implements ColumnInterface
     //-------------------------------------------------
     // Custom Options
     //-------------------------------------------------
-
-    /**
-     * Add column only if parameter / conditions are TRUE.
-     * Default: null
-     *
-     * @var null|Closure
-     */
-    protected $addIf;
 
     /**
      * Join type (default: 'leftJoin'), if the column represents an association.
@@ -324,22 +317,12 @@ abstract class AbstractColumn implements ColumnInterface
         return null;
     }
 
-    //-------------------------------------------------
-    // Helper
-    //-------------------------------------------------
-
     /**
-     * Checks whether the column may be added.
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    public function callAddIfClosure()
+    public function allowedPositions()
     {
-        if ($this->addIf instanceof Closure) {
-            return call_user_func($this->addIf);
-        }
-
-        return true;
+        return null;
     }
 
     //-------------------------------------------------
@@ -666,30 +649,6 @@ abstract class AbstractColumn implements ColumnInterface
     public function setWidth($width)
     {
         $this->width = $width;
-
-        return $this;
-    }
-
-    /**
-     * Get addIf.
-     *
-     * @return null|Closure
-     */
-    public function getAddIf()
-    {
-        return $this->addIf;
-    }
-
-    /**
-     * Set addIf.
-     *
-     * @param null|Closure $addIf
-     *
-     * @return $this
-     */
-    public function setAddIf($addIf)
-    {
-        $this->addIf = $addIf;
 
         return $this;
     }

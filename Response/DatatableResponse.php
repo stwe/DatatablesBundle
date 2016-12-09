@@ -12,6 +12,7 @@
 namespace Sg\DatatablesBundle\Response;
 
 use Sg\DatatablesBundle\Datatable\DatatableInterface;
+use Sg\DatatablesBundle\Datatable\Column\ColumnInterface;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
@@ -83,9 +84,15 @@ class DatatableResponse
      * @param DatatableInterface $datatable
      *
      * @return $this
+     * @throws Exception
      */
     public function setDatatable(DatatableInterface $datatable)
     {
+        $val = $this->validateColumnsPositions($datatable);
+        if (is_int($val)) {
+            throw new Exception("DatatableResponse::setDatatable(): The Column with the index $val is on a not allowed position.");
+        };
+
         $this->datatable = $datatable;
 
         return $this;
@@ -141,7 +148,7 @@ class DatatableResponse
         $outputHeader = array(
             'draw' => (int) $this->requestParams['draw'],
             'recordsFiltered' => (int) $this->datatableQueryBuilder->getCountFilteredResults(),
-            'recordsTotal' => true === $countAllResults ? (int) $this->datatableQueryBuilder->getCountAllResults() : 0
+            'recordsTotal' => true === $countAllResults ? (int) $this->datatableQueryBuilder->getCountAllResults() : 0,
         );
 
         return new JsonResponse(array_merge($outputHeader, $formatter->getOutput()));
@@ -170,5 +177,38 @@ class DatatableResponse
         }
 
         return $parameterBag->all();
+    }
+
+    /**
+     * Checks Column positions.
+     *
+     * @param DatatableInterface $datatable
+     *
+     * @return int|bool
+     */
+    private function validateColumnsPositions(DatatableInterface $datatable)
+    {
+        $columns = $datatable->getColumns();
+        $lastPosition = count($columns);
+
+        /** @var ColumnInterface $column */
+        foreach ($columns as $column) {
+            $allowedPositions = $column->allowedPositions();
+            /** @noinspection PhpUndefinedMethodInspection */
+            $index = $column->getIndex();
+            if (is_array($allowedPositions)) {
+                $allowedPositions = array_flip($allowedPositions);
+                if (array_key_exists(ColumnInterface::LAST_POSITION, $allowedPositions)) {
+                    $allowedPositions[$lastPosition] = $allowedPositions[ColumnInterface::LAST_POSITION];
+                    unset($allowedPositions[ColumnInterface::LAST_POSITION]);
+                }
+
+                if (false === array_key_exists($index, $allowedPositions)) {
+                    return $index;
+                }
+            }
+        }
+
+        return true;
     }
 }

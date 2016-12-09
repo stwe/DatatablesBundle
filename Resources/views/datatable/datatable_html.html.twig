@@ -6,20 +6,20 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-<table id="sg-datatables-{{ sg_datatable_view.name }}" class="{# sg_datatable_view.class #}" cellspacing="0" width="100%">
+<table id="sg-datatables-{{ sg_datatables_view.name }}" class="{# sg_datatables_view.class #}" cellspacing="0" width="100%">
     <thead>
-        {% if sg_datatable_view.options.individualFiltering %}
-            {% if 'head' == sg_datatable_view.options.individualFilteringPosition or 'both' == sg_datatable_view.options.individualFilteringPosition%}
+        {% if sg_datatables_view.options.individualFiltering %}
+            {% if 'head' == sg_datatables_view.options.individualFilteringPosition or 'both' == sg_datatables_view.options.individualFilteringPosition%}
                 <tr>
-                    {% for column in sg_datatable_view.columns %}
+                    {% for column in sg_datatables_view.columns %}
                         <th>{{ column.title }}</th>
                     {% endfor %}
                 </tr>
-                <tr id="sg-datatables-{{ sg_datatable_view.name }}-filterrow">
-                    {% for column in sg_datatable_view.columns %}
+                <tr id="sg-datatables-{{ sg_datatables_view.name }}-filterrow">
+                    {% for column in sg_datatables_view.columns %}
                         <th>
                             {% if column.searchable %}
-                                {{ sg_datatable_render_filter(sg_datatable_view, column, 'head') }}
+                                {{ sg_datatables_render_filter(sg_datatables_view, column, 'head') }}
                             {% endif %}
                         </th>
                     {% endfor %}
@@ -27,14 +27,14 @@
             {% endif %}
         {% endif %}
     </thead>
-        {% if sg_datatable_view.options.individualFiltering %}
-            {% if 'foot' == sg_datatable_view.options.individualFilteringPosition or 'both' == sg_datatable_view.options.individualFilteringPosition%}
+        {% if sg_datatables_view.options.individualFiltering %}
+            {% if 'foot' == sg_datatables_view.options.individualFilteringPosition or 'both' == sg_datatables_view.options.individualFilteringPosition%}
             <tfoot>
                     <tr>
-                        {% for column in sg_datatable_view.columns %}
+                        {% for column in sg_datatables_view.columns %}
                             <td>
                                 {% if column.searchable %}
-                                    {{ sg_datatable_render_filter(sg_datatable_view, column, 'foot') }}
+                                    {{ sg_datatables_render_filter(sg_datatables_view, column, 'foot') }}
                                 {% endif %}
                             </td>
                         {% endfor %}

@@ -27,7 +27,7 @@
             "title": "{{ column.title|raw }}",
         {% endif %}
         {% if column.searchable is same as (true) or column.searchable is same as(false) %}
-            "searchable": {{ column.searchable|sg_datatable_bool_var }},
+            "searchable": {{ column.searchable|sg_datatables_bool_var }},
         {% endif %}
         {% if column.visible is same as(true) %}
             "visible": true,

@@ -67,23 +67,23 @@ class DatatableTwigExtension extends Twig_Extension
     {
         return array(
             new Twig_SimpleFunction(
-                'sg_datatable_render',
-                array($this, 'datatableRender'),
+                'sg_datatables_render',
+                array($this, 'datatablesRender'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new Twig_SimpleFunction(
-                'sg_datatable_render_html',
-                array($this, 'datatableRenderHtml'),
+                'sg_datatables_render_html',
+                array($this, 'datatablesRenderHtml'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new Twig_SimpleFunction(
-                'sg_datatable_render_js',
-                array($this, 'datatableRenderJs'),
+                'sg_datatables_render_js',
+                array($this, 'datatablesRenderJs'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
             new Twig_SimpleFunction(
-                'sg_datatable_render_filter',
-                array($this, 'datatableRenderFilter'),
+                'sg_datatables_render_filter',
+                array($this, 'datatablesRenderFilter'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
         );
@@ -95,7 +95,7 @@ class DatatableTwigExtension extends Twig_Extension
     public function getFilters()
     {
         return array(
-            new Twig_SimpleFilter('sg_datatable_bool_var', array($this, 'boolVar')),
+            new Twig_SimpleFilter('sg_datatables_bool_var', array($this, 'boolVar')),
         );
     }
 
@@ -111,12 +111,12 @@ class DatatableTwigExtension extends Twig_Extension
      *
      * @return string
      */
-    public function datatableRender(Twig_Environment $twig, DatatableInterface $datatable)
+    public function datatablesRender(Twig_Environment $twig, DatatableInterface $datatable)
     {
         return $twig->render(
             'SgDatatablesBundle:datatable:datatable.html.twig',
             array(
-                'sg_datatable_view' => $datatable
+                'sg_datatables_view' => $datatable
             )
         );
     }
@@ -129,12 +129,12 @@ class DatatableTwigExtension extends Twig_Extension
      *
      * @return string
      */
-    public function datatableRenderHtml(Twig_Environment $twig, DatatableInterface $datatable)
+    public function datatablesRenderHtml(Twig_Environment $twig, DatatableInterface $datatable)
     {
         return $twig->render(
             'SgDatatablesBundle:datatable:datatable_html.html.twig',
             array(
-                'sg_datatable_view' => $datatable,
+                'sg_datatables_view' => $datatable,
             )
         );
     }
@@ -147,12 +147,12 @@ class DatatableTwigExtension extends Twig_Extension
      *
      * @return string
      */
-    public function datatableRenderJs(Twig_Environment $twig, DatatableInterface $datatable)
+    public function datatablesRenderJs(Twig_Environment $twig, DatatableInterface $datatable)
     {
         return $twig->render(
             'SgDatatablesBundle:datatable:datatable_js.html.twig',
             array(
-                'sg_datatable_view' => $datatable,
+                'sg_datatables_view' => $datatable,
             )
         );
     }
@@ -167,7 +167,7 @@ class DatatableTwigExtension extends Twig_Extension
      *
      * @return string
      */
-    public function datatableRenderFilter(Twig_Environment $twig, DatatableInterface $datatable, ColumnInterface $column, $position)
+    public function datatablesRenderFilter(Twig_Environment $twig, DatatableInterface $datatable, ColumnInterface $column, $position)
     {
         /** @var FilterInterface $filter */
         $filter = $this->accessor->getValue($column, 'filter');

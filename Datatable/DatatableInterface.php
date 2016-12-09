@@ -20,6 +20,8 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 interface DatatableInterface
 {
+    const NAME_REGEX = '/[a-zA-Z0-9\-\_]+/';
+
     /**
      * Builds the datatable.
      *

@@ -84,7 +84,7 @@ class ActionColumn extends AbstractColumn
 
         /** @var Action $action */
         foreach ($this->actions as $action) {
-            $actionRowItems[$action->getRoute()] = $action->callAddIfClosure();
+            $actionRowItems[$action->getRoute()] = $action->callAddIfClosure($row);
         }
 
         $row['sg_datatables_actions'][$this->getIndex()] = $actionRowItems;
@@ -111,7 +111,7 @@ class ActionColumn extends AbstractColumn
             }
         }
 
-        $row[$this->dql] = $this->twig->render(
+        $row[$this->getIndex()] = $this->twig->render(
             'SgDatatablesBundle:render:action.html.twig',
             array(
                 'actions' => $this->actions,
