@@ -12,7 +12,7 @@
 namespace Sg\DatatablesBundle\Datatable\Action;
 
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
-use Sg\DatatablesBundle\Datatable\AddIfTrait;
+use Sg\DatatablesBundle\Datatable\RenderIfTrait;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Exception;
@@ -24,8 +24,15 @@ use Exception;
  */
 class Action
 {
+    /**
+     * Use the OptionsResolver.
+     */
     use OptionsTrait;
-    use AddIfTrait;
+
+    /**
+     * Render an Action only if parameter / conditions are TRUE.
+     */
+    use RenderIfTrait;
 
     /**
      * The name of the Action route.
@@ -117,7 +124,7 @@ class Action
             'confirm' => false,
             'confirm_message' => null,
             'attributes' => null,
-            'add_if' => null
+            'render_if' => null
         ));
 
         $resolver->setAllowedTypes('route', 'string');
@@ -127,7 +134,7 @@ class Action
         $resolver->setAllowedTypes('confirm', 'bool');
         $resolver->setAllowedTypes('confirm_message', array('null', 'string'));
         $resolver->setAllowedTypes('attributes', array('null', 'array'));
-        $resolver->setAllowedTypes('add_if', array('null', 'Closure'));
+        $resolver->setAllowedTypes('render_if', array('null', 'Closure'));
 
         return $this;
     }

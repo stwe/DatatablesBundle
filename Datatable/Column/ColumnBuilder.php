@@ -132,7 +132,7 @@ class ColumnBuilder
             $this->columnNames[$dql] = $index;
             $column->setIndex($index);
 
-            // if after the options resolve 'data' still null, set the data to index
+            // Use the Column-Index as data source for Columns with 'dql' === null
             if (null === $column->getDql() && null === $column->getData()) {
                 $column->setData($index);
             }

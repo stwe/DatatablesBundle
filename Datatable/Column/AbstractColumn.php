@@ -27,7 +27,14 @@ use Exception;
  */
 abstract class AbstractColumn implements ColumnInterface
 {
+    /**
+     * Use the OptionsResolver.
+     */
     use OptionsTrait;
+
+    /**
+     * Use an 'add_if' option to check in ColumnBuilder if the Column can be added.
+     */
     use AddIfTrait;
 
     //--------------------------------------------------------------------------------------------------
@@ -224,6 +231,9 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        // the 'data' option needs no default value
+        $resolver->setDefined('data');
+
         $resolver->setDefaults(array(
             'cell_type' => null,
             'class_name' => null,
@@ -245,6 +255,7 @@ abstract class AbstractColumn implements ColumnInterface
         $resolver->setAllowedTypes('cell_type', array('null', 'string'));
         $resolver->setAllowedTypes('class_name', array('null', 'string'));
         $resolver->setAllowedTypes('content_padding', array('null', 'string'));
+        $resolver->setAllowedTypes('data', array('null', 'string'));
         $resolver->setAllowedTypes('default_content', array('null', 'string'));
         $resolver->setAllowedTypes('name', array('null', 'string'));
         $resolver->setAllowedTypes('orderable', 'bool');

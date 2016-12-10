@@ -22,6 +22,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class BooleanColumn extends AbstractColumn
 {
+    /**
+     * This Column is editable.
+     */
     use EditableTrait;
 
     /**
@@ -81,10 +84,10 @@ class BooleanColumn extends AbstractColumn
             $this->falseLabel = 'false';
         }
 
-        $row[$this->dql] = $this->twig->render(
+        $row[$this->data] = $this->twig->render(
             'SgDatatablesBundle:render:boolean.html.twig',
             array(
-                'data' => $row[$this->dql],
+                'data' => $row[$this->data],
                 'trueLabel' => $this->trueLabel,
                 'trueIcon' => $this->trueIcon,
                 'falseLabel' => $this->falseLabel,

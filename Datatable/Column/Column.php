@@ -22,6 +22,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Column extends AbstractColumn
 {
+    /**
+     * The Column is editable.
+     */
     use EditableTrait;
 
     //-------------------------------------------------
@@ -51,9 +54,6 @@ class Column extends AbstractColumn
     {
         parent::configureOptions($resolver);
 
-        // the 'data' option needs no default value
-        $resolver->setDefined('data');
-
         $resolver->setDefaults(array(
             'filter' => array(TextFilter::class, array()),
             'editable' => false,
@@ -61,7 +61,6 @@ class Column extends AbstractColumn
         ));
 
         $resolver->setAllowedTypes('filter', 'array');
-        $resolver->setAllowedTypes('data', array('null', 'string'));
         $resolver->setAllowedTypes('editable', 'bool');
         $resolver->setAllowedTypes('editable_if', array('null', 'Closure'));
 

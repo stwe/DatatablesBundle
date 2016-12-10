@@ -14,19 +14,19 @@ namespace Sg\DatatablesBundle\Datatable;
 use Closure;
 
 /**
- * Class AddIfTrait
+ * Class RenderIfTrait
  *
  * @package Sg\DatatablesBundle\Datatable
  */
-trait AddIfTrait
+trait RenderIfTrait
 {
     /**
-     * Add an object only if parameter / conditions are TRUE.
+     * Render an object only if parameter / conditions are TRUE.
      * Default: null
      *
      * @var null|Closure
      */
-    protected $addIf;
+    protected $renderIf;
 
     //-------------------------------------------------
     // Helper
@@ -35,12 +35,14 @@ trait AddIfTrait
     /**
      * Checks whether the object may be added.
      *
+     * @param array $row
+     *
      * @return bool
      */
-    public function callAddIfClosure()
+    public function callRenderIfClosure(array $row = array())
     {
-        if ($this->addIf instanceof Closure) {
-            return call_user_func($this->addIf);
+        if ($this->renderIf instanceof Closure) {
+            return call_user_func($this->renderIf, $row);
         }
 
         return true;
@@ -51,25 +53,25 @@ trait AddIfTrait
     //-------------------------------------------------
 
     /**
-     * Get addIf.
+     * Get renderIf.
      *
      * @return null|Closure
      */
-    public function getAddIf()
+    public function getRenderIf()
     {
-        return $this->addIf;
+        return $this->renderIf;
     }
 
     /**
-     * Set addIf.
+     * Set renderIf.
      *
-     * @param null|Closure $addIf
+     * @param null|Closure $renderIf
      *
      * @return $this
      */
-    public function setAddIf($addIf)
+    public function setRenderIf($renderIf)
     {
-        $this->addIf = $addIf;
+        $this->renderIf = $renderIf;
 
         return $this;
     }

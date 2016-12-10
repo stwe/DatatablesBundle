@@ -49,6 +49,9 @@ class VirtualColumn extends Column
     {
         parent::configureOptions($resolver);
 
+        $resolver->remove('data');
+        $resolver->remove('join_type');
+
         $resolver->setDefaults(array(
             'orderable' => false,
             'searchable' => false,

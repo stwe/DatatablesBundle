@@ -84,7 +84,7 @@ class ActionColumn extends AbstractColumn
 
         /** @var Action $action */
         foreach ($this->actions as $action) {
-            $actionRowItems[$action->getRoute()] = $action->callAddIfClosure($row);
+            $actionRowItems[$action->getRoute()] = $action->callRenderIfClosure($row);
         }
 
         $row['sg_datatables_actions'][$this->getIndex()] = $actionRowItems;
@@ -138,6 +138,7 @@ class ActionColumn extends AbstractColumn
     {
         parent::configureOptions($resolver);
 
+        $resolver->remove('data');
         $resolver->remove('default_content');
         $resolver->remove('orderable');
         $resolver->remove('order_data');
