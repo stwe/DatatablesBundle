@@ -21,8 +21,7 @@ use Closure;
 trait AddIfTrait
 {
     /**
-     * Add an object only if parameter / conditions are TRUE.
-     * Default: null
+     * Add an object only if conditions are TRUE.
      *
      * @var null|Closure
      */

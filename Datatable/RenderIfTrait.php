@@ -21,8 +21,7 @@ use Closure;
 trait RenderIfTrait
 {
     /**
-     * Render an object only if parameter / conditions are TRUE.
-     * Default: null
+     * Render an object only if conditions are TRUE.
      *
      * @var null|Closure
      */

@@ -12,6 +12,7 @@
 namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Sg\DatatablesBundle\Datatable\Action\Action;
+use Sg\DatatablesBundle\Datatable\HtmlContainerTrait;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Exception;
@@ -24,28 +25,17 @@ use Exception;
 class ActionColumn extends AbstractColumn
 {
     /**
+     * This Column has a 'start_html' and a 'end_html' option.
+     */
+    use HtmlContainerTrait;
+
+    /**
      * The Actions container.
      * A required option.
      *
      * @var array
      */
     protected $actions;
-
-    /**
-     * HTML code before the <a> Tag.
-     * Default: null
-     *
-     * @var null|string
-     */
-    protected $startHtml;
-
-    /**
-     * HTML code after the <a> Tag.
-     * Default: null
-     *
-     * @var null|string
-     */
-    protected $endHtml;
 
     //-------------------------------------------------
     // ColumnInterface
@@ -116,9 +106,9 @@ class ActionColumn extends AbstractColumn
             array(
                 'actions' => $this->actions,
                 'set_route_parameters' => $parameters,
-                'add_if_actions' => $row['sg_datatables_actions'][$this->index],
-                'start_html' => $this->startHtml,
-                'end_html' => $this->endHtml,
+                'render_if_actions' => $row['sg_datatables_actions'][$this->index],
+                'start_html_container' => $this->startHtml,
+                'end_html_container' => $this->endHtml,
             )
         );
     }
@@ -193,54 +183,6 @@ class ActionColumn extends AbstractColumn
         } else {
             throw new Exception('ActionColumn::setActions(): The actions array should contain at least one element.');
         }
-
-        return $this;
-    }
-
-    /**
-     * Get startHtml.
-     *
-     * @return null|string
-     */
-    public function getStartHtml()
-    {
-        return $this->startHtml;
-    }
-
-    /**
-     * Set startHtml.
-     *
-     * @param null|string $startHtml
-     *
-     * @return $this
-     */
-    public function setStartHtml($startHtml)
-    {
-        $this->startHtml = $startHtml;
-
-        return $this;
-    }
-
-    /**
-     * Get endHtml.
-     *
-     * @return null|string
-     */
-    public function getEndHtml()
-    {
-        return $this->endHtml;
-    }
-
-    /**
-     * Set endHtml.
-     *
-     * @param null|string $endHtml
-     *
-     * @return $this
-     */
-    public function setEndHtml($endHtml)
-    {
-        $this->endHtml = $endHtml;
 
         return $this;
     }

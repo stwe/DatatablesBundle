@@ -26,25 +26,29 @@
     {% endif %}
 {% endmacro %}
 
+{{ start_html_container|raw }}
+
 {% for action in actions %}
-    {% if true == add_if_actions[action.route] %}
+    {% if true == render_if_actions[action.route] %}
         {% if action.routeParameters is not null %}
             {% if app.request.locale is defined and app.request.locale is not null %}
                 {% if '_locale' in set_route_parameters|keys %}
                     {% set set_route_parameters = set_route_parameters|merge({ '_locale': app.request.locale }) %}
                 {% endif %}
             {% endif %}
-            {{ start_html|raw }}
+            {{ action.startHtml|raw }}
             <a href="{{ path(action.route, set_route_parameters) }}" {{ _self.attributes(action) }} {{ _self.confirm_dialog(action) }}>
                 {{ _self.link_title(action) }}
             </a>
-            {{ end_html|raw }}
+            {{ action.endHtml|raw }}
         {% else %}
-            {{ start_html|raw }}
+            {{ action.startHtml|raw }}
             <a href="{{ path(action.route) }}" {{ _self.attributes(action) }} {{ _self.confirm_dialog(action) }}>
                 {{ _self.link_title(action) }}
             </a>
-            {{ end_html|raw }}
+            {{ action.endHtml|raw }}
         {% endif %}
     {% endif %}
 {% endfor %}
+
+{{ end_html_container|raw }}

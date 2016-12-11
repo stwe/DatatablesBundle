@@ -11,6 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable\Action;
 
+use Sg\DatatablesBundle\Datatable\HtmlContainerTrait;
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
 use Sg\DatatablesBundle\Datatable\RenderIfTrait;
 
@@ -33,6 +34,11 @@ class Action
      * Render an Action only if parameter / conditions are TRUE.
      */
     use RenderIfTrait;
+
+    /**
+     * An Action has a 'start_html' and a 'end_html' option.
+     */
+    use HtmlContainerTrait;
 
     /**
      * The name of the Action route.
@@ -124,7 +130,9 @@ class Action
             'confirm' => false,
             'confirm_message' => null,
             'attributes' => null,
-            'render_if' => null
+            'render_if' => null,
+            'start_html' => null,
+            'end_html' => null,
         ));
 
         $resolver->setAllowedTypes('route', 'string');
@@ -135,6 +143,8 @@ class Action
         $resolver->setAllowedTypes('confirm_message', array('null', 'string'));
         $resolver->setAllowedTypes('attributes', array('null', 'array'));
         $resolver->setAllowedTypes('render_if', array('null', 'Closure'));
+        $resolver->setAllowedTypes('start_html', array('null', 'string'));
+        $resolver->setAllowedTypes('end_html', array('null', 'string'));
 
         return $this;
     }
