@@ -19,7 +19,7 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 interface ColumnInterface
 {
     /**
-     * @internal
+     * @var int
      */
     const LAST_POSITION = -1;
 

@@ -12,6 +12,8 @@
     {% endfor %}
 {% endmacro %}
 
-{{ start_html|raw }}
-<input type="checkbox" {{ _self.attributes(attributes) }} value="{{ value }}" />
-{{ end_html|raw }}
+{% if true == render_if_cbox %}
+    {{ start_html|raw }}
+    <input type="checkbox" {{ _self.attributes(attributes) }} value="{{ value }}" />
+    {{ end_html|raw }}
+{% endif %}

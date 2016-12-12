@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\Datatable\RenderIfTrait;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Exception;
 
@@ -21,6 +23,11 @@ use Exception;
  */
 class MultiselectColumn extends ActionColumn
 {
+    /**
+     * Render a Checkbox only if conditions are TRUE.
+     */
+    use RenderIfTrait;
+
     /**
      * HTML <input> Tag attributes (except 'type' and 'value').
      * Default: null
@@ -36,6 +43,14 @@ class MultiselectColumn extends ActionColumn
      * @var string
      */
     protected $value;
+
+    /**
+     * Id selector where all multiselect actions are rendered.
+     * Default: null ('sg-datatables-{{ sg_datatables_view.name }}-multiselect-actions')
+     *
+     * @var null|string
+     */
+    protected $renderActionsToId;
 
     //-------------------------------------------------
     // ColumnInterface
@@ -62,7 +77,7 @@ class MultiselectColumn extends ActionColumn
      */
     public function addDataToOutputArray(array &$row)
     {
-        $row['sg_datatables_cbox'] = $this->callAddIfClosure($row);
+        $row['sg_datatables_cbox'] = $this->callRenderIfClosure($row);
     }
 
     /**
@@ -72,6 +87,10 @@ class MultiselectColumn extends ActionColumn
     {
         $value = $row[$this->value];
 
+        if (is_bool($value)) {
+            $value = (int) $value;
+        }
+
         $row[$this->getIndex()] = $this->twig->render(
             'SgDatatablesBundle:render:multiselect.html.twig',
             array(
@@ -79,6 +98,7 @@ class MultiselectColumn extends ActionColumn
                 'value' => $value,
                 'start_html' => $this->startHtml,
                 'end_html' => $this->endHtml,
+                'render_if_cbox' => $row['sg_datatables_cbox'],
             )
         );
     }
@@ -89,6 +109,14 @@ class MultiselectColumn extends ActionColumn
     public function allowedPositions()
     {
         return array(0, self::LAST_POSITION);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getColumnType()
+    {
+        return 'multiselect';
     }
 
     //-------------------------------------------------
@@ -109,12 +137,14 @@ class MultiselectColumn extends ActionColumn
         $resolver->setDefaults(array(
             'attributes' => null,
             'value' => 'id',
-            'add_if' => null,
+            'render_actions_to_id' => null,
+            'render_if' => null,
         ));
 
         $resolver->setAllowedTypes('attributes', array('null', 'array'));
         $resolver->setAllowedTypes('value', 'string');
-        $resolver->setAllowedTypes('add_if', array('null', 'Closure'));
+        $resolver->setAllowedTypes('render_actions_to_id', array('null', 'string'));
+        $resolver->setAllowedTypes('render_if', array('null', 'Closure'));
 
         return $this;
     }
@@ -180,6 +210,30 @@ class MultiselectColumn extends ActionColumn
     public function setValue($value)
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get renderActionsToId.
+     *
+     * @return null|string
+     */
+    public function getRenderActionsToId()
+    {
+        return $this->renderActionsToId;
+    }
+
+    /**
+     * Set renderActionsToId.
+     *
+     * @param null|string $renderActionsToId
+     *
+     * @return $this
+     */
+    public function setRenderActionsToId($renderActionsToId)
+    {
+        $this->renderActionsToId = $renderActionsToId;
 
         return $this;
     }
