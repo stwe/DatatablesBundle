@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
+use Sg\DatatablesBundle\Datatable\Column\ColumnInterface;
+
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -49,6 +51,13 @@ interface DatatableInterface
      * @return array
      */
     public function getColumnNames();
+
+    /**
+     * Returns a MultiselectColumn if it exists.
+     *
+     * @return null|ColumnInterface
+     */
+    public function getMultiselectColumn();
 
     /**
      * Get Ajax instance.

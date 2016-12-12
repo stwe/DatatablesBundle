@@ -77,6 +77,14 @@ class VirtualColumn extends Column
         return false;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getColumnType()
+    {
+        return 'virtual';
+    }
+
     //-------------------------------------------------
     // Getters && Setters
     //-------------------------------------------------

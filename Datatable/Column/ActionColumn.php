@@ -113,6 +113,14 @@ class ActionColumn extends AbstractColumn
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getColumnType()
+    {
+        return 'action';
+    }
+
     //-------------------------------------------------
     // Options
     //-------------------------------------------------

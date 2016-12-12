@@ -163,6 +163,14 @@ abstract class AbstractDatatable implements DatatableInterface
     /**
      * {@inheritdoc}
      */
+    public function getMultiselectColumn()
+    {
+        return $this->columnBuilder->getMultiselectColumn();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAjax()
     {
         return $this->ajax;

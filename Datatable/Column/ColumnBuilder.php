@@ -66,6 +66,13 @@ class ColumnBuilder
      */
     private $uniqueFlag;
 
+    /**
+     * A generated MultiselectColumn.
+     *
+     * @var null|ColumnInterface
+     */
+    private $multiselectColumn;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -85,6 +92,7 @@ class ColumnBuilder
         $this->columns = array();
         $this->columnNames = array();
         $this->uniqueFlag = false;
+        $this->multiselectColumn = null;
     }
 
     //-------------------------------------------------
@@ -141,6 +149,9 @@ class ColumnBuilder
         if (true === $column->isUnique()) {
             if (false === $this->uniqueFlag) {
                 $this->uniqueFlag = true;
+                if ('multiselect' === $column->getColumnType()) {
+                    $this->multiselectColumn = $column;
+                }
             } else {
                 throw new Exception('ColumnBuilder::add(): There is only one unique Column allowed. Check the Column with index: ' . $column->getIndex() . '.');
             }
@@ -171,5 +182,15 @@ class ColumnBuilder
     public function getColumnNames()
     {
         return $this->columnNames;
+    }
+
+    /**
+     * Get multiselectColumn.
+     *
+     * @return null|ColumnInterface
+     */
+    public function getMultiselectColumn()
+    {
+        return $this->multiselectColumn;
     }
 }

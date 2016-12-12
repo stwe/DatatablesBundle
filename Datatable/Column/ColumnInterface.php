@@ -18,6 +18,9 @@ namespace Sg\DatatablesBundle\Datatable\Column;
  */
 interface ColumnInterface
 {
+    /**
+     * @internal
+     */
     const LAST_POSITION = -1;
 
     /**
@@ -84,4 +87,11 @@ interface ColumnInterface
      * @return null|array
      */
     public function allowedPositions();
+
+    /**
+     * Returns the Column type.
+     *
+     * @return string
+     */
+    public function getColumnType();
 }

@@ -336,6 +336,14 @@ abstract class AbstractColumn implements ColumnInterface
         return null;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getColumnType()
+    {
+        return 'data';
+    }
+
     //-------------------------------------------------
     // Getters && Setters
     //-------------------------------------------------
