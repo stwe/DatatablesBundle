@@ -1,0 +1,62 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{% macro link_title(action) %}
+    {% if action.label is null and action.icon is null %}
+        {{ action.route }}
+    {% else %}
+        <span class="{{ action.icon }}"></span> {{ action.label }}
+    {% endif %}
+{% endmacro %}
+
+{% macro attributes(action) %}
+    {% for key, value in action.attributes %}
+        {{ key }}="{{ value }}"
+    {% endfor %}
+{% endmacro %}
+
+{% macro confirm_dialog(action) %}
+    {% if true == action.confirm %}
+        onclick="return confirm('{{ action.confirmMessage }}')"
+    {% endif %}
+{% endmacro %}
+
+{% set multiselect_actions %}
+    {% for action in actions %}
+        {% if true == action.callRenderIfClosure %}
+            {% if action.routeParameters is not null %}
+                {% if app.request.locale is defined and app.request.locale is not null %}
+                    {% if '_locale' in set_route_parameters|keys %}
+                        {% set set_route_parameters = set_route_parameters|merge({ '_locale': app.request.locale }) %}
+                    {% endif %}
+                {% endif %}
+                {{ action.startHtml|raw }}
+                <a href="{{ path(action.route, set_route_parameters) }}" {{ _self.attributes(action) }} {{ _self.confirm_dialog(action) }}>
+                    {{ _self.link_title(action) }}
+                </a>
+                {{ action.endHtml|raw }}
+            {% else %}
+                {{ action.startHtml|raw }}
+                <a href="{{ path(action.route) }}" {{ _self.attributes(action) }} {{ _self.confirm_dialog(action) }}>
+                    {{ _self.link_title(action) }}
+                </a>
+                {{ action.endHtml|raw }}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endset %}
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        {% if dom_id is null %}
+            $("#sg-datatables-{{ datatable_name }}-multiselect-actions").append("{{ multiselect_actions|e('js') }}");
+        {% else %}
+            $("#multiselect-actions").append("{{ multiselect_actions|e('js') }}");
+        {% endif %}
+    });
+</script>

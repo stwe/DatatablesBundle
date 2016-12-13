@@ -26,6 +26,7 @@ class ActionColumn extends AbstractColumn
 {
     /**
      * This Column has a 'start_html' and a 'end_html' option.
+     * <startHtml> action1 action2 actionX </endHtml>
      */
     use HtmlContainerTrait;
 

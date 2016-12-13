@@ -31,12 +31,13 @@ class Action
     use OptionsTrait;
 
     /**
-     * Render an Action only if parameter / conditions are TRUE.
+     * Render an Action only if conditions are TRUE.
      */
     use RenderIfTrait;
 
     /**
      * An Action has a 'start_html' and a 'end_html' option.
+     * <startHtml>action</endHtml>
      */
     use HtmlContainerTrait;
 

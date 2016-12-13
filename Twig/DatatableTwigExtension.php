@@ -86,6 +86,11 @@ class DatatableTwigExtension extends Twig_Extension
                 array($this, 'datatablesRenderFilter'),
                 array('is_safe' => array('html'), 'needs_environment' => true)
             ),
+            new Twig_SimpleFunction(
+                'sg_datatables_render_multiselect_actions',
+                array($this, 'datatablesRenderMultiselectActions'),
+                array('is_safe' => array('html'), 'needs_environment' => true)
+            ),
         );
     }
 
@@ -186,6 +191,39 @@ class DatatableTwigExtension extends Twig_Extension
                 'search_column_index' => $searchColumnIndex,
                 'datatable_name' => $datatable->getName(),
                 'position' => $position
+            )
+        );
+    }
+
+    /**
+     * Renders the MultiselectColumn Actions.
+     *
+     * @param Twig_Environment $twig
+     * @param ColumnInterface  $multiselectColumn
+     * @param string           $datatableName
+     *
+     * @return string
+     */
+    public function datatablesRenderMultiselectActions(Twig_Environment $twig, ColumnInterface $multiselectColumn, $datatableName)
+    {
+        $parameters = array();
+        $actions = $this->accessor->getValue($multiselectColumn, 'actions');
+        $domId = $this->accessor->getValue($multiselectColumn, 'renderActionsToId');
+
+        foreach ($actions as $action) {
+            $routeParameters = $this->accessor->getValue($action, 'routeParameters');
+            if (null !== $routeParameters) {
+                foreach ($routeParameters as $key => $value) {
+                    $parameters[$key] = $value;
+                }
+            }
+        }
+
+        return $twig->render('SgDatatablesBundle:datatable:multiselect_actions.html.twig', array(
+                'actions' => $actions,
+                'set_route_parameters' => $parameters,
+                'datatable_name' => $datatableName,
+                'dom_id' => $domId
             )
         );
     }
