@@ -17,6 +17,7 @@
 
 {% block javascript %}
     <script type="text/javascript">
+    $(document).ready(function () {
         try {
             moment.locale("{{ app.request.locale }}");
             $("#{{ tableId }} .sg-daterange").daterangepicker({
@@ -40,5 +41,6 @@
         } catch (e) {
             console.log(e.message);
         }
+    });
     </script>
 {% endblock %}
