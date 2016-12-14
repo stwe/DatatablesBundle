@@ -126,6 +126,15 @@ Full example with CDN:
 </head>
 ```
 
+#### Add JavaScripts (optional)
+Some scripts are embeded in your page. You can add the scripts to your javascripts (see above),
+ so your website can take advantage of (browser) cache.
+
+```
+<script src="{{ asset('bundles/sgdatatablesbundle/js/render_functions.js') }}"></script>
+<script src="{{ asset('bundles/sgdatatablesbundle/js/pipeline.js') }}"></script>
+```
+
 ## Your First Datatable
 
 ### Step 1: 

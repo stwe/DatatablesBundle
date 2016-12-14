@@ -3,7 +3,7 @@
 
         if (typeof window.pipelineFunctionAlreadyLoaded == 'undefined') {
             {% if view_ajax.pipeline > 0 %}
-               {% include "SgDatatablesBundle:Datatable:pipeline.js.twig" %}
+               {% include "../../public/pipeline.js" %}
             {% endif %}
         }
 
@@ -153,7 +153,7 @@
 
     <script type="text/javascript">
         if (typeof window.renderFunctionsAlreadyLoaded == 'undefined') {
-            {% include "SgDatatablesBundle:Datatable:render_functions.js.twig" %}
+            {% include '../../public/js/render_functions.js' %}
         }
     </script>
 
