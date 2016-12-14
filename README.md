@@ -4,68 +4,29 @@
 
 [![knpbundles.com](http://knpbundles.com/stwe/DatatablesBundle/badge)](http://knpbundles.com/stwe/DatatablesBundle)
 
+[![Build Status](https://travis-ci.org/stwe/DatatablesBundle.svg?branch=master)](https://travis-ci.org/stwe/DatatablesBundle)
+
 [![Latest Stable Version](https://poser.pugx.org/sg/datatablesbundle/v/stable)](https://packagist.org/packages/sg/datatablesbundle) [![Total Downloads](https://poser.pugx.org/sg/datatablesbundle/downloads)](https://packagist.org/packages/sg/datatablesbundle) [![Latest Unstable Version](https://poser.pugx.org/sg/datatablesbundle/v/unstable)](https://packagist.org/packages/sg/datatablesbundle) [![License](https://poser.pugx.org/sg/datatablesbundle/license)](https://packagist.org/packages/sg/datatablesbundle)
 
-## Help wanted
+## About
 
-To all russian and polish speaking contributors. Please help me to update the translation files. Thanks a lot!
+This Bundle has reached 50k downloads. "Thank you!" to all the [contributors](https://github.com/stwe/DatatablesBundle/graphs/contributors), users and bug reporters for making this possible!
 
-## Recent Important Changes
+## Versioning
 
-The ClientSide mode is no longer supported by me!
+### 0.x (stable)
 
-- unlimited nested association support and fix filtered counter when using a custom query
-- start for PostgreSql support
-- Datatable Events supported
-- some new translations
-- render_if Closure parameter in action column
-- outsourcing individual filter in new classes, see below example
+Last version is 0.13.
 
-```php
-    public function buildDatatable(array $options = array())
-    {
-        // ...
+### 1.x (dev)
 
-        $users = $this->em->getRepository('AppBundle:User')->findAll();
-
-        $this->columnBuilder
-            ->add('title', 'column', array(
-                'title' => 'Title',
-                'filter' => array('text', array(
-                    'search_type' => 'eq'
-                ))
-            ))
-            ->add('visible', 'boolean', array(
-                'title' => 'Visible',
-                'filter' => array('select', array(
-                    'search_type' => 'eq',
-                    'select_options' => array('' => 'All', '1' => 'Yes', '0' => 'No')
-                )),
-            ))
-            ->add('createdby.username', 'column', array(
-                'title' => 'Createdby User',
-                'filter' => array('select', array(
-                    'search_type' => 'eq',
-                    'select_options' => array('' => 'All') + $this->getCollectionAsOptionsArray($users, 'username', 'username'),
-                ))
-            ))
-            ->add('createdAt', 'datetime', array(
-                'title' => 'Created',
-                'filter' => array('daterange', array()),
-            ))
-        ;
-    }
-```
+1.0 is under heavy development. The bundle is completely revised.
 
 ## Screenshots
 
 ### Table with Bootstrap3 integration: 
 
-<div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/images/bs3.jpg"></div>
-
-### Table with default stylesheet (`display`): 
-
-<div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/images/display.jpg"></div>
+<div style="text-align:center"><img alt="Screenshot" src="https://github.com/stwe/DatatablesBundle/raw/master/Resources/images/sc1.jpg"></div>
 
 ## Documentation
 
@@ -107,23 +68,19 @@ The ClientSide mode is no longer supported by me!
 
 Much like every other piece of software `SgDatatablesBundle` is not perfect and far from feature complete.
 
-### Use this Bundle in ServerSide mode
-
-The ClientSide mode is no longer supported by me.
-
-### Other limitations
-
-- This bundle does not support multiple Ids
-- Searching and filtering on a virtual column not yet implemented and disabled by default
-- PostgreSql is currently not fully supported
+- This bundle does not support multiple Ids.
+- Searching and filtering on a virtual column not yet implemented and disabled by default.
+- PostgreSql is currently not fully supported.
 
 ## Reporting an issue or a feature request
 
 Issues and feature requests are tracked in the [Github issue tracker](https://github.com/stwe/DatatablesBundle/issues).
 
+**You must know that all the pull requests you are going to submit must be released under the MIT license.**
+
 ## Friendly License
 
-This bundle is available under the MIT license. See the complete license in the bundle:
+This bundle is under the MIT license. See the complete license in the bundle:
 
     Resources/meta/LICENSE
 

@@ -28,13 +28,6 @@ class Column extends AbstractColumn
      */
     protected $default;
 
-    /**
-     * Editable flag.
-     *
-     * @var boolean
-     */
-    protected $editable;
-
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -64,6 +57,14 @@ class Column extends AbstractColumn
     /**
      * {@inheritdoc}
      */
+    public function addDataToOutputArray(&$row)
+    {
+        $row['sg_datatables_editable'][$this->getIndex()] = $this->isEditableIfClosure($row);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAlias()
     {
         return 'column';
@@ -78,35 +79,19 @@ class Column extends AbstractColumn
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        parent::configureOptions($resolver);
+
         $resolver->setDefaults(array(
-            'class' => '',
-            'padding' => '',
-            'name' => '',
-            'orderable' => true,
-            'render' => null,
-            'searchable' => true,
-            'title' => '',
-            'type' => '',
-            'visible' => true,
-            'width' => '',
             'filter' => array('text', array()),
             'default' => '',
-            'editable' => false
+            'editable' => false,
+            'editable_if' => null,
         ));
 
-        $resolver->setAllowedTypes('class', 'string');
-        $resolver->setAllowedTypes('padding', 'string');
-        $resolver->setAllowedTypes('name', 'string');
-        $resolver->setAllowedTypes('orderable', 'bool');
-        $resolver->setAllowedTypes('render', array('string', 'null'));
-        $resolver->setAllowedTypes('searchable', 'bool');
-        $resolver->setAllowedTypes('title', 'string');
-        $resolver->setAllowedTypes('type', 'string');
-        $resolver->setAllowedTypes('visible', 'bool');
-        $resolver->setAllowedTypes('width', 'string');
         $resolver->setAllowedTypes('filter', 'array');
         $resolver->setAllowedTypes('default', 'string');
         $resolver->setAllowedTypes('editable', 'bool');
+        $resolver->setAllowedTypes('editable_if', array('Closure', 'null'));
 
         return $this;
     }
@@ -137,29 +122,5 @@ class Column extends AbstractColumn
         $this->default = $default;
 
         return $this;
-    }
-
-    /**
-     * Set editable.
-     *
-     * @param boolean $editable
-     *
-     * @return $this
-     */
-    public function setEditable($editable)
-    {
-        $this->editable = $editable;
-
-        return $this;
-    }
-
-    /**
-     * Get editable.
-     *
-     * @return boolean
-     */
-    public function getEditable()
-    {
-        return $this->editable;
     }
 }

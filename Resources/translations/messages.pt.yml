@@ -1,0 +1,40 @@
+datatables:
+    datatable:
+        processing: "Processando..."
+        lengthMenu: "Exibir _MENU_ registros"
+        zeroRecords: "Nenhum resultado encontrado"
+        info: "Exibindo de _START_ a _END_ de _TOTAL_ registros"
+        infoEmpty: "Sem registros"
+        infoFiltered: "(filtrados do total de _MAX_ registros)"
+        infoPostFix: ""
+        search: "Pesquisar"
+        searchPlaceholder: ""
+        first: "Primeiro"
+        previous: "Anterior"
+        next: "Próximo"
+        last: "Último"
+        all: "todos"
+    bulk:
+        confirmMsg: "Você tem certeza?"
+        selectError: "You need to select at least one element."
+        ok: "Ok"
+    actions:
+        title: "Ações"
+        show: "Exibir"
+        new: "Novo"
+        edit: "Alterar"
+        delete: "Apagar"
+        toList: "Voltar para a lista"
+        save: "Salvar"
+    dialog:
+        close: "Fechar"
+daterange:
+    apply: "Aplicar"
+    cancel: "Cancelar"
+    format: "YYYY-MM-DD"
+editable:
+    tableRedraw: "As mudanças envolvem múltiplos registros. A tabela serã re-desenhada com os novos dados."
+filter:
+    default: "default"
+query:
+    filtered: "(filtered)"

@@ -77,16 +77,15 @@ class DatatableGenerator extends Generator
      * @param BundleInterface $bundle     The bundle in which to create the class
      * @param string          $entity     The entity relative class name
      * @param array           $fields     The datatable fields
-     * @param boolean         $clientSide The client side flag
      * @param string          $ajaxUrl    The ajax url
      * @param boolean         $bootstrap3 The bootstrap3 flag
-     *
-     * @throws RuntimeException
+     * @param mixed           $primaryKey
      */
-    public function generate(BundleInterface $bundle, $entity, array $fields, $clientSide, $ajaxUrl, $bootstrap3)
+    public function generate(BundleInterface $bundle, $entity, array $fields, $ajaxUrl, $bootstrap3, $primaryKey)
     {
         $parts = explode("\\", $entity);
         $entityClass = array_pop($parts);
+        $entityClassLowerCase = strtolower($entityClass);
 
         $this->className = $entityClass . 'Datatable';
         $dirPath = $bundle->getPath() . '/Datatables';
@@ -99,17 +98,7 @@ class DatatableGenerator extends Generator
         $parts = explode('\\', $entity);
         array_pop($parts);
 
-        // set ajaxUrl
-        if (false === $clientSide) {
-            // server-side
-            if (!$ajaxUrl) {
-                $this->ajaxUrl = strtolower($entityClass) . '_results';
-            } else {
-                $this->ajaxUrl = $ajaxUrl;
-            }
-        }
-
-        $routePref = strtolower($entityClass);
+        $this->ajaxUrl = $ajaxUrl? $ajaxUrl : $entityClassLowerCase . '_results';
 
         $this->renderFile('class.php.twig', $this->classPath, array(
             'namespace' => $bundle->getNamespace(),
@@ -117,12 +106,12 @@ class DatatableGenerator extends Generator
             'entity_class' => $entityClass,
             'bundle' => $bundle->getName(),
             'datatable_class' => $this->className,
-            'datatable_name' => strtolower($entityClass) . '_datatable',
+            'datatable_name' => $entityClassLowerCase . '_datatable',
             'fields' => $fields,
-            'client_side' => (boolean) $clientSide,
             'ajax_url' => $this->ajaxUrl,
             'bootstrap3' => (boolean) $bootstrap3,
-            'route_pref' => $routePref
+            'route_pref' => $entityClassLowerCase,
+            'primary_key' => $primaryKey
         ));
     }
 }

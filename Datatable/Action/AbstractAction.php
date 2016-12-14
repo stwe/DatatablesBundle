@@ -15,6 +15,7 @@ use Sg\DatatablesBundle\OptionsResolver\OptionsInterface;
 use Sg\DatatablesBundle\Datatable\View\AbstractViewOptions;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Closure;
 
 /**
  * Class AbstractAction
@@ -80,11 +81,11 @@ abstract class AbstractAction implements ActionInterface, OptionsInterface
     protected $attributes;
 
     /**
-     * Check the specified role.
+     * Render only if conditions are True.
      *
-     * @var string
+     * @var Closure|null
      */
-    protected $role;
+    protected $renderIf;
 
     //-------------------------------------------------
     // Ctor.
@@ -103,11 +104,7 @@ abstract class AbstractAction implements ActionInterface, OptionsInterface
     //-------------------------------------------------
 
     /**
-     * Set route.
-     *
-     * @param string $route
-     *
-     * @return $this
+     * {@inheritdoc}
      */
     public function setRoute($route)
     {
@@ -117,13 +114,23 @@ abstract class AbstractAction implements ActionInterface, OptionsInterface
     }
 
     /**
-     * Get route.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getRoute()
     {
         return $this->route;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRenderIfClosure(array $row = array())
+    {
+        if ($this->renderIf instanceof Closure) {
+            return call_user_func($this->renderIf, $row);
+        }
+
+        return true;
     }
 
     //-------------------------------------------------
@@ -144,7 +151,7 @@ abstract class AbstractAction implements ActionInterface, OptionsInterface
             'confirm' => false,
             'confirm_message' => '',
             'attributes' => array(),
-            'role' => ''
+            'render_if' => null
         ));
 
         $resolver->setAllowedTypes('route', 'string');
@@ -154,7 +161,7 @@ abstract class AbstractAction implements ActionInterface, OptionsInterface
         $resolver->setAllowedTypes('confirm', 'bool');
         $resolver->setAllowedTypes('confirm_message', 'string');
         $resolver->setAllowedTypes('attributes', 'array');
-        $resolver->setAllowedTypes('role', 'string');
+        $resolver->setAllowedTypes('render_if', array('Closure', 'null'));
 
         return $this;
     }
@@ -332,26 +339,26 @@ abstract class AbstractAction implements ActionInterface, OptionsInterface
     }
 
     /**
-     * Set role.
+     * Set renderIf.
      *
-     * @param string $role
+     * @param Closure|null $renderIf
      *
      * @return $this
      */
-    public function setRole($role)
+    public function setRenderIf($renderIf)
     {
-        $this->role = $role;
+        $this->renderIf = $renderIf;
 
         return $this;
     }
 
     /**
-     * Get role.
+     * Get renderIf.
      *
-     * @return string
+     * @return Closure|null
      */
-    public function getRole()
+    public function getRenderIf()
     {
-        return $this->role;
+        return $this->renderIf;
     }
 }

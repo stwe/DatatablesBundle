@@ -23,21 +23,25 @@ SgDatatablesBundle:Column:column.html.twig
 
 ### Options
 
-| Option               | Type           | Default                |
-|----------------------|----------------|------------------------|
-| class                | string         | ''                     |
-| padding              | string         | ''                     |
-| name                 | string         | ''                     |
-| orderable            | boolean        | true                   |
-| render               | null or string | null                   |
-| searchable           | boolean        | true                   |
-| title                | string         | ''                     |
-| type                 | string         | ''                     |
-| visible              | boolean        | true                   |
-| width                | string         | ''                     |
-| filter               | array          | array('text', array()) |
-| default              | string         | ''                     |
-| editable             | boolean        | false                  |
+| Option          | Type           | Default                | Required | Description |
+|-----------------|----------------|------------------------|----------|-------------|
+| class           | string         | ''                     |          | Class to assign to each cell in the column. |
+| default_content | null or string | null                   |          | Default content for a field that can have a null or undefined value. |
+| padding         | string         | ''                     |          | Add padding to the text content used when calculating the optimal width for a table. |
+| name            | string         | ''                     |          | Set a descriptive name for a column. |
+| orderable       | boolean        | true                   |          | Enable or disable ordering on this column. |
+| render          | null or string | null                   |          | This property will modify the data that is used by DataTables. |
+| searchable      | boolean        | true                   |          | Enable or disable filtering on the data in this column. |
+| title           | string         | ''                     |          | The displayed column title. This value is not translated automatically. |
+| type            | string         | ''                     |          | Set the column type - used for filtering and sorting string processing. |
+| visible         | boolean        | true                   |          | Display or hide this column completly so no data will be displayed in the browser. |
+| width           | string         | ''                     |          | Adjust the column's width. This value will set the element attribute `style="width: XXXpx;`. |
+| order_sequence  | null or array  | null                   |          | Control the default ordering direction. |
+| filter          | array          | array('text', array()) |          | See [Filtering](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filter.md#2-serverside-individual-column-filtering) for more information. |
+| add_if          | Closure        | null                   |          | Add a closure to check e.g. the current user's permissions and display a column depending on that result. |
+| default         | string         | ''                     |          | Default content for a field that can have an empty string. |
+| editable        | boolean        | false                  |          | Enable edit mode for this column. |
+| editable_if     | Closure        | null                   |          | Enable edit mode for this column depending on a closure condition e.g. permissions. |
 
 ### Example
 
@@ -47,7 +51,10 @@ $this->columnBuilder
         'title' => 'title',
         'searchable' => false,
         'orderable' => false,
-        'default' => 'default title value'
+        'default' => 'default title value',
+        'add_if' => function() {
+            return ($this->authorizationChecker->isGranted('ROLE_ADMIN'));
+        },
     ))
 ;
 ```
@@ -64,6 +71,16 @@ $this->columnBuilder
     ))
 ;
 ```
+
+For Doctrine Embeddables:
+
+``` php
+$this->columnBuilder
+    ->add('credentials\\.username', 'column', array(
+        'title' => 'Username'
+    ))
+;
+```
 ___
 
 ## 2. Array column
@@ -76,37 +93,39 @@ SgDatatablesBundle:Column:array.html.twig
 
 ### Options
 
-| Option               | Type           | Default                |          |
-|----------------------|----------------|------------------------|----------|
-| class                | string         | ''                     |          |
-| padding              | string         | ''                     |          |
-| name                 | string         | ''                     |          |
-| orderable            | boolean        | true                   |          |
-| render               | null or string | null                   |          |
-| searchable           | boolean        | true                   |          |
-| title                | string         | ''                     |          |
-| type                 | string         | ''                     |          |
-| visible              | boolean        | true                   |          |
-| width                | string         | ''                     |          |
-| filter               | array          | array('text', array()) |          |
-| default              | string         | ''                     |          |
-| data                 | string         |                        | required |
-| count                | boolean        | false                  |          |
-| count_action         | array          | array()                |          |
+| Option               | Type           | Default                | Required | Description |
+|----------------------|----------------|------------------------|----------|-------------|
+| class                | string         | ''                     |          | Class to assign to each cell in the column. |
+| default_content      | null or string | null                   |          | Default content for a field that can have a null or undefined value. |
+| padding              | string         | ''                     |          | Add padding to the text content used when calculating the optimal width for a table. |
+| name                 | string         | ''                     |          | Set a descriptive name for a column. |
+| orderable            | boolean        | true                   |          | Enable or disable ordering on this column. |
+| render               | null or string | null                   |          | This property will modify the data that is used by DataTables. |
+| searchable           | boolean        | true                   |          | Enable or disable filtering on the data in this column. |
+| title                | string         | ''                     |          | The displayed column title. This value is not translated automatically. |
+| type                 | string         | ''                     |          | Set the column type - used for filtering and sorting string processing. |
+| visible              | boolean        | true                   |          | Display or hide this column completly so no data will be displayed in the browser. |
+| width                | string         | ''                     |          | Adjust the column's width. This value will set the element attribute `style="width: XXXpx;`. |
+| order_sequence       | null or array  | null                   |          | Control the default ordering direction. |
+| filter               | array          | array('text', array()) |          | See [Filtering](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filter.md#2-serverside-individual-column-filtering) for more information. |
+| add_if               | Closure        | null                   |          | Add a closure to check e.g. the current user's permissions and display a column depending on that result. |
+| default              | string         | ''                     |          | Default content for a field that can have an empty string. |
+| data                 | string         |                        | ✔        | Fetch array data from this entity attribute. You can define sub elements e.g. "foo.bar".|
+| count                | boolean        | false                  |          | Count array elements. |
+| count_action         | array          | array()                |          | The counter represents a link, see [Count Action options](#count-action-options). |
 
 ### Count Action options
 
-| Option           | Type             | Default                      |          |
-|------------------|------------------|------------------------------|----------|
-| route            | string           |                              | required |
-| route_parameters | array            | array()                      |          |
-| icon             | string           | ''                           |          |
-| label            | string           | ''                           |          |
-| confirm          | boolean          | false                        |          |
-| confirm_message  | string           | 'datatables.bulk.confirmMsg' |          |
-| attributes       | array            | array()                      |          |
-| role             | string           | ''                           |          |
-| render_if        | Closure or array | array()                      |          |
+| Option           | Type    | Default                      | Required | Description |
+|------------------|---------|------------------------------|----------|-------------|
+| route            | string  |                              | ✔        | Redirect user to this route ... |
+| route_parameters | array   | array()                      |          | ... using the following optional route parameters. |
+| icon             | string  | ''                           |          | Display an icon e.g. `glyphicon glyphicon-new-window`. |
+| label            | string  | ''                           |          | Optional label text to display. |
+| confirm          | boolean | false                        |          | Show a confirm dialog on click. |
+| confirm_message  | string  | 'datatables.bulk.confirmMsg' |          | Display this confirm dialog message to the user. |
+| attributes       | array   | array()                      |          | Add some element attributes e.g. to style link as a boostrap button (see example below). |
+| render_if        | Closure | null                         |          | Render depending on a closure condition e.g. permissions. |
 
 ### Example
 
@@ -151,7 +170,23 @@ SgDatatablesBundle:Column:column.html.twig
 
 ### Options
 
-see: Column
+| Option          | Type           | Default                | Required | Description |
+|-----------------|----------------|------------------------|----------|-------------|
+| class           | string         | ''                     |          | Class to assign to each cell in the column. |
+| default_content | null or string | null                   |          | Default content for a field that can have a null or undefined value. |
+| padding         | string         | ''                     |          | Add padding to the text content used when calculating the optimal width for a table. |
+| name            | string         | ''                     |          | Set a descriptive name for a column. |
+| orderable       | boolean        | false                  |          | Enable or disable ordering on this column. |
+| render          | null or string | null                   |          | This property will modify the data that is used by DataTables. |
+| searchable      | boolean        | false                  |          | Enable or disable filtering on the data in this column. |
+| title           | string         | ''                     |          | The displayed column title. This value is not translated automatically. |
+| type            | string         | ''                     |          | Set the column type - used for filtering and sorting string processing. |
+| visible         | boolean        | true                   |          | Display or hide this column completly so no data will be displayed in the browser. |
+| width           | string         | ''                     |          | Adjust the column's width. This value will set the element attribute `style="width: XXXpx;`. |
+| order_sequence  | null or array  | null                   |          | Control the default ordering direction. |
+| filter          | array          | array('text', array()) |          | See [Filtering](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filter.md#2-serverside-individual-column-filtering) for more information. |
+| add_if          | Closure        | null                   |          | Add a closure to check e.g. the current user's permissions and display a column depending on that result. |
+| default         | string         | ''                     |          | Default content for a field that can have an empty string. |
 
 ### Example
 
@@ -174,24 +209,28 @@ SgDatatablesBundle:Column:boolean.html.twig
 
 ### Options
 
-| Option               | Type           | Default               |
-|----------------------|----------------|-----------------------|
-| class                | string         | ''                    |
-| padding              | string         | ''                    |
-| name                 | string         | ''                    |
-| orderable            | boolean        | true                  |
-| render               | null or string | render_boolean        |
-| searchable           | boolean        | true                  |
-| title                | string         | ''                    |
-| type                 | string         | ''                    |
-| visible              | boolean        | true                  |
-| width                | string         | ''                    |
-| true_icon            | string         | ''                    |
-| false_icon           | string         | ''                    |
-| true_label           | string         | ''                    |
-| false_label          | string         | ''                    |
-| filter               | array          | see the below example |
-| editable             | boolean        | false                 |
+| Option          | Type           | Default                | Required | Description |
+|-----------------|----------------|------------------------|----------|-------------|
+| class           | string         | ''                     |          | Class to assign to each cell in the column. |
+| default_content | null or string | null                   |          | Default content for a field that can have a null or undefined value. |
+| padding         | string         | ''                     |          | Add padding to the text content used when calculating the optimal width for a table. |
+| name            | string         | ''                     |          | Set a descriptive name for a column. |
+| orderable       | boolean        | true                   |          | Enable or disable ordering on this column. |
+| render          | null or string | 'render_boolean'       |          | This property will modify the data that is used by DataTables. |
+| searchable      | boolean        | true                   |          | Enable or disable filtering on the data in this column. |
+| title           | string         | ''                     |          | The displayed column title. This value is not translated automatically. |
+| type            | string         | ''                     |          | Set the column type - used for filtering and sorting string processing. |
+| visible         | boolean        | true                   |          | Display or hide this column completly so no data will be displayed in the browser. |
+| width           | string         | ''                     |          | Adjust the column's width. This value will set the element attribute `style="width: XXXpx;`. |
+| order_sequence  | null or array  | null                   |          | Control the default ordering direction. |
+| true_icon       | string         | ''                     |          | Display a icon if the boolean condition is true e.g. `glyphicon glyphicon-ok`. |
+| false_icon      | string         | ''                     |          | Display a icon if the boolean condition is false e.g. `glyphicon glyphicon-remove`. |
+| true_label      | string         | ''                     |          | Display text if the boolean condition is true e.g. `yes`. |
+| false_label     | string         | ''                     |          | Display text if the boolean condition is false e.g. `no`. |
+| filter          | array          | see the below example  |          | See [Filtering](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filter.md#2-serverside-individual-column-filtering) for more information. |
+| add_if          | Closure        | null                   |          | Add a closure to check e.g. the current user's permissions and display a column depending on that result. |
+| editable        | boolean        | false                  |          | Enable edit mode for this column. |
+| editable_if     | Closure        | null                   |          | Enable edit mode for this column depending on a closure condition e.g. permissions. |
 
 ### Example
 
@@ -222,21 +261,25 @@ SgDatatablesBundle:Column:datetime.html.twig
 
 ### Options
 
-| Option               | Type           | Default                |
-|----------------------|----------------|------------------------|
-| class                | string         | ''                     |
-| padding              | string         | ''                     |
-| name                 | string         | ''                     |
-| orderable            | boolean        | true                   |
-| render               | null or string | render_datetime        |
-| searchable           | boolean        | true                   |
-| title                | string         | ''                     |
-| type                 | string         | ''                     |
-| visible              | boolean        | true                   |
-| width                | string         | ''                     |
-| filter               | array          | array('text', array()) |
-| date_format          | string         | 'lll'                  |
-| editable             | boolean        | false                  |
+| Option          | Type           | Default                | Required | Description |
+|-----------------|----------------|------------------------|----------|-------------|
+| class           | string         | ''                     |          | Class to assign to each cell in the column. |
+| default_content | null or string | null                   |          | Default content for a field that can have a null or undefined value. |
+| padding         | string         | ''                     |          | Add padding to the text content used when calculating the optimal width for a table. |
+| name            | string         | ''                     |          | Set a descriptive name for a column. |
+| orderable       | boolean        | true                   |          | Enable or disable ordering on this column. |
+| render          | null or string | 'render_datetime'      |          | This property will modify the data that is used by DataTables. |
+| searchable      | boolean        | true                   |          | Enable or disable filtering on the data in this column. |
+| title           | string         | ''                     |          | The displayed column title. This value is not translated automatically. |
+| type            | string         | ''                     |          | Set the column type - used for filtering and sorting string processing. |
+| visible         | boolean        | true                   |          | Display or hide this column completly so no data will be displayed in the browser. |
+| width           | string         | ''                     |          | Adjust the column's width. This value will set the element attribute `style="width: XXXpx;`. |
+| order_sequence  | null or array  | null                   |          | Control the default ordering direction. |
+| filter          | array          | array('text', array()) |          | See [Filtering](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filter.md#2-serverside-individual-column-filtering) for more information. |
+| add_if          | Closure        | null                   |          | Add a closure to check e.g. the current user's permissions and display a column depending on that result. |
+| date_format     | string         | 'lll'                  |          | Format date, see [Date Parameteres](http://php.net/manual/de/function.date.php#refsect1-function.date-parameters). |
+| editable        | boolean        | false                  |          | Enable edit mode for this column. |
+| editable_if     | Closure        | null                   |          | Enable edit mode for this column depending on a closure condition e.g. permissions. |
 
 ### Example
 
@@ -261,19 +304,22 @@ SgDatatablesBundle:Column:timeago.html.twig
 
 ### Options
 
-| Option               | Type           | Default                |
-|----------------------|----------------|------------------------|
-| class                | string         | ''                     |
-| padding              | string         | ''                     |
-| name                 | string         | ''                     |
-| orderable            | boolean        | true                   |
-| render               | null or string | render_timeago         |
-| searchable           | boolean        | true                   |
-| title                | string         | ''                     |
-| type                 | string         | ''                     |
-| visible              | boolean        | true                   |
-| width                | string         | ''                     |
-| filter               | array          | array('text', array()) |
+| Option          | Type           | Default                | Required | Description |
+|-----------------|----------------|------------------------|----------|-------------|
+| class           | string         | ''                     |          | Class to assign to each cell in the column. |
+| default_content | null or string | null                   |          | Default content for a field that can have a null or undefined value. |
+| padding         | string         | ''                     |          | Add padding to the text content used when calculating the optimal width for a table. |
+| name            | string         | ''                     |          | Set a descriptive name for a column. |
+| orderable       | boolean        | true                   |          | Enable or disable ordering on this column. |
+| render          | null or string | 'render_timeago'       |          | This property will modify the data that is used by DataTables. |
+| searchable      | boolean        | true                   |          | Enable or disable filtering on the data in this column. |
+| title           | string         | ''                     |          | The displayed column title. This value is not translated automatically. |
+| type            | string         | ''                     |          | Set the column type - used for filtering and sorting string processing. |
+| visible         | boolean        | true                   |          | Display or hide this column completly so no data will be displayed in the browser. |
+| width           | string         | ''                     |          | Adjust the column's width. This value will set the element attribute `style="width: XXXpx;`. |
+| order_sequence  | null or array  | null                   |          | Control the default ordering direction. |
+| filter          | array          | array('text', array()) |          | See [Filtering](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filter.md#2-serverside-individual-column-filtering) for more information. |
+| add_if          | Closure        | null                   |          | Add a closure to check e.g. the current user's permissions and display a column depending on that result. |
 
 ### Example
 
@@ -296,32 +342,32 @@ SgDatatablesBundle:Column:action.html.twig
 
 ### Options
 
-| Option     | Type        | Default |          |
-|------------|-------------|---------|----------|
-| class      | string      | ''      |          |
-| padding    | string      | ''      |          |
-| name       | string      | ''      |          |
-| title      | string      | ''      |          |
-| type       | string      | ''      |          |
-| visible    | boolean     | true    |          |
-| width      | string      | ''      |          |
-| start_html | string      | ''      |          |
-| end_html   | string      | ''      |          |
-| actions    | array       |         | required |
+| Option     | Type         | Default   | Required | Description |
+|------------|--------------|-----------|----------|-------------|
+| class      | string       | ''        |          | Class to assign to each cell in the column. |
+| padding    | string       | ''        |          | Add padding to the text content used when calculating the optimal width for a table. |
+| name       | string       | ''        |          | Set a descriptive name for a column. |
+| title      | string       | ''        |          | The displayed column title. This value is not translated automatically. |
+| type       | string       | ''        |          | Set the column type - used for filtering and sorting string processing. |
+| visible    | boolean      | true      |          | Display or hide this column completly so no data will be displayed in the browser. |
+| width      | string       | ''        |          | Adjust the column's width. This value will set the element attribute `style="width: XXXpx;`. |
+| start_html | string       | ''        |          | Start HTML - use in combination with `end_html` to define a wrapper element. |
+| end_html   | string       | ''        |          | End HTML |
+| add_if     | Closure      | null      |          | Add a closure to check e.g. the current user's permissions and display a column depending on that result. |
+| actions    | array        |           | ✔        | The actions container, see [Action options](#action-options). |
 
 ### Action options
 
-| Option           | Type             | Default                      |          |
-|------------------|------------------|------------------------------|----------|
-| route            | string           |                              | required |
-| route_parameters | array            | array()                      |          |
-| icon             | string           | ''                           |          |
-| label            | string           | ''                           |          |
-| confirm          | boolean          | false                        |          |
-| confirm_message  | string           | 'datatables.bulk.confirmMsg' |          |
-| attributes       | array            | array()                      |          |
-| role             | string           | ''                           |          |
-| render_if        | Closure or array | array()                      |          |
+| Option           | Type    | Default                      | Required | Description |
+|------------------|---------|------------------------------|----------|-------------|
+| route            | string  |                              | ✔        | Redirect user to this route ... |
+| route_parameters | array   | array()                      |          | ... using the following optional route parameters. |
+| icon             | string  | ''                           |          | Display an icon e.g. `glyphicon glyphicon-new-window`. |
+| label            | string  | ''                           |          | Optional label text to display. |
+| confirm          | boolean | false                        |          | Show a confirm dialog on click. |
+| confirm_message  | string  | 'datatables.bulk.confirmMsg' |          | Display this confirm dialog message to the user. |
+| attributes       | array   | array()                      |          | Add some element attributes e.g. to style link as a boostrap button (see example below). |
+| render_if        | Closure | null                         |          | Render depending on a closure condition e.g. permissions. |
 
 ### Example
 
@@ -331,6 +377,9 @@ $this->columnBuilder
         'title' => 'Actions',
         'start_html' => '<div class="wrapper_example_class">',
         'end_html' => '</div>',
+        'add_if' => function() {
+            return ($this->authorizationChecker->isGranted('ROLE_ADMIN'));
+        },
         'actions' => array( // required option
             array(
                 'route' => 'post_edit',
@@ -346,13 +395,11 @@ $this->columnBuilder
                 ),
                 'confirm' => true,
                 'confirm_message' => 'Are you sure?',
-                'role' => 'ROLE_ADMIN',
-                'render_if' => function($rowEntity) {
-                    /**
-                     * Return a boolean variable or boolean condition
-                     * $rowEntity['columnName'] 
-                     */
-                    return ($rowEntity['title'] === 'Title 1');
+                'render_if' => function($row) {
+                    return (
+                        $this->authorizationChecker->isGranted('ROLE_ADMIN') &&
+                        $row['title'] === 'Title 1'
+                    );
                 },
             ),
             array(
@@ -367,40 +414,10 @@ $this->columnBuilder
                     'class' => 'btn btn-default btn-xs',
                     'role' => 'button'
                 ),
-                'role' => 'ROLE_USER',
-                'render_if' => array(
-                    'id' => 1,
-                    'username' => 'admin',
-                    'enabled' => false,
-                    // ...
-                )
             )
         )
     ))
 ;
-```
-
-### Render_if
-
-The render_if option can be used with a Closure or array.
-
-```php
-'render_if' => array(
-    'id' => 1,
-    'username' => 'admin',
-    'enabled' => false,
-    // ...
-)
-```
-
-```php
-'render_if' => function($rowEntity) {
-    /**
-     * Return a boolean variable or boolean condition
-     * $rowEntity['columnName'] 
-     */
-    return ($rowEntity['title'] === 'Title 1');
-},
 ```
 ___
 
@@ -412,31 +429,35 @@ SgDatatablesBundle:Column:multiselect.html.twig
 
 ### Options
 
-| Option     | Type        | Default |          |
-|------------|-------------|---------|----------|
-| class      | string      | ''      |          |
-| padding    | string      | ''      |          |
-| name       | string      | ''      |          |
-| title      | string      | ''      |          |
-| type       | string      | ''      |          |
-| visible    | boolean     | true    |          |
-| width      | string      | ''      |          |
-| start_html | string      | ''      |          |
-| end_html   | string      | ''      |          |
-| actions    | array       |         | required |
-| attributes | array       | array() |          |
-| value      | string      | 'id'    |          |
+| Option             | Type        | Default | Required | Description |
+|--------------------|-------------|---------|----------|-------------|
+| class              | string      | ''      |          | Class to assign to each cell in the column. |
+| padding            | string      | ''      |          | Add padding to the text content used when calculating the optimal width for a table. |
+| name               | string      | ''      |          | Set a descriptive name for a column. |
+| title              | string      | ''      |          | The displayed column title. This value is not translated automatically. |
+| type               | string      | ''      |          | Set the column type - used for filtering and sorting string processing. |
+| visible            | boolean     | true    |          | Display or hide this column completly so no data will be displayed in the browser. |
+| width              | string      | ''      |          | Adjust the column's width. This value will set the element attribute `style="width: XXXpx;`. |
+| start_html         | string      | ''      |          | Start HTML - use in combination with `end_html` to define a wrapper element. |
+| end_html           | string      | ''      |          | End HTML |
+| add_if             | Closure     | null    |          | Add a closure to check e.g. the current user's permissions and display a column depending on that result. |
+| actions            | array       |         | ✔        | The actions container, see [Action options](#action-options). |
+| attributes         | array       | array() |          | Add some element attributes e.g. to style link as a boostrap button (see example below). |
+| value              | string      | 'id'    |          | |
+| render_checkbox_if | Closure     | null    |          | Add a closure and render the current cell only if it does match some condition. |
 
 ### Multiselect-Action options
 
-| Option           | Type        | Default |          |
-|------------------|-------------|---------|----------|
-| route            | string      |         | required |
-| route_parameters | array       | array() |          |
-| icon             | string      | ''      |          |
-| label            | string      | ''      |          |
-| attributes       | array       | array() |          |
-| role             | string      | ''      |          |
+| Option           | Type    | Default                      | Required | Description |
+|------------------|---------|------------------------------|----------|-------------|
+| route            | string  |                              | ✔        | Redirect user to this route ... |
+| route_parameters | array   | array()                      |          | ... using the following optional route parameters. |
+| icon             | string  | ''                           |          | Display an icon e.g. `glyphicon glyphicon-new-window`. |
+| label            | string  | ''                           |          | Optional label text to display. |
+| confirm          | boolean | false                        |          | Show a confirm dialog on click. |
+| confirm_message  | string  | 'datatables.bulk.confirmMsg' |          | Display this confirm dialog message to the user. |
+| attributes       | array   | array()                      |          | Add some element attributes e.g. to style link as a boostrap button (see example below). |
+| render_if        | Closure | null                         |          | Render depending on a closure condition e.g. permissions. |
 
 ### Example
 
@@ -451,11 +472,19 @@ $this->getColumnBuilder()
             'class' => 'testclass',
             'name' => 'testname',
         ),
+        'add_if' => function() {
+            return ($this->authorizationChecker->isGranted('ROLE_ADMIN'));
+        },
+        'render_checkbox_if' => function($row) {
+            return ($row['public'] == true);
+        },
         'actions' => array(
             array(
                 'route' => 'post_bulk_delete',
                 'label' => 'Delete',
-                'role' => 'ROLE_ADMIN',
+                'render_if' => function() {
+                    return ($this->authorizationChecker->isGranted('ROLE_ADMIN'));
+                },
                 'icon' => 'fa fa-times',
                 'attributes' => array(
                     'rel' => 'tooltip',
@@ -521,6 +550,10 @@ ___
 
 Shows an uploaded image.
 
+For proper display of images as thumbnails the LiipImagineBundle is required. Please follow all steps as described [here](http://symfony.com/doc/master/bundles/LiipImagineBundle/installation.html).
+
+To upload images, I recommend the VichUploaderBundle. You can follow all steps as described [here](https://github.com/dustin10/VichUploaderBundle/blob/master/Resources/doc/index.md).
+
 Example entity:
 
 ```php
@@ -559,24 +592,27 @@ SgDatatablesBundle:Column:image.html.twig
 
 ### Options
 
-| Option               | Type           | Default                |          |
-|----------------------|----------------|------------------------|----------|
-| class                | string         | ''                     |          |
-| padding              | string         | ''                     |          |
-| name                 | string         | ''                     |          |
-| orderable            | boolean        | false                  |          |
-| searchable           | boolean        | false                  |          |
-| title                | string         | ''                     |          |
-| type                 | string         | ''                     |          |
-| visible              | boolean        | true                   |          |
-| width                | string         | ''                     |          |
-| filter               | array          | array('text', array()) |          |
-| imagine_filter       | string         | ''                     |          |
-| relative_path        | string         |                        | required |
-| holder_url           | string         | ''                     |          |
-| holder_width         | string         | '50'                   |          |
-| holder_height        | string         | '50'                   |          |
-| enlarge              | boolean        | false                  |          |
+| Option                   | Type           | Default                | Required | Description |
+|--------------------------|----------------|------------------------|----------|-------------|
+| class                    | string         | ''                     |          | Class to assign to each cell in the column. |
+| padding                  | string         | ''                     |          | Add padding to the text content used when calculating the optimal width for a table. |
+| name                     | string         | ''                     |          | Set a descriptive name for a column. |
+| orderable                | boolean        | false                  |          | Enable or disable ordering on this column. |
+| searchable               | boolean        | false                  |          | Enable or disable filtering on the data in this column. |
+| title                    | string         | ''                     |          | The displayed column title. This value is not translated automatically. |
+| type                     | string         | ''                     |          | Set the column type - used for filtering and sorting string processing. |
+| visible                  | boolean        | true                   |          | Display or hide this column completly so no data will be displayed in the browser. |
+| width                    | string         | ''                     |          | Adjust the column's width. This value will set the element attribute `style="width: XXXpx;`. |
+| order_sequence           | null or array  | null                   |          | Control the default ordering direction. |
+| filter                   | array          | array('text', array()) |          | See [Filtering](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filter.md#2-serverside-individual-column-filtering) for more information. |
+| add_if                   | Closure        | null                   |          | Add a closure to check e.g. the current user's permissions and display a column depending on that result. |
+| imagine_filter           | string         | ''                     |          | The imagine filter used to display image preview, see (LiipImagineBundle)[https://github.com/liip/LiipImagineBundle#basic-usage]. |
+| imagine_filter_enlarged  | null or string | null                   |          | The imagine filter used to display the enlarged image's size. If not set or null, no filter will be applied. Option `enlarge` need to be set to true too. |
+| relative_path            | string         |                        | ✔        | The relative path. |
+| holder_url               | string         | ''                     |          | The placeholder url e.g. "http://placehold.it". |
+| holder_width             | string         | '50'                   |          | The default width of the placeholder. |
+| holder_height            | string         | '50'                   |          | The default height of the placeholder. |
+| enlarge                  | boolean        | false                  |          | Enlarge thumbnail. |
 
 ### Example
 
@@ -586,6 +622,7 @@ $this->columnBuilder
         'title' => 'Bild',
         'relative_path' => 'images/posts',
         //'imagine_filter' => 'my_thumb_40x40',
+        //'imagine_filter_enlarged' => 'my_thumb_500x500',
         //'holder_url' => 'https://placehold.it',
         //'holder_width' => '65',
         //'holder_height' => '65',
@@ -598,6 +635,10 @@ ___
 ## 10. Gallery column
 
 This column shows a list of uploaded images.
+
+For proper display of images as thumbnails the LiipImagineBundle is required. Please follow all steps as described [here](http://symfony.com/doc/master/bundles/LiipImagineBundle/installation.html).
+
+To upload images, I recommend the VichUploaderBundle. You can follow all steps as described [here](https://github.com/dustin10/VichUploaderBundle/blob/master/Resources/doc/index.md).
 
 Example: Suppose you have an entity `Post`, and `Post` have one or more images associated.
 
@@ -676,25 +717,28 @@ SgDatatablesBundle:Column:image.html.twig
 
 ### Options
 
-| Option               | Type           | Default                |          |
-|----------------------|----------------|------------------------|----------|
-| class                | string         | ''                     |          |
-| padding              | string         | ''                     |          |
-| name                 | string         | ''                     |          |
-| orderable            | boolean        | false                  |          |
-| searchable           | boolean        | false                  |          |
-| title                | string         | ''                     |          |
-| type                 | string         | ''                     |          |
-| visible              | boolean        | true                   |          |
-| width                | string         | ''                     |          |
-| filter               | array          | array('text', array()) |          |
-| imagine_filter       | string         |                        | required |
-| relative_path        | string         |                        | required |
-| holder_url           | string         | ''                     |          |
-| holder_width         | string         | '50'                   |          |
-| holder_height        | string         | '50'                   |          |
-| enlarge              | boolean        | false                  |          |
-| view_limit           | integer        | 4                      |          |
+| Option                  | Type           | Default                | Required | Description |
+|-------------------------|----------------|------------------------|----------|-------------|
+| class                   | string         | ''                     |          | Class to assign to each cell in the column. |
+| padding                 | string         | ''                     |          | Add padding to the text content used when calculating the optimal width for a table. |
+| name                    | string         | ''                     |          | Set a descriptive name for a column. |
+| orderable               | boolean        | false                  |          | Enable or disable ordering on this column. |
+| searchable              | boolean        | false                  |          | Enable or disable filtering on the data in this column. |
+| title                   | string         | ''                     |          | The displayed column title. This value is not translated automatically. |
+| type                    | string         | ''                     |          | Set the column type - used for filtering and sorting string processing. |
+| visible                 | boolean        | true                   |          | Display or hide this column completly so no data will be displayed in the browser. |
+| width                   | string         | ''                     |          | Adjust the column's width. This value will set the element attribute `style="width: XXXpx;`. |
+| order_sequence          | null or array  | null                   |          | Control the default ordering direction. |
+| filter                  | array          | array('text', array()) |          | See [Filtering](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filter.md#2-serverside-individual-column-filtering) for more information. |
+| add_if                  | Closure        | null                   |          | Add a closure to check e.g. the current user's permissions and display a column depending on that result. |
+| imagine_filter          | string         |                        | ✔        | The imagine filter used to display image preview, see (LiipImagineBundle)[https://github.com/liip/LiipImagineBundle#basic-usage]. |
+| imagine_filter_enlarged | null or string | null                   |          | The imagine filter used to display the enlarged image's size. If not set or null, no filter will be applied. Option `enlarge` need to be set to true too. |
+| relative_path           | string         |                        | ✔        | The relative path. |
+| holder_url              | string         | ''                     |          | The placeholder url e.g. "http://placehold.it". |
+| holder_width            | string         | '50'                   |          | The default width of the placeholder. |
+| holder_height           | string         | '50'                   |          | The default height of the placeholder. |
+| enlarge                 | boolean        | false                  |          | Enlarge thumbnail. |
+| view_limit              | integer        | 4                      |          | Maximum number of images to be displayed. |
 
 ### Example
 
@@ -715,7 +759,7 @@ $this->columnBuilder
 
 ## 11. Progress Bar column
 
-Progress bars. Bootstrap 3 is recommended.
+This Column relies on [Bootstrap3](http://getbootstrap.com/).
 
 ### Default template
 
@@ -723,24 +767,26 @@ SgDatatablesBundle:Column:progress_bar.html.twig
 
 ### Options
 
-| Option               | Type           | Default               |
-|----------------------|----------------|-----------------------|
-| class                | string         | ''                    |
-| padding              | string         | ''                    |
-| name                 | string         | ''                    |
-| orderable            | boolean        | true                  |
-| render               | null or string | render_progress_bar   |
-| searchable           | boolean        | true                  |
-| title                | string         | ''                    |
-| type                 | string         | ''                    |
-| visible              | boolean        | true                  |
-| width                | string         | ''                    |
-| filter               | array          | see the below example |
-| bar_classes          | string         | ''                    |
-| value_min            | string         | '0'                   |
-| value_max            | string         | '100'                 |
-| label                | boolean        | true                  |
-| multi_color          | boolean        | false                 |
+| Option               | Type           | Default               | Required | Description |
+|----------------------|----------------|-----------------------|----------|-------------|
+| class                | string         | ''                    |          | Class to assign to each cell in the column. |
+| padding              | string         | ''                    |          | Add padding to the text content used when calculating the optimal width for a table. |
+| name                 | string         | ''                    |          | Set a descriptive name for a column. |
+| orderable            | boolean        | true                  |          | Enable or disable ordering on this column. |
+| render               | null or string | render_progress_bar   |          | This property will modify the data that is used by DataTables. |
+| searchable           | boolean        | true                  |          | Enable or disable filtering on the data in this column. |
+| title                | string         | ''                    |          | The displayed column title. This value is not translated automatically. |
+| type                 | string         | ''                    |          | Set the column type - used for filtering and sorting string processing. |
+| visible              | boolean        | true                  |          | Display or hide this column completly so no data will be displayed in the browser. |
+| width                | string         | ''                    |          | Adjust the column's width. This value will set the element attribute `style="width: XXXpx;`. |
+| order_sequence       | null or array  | null                  |          | Control the default ordering direction. |
+| filter               | array          | see the below example |          | See [Filtering](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filter.md#2-serverside-individual-column-filtering) for more information. |
+| add_if               | Closure        | null                  |          | Add a closure to check e.g. the current user's permissions and display a column depending on that result. |
+| bar_classes          | string         | ''                    |          | |
+| value_min            | string         | '0'                   |          | |
+| value_max            | string         | '100'                 |          | |
+| label                | boolean        | true                  |          | |
+| multi_color          | boolean        | false                 |          | |
 
 ### Example
 
@@ -774,7 +820,6 @@ use it in the Datatable class:
         ->add('client.name', new MyOtherOwnColumn(), [...])
     ...
 ```
-.
 
 - Define `getTemplate` to talk to datatables api : (ex. `SgDatatablesBundle:Column:column.html.twig`)
 - Implement the `renderContent` function to render complexe contents

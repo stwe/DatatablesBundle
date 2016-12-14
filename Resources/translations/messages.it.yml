@@ -8,6 +8,7 @@ datatables:
         infoFiltered: "(filtrati da _MAX_ record totali)"
         infoPostFix: ""
         search: "Cerca"
+        searchPlaceholder: ""
         first: "Primo"
         previous: "Precedente"
         next: "Successivo"
@@ -33,3 +34,7 @@ daterange:
     format: "DD-MM-YYYY"
 editable:
     tableRedraw: "I cambiamenti riguardano record multipli. La tabella è ridisegnata con i nuovi dati."
+filter:
+    default: "default"
+query:
+    filtered: "(filtered)"

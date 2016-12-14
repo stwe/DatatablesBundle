@@ -1,0 +1,82 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{% extends 'SgDatatablesBundle:Filters:filter.html.twig' %}
+
+{% block html %}
+    <select
+        {% if column.filter.multiple %}multiple="multiple"{% endif %}
+        id="{{ tableId }}-sg-filter-{{ selectorId }}"
+        class="individual_filtering{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
+        style="width:100%;"
+        {% if column.name %}name="{{ column.name }}"{% endif %}
+        data-filter-property-id="{{ filterColumnId }}"
+        data-search-column="{{ column.filter.searchColumn }}"
+    >
+        {% if column.filter.searchColumn %}
+            <option value="{{ column.filter.searchColumn }}">
+                {{ column.filter.searchColumn }} ({{ 'filter.default'|trans({}, 'messages') }})
+            </option>
+        {% endif %}
+        {% for key, name in column.filter.selectOptions %}
+            <option value="{{ key }}">{{ name }}</option>
+        {% endfor %}
+    </select>
+    {% if true == column.filter.cancelButton %}
+        {{ cancel_button_html }}
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+
+    <script>
+        $('#{{ tableId }}-sg-filter-{{ selectorId }}').select2({
+            {% if column.filter.placeholder %}placeholder: "{{ column.filter.placeholder }}",{% endif %}
+            tags: {{ column.filter.tags ? 'true' : 'false' }},
+            allowClear: {{ column.filter.allowClear ? 'true' : 'false' }},
+            language: "{{ column.filter.language }}",
+            dropdownAutoWidth : true,
+            {% if column.filter.url %}
+            ajax: {
+                url: "{{ path(column.filter.url) }}",
+                dataType: 'json',
+                delay: {{ column.filter.delay }},
+                cache: {{ column.filter.cache ? 'true' : 'false' }},
+                data: function (params) {
+                    return {
+                        q: params.term,
+                        page: params.page
+                    };
+                },
+                processResults: function (data, params) {
+                    params.page = params.page || 1;
+
+                    var resultArray = [];
+                    for (var id in data) {
+                        resultArray.push({
+                            id : data[id],
+                            text : data[id]
+                        });
+                    }
+
+                    return {
+                        results: resultArray,
+                        pagination: {
+                            more: (params.page * 30) < data.total_count
+                        }
+                    };
+                }
+            },
+            {% endif %}
+        });
+        {% if column.filter.searchColumn %}
+            $('#{{ tableId }}-sg-filter-{{ selectorId }}').val($('#{{ tableId }}-sg-filter-{{ selectorId }} option:first-child').val()).trigger('change');
+        {% endif %}
+    </script>
+{% endblock %}

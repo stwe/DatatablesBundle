@@ -6,14 +6,10 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-{% set visible = false %}
-
 {% set multiple_actions %}
     <div>
         {% for action in column.actions %}
-            {% set visible = (action.role and app.user is not null and is_granted(action.role) or not action.role) ? true : false %}
-
-            {% if visible %}
+            {% if action.isRenderIfClosure %}
                 {% set route = action.route ? path(action.route, action.routeParameters) : '' %}
                 {% set attributes %}
                     {% for key, value in action.attributes %} {{ key }}='{{ value }}'{% endfor %}
@@ -31,6 +27,10 @@ $(".{{ view_table_id }}_multiselect_checkall").click(function(event) {
     $("input.{{ view_table_id }}_multiselect_checkbox:checkbox").each(function() {
         this.checked = that.checked;
     });
+});
+
+$(selector).on('click', 'input.{{ view_table_id }}_multiselect_checkbox', function(event) {
+    updateCheckAll();
 });
 
 $(".{{ view_table_id }}_multiselect_action_click").on('click', function(event) {
@@ -54,7 +54,11 @@ $(".{{ view_table_id }}_multiselect_action_click").on('click', function(event) {
                 'token': '{{ token }}'
             },
             success: function(msg) {
-                oTable.draw();
+                {% if view_ajax.pipeline > 0 %}
+                    oTable.clearPipeline().draw();
+                {% else %}
+                    oTable.draw();
+                {% endif %}
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(XMLHttpRequest + ' ' + textStatus + ' ' +errorThrown);
@@ -64,3 +68,20 @@ $(".{{ view_table_id }}_multiselect_action_click").on('click', function(event) {
         alert("{{ 'datatables.bulk.selectError'|trans({}, 'messages') }}");
     }
 });
+
+function updateCheckAll(){
+    var $individual_all        = $("input.{{ view_table_id }}_multiselect_checkbox:checkbox");
+    var $individual_checked    = $("input.{{ view_table_id }}_multiselect_checkbox:checkbox:checked");
+    var $all                   = $(".{{ view_table_id }}_multiselect_checkall");
+
+    if($individual_checked.length === 0){
+        $all.prop('checked', false);
+        $all.prop('indeterminate', false);
+    } else if ($individual_checked.length === $individual_all.length){
+        $all.prop('checked', true);
+        $all.prop('indeterminate', false);
+    } else {
+        $all.prop('checked', false);
+        $all.prop('indeterminate', true);
+    }
+}

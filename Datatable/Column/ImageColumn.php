@@ -25,13 +25,24 @@ use Twig_Environment;
 class ImageColumn extends AbstractColumn
 {
     /**
-     * The imagine filter.
+     * The imagine filter used to display image preview.
      *
      * @link https://github.com/liip/LiipImagineBundle#basic-usage
      *
      * @var string
      */
     protected $imagineFilter;
+
+    /**
+     * The imagine filter used to display the enlarged image's size;
+     * if not set or null, no filter will be applied;
+     * $enlarged need to be set to true.
+     *
+     * @link https://github.com/liip/LiipImagineBundle#basic-usage
+     *
+     * @var string
+     */
+    protected $imagineFilterEnlarged;
 
     /**
      * The relative path.
@@ -98,18 +109,57 @@ class ImageColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function renderContent(&$item, DatatableQuery $datatableQuery = null)
+    public function renderContent(&$row, DatatableQuery $datatableQuery = null)
     {
         if (true === $datatableQuery->getImagineBundle()) {
-            $item[$this->getDql()] = $this->renderImage($item[$this->getDql()], $datatableQuery->getTwig());
+            if ($this->isAssociation()) {
+                $fields = explode('.', $this->getDql());
+                $field = $fields[0];
+
+                if (array_key_exists($field, $row) && null === $row[$field]) {
+                    $row[$field] = $this->renderImage(null, $datatableQuery->getTwig());
+                } else {
+                    $this->getAccessor()->setValue($row, $this->getDqlProperty(), $this->renderImage($this->getAccessor()->getValue($row, $this->getDqlProperty()), $datatableQuery->getTwig()));
+                }
+            } else {
+                $row[$this->getDql()] = $this->renderImage($row[$this->getDql()], $datatableQuery->getTwig());
+            }
         } else {
-            $item[$this->getDql()] = $datatableQuery->getTwig()->render(
-                'SgDatatablesBundle:Helper:render_image.html.twig',
-                array(
-                    'image_name' => $item[$this->getDql()],
-                    'path' => $this->getRelativePath()
-                )
-            );
+            if ($this->isAssociation()) {
+                $fields = explode('.', $this->getDql());
+                $field = $fields[0];
+
+                if (array_key_exists($field, $row) && null === $row[$field]) {
+                    $row[$field] = $datatableQuery->getTwig()->render(
+                        'SgDatatablesBundle:Helper:render_image.html.twig',
+                        array(
+                            'image_name' => null,
+                            'path' => $this->getRelativePath(),
+                        )
+                    );
+                } else {
+                    $render = $datatableQuery->getTwig()->render(
+                        'SgDatatablesBundle:Helper:render_image.html.twig',
+                        array(
+                            'image_name' => $this->getAccessor()->getValue($row, $this->getDqlProperty()),
+                            'path' => $this->getRelativePath(),
+                        )
+                    );
+                    $this->getAccessor()->setValue($row, $this->getDqlProperty(), $render);
+                }
+            } else {
+                $this->getAccessor()->setValue(
+                    $row,
+                    $this->getDqlProperty(),
+                    $datatableQuery->getTwig()->render(
+                        'SgDatatablesBundle:Helper:render_image.html.twig',
+                        array(
+                            'image_name' => $this->getAccessor()->getValue($row, $this->getDqlProperty()),
+                            'path' => $this->getRelativePath(),
+                        )
+                    )
+                );
+            }
         }
     }
 
@@ -126,9 +176,9 @@ class ImageColumn extends AbstractColumn
         return $twig->render(
             'SgDatatablesBundle:Helper:ii_render_image.html.twig',
             array(
-                'image_id' => 'sg_image_' . uniqid(rand(10000, 99999)),
                 'image_name' => $imageName,
                 'filter' => $this->getImagineFilter(),
+                'enlarged_filter' => $this->getImagineFilterEnlarged(),
                 'path' => $this->getRelativePath(),
                 'holder_url' => $this->getHolderUrl(),
                 'width' => $this->getHolderWidth(),
@@ -155,37 +205,28 @@ class ImageColumn extends AbstractColumn
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        parent::configureOptions($resolver);
+
+        $resolver->remove('default_content');
+        $resolver->remove('render');
+
         $resolver->setRequired(array('relative_path'));
 
         $resolver->setDefaults(array(
-            'class' => '',
-            'padding' => '',
-            'name' => '',
             'orderable' => false,
             'searchable' => false,
-            'title' => '',
-            'type' => '',
-            'visible' => true,
-            'width' => '',
             'filter' => array('text', array()),
             'imagine_filter' => '',
+            'imagine_filter_enlarged' => null,
             'holder_url' => '',
             'holder_width' => '50',
             'holder_height' => '50',
             'enlarge' => false
         ));
 
-        $resolver->setAllowedTypes('class', 'string');
-        $resolver->setAllowedTypes('padding', 'string');
-        $resolver->setAllowedTypes('name', 'string');
-        $resolver->setAllowedTypes('orderable', 'bool');
-        $resolver->setAllowedTypes('searchable', 'bool');
-        $resolver->setAllowedTypes('title', 'string');
-        $resolver->setAllowedTypes('type', 'string');
-        $resolver->setAllowedTypes('visible', 'bool');
-        $resolver->setAllowedTypes('width', 'string');
         $resolver->setAllowedTypes('filter', 'array');
         $resolver->setAllowedTypes('imagine_filter', 'string');
+        $resolver->setAllowedTypes('imagine_filter_enlarged', array('string', 'null'));
         $resolver->setAllowedTypes('relative_path', 'string');
         $resolver->setAllowedTypes('holder_url', 'string');
         $resolver->setAllowedTypes('holder_width', 'string');
@@ -221,6 +262,30 @@ class ImageColumn extends AbstractColumn
     public function getImagineFilter()
     {
         return $this->imagineFilter;
+    }
+
+    /**
+     * Set imagineFilterEnlarged.
+     *
+     * @param string $imagineFilterEnlarged
+     *
+     * @return $this
+     */
+    public function setImagineFilterEnlarged($imagineFilterEnlarged)
+    {
+        $this->imagineFilterEnlarged = $imagineFilterEnlarged;
+
+        return $this;
+    }
+
+    /**
+     * Get imagineFilterEnlarged.
+     *
+     * @return string
+     */
+    public function getImagineFilterEnlarged()
+    {
+        return $this->imagineFilterEnlarged;
     }
 
     /**

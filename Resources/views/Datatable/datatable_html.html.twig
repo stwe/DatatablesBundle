@@ -1,8 +1,18 @@
-{{ view_actions.startHtml|raw }}
-{% for action in view_actions.actions %}
-    {% include 'SgDatatablesBundle:Action:top_actions.html.twig' %}
-{% endfor %}
-{{ view_actions.endHtml|raw }}
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{% if true == view_actions.isAddIfClosure %}
+    {{ view_actions.startHtml|raw }}
+    {% for action in view_actions.actions %}
+        {% include 'SgDatatablesBundle:Action:top_actions.html.twig' %}
+    {% endfor %}
+    {{ view_actions.endHtml|raw }}
+{% endif %}
 
 <table cellpadding="0" cellspacing="0" class="{{ view_options.class }}" border="0" id="{{ view_table_id }}" width="100%">
     <thead>

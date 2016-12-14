@@ -15,6 +15,8 @@ use Sg\DatatablesBundle\Datatable\View\AbstractViewOptions;
 use Sg\DatatablesBundle\OptionsResolver\OptionsInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query\Expr\Andx;
 
 /**
  * Class AbstractFilter
@@ -57,6 +59,11 @@ abstract class AbstractFilter implements FilterInterface, OptionsInterface
      */
     protected $class;
 
+    /**
+     * @var boolean
+     */
+    protected $cancelButton;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -94,6 +101,107 @@ abstract class AbstractFilter implements FilterInterface, OptionsInterface
     }
 
     //-------------------------------------------------
+    // FilterInterface
+    //-------------------------------------------------
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProperty()
+    {
+        return $this->property;
+    }
+
+    //-------------------------------------------------
+    // Helper
+    //-------------------------------------------------
+
+    /**
+     * Get a condition.
+     *
+     * @param Andx         $andExpr
+     * @param QueryBuilder $pivot
+     * @param string       $searchField
+     * @param mixed        $searchValue
+     * @param integer      $i
+     *
+     * @return Andx
+     */
+    protected function getAndExpression(Andx $andExpr, QueryBuilder $pivot, $searchField, $searchValue, $i)
+    {
+        switch ($this->getSearchType()) {
+            case 'like':
+                $andExpr->add($pivot->expr()->like($searchField, '?' . $i));
+                $pivot->setParameter($i, '%' . $searchValue . '%');
+                break;
+            case 'notLike':
+                $andExpr->add($pivot->expr()->notLike($searchField, '?' . $i));
+                $pivot->setParameter($i, '%' . $searchValue . '%');
+                break;
+            case 'eq':
+                $andExpr->add($pivot->expr()->eq($searchField, '?' . $i));
+                $pivot->setParameter($i, $searchValue);
+                break;
+            case 'neq':
+                $andExpr->add($pivot->expr()->neq($searchField, '?' . $i));
+                $pivot->setParameter($i, $searchValue);
+                break;
+            case 'lt':
+                $andExpr->add($pivot->expr()->lt($searchField, '?' . $i));
+                $pivot->setParameter($i, $searchValue);
+                break;
+            case 'lte':
+                $andExpr->add($pivot->expr()->lte($searchField, '?' . $i));
+                $pivot->setParameter($i, $searchValue);
+                break;
+            case 'gt':
+                $andExpr->add($pivot->expr()->gt($searchField, '?' . $i));
+                $pivot->setParameter($i, $searchValue);
+                break;
+            case 'gte':
+                $andExpr->add($pivot->expr()->gte($searchField, '?' . $i));
+                $pivot->setParameter($i, $searchValue);
+                break;
+            case 'in':
+                $andExpr->add($pivot->expr()->in($searchField, '?' . $i));
+                $pivot->setParameter($i, explode(',', $searchValue));
+                break;
+            case 'notIn':
+                $andExpr->add($pivot->expr()->notIn($searchField, '?' . $i));
+                $pivot->setParameter($i, explode(',', $searchValue));
+                break;
+            case 'isNull':
+                $andExpr->add($pivot->expr()->isNull($searchField));
+                break;
+            case 'isNotNull':
+                $andExpr->add($pivot->expr()->isNotNull($searchField));
+                break;
+        }
+
+        return $andExpr;
+    }
+
+    /**
+     * @param Andx         $andExpr
+     * @param QueryBuilder $pivot
+     * @param string       $searchField
+     * @param mixed        $from
+     * @param mixed        $to
+     * @param integer      $i
+     *
+     * @return Andx
+     */
+    protected function getBetweenAndExpression(Andx $andExpr, QueryBuilder $pivot, $searchField, $from, $to, $i)
+    {
+        $k = $i + 1;
+        $andExpr->add($pivot->expr()->between($searchField, '?' . $i, '?' . $k));
+        $pivot->setParameter($i, $from);
+        $pivot->setParameter($k, $to);
+
+        return $andExpr;
+    }
+
+    //-------------------------------------------------
     // Getters && Setters
     //-------------------------------------------------
 
@@ -119,16 +227,6 @@ abstract class AbstractFilter implements FilterInterface, OptionsInterface
         $this->searchType = $searchType;
 
         return $this;
-    }
-
-    /**
-     * Get property.
-     *
-     * @return string
-     */
-    public function getProperty()
-    {
-        return $this->property;
     }
 
     /**
@@ -189,6 +287,30 @@ abstract class AbstractFilter implements FilterInterface, OptionsInterface
     public function setClass($class)
     {
         $this->class = $class;
+
+        return $this;
+    }
+
+    /**
+     * Get cancel button.
+     *
+     * @return boolean
+     */
+    public function getCancelButton()
+    {
+        return $this->cancelButton;
+    }
+
+    /**
+     * Set cancel button.
+     *
+     * @param boolean $cancelButton
+     *
+     * @return $this
+     */
+    public function setCancelButton($cancelButton)
+    {
+        $this->cancelButton = $cancelButton;
 
         return $this;
     }

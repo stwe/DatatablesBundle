@@ -158,6 +158,20 @@ class Options extends AbstractViewOptions
      */
     protected $forceDom;
 
+    /**
+     * Data property name that DataTables will use to set tr element DOM IDs.
+     *
+     * @var string
+     */
+    protected $rowId;
+
+    /**
+     * Count and show all results.
+     *
+     * @var boolean
+     */
+    protected $countAllResults;
+
     //-------------------------------------------------
     // OptionsInterface
     //-------------------------------------------------
@@ -201,9 +215,11 @@ class Options extends AbstractViewOptions
             'stripe_classes' => array(),
             'class' => Style::BASE_STYLE,
             'individual_filtering' => false,
-            'individual_filtering_position' => 'foot',
+            'individual_filtering_position' => 'head',
             'use_integration_options' => false,
-            'force_dom' => false
+            'force_dom' => false,
+            'row_id' => '',
+            'count_all_results' => true
         ));
 
         $resolver->setAllowedTypes('display_start', 'int');
@@ -225,6 +241,8 @@ class Options extends AbstractViewOptions
         $resolver->setAllowedTypes('individual_filtering_position', 'string');
         $resolver->setAllowedTypes('use_integration_options', 'bool');
         $resolver->setAllowedTypes('force_dom', 'bool');
+        $resolver->setAllowedTypes('row_id', 'string');
+        $resolver->setAllowedTypes('count_all_results', 'bool');
 
         $resolver->setAllowedValues('individual_filtering_position', array('head', 'foot', 'both'));
 
@@ -700,5 +718,53 @@ class Options extends AbstractViewOptions
     public function getForceDom()
     {
         return $this->forceDom;
+    }
+
+    /**
+     * Set rowId.
+     *
+     * @param string $rowId
+     *
+     * @return $this
+     */
+    protected function setRowId($rowId)
+    {
+        $this->rowId = $rowId;
+
+        return $this;
+    }
+
+    /**
+     * Get rowId.
+     *
+     * @return string
+     */
+    public function getRowId()
+    {
+        return $this->rowId;
+    }
+
+    /**
+     * Set count all results.
+     *
+     * @param boolean $countAllResults
+     *
+     * @return $this
+     */
+    protected function setCountAllResults($countAllResults)
+    {
+        $this->countAllResults = $countAllResults;
+
+        return $this;
+    }
+
+    /**
+     * Get count all results.
+     *
+     * @return boolean
+     */
+    public function getCountAllResults()
+    {
+        return $this->countAllResults;
     }
 }

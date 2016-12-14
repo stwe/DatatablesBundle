@@ -6,13 +6,4 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-{% block html %}
-    <input type="text"
-           class="individual_filtering{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
-           style="{% if column.width %} width:{{ column.width }};{% endif %}"
-           placeholder="{{ column.title|striptags|trim }}"
-           {% if column.name %}name="{{ column.name }}"{% endif %} />
-{% endblock %}
-{% block javascript %}
-{% endblock %}
-
+{% extends 'SgDatatablesBundle:Filters:filter.html.twig' %}

@@ -23,98 +23,98 @@ class Callbacks extends AbstractViewOptions
     /**
      * Callback for whenever a TR element is created for the table's body.
      *
-     * @var string
+     * @var array
      */
     protected $createdRow;
 
     /**
      * Function that is called every time DataTables performs a draw.
      *
-     * @var string
+     * @var array
      */
     protected $drawCallback;
 
     /**
      * Footer display callback function.
      *
-     * @var string
+     * @var array
      */
     protected $footerCallback;
 
     /**
      * Number formatting callback function.
      *
-     * @var string
+     * @var array
      */
     protected $formatNumber;
 
     /**
      * Header display callback function.
      *
-     * @var string
+     * @var array
      */
     protected $headerCallback;
 
     /**
      * Table summary information display callback.
      *
-     * @var string
+     * @var array
      */
     protected $infoCallback;
 
     /**
      * Initialisation complete callback.
      *
-     * @var string
+     * @var array
      */
     protected $initComplete;
 
     /**
      * Pre-draw callback.
      *
-     * @var string
+     * @var array
      */
     protected $preDrawCallback;
 
     /**
      * Row draw callback.
      *
-     * @var string
+     * @var array
      */
     protected $rowCallback;
 
     /**
      * Callback that defines where and how a saved state should be loaded.
      *
-     * @var string
+     * @var array
      */
     protected $stateLoadCallback;
 
     /**
      * State loaded callback.
      *
-     * @var string
+     * @var array
      */
     protected $stateLoaded;
 
     /**
-     * State loaded - data manipulation callback
+     * State loaded - data manipulation callback.
      *
-     * @var string
+     * @var array
      */
     protected $stateLoadParams;
 
     /**
      * Callback that defines how the table state is stored and where.
      *
-     * @var string
+     * @var array
      */
     protected $stateSaveCallback;
 
     /**
-     * State save - data manipulation callback
+     * State save - data manipulation callback.
      *
-     * @var string
+     * @var array
      */
     protected $stateSaveParams;
 
@@ -128,36 +128,60 @@ class Callbacks extends AbstractViewOptions
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'created_row' => '',
-            'draw_callback' => '',
-            'footer_callback' => '',
-            'format_number' => '',
-            'header_callback' => '',
-            'info_callback' => '',
-            'init_complete' => '',
-            'pre_draw_callback' => '',
-            'row_callback' => '',
-            'state_load_callback' => '',
-            'state_loaded' => '',
-            'state_load_params' => '',
-            'state_save_callback' => '',
-            'state_save_params' => '',
+            'created_row' => array(),
+            'draw_callback' => array(),
+            'footer_callback' => array(),
+            'format_number' => array(),
+            'header_callback' => array(),
+            'info_callback' => array(),
+            'init_complete' => array(),
+            'pre_draw_callback' => array(),
+            'row_callback' => array(),
+            'state_load_callback' => array(),
+            'state_loaded' => array(),
+            'state_load_params' => array(),
+            'state_save_callback' => array(),
+            'state_save_params' => array(),
         ));
 
-        $resolver->setAllowedTypes('created_row', 'string');
-        $resolver->setAllowedTypes('draw_callback', 'string');
-        $resolver->setAllowedTypes('footer_callback', 'string');
-        $resolver->setAllowedTypes('format_number', 'string');
-        $resolver->setAllowedTypes('header_callback', 'string');
-        $resolver->setAllowedTypes('info_callback', 'string');
-        $resolver->setAllowedTypes('init_complete', 'string');
-        $resolver->setAllowedTypes('pre_draw_callback', 'string');
-        $resolver->setAllowedTypes('row_callback', 'string');
-        $resolver->setAllowedTypes('state_load_callback', 'string');
-        $resolver->setAllowedTypes('state_loaded', 'string');
-        $resolver->setAllowedTypes('state_load_params', 'string');
-        $resolver->setAllowedTypes('state_save_callback', 'string');
-        $resolver->setAllowedTypes('state_save_params', 'string');
+        $resolver->setAllowedTypes('created_row', 'array');
+        $resolver->setAllowedTypes('draw_callback', 'array');
+        $resolver->setAllowedTypes('footer_callback', 'array');
+        $resolver->setAllowedTypes('format_number', 'array');
+        $resolver->setAllowedTypes('header_callback', 'array');
+        $resolver->setAllowedTypes('info_callback', 'array');
+        $resolver->setAllowedTypes('init_complete', 'array');
+        $resolver->setAllowedTypes('pre_draw_callback', 'array');
+        $resolver->setAllowedTypes('row_callback', 'array');
+        $resolver->setAllowedTypes('state_load_callback', 'array');
+        $resolver->setAllowedTypes('state_loaded', 'array');
+        $resolver->setAllowedTypes('state_load_params', 'array');
+        $resolver->setAllowedTypes('state_save_callback', 'array');
+        $resolver->setAllowedTypes('state_save_params', 'array');
+
+        $this->nestedOptionsResolver = new OptionsResolver();
+
+        return $this;
+    }
+
+    /**
+     * Configure and resolve nested options.
+     *
+     * @param array $options
+     *
+     * @return $this
+     */
+    public function configureAndResolveNestedOptions(array $options)
+    {
+        $this->nestedOptionsResolver->setDefaults(array(
+            'template' => '',
+            'vars' => null,
+        ));
+
+        $this->nestedOptionsResolver->setAllowedTypes('template', 'string');
+        $this->nestedOptionsResolver->setAllowedTypes('vars', array('array', 'null'));
+
+        $this->nestedOptionsResolver->resolve($options);
 
         return $this;
     }
@@ -169,21 +193,21 @@ class Callbacks extends AbstractViewOptions
     /**
      * Get CreatedRow.
      *
-     * @return string
+     * @return array
      */
     public function getCreatedRow()
     {
-        return (string) $this->createdRow;
+        return $this->createdRow;
     }
 
     /**
      * Set CreatedRow.
      *
-     * @param string $createdRow
+     * @param array $createdRow
      *
      * @return $this
      */
-    protected function setCreatedRow($createdRow)
+    protected function setCreatedRow(array $createdRow)
     {
         $this->createdRow = $createdRow;
 
@@ -193,21 +217,21 @@ class Callbacks extends AbstractViewOptions
     /**
      * Get DrawCallback.
      *
-     * @return string
+     * @return array
      */
     public function getDrawCallback()
     {
-        return (string) $this->drawCallback;
+        return $this->drawCallback;
     }
 
     /**
      * Set DrawCallback.
      *
-     * @param string $drawCallback
+     * @param array $drawCallback
      *
      * @return $this
      */
-    protected function setDrawCallback($drawCallback)
+    protected function setDrawCallback(array $drawCallback)
     {
         $this->drawCallback = $drawCallback;
 
@@ -217,21 +241,21 @@ class Callbacks extends AbstractViewOptions
     /**
      * Get FooterCallback.
      *
-     * @return string
+     * @return array
      */
     public function getFooterCallback()
     {
-        return (string) $this->footerCallback;
+        return $this->footerCallback;
     }
 
     /**
      * Set FooterCallback.
      *
-     * @param string $footerCallback
+     * @param array $footerCallback
      *
      * @return $this
      */
-    protected function setFooterCallback($footerCallback)
+    protected function setFooterCallback(array $footerCallback)
     {
         $this->footerCallback = $footerCallback;
 
@@ -241,21 +265,21 @@ class Callbacks extends AbstractViewOptions
     /**
      * Get FormatNumber.
      *
-     * @return string
+     * @return array
      */
     public function getFormatNumber()
     {
-        return (string) $this->formatNumber;
+        return $this->formatNumber;
     }
 
     /**
      * Set FormatNumber.
      *
-     * @param string $formatNumber
+     * @param array $formatNumber
      *
      * @return $this
      */
-    protected function setFormatNumber($formatNumber)
+    protected function setFormatNumber(array $formatNumber)
     {
         $this->formatNumber = $formatNumber;
 
@@ -265,21 +289,21 @@ class Callbacks extends AbstractViewOptions
     /**
      * Get HeaderCallback.
      *
-     * @return string
+     * @return array
      */
     public function getHeaderCallback()
     {
-        return (string) $this->headerCallback;
+        return $this->headerCallback;
     }
 
     /**
      * Set HeaderCallback.
      *
-     * @param string $headerCallback
+     * @param array $headerCallback
      *
      * @return $this
      */
-    protected function setHeaderCallback($headerCallback)
+    protected function setHeaderCallback(array $headerCallback)
     {
         $this->headerCallback = $headerCallback;
 
@@ -289,21 +313,21 @@ class Callbacks extends AbstractViewOptions
     /**
      * Get InfoCallback.
      *
-     * @return string
+     * @return array
      */
     public function getInfoCallback()
     {
-        return (string) $this->infoCallback;
+        return $this->infoCallback;
     }
 
     /**
      * Set InfoCallback.
      *
-     * @param string $infoCallback
+     * @param array $infoCallback
      *
      * @return $this
      */
-    protected function setInfoCallback($infoCallback)
+    protected function setInfoCallback(array $infoCallback)
     {
         $this->infoCallback = $infoCallback;
 
@@ -313,21 +337,21 @@ class Callbacks extends AbstractViewOptions
     /**
      * Get InitComplete.
      *
-     * @return string
+     * @return array
      */
     public function getInitComplete()
     {
-        return (string) $this->initComplete;
+        return $this->initComplete;
     }
 
     /**
      * Set InitComplete.
      *
-     * @param string $initComplete
+     * @param array $initComplete
      *
      * @return $this
      */
-    protected function setInitComplete($initComplete)
+    protected function setInitComplete(array $initComplete)
     {
         $this->initComplete = $initComplete;
 
@@ -337,21 +361,21 @@ class Callbacks extends AbstractViewOptions
     /**
      * Get PreDrawCallback.
      *
-     * @return string
+     * @return array
      */
     public function getPreDrawCallback()
     {
-        return (string) $this->preDrawCallback;
+        return $this->preDrawCallback;
     }
 
     /**
      * Set PreDrawCallback.
      *
-     * @param string $preDrawCallback
+     * @param array $preDrawCallback
      *
      * @return $this
      */
-    protected function setPreDrawCallback($preDrawCallback)
+    protected function setPreDrawCallback(array $preDrawCallback)
     {
         $this->preDrawCallback = $preDrawCallback;
 
@@ -361,21 +385,21 @@ class Callbacks extends AbstractViewOptions
     /**
      * Get RowCallback.
      *
-     * @return string
+     * @return array
      */
     public function getRowCallback()
     {
-        return (string) $this->rowCallback;
+        return $this->rowCallback;
     }
 
     /**
      * Set RowCallback.
      *
-     * @param string $rowCallback
+     * @param array $rowCallback
      *
      * @return $this
      */
-    protected function setRowCallback($rowCallback)
+    protected function setRowCallback(array $rowCallback)
     {
         $this->rowCallback = $rowCallback;
 
@@ -385,21 +409,21 @@ class Callbacks extends AbstractViewOptions
     /**
      * Get StateLoadCallback.
      *
-     * @return string
+     * @return array
      */
     public function getStateLoadCallback()
     {
-        return (string) $this->stateLoadCallback;
+        return $this->stateLoadCallback;
     }
 
     /**
      * Set StateLoadCallback.
      *
-     * @param string $stateLoadCallback
+     * @param array $stateLoadCallback
      *
      * @return $this
      */
-    protected function setStateLoadCallback($stateLoadCallback)
+    protected function setStateLoadCallback(array $stateLoadCallback)
     {
         $this->stateLoadCallback = $stateLoadCallback;
 
@@ -409,21 +433,21 @@ class Callbacks extends AbstractViewOptions
     /**
      * Get StateLoaded.
      *
-     * @return string
+     * @return array
      */
     public function getStateLoaded()
     {
-        return (string) $this->stateLoaded;
+        return $this->stateLoaded;
     }
 
     /**
      * Set StateLoaded.
      *
-     * @param string $stateLoaded
+     * @param array $stateLoaded
      *
      * @return $this
      */
-    protected function setStateLoaded($stateLoaded)
+    protected function setStateLoaded(array $stateLoaded)
     {
         $this->stateLoaded = $stateLoaded;
 
@@ -433,21 +457,21 @@ class Callbacks extends AbstractViewOptions
     /**
      * Get StateLoadParams.
      *
-     * @return string
+     * @return array
      */
     public function getStateLoadParams()
     {
-        return (string) $this->stateLoadParams;
+        return $this->stateLoadParams;
     }
 
     /**
      * Set StateLoadParams.
      *
-     * @param string $stateLoadParams
+     * @param array $stateLoadParams
      *
      * @return $this
      */
-    protected function setStateLoadParams($stateLoadParams)
+    protected function setStateLoadParams(array $stateLoadParams)
     {
         $this->stateLoadParams = $stateLoadParams;
 
@@ -457,21 +481,21 @@ class Callbacks extends AbstractViewOptions
     /**
      * Get StateSaveCallback.
      *
-     * @return string
+     * @return array
      */
     public function getStateSaveCallback()
     {
-        return (string) $this->stateSaveCallback;
+        return $this->stateSaveCallback;
     }
 
     /**
      * Set StateSaveCallback.
      *
-     * @param string $stateSaveCallback
+     * @param array $stateSaveCallback
      *
      * @return $this
      */
-    protected function setStateSaveCallback($stateSaveCallback)
+    protected function setStateSaveCallback(array $stateSaveCallback)
     {
         $this->stateSaveCallback = $stateSaveCallback;
 
@@ -481,21 +505,21 @@ class Callbacks extends AbstractViewOptions
     /**
      * Get StateSaveParams.
      *
-     * @return string
+     * @return array
      */
     public function getStateSaveParams()
     {
-        return (string) $this->stateSaveParams;
+        return $this->stateSaveParams;
     }
 
     /**
      * Set StateSaveParams.
      *
-     * @param string $stateSaveParams
+     * @param array $stateSaveParams
      *
      * @return $this
      */
-    protected function setStateSaveParams($stateSaveParams)
+    protected function setStateSaveParams(array $stateSaveParams)
     {
         $this->stateSaveParams = $stateSaveParams;
 

@@ -31,7 +31,7 @@ class ArrayColumn extends Column
     protected $count;
 
     /**
-     * The counter represents a link.
+     * The counter is a link.
      *
      * @var Action
      */
@@ -70,6 +70,21 @@ class ArrayColumn extends Column
     /**
      * {@inheritdoc}
      */
+    public function addDataToOutputArray(&$row)
+    {
+        $actionRowItem = array();
+
+        if (!empty($this->countAction)) {
+            $actionRowItem[$this->countAction->getRoute()] = $this->countAction->isRenderIfClosure($row);
+            $row['sg_datatables_actions'][$this->getIndex()] = $actionRowItem;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAlias()
     {
         return 'array';
@@ -86,16 +101,17 @@ class ArrayColumn extends Column
     {
         parent::configureOptions($resolver);
 
-        $resolver->remove(array('editable'));
+        $resolver->remove('editable');
+        $resolver->remove('editable_if');
 
         $resolver->setRequired(array('data'));
 
         $resolver->setDefault('count', false);
         $resolver->setDefault('count_action', array());
 
-        $resolver->addAllowedTypes('data', 'string');
+        $resolver->setAllowedTypes('data', 'string');
         $resolver->setAllowedTypes('count', 'bool');
-        $resolver->addAllowedTypes('count_action', 'array');
+        $resolver->setAllowedTypes('count_action', 'array');
 
         return $this;
     }

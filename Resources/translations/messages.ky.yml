@@ -1,0 +1,40 @@
+datatables:
+    datatable:
+        processing: "Уланууда..."
+        lengthMenu: "_MENU_ жазылыш көрсөтүлдү"
+        zeroRecords: "Эч нерсе табылбады"
+        info: "_TOTAL_ маалыматтын ичинден _START_ ден _END_ чейин маалымат табылды"
+        infoEmpty: "0 маалыматтын ичинден 0 дон 0 го чейин көрсөтүлүүдө"
+        infoFiltered: "(_MAX_ маалыматтан фильтрленген)"
+        infoPostFix: ""
+        search: "Издөө"
+        searchPlaceholder: ""
+        first: "Биринчи"
+        previous: "Мурунку"
+        next: "Кийинки"
+        last: "Акыркы"
+        all: "Баары"
+    bulk:
+        confirmMsg: "Сиз туура деп ойлойсузбу?"
+        selectError: "Сиз жок дегенде бир элемент тандашыңыз керек"
+        ok: "Ok"
+    actions:
+        title: "Кыймыл-Аракет"
+        show: "Көрсөтүү"
+        new: "Жаңы"
+        edit: "Редакциялоо"
+        delete: "Өчүрүү"
+        toList: "Тизмеге кайтуу"
+        save: "Сактоо"
+    dialog:
+        close: "Жабуу"
+daterange:
+    apply: "Колдонуу"
+    cancel: "Баш тарт"
+    format: "DD.MM.YYYY"
+editable:
+    tableRedraw: "Таблица жаңыланууда."
+filter:
+    default: "default"
+query:
+    filtered: "(filtered)"

@@ -22,6 +22,13 @@ use Doctrine\ORM\Query\Expr\Andx;
 interface FilterInterface
 {
     /**
+     * Get property.
+     *
+     * @return string
+     */
+    public function getProperty();
+
+    /**
      * Get template.
      *
      * @return string
@@ -34,7 +41,7 @@ interface FilterInterface
      * @param Andx         $andExpr
      * @param QueryBuilder $pivot
      * @param string       $searchField
-     * @param string       $searchValue
+     * @param mixed        $searchValue
      * @param integer      $i
      *
      * @return Andx

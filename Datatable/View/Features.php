@@ -99,14 +99,6 @@ class Features extends AbstractViewOptions
     protected $searching;
 
     /**
-     * Feature control DataTables server-side processing mode.
-     *
-     * @var boolean
-     * @deprecated since v0.11 (to be removed in v0.12)
-     */
-    protected $serverSide;
-
-    /**
      * State saving - restore table state on page reload.
      *
      * @var boolean
@@ -162,7 +154,6 @@ class Features extends AbstractViewOptions
             'scroll_x' => false,
             'scroll_y' => '',
             'searching' => true,
-            'server_side' => true,
             'state_save' => false,
             'delay' => 0,
             'extensions' => array(),
@@ -181,7 +172,6 @@ class Features extends AbstractViewOptions
         $resolver->setAllowedTypes('scroll_x', 'bool');
         $resolver->setAllowedTypes('scroll_y', 'string');
         $resolver->setAllowedTypes('searching', 'bool');
-        $resolver->setAllowedTypes('server_side', 'bool');
         $resolver->setAllowedTypes('state_save', 'bool');
         $resolver->setAllowedTypes('delay', 'int');
         $resolver->setAllowedTypes('extensions', 'array');
@@ -459,32 +449,6 @@ class Features extends AbstractViewOptions
     public function getSearching()
     {
         return (boolean) $this->searching;
-    }
-
-    /**
-     * Set ServerSide.
-     *
-     * @param boolean $serverSide
-     *
-     * @return $this
-     * @deprecated since v0.11 (to be removed in v0.12)
-     */
-    protected function setServerSide($serverSide)
-    {
-        $this->serverSide = (boolean) $serverSide;
-
-        return $this;
-    }
-
-    /**
-     * Get ServerSide.
-     *
-     * @return boolean
-     * @deprecated since v0.11 (to be removed in v0.12)
-     */
-    public function getServerSide()
-    {
-        return (boolean) $this->serverSide;
     }
 
     /**

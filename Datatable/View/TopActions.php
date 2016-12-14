@@ -11,9 +11,10 @@
 
 namespace Sg\DatatablesBundle\Datatable\View;
 
-use Sg\DatatablesBundle\Datatable\Action\TopAction;
+use Sg\DatatablesBundle\Datatable\Action\Action;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Closure;
 
 /**
  * Class TopActions
@@ -37,6 +38,13 @@ class TopActions extends AbstractViewOptions
     protected $endHtml;
 
     /**
+     * Add Top-Action-Bar only if parameter / conditions are TRUE
+     *
+     * @var Closure|null
+     */
+    protected $addIf;
+
+    /**
      * The actions container.
      *
      * @var array
@@ -53,6 +61,7 @@ class TopActions extends AbstractViewOptions
     public function __construct()
     {
         $this->options = array();
+        $this->nestedOptionsResolver = null;
     }
 
     //-------------------------------------------------
@@ -68,11 +77,13 @@ class TopActions extends AbstractViewOptions
 
         $resolver->setDefaults(array(
             'start_html' => '',
-            'end_html' => ''
+            'end_html' => '',
+            'add_if' => null
         ));
 
         $resolver->setAllowedTypes('start_html', 'string');
         $resolver->setAllowedTypes('end_html', 'string');
+        $resolver->setAllowedTypes('add_if', array('Closure', 'null'));
         $resolver->setAllowedTypes('actions', 'array');
 
         return $this;
@@ -131,6 +142,30 @@ class TopActions extends AbstractViewOptions
     }
 
     /**
+     * Set addIf.
+     *
+     * @param Closure|null $addIf
+     *
+     * @return $this
+     */
+    public function setAddIf($addIf)
+    {
+        $this->addIf = $addIf;
+
+        return $this;
+    }
+
+    /**
+     * Get addIf.
+     *
+     * @return Closure|null
+     */
+    public function getAddIf()
+    {
+        return $this->addIf;
+    }
+
+    /**
      * Set actions.
      *
      * @param array $actions
@@ -140,7 +175,7 @@ class TopActions extends AbstractViewOptions
     protected function setActions(array $actions)
     {
         foreach ($actions as $action) {
-            $newAction = new TopAction();
+            $newAction = new Action();
             $this->actions[] = $newAction->setupOptionsResolver($action);
         }
 
@@ -155,5 +190,23 @@ class TopActions extends AbstractViewOptions
     public function getActions()
     {
         return $this->actions;
+    }
+
+    //-------------------------------------------------
+    // Helper
+    //-------------------------------------------------
+
+    /**
+     * Checks whether the Top-Action-Bar may be added.
+     *
+     * @return boolean
+     */
+    public function isAddIfClosure()
+    {
+        if ($this->addIf instanceof Closure) {
+            return call_user_func($this->addIf);
+        }
+
+        return true;
     }
 }

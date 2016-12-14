@@ -89,17 +89,12 @@ class ProgressBarColumn extends AbstractColumn
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        parent::configureOptions($resolver);
+
+        $resolver->remove('default_content');
+
         $resolver->setDefaults(array(
-            'class' => '',
-            'padding' => '',
-            'name' => '',
-            'orderable' => true,
             'render' => 'render_progress_bar',
-            'searchable' => true,
-            'title' => '',
-            'type' => '',
-            'visible' => true,
-            'width' => '',
             'filter' => array('text', array(
                 'search_type' => 'eq'
             )),
@@ -110,11 +105,12 @@ class ProgressBarColumn extends AbstractColumn
             'multi_color' => false
         ));
 
-        $resolver->addAllowedTypes('bar_classes', 'string');
-        $resolver->addAllowedTypes('value_min', 'string');
+        $resolver->setAllowedTypes('filter', 'array');
+        $resolver->setAllowedTypes('bar_classes', 'string');
+        $resolver->setAllowedTypes('value_min', 'string');
         $resolver->setAllowedTypes('value_max', 'string');
-        $resolver->addAllowedTypes('label', 'bool');
-        $resolver->addAllowedTypes('multi_color', 'bool');
+        $resolver->setAllowedTypes('label', 'bool');
+        $resolver->setAllowedTypes('multi_color', 'bool');
 
         return $this;
     }

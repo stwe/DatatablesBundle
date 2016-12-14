@@ -44,8 +44,17 @@ class FilterFactory
             case 'select':
                 return new SelectFilter();
                 break;
+            case 'multiselect':
+                return new MultiSelectFilter();
+                break;
+            case 'select2':
+                return new Select2Filter();
+                break;
             case 'daterange':
                 return new DateRangeFilter();
+                break;
+            case 'slider':
+                return new SliderFilter();
                 break;
             default:
                 throw new InvalidArgumentException('createFilterByType(): The filter-type is not supported.');

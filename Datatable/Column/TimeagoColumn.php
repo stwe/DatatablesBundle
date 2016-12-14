@@ -64,30 +64,13 @@ class TimeagoColumn extends AbstractColumn
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        parent::configureOptions($resolver);
+
         $resolver->setDefaults(array(
-            'class' => '',
-            'padding' => '',
-            'name' => '',
-            'orderable' => true,
             'render' => 'render_timeago',
-            'searchable' => true,
-            'title' => '',
-            'type' => '',
-            'visible' => true,
-            'width' => '',
             'filter' => array('text', array()),
         ));
 
-        $resolver->setAllowedTypes('class', 'string');
-        $resolver->setAllowedTypes('padding', 'string');
-        $resolver->setAllowedTypes('name', 'string');
-        $resolver->setAllowedTypes('orderable', 'bool');
-        $resolver->setAllowedTypes('render', 'string');
-        $resolver->setAllowedTypes('searchable', 'bool');
-        $resolver->setAllowedTypes('title', 'string');
-        $resolver->setAllowedTypes('type', 'string');
-        $resolver->setAllowedTypes('visible', 'bool');
-        $resolver->setAllowedTypes('width', 'string');
         $resolver->setAllowedTypes('filter', 'array');
 
         return $this;

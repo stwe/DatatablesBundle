@@ -8,16 +8,8 @@
  #}
 routeParameters = new Array();
 attributes = "";
-roleFlag = true;
 
-{% if action.role %}
-    roleFlag = false;
-    {% if app.user is not null and is_granted(action.role) %}
-        roleFlag = true;
-    {% endif %}
-{% endif %}
-
-if (row.actions["{{ action.route }}"] && true == roleFlag) {
+if (true == row.sg_datatables_actions[{{ column.index }}]["{{ action.route }}"]) {
     {% for key, value in action.routeParameters %}
         routeParameters["{{ key }}"] = row.{{ value }};
     {% endfor %}

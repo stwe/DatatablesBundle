@@ -18,12 +18,6 @@ $ php app/console sg:datatable:generate AppBundle:Post
 $ php app/console sg:datatable:generate AppBundle:Post --fields="id name createdAt:timeago"
 ```
 
-- `--client-side` (optional): The client-side flag.
-
-``` bash
-$ php app/console sg:datatable:generate AppBundle:Post --client-side
-```
-
 - `--bootstrap3` (optional): The Bootstrap3-Framework flag.
 
 ``` bash

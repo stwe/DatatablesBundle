@@ -13,6 +13,9 @@
         "name": "{{ column.name }}",
         {% if column.orderable %}
             "orderable": true,
+            {% if column.orderSequence %}
+                "orderSequence": {{ column.orderSequence|json_encode|raw }},
+            {% endif %}
         {% else %}
             "orderable": false,
         {% endif %}
@@ -53,7 +56,7 @@
         {% endif %}
         {% if column.editable %}
             "render": function(data, type, row, meta) {
-                return render_editable_text(data, type, row, meta, '{{ column.data }}');
+                return render_editable_text(data, type, row, meta, '{{ column.data }}', '{{ column.index }}');
             },
         {% endif %}
     {% endblock %}

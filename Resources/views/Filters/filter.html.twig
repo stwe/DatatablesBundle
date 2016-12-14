@@ -1,0 +1,47 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{% set cancel_button_html %}
+    <button type="button"
+            id="{{ tableId }}-sg-filter-cancel-button-{{ selectorId }}"
+            class="btn btn-default btn-sm"
+    >&times;</button>
+{% endset %}
+
+{% set cancel_button_js %}
+    <script>
+        $("#{{ tableId }}-sg-filter-cancel-button-{{ selectorId }}").click(function() {
+            if ('' != $("#{{ tableId }}-sg-filter-{{ selectorId }}").val()) {
+                $("#{{ tableId }}-sg-filter-{{ selectorId }}")
+                    .val('')
+                    .change();
+            }
+        });
+    </script>
+{% endset %}
+
+{% block html %}
+    <input type="text"
+           id="{{ tableId }}-sg-filter-{{ selectorId }}"
+           class="individual_filtering{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
+           style="{% if column.width %} width:{{ column.width }};{% endif %}"
+           placeholder="{{ column.title|striptags|trim }}"
+           data-filter-property-id="{{ filterColumnId }}"
+           data-search-column="{{ column.filter.searchColumn }}"
+           {% if column.name %}name="{{ column.name }}"{% endif %}
+           {% if column.filter.searchColumn %}value="{{ column.filter.searchColumn }}"{% endif %} />
+    {% if true == column.filter.cancelButton %}
+        {{ cancel_button_html }}
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    {% if true == column.filter.cancelButton %}
+        {{ cancel_button_js }}
+    {% endif %}
+{% endblock %}

@@ -34,7 +34,6 @@ class SgDatatablesExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $container->setParameter('sg_datatables.datatable.templates', $config['datatable']['templates']);
         $container->setParameter('sg_datatables.datatable.query', $config['datatable']['query']);
     }
 }

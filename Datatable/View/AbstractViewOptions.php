@@ -31,6 +31,11 @@ abstract class AbstractViewOptions implements OptionsInterface
      */
     protected $options;
 
+    /**
+     * @var null|OptionsResolver
+     */
+    protected $nestedOptionsResolver;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -41,6 +46,7 @@ abstract class AbstractViewOptions implements OptionsInterface
     public function __construct()
     {
         $this->options = array();
+        $this->nestedOptionsResolver = null;
         $this->set($this->options);
     }
 
@@ -62,6 +68,12 @@ abstract class AbstractViewOptions implements OptionsInterface
         $this->configureOptions($resolver);
 
         $this->options = $resolver->resolve($options);
+
+        if (null !== $this->nestedOptionsResolver) {
+            foreach ($options as $key => $value) {
+                $this->configureAndResolveNestedOptions($this->options[$key]);
+            }
+        }
 
         $this::callingSettersWithOptions($this->options, $this);
 

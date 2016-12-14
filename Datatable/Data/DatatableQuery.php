@@ -13,7 +13,6 @@ namespace Sg\DatatablesBundle\Datatable\Data;
 
 use Sg\DatatablesBundle\Datatable\View\DatatableViewInterface;
 use Sg\DatatablesBundle\Datatable\Column\AbstractColumn;
-use Sg\DatatablesBundle\Datatable\Column\ActionColumn;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Serializer;
@@ -111,11 +110,6 @@ class DatatableQuery
     /**
      * @var array
      */
-    private $selects;
-
-    /**
-     * @var array
-     */
     private $callbacks;
 
     /**
@@ -127,6 +121,11 @@ class DatatableQuery
      * @var AbstractColumn[]
      */
     private $columns;
+
+    /**
+     * @var Paginator
+     */
+    private $paginator;
 
     /**
      * @var array
@@ -205,9 +204,9 @@ class DatatableQuery
         $this->joins = array();
         $this->searchColumns = array();
         $this->orderColumns = array();
-        $this->selects = array();
         $this->callbacks = array();
         $this->columns = $datatableView->getColumnBuilder()->getColumns();
+        $this->paginator = null;
 
         $this->configs = $configs;
 
@@ -269,6 +268,7 @@ class DatatableQuery
      *
      * @author stwe <https://github.com/stwe>
      * @author Gaultier Boniface <https://github.com/wysow>
+     * @author greg-avanim <https://github.com/greg-avanim>
      *
      * @return $this
      */
@@ -294,53 +294,47 @@ class DatatableQuery
         foreach ($this->columns as $key => $column) {
             $data = $column->getDql();
 
+            $currentPart = $this->tableName;
+            $currentAlias = $currentPart;
+
+            $metadata = $this->metadata;
+
             if (true === $this->isSelectColumn($data)) {
-                if (false === $this->isAssociation($data)) {
-                    $this->addSearchOrderColumn($key, $this->tableName, $data);
-                    if ($data !== $this->rootEntityIdentifier) {
-                        $this->selectColumns[$this->tableName][] = $data;
+                $parts = explode('\\\\.', $data);
+
+                if (count($parts) > 1) {
+                    // If it's an embedded class, we can query without JOIN
+                    if (array_key_exists($parts[0], $metadata->embeddedClasses)) {
+                        $column = str_replace('\\', '', $data);
+                        $this->selectColumns[$currentAlias][] = $column;
+                        $this->addSearchOrderColumn($key, $currentAlias, $column);
+                        continue;
                     }
                 } else {
-                    $replaced = str_replace('.', '_', $data);
-                    $parts = explode('_', $replaced);
-                    $last = array_pop($parts);
+                    $parts = explode('.', $data);
 
-                    $previousPart = $this->tableName;
-                    $currentPart = null;
-                    $metadata = null;
-                    $select = null;
+                    while (count($parts) > 1) {
+                        $previousPart = $currentPart;
+                        $previousAlias = $currentAlias;
 
-                    while (count($parts) > 0) {
-                        $select = implode('_', $parts);
-
-                        if (in_array($select, $this->selects)) {
-                            $select .= '_'.uniqid();
-                        }
-
-                        $this->selects[] = $select;
                         $currentPart = array_shift($parts);
+                        $currentAlias = ($previousPart == $this->tableName ? '' : $previousPart.'_') . $currentPart; // This condition keeps stable queries callbacks
 
-                        if (!array_key_exists($previousPart.'.'.$currentPart, $this->joins)) {
-                            $this->joins[$previousPart.'.'.$currentPart] = $select;
-                        } else {
-                            $select = $this->joins[$previousPart.'.'.$currentPart];
+                        if (!array_key_exists($previousAlias.'.'.$currentPart, $this->joins)) {
+                            $this->joins[$previousAlias.'.'.$currentPart] = $currentAlias;
                         }
 
-                        if (false === array_key_exists($select, $this->selectColumns)) {
-                            $metadata = $this->setIdentifierFromAssociation($select, $currentPart, $metadata);
-                        }
-
-                        $previousPart = $select;
+                        $metadata = $this->setIdentifierFromAssociation($currentAlias, $currentPart, $metadata);
                     }
 
-                    $this->selectColumns[$select][] = $last;
-                    $this->addSearchOrderColumn($key, $select, $last);
+                    $this->selectColumns[$currentAlias][] = $this->getIdentifier($metadata);
+                    $this->selectColumns[$currentAlias][] = $parts[0];
+                    $this->addSearchOrderColumn($key, $currentAlias, $parts[0]);
                 }
             } else {
                 $this->orderColumns[] = null;
                 $this->searchColumns[] = null;
             }
-
         }
 
         return $this;
@@ -351,18 +345,14 @@ class DatatableQuery
      *
      * @return $this
      */
-    public function buildQuery($limit = true)
+    public function buildQuery()
     {
         $this->setSelectFrom();
         $this->setLeftJoins($this->qb);
         $this->setWhere($this->qb);
-        $this->setWhereResultCallback($this->qb);
         $this->setWhereAllCallback($this->qb);
         $this->setOrderBy();
-
-        if ($limit) {
-            $this->setLimit();
-        }
+        $this->setLimit();
 
         return $this;
     }
@@ -396,28 +386,19 @@ class DatatableQuery
     //-------------------------------------------------
 
     /**
-     * Add the where-result function.
-     *
-     * @param $callback
-     *
-     * @return $this
-     */
-    public function addWhereResult($callback)
-    {
-        $this->callbacks['WhereResult'][] = $callback;
-
-        return $this;
-    }
-
-    /**
      * Add the where-all function.
      *
      * @param $callback
      *
      * @return $this
+     * @throws Exception
      */
     public function addWhereAll($callback)
     {
+        if (!is_callable($callback)) {
+            throw new Exception(sprintf("Callable expected and %s given", gettype($callback)));
+        }
+
         $this->callbacks['WhereAll'][] = $callback;
 
         return $this;
@@ -431,24 +412,6 @@ class DatatableQuery
     private function setLineFormatter()
     {
         $this->lineFormatter = $this->datatableView->getLineFormatter();
-
-        return $this;
-    }
-
-    /**
-     * Set where result callback.
-     *
-     * @param QueryBuilder $qb
-     *
-     * @return $this
-     */
-    private function setWhereResultCallback(QueryBuilder $qb)
-    {
-        if (!empty($this->callbacks['WhereResult'])) {
-            foreach ($this->callbacks['WhereResult'] as $callback) {
-                $callback($qb);
-            }
-        }
 
         return $this;
     }
@@ -469,6 +432,43 @@ class DatatableQuery
         }
 
         return $this;
+    }
+
+    /**
+     * Add response callback.
+     *
+     * @param $callback
+     *
+     * @return $this
+     * @throws Exception
+     */
+    public function addResponseCallback($callback)
+    {
+        if (!is_callable($callback)) {
+            throw new Exception(sprintf("Callable expected and %s given", gettype($callback)));
+        }
+
+        $this->callbacks['Response'][] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Apply response callbacks.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    private function applyResponseCallbacks(array $data)
+    {
+        if (!empty($this->callbacks['Response'])) {
+            foreach ($this->callbacks['Response'] as $callback) {
+                $data = $callback($data, $this);
+            }
+        }
+
+        return $data;
     }
 
     //-------------------------------------------------
@@ -551,7 +551,13 @@ class DatatableQuery
                 if (true === $this->isSearchColumn($column)) {
                     $filter = $column->getFilter();
                     $searchField = $this->searchColumns[$key];
+                    
+                    if (array_key_exists($key, $this->requestParams['columns']) === false) {
+                        continue;
+                    }
+                    
                     $searchValue = $this->requestParams['columns'][$key]['search']['value'];
+                    
                     if ('' != $searchValue && 'null' != $searchValue) {
                         if (true === $this->isPostgreSQLConnection) {
                             $searchField = $this->cast($searchField, $column);
@@ -715,52 +721,53 @@ class DatatableQuery
      * Get response.
      *
      * @param bool $buildQuery
+     * @param bool $outputWalkers
      *
      * @return Response
      * @throws Exception
      */
-    public function getResponse($buildQuery = true, $limit = true)
+    public function getResponse($buildQuery = true, $outputWalkers = false)
     {
-        false === $buildQuery ? : $this->buildQuery($limit);
+        false === $buildQuery ? : $this->buildQuery();
 
-        $fresults = new Paginator($this->execute(), true);
-        $fresults->setUseOutputWalkers(false);
-        $output = array('data' => array());
+        $this->paginator = new Paginator($this->execute(), true);
+        $this->paginator->setUseOutputWalkers($outputWalkers);
 
-        foreach ($fresults as $item) {
-            if (is_callable($this->lineFormatter)) {
-                $callable = $this->lineFormatter;
-                $item = call_user_func($callable, $item);
-            }
+        $formatter = new DatatableFormatter($this);
+        $formatter->runFormatter();
 
-            foreach ($this->columns as $column) {
-                $column->renderContent($item, $this);
-
-                /** @var ActionColumn $column */
-                if ('action' === $column->getAlias()) {
-                    $column->checkVisibility($item);
-                }
-            }
-
-            $output['data'][] = $item;
-        }
+        $countAllResults = $this->datatableView->getOptions()->getCountAllResults();
 
         $outputHeader = array(
             'draw' => (int) $this->requestParams['draw'],
-            'recordsTotal' => (int) $this->getCountAllResults($this->rootEntityIdentifier)
+            'recordsTotal' => true === $countAllResults ? (int) $this->getCountAllResults($this->rootEntityIdentifier) : 0,
+            'recordsFiltered' => (int) $this->getCountFilteredResults($this->rootEntityIdentifier, $buildQuery)
         );
 
-        if ($this->getQuery()->getDQLPart('where') === null) {
-            $outputHeader['recordsFiltered'] = $outputHeader['recordsTotal'];
-        } else {
-            $outputHeader['recordsFiltered'] = (int) $this->getCountFilteredResults($this->rootEntityIdentifier, $buildQuery);
-        }
+        $fullOutput = array_merge($outputHeader, $formatter->getOutput());
+        $fullOutput = $this->applyResponseCallbacks($fullOutput);
 
-        $json = $this->serializer->serialize(array_merge($outputHeader, $output), 'json');
+        $json = $this->serializer->serialize($fullOutput, 'json');
         $response = new Response($json);
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
+    }
+
+    /**
+     * Simple function to get results for export to PHPExcel.
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function getDataForExport()
+    {
+        $this->setSelectFrom();
+        $this->setLeftJoins($this->qb);
+        $this->setWhereAllCallback($this->qb);
+        $this->setOrderBy();
+
+        return $this->execute()->getArrayResult();
     }
 
     //-------------------------------------------------
@@ -853,18 +860,6 @@ class DatatableQuery
     }
 
     /**
-     * Is association.
-     *
-     * @param string $data
-     *
-     * @return bool|int
-     */
-    private function isAssociation($data)
-    {
-        return strpos($data, '.');
-    }
-
-    /**
      * Is select column.
      *
      * @param string $data
@@ -905,6 +900,36 @@ class DatatableQuery
     //-------------------------------------------------
     // Getters
     //-------------------------------------------------
+
+    /**
+     * Get lineFormatter.
+     *
+     * @return callable
+     */
+    public function getLineFormatter()
+    {
+        return $this->lineFormatter;
+    }
+
+    /**
+     * Get columns.
+     *
+     * @return AbstractColumn[]
+     */
+    public function getColumns()
+    {
+        return $this->columns;
+    }
+
+    /**
+     * Get paginator.
+     *
+     * @return Paginator|null
+     */
+    public function getPaginator()
+    {
+        return $this->paginator;
+    }
 
     /**
      * Get Twig Environment.

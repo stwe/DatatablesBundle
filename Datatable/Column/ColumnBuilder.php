@@ -74,6 +74,11 @@ class ColumnBuilder implements ColumnBuilderInterface
      */
     public function add($data, $alias, array $options = array())
     {
+        // Support embeddables forcing the two backslashes in the column name
+        if (strpos($data, '\\') !== false) {
+            $data = str_replace('\\', '\\\\', $data);
+        }
+
         /**
          * @var AbstractColumn $column
          */
@@ -83,9 +88,14 @@ class ColumnBuilder implements ColumnBuilderInterface
         $column->setDql($data);
         $column->setupOptionsResolver($options);
 
-        $this->columns[] = $column;
+        $addColumn = $column->isAddIfClosure();
 
-        if ($column instanceof MultiselectColumn) {
+        if (true === $addColumn) {
+            $column->setIndex(count($this->columns));
+            $this->columns[] = $column;
+        }
+
+        if (true === $addColumn && $column instanceof MultiselectColumn) {
             if (false === $this->multiselect) {
                 $this->multiselect = true;
                 $this->multiselectColumn = $column;

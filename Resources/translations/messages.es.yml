@@ -8,6 +8,7 @@ datatables:
         infoFiltered: "(filtrado de un total de _MAX_ resultados)"
         infoPostFix: ""
         search: "Buscar"
+        searchPlaceholder: ""
         first: "Primero"
         previous: "Anterior"
         next: "Siguiente"
@@ -33,3 +34,7 @@ daterange:
     format: "YYYY-MM-DD"
 editable:
     tableRedraw: "Los cambios afectan a varios registros. La tabla se recargará con los nuevos datos."
+filter:
+    default: "default"
+query:
+    filtered: "(filtered)"

@@ -8,10 +8,11 @@ datatables:
         infoFiltered: "(отфильтровано из _MAX_ записей)"
         infoPostFix: ""
         search: "Поиск"
+        searchPlaceholder: ""
         first: "Первая"
         previous: "Предыдущая"
         next: "Следующая"
-        last: "Постедняя"
+        last: "Последняя"
         all: "Все"
     bulk:
         confirmMsg: "Вы уверены?"
@@ -30,6 +31,10 @@ datatables:
 daterange:
     apply: "Применить"
     cancel: "Отменить"
-    format: "YYYY-MM-DD"
+    format: "DD.MM.YYYY"
 editable:
-    tableRedraw: "The changes relates multiple records. The table is redraw with the new data."
+    tableRedraw: "Подчиненные записи изменены. Таблица обновляется."
+filter:
+    default: "default"
+query:
+    filtered: "(filtered)"

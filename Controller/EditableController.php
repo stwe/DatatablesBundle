@@ -88,6 +88,10 @@ class EditableController extends Controller
                     null === $getter ? $entity->$setter($value) : $entity->$getter()->$setter($value);
                     $supportedFieldType = true;
                     break;
+                case 'integer':
+                    null === $getter ? $entity->$setter((int) $value) : $entity->$getter()->$setter((int) $value);
+                    $supportedFieldType = true;
+                    break;
                 default:
                     throw new \Exception("editAction(): The field type {$fieldType} is not supported.");
             }

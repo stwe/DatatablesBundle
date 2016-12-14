@@ -1,0 +1,39 @@
+language: php
+
+sudo: false
+
+php:
+  - 5.3
+  - 5.4
+  - 5.6
+  - 7.0
+  - hhvm
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 5.3
+      env: COMPOSER_FLAGS="--prefer-lowest"
+    - php: 5.6
+      env: SYMFONY_VERSION=2.6.*
+    - php: 5.6
+      env: SYMFONY_VERSION=2.7.*
+    - php: 5.6
+      env: SYMFONY_VERSION=2.8.*
+    - php: 5.6
+      env: SYMFONY_VERSION=3.0.*
+  allow_failures:
+    - php: hhvm
+
+before_install:
+  - composer selfupdate
+  - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
+
+install: composer update --prefer-dist --no-interaction $COMPOSER_FLAGS
+
+script:
+  - phpunit --coverage-text
