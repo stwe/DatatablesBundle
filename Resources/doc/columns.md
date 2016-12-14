@@ -249,7 +249,7 @@ SgDatatablesBundle:Column:column.html.twig
 
 ### Options
 
-All options of [Action Column](#4-action-column).
+All options of [Action Column](#4-action-column), except `title`.
 
 **Additional Column options:**
 
@@ -271,7 +271,6 @@ $this->options->set(array(
 
 $this->columnBuilder
     ->add(null, MultiselectColumn::class, array(
-        'title' => 'Multi',
         'start_html' => '<div class="start_checkbox">',
         'end_html' => '</div>',
         'add_if' => function() {

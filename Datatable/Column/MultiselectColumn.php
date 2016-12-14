@@ -69,7 +69,7 @@ class MultiselectColumn extends ActionColumn
      */
     public function getTemplate()
     {
-        return 'SgDatatablesBundle:column:column.html.twig';
+        return 'SgDatatablesBundle:column:multiselect.html.twig';
     }
 
     /**
@@ -133,6 +133,9 @@ class MultiselectColumn extends ActionColumn
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
+
+        // predefined in the view as Checkbox
+        $resolver->remove('title');
 
         $resolver->setDefaults(array(
             'attributes' => null,
