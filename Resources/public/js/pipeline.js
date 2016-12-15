@@ -1,7 +1,7 @@
-{#
+/**
 Pipelining function for DataTables. To be used to the `ajax` option of DataTables
 from: https://datatables.net/examples/server_side/pipeline.html
-#}
+*/
 var pipelineFunctionAlreadyLoaded = true;
 
 $.fn.dataTable.pipeline = function ( opts ) {
