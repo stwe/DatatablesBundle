@@ -176,6 +176,8 @@ class MultiselectColumn extends ActionColumn
      */
     public function setAttributes($attributes)
     {
+        $value = 'sg-datatables-' . $this->datatableName . '-multiselect-checkbox';
+
         if (is_array($attributes)) {
             if (array_key_exists('type', $attributes)) {
                 throw new Exception('MultiselectColumn::setAttributes(): The type attribute is not supported.');
@@ -184,9 +186,21 @@ class MultiselectColumn extends ActionColumn
             if (array_key_exists('value', $attributes)) {
                 throw new Exception('MultiselectColumn::setAttributes(): The value attribute is not supported.');
             }
-        }
 
-        // @todo: handle 'name' && 'class'
+            if (array_key_exists('name', $attributes)) {
+                $attributes['name'] = $value . ' ' . $attributes['name'];
+            } else {
+                $attributes['name'] = $value;
+            }
+            if (array_key_exists('class', $attributes)) {
+                $attributes['class'] = $value . ' ' . $attributes['class'];
+            } else {
+                $attributes['class'] = $value;
+            }
+        } else {
+            $attributes['name'] = $value;
+            $attributes['class'] = $value;
+        }
 
         $this->attributes = $attributes;
 

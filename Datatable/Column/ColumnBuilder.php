@@ -73,6 +73,13 @@ class ColumnBuilder
      */
     private $multiselectColumn;
 
+    /**
+     * The name of the associated Datatable.
+     *
+     * @var string
+     */
+    private $datatableName;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -83,8 +90,9 @@ class ColumnBuilder
      * @param EntityManagerInterface $em
      * @param ClassMetadata          $metadata
      * @param Twig_Environment       $twig
+     * @param string                 $datatableName
      */
-    public function __construct(EntityManagerInterface $em, ClassMetadata $metadata, Twig_Environment $twig)
+    public function __construct(EntityManagerInterface $em, ClassMetadata $metadata, Twig_Environment $twig, $datatableName)
     {
         $this->em = $em;
         $this->metadata = $metadata;
@@ -93,6 +101,7 @@ class ColumnBuilder
         $this->columnNames = array();
         $this->uniqueFlag = false;
         $this->multiselectColumn = null;
+        $this->datatableName = $datatableName;
     }
 
     //-------------------------------------------------
@@ -120,6 +129,8 @@ class ColumnBuilder
         // the Column 'data' property has normally the same value as 'dql'
         $column->setDql($dql);
         $column->setData($dql);
+        // set the name of the Datatable
+        $column->setDatatableName($this->datatableName);
         // inject twig for rendering special Column content
         $column->setTwig($this->twig);
         // resolve options

@@ -218,6 +218,14 @@ abstract class AbstractColumn implements ColumnInterface
      */
     protected $index;
 
+    /**
+     * The name of the associated Datatable.
+     * Is set in the ColumnBuilder.
+     *
+     * @var string
+     */
+    protected $datatableName;
+
     //-------------------------------------------------
     // Options
     //-------------------------------------------------
@@ -832,6 +840,30 @@ abstract class AbstractColumn implements ColumnInterface
     public function setIndex($index)
     {
         $this->index = $index;
+
+        return $this;
+    }
+
+    /**
+     * Get datatableName.
+     *
+     * @return string
+     */
+    public function getDatatableName()
+    {
+        return $this->datatableName;
+    }
+
+    /**
+     * Set datatableName.
+     *
+     * @param string $datatableName
+     *
+     * @return $this
+     */
+    public function setDatatableName($datatableName)
+    {
+        $this->datatableName = $datatableName;
 
         return $this;
     }
