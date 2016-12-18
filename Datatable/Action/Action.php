@@ -97,16 +97,26 @@ class Action
      */
     protected $attributes;
 
+    /**
+     * The name of the associated Datatable.
+     *
+     * @var string
+     */
+    protected $datatableName;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
 
     /**
      * Action constructor.
+     *
+     * @param string $datatableName
      */
-    public function __construct()
+    public function __construct($datatableName)
     {
         $this->initOptions(false);
+        $this->datatableName = $datatableName;
     }
 
     //-------------------------------------------------
@@ -325,6 +335,30 @@ class Action
         }
 
         $this->attributes = $attributes;
+
+        return $this;
+    }
+
+    /**
+     * Get datatableName.
+     *
+     * @return string
+     */
+    public function getDatatableName()
+    {
+        return $this->datatableName;
+    }
+
+    /**
+     * Set datatableName.
+     *
+     * @param string $datatableName
+     *
+     * @return $this
+     */
+    public function setDatatableName($datatableName)
+    {
+        $this->datatableName = $datatableName;
 
         return $this;
     }
