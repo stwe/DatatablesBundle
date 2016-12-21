@@ -11,6 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\Datatable\Action\MultiselectAction;
 use Sg\DatatablesBundle\Datatable\RenderIfTrait;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -155,6 +156,28 @@ class MultiselectColumn extends ActionColumn
     //-------------------------------------------------
     // Getters && Setters
     //-------------------------------------------------
+
+    /**
+     * Set actions.
+     *
+     * @param array $actions
+     *
+     * @return $this
+     * @throws Exception
+     */
+    public function setActions(array $actions)
+    {
+        if (count($actions) > 0) {
+            foreach ($actions as $action) {
+                $newAction = new MultiselectAction($this->datatableName);
+                $this->actions[] = $newAction->set($action);
+            }
+        } else {
+            throw new Exception('MultiselectColumn::setActions(): The actions array should contain at least one element.');
+        }
+
+        return $this;
+    }
 
     /**
      * Get attributes.

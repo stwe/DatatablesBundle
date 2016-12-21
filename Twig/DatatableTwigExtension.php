@@ -201,10 +201,11 @@ class DatatableTwigExtension extends Twig_Extension
      * @param Twig_Environment $twig
      * @param ColumnInterface  $multiselectColumn
      * @param string           $datatableName
+     * @param int              $pipeline
      *
      * @return string
      */
-    public function datatablesRenderMultiselectActions(Twig_Environment $twig, ColumnInterface $multiselectColumn, $datatableName)
+    public function datatablesRenderMultiselectActions(Twig_Environment $twig, ColumnInterface $multiselectColumn, $datatableName, $pipeline)
     {
         $parameters = array();
         $actions = $this->accessor->getValue($multiselectColumn, 'actions');
@@ -223,7 +224,8 @@ class DatatableTwigExtension extends Twig_Extension
                 'actions' => $actions,
                 'set_route_parameters' => $parameters,
                 'datatable_name' => $datatableName,
-                'dom_id' => $domId
+                'dom_id' => $domId,
+                'pipeline' => $pipeline
             )
         );
     }

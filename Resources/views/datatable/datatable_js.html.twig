@@ -47,9 +47,9 @@
             $.extend(defaults, columns);
             $.extend(defaults, initialSearch);
 
-            if (!$.fn.DataTable.isDataTable(selector)) {
+            if (!$.fn.dataTable.isDataTable(selector)) {
                 oTable = $(selector)
-                        .DataTable(defaults);
+                    .DataTable(defaults);
 
                 {% if true == sg_datatables_view.options.individualFiltering %}
                     {% include 'SgDatatablesBundle:datatable:search.js.twig' %}
@@ -57,7 +57,9 @@
             }
         }
 
-        setTimeout(createDatatable, 0 /* no waitFor rendering*/);
+        createDatatable();
+
+        {{ sg_datatables_render_multiselect_actions(sg_datatables_view.multiselectColumn, sg_datatables_view.name, sg_datatables_view.ajax.pipeline) }}
     });
 
 </script>

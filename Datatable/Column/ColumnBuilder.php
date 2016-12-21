@@ -133,7 +133,7 @@ class ColumnBuilder
         $column->setDatatableName($this->datatableName);
         // inject twig for rendering special Column content
         $column->setTwig($this->twig);
-        // resolve options
+        // resolve options - !!'data' can be modified again!!
         $column->set($options);
 
         if (null === $column->getTypeOfField() && true === $column->isSelectColumn()) {
