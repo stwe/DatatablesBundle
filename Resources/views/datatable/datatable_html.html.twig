@@ -46,4 +46,6 @@
     </tbody>
 </table>
 
-<div id="sg-datatables-{{ sg_datatables_view.name }}-multiselect-actions"></div>
+{% if sg_datatables_view.multiselectColumn is not null %}
+    <div id="sg-datatables-{{ sg_datatables_view.name }}-multiselect-actions"></div>
+{% endif %}
