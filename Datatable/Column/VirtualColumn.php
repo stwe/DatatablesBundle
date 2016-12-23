@@ -12,6 +12,8 @@
 namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\Options;
+use Exception;
 
 /**
  * Class VirtualColumn
@@ -61,6 +63,22 @@ class VirtualColumn extends Column
 
         $resolver->setAllowedTypes('order_column', array('null', 'string'));
         $resolver->setAllowedTypes('search_column', array('null', 'string'));
+
+        $resolver->setNormalizer('orderable', function (Options $options, $value) {
+            if (null === $options['order_column'] && true === $value) {
+                throw new Exception('VirtualColumn::configureOptions(): For the orderable option, order_column should not be null.');
+            }
+
+            return $value;
+        });
+
+        $resolver->setNormalizer('searchable', function (Options $options, $value) {
+            if (null === $options['search_column'] && true === $value) {
+                throw new Exception('VirtualColumn::configureOptions(): For the searchable option, search_column should not be null.');
+            }
+
+            return $value;
+        });
 
         return $this;
     }
