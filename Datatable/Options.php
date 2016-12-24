@@ -200,6 +200,14 @@ class Options
     //-------------------------------------------------
 
     /**
+     * To define the style for the table.
+     * Default: Style::BASE_STYLE
+     *
+     * @var string
+     */
+    protected $classes;
+
+    /**
      * Enable or disable individual filtering.
      * Default: false
      *
@@ -275,6 +283,7 @@ class Options
             'search_delay' => null,
             'state_duration' => null,
             'stripe_classes' => null,
+            'classes' => Style::BASE_STYLE,
             'individual_filtering' => false,
             'individual_filtering_position' => 'head',
             'search_in_non_visible_columns' => false,
@@ -299,6 +308,7 @@ class Options
         $resolver->setAllowedTypes('search_delay', array('null', 'int'));
         $resolver->setAllowedTypes('state_duration', array('null', 'int'));
         $resolver->setAllowedTypes('stripe_classes', array('null', 'array'));
+        $resolver->setAllowedTypes('classes', 'string');
         $resolver->setAllowedTypes('individual_filtering', 'bool');
         $resolver->setAllowedTypes('individual_filtering_position', 'string');
         $resolver->setAllowedTypes('search_in_non_visible_columns', 'bool');
@@ -762,6 +772,30 @@ class Options
     public function setStripeClasses($stripeClasses)
     {
         $this->stripeClasses = $stripeClasses;
+
+        return $this;
+    }
+
+    /**
+     * Get classes.
+     *
+     * @return string
+     */
+    public function getClasses()
+    {
+        return $this->classes;
+    }
+
+    /**
+     * Set classes.
+     *
+     * @param string $classes
+     *
+     * @return $this
+     */
+    public function setClasses($classes)
+    {
+        $this->classes = $classes;
 
         return $this;
     }
