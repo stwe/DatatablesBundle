@@ -66,9 +66,12 @@ class DatatableFormatter
                 /** @noinspection PhpUndefinedMethodInspection */
                 $data = $column->getData();
 
-                if (null !== $dql && $dql !== $data && false === array_key_exists($data, $row)) {
-                    $row[$data] = $row[$dql];
-                    unset($row[$dql]);
+                /** @noinspection PhpUndefinedMethodInspection */
+                if (false === $column->isAssociation()) {
+                    if (null !== $dql && $dql !== $data && false === array_key_exists($data, $row)) {
+                        $row[$data] = $row[$dql];
+                        unset($row[$dql]);
+                    }
                 }
             }
 

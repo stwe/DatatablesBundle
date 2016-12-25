@@ -139,12 +139,16 @@ class ActionColumn extends AbstractColumn
 
         $resolver->remove('data');
         $resolver->remove('default_content');
+
         // the 'orderable' option is removed, but via getter it returns 'false' for the view
         $resolver->remove('orderable');
+
         $resolver->remove('order_data');
         $resolver->remove('order_sequence');
+
         // the 'searchable' option is removed, but via getter it returns 'false' for the view
         $resolver->remove('searchable');
+
         $resolver->remove('join_type');
         $resolver->remove('type_of_field');
 

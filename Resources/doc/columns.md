@@ -40,18 +40,35 @@ With 'null' initialized options uses the default value of the DataTables plugin.
 | editable        | bool               | false             |          | Enable edit mode for this column. |
 | editable_if     | null or Closure    | null              |          | Enable edit mode for this column only if conditions are TRUE. |
 
-
 ### Example
 
 ``` php
 $this->columnBuilder
     ->add('title', Column::class, array(
-        'title' => 'title',
-        'searchable' => true, // default
-        'orderable' => true, // default
-        'type_of_field' => 'integer' // Example: If numbers are stored as a string, try this option for a better ordering.
+        'title' => 'Title',
+        'searchable' => true,
+        'orderable' => true,
+        'filter' => array(SelectFilter::class, array(
+            'multiple' => true,
+            'cancel_button' => true,
+            'select_search_types' => array(
+                '' => null,
+                '2' => 'like',
+                '1' => 'eq',
+                'send_isNull' => 'isNull',
+                'send_isNotNull' => 'isNotNull'
+            ),
+            'select_options' => array(
+                '' => 'Any',
+                '2' => 'Title with the digit 2',
+                '1' => 'Title with the digit 1',
+                'send_isNull' => 'is Null',
+                'send_isNotNull' => 'is not Null'
+            ),
+        )),
+        'type_of_field' => 'integer', // If the title consists only of digits.
         'add_if' => function() {
-            return ($this->authorizationChecker->isGranted('ROLE_ADMIN'));
+            return $this->authorizationChecker->isGranted('ROLE_USER');
         },
     ))
 ;
@@ -60,18 +77,33 @@ $this->columnBuilder
 **For many-to-one associations:**
 
 ``` php
+$users = $this->em->getRepository('AppBundle:User')->findAll();
+
 $this->columnBuilder
     ->add('createdBy.username', Column::class, array(
-        'title' => 'CreatedBy'
-    ))
-    ->add('updatedBy.username', Column::class, array(
-        'title' => 'UpdatedBy'
+        'title' => 'Created by',
+        'searchable' => true,
+        'orderable' => true,
+        'filter' => array(SelectFilter::class, array(
+            'select_options' => array('' => 'All') + $this->getOptionsArrayFromEntities($users, 'username', 'username'),
+            'search_type' => 'eq'
+        ))
     ))
 ;
 ```
 
 **For one-to-many associations:**
 
+``` php
+$this->columnBuilder
+    ->add('comments.title', Column::class, array(
+        'title' => 'Comments',
+        'data' => 'comments[,].title',
+        'searchable' => true,
+        'orderable' => true,
+    ))
+;
+```
 
 ___
 
@@ -87,15 +119,16 @@ SgDatatablesBundle:column:column.html.twig
 
 All options of [Column](#1-column).
 
+The option `filter` is set to `SelectFilter` by default.
+
 **Additional:**
 
-| Option      | Type               | Default      | Required | Description                                 |
-|-------------|--------------------|--------------|----------|---------------------------------------------|
-| filter      | array              | SelectFilter |          | A Filter instance for individual filtering. |
-| true_icon   | null or string     | null         |          | Icon for true                               |
-| false_icon  | null or string     | null         |          | Icon for false                              |
-| true_label  | null or string     | null         |          | Label for true                              |
-| false_label | null or string     | null         |          | Label for false                             |
+| Option      | Type               | Default | Required | Description     |
+|-------------|--------------------|---------|----------|-----------------|
+| true_icon   | null or string     | null    |          | Icon for true   |
+| false_icon  | null or string     | null    |          | Icon for false  |
+| true_label  | null or string     | null    |          | Label for true  |
+| false_label | null or string     | null    |          | Label for false |
 
 ### Example
 
@@ -124,7 +157,7 @@ SgDatatablesBundle:Column:column.html.twig
 
 All options of [Column](#1-column), except `data` and `join_type`.
 
-The options `searchable` and `orderable` are `false`.
+The options `searchable` and `orderable` are set to `false` by default.
 
 **Additional:**
 
@@ -136,15 +169,44 @@ The options `searchable` and `orderable` are `false`.
 ### Example
 
 ``` php
-$this->columnBuilder
-    ->add('test', VirtualColumn::class, array(
-        'title' => 'Test virtual column',
-        'searchable' => true,
-        'orderable' => true,
-        'order_column' => 'title',
-        'search_column' => 'title',
-    ))
-;
+public function getLineFormatter()
+{
+    $formatter = function($row) {
+        $row['test'] = 'Post from ' . $row['createdBy']['username'];
+
+        return $row;
+    };
+
+    return $formatter;
+}
+
+public function buildDatatable(array $options = array())
+{
+    // ...
+
+    $users = $this->em->getRepository('AppBundle:User')->findAll();
+
+    $this->columnBuilder
+        ->add('test', VirtualColumn::class, array(
+            'title' => 'Test virtual',
+            'searchable' => true,
+            'orderable' => true,
+            'order_column' => 'createdBy.username', // use the 'createdBy.username' column for ordering
+            'search_column' => 'createdBy.username', // use the 'createdBy.username' column for searching
+        ))
+        ->add('createdBy.username', Column::class, array(
+            'title' => 'Created by',
+            'searchable' => true,
+            'orderable' => true,
+            'filter' => array(SelectFilter::class, array(
+                'select_options' => array('' => 'All') + $this->getOptionsArrayFromEntities($users, 'username', 'username'),
+                'search_type' => 'eq'
+            ))
+        ))
+
+        // ...
+    ;
+}
 ```
 ___
 
@@ -156,7 +218,7 @@ A Column to display CRUD action labels or buttons.
 
 SgDatatablesBundle:Column:column.html.twig
 
-### Options
+### Action column options
 
 | Option          | Type               | Default           | Required | Description |
 |-----------------|--------------------|-------------------|----------|-------------|
@@ -174,8 +236,8 @@ SgDatatablesBundle:Column:column.html.twig
 
 ### Action options
 
-| Option          | Type             | Default | Required | Description |
-|-----------------|------------------|---------|----------|-------------|
+| Option           | Type            | Default | Required | Description |
+|------------------|-----------------|---------|----------|-------------|
 | route            | string          |         | X        | The name of the Action route. |
 | route_parameters | null or array   | null    |          | The route parameters. |
 | icon             | null or string  | null    |          | An icon for the Action. |
@@ -189,38 +251,56 @@ SgDatatablesBundle:Column:column.html.twig
 
 ### Example
 
+**Don't forget to add the following to your route annotation:**
+
+``` php
+options = {"expose" = true}
+```
+
+#### The Controller
+
+``` php
+/**
+ * Finds and displays a Post entity.
+ *
+ * @param Post $post
+ *
+ * @Route("/{_locale}/{id}.{_format}", name = "post_show", options = {"expose" = true})
+ * @Method("GET")
+ * @Security("has_role('ROLE_USER')")
+ *
+ * @return Response
+ */
+public function showAction(Post $post)
+{
+    $deleteForm = $this->createDeleteForm($post);
+
+    return $this->render('post/show.html.twig', array(
+        'post' => $post,
+        'delete_form' => $deleteForm->createView(),
+    ));
+}
+```
+
+#### The Datatable Class
+
 ``` php
 $this->columnBuilder
     ->add(null, ActionColumn::class, array(
         'title' => 'Actions',
-        'start_html' => '<div class="start">',
+        'start_html' => '<div class="start_actions">',
         'end_html' => '</div>',
         'actions' => array(
             array(
-                'route' => 'post_index',
-                'icon' => 'glyphicon glyphicon-ok',
-                'label' => 'Index',
-                'attributes' => array(
-                    'rel' => 'tooltip',
-                    'title' => 'Index',
-                    'class' => 'btn btn-primary btn-xs',
-                    'role' => 'button'
-                ),
-                'confirm' => true,
-                'confirm_message' => 'Really?',
-                'start_html' => '<div class="start_index_action">',
-                'end_html' => '</div>',
-            ),
-            array(
                 'route' => 'post_show',
-                'label' => 'Show',
+                'label' => 'Show Posting',
                 'route_parameters' => array(
                     'id' => 'id',
-                    //'_format' => 'html',
-                    //'_locale' => 'en'
+                    '_format' => 'html',
+                    '_locale' => 'en'
                 ),
                 'render_if' => function($row) {
-                    return $row['id'] === 2;
+                    return $row['createdBy']['username'] === 'user' && $this->authorizationChecker->isGranted('ROLE_USER');
                 },
                 'attributes' => array(
                     'rel' => 'tooltip',
@@ -233,7 +313,6 @@ $this->columnBuilder
             )
         )
     ))
-
 ;
 ```
 
@@ -245,7 +324,7 @@ Support for Bulk Actions.
 
 ### Default template
 
-SgDatatablesBundle:Column:column.html.twig
+SgDatatablesBundle:Column:multiselect.html.twig
 
 ### Options
 
@@ -262,7 +341,51 @@ All options of [Action Column](#4-action-column), except `title`.
 
 ### Example
 
-If the MultiselectColumn is the first Column (position: 0), it is not orderable. Change the initial order statement:
+#### The Controller
+
+``` php
+/**
+ * Bulk delete action.
+ *
+ * @param Request $request
+ *
+ * @Route("/bulk/delete", name="post_bulk_delete")
+ * @Method("POST")
+ *
+ * @return Response
+ */
+public function bulkDeleteAction(Request $request)
+{
+    $isAjax = $request->isXmlHttpRequest();
+
+    if ($isAjax) {
+        $choices = $request->request->get('data');
+        $token = $request->request->get('token');
+
+        if (!$this->isCsrfTokenValid('multiselect', $token)) {
+            throw new AccessDeniedException('The CSRF token is invalid.');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('AppBundle:Post');
+
+        foreach ($choices as $choice) {
+            $entity = $repository->find($choice['id']);
+            $em->remove($entity);
+        }
+
+        $em->flush();
+
+        return new Response('Success', 200);
+    }
+
+    return new Response('Bad Request', 400);
+}
+```
+
+#### The Datatable Class
+
+**If the MultiselectColumn is the first Column (position: 0), it is not orderable. Change the initial order statement:**
 
 ``` php
 $this->options->set(array(
@@ -271,24 +394,24 @@ $this->options->set(array(
 
 $this->columnBuilder
     ->add(null, MultiselectColumn::class, array(
-        'start_html' => '<div class="start_checkbox">',
+        'start_html' => '<div class="start_checkboxes">',
         'end_html' => '</div>',
         'add_if' => function() {
-            // condition is checked in the ColumnBuilder
-            return true;
+            // add Column if condition is true
+            return $this->authorizationChecker->isGranted('ROLE_USER');
         },
-        'attributes' => array('data-toggle' => 'toggle'),
+        //'attributes' => array('data-toggle' => 'toggle'),
         'value' => 'id',
-        'render_actions_to_id' => 'multiselect-actions', // custom dom id for the actions
+        'render_actions_to_id' => 'sidebar-multiselect-actions', // custom Dom id for the actions
         'render_if' => function($row) {
-            // render checkbox only if id > 3
-            return $row['id'] > 3;
+            // render checkbox only if the Post created by 'user'
+            return $row['createdBy']['username'] === 'user';
         },
         'actions' => array(
             array(
-                'route' => 'post_index',
+                'route' => 'post_bulk_delete',
                 'icon' => 'glyphicon glyphicon-ok',
-                'label' => 'testlabel',
+                'label' => 'Delete Postings',
                 'attributes' => array(
                     'rel' => 'tooltip',
                     'title' => 'Delete',
@@ -297,36 +420,12 @@ $this->columnBuilder
                 ),
                 'confirm' => true,
                 'confirm_message' => 'Really?',
-                'start_html' => '<div class="start_index_action">',
+                'start_html' => '<div class="start_delete_action">',
                 'end_html' => '</div>',
-                // the $row argument is not available in this context
-                'render_if' => function(/* $row */) {
-                    return false;
+                'render_if' => function(/* the $row argument is not available in this context */) {
+                    return $this->authorizationChecker->isGranted('ROLE_USER');
                 }
             ),
-            array(
-                'route' => 'post_show',
-                'route_parameters' => array(
-                    'id' => 'id',
-                    '_format' => 'html',
-                    '_locale' => 'en'
-                ),
-                'label' => 'show',
-                'icon' => 'glyphicon glyphicon-ok',
-                'confirm' => true,
-                'confirm_message' => 'Really?',
-                'render_if' => function() {
-                    return true;
-                },
-                'attributes' => array(
-                    'rel' => 'tooltip',
-                    'title' => 'Show',
-                    'class' => 'btn btn-primary btn-xs',
-                    'role' => 'button'
-                ),
-                'start_html' => '<div class="start_show_action">',
-                'end_html' => '</div>',
-            )
         )
     ))
 ```

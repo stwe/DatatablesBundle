@@ -17,6 +17,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Doctrine\ORM\EntityManagerInterface;
 use Twig_Environment;
 use Exception;
@@ -91,6 +93,13 @@ abstract class AbstractDatatable implements DatatableInterface
      */
     protected $options;
 
+    /**
+     * The PropertyAccessor.
+     *
+     * @var PropertyAccessor
+     */
+    protected $accessor;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -130,6 +139,8 @@ abstract class AbstractDatatable implements DatatableInterface
 
         $this->ajax = new Ajax();
         $this->options = new Options();
+
+        $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
     //-------------------------------------------------
@@ -190,6 +201,22 @@ abstract class AbstractDatatable implements DatatableInterface
     public function getEntityManager()
     {
         return $this->em;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOptionsArrayFromEntities($entities, $keyFrom = 'id', $valueFrom = 'name')
+    {
+        $options = array();
+
+        foreach ($entities as $entity) {
+            if (true === $this->accessor->isReadable($entity, $keyFrom) && true === $this->accessor->isReadable($entity, $valueFrom)) {
+                $options[$this->accessor->getValue($entity, $keyFrom)] = $this->accessor->getValue($entity, $valueFrom);
+            }
+        }
+
+        return $options;
     }
 
     //-------------------------------------------------

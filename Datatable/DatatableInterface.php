@@ -81,6 +81,17 @@ interface DatatableInterface
     public function getEntityManager();
 
     /**
+     * Help function to create an option array for filtering.
+     *
+     * @param array  $entities
+     * @param string $keyFrom
+     * @param string $valueFrom
+     *
+     * @return array
+     */
+    public function getOptionsArrayFromEntities($entities, $keyFrom = 'id', $valueFrom = 'name');
+
+    /**
      * Returns the name of the entity.
      *
      * @return string
