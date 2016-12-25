@@ -14,9 +14,9 @@ This bundle requires the following additional packages:
 * PHP 5.5.9
 * Doctrine 2.5
 * Symfony 3.x.x
-* jQuery (choose a Version, I use 3.1.x)
+* jQuery (choose a Version, I use 3.1.1)
 * DataTables 1.10.12 or higher
-* Moment.js 2.x.x (choose a Version, I use 2.15.x)
+* Moment.js 2.x.x (choose a Version, I use 2.15.1)
 * FOSJsRoutingBundle 1.6 ***Please follow all steps described [here](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/master/Resources/doc/installation.rst).***
 
 ### Translations
@@ -79,7 +79,7 @@ $ php bin/console assets:install --symlink
 $ php bin/console assets:install
 ```
 
-```html
+``` html
 <script src="{{ asset('bundles/sgdatatables/js/pipeline.js') }}"></script>
 ```
 
@@ -91,30 +91,17 @@ The easiest way is to load all files with your base layout with CDN.
 
 **Example:**
 
-```html
+``` html
 {% block stylesheets %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/v/bs/jszip-2.5.0/pdfmake-0.1.18/dt-1.10.12/b-1.2.2/b-colvis-1.2.2/b-flash-1.2.2/b-html5-1.2.2/b-print-1.2.2/fc-3.2.2/fh-3.1.2/r-2.1.0/datatables.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.24/daterangepicker.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css"/>
-    <link rel="stylesheet" href="//cdn.rawgit.com/noelboss/featherlight/1.5.1/release/featherlight.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.2.0/css/bootstrap-slider.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css">
 {% endblock %}
 {% block head_javascripts %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment-with-locales.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/v/bs/jszip-2.5.0/pdfmake-0.1.18/dt-1.10.12/b-1.2.2/b-colvis-1.2.2/b-flash-1.2.2/b-html5-1.2.2/b-print-1.2.2/fc-3.2.2/fh-3.1.2/r-2.1.0/datatables.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.24/daterangepicker.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-    <script src="//cdn.rawgit.com/noelboss/featherlight/1.5.1/release/featherlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.5.0/featherlight.gallery.min.js"></script>
-    <script src="https://raw.githubusercontent.com/bartaz/sandbox.js/master/jquery.highlight.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.2.0/bootstrap-slider.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
 
     <script src="{{ asset('bundles/sgdatatables/js/pipeline.js') }}"></script>
 
@@ -127,15 +114,19 @@ The easiest way is to load all files with your base layout with CDN.
 
 ### Step 1: Create a Datatable class
 
-```php
+``` php
 <?php
 
 namespace AppBundle\Datatables;
 
 use Sg\DatatablesBundle\Datatable\AbstractDatatable;
-use Sg\DatatablesBundle\Datatable\Column\Column;
+use Sg\DatatablesBundle\Datatable\Column\ActionColumn;
 use Sg\DatatablesBundle\Datatable\Column\BooleanColumn;
+use Sg\DatatablesBundle\Datatable\Column\Column;
 use Sg\DatatablesBundle\Datatable\Column\VirtualColumn;
+use Sg\DatatablesBundle\Datatable\Filter\NumberFilter;
+use Sg\DatatablesBundle\Datatable\Filter\SelectFilter;
+use Sg\DatatablesBundle\Datatable\Style;
 
 /**
  * Class PostDatatable
@@ -150,7 +141,7 @@ class PostDatatable extends AbstractDatatable
     public function getLineFormatter()
     {
         $formatter = function($row) {
-            $row['test'] = 'custom content';
+            $row['test'] = 'Post from ' . $row['createdBy']['username'];
 
             return $row;
         };
@@ -164,40 +155,136 @@ class PostDatatable extends AbstractDatatable
     public function buildDatatable(array $options = array())
     {
         $this->ajax->set(array(
+            // send some extra example data
             'data' => array('data1' => 1, 'data2' => 2),
+            // cache for 10 pages
             'pipeline' => 10
         ));
 
         $this->options->set(array(
+            'classes' => Style::BOOTSTRAP_3_STYLE,
             'stripe_classes' => [ 'strip1', 'strip2', 'strip3' ],
             'individual_filtering' => true,
-            'individual_filtering_position' => 'both',
-            'order_cells_top' => true
+            'individual_filtering_position' => 'head',
+            'order' => array(array(0, 'asc')),
+            'order_cells_top' => true,
+            //'global_search_type' => 'gt',
+            'search_in_non_visible_columns' => true,
         ));
+
+        $users = $this->em->getRepository('AppBundle:User')->findAll();
 
         $this->columnBuilder
             ->add('id', Column::class, array(
                 'title' => 'Id',
-                'searchable' => false,
+                'searchable' => true,
                 'orderable' => true,
+                'filter' => array(NumberFilter::class, array(
+                    'classes' => 'test1 test2',
+                    'search_type' => 'eq',
+                    'cancel_button' => true,
+                    'type' => 'number',
+                    'show_label' => true,
+                    'datalist' => array('3', '50', '75')
+                )),
             ))
-            ->add('test', VirtualColumn::class, array(
-                'title' => 'Test virtual',
-                'searchable' => false,
+            ->add('visible', BooleanColumn::class, array(
+                'title' => 'Visible',
+                'searchable' => true,
                 'orderable' => false,
-                'order_column' => 'title',
-                'search_column' => 'createdBy.username',
+                'true_label' => 'wahr',
+                'false_label' => 'falsch',
+                'true_icon' => 'glyphicon glyphicon-ok',
+                'false_icon' => 'glyphicon glyphicon-remove',
+                'filter' => array(SelectFilter::class, array(
+                    'classes' => 'test1 test2',
+                    'search_type' => 'eq',
+                    'multiple' => true,
+                    'select_options' => array(
+                        '' => 'Any',
+                        '1' => 'Yes',
+                        '0' => 'No'
+                    ),
+                    'cancel_button' => true,
+                )),
             ))
             ->add('title', Column::class, array(
                 'title' => 'Title',
                 'searchable' => true,
                 'orderable' => true,
-                //'type_of_field' => 'integer'
+                'filter' => array(SelectFilter::class, array(
+                    'multiple' => true,
+                    'cancel_button' => true,
+                    'select_search_types' => array(
+                        '' => null,
+                        '2' => 'like',
+                        '1' => 'eq',
+                        'send_isNull' => 'isNull',
+                        'send_isNotNull' => 'isNotNull'
+                    ),
+                    'select_options' => array(
+                        '' => 'Any',
+                        '2' => 'Title with the digit 2',
+                        '1' => 'Title with the digit 1',
+                        'send_isNull' => 'is Null',
+                        'send_isNotNull' => 'is not Null'
+                    ),
+                )),
+                'type_of_field' => 'integer', // If the title consists only of digits.
+                /*
+                'add_if' => function() {
+                    return $this->authorizationChecker->isGranted('ROLE_USER');
+                },
+                */
             ))
-            ->add('createdBy.username', Column::class, array(
-                'title' => 'Username',
+            ->add('test', VirtualColumn::class, array(
+                'title' => 'Test virtual',
                 'searchable' => true,
                 'orderable' => true,
+                'order_column' => 'createdBy.username', // use the 'createdBy.username' column for ordering
+                'search_column' => 'createdBy.username', // use the 'createdBy.username' column for searching
+            ))
+            ->add('createdBy.username', Column::class, array(
+                'title' => 'Created by',
+                'searchable' => true,
+                'orderable' => true,
+                'filter' => array(SelectFilter::class, array(
+                    'select_options' => array('' => 'All') + $this->getOptionsArrayFromEntities($users, 'username', 'username'),
+                    'search_type' => 'eq'
+                ))
+            ))
+            ->add('comments.title', Column::class, array(
+                'title' => 'Comments',
+                'data' => 'comments[,].title',
+                'searchable' => true,
+                'orderable' => true,
+            ))
+            ->add(null, ActionColumn::class, array(
+                'title' => 'Actions',
+                'start_html' => '<div class="start_actions">',
+                'end_html' => '</div>',
+                'actions' => array(
+                    array(
+                        'route' => 'post_show',
+                        'label' => 'Show Posting',
+                        'route_parameters' => array(
+                            'id' => 'id',
+                            '_format' => 'html',
+                            '_locale' => 'en'
+                        ),
+                        'render_if' => function($row) {
+                            return $row['createdBy']['username'] === 'user' && $this->authorizationChecker->isGranted('ROLE_USER');
+                        },
+                        'attributes' => array(
+                            'rel' => 'tooltip',
+                            'title' => 'Show',
+                            'class' => 'btn btn-primary btn-xs',
+                            'role' => 'button'
+                        ),
+                        'start_html' => '<div class="start_show_action">',
+                        'end_html' => '</div>',
+                    )
+                )
             ))
         ;
     }
@@ -222,7 +309,7 @@ class PostDatatable extends AbstractDatatable
 
 ### Step 2: Registering your Datatable as a Service
 
-```yaml
+``` yaml
 # app/config/services.yml
 
 services:
@@ -231,9 +318,9 @@ services:
         parent: sg_datatables.datatable.abstract
 ```
 
-### Step 3: Add controller action
+### Step 3: The Controller actions
 
-```php
+``` php
 /**
  * Lists all Post entities.
  *
@@ -258,6 +345,8 @@ public function indexAction(Request $request)
         $datatableQueryBuilder = $responseService->getDatatableQueryBuilder();
         $datatableQueryBuilder->buildQuery();
 
+        //dump($datatableQueryBuilder->getQb()->getDQL()); die();
+
         return $responseService->getResponse();
     }
 
@@ -265,15 +354,35 @@ public function indexAction(Request $request)
         'datatable' => $datatable,
     ));
 }
+
+/**
+ * Finds and displays a Post entity.
+ *
+ * @param Post $post
+ *
+ * @Route("/{_locale}/{id}.{_format}", name = "post_show", options = {"expose" = true})
+ * @Method("GET")
+ * @Security("has_role('ROLE_USER')")
+ *
+ * @return Response
+ */
+public function showAction(Post $post)
+{
+    return $this->render('post/show.html.twig', array(
+        'post' => $post
+    ));
+}
 ```
 
 ### Step 4: Create your index.html.twig
 
-```html
+``` html
 {% extends '::base.html.twig' %}
 
-{% block body %}
+{% block main %}
+
     <h2>Posts</h2>
     {{ sg_datatables_render(datatable) }}
+
 {% endblock %}
 ```
