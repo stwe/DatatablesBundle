@@ -51,11 +51,6 @@ class DatatableQueryBuilder
     private $requestParams;
 
     /**
-     * @var DatatableInterface
-     */
-    private $datatable;
-
-    /**
      * The EntityManager.
      *
      * @var EntityManagerInterface
@@ -162,7 +157,6 @@ class DatatableQueryBuilder
     public function __construct(array $requestParams, DatatableInterface $datatable)
     {
         $this->requestParams = $requestParams;
-        $this->datatable = $datatable;
 
         $this->em = $datatable->getEntityManager();
         $this->entityName = $datatable->getEntity();

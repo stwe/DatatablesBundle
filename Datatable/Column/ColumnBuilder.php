@@ -11,7 +11,6 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Twig_Environment;
 use Exception;
@@ -23,13 +22,6 @@ use Exception;
  */
 class ColumnBuilder
 {
-    /**
-     * The doctrine orm entity manager service.
-     *
-     * @var EntityManagerInterface
-     */
-    private $em;
-
     /**
      * The class metadata.
      *
@@ -87,14 +79,12 @@ class ColumnBuilder
     /**
      * ColumnBuilder constructor.
      *
-     * @param EntityManagerInterface $em
-     * @param ClassMetadata          $metadata
-     * @param Twig_Environment       $twig
-     * @param string                 $datatableName
+     * @param ClassMetadata    $metadata
+     * @param Twig_Environment $twig
+     * @param string           $datatableName
      */
-    public function __construct(EntityManagerInterface $em, ClassMetadata $metadata, Twig_Environment $twig, $datatableName)
+    public function __construct(ClassMetadata $metadata, Twig_Environment $twig, $datatableName)
     {
-        $this->em = $em;
         $this->metadata = $metadata;
         $this->twig = $twig;
         $this->columns = array();
