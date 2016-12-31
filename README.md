@@ -48,6 +48,8 @@ This bundle is currently under heavy development and the dev-master branch conta
 
 [Installation](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/installation.md)
 
+[Console Command](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/command.md)
+
 [Columns](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/columns.md)
 
 [Options](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/options.md)
