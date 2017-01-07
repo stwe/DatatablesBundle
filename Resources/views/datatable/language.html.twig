@@ -1,7 +1,7 @@
 {% if sg_datatables_view.language.language is null %}
-    {% if true == sg_datatables_view.language.cdnLanguageByLocale %}
+    {% if true == sg_datatables_view.language.languageCDNFile %}
         "language": {
-            "url": "{{ asset(sg_datatables_view.language.CDNfilename[app.request.locale], 'datatables_cdn') }}"
+            "url": "{{ asset(sg_datatables_view.language.languageCDNFile[app.request.locale], 'datatables_cdn') }}"
         }
     {% endif %}
 

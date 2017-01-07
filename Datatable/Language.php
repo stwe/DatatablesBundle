@@ -25,7 +25,7 @@ class Language
     /**
      * @var array
      */
-    const LANGUAGE_CDN_FILE = array(
+    protected $languageCDNFile = array(
         'af' => 'Afrikaans.json',
         'ar' => 'Arabic.json',
         'az' => 'Azerbaijan.json',
@@ -158,13 +158,13 @@ class Language
     //-------------------------------------------------
 
     /**
-     * Get CDN filenames.
+     * Get languageCDNFile.
      *
      * @return array
      */
-    public function getCDNFilename()
+    public function getLanguageCDNFile()
     {
-        return self::LANGUAGE_CDN_FILE;
+        return $this->languageCDNFile;
     }
 
     /**
