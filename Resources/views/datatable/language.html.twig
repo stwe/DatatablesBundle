@@ -1,0 +1,15 @@
+{% if sg_datatables_view.language.language is null %}
+    {% if true == sg_datatables_view.language.cdnLanguageByLocale %}
+        "language": {
+            "url": "{{ asset(sg_datatables_view.language.CDNfilename[app.request.locale], 'datatables_cdn') }}"
+        }
+    {% endif %}
+
+    {% if true == sg_datatables_view.language.languageByLocale %}
+        "language":
+            {% include 'SgDatatablesBundle:i18n:' ~ app.request.locale ~ '.json.twig' %}
+    {% endif %}
+{% else %}
+    "language":
+        {% include 'SgDatatablesBundle:i18n:' ~ sg_datatables_view.language.language ~ '.json.twig' %}
+{% endif %}

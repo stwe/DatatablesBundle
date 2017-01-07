@@ -28,7 +28,7 @@ With 'null' initialized options uses the default value of the DataTables plugin.
 | search_in_non_visible_columns | bool               | false     | Determines whether to search in non-visible columns. |
 | global_search_type            | string             | 'like'    | The global search type (example: 'eq'). |
 
-```php
+``` php
 class PostDatatable extends AbstractDatatable
 {
     public function buildDatatable(array $options = array())

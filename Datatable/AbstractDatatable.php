@@ -94,6 +94,13 @@ abstract class AbstractDatatable implements DatatableInterface
     protected $options;
 
     /**
+     * A Language instance.
+     *
+     * @var Language
+     */
+    protected $language;
+
+    /**
      * The PropertyAccessor.
      *
      * @var PropertyAccessor
@@ -139,6 +146,7 @@ abstract class AbstractDatatable implements DatatableInterface
 
         $this->ajax = new Ajax();
         $this->options = new Options();
+        $this->language = new Language();
 
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
@@ -193,6 +201,14 @@ abstract class AbstractDatatable implements DatatableInterface
     public function getOptions()
     {
         return $this->options;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLanguage()
+    {
+        return $this->language;
     }
 
     /**

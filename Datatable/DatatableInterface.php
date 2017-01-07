@@ -74,6 +74,13 @@ interface DatatableInterface
     public function getOptions();
 
     /**
+     * Get Language instance.
+     *
+     * @return Language
+     */
+    public function getLanguage();
+
+    /**
      * Get the EntityManager.
      *
      * @return EntityManagerInterface

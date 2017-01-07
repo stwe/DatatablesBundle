@@ -10,19 +10,14 @@
 
     $(document).ready(function () {
 
-        var locale = "{{ app.request.getLocale() }}";
-        var language = {};
-        language['de'] = "http://cdn.datatables.net/plug-ins/1.10.12/i18n/German.json";
-        language['en'] = "http://cdn.datatables.net/plug-ins/1.10.12/i18n/English.json";
-        language['fr'] = "http://cdn.datatables.net/plug-ins/1.10.12/i18n/French.json";
-
         var selector = "#sg-datatables-{{ sg_datatables_view.name }}";
         var oTable;
 
         var defaults = {
-            "language": {
-                "url": language[locale]
-            }
+        };
+
+        var language = {
+            {% include 'SgDatatablesBundle:datatable:language.html.twig' %}
         };
 
         var ajax = {
@@ -42,6 +37,7 @@
         };
 
         function createDatatable() {
+            $.extend(defaults, language);
             $.extend(defaults, ajax);
             $.extend(defaults, options);
             $.extend(defaults, columns);

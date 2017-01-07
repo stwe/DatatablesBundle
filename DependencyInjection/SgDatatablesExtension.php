@@ -14,6 +14,7 @@ namespace Sg\DatatablesBundle\DependencyInjection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
@@ -21,7 +22,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
  *
  * @package Sg\DatatablesBundle\DependencyInjection
  */
-class SgDatatablesExtension extends Extension
+class SgDatatablesExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * {@inheritDoc}
@@ -35,5 +36,26 @@ class SgDatatablesExtension extends Extension
         $loader->load('services.yml');
 
         $container->setParameter('sg_datatables.datatable.query', $config['datatable']['query']);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        $container->prependExtensionConfig(
+            'framework',
+            array(
+                'assets' => array(
+                    'version' => '1.10.13',
+                    'version_format' => '%%s?version=%%s',
+                    'packages' => array(
+                        'datatables_cdn' => array(
+                            'base_path' => '//cdn.datatables.net/plug-ins/1.10.13/i18n/',
+                        ),
+                    )
+                )
+            )
+        );
     }
 }
