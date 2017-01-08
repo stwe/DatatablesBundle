@@ -46,6 +46,14 @@ class MultiselectColumn extends ActionColumn
     protected $value;
 
     /**
+     * Use the Datatable-Name as prefix for the value.
+     * Default: false
+     *
+     * @var bool
+     */
+    protected $valuePrefix;
+
+    /**
      * Id selector where all multiselect actions are rendered.
      * Default: null ('sg-datatables-{{ sg_datatables_view.name }}-multiselect-actions')
      *
@@ -90,6 +98,10 @@ class MultiselectColumn extends ActionColumn
 
         if (is_bool($value)) {
             $value = (int) $value;
+        }
+
+        if (true === $this->valuePrefix) {
+            $value = 'sg-datatables-' . $this->getDatatableName() . '-checkbox-' . $value;
         }
 
         $row[$this->getIndex()] = $this->twig->render(
@@ -141,12 +153,14 @@ class MultiselectColumn extends ActionColumn
         $resolver->setDefaults(array(
             'attributes' => null,
             'value' => 'id',
+            'value_prefix' => false,
             'render_actions_to_id' => null,
             'render_if' => null,
         ));
 
         $resolver->setAllowedTypes('attributes', array('null', 'array'));
         $resolver->setAllowedTypes('value', 'string');
+        $resolver->setAllowedTypes('value_prefix', 'bool');
         $resolver->setAllowedTypes('render_actions_to_id', array('null', 'string'));
         $resolver->setAllowedTypes('render_if', array('null', 'Closure'));
 
@@ -250,6 +264,30 @@ class MultiselectColumn extends ActionColumn
     public function setValue($value)
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get value prefix.
+     *
+     * @return bool
+     */
+    public function isValuePrefix()
+    {
+        return $this->valuePrefix;
+    }
+
+    /**
+     * Set value prefix.
+     *
+     * @param bool $valuePrefix
+     *
+     * @return $this
+     */
+    public function setValuePrefix($valuePrefix)
+    {
+        $this->valuePrefix = $valuePrefix;
 
         return $this;
     }
