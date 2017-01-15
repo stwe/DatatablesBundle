@@ -2,9 +2,10 @@
 
 1. [Column](#1-column)
 2. [Boolean Column](#2-boolean-column)
-3. [Virtual Column](#3-virtual-column)
-4. [Action Column](#4-action-column)
-5. [Multiselect Column](#5-multiselect-column)
+3. [DateTime Column](#3-datetime-column)
+4. [Virtual Column](#4-virtual-column)
+5. [Action Column](#5-action-column)
+6. [Multiselect Column](#6-multiselect-column)
 
 ## 1. Column
 
@@ -104,7 +105,6 @@ $this->columnBuilder
     ))
 ;
 ```
-
 ___
 
 ## 2. Boolean column
@@ -145,7 +145,41 @@ $this->columnBuilder
 ```
 ___
 
-## 3. Virtual column
+## 3. DateTime column
+
+Represents a column, optimized for date time values.
+
+**Be sure to install the [Moment.js](https://momentjs.com/) plugin before using this column.**
+
+### Default template
+
+SgDatatablesBundle:column:column.html.twig
+
+### Options
+
+All options of [Column](#1-column).
+
+**Additional:**
+
+| Option      | Type   | Default | Required | Description              |
+|-------------|--------|---------|----------|--------------------------|
+| date_format | string | lll     |          | Moment.js date format.   |
+| timeago     | bool   | false   |          | Use the time ago format. |
+
+### Example
+
+``` php
+$this->columnBuilder
+    ->add('publishedAt', DateTimeColumn::class, array(
+        'title' => 'Created at',
+        'date_format' => 'L',
+        //'timeago' => true
+    ))
+;
+```
+___
+
+## 4. Virtual column
 
 Represents a virtual column.
 
@@ -210,7 +244,7 @@ public function buildDatatable(array $options = array())
 ```
 ___
 
-## 4. Action column
+## 5. Action column
 
 A Column to display CRUD action labels or buttons.
 
@@ -315,10 +349,9 @@ $this->columnBuilder
     ))
 ;
 ```
-
 ___
 
-## 5. Multiselect column
+## 6. Multiselect column
 
 Support for Bulk Actions.
 
