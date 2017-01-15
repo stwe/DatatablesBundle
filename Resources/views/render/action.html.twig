@@ -22,7 +22,11 @@
 
 {% macro confirm_dialog(action) %}
     {% if true == action.confirm %}
-        onclick="return confirm('{{ action.confirmMessage }}')"
+        {% if action.confirmMessage is not null %}
+            onclick="return confirm('{{ action.confirmMessage }}')"
+        {% else %}
+            onclick="return confirm('{{ 'sg.datatables.confirmMessage'|trans({}, 'messages') }}')"
+        {% endif %}
     {% endif %}
 {% endmacro %}
 
