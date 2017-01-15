@@ -20,9 +20,13 @@
     {% endfor %}
 {% endmacro %}
 
-{% macro confirm_dialog(action) %}
+{% macro confirm_message(action) %}
     {% if true == action.confirm %}
-        onclick="return confirm('{{ action.confirmMessage }}')"
+        {% if action.confirmMessage is not null %}
+            data-message="{{ action.confirmMessage }}"
+        {% else %}
+            data-message="{{ 'sg.datatables.confirmMessage'|trans({}, 'messages') }}"
+        {% endif %}
     {% endif %}
 {% endmacro %}
 
@@ -36,13 +40,13 @@
                     {% endif %}
                 {% endif %}
                 {{ action.startHtml|raw }}
-                <a href="{{ path(action.route, set_route_parameters) }}" {{ _self.attributes(action) }} {{ _self.confirm_dialog(action) }}>
+                <a href="{{ path(action.route, set_route_parameters) }}" {{ _self.attributes(action) }} {{ _self.confirm_message(action) }}>
                     {{ _self.link_title(action) }}
                 </a>
                 {{ action.endHtml|raw }}
             {% else %}
                 {{ action.startHtml|raw }}
-                <a href="{{ path(action.route) }}" {{ _self.attributes(action) }} {{ _self.confirm_dialog(action) }}>
+                <a href="{{ path(action.route) }}" {{ _self.attributes(action) }} {{ _self.confirm_message(action) }}>
                     {{ _self.link_title(action) }}
                 </a>
                 {{ action.endHtml|raw }}
@@ -117,6 +121,12 @@ $(".sg-datatables-{{ datatable_name }}-multiselect-action").on("click", function
     event.preventDefault();
 
     if (oTable.rows(".selected").data().length > 0) {
+        if ($(this).data("message")) {
+            if (!confirm($(this).data("message"))) {
+                return;
+            }
+        }
+
         var items = $.map(oTable.rows(".selected").data(), function (i) {
             return i
         });
