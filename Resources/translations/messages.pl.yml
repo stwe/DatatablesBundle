@@ -1,0 +1,4 @@
+sg:
+    datatables:
+        confirmMessage: "Jesteś pewien?"
+        selectError: "Musisz wybrać przynajmniej jeden element"

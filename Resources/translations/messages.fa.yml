@@ -1,0 +1,4 @@
+sg:
+    datatables:
+        confirmMessage: "آیا مطمئن هستید؟"
+        selectError: "شما می‌بایست حداقل یک سطر را انتخاب کنید."

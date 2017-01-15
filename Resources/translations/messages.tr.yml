@@ -1,0 +1,4 @@
+sg:
+    datatables:
+        confirmMessage: "Emin misiniz?"
+        selectError: "En az bir eleman seçmelisiniz."

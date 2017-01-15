@@ -1,0 +1,4 @@
+sg:
+    datatables:
+        confirmMessage: "Сиз туура деп ойлойсузбу?"
+        selectError: "Сиз жок дегенде бир элемент тандашыңыз керек"
