@@ -31,6 +31,20 @@ class {{ datatable_class }} extends AbstractDatatable
      */
     public function buildDatatable(array $options = array())
     {
+        $this->language->set(array(
+            'cdn_language_by_locale' => true
+            //'language' => 'de'
+        ));
+
+        $this->ajax->set(array(
+        ));
+
+        $this->options->set(array(
+            'individual_filtering' => true,
+            'individual_filtering_position' => 'head',
+            'order_cells_top' => true,
+        ));
+
         $this->columnBuilder
             {% for field in fields -%}
             ->add('{{ field.property }}', {{ field.column_type }}, array(
