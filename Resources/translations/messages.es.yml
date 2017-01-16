@@ -2,3 +2,7 @@ sg:
     datatables:
         confirmMessage: "¿Está seguro?"
         selectError: "Es necesario seleccionar al menos 1 elemento."
+        actions:
+            title: "Acciones"
+            show: "Mostrar"
+            edit: "Editar"

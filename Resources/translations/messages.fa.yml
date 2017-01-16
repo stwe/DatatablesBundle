@@ -2,3 +2,7 @@ sg:
     datatables:
         confirmMessage: "آیا مطمئن هستید؟"
         selectError: "شما می‌بایست حداقل یک سطر را انتخاب کنید."
+        actions:
+            title: "Actions"
+            show: "Show"
+            edit: "Edit"

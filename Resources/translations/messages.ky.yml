@@ -2,3 +2,7 @@ sg:
     datatables:
         confirmMessage: "Сиз туура деп ойлойсузбу?"
         selectError: "Сиз жок дегенде бир элемент тандашыңыз керек"
+        actions:
+            title: "Кыймыл-Аракет"
+            show: "Көрсөтүү"
+            edit: "Редакциялоо"

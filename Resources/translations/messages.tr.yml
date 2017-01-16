@@ -2,3 +2,7 @@ sg:
     datatables:
         confirmMessage: "Emin misiniz?"
         selectError: "En az bir eleman seçmelisiniz."
+        actions:
+            title: "İşlemler"
+            show: "Göster"
+            edit: "Düzenle"

@@ -2,3 +2,7 @@ sg:
     datatables:
         confirmMessage: "Weet u het zeker?"
         selectError: "U moet tenminste één element selecteren."
+        actions:
+            title: "Acties"
+            show: "Bekijken"
+            edit: "Bewerken"

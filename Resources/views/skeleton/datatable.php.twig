@@ -10,6 +10,7 @@ use Sg\DatatablesBundle\Datatable\Column\BooleanColumn;
 use Sg\DatatablesBundle\Datatable\Column\ActionColumn;
 use Sg\DatatablesBundle\Datatable\Column\MultiselectColumn;
 use Sg\DatatablesBundle\Datatable\Column\VirtualColumn;
+use Sg\DatatablesBundle\Datatable\Column\DateTimeColumn;
 use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
 use Sg\DatatablesBundle\Datatable\Filter\NumberFilter;
 use Sg\DatatablesBundle\Datatable\Filter\SelectFilter;
@@ -37,18 +38,18 @@ class {{ datatable_class }} extends AbstractDatatable
             ))
             {% endfor -%}
             ->add(null, ActionColumn::class, array(
-                'title' => $this->translator->trans('datatables.actions.title'),
+                'title' => $this->translator->trans('sg.datatables.actions.title'),
                 'actions' => array(
                     array(
                         'route' => '{{ route_pref }}_show',
                         'route_parameters' => array(
                             'id' => 'id'
                         ),
-                        'label' => $this->translator->trans('datatables.actions.show'),
+                        'label' => $this->translator->trans('sg.datatables.actions.show'),
                         'icon' => 'glyphicon glyphicon-eye-open',
                         'attributes' => array(
                             'rel' => 'tooltip',
-                            'title' => $this->translator->trans('datatables.actions.show'),
+                            'title' => $this->translator->trans('sg.datatables.actions.show'),
                             'class' => 'btn btn-primary btn-xs',
                             'role' => 'button'
                         ),
@@ -58,11 +59,11 @@ class {{ datatable_class }} extends AbstractDatatable
                         'route_parameters' => array(
                             'id' => 'id'
                         ),
-                        'label' => $this->translator->trans('datatables.actions.edit'),
+                        'label' => $this->translator->trans('sg.datatables.actions.edit'),
                         'icon' => 'glyphicon glyphicon-edit',
                         'attributes' => array(
                             'rel' => 'tooltip',
-                            'title' => $this->translator->trans('datatables.actions.edit'),
+                            'title' => $this->translator->trans('sg.datatables.actions.edit'),
                             'class' => 'btn btn-primary btn-xs',
                             'role' => 'button'
                         ),
