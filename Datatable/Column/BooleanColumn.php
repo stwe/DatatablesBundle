@@ -88,10 +88,10 @@ class BooleanColumn extends AbstractColumn
             'SgDatatablesBundle:render:boolean.html.twig',
             array(
                 'data' => $row[$this->data],
-                'trueLabel' => $this->trueLabel,
-                'trueIcon' => $this->trueIcon,
-                'falseLabel' => $this->falseLabel,
-                'falseIcon' => $this->falseIcon,
+                'true_label' => $this->trueLabel,
+                'true_icon' => $this->trueIcon,
+                'false_label' => $this->falseLabel,
+                'false_icon' => $this->falseIcon,
             )
         );
     }
