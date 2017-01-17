@@ -125,22 +125,25 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
 
         foreach (explode(' ', $input) as $value) {
             $elements = explode(':', $value);
-            $property = $elements[0];
 
-            if (strlen($property)) {
-                // @todo: fix set type --fields="createdAt:Type"
-                $columnType = isset($elements[1]) ? $elements[1] : 'Column::class';
-                preg_match_all('/(.*)\((.*)\)/', $columnType, $matches);
-                $columnType = isset($matches[1][0]) ? $matches[1][0] : $columnType;
+            $row = array();
+            $row['property'] = $elements[0];
+            $row['column_type'] = 'Column::class';
+            $row['data'] = null;
+            $row['title'] = ucwords(str_replace('.', ' ', $elements[0]));
 
-                $title = ucwords(str_replace('.', ' ', $property));
-
-                $row = array();
-                $row['property'] = $property;
-                $row['column_type'] = $columnType;
-                $row['title'] = $title;
-                $fields[] = $row;
+            if (isset($elements[1])) {
+                switch($elements[1]) {
+                    case 'datetime':
+                        $row['column_type'] = 'DateTimeColumn::class';
+                        break;
+                    case 'boolean':
+                        $row['column_type'] = 'BooleanColumn::class';
+                        break;
+                }
             }
+
+            $fields[] = $row;
         }
 
         return $fields;
@@ -191,22 +194,25 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
             }
 
             $row['title'] = ucwords($field['fieldName']);
+            $row['data'] = null;
             $fields[] = $row;
         }
 
         foreach ($metadata->associationMappings as $relation) {
-            if ( ($relation['type'] !== ClassMetadataInfo::ONE_TO_MANY) && ($relation['type'] !== ClassMetadataInfo::MANY_TO_MANY) ) {
+            $targetClass = $relation['targetEntity'];
+            $targetMetadata = $this->getEntityMetadata($targetClass);
 
-                $targetClass = $relation['targetEntity'];
-                $targetMetadata = $this->getEntityMetadata($targetClass);
-
-                foreach ($targetMetadata[0]->fieldMappings as $field) {
-                    $row = array();
-                    $row['property'] = $relation['fieldName'] . '.' . $field['fieldName'];
-                    $row['column_type'] = 'Column::class';
-                    $row['title'] = ucwords(str_replace('.', ' ', $row['property']));
-                    $fields[] = $row;
+            foreach ($targetMetadata[0]->fieldMappings as $field) {
+                $row = array();
+                $row['property'] = $relation['fieldName'] . '.' . $field['fieldName'];
+                $row['column_type'] = 'Column::class';
+                $row['title'] = ucwords(str_replace('.', ' ', $row['property']));
+                if ($relation['type'] === ClassMetadataInfo::ONE_TO_MANY || $relation['type'] === ClassMetadataInfo::MANY_TO_MANY) {
+                    $row['data'] = $relation['fieldName'] . '[, ].' . $field['fieldName'];
+                } else {
+                    $row['data'] = null;
                 }
+                $fields[] = $row;
             }
         }
 
