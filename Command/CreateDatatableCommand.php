@@ -62,13 +62,11 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
         $metadata = $this->getEntityMetadata($entityClass);
 
         // get fields option
-        $fields = $this->parseFields($input->getOption('fields'));
-        if (0 == count($fields)) {
-            $fields = $this->getFieldsFromMetadata($metadata[0]);
-        }
+        $fieldsOption = $input->getOption('fields');
+        null === $fieldsOption ? $fields = $this->getFieldsFromMetadata($metadata[0]) : $fields = $this->parseFields($fieldsOption);
 
         // get overwrite option
-        $overwrite = $this->parseFields($input->getOption('overwrite'));
+        $overwrite = $input->getOption('overwrite');
 
         // get the entity's primary key
         $id = $this->getIdentifierFromMetadata($metadata);
