@@ -52,13 +52,15 @@ This bundle is currently under heavy development and the dev-master branch conta
 
 [Columns](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/columns.md)
 
+[Filters](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filters.md)
+
 [Options](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/options.md)
 
 [Internationalisation](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/internationalisation.md)
 
 ## Example
 
-[Demo Application](https://github.com/stwe/DtBundleDemo)
+[Demo Application for v0.13](https://github.com/stwe/DtBundleDemo)
 
 ## Friendly License
 

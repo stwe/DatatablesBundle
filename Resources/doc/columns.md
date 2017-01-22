@@ -140,6 +140,17 @@ $this->columnBuilder
         'false_icon' => 'glyphicon glyphicon-remove',
         'true_label' => 'yes',
         'false_label' => 'no',
+        'filter' => array(SelectFilter::class, array(
+            'classes' => 'test1 test2',
+            'search_type' => 'eq',
+            'multiple' => true,
+            'select_options' => array(
+                '' => 'Any',
+                '1' => 'Yes',
+                '0' => 'No'
+            ),
+            'cancel_button' => true,
+        )),
     ))
 ;
 ```
@@ -150,6 +161,7 @@ ___
 Represents a column, optimized for date time values.
 
 **Be sure to install the [Moment.js](https://momentjs.com/) plugin before using this column.**
+**Be sure to install the [Bootstrap Date Range Picker](http://www.daterangepicker.com/) plugin before using the DateRangeFilter.**
 
 ### Default template
 
@@ -173,6 +185,9 @@ $this->columnBuilder
     ->add('publishedAt', DateTimeColumn::class, array(
         'title' => 'Created at',
         'date_format' => 'L',
+        'filter' => array(DateRangeFilter::class, array(
+            'cancel_button' => true
+        )),
         //'timeago' => true
     ))
 ;

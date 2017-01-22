@@ -14,6 +14,7 @@ namespace Sg\DatatablesBundle\Datatable\Filter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Andx;
 use DateTime;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class DateRangeFilter
@@ -48,6 +49,26 @@ class DateRangeFilter extends AbstractFilter
         $parameterCounter += 2;
 
         return $andExpr;
+    }
+
+    //-------------------------------------------------
+    // Options
+    //-------------------------------------------------
+
+    /**
+     * Config options.
+     *
+     * @param OptionsResolver $resolver
+     *
+     * @return $this
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        parent::configureOptions($resolver);
+
+        $resolver->remove('search_type');
+
+        return $this;
     }
 
     //-------------------------------------------------
