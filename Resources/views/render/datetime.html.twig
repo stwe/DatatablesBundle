@@ -7,16 +7,16 @@
  # file that was distributed with this source code.
  #}
 {% if data is not null %}
-    <div class="sg-datatables-{{ datatable_name }}-datetime-{{ column_name }}"></div>
+    <div id="sg-datatables-{{ datatable_name }}-datetime-{{ row_data_id }}"></div>
 
     <script type="text/javascript">
         $(function() {
             moment.locale("{{ app.request.locale }}");
 
             {% if false == timeago %}
-                $(".sg-datatables-{{ datatable_name }}-datetime-{{ column_name }}").html(moment.unix({{ data|date('U') }}).format("{{ date_format }}"));
+                $("#sg-datatables-{{ datatable_name }}-datetime-{{ row_data_id }}").html(moment.unix({{ data|date('U') }}).format("{{ date_format }}"));
             {% else %}
-                $(".sg-datatables-{{ datatable_name }}-datetime-{{ column_name }}").html(moment.unix({{ data|date('U') }}).fromNow());
+                $("#sg-datatables-{{ datatable_name }}-datetime-{{ row_data_id }}").html(moment.unix({{ data|date('U') }}).fromNow());
             {% endif %}
         });
     </script>
