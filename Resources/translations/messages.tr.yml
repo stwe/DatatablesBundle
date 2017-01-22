@@ -6,3 +6,7 @@ sg:
             title: "İşlemler"
             show: "Göster"
             edit: "Düzenle"
+        daterange:
+            apply: "Uygula"
+            cancel: "Vazgeç"
+            format: "DD-MM-YYYY"

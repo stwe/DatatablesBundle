@@ -6,3 +6,7 @@ sg:
             title: "Azioni"
             show: "Mostra"
             edit: "Modifica"
+        daterange:
+            apply: "Applica"
+            cancel: "Annulla"
+            format: "DD-MM-YYYY"

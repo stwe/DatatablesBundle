@@ -6,3 +6,7 @@ sg:
             title: "Acciones"
             show: "Mostrar"
             edit: "Editar"
+        daterange:
+            apply: "Aplicar"
+            cancel: "Cancelar"
+            format: "YYYY-MM-DD"

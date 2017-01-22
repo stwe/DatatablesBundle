@@ -6,3 +6,7 @@ sg:
             title: "Acties"
             show: "Bekijken"
             edit: "Bewerken"
+        daterange:
+            apply: "Toepassen"
+            cancel: "Annuleren"
+            format: "YYYY-MM-DD"

@@ -6,3 +6,7 @@ sg:
             title: "Кыймыл-Аракет"
             show: "Көрсөтүү"
             edit: "Редакциялоо"
+        daterange:
+            apply: "Колдонуу"
+            cancel: "Баш тарт"
+            format: "DD.MM.YYYY"

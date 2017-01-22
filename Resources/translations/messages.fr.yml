@@ -6,3 +6,7 @@ sg:
             title: "Actions"
             show: "Voir"
             edit: "Modifier"
+        daterange:
+            apply: "Appliquer"
+            cancel: "Annuler"
+            format: "DD-MM-YYYY"

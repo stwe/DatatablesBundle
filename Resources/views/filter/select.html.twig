@@ -6,7 +6,35 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-{% extends 'SgDatatablesBundle:filter:filter.html.twig' %}
+{% set filter_select_multiple %}
+    {% if true == column.filter.multiple %}
+        multiple="multiple"
+    {% endif %}
+{% endset %}
+
+{%- set filter_id_selector -%}
+    sg-datatables-{{ datatable_name }}-{{ position }}-filter-{{ column.index }}
+{%- endset -%}
+
+{%- set filter_selector -%}
+    id="{{ filter_id_selector }}"
+{%- endset -%}
+
+{% set filter_classes %}
+    class="sg-datatables-individual-filtering{% if column.filter.classes is not null %} {{ column.filter.classes }}{% endif %}"
+{% endset %}
+
+{% set filter_width %}
+    {% if column.width is not null %}style="width:{{ column.width }};"{% endif %}
+{% endset %}
+
+{% set filter_search_column_index %}
+    data-search-column-index="{{ search_column_index }}"
+{% endset %}
+
+{% set filter_column_name %}
+    {% if column.name is not null %}name="{{ column.name }}"{% endif %}
+{% endset %}
 
 {% set filter_select_initial_search %}
     {% if column.filter.initialSearch is not null %}
@@ -22,22 +50,43 @@
     {% endfor %}
 {% endset %}
 
-{% set filter_select_multiple %}
-    {% if true == column.filter.multiple %}
-        multiple="multiple"
+{%- set cancel_button_id_selector -%}
+    sg-datatables-{{ datatable_name }}-{{ position }}-filter-cancel-{{ column.index }}
+{%- endset -%}
+
+{% set cancel_button_html %}
+    {% if true == column.filter.cancelButton %}
+        <button type="button"
+                id="{{ cancel_button_id_selector }}"
+                class="btn btn-default btn-xs"
+        >&times;</button>
+    {% endif %}
+{% endset %}
+
+{% set cancel_button_js %}
+    {% if true == column.filter.cancelButton %}
+        <script type="text/javascript">
+            $("#{{ cancel_button_id_selector }}").click(function() {
+                if ('' != $("#{{ filter_id_selector }}").val()) {
+                    $("#{{ filter_id_selector }}")
+                        .val('')
+                        .change();
+                }
+            });
+        </script>
     {% endif %}
 {% endset %}
 
 {% block html %}
     <select
-            {{ filter_select_multiple }}
-            {{ filter_selector }}
-            {{ filter_classes }}
-            {{ filter_width }}
-            {{ filter_search_column_index }}
-            {{ filter_column_name }}
+            {{ filter_select_multiple }}     {# multiple="multiple" #}
+            {{ filter_selector }}            {# id="" #}
+            {{ filter_classes }}             {# class="" #}
+            {{ filter_width }}               {# style = "width:" #}
+            {{ filter_search_column_index }} {# data-search-column-index = "" #}
+            {{ filter_column_name }}         {# name = "" #}
     >
-        {{ filter_select_initial_search }}
+        {{ filter_select_initial_search }}   {# <option value=""></option> #}
         {{ filter_select_select_options }}
     </select>
     {{ cancel_button_html }}

@@ -6,3 +6,7 @@ sg:
             title: "Действия"
             show: "Показать"
             edit: "Редактировать"
+        daterange:
+            apply: "Применить"
+            cancel: "Отменить"
+            format: "DD.MM.YYYY"

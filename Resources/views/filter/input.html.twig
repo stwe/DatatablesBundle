@@ -6,14 +6,24 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-{% extends 'SgDatatablesBundle:filter:filter.html.twig' %}
+{% set filter_input_type %}
+    type="{{ column.filter.type }}"
+{% endset %}
 
 {%- set filter_id_selector -%}
     sg-datatables-{{ datatable_name }}-{{ position }}-filter-{{ column.index }}
 {%- endset -%}
 
-{% set filter_input_initial_search %}
-    {% if column.filter.initialSearch %}value="{{ column.filter.initialSearch }}"{% endif %}
+{%- set filter_selector -%}
+    id="{{ filter_id_selector }}"
+{%- endset -%}
+
+{% set filter_classes %}
+    class="sg-datatables-individual-filtering{% if column.filter.classes is not null %} {{ column.filter.classes }}{% endif %}"
+{% endset %}
+
+{% set filter_width %}
+    {% if column.width is not null %}style="width:{{ column.width }};"{% endif %}
 {% endset %}
 
 {% set filter_input_placeholder %}
@@ -22,8 +32,12 @@
     {% endif %}
 {% endset %}
 
-{% set filter_input_type %}
-    type="{{ column.filter.type }}"
+{% set filter_search_column_index %}
+    data-search-column-index="{{ search_column_index }}"
+{% endset %}
+
+{% set filter_column_name %}
+    {% if column.name is not null %}name="{{ column.name }}"{% endif %}
 {% endset %}
 
 {% set filter_input_minmax %}
@@ -40,6 +54,10 @@
     {% endif %}
 {% endset %}
 
+{% set filter_input_initial_search %}
+    {% if column.filter.initialSearch %}value="{{ column.filter.initialSearch }}"{% endif %}
+{% endset %}
+
 {% set filter_input_datalist_values %}
     {% if 'number' == column.filter.type or 'range' == column.filter.type %}
         {% if column.filter.datalist is not null %}
@@ -52,6 +70,19 @@
     {% endif %}
 {% endset %}
 
+{%- set cancel_button_id_selector -%}
+    sg-datatables-{{ datatable_name }}-{{ position }}-filter-cancel-{{ column.index }}
+{%- endset -%}
+
+{% set cancel_button_html %}
+    {% if true == column.filter.cancelButton %}
+        <button type="button"
+                id="{{ cancel_button_id_selector }}"
+                class="btn btn-default btn-xs"
+        >&times;</button>
+    {% endif %}
+{% endset %}
+
 {% set filter_input_range_label_html %}
     {% if 'number' == column.filter.type or 'range' == column.filter.type %}
         {% if true == column.filter.showLabel %}
@@ -60,10 +91,24 @@
     {% endif %}
 {% endset %}
 
+{% set cancel_button_js %}
+    {% if true == column.filter.cancelButton %}
+        <script type="text/javascript">
+            $("#{{ cancel_button_id_selector }}").click(function() {
+                if ('' != $("#{{ filter_id_selector }}").val()) {
+                    $("#{{ filter_id_selector }}")
+                        .val('')
+                        .change();
+                }
+            });
+        </script>
+    {% endif %}
+{% endset %}
+
 {% set filter_input_range_label_js %}
     {% if 'number' == column.filter.type or 'range' == column.filter.type %}
         {% if true == column.filter.showLabel %}
-            <script>
+            <script type="text/javascript">
                 var interval;
 
                 $("#{{ filter_id_selector }}-range-label").html($("#{{ filter_id_selector }}").val());
@@ -87,18 +132,18 @@
 {% endset %}
 
 {% block html %}
-    <input {{ filter_input_type }}
-            {{ filter_selector }}
-            {{ filter_classes }}
-            {{ filter_width }}
-            {{ filter_input_placeholder }}
-            {{ filter_search_column_index }}
-            {{ filter_column_name }}
-            {{ filter_input_minmax }}
-            {{ filter_input_datalist }}
-            {{ filter_input_initial_search }}
+    <input {{ filter_input_type }}            {# type = "" text, number or range #}
+            {{ filter_selector }}             {# id = "" #}
+            {{ filter_classes }}              {# class = "" #}
+            {{ filter_width }}                {# style = "width:" #}
+            {{ filter_input_placeholder }}    {# placeholder = "" #}
+            {{ filter_search_column_index }}  {# data-search-column-index = "" #}
+            {{ filter_column_name }}          {# name = "" #}
+            {{ filter_input_minmax }}         {# min = "" max = "" step = "" #}
+            {{ filter_input_datalist }}       {# list = "" #}
+            {{ filter_input_initial_search }} {# value = "" #}
     />
-    {{ filter_input_datalist_values }}
+    {{ filter_input_datalist_values }}        {# <datalist> #}
     {{ cancel_button_html }}
     {{ filter_input_range_label_html }}
 {% endblock %}
