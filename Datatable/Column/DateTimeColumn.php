@@ -62,11 +62,13 @@ class DateTimeColumn extends AbstractColumn
      */
     public function renderContent(array &$row)
     {
+        $rowId = strtr(base64_encode(openssl_random_pseudo_bytes(16)), '+/=', 'ggg');
+
         $row[$this->data] = $this->twig->render(
             'SgDatatablesBundle:render:datetime.html.twig',
             array(
                 'datatable_name' => $this->getDatatableName(),
-                'column_name' => $this->data,
+                'row_data_id' => $rowId,
                 'data' => $row[$this->data],
                 'date_format' => $this->dateFormat,
                 'timeago' => $this->timeago
