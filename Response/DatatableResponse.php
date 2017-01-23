@@ -99,21 +99,13 @@ class DatatableResponse
     }
 
     /**
-     * Create a new DatatableQueryBuilder instance.
+     * Get DatatableQueryBuilder instance.
      *
      * @return DatatableQueryBuilder
-     * @throws Exception
      */
     public function getDatatableQueryBuilder()
     {
-        if (null === $this->datatable) {
-            throw new Exception('DatatableResponse::getDatatableQueryBuilder(): Set a Datatable class with setDatatable().');
-        }
-
-        $this->requestParams = $this->getRequestParams();
-        $this->datatableQueryBuilder = new DatatableQueryBuilder($this->requestParams, $this->datatable);
-
-        return $this->datatableQueryBuilder;
+        return $this->datatableQueryBuilder ? : $this->createDatatableQueryBuilder();
     }
 
     //-------------------------------------------------
@@ -157,6 +149,24 @@ class DatatableResponse
     //-------------------------------------------------
     // Private
     //-------------------------------------------------
+
+    /**
+     * Create a new DatatableQueryBuilder instance.
+     *
+     * @return DatatableQueryBuilder
+     * @throws Exception
+     */
+    private function createDatatableQueryBuilder()
+    {
+        if (null === $this->datatable) {
+            throw new Exception('DatatableResponse::getDatatableQueryBuilder(): Set a Datatable class with setDatatable().');
+        }
+
+        $this->requestParams = $this->getRequestParams();
+        $this->datatableQueryBuilder = new DatatableQueryBuilder($this->requestParams, $this->datatable);
+
+        return $this->datatableQueryBuilder;
+    }
 
     /**
      * Get request params.
