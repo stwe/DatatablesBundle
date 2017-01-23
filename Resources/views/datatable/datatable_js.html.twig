@@ -28,6 +28,10 @@
             {% include 'SgDatatablesBundle:datatable:options.html.twig' %}
         };
 
+        var features = {
+            {% include 'SgDatatablesBundle:datatable:features.html.twig' %}
+        };
+
         var columns = {
             {% include 'SgDatatablesBundle:datatable:columns.html.twig' %}
         };
@@ -40,6 +44,7 @@
             $.extend(defaults, language);
             $.extend(defaults, ajax);
             $.extend(defaults, options);
+            $.extend(defaults, features);
             $.extend(defaults, columns);
             $.extend(defaults, initialSearch);
 

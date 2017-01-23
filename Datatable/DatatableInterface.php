@@ -74,6 +74,13 @@ interface DatatableInterface
     public function getOptions();
 
     /**
+     * Get Features instance.
+     *
+     * @return Features
+     */
+    public function getFeatures();
+
+    /**
      * Get Language instance.
      *
      * @return Language
