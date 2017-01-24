@@ -15,6 +15,8 @@ use Sg\DatatablesBundle\Datatable\Column\ColumnInterface;
 use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
 use Sg\DatatablesBundle\Datatable\DatatableInterface;
 use Sg\DatatablesBundle\Datatable\Options;
+use Sg\DatatablesBundle\Datatable\Features;
+use Sg\DatatablesBundle\Datatable\Ajax;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -136,11 +138,25 @@ class DatatableQueryBuilder
     private $joins;
 
     /**
-     * The Datatable Options.
+     * The Datatable Options instance.
      *
      * @var Options
      */
     private $options;
+
+    /**
+     * The Datatable Features instance.
+     *
+     * @var Features
+     */
+    private $features;
+
+    /**
+     * The Datatable Ajax instance.
+     *
+     * @var Ajax
+     */
+    private $ajax;
 
     //-------------------------------------------------
     // Ctor. && Init column arrays
@@ -176,6 +192,8 @@ class DatatableQueryBuilder
         $this->joins = array();
 
         $this->options = $datatable->getOptions();
+        $this->features = $datatable->getFeatures();
+        $this->ajax = $datatable->getAjax();
 
         $this->initColumnArrays();
     }
@@ -452,11 +470,16 @@ class DatatableQueryBuilder
      * Construct the LIMIT clause for server-side processing SQL query.
      *
      * @return $this
+     * @throws Exception
      */
     private function setLimit()
     {
-        if (isset($this->requestParams['start']) && DatatableQueryBuilder::DISABLE_PAGINATION != $this->requestParams['length']) {
-            $this->qb->setFirstResult($this->requestParams['start'])->setMaxResults($this->requestParams['length']);
+        if (true === $this->features->getPaging()) {
+            if (isset($this->requestParams['start']) && DatatableQueryBuilder::DISABLE_PAGINATION != $this->requestParams['length']) {
+                $this->qb->setFirstResult($this->requestParams['start'])->setMaxResults($this->requestParams['length']);
+            }
+        } elseif ($this->ajax->getPipeline() > 0) {
+            throw new Exception('DatatableQueryBuilder::setLimit(): For disabled paging, the ajax Pipeline-Option must be turned off.');
         }
 
         return $this;
@@ -613,7 +636,7 @@ class DatatableQueryBuilder
         try {
             $metadata = $this->em->getMetadataFactory()->getMetadataFor($entityName);
         } catch (MappingException $e) {
-            throw new Exception('DatatableQuery::getMetadata(): Given object ' . $entityName . ' is not a Doctrine Entity.');
+            throw new Exception('DatatableQueryBuilder::getMetadata(): Given object ' . $entityName . ' is not a Doctrine Entity.');
         }
 
         // @todo:
