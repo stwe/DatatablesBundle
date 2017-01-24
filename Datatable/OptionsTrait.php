@@ -80,6 +80,22 @@ trait OptionsTrait
         return $this;
     }
 
+    /**
+     * Get options.
+     *
+     * @param null|string $option
+     *
+     * @return mixed
+     */
+    public function get($option = null)
+    {
+        if ($option) {
+            return $this->options[$option];
+        }
+
+        return $this->options;
+    }
+
     //-------------------------------------------------
     // Private
     //-------------------------------------------------
