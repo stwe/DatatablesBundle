@@ -94,6 +94,7 @@ class DatatableResponse
         };
 
         $this->datatable = $datatable;
+        $this->datatableQueryBuilder = null;
 
         return $this;
     }
