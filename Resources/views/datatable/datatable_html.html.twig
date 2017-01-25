@@ -8,7 +8,7 @@
  #}
 <table id="sg-datatables-{{ sg_datatables_view.name }}" class="{{ sg_datatables_view.options.classes }}" cellspacing="0" width="100%">
     <thead>
-        {% if sg_datatables_view.options.individualFiltering %}
+        {% if true == sg_datatables_view.options.individualFiltering and true == sg_datatables_view.features.searching %}
             {% if 'head' == sg_datatables_view.options.individualFilteringPosition or 'both' == sg_datatables_view.options.individualFilteringPosition%}
                 <tr>
                     {% for column in sg_datatables_view.columns %}
@@ -27,7 +27,7 @@
             {% endif %}
         {% endif %}
     </thead>
-        {% if sg_datatables_view.options.individualFiltering %}
+        {% if true == sg_datatables_view.options.individualFiltering and true == sg_datatables_view.features.searching %}
             {% if 'foot' == sg_datatables_view.options.individualFilteringPosition or 'both' == sg_datatables_view.options.individualFilteringPosition%}
             <tfoot>
                     <tr>
