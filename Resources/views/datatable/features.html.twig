@@ -31,7 +31,7 @@
     "scrollX": {{ sg_datatables_view.features.scrollX|sg_datatables_bool_var }},
 {% endif %}
 {% if sg_datatables_view.features.scrollY is not null %}
-    "scrollY": {{ sg_datatables_view.features.scrollY }},
+    "scrollY": "{{ sg_datatables_view.features.scrollY }}",
 {% endif %}
 {% if sg_datatables_view.features.searching is not null %}
     "searching": {{ sg_datatables_view.features.searching|sg_datatables_bool_var }},
