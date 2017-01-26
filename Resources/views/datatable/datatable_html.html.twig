@@ -9,7 +9,7 @@
 {% set individual_filtering = false %}
 
 {% if true == sg_datatables_view.options.individualFiltering %}
-    {% if true == sg_datatables_view.features.searching or sg_datatables_view.features.searching is null %}
+    {% if true == sg_datatables_view.features.searching or sg_datatables_view.features.searching is same as(null) %}
         {% set individual_filtering = true %}
     {% endif %}
 {% endif %}

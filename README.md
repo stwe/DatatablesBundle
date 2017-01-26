@@ -56,6 +56,8 @@ This bundle is currently under heavy development and the dev-master branch conta
 
 [Options](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/options.md)
 
+[Features](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/features.md)
+
 [Internationalisation](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/internationalisation.md)
 
 ## Example
