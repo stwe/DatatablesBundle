@@ -6,9 +6,17 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
+{% set individual_filtering = false %}
+
+{% if true == sg_datatables_view.options.individualFiltering %}
+    {% if true == sg_datatables_view.features.searching or sg_datatables_view.features.searching is null %}
+        {% set individual_filtering = true %}
+    {% endif %}
+{% endif %}
+
 <table id="sg-datatables-{{ sg_datatables_view.name }}" class="{{ sg_datatables_view.options.classes }}" cellspacing="0" width="100%">
     <thead>
-        {% if true == sg_datatables_view.options.individualFiltering and true == sg_datatables_view.features.searching or sg_datatables_view.features.searching is null %}
+        {% if true == individual_filtering %}
             {% if 'head' == sg_datatables_view.options.individualFilteringPosition or 'both' == sg_datatables_view.options.individualFilteringPosition%}
                 <tr>
                     {% for column in sg_datatables_view.columns %}
@@ -27,7 +35,7 @@
             {% endif %}
         {% endif %}
     </thead>
-        {% if true == sg_datatables_view.options.individualFiltering and true == sg_datatables_view.features.searching or sg_datatables_view.features.searching is null  %}
+        {% if true == individual_filtering %}
             {% if 'foot' == sg_datatables_view.options.individualFilteringPosition or 'both' == sg_datatables_view.options.individualFilteringPosition%}
             <tfoot>
                     <tr>
