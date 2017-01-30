@@ -6,17 +6,25 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
+{%- set datetime_id_selector -%}
+    sg-datatables-{{ datatable_name }}-datetime-{{ row_id }}
+{%- endset -%}
+
+{%- set datetime_selector -%}
+    id="{{ datetime_id_selector }}"
+{%- endset -%}
+
 {% if data is not null %}
-    <div id="sg-datatables-{{ datatable_name }}-datetime-{{ row_data_id }}"></div>
+    <div {{ datetime_selector }}></div>
 
     <script type="text/javascript">
         $(function() {
             moment.locale("{{ app.request.locale }}");
 
-            {% if false == timeago %}
-                $("#sg-datatables-{{ datatable_name }}-datetime-{{ row_data_id }}").html(moment.unix({{ data|date('U') }}).format("{{ date_format }}"));
+            {% if timeago is same as(false) %}
+                $("#{{ datetime_id_selector }}").html(moment.unix({{ data|date('U') }}).format("{{ date_format }}"));
             {% else %}
-                $("#sg-datatables-{{ datatable_name }}-datetime-{{ row_data_id }}").html(moment.unix({{ data|date('U') }}).fromNow());
+                $("#{{ datetime_id_selector }}").html(moment.unix({{ data|date('U') }}).fromNow());
             {% endif %}
         });
     </script>

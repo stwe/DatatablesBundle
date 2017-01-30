@@ -12,6 +12,8 @@
 namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
+use Sg\DatatablesBundle\Datatable\UniqueID;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Exception;
 
@@ -62,13 +64,11 @@ class DateTimeColumn extends AbstractColumn
      */
     public function renderContent(array &$row)
     {
-        $rowId = strtr(base64_encode(openssl_random_pseudo_bytes(16)), '+/=', 'ggg');
-
         $row[$this->data] = $this->twig->render(
             'SgDatatablesBundle:render:datetime.html.twig',
             array(
                 'datatable_name' => $this->getDatatableName(),
-                'row_data_id' => $rowId,
+                'row_id' => UniqueID::generateUniqueID(),
                 'data' => $row[$this->data],
                 'date_format' => $this->dateFormat,
                 'timeago' => $this->timeago
