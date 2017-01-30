@@ -35,6 +35,26 @@ trait EditableTrait
     protected $editableIf;
 
     //-------------------------------------------------
+    // Helper
+    //-------------------------------------------------
+
+    /**
+     * Checks whether the object may be editable.
+     *
+     * @param array $row
+     *
+     * @return bool
+     */
+    public function callEditableIfClosure(array $row = array())
+    {
+        if ($this->editableIf instanceof Closure) {
+            return call_user_func($this->editableIf, $row);
+        }
+
+        return true;
+    }
+
+    //-------------------------------------------------
     // Getters && Setters
     //-------------------------------------------------
 

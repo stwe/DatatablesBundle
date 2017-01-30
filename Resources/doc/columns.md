@@ -204,7 +204,7 @@ SgDatatablesBundle:Column:column.html.twig
 
 ### Options
 
-All options of [Column](#1-column), except `data` and `join_type`.
+All options of [Column](#1-column), except `data`, `join_type`, `editable` and `editable_if`.
 
 The options `searchable` and `orderable` are set to `false` by default.
 
