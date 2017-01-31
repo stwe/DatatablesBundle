@@ -63,20 +63,6 @@
     {% endif %}
 {% endset %}
 
-{% set cancel_button_js %}
-    {% if column.filter.cancelButton is same as(true) %}
-        <script type="text/javascript">
-            $("#{{ cancel_button_id_selector }}").click(function() {
-                if ('' != $("#{{ filter_id_selector }}").val()) {
-                    $("#{{ filter_id_selector }}")
-                        .val('')
-                        .change();
-                }
-            });
-        </script>
-    {% endif %}
-{% endset %}
-
 {% block html %}
     <select
             {{ filter_select_multiple }}     {# multiple="multiple" #}
@@ -93,5 +79,5 @@
 {% endblock %}
 
 {% block javascript %}
-    {{ cancel_button_js }}
+    {% include 'SgDatatablesBundle:filter:_cancel_button.html.twig' %}
 {% endblock %}
