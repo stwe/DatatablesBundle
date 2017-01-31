@@ -24,6 +24,9 @@ use Doctrine\ORM\Query\Expr\Andx;
  */
 abstract class AbstractFilter implements FilterInterface
 {
+    /**
+     * Use the OptionsResolver.
+     */
     use OptionsTrait;
 
     /**

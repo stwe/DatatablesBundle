@@ -20,6 +20,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Ajax
 {
+    /**
+     * Use the OptionsResolver.
+     */
     use OptionsTrait;
 
     //-------------------------------------------------

@@ -11,7 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Closure;
+use Sg\DatatablesBundle\Datatable\Editable\Editable;
 
 /**
  * Class EditableTrait
@@ -21,38 +21,11 @@ use Closure;
 trait EditableTrait
 {
     /**
-     * Editable flag.
+     * Editable Options.
      *
-     * @var bool
+     * @var null|array|Editable
      */
     protected $editable;
-
-    /**
-     * Editable only if conditions are True.
-     *
-     * @var null|Closure
-     */
-    protected $editableIf;
-
-    //-------------------------------------------------
-    // Helper
-    //-------------------------------------------------
-
-    /**
-     * Checks whether the object may be editable.
-     *
-     * @param array $row
-     *
-     * @return bool
-     */
-    public function callEditableIfClosure(array $row = array())
-    {
-        if ($this->editableIf instanceof Closure) {
-            return call_user_func($this->editableIf, $row);
-        }
-
-        return true;
-    }
 
     //-------------------------------------------------
     // Getters && Setters
@@ -61,9 +34,9 @@ trait EditableTrait
     /**
      * Get editable.
      *
-     * @return boolean
+     * @return null|array|Editable
      */
-    public function isEditable()
+    public function getEditable()
     {
         return $this->editable;
     }
@@ -71,37 +44,18 @@ trait EditableTrait
     /**
      * Set editable.
      *
-     * @param boolean $editable
+     * @param array|null $editable
      *
      * @return $this
      */
     public function setEditable($editable)
     {
-        $this->editable = $editable;
-
-        return $this;
-    }
-
-    /**
-     * Get editableIf.
-     *
-     * @return null|Closure
-     */
-    public function getEditableIf()
-    {
-        return $this->editableIf;
-    }
-
-    /**
-     * Set editableIf.
-     *
-     * @param null|Closure $editableIf
-     *
-     * @return $this
-     */
-    public function setEditableIf($editableIf)
-    {
-        $this->editableIf = $editableIf;
+        if (is_array($editable)) {
+            $newEditable = new Editable();
+            $this->editable = $newEditable->set($editable);
+        } else {
+            $this->editable = $editable;
+        }
 
         return $this;
     }

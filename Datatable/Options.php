@@ -20,6 +20,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Options
 {
+    /**
+     * Use the OptionsResolver.
+     */
     use OptionsTrait;
 
     //--------------------------------------------------------------------------------------------------
