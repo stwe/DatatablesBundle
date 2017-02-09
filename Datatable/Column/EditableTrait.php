@@ -59,4 +59,18 @@ trait EditableTrait
 
         return $this;
     }
+
+    //-------------------------------------------------
+    // Helper
+    //-------------------------------------------------
+
+    /**
+     * Get class selector name for editable.
+     *
+     * @return string
+     */
+    private function getColumnClassEditableSelector()
+    {
+        return 'sg-datatables-' . $this->getDatatableName() . '-editable-column-' . $this->index;
+    }
 }

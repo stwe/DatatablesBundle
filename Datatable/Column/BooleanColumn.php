@@ -12,6 +12,7 @@
 namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Sg\DatatablesBundle\Datatable\Filter\SelectFilter;
+use Sg\DatatablesBundle\Datatable\Editable\Editable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -84,16 +85,45 @@ class BooleanColumn extends AbstractColumn
             $this->falseLabel = 'false';
         }
 
+        $render = array(
+            'data' => $row[$this->data],
+            'true_label' => $this->trueLabel,
+            'true_icon' => $this->trueIcon,
+            'false_label' => $this->falseLabel,
+            'false_icon' => $this->falseIcon,
+        );
+
+        if ($this->editable instanceof Editable && true === $this->editable->callEditableIfClosure($row)) {
+            $render = array_merge($render, array(
+                'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
+                'pk' => $row[$this->editable->getPk()]
+            ));
+        }
+
         $row[$this->data] = $this->twig->render(
             'SgDatatablesBundle:render:boolean.html.twig',
-            array(
-                'data' => $row[$this->data],
-                'true_label' => $this->trueLabel,
-                'true_icon' => $this->trueIcon,
-                'false_label' => $this->falseLabel,
-                'false_icon' => $this->falseIcon,
-            )
+            $render
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function renderPostCreateDatatableJsContent()
+    {
+        if ($this->editable instanceof  Editable) {
+            return $this->twig->render(
+                'SgDatatablesBundle:column:column_post_create_dt.js.twig',
+                array(
+                    'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
+                    'editable_options' => $this->editable,
+                    'entity_class_name' => $this->getEntityClassName(),
+                    'column_dql' => $this->dql
+                )
+            );
+        }
+
+        return null;
     }
 
     //-------------------------------------------------

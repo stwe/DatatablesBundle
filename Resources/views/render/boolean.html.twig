@@ -6,8 +6,16 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-{% if true == data %}
-    <span class="{{ true_icon }}"></span> {{ true_label }}
+{% if column_class_editable_selector is defined %}
+    {% if data is same as(true) %}
+        <span class="{{ true_icon ~ ' ' ~ column_class_editable_selector }}" data-pk="{{ pk }}"></span> {{ true_label }}
+    {% else %}
+        <span class="{{ false_icon ~ ' ' ~ column_class_editable_selector }}" data-pk="{{ pk }}"></span> {{ false_label }}
+    {% endif %}
 {% else %}
-    <span class="{{ false_icon }}"></span> {{ false_label }}
+    {% if data is same as(true) %}
+        <span class="{{ true_icon }}"></span> {{ true_label }}
+    {% else %}
+        <span class="{{ false_icon }}"></span> {{ false_label }}
+    {% endif %}
 {% endif %}

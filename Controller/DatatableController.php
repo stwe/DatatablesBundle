@@ -19,6 +19,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Exception;
+use DateTime;
 
 /**
  * Class DatatableController
@@ -65,7 +66,10 @@ class DatatableController extends Controller
             // generate accessor
             $accessor = PropertyAccess::createPropertyAccessor();
 
-            // write new value
+            // prepare value
+            $value = $this->prepareValue($entityClassName, $field, $value);
+
+            // write value
             $accessor->setValue($entity, $field, $value);
 
             // save
@@ -104,6 +108,56 @@ class DatatableController extends Controller
     }
 
     /**
+     * Prepare value.
+     *
+     * @param string $entityClassName
+     * @param string $field
+     * @param mixed  $value
+     *
+     * @return bool|\DateTime|float|int
+     * @throws Exception
+     */
+    private function prepareValue($entityClassName, $field, $value)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $metadata = $em->getClassMetadata($entityClassName);
+
+        if (false === strstr($field, '.')) {
+            $fieldType = $metadata->getTypeOfField($field);
+        } else {
+            // @todo: unlim. associations
+            $parts = explode('.', $field);
+            $targetClass = $metadata->getAssociationTargetClass($parts[0]);
+            $targetMeta = $em->getClassMetadata($targetClass);
+            $fieldType = $targetMeta->getTypeOfField($parts[1]);
+        }
+
+        switch ($fieldType) {
+            case 'datetime':
+                $value = new DateTime($value);
+                break;
+            case 'boolean':
+                $value = $this->strToBool($value);
+                break;
+            case 'string':
+                break;
+            case 'smallint':
+            case 'integer':
+            case 'bigint':
+                $value = (int) $value;
+                break;
+            case 'float':
+            case 'decimal':
+                $value = (float) $value;
+                break;
+            default:
+                throw new Exception("DatatableController::prepareValue(): The field type {$fieldType} is not supported.");
+        }
+
+        return $value;
+    }
+
+    /**
      * String to boolean.
      *
      * @param string $str
@@ -118,7 +172,7 @@ class DatatableController extends Controller
         } else if ($str === 'false') {
             return false;
         } else {
-            throw new Exception('strToBool(): Cannot convert string to boolean, expected string "true" or "false".');
+            throw new Exception('DatatableController::strToBool(): Cannot convert string to boolean, expected string "true" or "false".');
         }
     }
 }

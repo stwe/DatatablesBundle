@@ -49,7 +49,7 @@ class Column extends AbstractColumn
             $row[$this->data] = $this->twig->render(
                 'SgDatatablesBundle:render:column.html.twig',
                 array(
-                    'column_class_selector' => $this->getColumnClassEditableSelector(),
+                    'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
                     'data' => $row[$this->data],
                     'pk' => $row[$this->editable->getPk()]
                 )
@@ -66,7 +66,7 @@ class Column extends AbstractColumn
             return $this->twig->render(
                 'SgDatatablesBundle:column:column_post_create_dt.js.twig',
                 array(
-                    'column_class_selector' => $this->getColumnClassEditableSelector(),
+                    'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
                     'editable_options' => $this->editable,
                     'entity_class_name' => $this->getEntityClassName(),
                     'column_dql' => $this->dql
@@ -101,19 +101,5 @@ class Column extends AbstractColumn
         $resolver->setAllowedTypes('editable', array('null', 'array'));
 
         return $this;
-    }
-
-    //-------------------------------------------------
-    // Helper
-    //-------------------------------------------------
-
-    /**
-     * Get class selector name.
-     *
-     * @return string
-     */
-    private function getColumnClassEditableSelector()
-    {
-        return 'sg-datatables-' . $this->getDatatableName() . '-editable-column-' . $this->index;
     }
 }
