@@ -52,7 +52,7 @@ class Editable
      * Value that will be displayed in input if original field value is empty (null|undefined|'').
      * Default: null
      *
-     * @var string|null
+     * @var null|string
      */
     protected $defaultValue;
 
@@ -92,7 +92,7 @@ class Editable
      * Name of field. Will be submitted on server. Can be taken from id attribute.
      * Default: null
      *
-     * @var string|null
+     * @var null|string
      */
     protected $name;
 
@@ -111,6 +111,14 @@ class Editable
      * @var string
      */
     protected $type;
+
+    /**
+     * Source data for list.
+     * Default: null
+     *
+     * @var null|array
+     */
+    protected $source;
 
     //-------------------------------------------------
     // Custom Options
@@ -159,6 +167,7 @@ class Editable
             'name' => null,
             'pk' => 'id',
             'type' => 'text',
+            'source' => null,
             'editable_if' => null
         ));
 
@@ -172,6 +181,7 @@ class Editable
         $resolver->setAllowedTypes('name', array('string', 'null'));
         $resolver->setAllowedTypes('pk', 'string');
         $resolver->setAllowedTypes('type', 'string');
+        $resolver->setAllowedTypes('source', array('array', 'null'));
         $resolver->setAllowedTypes('editable_if', array('Closure', 'null'));
 
         $resolver->setAllowedValues('mode', array('popup', 'inline'));
@@ -231,7 +241,7 @@ class Editable
     /**
      * Get params.
      *
-     * @return array|null
+     * @return null|array
      */
     public function getParams()
     {
@@ -241,7 +251,7 @@ class Editable
     /**
      * Set params.
      *
-     * @param array|null $params
+     * @param null|array $params
      *
      * @return $this
      */
@@ -440,6 +450,34 @@ class Editable
     public function setType($type)
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get source.
+     *
+     * @return null|array
+     */
+    public function getSource()
+    {
+        if (is_array($this->source)) {
+            return $this->optionToJson($this->source);
+        }
+
+        return $this->source;
+    }
+
+    /**
+     * Set source.
+     *
+     * @param null|array $source
+     *
+     * @return $this
+     */
+    public function setSource($source)
+    {
+        $this->source = $source;
 
         return $this;
     }
