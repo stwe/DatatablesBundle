@@ -40,7 +40,7 @@
             {% include 'SgDatatablesBundle:datatable:initial_search.html.twig' %}
         };
 
-        function postCreateDatatable() {
+        function postCreateDatatable(pipeline) {
             {% for column in sg_datatables_view.columns %}
                 {% if column.renderPostCreateDatatableJsContent is not null %}
                     {{ column.renderPostCreateDatatableJsContent|raw }}
@@ -59,7 +59,7 @@
             if (!$.fn.dataTable.isDataTable(selector)) {
                 oTable = $(selector)
                     .DataTable(defaults)
-                        .on('draw.dt', function() { postCreateDatatable() });
+                        .on('draw.dt', function() { postCreateDatatable({{ sg_datatables_view.ajax.pipeline}}) });
 
                 {% if true == sg_datatables_view.options.individualFiltering %}
                     {% include 'SgDatatablesBundle:datatable:search.js.twig' %}
