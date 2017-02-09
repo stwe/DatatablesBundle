@@ -38,4 +38,11 @@ $(".{{ column_class_editable_selector|raw }}").editable({
     {% if editable_options.source is not null %}
     source: {{ editable_options.source|raw }},
     {% endif %}
+    success: function() {
+        if (pipeline > 0) {
+            oTable.clearPipeline().draw();
+        } else {
+            oTable.draw();
+        }
+    }
 });
