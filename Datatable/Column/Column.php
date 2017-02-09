@@ -12,6 +12,7 @@
 namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
+use Sg\DatatablesBundle\Datatable\Editable\Editable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -39,6 +40,43 @@ class Column extends AbstractColumn
         return 'SgDatatablesBundle:column:column.html.twig';
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function renderCellContent(array &$row)
+    {
+        if ($this->editable instanceof Editable && true === $this->editable->callEditableIfClosure($row)) {
+            $row[$this->data] = $this->twig->render(
+                'SgDatatablesBundle:render:column.html.twig',
+                array(
+                    'column_class_selector' => $this->getColumnClassEditableSelector(),
+                    'data' => $row[$this->data],
+                    'pk' => $row[$this->editable->getPk()]
+                )
+            );
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function renderPostCreateDatatableJsContent()
+    {
+        if ($this->editable instanceof  Editable) {
+            return $this->twig->render(
+                'SgDatatablesBundle:column:column_post_create_dt.js.twig',
+                array(
+                    'column_class_selector' => $this->getColumnClassEditableSelector(),
+                    'editable_options' => $this->editable,
+                    'entity_class_name' => $this->getEntityClassName(),
+                    'column_dql' => $this->dql
+                )
+            );
+        }
+
+        return null;
+    }
+
     //-------------------------------------------------
     // Options
     //-------------------------------------------------
@@ -56,14 +94,26 @@ class Column extends AbstractColumn
 
         $resolver->setDefaults(array(
             'filter' => array(TextFilter::class, array()),
-            'editable' => false,
-            'editable_if' => null,
+            'editable' => null
         ));
 
         $resolver->setAllowedTypes('filter', 'array');
-        $resolver->setAllowedTypes('editable', 'bool');
-        $resolver->setAllowedTypes('editable_if', array('null', 'Closure'));
+        $resolver->setAllowedTypes('editable', array('null', 'array'));
 
         return $this;
+    }
+
+    //-------------------------------------------------
+    // Helper
+    //-------------------------------------------------
+
+    /**
+     * Get class selector name.
+     *
+     * @return string
+     */
+    private function getColumnClassEditableSelector()
+    {
+        return 'sg-datatables-' . $this->getDatatableName() . '-editable-column-' . $this->index;
     }
 }

@@ -1,0 +1,38 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{% set token = csrf_token('sg-datatables-editable') %}
+
+$(".{{ column_class_selector|raw }}").editable({
+    url: '{{ path(editable_options.url)|raw }}',
+    params: function (params) {
+        params.entityClassName = '{{ entity_class_name }}';
+        params.token = '{{ token }}';
+
+        {% if editable_options.params is not null %}
+            {% for key, param in editable_options.params %}
+                params.{{ key }} = '{{ param }}';
+            {% endfor %}
+        {% endif %}
+
+        return params;
+    },
+    {% if editable_options.defaultValue is not null %}
+    defaultValue: '{{ editable_options.defaultValue }}',
+    {% endif %}
+    emptyclass: '{{ editable_options.emptyClass|raw }}',
+    emptytext: '{{ editable_options.emptyText|raw }}',
+    highlight: '{{ editable_options.highlight|raw }}',
+    mode: '{{ editable_options.mode }}',
+    {% if editable_options.name is not null %}
+    name: '{{ editable_options.name }}',
+    {% else %}
+    name: '{{ column_dql }}',
+    {% endif %}
+    type: '{{ editable_options.type }}'
+});

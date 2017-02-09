@@ -33,6 +33,22 @@ class Editable
     //-------------------------------------------------
 
     /**
+     * Url for submit.
+     * Default: 'sg_datatables_edit'
+     *
+     * @var string
+     */
+    protected $url;
+
+    /**
+     * Additional params for submit It is appended to original ajax data (pk, name and value).
+     * Default: null
+     *
+     * @var null|array
+     */
+    protected $params;
+
+    /**
      * Value that will be displayed in input if original field value is empty (null|undefined|'').
      * Default: null
      *
@@ -82,9 +98,9 @@ class Editable
 
     /**
      * Primary key of editable object.
-     * Default: null
+     * Default: 'id'
      *
-     * @var string|null
+     * @var string
      */
     protected $pk;
 
@@ -133,24 +149,30 @@ class Editable
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
+            'url' => 'sg_datatables_edit',
+            'params' => null,
             'default_value' => null,
             'empty_class' => 'editable-empty',
             'empty_text' => 'Empty',
             'highlight' => '#FFFF80',
             'mode' => 'popup',
             'name' => null,
-            'pk' => null,
+            'pk' => 'id',
             'type' => 'text',
+            'editable_if' => null
         ));
 
+        $resolver->setAllowedTypes('url', 'string');
+        $resolver->setAllowedTypes('params', array('null', 'array'));
         $resolver->setAllowedTypes('default_value', array('string', 'null'));
         $resolver->setAllowedTypes('empty_class', 'string');
         $resolver->setAllowedTypes('empty_text', 'string');
         $resolver->setAllowedTypes('highlight', 'string');
         $resolver->setAllowedTypes('mode', 'string');
         $resolver->setAllowedTypes('name', array('string', 'null'));
-        $resolver->setAllowedTypes('pk', array('string', 'null'));
+        $resolver->setAllowedTypes('pk', 'string');
         $resolver->setAllowedTypes('type', 'string');
+        $resolver->setAllowedTypes('editable_if', array('Closure', 'null'));
 
         $resolver->setAllowedValues('mode', array('popup', 'inline'));
         $resolver->setAllowedValues('type', array('text', 'textarea', 'select', 'date', 'checklist'));
@@ -181,6 +203,54 @@ class Editable
     //-------------------------------------------------
     // Getters && Setters
     //-------------------------------------------------
+
+    /**
+     * Get url.
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * Set url.
+     *
+     * @param string $url
+     *
+     * @return $this
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get params.
+     *
+     * @return array|null
+     */
+    public function getParams()
+    {
+        return $this->params;
+    }
+
+    /**
+     * Set params.
+     *
+     * @param array|null $params
+     *
+     * @return $this
+     */
+    public function setParams($params)
+    {
+        $this->params = $params;
+
+        return $this;
+    }
 
     /**
      * Get defaultValue.
@@ -329,7 +399,7 @@ class Editable
     /**
      * Get pk.
      *
-     * @return null|string
+     * @return string
      */
     public function getPk()
     {
@@ -339,7 +409,7 @@ class Editable
     /**
      * Set pk.
      *
-     * @param null|string $pk
+     * @param string $pk
      *
      * @return $this
      */

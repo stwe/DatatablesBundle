@@ -72,6 +72,13 @@ class ColumnBuilder
      */
     private $datatableName;
 
+    /**
+     * The fully-qualified class name of the entity.
+     *
+     * @var string
+     */
+    private $entityClassName;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -92,6 +99,7 @@ class ColumnBuilder
         $this->uniqueFlag = false;
         $this->multiselectColumn = null;
         $this->datatableName = $datatableName;
+        $this->entityClassName = $metadata->getName();
     }
 
     //-------------------------------------------------
@@ -121,6 +129,8 @@ class ColumnBuilder
         $column->setData($dql);
         // set the name of the Datatable
         $column->setDatatableName($this->datatableName);
+        // set the table name
+        $column->setEntityClassName($this->entityClassName);
         // inject twig for rendering special Column content
         $column->setTwig($this->twig);
         // resolve options - !!'data' can be modified again!!

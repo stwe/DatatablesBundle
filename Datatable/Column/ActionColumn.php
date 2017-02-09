@@ -84,7 +84,7 @@ class ActionColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function renderContent(array &$row)
+    public function renderCellContent(array &$row)
     {
         $parameters = array();
 

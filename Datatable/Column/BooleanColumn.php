@@ -74,7 +74,7 @@ class BooleanColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function renderContent(array &$row)
+    public function renderCellContent(array &$row)
     {
         if (null === $this->trueIcon && null === $this->trueLabel) {
             $this->trueLabel = 'true';
@@ -120,8 +120,7 @@ class BooleanColumn extends AbstractColumn
             'false_icon' => null,
             'true_label' => null,
             'false_label' => null,
-            'editable' => false,
-            'editable_if' => null,
+            'editable' => null
         ));
 
         $resolver->setAllowedTypes('filter', 'array');
@@ -129,8 +128,7 @@ class BooleanColumn extends AbstractColumn
         $resolver->setAllowedTypes('false_icon', array('null', 'string'));
         $resolver->setAllowedTypes('true_label', array('null', 'string'));
         $resolver->setAllowedTypes('false_label', array('null', 'string'));
-        $resolver->setAllowedTypes('editable', 'bool');
-        $resolver->setAllowedTypes('editable_if', array('null', 'Closure'));
+        $resolver->setAllowedTypes('editable', array('null', 'array'));
 
         return $this;
     }

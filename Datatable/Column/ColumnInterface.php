@@ -77,9 +77,18 @@ interface ColumnInterface
      *
      * @param array $row
      *
-     * @return $this
+     * @return mixed
      */
-    public function renderContent(array &$row);
+    public function renderCellContent(array &$row);
+
+    /**
+     * Implementation of the 'Draw Event' - fired once the table has completed a draw.
+     * With this function can javascript execute after drawing the whole table.
+     * Used - for example - for the Editable function.
+     *
+     * @return mixed
+     */
+    public function renderPostCreateDatatableJsContent();
 
     /**
      * The allowed Column positions as array.

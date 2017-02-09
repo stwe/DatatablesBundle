@@ -62,7 +62,7 @@ class DateTimeColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function renderContent(array &$row)
+    public function renderCellContent(array &$row)
     {
         $row[$this->data] = $this->twig->render(
             'SgDatatablesBundle:render:datetime.html.twig',
@@ -95,15 +95,13 @@ class DateTimeColumn extends AbstractColumn
             'date_format' => 'lll',
             'timeago' => false,
             'filter' => array(TextFilter::class, array()),
-            'editable' => false,
-            'editable_if' => null,
+            'editable' => null,
         ));
 
         $resolver->setAllowedTypes('date_format', 'string');
         $resolver->setAllowedTypes('timeago', 'bool');
         $resolver->setAllowedTypes('filter', 'array');
-        $resolver->setAllowedTypes('editable', 'bool');
-        $resolver->setAllowedTypes('editable_if', array('null', 'Closure'));
+        $resolver->setAllowedTypes('editable', array('null', 'array'));
 
         return $this;
     }

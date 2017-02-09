@@ -226,6 +226,13 @@ abstract class AbstractColumn implements ColumnInterface
      */
     protected $datatableName;
 
+    /**
+     * The fully-qualified class name of the entity.
+     *
+     * @var string
+     */
+    protected $entityClassName;
+
     //-------------------------------------------------
     // Options
     //-------------------------------------------------
@@ -331,7 +338,15 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function renderContent(array &$row)
+    public function renderCellContent(array &$row)
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function renderPostCreateDatatableJsContent()
     {
         return null;
     }
@@ -864,6 +879,30 @@ abstract class AbstractColumn implements ColumnInterface
     public function setDatatableName($datatableName)
     {
         $this->datatableName = $datatableName;
+
+        return $this;
+    }
+
+    /**
+     * Get entityClassName.
+     *
+     * @return string
+     */
+    public function getEntityClassName()
+    {
+        return $this->entityClassName;
+    }
+
+    /**
+     * Set entityClassName.
+     *
+     * @param string $entityClassName
+     *
+     * @return $this
+     */
+    public function setEntityClassName($entityClassName)
+    {
+        $this->entityClassName = $entityClassName;
 
         return $this;
     }

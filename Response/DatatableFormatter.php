@@ -85,7 +85,7 @@ class DatatableFormatter
                 // 3. Add some special data to the output array. For example, the visibility of actions.
                 $column->addDataToOutputArray($row);
                 // 4. Call Columns renderContent method to format row items (e.g. for images or boolean values)
-                $column->renderContent($row);
+                $column->renderCellContent($row);
             }
 
             $this->output['data'][] = $row;
