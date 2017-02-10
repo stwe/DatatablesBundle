@@ -38,6 +38,12 @@ $(".{{ column_class_editable_selector|raw }}").editable({
     {% if editable_options.source is defined and editable_options.source is not null %}
     source: {{ editable_options.source|raw }},
     {% endif %}
+    {% if editable_options.clear is defined %}
+    clear: {{ editable_options.clear|sg_datatables_bool_var }},
+    {% endif %}
+    {% if editable_options.placeholder is defined and editable_options.placeholder is not null %}
+    placeholder: '{{ editable_options.placeholder|raw }}',
+    {% endif %}
     success: function() {
         if (pipeline > 0) {
             oTable.clearPipeline().draw();

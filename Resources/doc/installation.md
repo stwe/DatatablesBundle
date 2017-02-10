@@ -62,6 +62,14 @@ class AppKernel extends Kernel
 
 ### Step 3: Load the Routes of the Bundle
 
+Load the routes of the bundle by adding this configuration to the app/config/routing.yml file:
+
+``` yml
+# app/config/routing.yml
+sg_datatables_bundle:
+    resource: "@SgDatatablesBundle/Controller/"
+    type:     annotation
+```
 
 ### Step 4: Assetic Configuration
 
@@ -97,6 +105,7 @@ The easiest way is to load all files with your base layout with CDN.
     <link rel="stylesheet" href="https://cdn.datatables.net/v/bs/jszip-2.5.0/pdfmake-0.1.18/dt-1.10.12/b-1.2.2/b-colvis-1.2.2/b-flash-1.2.2/b-html5-1.2.2/b-print-1.2.2/fc-3.2.2/fh-3.1.2/r-2.1.0/datatables.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css">
 {% endblock %}
 {% block head_javascripts %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -104,6 +113,7 @@ The easiest way is to load all files with your base layout with CDN.
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.js" charset="UTF-8"></script>
     <script src="https://cdn.datatables.net/v/bs/jszip-2.5.0/pdfmake-0.1.18/dt-1.10.12/b-1.2.2/b-colvis-1.2.2/b-flash-1.2.2/b-html5-1.2.2/b-print-1.2.2/fc-3.2.2/fh-3.1.2/r-2.1.0/datatables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 
     <script src="{{ asset('bundles/sgdatatables/js/pipeline.js') }}"></script>
 
@@ -137,9 +147,15 @@ use Sg\DatatablesBundle\Datatable\AbstractDatatable;
 use Sg\DatatablesBundle\Datatable\Column\ActionColumn;
 use Sg\DatatablesBundle\Datatable\Column\BooleanColumn;
 use Sg\DatatablesBundle\Datatable\Column\Column;
+use Sg\DatatablesBundle\Datatable\Column\DateTimeColumn;
+use Sg\DatatablesBundle\Datatable\Column\MultiselectColumn;
 use Sg\DatatablesBundle\Datatable\Column\VirtualColumn;
+use Sg\DatatablesBundle\Datatable\Editable\SelectEditable;
+use Sg\DatatablesBundle\Datatable\Editable\TextEditable;
+use Sg\DatatablesBundle\Datatable\Filter\DateRangeFilter;
 use Sg\DatatablesBundle\Datatable\Filter\NumberFilter;
 use Sg\DatatablesBundle\Datatable\Filter\SelectFilter;
+use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
 use Sg\DatatablesBundle\Datatable\Style;
 
 /**
@@ -221,6 +237,25 @@ class PostDatatable extends AbstractDatatable
                     ),
                     'cancel_button' => true,
                 )),
+                'editable' => array(SelectEditable::class, array(
+                    /*
+                    'editable_if' => function($row) {
+                        return $row['cid'] == 5;
+                    },
+                    */
+                    'source' => array(
+                        array('value' => 1, 'text' => 'Yes'),
+                        array('value' => 0, 'text' => 'No'),
+                    ),
+                    'mode' => 'inline',
+                    'empty_text' => '',
+                    //'pk' => 'cid',
+                    /*
+                    'params' => array(
+                        'dataStr' => 'test1',
+                    )
+                    */
+                )),
             ))
             ->add('title', Column::class, array(
                 'title' => 'Title',
@@ -243,6 +278,9 @@ class PostDatatable extends AbstractDatatable
                         'send_isNull' => 'is Null',
                         'send_isNotNull' => 'is not Null'
                     ),
+                )),
+                'editable' => array(TextEditable::class, array(
+                    //'pk' => 'cid',
                 )),
                 'type_of_field' => 'integer', // If the title consists only of digits.
                 /*

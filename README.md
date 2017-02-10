@@ -54,6 +54,8 @@ This bundle is currently under heavy development and the dev-master branch conta
 
 [Filters](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filters.md)
 
+[In-place editing](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/editable.md)
+
 [Options](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/options.md)
 
 [Features](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/features.md)

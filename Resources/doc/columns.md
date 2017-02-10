@@ -38,8 +38,7 @@ With 'null' initialized options uses the default value of the DataTables plugin.
 | join_type       | string             | 'leftJoin'        |          | Join type (default: 'leftJoin'), if the column represents an association. |
 | type_of_field   | null or string     | null (autodetect) |          | Set the data type itself for ordering (example: integer instead string). |
 | filter          | array              | TextFilter        |          | A Filter instance for individual filtering. |
-| editable        | bool               | false             |          | Enable edit mode for this column. |
-| editable_if     | null or Closure    | null              |          | Enable edit mode for this column only if conditions are TRUE. |
+| editable        | array or null      | null              |          | An Editable instance for in-place editing. |
 
 ### Example
 
@@ -66,6 +65,9 @@ $this->columnBuilder
                 'send_isNull' => 'is Null',
                 'send_isNotNull' => 'is not Null'
             ),
+        )),
+        'editable' => array(TextEditable::class, array(
+            //'pk' => 'cid',
         )),
         'type_of_field' => 'integer', // If the title consists only of digits.
         'add_if' => function() {
@@ -138,8 +140,8 @@ $this->columnBuilder
         'title' => 'Visible',
         'true_icon' => 'glyphicon glyphicon-ok',
         'false_icon' => 'glyphicon glyphicon-remove',
-        'true_label' => 'yes',
-        'false_label' => 'no',
+        'true_label' => 'Yes',
+        'false_label' => 'No',
         'filter' => array(SelectFilter::class, array(
             'classes' => 'test1 test2',
             'search_type' => 'eq',
@@ -150,6 +152,14 @@ $this->columnBuilder
                 '0' => 'No'
             ),
             'cancel_button' => true,
+        )),
+        'editable' => array(SelectEditable::class, array(
+            'source' => array(
+                array('value' => 1, 'text' => 'Yes'),
+                array('value' => 0, 'text' => 'No'),
+            ),
+            'mode' => 'inline',
+            //'pk' => 'cid',
         )),
     ))
 ;

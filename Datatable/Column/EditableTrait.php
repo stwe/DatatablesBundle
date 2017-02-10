@@ -24,7 +24,7 @@ use Exception;
 trait EditableTrait
 {
     /**
-     * A EditableInterface instance.
+     * An EditableInterface instance.
      * Default: null
      *
      * @var null|EditableInterface
