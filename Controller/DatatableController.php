@@ -18,6 +18,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Doctrine\DBAL\Types\Type;
 use Exception;
 use DateTime;
 
@@ -133,21 +134,23 @@ class DatatableController extends Controller
         }
 
         switch ($fieldType) {
-            case 'datetime':
+            case Type::DATETIME:
                 $value = new DateTime($value);
                 break;
-            case 'boolean':
+            case Type::BOOLEAN:
                 $value = $this->strToBool($value);
                 break;
-            case 'string':
+            case Type::STRING:
                 break;
-            case 'smallint':
-            case 'integer':
-            case 'bigint':
+            case Type::SMALLINT:
+            case Type::INTEGER:
                 $value = (int) $value;
                 break;
-            case 'float':
-            case 'decimal':
+            case Type::BIGINT:
+                $value = (string) $value;
+                break;
+            case Type::FLOAT:
+            case Type::DECIMAL:
                 $value = (float) $value;
                 break;
             default:
