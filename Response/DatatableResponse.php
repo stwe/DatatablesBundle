@@ -147,7 +147,7 @@ class DatatableResponse
 
         $outputHeader = array(
             'draw' => (int) $this->requestParams['draw'],
-            'recordsFiltered' => (int) $this->datatableQueryBuilder->getCountFilteredResults(),
+            'recordsFiltered' => count($paginator),
             'recordsTotal' => true === $countAllResults ? (int) $this->datatableQueryBuilder->getCountAllResults() : 0,
         );
 
