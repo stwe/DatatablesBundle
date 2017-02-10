@@ -35,7 +35,7 @@ $(".{{ column_class_editable_selector|raw }}").editable({
     name: '{{ column_dql }}',
     {% endif %}
     type: '{{ editable_options.type }}',
-    {% if editable_options.source is not null %}
+    {% if editable_options.source is defined and editable_options.source is not null %}
     source: {{ editable_options.source|raw }},
     {% endif %}
     success: function() {

@@ -17,11 +17,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Closure;
 
 /**
- * Class Editable
+ * Class AbstractEditable
  *
  * @package Sg\DatatablesBundle\Datatable\Editable
  */
-class Editable
+abstract class AbstractEditable implements EditableInterface
 {
     /**
      * Use the OptionsResolver.
@@ -104,22 +104,6 @@ class Editable
      */
     protected $pk;
 
-    /**
-     * Type of input. Can be text|textarea|select|date|checklist and more.
-     * Default: 'text'
-     *
-     * @var string
-     */
-    protected $type;
-
-    /**
-     * Source data for list.
-     * Default: null
-     *
-     * @var null|array
-     */
-    protected $source;
-
     //-------------------------------------------------
     // Custom Options
     //-------------------------------------------------
@@ -136,11 +120,35 @@ class Editable
     //-------------------------------------------------
 
     /**
-     * Editable constructor.
+     * AbstractEditable constructor.
      */
     public function __construct()
     {
         $this->initOptions(false);
+    }
+
+    //-------------------------------------------------
+    // EditableInterface
+    //-------------------------------------------------
+
+    /**
+     * {@inheritdoc}
+     */
+    public function callEditableIfClosure(array $row = array())
+    {
+        if ($this->editableIf instanceof Closure) {
+            return call_user_func($this->editableIf, $row);
+        }
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPk()
+    {
+        return $this->pk;
     }
 
     //-------------------------------------------------
@@ -166,8 +174,6 @@ class Editable
             'mode' => 'popup',
             'name' => null,
             'pk' => 'id',
-            'type' => 'text',
-            'source' => null,
             'editable_if' => null
         ));
 
@@ -180,34 +186,11 @@ class Editable
         $resolver->setAllowedTypes('mode', 'string');
         $resolver->setAllowedTypes('name', array('string', 'null'));
         $resolver->setAllowedTypes('pk', 'string');
-        $resolver->setAllowedTypes('type', 'string');
-        $resolver->setAllowedTypes('source', array('array', 'null'));
         $resolver->setAllowedTypes('editable_if', array('Closure', 'null'));
 
         $resolver->setAllowedValues('mode', array('popup', 'inline'));
-        $resolver->setAllowedValues('type', array('text', 'textarea', 'select', 'date', 'checklist'));
 
         return $this;
-    }
-
-    //-------------------------------------------------
-    // Helper
-    //-------------------------------------------------
-
-    /**
-     * Checks whether the object may be editable.
-     *
-     * @param array $row
-     *
-     * @return bool
-     */
-    public function callEditableIfClosure(array $row = array())
-    {
-        if ($this->editableIf instanceof Closure) {
-            return call_user_func($this->editableIf, $row);
-        }
-
-        return true;
     }
 
     //-------------------------------------------------
@@ -407,16 +390,6 @@ class Editable
     }
 
     /**
-     * Get pk.
-     *
-     * @return string
-     */
-    public function getPk()
-    {
-        return $this->pk;
-    }
-
-    /**
      * Set pk.
      *
      * @param string $pk
@@ -426,58 +399,6 @@ class Editable
     public function setPk($pk)
     {
         $this->pk = $pk;
-
-        return $this;
-    }
-
-    /**
-     * Get type.
-     *
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * Set type.
-     *
-     * @param string $type
-     *
-     * @return $this
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get source.
-     *
-     * @return null|array
-     */
-    public function getSource()
-    {
-        if (is_array($this->source)) {
-            return $this->optionToJson($this->source);
-        }
-
-        return $this->source;
-    }
-
-    /**
-     * Set source.
-     *
-     * @param null|array $source
-     *
-     * @return $this
-     */
-    public function setSource($source)
-    {
-        $this->source = $source;
 
         return $this;
     }

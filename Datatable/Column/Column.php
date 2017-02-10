@@ -12,7 +12,7 @@
 namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
-use Sg\DatatablesBundle\Datatable\Editable\Editable;
+use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -45,7 +45,7 @@ class Column extends AbstractColumn
      */
     public function renderCellContent(array &$row)
     {
-        if ($this->editable instanceof Editable && true === $this->editable->callEditableIfClosure($row)) {
+        if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
             $row[$this->data] = $this->twig->render(
                 'SgDatatablesBundle:render:column.html.twig',
                 array(
@@ -62,7 +62,7 @@ class Column extends AbstractColumn
      */
     public function renderPostCreateDatatableJsContent()
     {
-        if ($this->editable instanceof  Editable) {
+        if ($this->editable instanceof EditableInterface) {
             return $this->twig->render(
                 'SgDatatablesBundle:column:column_post_create_dt.js.twig',
                 array(

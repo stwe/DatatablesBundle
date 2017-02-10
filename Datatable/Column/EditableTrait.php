@@ -11,7 +11,10 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Datatable\Editable\Editable;
+use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
+use Sg\DatatablesBundle\Datatable\Factory;
+
+use Exception;
 
 /**
  * Class EditableTrait
@@ -21,9 +24,10 @@ use Sg\DatatablesBundle\Datatable\Editable\Editable;
 trait EditableTrait
 {
     /**
-     * Editable Options.
+     * A EditableInterface instance.
+     * Default: null
      *
-     * @var null|array|Editable
+     * @var null|EditableInterface
      */
     protected $editable;
 
@@ -32,9 +36,7 @@ trait EditableTrait
     //-------------------------------------------------
 
     /**
-     * Get editable.
-     *
-     * @return null|array|Editable
+     * @return null|EditableInterface
      */
     public function getEditable()
     {
@@ -44,17 +46,30 @@ trait EditableTrait
     /**
      * Set editable.
      *
-     * @param array|null $editable
+     * @param null|array $editableClassAndOptions
      *
      * @return $this
+     * @throws Exception
      */
-    public function setEditable($editable)
+    public function setEditable($editableClassAndOptions)
     {
-        if (is_array($editable)) {
-            $newEditable = new Editable();
-            $this->editable = $newEditable->set($editable);
+        if (is_array($editableClassAndOptions)) {
+            if (count($editableClassAndOptions) != 2) {
+                throw new Exception('EditableTrait::setEditable(): Two arguments expected.');
+            }
+
+            if (!isset($editableClassAndOptions[0]) || !is_string($editableClassAndOptions[0]) && !$editableClassAndOptions[0] instanceof EditableInterface) {
+                throw new Exception('EditableTrait::setEditable(): Set a Editable class.');
+            }
+
+            if (!isset($editableClassAndOptions[1]) || !is_array($editableClassAndOptions[1])) {
+                throw new Exception('EditableTrait::setEditable(): Set an options array.');
+            }
+
+            $newEditable = Factory::create($editableClassAndOptions[0], EditableInterface::class);
+            $this->editable = $newEditable->set($editableClassAndOptions[1]);
         } else {
-            $this->editable = $editable;
+            $this->editable = $editableClassAndOptions;
         }
 
         return $this;

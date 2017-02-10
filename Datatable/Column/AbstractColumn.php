@@ -13,8 +13,8 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
 use Sg\DatatablesBundle\Datatable\AddIfTrait;
-use Sg\DatatablesBundle\Datatable\Filter\FilterFactory;
 use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
+use Sg\DatatablesBundle\Datatable\Factory;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig_Environment;
@@ -182,7 +182,7 @@ abstract class AbstractColumn implements ColumnInterface
     protected $typeOfField;
 
     /**
-     * A Filter instance for individual filtering.
+     * A FilterInterface instance for individual filtering.
      * Default: See the different column types.
      *
      * @var FilterInterface
@@ -765,8 +765,7 @@ abstract class AbstractColumn implements ColumnInterface
             throw new Exception('AbstractColumn::setFilter(): Set an options array.');
         }
 
-        /** @var \Sg\DatatablesBundle\Datatable\Filter\AbstractFilter $newFilter */
-        $newFilter = FilterFactory::createFilter($filterClassAndOptions[0]);
+        $newFilter = Factory::create($filterClassAndOptions[0], FilterInterface::class);
         $this->filter = $newFilter->set($filterClassAndOptions[1]);
 
         return $this;

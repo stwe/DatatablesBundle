@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\Datatable\Factory;
+
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Twig_Environment;
 use Exception;
@@ -121,7 +123,7 @@ class ColumnBuilder
         /**
          * @var AbstractColumn $column
          */
-        $column = ColumnFactory::createColumn($class);
+        $column = Factory::create($class, ColumnInterface::class);
         // creates the empty Column Options array and the Property Accessor
         $column->initOptions(false);
         // the Column 'data' property has normally the same value as 'dql'

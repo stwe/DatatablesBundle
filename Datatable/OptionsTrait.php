@@ -81,7 +81,7 @@ trait OptionsTrait
     }
 
     //-------------------------------------------------
-    // Private
+    // Helper
     //-------------------------------------------------
 
     /**
@@ -107,7 +107,7 @@ trait OptionsTrait
      *
      * @return mixed
      */
-    private function optionToJson($value)
+    protected function optionToJson($value)
     {
         if (is_array($value) && !empty($value)) {
             return json_encode($value);
