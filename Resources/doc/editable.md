@@ -84,8 +84,9 @@ $this->columnBuilder
         'orderable' => true,
         'editable' => array(TextEditable::class, array(
             //'pk' => 'cid',
-            'placeholder' => 'Edit value'
-        )),
+            'placeholder' => 'Edit value',
+            'empty_text' => 'Empty Text'
+        ))
     ))
 ;
 ```
@@ -204,15 +205,17 @@ All options of [Text Editable](#2-text-editable).
 $this->columnBuilder
     ->add('publishedAt', DateTimeColumn::class, array(
         'title' => 'Published at',
+        'default_content' => 'No value',
         'date_format' => 'L',
         'filter' => array(DateRangeFilter::class, array(
             'cancel_button' => true,
         )),
         'editable' => array(CombodateEditable::class, array(
+            'format' => 'YYYY-MM-DD',
             'view_format' => 'DD.MM.YYYY',
             //'pk' => 'cid'
-        ))
-        //'timeago' => false
+        )),
+        'timeago' => true
     ))
 ;
 ```

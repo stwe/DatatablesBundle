@@ -48,6 +48,11 @@ $this->columnBuilder
         'title' => 'Title',
         'searchable' => true,
         'orderable' => true,
+        'editable' => array(TextEditable::class, array(
+            //'pk' => 'cid',
+            'placeholder' => 'Edit value',
+            'empty_text' => 'Empty Text'
+        )),
         'filter' => array(SelectFilter::class, array(
             'multiple' => true,
             'cancel_button' => true,
@@ -66,13 +71,12 @@ $this->columnBuilder
                 'send_isNotNull' => 'is not Null'
             ),
         )),
-        'editable' => array(TextEditable::class, array(
-            //'pk' => 'cid',
-        )),
         'type_of_field' => 'integer', // If the title consists only of digits.
+        /*
         'add_if' => function() {
             return $this->authorizationChecker->isGranted('ROLE_USER');
         },
+        */
     ))
 ;
 ```
@@ -198,12 +202,18 @@ All options of [Column](#1-column).
 ``` php
 $this->columnBuilder
     ->add('publishedAt', DateTimeColumn::class, array(
-        'title' => 'Created at',
+        'title' => 'Published at',
+        'default_content' => 'No value',
         'date_format' => 'L',
         'filter' => array(DateRangeFilter::class, array(
-            'cancel_button' => true
+            'cancel_button' => true,
         )),
-        //'timeago' => true
+        'editable' => array(CombodateEditable::class, array(
+            'format' => 'YYYY-MM-DD',
+            'view_format' => 'DD.MM.YYYY',
+            //'pk' => 'cid'
+        )),
+        'timeago' => true
     ))
 ;
 ```

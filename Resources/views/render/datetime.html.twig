@@ -17,17 +17,23 @@
 {% if column_class_editable_selector is defined %}
     <div {{ datetime_selector }} class="{{ column_class_editable_selector }}" data-pk="{{ pk }}"></div>
 {% else %}
-    <div {{ datetime_selector }}></div>
+    <div {{ datetime_selector }}>
+        {% if data is same as(null) and default_content is not same as(null) %}
+            {{ default_content }}
+        {% endif %}
+    </div>
 {% endif %}
 
-<script type="text/javascript">
-    $(function() {
-        moment.locale("{{ app.request.locale }}");
+{% if data is not same as(null) %}
+    <script type="text/javascript">
+        $(function() {
+            moment.locale("{{ app.request.locale }}");
 
-        {% if timeago is same as(false) %}
-            $("#{{ datetime_id_selector }}").html(moment.unix({{ data|date('U') }}).format("{{ date_format }}"));
-        {% else %}
-            $("#{{ datetime_id_selector }}").html(moment.unix({{ data|date('U') }}).fromNow());
-        {% endif %}
-    });
-</script>
+            {% if timeago is same as(false) %}
+                $("#{{ datetime_id_selector }}").html(moment.unix({{ data|date('U') }}).format("{{ date_format }}"));
+            {% else %}
+                $("#{{ datetime_id_selector }}").html(moment.unix({{ data|date('U') }}).fromNow());
+            {% endif %}
+        });
+    </script>
+{% endif %}

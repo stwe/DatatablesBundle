@@ -69,6 +69,7 @@ class DateTimeColumn extends AbstractColumn
             'datatable_name' => $this->getDatatableName(),
             'row_id' => UniqueID::generateUniqueID(),
             'data' => $row[$this->data],
+            'default_content' => $this->getDefaultContent(),
             'date_format' => $this->dateFormat,
             'timeago' => $this->timeago
         );

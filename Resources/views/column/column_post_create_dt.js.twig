@@ -47,6 +47,12 @@ $(".{{ column_class_editable_selector|raw }}").editable({
     {% if editable_options.rows is defined %}
     rows: {{ editable_options.rows }},
     {% endif %}
+    {% if editable_options.format is defined %}
+    format: '{{ editable_options.format }}',
+    {% endif %}
+    {% if editable_options.viewFormat is defined and editable_options.viewFormat is not null %}
+    viewformat: '{{ editable_options.viewFormat }}',
+    {% endif %}
     success: function() {
         if (pipeline > 0) {
             oTable.clearPipeline().draw();
