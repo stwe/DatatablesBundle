@@ -44,6 +44,9 @@ $(".{{ column_class_editable_selector|raw }}").editable({
     {% if editable_options.placeholder is defined and editable_options.placeholder is not null %}
     placeholder: '{{ editable_options.placeholder|raw }}',
     {% endif %}
+    {% if editable_options.rows is defined %}
+    rows: {{ editable_options.rows }},
+    {% endif %}
     success: function() {
         if (pipeline > 0) {
             oTable.clearPipeline().draw();

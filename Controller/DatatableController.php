@@ -140,6 +140,7 @@ class DatatableController extends Controller
             case Type::BOOLEAN:
                 $value = $this->strToBool($value);
                 break;
+            case Type::TEXT:
             case Type::STRING:
                 break;
             case Type::SMALLINT:

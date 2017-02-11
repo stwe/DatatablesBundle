@@ -2,7 +2,8 @@
 
 1. [Setup](#1-setup)
 2. [Text Editable](#2-text-editable)
-3. [Select Editable](#3-select-editable)
+3. [Textarea Editable](#3-textarea-editable)
+4. [Select Editable](#4-select-editable)
 
 ## 1. Setup
 
@@ -47,6 +48,7 @@ Ensure to load all js and css files from [X-editable](https://vitalets.github.io
     <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
 {% endblock %}
 ```
+__
 
 ## 2. Text editable
 
@@ -82,7 +84,7 @@ $this->columnBuilder
 ```
 __
 
-## 3. Select editable
+## 3. Textarea editable
 
 ### Template
 
@@ -94,8 +96,36 @@ All options of [Text Editable](#2-text-editable).
 
 **Additional:**
 
-| Option | Type  | Default | Description    |
-|--------|-------|---------|----------------|
+| Option | Type | Default | Description                 |
+|--------|------|---------|-----------------------------|
+| rows   | int  | 7       | Number of rows in textarea. |
+
+### Example
+
+``` php
+$this->columnBuilder
+    'editable' => array(TextEditable::class, array(
+        //'pk' => 'cid',
+        'rows' => 50,
+    )),
+;
+```
+__
+
+## 4. Select editable
+
+### Template
+
+SgDatatablesBundle:column:column_post_create_dt.js.twig
+
+### Options
+
+All options of [Text Editable](#2-text-editable).
+
+**Additional:**
+
+| Option | Type  | Default | Description           |
+|--------|-------|---------|-----------------------|
 | source | array | array() | Source data for list. |
 
 ### Example
