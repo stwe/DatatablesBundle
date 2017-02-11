@@ -14,18 +14,20 @@
     id="{{ datetime_id_selector }}"
 {%- endset -%}
 
-{% if data is not null %}
+{% if column_class_editable_selector is defined %}
+    <div {{ datetime_selector }} class="{{ column_class_editable_selector }}" data-pk="{{ pk }}"></div>
+{% else %}
     <div {{ datetime_selector }}></div>
-
-    <script type="text/javascript">
-        $(function() {
-            moment.locale("{{ app.request.locale }}");
-
-            {% if timeago is same as(false) %}
-                $("#{{ datetime_id_selector }}").html(moment.unix({{ data|date('U') }}).format("{{ date_format }}"));
-            {% else %}
-                $("#{{ datetime_id_selector }}").html(moment.unix({{ data|date('U') }}).fromNow());
-            {% endif %}
-        });
-    </script>
 {% endif %}
+
+<script type="text/javascript">
+    $(function() {
+        moment.locale("{{ app.request.locale }}");
+
+        {% if timeago is same as(false) %}
+            $("#{{ datetime_id_selector }}").html(moment.unix({{ data|date('U') }}).format("{{ date_format }}"));
+        {% else %}
+            $("#{{ datetime_id_selector }}").html(moment.unix({{ data|date('U') }}).fromNow());
+        {% endif %}
+    });
+</script>

@@ -12,6 +12,7 @@
 namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
+use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
 use Sg\DatatablesBundle\Datatable\UniqueID;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -64,16 +65,45 @@ class DateTimeColumn extends AbstractColumn
      */
     public function renderCellContent(array &$row)
     {
+        $render = array(
+            'datatable_name' => $this->getDatatableName(),
+            'row_id' => UniqueID::generateUniqueID(),
+            'data' => $row[$this->data],
+            'date_format' => $this->dateFormat,
+            'timeago' => $this->timeago
+        );
+
+        if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
+            $render = array_merge($render, array(
+                'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
+                'pk' => $row[$this->editable->getPk()]
+            ));
+        }
+
         $row[$this->data] = $this->twig->render(
             'SgDatatablesBundle:render:datetime.html.twig',
-            array(
-                'datatable_name' => $this->getDatatableName(),
-                'row_id' => UniqueID::generateUniqueID(),
-                'data' => $row[$this->data],
-                'date_format' => $this->dateFormat,
-                'timeago' => $this->timeago
-            )
+            $render
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function renderPostCreateDatatableJsContent()
+    {
+        if ($this->editable instanceof EditableInterface) {
+            return $this->twig->render(
+                'SgDatatablesBundle:column:column_post_create_dt.js.twig',
+                array(
+                    'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
+                    'editable_options' => $this->editable,
+                    'entity_class_name' => $this->getEntityClassName(),
+                    'column_dql' => $this->dql
+                )
+            );
+        }
+
+        return null;
     }
 
     //-------------------------------------------------

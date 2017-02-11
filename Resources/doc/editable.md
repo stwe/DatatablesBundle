@@ -4,6 +4,7 @@
 2. [Text Editable](#2-text-editable)
 3. [Textarea Editable](#3-textarea-editable)
 4. [Select Editable](#4-select-editable)
+5. [Combodate Editable](#5-combodate-editable)
 
 ## 1. Setup
 
@@ -77,9 +78,15 @@ SgDatatablesBundle:column:column_post_create_dt.js.twig
 
 ``` php
 $this->columnBuilder
-    'editable' => array(TextEditable::class, array(
-        //'pk' => 'cid',
-    )),
+    ->add('title', Column::class, array(
+        'title' => 'Title',
+        'searchable' => true,
+        'orderable' => true,
+        'editable' => array(TextEditable::class, array(
+            //'pk' => 'cid',
+            'placeholder' => 'Edit value'
+        )),
+    ))
 ;
 ```
 __
@@ -104,10 +111,13 @@ All options of [Text Editable](#2-text-editable).
 
 ``` php
 $this->columnBuilder
-    'editable' => array(TextareaEditable::class, array(
-        //'pk' => 'cid',
-        'rows' => 50,
-    )),
+    ->add('content', Column::class, array(
+        'title' => 'Content',
+        'editable' => array(TextareaEditable::class, array(
+            //'pk' => 'cid',
+            'rows' => 50
+        ))
+    ))
 ;
 ```
 __
@@ -166,6 +176,43 @@ $this->columnBuilder
             )
             */
         )),
+    ))
+;
+```
+__
+
+## 5. Combodate editable
+
+### Template
+
+SgDatatablesBundle:column:column_post_create_dt.js.twig
+
+### Options
+
+All options of [Text Editable](#2-text-editable).
+
+**Additional:**
+
+| Option      | Type           | Default               | Description                 |
+|-------------|----------------|-----------------------|-----------------------------|
+| format      | string         | 'YYYY-MM-DD'          | Format used for sending value to server. |
+| view_format | string or null | null (same as format) | Format used for displaying date. If not specified equals to $format. |
+
+### Example
+
+``` php
+$this->columnBuilder
+    ->add('publishedAt', DateTimeColumn::class, array(
+        'title' => 'Published at',
+        'date_format' => 'L',
+        'filter' => array(DateRangeFilter::class, array(
+            'cancel_button' => true,
+        )),
+        'editable' => array(CombodateEditable::class, array(
+            'view_format' => 'DD.MM.YYYY',
+            //'pk' => 'cid'
+        ))
+        //'timeago' => false
     ))
 ;
 ```
