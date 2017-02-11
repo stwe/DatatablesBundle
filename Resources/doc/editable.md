@@ -104,7 +104,7 @@ All options of [Text Editable](#2-text-editable).
 
 ``` php
 $this->columnBuilder
-    'editable' => array(TextEditable::class, array(
+    'editable' => array(TextareaEditable::class, array(
         //'pk' => 'cid',
         'rows' => 50,
     )),
