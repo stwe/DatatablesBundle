@@ -12,11 +12,11 @@
 namespace Sg\DatatablesBundle\Datatable;
 
 /**
- * Class UniqueID
+ * Class Helper
  *
  * @package Sg\DatatablesBundle\Datatable
  */
-class UniqueID
+class Helper
 {
     /**
      * Generate a unique ID.
@@ -31,4 +31,17 @@ class UniqueID
 
         return $prefix ? $prefix . '-' . $id : $id;
     }
+
+    /**
+     * Returns a property path for the Accessor.
+     *
+     * @param string $data
+     *
+     * @return string
+     */
+    public static function getDataPropertyPath($data)
+    {
+        return '[' . str_replace('.', '][', $data) . ']';
+    }
+
 }

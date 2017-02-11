@@ -13,7 +13,7 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
 use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
-use Sg\DatatablesBundle\Datatable\UniqueID;
+use Sg\DatatablesBundle\Datatable\Helper;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Exception;
@@ -67,7 +67,7 @@ class DateTimeColumn extends AbstractColumn
     {
         $render = array(
             'datatable_name' => $this->getDatatableName(),
-            'row_id' => UniqueID::generateUniqueID(),
+            'row_id' => Helper::generateUniqueID(),
             'data' => $row[$this->data],
             'default_content' => $this->getDefaultContent(),
             'date_format' => $this->dateFormat,
