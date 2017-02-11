@@ -87,6 +87,7 @@ class BooleanColumn extends AbstractColumn
 
         $render = array(
             'data' => $row[$this->data],
+            'default_content' => $this->getDefaultContent(),
             'true_label' => $this->trueLabel,
             'true_icon' => $this->trueIcon,
             'false_label' => $this->falseLabel,

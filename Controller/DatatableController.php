@@ -166,11 +166,17 @@ class DatatableController extends Controller
      *
      * @param string $str
      *
-     * @return bool
+     * @return null|bool
      * @throws Exception
      */
     private function strToBool($str)
     {
+        $str = strtolower($str);
+
+        if ('null' === $str) {
+            return null;
+        }
+
         if ($str === 'true' || $str === '1') {
             return true;
         } else if ($str === 'false' || $str === '0') {

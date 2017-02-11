@@ -138,10 +138,13 @@ The option `filter` is set to `SelectFilter` by default.
 $this->columnBuilder
     ->add('visible', BooleanColumn::class, array(
         'title' => 'Visible',
-        'true_icon' => 'glyphicon glyphicon-ok',
-        'false_icon' => 'glyphicon glyphicon-remove',
+        'searchable' => true,
+        'orderable' => true,
         'true_label' => 'Yes',
         'false_label' => 'No',
+        'default_content' => 'Default Value',
+        'true_icon' => 'glyphicon glyphicon-ok',
+        'false_icon' => 'glyphicon glyphicon-remove',
         'filter' => array(SelectFilter::class, array(
             'classes' => 'test1 test2',
             'search_type' => 'eq',
@@ -157,9 +160,11 @@ $this->columnBuilder
             'source' => array(
                 array('value' => 1, 'text' => 'Yes'),
                 array('value' => 0, 'text' => 'No'),
+                array('value' => null, 'text' => 'Null')
             ),
             'mode' => 'inline',
             //'pk' => 'cid',
+            'empty_text' => '',
         )),
     ))
 ;

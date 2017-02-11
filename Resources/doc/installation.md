@@ -221,9 +221,10 @@ class PostDatatable extends AbstractDatatable
             ->add('visible', BooleanColumn::class, array(
                 'title' => 'Visible',
                 'searchable' => true,
-                'orderable' => false,
-                'true_label' => 'wahr',
-                'false_label' => 'falsch',
+                'orderable' => true,
+                'true_label' => 'Yes',
+                'false_label' => 'No',
+                'default_content' => 'Default Value',
                 'true_icon' => 'glyphicon glyphicon-ok',
                 'false_icon' => 'glyphicon glyphicon-remove',
                 'filter' => array(SelectFilter::class, array(
@@ -238,23 +239,14 @@ class PostDatatable extends AbstractDatatable
                     'cancel_button' => true,
                 )),
                 'editable' => array(SelectEditable::class, array(
-                    /*
-                    'editable_if' => function($row) {
-                        return $row['cid'] == 5;
-                    },
-                    */
                     'source' => array(
                         array('value' => 1, 'text' => 'Yes'),
                         array('value' => 0, 'text' => 'No'),
+                        array('value' => null, 'text' => 'Null')
                     ),
                     'mode' => 'inline',
-                    'empty_text' => '',
                     //'pk' => 'cid',
-                    /*
-                    'params' => array(
-                        'dataStr' => 'test1',
-                    )
-                    */
+                    'empty_text' => '',
                 )),
             ))
             ->add('title', Column::class, array(
