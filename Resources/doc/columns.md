@@ -11,9 +11,13 @@
 
 Represents the most basic column.
 
-### Default template
+### Options template
 
 SgDatatablesBundle:column:column.html.twig
+
+### Cell content template
+
+SgDatatablesBundle:render:column.html.twig
 
 ### Options
 
@@ -117,9 +121,13 @@ ___
 
 Represents a column, optimized for boolean values.
 
-### Default template
+### Options template
 
 SgDatatablesBundle:column:column.html.twig
+
+### Cell content template
+
+SgDatatablesBundle:render:boolean.html.twig
 
 ### Options
 
@@ -182,9 +190,13 @@ Represents a column, optimized for date time values.
 **Be sure to install the [Moment.js](https://momentjs.com/) plugin before using this column.**
 **Be sure to install the [Bootstrap Date Range Picker](http://www.daterangepicker.com/) plugin before using the DateRangeFilter.**
 
-### Default template
+### Options template
 
 SgDatatablesBundle:column:column.html.twig
+
+### Cell content template
+
+SgDatatablesBundle:render:datetime.html.twig
 
 ### Options
 
@@ -223,7 +235,7 @@ ___
 
 Represents a virtual column.
 
-### Default template
+### Options template
 
 SgDatatablesBundle:Column:column.html.twig
 
@@ -288,9 +300,13 @@ ___
 
 A Column to display CRUD action labels or buttons.
 
-### Default template
+### Options template
 
 SgDatatablesBundle:Column:column.html.twig
+
+### Cell content template
+
+SgDatatablesBundle:render:action.html.twig
 
 ### Action column options
 
@@ -395,9 +411,13 @@ ___
 
 Support for Bulk Actions.
 
-### Default template
+### Options template
 
 SgDatatablesBundle:Column:multiselect.html.twig
+
+### Cell content template
+
+SgDatatablesBundle:render:multiselect.html.twig
 
 ### Options
 
