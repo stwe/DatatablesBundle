@@ -30,6 +30,11 @@ class BooleanColumn extends AbstractColumn
     use EditableTrait;
 
     /**
+     * The Column is filterable.
+     */
+    use FilterableTrait;
+
+    /**
      * The icon for a value that is true.
      * Default: null
      *

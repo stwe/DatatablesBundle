@@ -36,6 +36,8 @@ trait EditableTrait
     //-------------------------------------------------
 
     /**
+     * Get editable.
+     *
      * @return null|EditableInterface
      */
     public function getEditable()

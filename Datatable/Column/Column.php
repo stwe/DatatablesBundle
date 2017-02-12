@@ -29,6 +29,11 @@ class Column extends AbstractColumn
      */
     use EditableTrait;
 
+    /**
+     * The Column is filterable.
+     */
+    use FilterableTrait;
+
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------

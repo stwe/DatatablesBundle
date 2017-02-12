@@ -31,6 +31,11 @@ class DateTimeColumn extends AbstractColumn
     use EditableTrait;
 
     /**
+     * The Column is filterable.
+     */
+    use FilterableTrait;
+
+    /**
      * Moment.js date format.
      * Default: 'lll'
      *

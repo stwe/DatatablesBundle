@@ -13,8 +13,6 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
 use Sg\DatatablesBundle\Datatable\AddIfTrait;
-use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
-use Sg\DatatablesBundle\Datatable\Factory;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig_Environment;
@@ -181,15 +179,6 @@ abstract class AbstractColumn implements ColumnInterface
      * @var null|string
      */
     protected $typeOfField;
-
-    /**
-     * A FilterInterface instance for individual filtering.
-     * Default: See the different column types.
-     *
-     * @todo: Trait
-     * @var FilterInterface
-     */
-    protected $filter;
 
     //-------------------------------------------------
     // Other Properties
@@ -747,44 +736,6 @@ abstract class AbstractColumn implements ColumnInterface
         $this->typeOfField = $typeOfField;
 
         return $this;
-    }
-
-    /**
-     * Set Filter instance.
-     *
-     * @param array $filterClassAndOptions
-     *
-     * @return $this
-     * @throws Exception
-     */
-    public function setFilter(array $filterClassAndOptions)
-    {
-        if (count($filterClassAndOptions) != 2) {
-            throw new Exception('AbstractColumn::setFilter(): Two arguments expected.');
-        }
-
-        if (!isset($filterClassAndOptions[0]) || !is_string($filterClassAndOptions[0]) && !$filterClassAndOptions[0] instanceof FilterInterface) {
-            throw new Exception('AbstractColumn::setFilter(): Set a Filter class.');
-        }
-
-        if (!isset($filterClassAndOptions[1]) || !is_array($filterClassAndOptions[1])) {
-            throw new Exception('AbstractColumn::setFilter(): Set an options array.');
-        }
-
-        $newFilter = Factory::create($filterClassAndOptions[0], FilterInterface::class);
-        $this->filter = $newFilter->set($filterClassAndOptions[1]);
-
-        return $this;
-    }
-
-    /**
-     * Get Filter instance.
-     *
-     * @return FilterInterface
-     */
-    public function getFilter()
-    {
-        return $this->filter;
     }
 
     /**
