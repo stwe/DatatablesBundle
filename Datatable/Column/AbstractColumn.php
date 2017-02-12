@@ -84,6 +84,7 @@ abstract class AbstractColumn implements ColumnInterface
 
     /**
      * Set default, static, content for a column.
+     * Show an information message for a field that can have a 'null' or 'undefined' value.
      * Default: null
      *
      * @var null|string
@@ -91,7 +92,7 @@ abstract class AbstractColumn implements ColumnInterface
     protected $defaultContent;
 
     /**
-     * Set a descriptive name for a column.
+     * Set a descriptive name for a column. Only needed when working with DataTables' API.
      * Default: null
      *
      * @var null|string
@@ -185,6 +186,7 @@ abstract class AbstractColumn implements ColumnInterface
      * A FilterInterface instance for individual filtering.
      * Default: See the different column types.
      *
+     * @todo: Trait
      * @var FilterInterface
      */
     protected $filter;
@@ -590,10 +592,6 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function setOrderSequence($orderSequence)
     {
-        if (is_array($orderSequence)) {
-            $this->checkOptions($orderSequence, array('asc', 'desc'));
-        }
-
         $this->orderSequence = $orderSequence;
 
         return $this;

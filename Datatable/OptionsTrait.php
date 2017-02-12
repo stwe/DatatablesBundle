@@ -51,7 +51,9 @@ trait OptionsTrait
     public function initOptions($callSetOptions = true)
     {
         $this->options = array();
-        $this->accessor = PropertyAccess::createPropertyAccessor();
+        $this->accessor = PropertyAccess::createPropertyAccessorBuilder()
+            ->enableMagicCall()
+            ->getPropertyAccessor();
 
         if (true === $callSetOptions) {
             $this->set($this->options);
@@ -114,25 +116,5 @@ trait OptionsTrait
         }
 
         return $value;
-    }
-
-    /**
-     * Check options.
-     *
-     * @param array $array
-     * @param array $options
-     *
-     * @return bool
-     * @throws Exception
-     */
-    private function checkOptions(array $array, array $options)
-    {
-        foreach($array as $key => $value) {
-            if (!in_array(strtolower($key), array_map('strtolower', $options), true)) {
-                throw new Exception("OptionsTrait::checkOptions(): $key is not a valid option.");
-            }
-        }
-
-        return true;
     }
 }

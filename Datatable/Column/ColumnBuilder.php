@@ -159,6 +159,7 @@ class ColumnBuilder
             }
         }
 
+        // @todo: two or more unique column types
         if (true === $column->isUnique()) {
             if (false === $this->uniqueFlag) {
                 $this->uniqueFlag = true;

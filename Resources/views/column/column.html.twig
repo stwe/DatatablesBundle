@@ -44,7 +44,7 @@
         {% if column.orderable is same as(true) %}
             "orderable": true,
             {% if column.orderSequence is not null %}
-                "orderSequence": {{ column.orderSequence }},
+                "orderSequence": {{ column.orderSequence|raw }},
             {% endif %}
             {% if column.orderData is not null %}
                 "orderData": {{ column.orderData }},

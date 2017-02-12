@@ -11,6 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Sg\DatatablesBundle\Datatable\Helper;
 use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
 use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
 
@@ -45,15 +46,20 @@ class Column extends AbstractColumn
      */
     public function renderCellContent(array &$row)
     {
-        if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
-            $row[$this->data] = $this->twig->render(
-                'SgDatatablesBundle:render:column.html.twig',
-                array(
-                    'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
-                    'data' => $row[$this->data],
-                    'pk' => $row[$this->editable->getPk()]
-                )
-            );
+        if (false === $this->isAssociation()) {
+            if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
+                $this->createEditableContent($row, $this->data);
+            }
+        } else {
+            if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
+                $toMany = strpos($this->data, ',');
+
+                if (false === $toMany) {
+                    $this->createEditableContent($row, $this->data);
+                } else {
+                    // @todo: editable content for toMany associations
+                }
+            }
         }
     }
 
@@ -99,6 +105,38 @@ class Column extends AbstractColumn
 
         $resolver->setAllowedTypes('filter', 'array');
         $resolver->setAllowedTypes('editable', array('null', 'array'));
+
+        return $this;
+    }
+
+    //-------------------------------------------------
+    // Helper
+    //-------------------------------------------------
+
+    /**
+     * Create editable content.
+     *
+     * @param array  $row
+     * @param string $data
+     *
+     * @return $this
+     */
+    private function createEditableContent(array &$row, $data)
+    {
+        $path = Helper::getDataPropertyPath($data);
+
+        $render = array(
+            'data' => $this->accessor->getValue($row, $path),
+            'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
+            'pk' => $row[$this->editable->getPk()]
+        );
+
+        $content = $this->twig->render(
+            'SgDatatablesBundle:render:column.html.twig',
+            $render
+        );
+
+        $this->accessor->setValue($row, $path, $content);
 
         return $this;
     }
