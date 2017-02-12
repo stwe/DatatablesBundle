@@ -151,6 +151,14 @@ abstract class AbstractEditable implements EditableInterface
         return $this->pk;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getEmptyText()
+    {
+        return $this->emptyText;
+    }
+
     //-------------------------------------------------
     // Options
     //-------------------------------------------------
@@ -291,16 +299,6 @@ abstract class AbstractEditable implements EditableInterface
         $this->emptyClass = $emptyClass;
 
         return $this;
-    }
-
-    /**
-     * Get emptyText.
-     *
-     * @return string
-     */
-    public function getEmptyText()
-    {
-        return $this->emptyText;
     }
 
     /**

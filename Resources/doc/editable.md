@@ -167,6 +167,7 @@ $this->columnBuilder
             'source' => array(
                 array('value' => 1, 'text' => 'Yes'),
                 array('value' => 0, 'text' => 'No'),
+                array('value' => null, 'text' => 'Null')
             ),
             'mode' => 'inline',
             'empty_text' => '',

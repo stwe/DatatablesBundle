@@ -40,4 +40,11 @@ interface EditableInterface
      * @return string
      */
     public function getPk();
+
+    /**
+     * Get emptyText.
+     *
+     * @return string
+     */
+    public function getEmptyText();
 }

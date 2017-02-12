@@ -13,6 +13,7 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Sg\DatatablesBundle\Datatable\Filter\SelectFilter;
 use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
+use Sg\DatatablesBundle\Datatable\Helper;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -85,26 +86,38 @@ class BooleanColumn extends AbstractColumn
             $this->falseLabel = 'false';
         }
 
-        $render = array(
-            'data' => $row[$this->data],
-            'default_content' => $this->getDefaultContent(),
-            'true_label' => $this->trueLabel,
-            'true_icon' => $this->trueIcon,
-            'false_label' => $this->falseLabel,
-            'false_icon' => $this->falseIcon,
-        );
+        if (false === $this->isAssociation()) {
+            $path = Helper::getDataPropertyPath($this->data);
+            $render = $this->getBaseRenderVars($row, $path);
 
-        if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
-            $render = array_merge($render, array(
-                'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
-                'pk' => $row[$this->editable->getPk()]
-            ));
+            if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
+                $render = array_merge($render, array(
+                    'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
+                    'pk' => $row[$this->editable->getPk()]
+                ));
+            }
+
+            $this->renderContent($row, $render, $path);
+        } else {
+            $toMany = strpos($this->data, ',');
+
+            if (false === $toMany) {
+                $path = Helper::getDataPropertyPath($this->data);
+                $render = $this->getBaseRenderVars($row, $path);
+
+                if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
+                    $render = array_merge($render, array(
+                        'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
+                        'pk' => $row[$this->editable->getPk()],
+                        'empty_text' => $this->editable->getEmptyText(),
+                    ));
+                }
+
+                $this->renderContent($row, $render, $path);
+            } else {
+                // @todo: content for toMany associations
+            }
         }
-
-        $row[$this->data] = $this->twig->render(
-            'SgDatatablesBundle:render:boolean.html.twig',
-            $render
-        );
     }
 
     /**
@@ -260,6 +273,51 @@ class BooleanColumn extends AbstractColumn
     public function setFalseLabel($falseLabel)
     {
         $this->falseLabel = $falseLabel;
+
+        return $this;
+    }
+
+    //-------------------------------------------------
+    // Helper
+    //-------------------------------------------------
+
+    /**
+     * Get base render vars.
+     *
+     * @param array  $row
+     * @param string $path
+     *
+     * @return array
+     */
+    private function getBaseRenderVars(array $row, $path)
+    {
+        return array(
+            'data' => $this->accessor->getValue($row, $path),
+            'default_content' => $this->getDefaultContent(),
+            'true_label' => $this->trueLabel,
+            'true_icon' => $this->trueIcon,
+            'false_label' => $this->falseLabel,
+            'false_icon' => $this->falseIcon,
+        );
+    }
+
+    /**
+     * Render content.
+     *
+     * @param array  $row
+     * @param array  $renderVars
+     * @param string $path
+     *
+     * @return $this
+     */
+    private function renderContent(array &$row, array $renderVars, $path)
+    {
+        $content = $this->twig->render(
+            'SgDatatablesBundle:render:boolean.html.twig',
+            $renderVars
+        );
+
+        $this->accessor->setValue($row, $path, $content);
 
         return $this;
     }

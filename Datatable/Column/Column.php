@@ -48,14 +48,14 @@ class Column extends AbstractColumn
     {
         if (false === $this->isAssociation()) {
             if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
-                $this->createEditableContent($row, $this->data);
+                $this->renderEditableContent($row, $this->data);
             }
         } else {
             if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
                 $toMany = strpos($this->data, ',');
 
                 if (false === $toMany) {
-                    $this->createEditableContent($row, $this->data);
+                    $this->renderEditableContent($row, $this->data);
                 } else {
                     // @todo: editable content for toMany associations
                 }
@@ -114,14 +114,14 @@ class Column extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Create editable content.
+     * Render editable content.
      *
      * @param array  $row
      * @param string $data
      *
      * @return $this
      */
-    private function createEditableContent(array &$row, $data)
+    private function renderEditableContent(array &$row, $data)
     {
         $path = Helper::getDataPropertyPath($data);
 

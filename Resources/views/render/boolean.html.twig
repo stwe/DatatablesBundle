@@ -16,7 +16,7 @@
             {% if default_content is not same as(null) %}
                 {{ default_content }}
             {% else %}
-                null {# an editable string #}
+                {{ empty_text }}
             {% endif %}
         </span>
     {% endif %}
