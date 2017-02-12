@@ -65,26 +65,37 @@ class DateTimeColumn extends AbstractColumn
      */
     public function renderCellContent(array &$row)
     {
-        $render = array(
-            'datatable_name' => $this->getDatatableName(),
-            'row_id' => Helper::generateUniqueID(),
-            'data' => $row[$this->data],
-            'default_content' => $this->getDefaultContent(),
-            'date_format' => $this->dateFormat,
-            'timeago' => $this->timeago
-        );
+        if (false === $this->isAssociation()) {
+            $path = Helper::getDataPropertyPath($this->data);
+            $render = $this->getBaseRenderVars($row, $path);
 
-        if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
-            $render = array_merge($render, array(
-                'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
-                'pk' => $row[$this->editable->getPk()]
-            ));
+            if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
+                $render = array_merge($render, array(
+                    'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
+                    'pk' => $row[$this->editable->getPk()]
+                ));
+            }
+
+            $this->renderContent($row, $render, $path);
+        } else {
+            $toMany = strpos($this->data, ',');
+
+            if (false === $toMany) {
+                $path = Helper::getDataPropertyPath($this->data);
+                $render = $this->getBaseRenderVars($row, $path);
+
+                if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
+                    $render = array_merge($render, array(
+                        'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
+                        'pk' => $row[$this->editable->getPk()]
+                    ));
+                }
+
+                $this->renderContent($row, $render, $path);
+            } else {
+                // @todo: content for toMany associations
+            }
         }
-
-        $row[$this->data] = $this->twig->render(
-            'SgDatatablesBundle:render:datetime.html.twig',
-            $render
-        );
     }
 
     /**
@@ -190,6 +201,51 @@ class DateTimeColumn extends AbstractColumn
     public function setTimeago($timeago)
     {
         $this->timeago = $timeago;
+
+        return $this;
+    }
+
+    //-------------------------------------------------
+    // Helper
+    //-------------------------------------------------
+
+    /**
+     * Get base render vars.
+     *
+     * @param array  $row
+     * @param string $path
+     *
+     * @return array
+     */
+    private function getBaseRenderVars(array $row, $path)
+    {
+        return array(
+            'data' => $this->accessor->getValue($row, $path),
+            'default_content' => $this->getDefaultContent(),
+            'date_format' => $this->dateFormat,
+            'timeago' => $this->timeago,
+            'datatable_name' => $this->getDatatableName(),
+            'row_id' => Helper::generateUniqueID(),
+        );
+    }
+
+    /**
+     * Render content.
+     *
+     * @param array  $row
+     * @param array  $renderVars
+     * @param string $path
+     *
+     * @return $this
+     */
+    private function renderContent(array &$row, array $renderVars, $path)
+    {
+        $content = $this->twig->render(
+            'SgDatatablesBundle:render:datetime.html.twig',
+            $renderVars
+        );
+
+        $this->accessor->setValue($row, $path, $content);
 
         return $this;
     }
