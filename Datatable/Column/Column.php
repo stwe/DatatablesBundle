@@ -36,14 +36,6 @@ class Column extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function getTemplate()
-    {
-        return 'SgDatatablesBundle:column:column.html.twig';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function renderCellContent(array &$row)
     {
         if (false === $this->isAssociation()) {
@@ -61,6 +53,14 @@ class Column extends AbstractColumn
                 }
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCellContentTemplate()
+    {
+        return 'SgDatatablesBundle:render:column.html.twig';
     }
 
     /**
@@ -132,7 +132,7 @@ class Column extends AbstractColumn
         );
 
         $content = $this->twig->render(
-            'SgDatatablesBundle:render:column.html.twig',
+            $this->getCellContentTemplate(),
             $render
         );
 

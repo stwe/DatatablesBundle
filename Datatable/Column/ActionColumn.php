@@ -61,14 +61,6 @@ class ActionColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function getTemplate()
-    {
-        return 'SgDatatablesBundle:column:column.html.twig';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function addDataToOutputArray(array &$row)
     {
         $actionRowItems = array();
@@ -103,7 +95,7 @@ class ActionColumn extends AbstractColumn
         }
 
         $row[$this->getIndex()] = $this->twig->render(
-            'SgDatatablesBundle:render:action.html.twig',
+            $this->getCellContentTemplate(),
             array(
                 'actions' => $this->actions,
                 'set_route_parameters' => $parameters,
@@ -112,6 +104,14 @@ class ActionColumn extends AbstractColumn
                 'end_html_container' => $this->endHtml,
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCellContentTemplate()
+    {
+        return 'SgDatatablesBundle:render:action.html.twig';
     }
 
     /**

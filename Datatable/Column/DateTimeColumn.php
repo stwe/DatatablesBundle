@@ -55,14 +55,6 @@ class DateTimeColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function getTemplate()
-    {
-        return 'SgDatatablesBundle:column:column.html.twig';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function renderCellContent(array &$row)
     {
         if (false === $this->isAssociation()) {
@@ -96,6 +88,14 @@ class DateTimeColumn extends AbstractColumn
                 // @todo: content for toMany associations
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCellContentTemplate()
+    {
+        return 'SgDatatablesBundle:render:datetime.html.twig';
     }
 
     /**
@@ -241,7 +241,7 @@ class DateTimeColumn extends AbstractColumn
     private function renderContent(array &$row, array $renderVars, $path)
     {
         $content = $this->twig->render(
-            'SgDatatablesBundle:render:datetime.html.twig',
+            $this->getCellContentTemplate(),
             $renderVars
         );
 

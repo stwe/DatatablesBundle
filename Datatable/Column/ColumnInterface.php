@@ -55,11 +55,11 @@ interface ColumnInterface
     public function isSelectColumn();
 
     /**
-     * Get template.
+     * Get the template, in which all DataTables-Columns-Options set.
      *
      * @return string
      */
-    public function getTemplate();
+    public function getOptionsTemplate();
 
     /**
      * Sometimes it is necessary to add some special data to the output array.
@@ -80,6 +80,13 @@ interface ColumnInterface
      * @return mixed
      */
     public function renderCellContent(array &$row);
+
+    /**
+     * Get the template for the 'renderCellContent' function.
+     *
+     * @return string
+     */
+    public function getCellContentTemplate();
 
     /**
      * Implementation of the 'Draw Event' - fired once the table has completed a draw.

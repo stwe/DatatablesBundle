@@ -76,7 +76,7 @@ class MultiselectColumn extends ActionColumn
     /**
      * {@inheritdoc}
      */
-    public function getTemplate()
+    public function getOptionsTemplate()
     {
         return 'SgDatatablesBundle:column:multiselect.html.twig';
     }
@@ -105,7 +105,7 @@ class MultiselectColumn extends ActionColumn
         }
 
         $row[$this->getIndex()] = $this->twig->render(
-            'SgDatatablesBundle:render:multiselect.html.twig',
+            $this->getCellContentTemplate(),
             array(
                 'attributes' => $this->attributes,
                 'value' => $value,
@@ -114,6 +114,14 @@ class MultiselectColumn extends ActionColumn
                 'render_if_cbox' => $row['sg_datatables_cbox'],
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCellContentTemplate()
+    {
+        return 'SgDatatablesBundle:render:multiselect.html.twig';
     }
 
     /**

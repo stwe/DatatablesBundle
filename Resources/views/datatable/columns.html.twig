@@ -8,6 +8,6 @@
  #}
 "columns": [
     {% for column in sg_datatables_view.columns %}
-        {% include column.getTemplate %}
+        {% include column.getOptionsTemplate %}
     {% endfor %}
 ]
