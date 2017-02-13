@@ -518,25 +518,6 @@ class DatatableQueryBuilder
             : count($qb->getQuery()->getResult());
     }
 
-    /**
-     * Query results after filtering.
-     *
-     * @return int
-     */
-    public function getCountFilteredResults()
-    {
-        $qb = $this->em->createQueryBuilder();
-        $qb->select('count(distinct ' . $this->tableName . '.' . $this->rootEntityIdentifier . ')');
-        $qb->from($this->entityName, $this->tableName);
-
-        $this->setJoins($qb);
-        $this->setWhere($qb);
-
-        return !$qb->getDQLPart('groupBy') ?
-            (int)$qb->getQuery()->getSingleScalarResult()
-            : count($qb->getQuery()->getResult());
-    }
-
     //-------------------------------------------------
     // Private - Helper
     //-------------------------------------------------
