@@ -1,6 +1,6 @@
 sg:
     datatables:
-        confirmMessage: "Êtes vous certain?"
+        confirmMessage: "Êtes-vous sûr ?"
         selectError: "Vous devez sélectionner au moins un élément."
         actions:
             title: "Actions"
@@ -9,4 +9,4 @@ sg:
         daterange:
             apply: "Appliquer"
             cancel: "Annuler"
-            format: "DD-MM-YYYY"
+            format: "DD/MM/YYYY"
