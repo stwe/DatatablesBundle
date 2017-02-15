@@ -1,6 +1,7 @@
 # Planned Features v1.0
 
 **[ x ] = ready to use**
+
 **[ ! ] = partly ready to use**
 
 ## DataTables
@@ -53,7 +54,7 @@
 
 The Bundle is optimized for use with the Bootstrap-Framework.
 
-This [Site](https://datatables.net/examples/styling/index.html) includes some examples of how DataTables can be styled:
+This [Site](https://datatables.net/examples/styling/index.html) includes some examples of how DataTables can be styled.
 
 ## In-place Editing Types with [X-editable](http://vitalets.github.io/x-editable/)
 

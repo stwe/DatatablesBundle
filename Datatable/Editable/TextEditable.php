@@ -24,6 +24,8 @@ class TextEditable extends AbstractEditable
      * Whether to show clear button.
      * Default: true
      *
+     * Currently not usable: x-editable bug https://github.com/vitalets/x-editable/issues/977
+     *
      * @var bool
      */
     protected $clear;
