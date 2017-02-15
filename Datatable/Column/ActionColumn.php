@@ -15,6 +15,7 @@ use Sg\DatatablesBundle\Datatable\Action\Action;
 use Sg\DatatablesBundle\Datatable\HtmlContainerTrait;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Closure;
 use Exception;
 
 /**
@@ -83,7 +84,7 @@ class ActionColumn extends AbstractColumn
         /** @var Action $action */
         foreach ($this->actions as $action) {
             $routeParameters = $action->getRouteParameters();
-            if (null !== $routeParameters) {
+            if (is_array($routeParameters)) {
                 foreach ($routeParameters as $key => $value) {
                     if (isset($row[$value])) {
                         $parameters[$key] = $row[$value];
@@ -91,6 +92,9 @@ class ActionColumn extends AbstractColumn
                         $parameters[$key] = $value;
                     }
                 }
+            }
+            elseif ($routeParameters instanceof Closure) {
+                $parameters = call_user_func($routeParameters, $row);
             }
         }
 

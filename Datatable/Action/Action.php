@@ -53,7 +53,7 @@ class Action
      * The route parameters.
      * Default: null
      *
-     * @var null|array
+     * @var null|array|Closure
      */
     protected $routeParameters;
 
@@ -147,7 +147,7 @@ class Action
         ));
 
         $resolver->setAllowedTypes('route', 'string');
-        $resolver->setAllowedTypes('route_parameters', array('null', 'array'));
+        $resolver->setAllowedTypes('route_parameters', array('null', 'array', 'Closure'));
         $resolver->setAllowedTypes('icon', array('null', 'string'));
         $resolver->setAllowedTypes('label', array('null', 'string'));
         $resolver->setAllowedTypes('confirm', 'bool');

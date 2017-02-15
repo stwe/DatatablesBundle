@@ -326,18 +326,18 @@ SgDatatablesBundle:render:action.html.twig
 
 ### Action options
 
-| Option           | Type            | Default | Required | Description |
-|------------------|-----------------|---------|----------|-------------|
-| route            | string          |         | X        | The name of the Action route. |
-| route_parameters | null or array   | null    |          | The route parameters. |
-| icon             | null or string  | null    |          | An icon for the Action. |
-| label            | null or string  | null    |          | A label for the Action. |
-| confirm          | bool            | false   |          | Show confirm message if true. |
-| confirm_message  | null or string  | null    |          | The confirm message. |
-| attributes       | null or array   | null    |          | HTML <a> Tag attributes (except 'href'). |
-| render_if        | null or Closure | null    |          | Render an Action only if conditions are TRUE. |
-| start_html       | null or string  | null    |          | HTML code before the <a> Tag. |
-| end_html         | null or string  | null    |          | HTML code after the <a> Tag. |
+| Option           | Type                   | Default | Required | Description |
+|------------------|------------------------|---------|----------|-------------|
+| route            | string                 |         | X        | The name of the Action route. |
+| route_parameters | null, array or Closure | null    |          | The route parameters. |
+| icon             | null or string         | null    |          | An icon for the Action. |
+| label            | null or string         | null    |          | A label for the Action. |
+| confirm          | bool                   | false   |          | Show confirm message if true. |
+| confirm_message  | null or string         | null    |          | The confirm message. |
+| attributes       | null or array          | null    |          | HTML <a> Tag attributes (except 'href'). |
+| render_if        | null or Closure        | null    |          | Render an Action only if conditions are TRUE. |
+| start_html       | null or string         | null    |          | HTML code before the <a> Tag. |
+| end_html         | null or string         | null    |          | HTML code after the <a> Tag. |
 
 ### Example
 
