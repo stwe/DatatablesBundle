@@ -103,7 +103,7 @@ $this->columnBuilder
 ;
 ```
 
-**For one-to-many associations:**
+**For one-to-many or many-to-many associations:**
 
 ``` php
 $this->columnBuilder

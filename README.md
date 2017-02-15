@@ -12,6 +12,8 @@
 
 This bundle is currently under heavy development and the dev-master branch contains the new codebase for v1.0.
 
+**[The current state of development of v1.0](https://github.com/stwe/DatatablesBundle/blob/master/FEATURES.md)**
+
 ## Documentation
 
 ### v0.13
