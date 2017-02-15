@@ -92,8 +92,7 @@ class ActionColumn extends AbstractColumn
                         $parameters[$key] = $value;
                     }
                 }
-            }
-            elseif ($routeParameters instanceof Closure) {
+            } elseif ($routeParameters instanceof Closure) {
                 $parameters = call_user_func($routeParameters, $row);
             }
         }
