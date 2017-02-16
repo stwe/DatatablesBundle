@@ -59,6 +59,20 @@ class DatatableFormatter
 
         foreach ($paginator as $row) {
 
+            // Adding custom DQL fields make PARTIAL columns stored in key 0
+            if (isset($row[0])) {
+                $row = array_merge($row, $row[0]);
+                unset($row[0]);
+            }
+
+            // Format custom DQL fields output ('custom.dql.name' => $row['custom']['dql']['name'] = 'value')
+            foreach ($columns as $column) {
+                if (true === $column->isCustomDql()) {
+                    $columnAlias = str_replace('.', '_', $column->getData());
+                    eval("\$row['" . str_replace('.', "']['", $column->getData()) . "'] = \$row['$columnAlias'];");
+                }
+            }
+
             // 1. Set (if necessary) the custom data source for the Columns with a 'data' option
             foreach ($columns as $column) {
                 /** @noinspection PhpUndefinedMethodInspection */

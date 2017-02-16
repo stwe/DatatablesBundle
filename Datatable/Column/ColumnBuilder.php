@@ -127,8 +127,13 @@ class ColumnBuilder
         // creates the empty Column Options array and the Property Accessor
         $column->initOptions(false);
         // the Column 'data' property has normally the same value as 'dql'
-        $column->setDql($dql);
         $column->setData($dql);
+        if (!isset($options['dql'])) {
+            $column->setDql($dql, true);
+            $column->setCustomDql(false);
+        } else {
+            $column->setCustomDql(true);
+        }
         // set the name of the Datatable
         $column->setDatatableName($this->datatableName);
         // set the table name
