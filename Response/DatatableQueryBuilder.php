@@ -336,7 +336,7 @@ class DatatableQueryBuilder
     private function setJoins(QueryBuilder $qb)
     {
         foreach ($this->joins as $key => $value) {
-            $qb->$value['type']($key, $value['alias']);
+            $qb->{$value['type']}($key, $value['alias']);
         }
 
         return $this;
