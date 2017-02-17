@@ -82,7 +82,7 @@ class DatatableFormatter
                 if (true === $column->isCustomDql()) {
                     $columnAlias = str_replace('.', '_', $column->getData());
                     $columnPath = '[' . str_replace('.', '][', $column->getData()) . ']';
-                    if (null === $this->accessor->getValue($row, $columnPath)) {
+                    if ($columnAlias !== $column->getData()) {
                         $this->accessor->setValue($row, $columnPath, $row[$columnAlias]);
                         unset($row[$columnAlias]);
                     }
