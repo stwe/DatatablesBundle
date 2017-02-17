@@ -15,6 +15,8 @@ use Sg\DatatablesBundle\Datatable\Column\ColumnInterface;
 use Sg\DatatablesBundle\Datatable\DatatableInterface;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
  * Class DatatableFormatter
@@ -30,6 +32,14 @@ class DatatableFormatter
      */
     private $output;
 
+    /**
+     * The PropertyAccessor.
+     * Provides functions to read and write from/to an object or array using a simple string notation.
+     *
+     * @var PropertyAccessor
+     */
+    private $accessor;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -40,6 +50,8 @@ class DatatableFormatter
     public function __construct()
     {
         $this->output = array('data' => array());
+
+        $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
     //-------------------------------------------------
@@ -69,7 +81,11 @@ class DatatableFormatter
             foreach ($columns as $column) {
                 if (true === $column->isCustomDql()) {
                     $columnAlias = str_replace('.', '_', $column->getData());
-                    eval("\$row['" . str_replace('.', "']['", $column->getData()) . "'] = \$row['$columnAlias'];");
+                    $columnPath = '[' . str_replace('.', '][', $column->getData()) . ']';
+                    if (null === $this->accessor->getValue($row, $columnPath)) {
+                        $this->accessor->setValue($row, $columnPath, $row[$columnAlias]);
+                        unset($row[$columnAlias]);
+                    }
                 }
             }
 
