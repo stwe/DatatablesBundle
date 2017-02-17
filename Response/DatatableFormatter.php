@@ -58,7 +58,6 @@ class DatatableFormatter
         $columns = $datatable->getColumns();
 
         foreach ($paginator as $row) {
-
             // 1. Set (if necessary) the custom data source for the Columns with a 'data' option
             foreach ($columns as $column) {
                 /** @noinspection PhpUndefinedMethodInspection */

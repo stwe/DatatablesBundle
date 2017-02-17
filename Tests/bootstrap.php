@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-if (!($loader = @include __DIR__ . '/../vendor/autoload.php')) {
+if (!($loader = @include __DIR__.'/../vendor/autoload.php')) {
     echo <<<EOT
 You need to install the project dependencies using Composer:
 $ wget http://getcomposer.org/composer.phar

@@ -58,7 +58,7 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
         list($bundle, $entity) = $this->parseShortcutNotation($entity);
 
         // get entity's metadata
-        $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle) . "\\" . $entity;
+        $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle)."\\".$entity;
         $metadata = $this->getEntityMetadata($entityClass);
 
         // get fields option
@@ -131,7 +131,7 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
             $row['title'] = ucwords(str_replace('.', ' ', $elements[0]));
 
             if (isset($elements[1])) {
-                switch($elements[1]) {
+                switch ($elements[1]) {
                     case 'datetime':
                         $row['column_type'] = 'DateTimeColumn::class';
                         break;
@@ -180,7 +180,7 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
             $row = array();
             $row['property'] = $field['fieldName'];
 
-            switch($field['type']) {
+            switch ($field['type']) {
                 case 'datetime':
                     $row['column_type'] = 'DateTimeColumn::class';
                     break;
@@ -202,11 +202,11 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
 
             foreach ($targetMetadata[0]->fieldMappings as $field) {
                 $row = array();
-                $row['property'] = $relation['fieldName'] . '.' . $field['fieldName'];
+                $row['property'] = $relation['fieldName'].'.'.$field['fieldName'];
                 $row['column_type'] = 'Column::class';
                 $row['title'] = ucwords(str_replace('.', ' ', $row['property']));
                 if ($relation['type'] === ClassMetadataInfo::ONE_TO_MANY || $relation['type'] === ClassMetadataInfo::MANY_TO_MANY) {
-                    $row['data'] = $relation['fieldName'] . '[, ].' . $field['fieldName'];
+                    $row['data'] = $relation['fieldName'].'[, ].'.$field['fieldName'];
                 } else {
                     $row['data'] = null;
                 }

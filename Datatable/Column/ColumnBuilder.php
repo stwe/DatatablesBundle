@@ -167,7 +167,7 @@ class ColumnBuilder
                     $this->multiselectColumn = $column;
                 }
             } else {
-                throw new Exception('ColumnBuilder::add(): There is only one unique Column allowed. Check the Column with index: ' . $column->getIndex() . '.');
+                throw new Exception('ColumnBuilder::add(): There is only one unique Column allowed. Check the Column with index: '.$column->getIndex().'.');
             }
         }
 

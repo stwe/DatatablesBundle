@@ -17,6 +17,7 @@ use Sg\DatatablesBundle\Datatable\RenderIfTrait;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Exception;
+use Closure;
 
 /**
  * Class Action
@@ -191,7 +192,7 @@ class Action
     /**
      * Get routeParameters.
      *
-     * @return null|array
+     * @return null|array|Closure
      */
     public function getRouteParameters()
     {
@@ -201,7 +202,7 @@ class Action
     /**
      * Set routeParameters.
      *
-     * @param null|array $routeParameters
+     * @param null|array|Closure $routeParameters
      *
      * @return $this
      */

@@ -146,7 +146,7 @@ class Language
         $resolver->setDefaults(array(
             'cdn_language_by_locale' => false,
             'language_by_locale' => false,
-            'language' => null
+            'language' => null,
         ));
 
         $resolver->setAllowedTypes('cdn_language_by_locale', 'bool');

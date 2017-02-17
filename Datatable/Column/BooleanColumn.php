@@ -90,7 +90,7 @@ class BooleanColumn extends AbstractColumn
             if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
                 $render = array_merge($render, array(
                     'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
-                    'pk' => $row[$this->editable->getPk()]
+                    'pk' => $row[$this->editable->getPk()],
                 ));
             }
 
@@ -137,7 +137,7 @@ class BooleanColumn extends AbstractColumn
                     'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
                     'editable_options' => $this->editable,
                     'entity_class_name' => $this->getEntityClassName(),
-                    'column_dql' => $this->dql
+                    'column_dql' => $this->dql,
                 )
             );
         }
@@ -160,17 +160,22 @@ class BooleanColumn extends AbstractColumn
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefaults(array(
-            'filter' => array(SelectFilter::class, array(
-                'search_type' => 'eq',
-                'select_options' => array('' => 'Any', '1' => 'Yes', '0' => 'No')
-            )),
-            'true_icon' => null,
-            'false_icon' => null,
-            'true_label' => null,
-            'false_label' => null,
-            'editable' => null
-        ));
+        $resolver->setDefaults(
+            array(
+                'filter' => array(
+                    SelectFilter::class,
+                    array(
+                        'search_type' => 'eq',
+                        'select_options' => array('' => 'Any', '1' => 'Yes', '0' => 'No'),
+                    ),
+                ),
+                'true_icon' => null,
+                'false_icon' => null,
+                'true_label' => null,
+                'false_label' => null,
+                'editable' => null,
+            )
+        );
 
         $resolver->setAllowedTypes('filter', 'array');
         $resolver->setAllowedTypes('true_icon', array('null', 'string'));

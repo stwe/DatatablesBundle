@@ -68,7 +68,7 @@ class CombodateEditable extends AbstractEditable
 
         $resolver->setDefaults(array(
             'format' => 'YYYY-MM-DD',
-            'view_format' => null
+            'view_format' => null,
         ));
 
         $resolver->setAllowedTypes('format', 'string');

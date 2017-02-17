@@ -179,7 +179,7 @@ class DatatableController extends Controller
 
         if ($str === 'true' || $str === '1') {
             return true;
-        } else if ($str === 'false' || $str === '0') {
+        } elseif ($str === 'false' || $str === '0') {
             return false;
         } else {
             throw new Exception('DatatableController::strToBool(): Cannot convert string to boolean, expected string "true" or "false".');

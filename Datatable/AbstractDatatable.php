@@ -137,8 +137,7 @@ abstract class AbstractDatatable implements DatatableInterface
         RouterInterface $router,
         EntityManagerInterface $em,
         Twig_Environment $twig
-    )
-    {
+    ) {
         $this->validateName();
 
         $this->authorizationChecker = $authorizationChecker;

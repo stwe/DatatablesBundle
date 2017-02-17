@@ -67,7 +67,7 @@ class TextEditable extends AbstractEditable
 
         $resolver->setDefaults(array(
             'clear' => true,
-            'placeholder' => null
+            'placeholder' => null,
         ));
 
         $resolver->setAllowedTypes('clear', 'bool');

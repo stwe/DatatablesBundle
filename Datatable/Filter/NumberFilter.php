@@ -92,7 +92,7 @@ class NumberFilter extends TextFilter
             'step' => '1',
             'show_label' => false,
             'datalist' => null,
-            'type' => 'number'
+            'type' => 'number',
         ));
 
         $resolver->setAllowedTypes('min', 'string');
