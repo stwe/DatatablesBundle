@@ -67,18 +67,18 @@ class DatatableQueryBuilder
     private $entityName;
 
     /**
+     * The short name of the entity.
+     *
+     * @var string
+     */
+    private $entityShortName;
+
+    /**
      * The class metadata for $entityName.
      *
      * @var ClassMetadata
      */
     private $metadata;
-
-    /**
-     * The table name for $entityName.
-     *
-     * @var string
-     */
-    private $tableName;
 
     /**
      * The root ID of the entity.
@@ -178,7 +178,7 @@ class DatatableQueryBuilder
         $this->entityName = $datatable->getEntity();
 
         $this->metadata = $this->getMetadata($this->entityName);
-        $this->tableName = $this->getTableName($this->metadata);
+        $this->entityShortName = $this->getEntityShortName($this->metadata);
         $this->rootEntityIdentifier = $this->getIdentifier($this->metadata);
 
         $this->qb = $this->em->createQueryBuilder();
@@ -208,7 +208,7 @@ class DatatableQueryBuilder
         foreach ($this->columns as $key => $column) {
             $data = $this->accessor->getValue($column, 'dql');
 
-            $currentPart = $this->tableName;
+            $currentPart = $this->entityShortName;
             $currentAlias = $currentPart;
             $metadata = $this->metadata;
 
@@ -220,7 +220,7 @@ class DatatableQueryBuilder
                     $previousAlias = $currentAlias;
 
                     $currentPart = array_shift($parts);
-                    $currentAlias = ($previousPart === $this->tableName ? '' : $previousPart . '_') . $currentPart;
+                    $currentAlias = ($previousPart === $this->entityShortName ? '' : $previousPart . '_') . $currentPart;
 
                     if (!array_key_exists($previousAlias . '.' . $currentPart, $this->joins)) {
                         $this->addJoin($previousAlias . '.' . $currentPart, $currentAlias, $this->accessor->getValue($column, 'joinType'));
@@ -238,7 +238,7 @@ class DatatableQueryBuilder
                     $orderColumn = $this->accessor->getValue($column, 'orderColumn');
                     $orderParts = explode('.', $orderColumn);
                     if(count($orderParts) < 2) {
-                        $orderColumn = $this->tableName . '.' . $orderColumn;
+                        $orderColumn = $this->entityShortName . '.' . $orderColumn;
                     }
                     $this->orderColumns[] = $orderColumn;
                 } else {
@@ -250,7 +250,7 @@ class DatatableQueryBuilder
                     $searchColumn = $this->accessor->getValue($column, 'searchColumn');
                     $searchParts = explode('.', $searchColumn);
                     if(count($searchParts) < 2) {
-                        $searchColumn = $this->tableName . '.' . $searchColumn;
+                        $searchColumn = $this->entityShortName . '.' . $searchColumn;
                     }
                     $this->searchColumns[] = $searchColumn;
                 } else {
@@ -321,7 +321,7 @@ class DatatableQueryBuilder
             $this->qb->addSelect('partial ' . $key . '.{' . implode(',', $this->selectColumns[$key]) . '}');
         }
 
-        $this->qb->from($this->entityName, $this->tableName);
+        $this->qb->from($this->entityName, $this->entityShortName);
 
         return $this;
     }
@@ -506,8 +506,8 @@ class DatatableQueryBuilder
     public function getCountAllResults()
     {
         $qb = $this->em->createQueryBuilder();
-        $qb->select('count(distinct ' . $this->tableName . '.' . $this->rootEntityIdentifier . ')');
-        $qb->from($this->entityName, $this->tableName);
+        $qb->select('count(distinct ' . $this->entityShortName . '.' . $this->rootEntityIdentifier . ')');
+        $qb->from($this->entityName, $this->entityShortName);
 
         /*
          * @todo: $this->setJoins($qb);
@@ -625,13 +625,13 @@ class DatatableQueryBuilder
     }
 
     /**
-     * Get table name.
+     * Get entity short name.
      *
      * @param ClassMetadata $metadata
      *
      * @return string
      */
-    private function getTableName(ClassMetadata $metadata)
+    private function getEntityShortName(ClassMetadata $metadata)
     {
         return strtolower($metadata->getReflectionClass()->getShortName());
     }

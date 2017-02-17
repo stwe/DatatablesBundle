@@ -60,12 +60,12 @@ class DatatableTest extends \PHPUnit_Framework_TestCase
     {
         $mock = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadata')
             ->disableOriginalConstructor()
-            ->setMethods(array('getTableName'))
+            ->setMethods(array('getEntityShortName'))
             ->getMock();
 
         $mock->expects($this->any())
-            ->method('getTableName')
-            ->will($this->returnValue('{tableName}'));
+            ->method('getEntityShortName')
+            ->will($this->returnValue('{entityShortName}'));
 
         return $mock;
     }
