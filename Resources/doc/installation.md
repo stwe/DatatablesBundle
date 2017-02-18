@@ -389,15 +389,7 @@ public function indexAction(Request $request)
     $datatable->buildDatatable();
 
     if ($isAjax) {
-        $responseService = $this->get('sg_datatables.response');
-        $responseService->setDatatable($datatable);
-
-        $datatableQueryBuilder = $responseService->getDatatableQueryBuilder();
-        $datatableQueryBuilder->buildQuery();
-
-        //dump($datatableQueryBuilder->getQb()->getDQL()); die();
-
-        return $responseService->getResponse();
+        return $datatable->createResponse();
     }
 
     return $this->render('post/index.html.twig', array(
