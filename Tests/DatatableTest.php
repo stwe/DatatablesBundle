@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Tests;
 
+use Sg\DatatablesBundle\Response\DatatableResponse;
+use Sg\DatatablesBundle\Response\DatatableResponseInterface;
 use Sg\DatatablesBundle\Tests\Datatables\PostDatatable;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -44,6 +46,8 @@ class DatatableTest extends \PHPUnit_Framework_TestCase
         $router = $this->getMock(RouterInterface::class);
         /** @noinspection PhpUndefinedMethodInspection */
         $twig = $this->getMock(Twig_Environment::class);
+        /** @noinspection PhpUndefinedMethodInspection */
+        $datatableResponse = $this->getMock(DatatableResponseInterface::class);
 
         /** @noinspection PhpUndefinedMethodInspection */
         $em = $this->getMockBuilder(EntityManager::class)
@@ -59,7 +63,7 @@ class DatatableTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->getClassMetadataMock()));
 
         /** @var \Sg\DatatablesBundle\Tests\Datatables\PostDatatable $table */
-        $table = new $tableClass($authorizationChecker, $securityToken, $translator, $router, $em, $twig);
+        $table = new $tableClass($authorizationChecker, $securityToken, $translator, $router, $em, $twig, $datatableResponse);
 
         /** @noinspection PhpUndefinedMethodInspection */
         $this->assertEquals('post_datatable', $table->getName());

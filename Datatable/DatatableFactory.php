@@ -12,6 +12,7 @@
 namespace Sg\DatatablesBundle\Datatable;
 
 use Sg\DatatablesBundle\Response\DatatableResponse;
+use Sg\DatatablesBundle\Response\DatatableResponseInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -72,7 +73,7 @@ class DatatableFactory
     /**
      * The datatable response service.
      *
-     * @var DatatableResponse
+     * @var DatatableResponseInterface
      */
     protected $datatableResponse;
 
@@ -89,7 +90,7 @@ class DatatableFactory
      * @param RouterInterface $router
      * @param EntityManagerInterface $em
      * @param Twig_Environment $twig
-     * @param DatatableResponse $datatableResponse
+     * @param DatatableResponseInterface $datatableResponse
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -98,7 +99,7 @@ class DatatableFactory
         RouterInterface $router,
         EntityManagerInterface $em,
         Twig_Environment $twig,
-        DatatableResponse $datatableResponse
+        DatatableResponseInterface $datatableResponse
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->securityToken = $securityToken;

@@ -14,6 +14,7 @@ namespace Sg\DatatablesBundle\Datatable;
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 
 use Sg\DatatablesBundle\Response\DatatableResponse;
+use Sg\DatatablesBundle\Response\DatatableResponseInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -76,7 +77,7 @@ abstract class AbstractDatatable implements DatatableInterface
     /**
      * The datatable response service.
      *
-     * @var DatatableResponse
+     * @var DatatableResponseInterface
      */
     protected $datatableResponse;
 
@@ -135,8 +136,7 @@ abstract class AbstractDatatable implements DatatableInterface
      * @param RouterInterface $router
      * @param EntityManagerInterface $em
      * @param Twig_Environment $twig
-     *
-     * @param DatatableResponse $datatableResponse
+     * @param DatatableResponseInterface $datatableResponse
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -145,7 +145,7 @@ abstract class AbstractDatatable implements DatatableInterface
         RouterInterface $router,
         EntityManagerInterface $em,
         Twig_Environment $twig,
-        DatatableResponse $datatableResponse
+        DatatableResponseInterface $datatableResponse
     ) {
         $this->validateName();
 
