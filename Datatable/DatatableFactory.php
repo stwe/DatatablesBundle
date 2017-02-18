@@ -107,7 +107,7 @@ class DatatableFactory
         $this->router = $router;
         $this->em = $em;
         $this->twig = $twig;
-        $this->datatableResponse;
+        $this->datatableResponse = $datatableResponse;
     }
 
     //-------------------------------------------------
