@@ -20,16 +20,16 @@ class Helper
 {
     /**
      * Generate a unique ID.
-
+     *
      * @param string $prefix
      *
      * @return string
      */
     public static function generateUniqueID($prefix = '')
     {
-        $id = sha1(microtime(true) . mt_rand(10000,90000));
+        $id = sha1(microtime(true).mt_rand(10000, 90000));
 
-        return $prefix ? $prefix . '-' . $id : $id;
+        return $prefix ? $prefix.'-'.$id : $id;
     }
 
     /**
@@ -41,7 +41,6 @@ class Helper
      */
     public static function getDataPropertyPath($data)
     {
-        return '[' . str_replace('.', '][', $data) . ']';
+        return '['.str_replace('.', '][', $data).']';
     }
-
 }

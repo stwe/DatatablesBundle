@@ -28,7 +28,7 @@ class PostDatatable extends AbstractDatatable
     {
         $this->ajax->set(array(
             'url' => '',
-            'type' => 'GET'
+            'type' => 'GET',
         ));
 
         $this->options->set(array(

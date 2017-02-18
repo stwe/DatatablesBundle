@@ -27,16 +27,25 @@ use Twig_Environment;
  */
 class DatatableTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * testCreate.
+     */
     public function testCreate()
     {
         $tableClass = PostDatatable::class;
 
+        /** @noinspection PhpUndefinedMethodInspection */
         $authorizationChecker = $this->getMock(AuthorizationCheckerInterface::class);
+        /** @noinspection PhpUndefinedMethodInspection */
         $securityToken = $this->getMock(TokenStorageInterface::class);
+        /** @noinspection PhpUndefinedMethodInspection */
         $translator = $this->getMock(TranslatorInterface::class);
+        /** @noinspection PhpUndefinedMethodInspection */
         $router = $this->getMock(RouterInterface::class);
+        /** @noinspection PhpUndefinedMethodInspection */
         $twig = $this->getMock(Twig_Environment::class);
 
+        /** @noinspection PhpUndefinedMethodInspection */
         $em = $this->getMockBuilder(EntityManager::class)
             ->disableOriginalConstructor()
             ->setMethods(
@@ -44,6 +53,7 @@ class DatatableTest extends \PHPUnit_Framework_TestCase
             )
             ->getMock();
 
+        /** @noinspection PhpUndefinedMethodInspection */
         $em->expects($this->any())
             ->method('getClassMetadata')
             ->will($this->returnValue($this->getClassMetadataMock()));
@@ -51,21 +61,29 @@ class DatatableTest extends \PHPUnit_Framework_TestCase
         /** @var \Sg\DatatablesBundle\Tests\Datatables\PostDatatable $table */
         $table = new $tableClass($authorizationChecker, $securityToken, $translator, $router, $em, $twig);
 
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->assertEquals('post_datatable', $table->getName());
 
         $table->buildDatatable();
     }
 
+    /**
+     * Get classMetadataMock.
+     *
+     * @return mixed
+     */
     public function getClassMetadataMock()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         $mock = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadata')
             ->disableOriginalConstructor()
-            ->setMethods(array('getTableName'))
+            ->setMethods(array('getEntityShortName'))
             ->getMock();
 
+        /** @noinspection PhpUndefinedMethodInspection */
         $mock->expects($this->any())
-            ->method('getTableName')
-            ->will($this->returnValue('{tableName}'));
+            ->method('getEntityShortName')
+            ->will($this->returnValue('{entityShortName}'));
 
         return $mock;
     }

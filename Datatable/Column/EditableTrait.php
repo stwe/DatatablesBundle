@@ -88,6 +88,6 @@ trait EditableTrait
      */
     private function getColumnClassEditableSelector()
     {
-        return 'sg-datatables-' . $this->getDatatableName() . '-editable-column-' . $this->index;
+        return 'sg-datatables-'.$this->getDatatableName().'-editable-column-'.$this->index;
     }
 }

@@ -182,7 +182,7 @@ abstract class AbstractEditable implements EditableInterface
             'mode' => 'popup',
             'name' => null,
             'pk' => 'id',
-            'editable_if' => null
+            'editable_if' => null,
         ));
 
         $resolver->setAllowedTypes('url', 'string');

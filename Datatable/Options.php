@@ -290,7 +290,7 @@ class Options
             'individual_filtering' => false,
             'individual_filtering_position' => 'head',
             'search_in_non_visible_columns' => false,
-            'global_search_type' => 'like'
+            'global_search_type' => 'like',
         ));
 
         $resolver->setAllowedTypes('defer_loading', array('null', 'int', 'array'));

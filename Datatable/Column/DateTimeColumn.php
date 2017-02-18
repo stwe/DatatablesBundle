@@ -69,7 +69,7 @@ class DateTimeColumn extends AbstractColumn
             if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
                 $render = array_merge($render, array(
                     'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
-                    'pk' => $row[$this->editable->getPk()]
+                    'pk' => $row[$this->editable->getPk()],
                 ));
             }
 
@@ -84,7 +84,7 @@ class DateTimeColumn extends AbstractColumn
                 if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
                     $render = array_merge($render, array(
                         'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
-                        'pk' => $row[$this->editable->getPk()]
+                        'pk' => $row[$this->editable->getPk()],
                     ));
                 }
 
@@ -115,7 +115,7 @@ class DateTimeColumn extends AbstractColumn
                     'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
                     'editable_options' => $this->editable,
                     'entity_class_name' => $this->getEntityClassName(),
-                    'column_dql' => $this->dql
+                    'column_dql' => $this->dql,
                 )
             );
         }

@@ -66,9 +66,9 @@ class DatatableGenerator extends Generator
         $entityClass = array_pop($parts);
         $entityClassLowerCase = strtolower($entityClass);
 
-        $this->className = $entityClass . 'Datatable';
-        $dirPath = $bundle->getPath() . '/Datatables';
-        $this->classPath = $dirPath . '/' . str_replace('\\', '/', $entity) . 'Datatable.php';
+        $this->className = $entityClass.'Datatable';
+        $dirPath = $bundle->getPath().'/Datatables';
+        $this->classPath = $dirPath.'/'.str_replace('\\', '/', $entity).'Datatable.php';
 
         if (!$overwrite) {
             if (file_exists($this->classPath)) {
@@ -91,10 +91,10 @@ class DatatableGenerator extends Generator
             'entity_class' => $entityClass,
             'bundle' => $bundle->getName(),
             'datatable_class' => $this->className,
-            'datatable_name' => $entityClassLowerCase . '_datatable',
+            'datatable_name' => $entityClassLowerCase.'_datatable',
             'fields' => $fields,
             'route_pref' => $entityClassLowerCase,
-            'id' => $id
+            'id' => $id,
         ));
     }
 

@@ -53,8 +53,8 @@ class SgDatatablesExtension extends Extension implements PrependExtensionInterfa
                         'datatables_cdn' => array(
                             'base_path' => '//cdn.datatables.net/plug-ins/1.10.13/i18n/',
                         ),
-                    )
-                )
+                    ),
+                ),
             )
         );
     }

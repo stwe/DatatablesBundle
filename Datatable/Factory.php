@@ -40,7 +40,7 @@ class Factory
         }
 
         if (is_string($class) && class_exists($class)) {
-            $instance = new $class;
+            $instance = new $class();
 
             if (!$instance instanceof $interface) {
                 throw new Exception("Factory::create(): String or $interface expected.");

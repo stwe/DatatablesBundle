@@ -60,7 +60,7 @@ class VirtualColumn extends Column
             'orderable' => false,
             'searchable' => false,
             'order_column' => null,
-            'search_column' => null
+            'search_column' => null,
         ));
 
         $resolver->setAllowedTypes('order_column', array('null', 'string'));

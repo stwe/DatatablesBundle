@@ -117,7 +117,7 @@ abstract class AbstractFilter implements FilterInterface
             'classes' => null,
             'cancel_button' => false,
             'placeholder' => true,
-            'placeholder_text' => null
+            'placeholder_text' => null,
         ));
 
         $resolver->setAllowedTypes('search_type', 'string');
@@ -131,95 +131,6 @@ abstract class AbstractFilter implements FilterInterface
         $resolver->setAllowedValues('search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
 
         return $this;
-    }
-
-    //-------------------------------------------------
-    // Helper
-    //-------------------------------------------------
-
-    /**
-     * Get a condition.
-     *
-     * @param Andx         $andExpr
-     * @param QueryBuilder $qb
-     * @param string       $searchField
-     * @param mixed        $searchValue
-     * @param int          $parameterCounter
-     *
-     * @return Andx
-     */
-    protected function getAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, $parameterCounter)
-    {
-        switch ($this->searchType) {
-            case 'like':
-                $andExpr->add($qb->expr()->like($searchField, '?' . $parameterCounter));
-                $qb->setParameter($parameterCounter, '%' . $searchValue . '%');
-                break;
-            case 'notLike':
-                $andExpr->add($qb->expr()->notLike($searchField, '?' . $parameterCounter));
-                $qb->setParameter($parameterCounter, '%' . $searchValue . '%');
-                break;
-            case 'eq':
-                $andExpr->add($qb->expr()->eq($searchField, '?' . $parameterCounter));
-                $qb->setParameter($parameterCounter, $searchValue);
-                break;
-            case 'neq':
-                $andExpr->add($qb->expr()->neq($searchField, '?' . $parameterCounter));
-                $qb->setParameter($parameterCounter, $searchValue);
-                break;
-            case 'lt':
-                $andExpr->add($qb->expr()->lt($searchField, '?' . $parameterCounter));
-                $qb->setParameter($parameterCounter, $searchValue);
-                break;
-            case 'lte':
-                $andExpr->add($qb->expr()->lte($searchField, '?' . $parameterCounter));
-                $qb->setParameter($parameterCounter, $searchValue);
-                break;
-            case 'gt':
-                $andExpr->add($qb->expr()->gt($searchField, '?' . $parameterCounter));
-                $qb->setParameter($parameterCounter, $searchValue);
-                break;
-            case 'gte':
-                $andExpr->add($qb->expr()->gte($searchField, '?' . $parameterCounter));
-                $qb->setParameter($parameterCounter, $searchValue);
-                break;
-            case 'in':
-                $andExpr->add($qb->expr()->in($searchField, '?' . $parameterCounter));
-                $qb->setParameter($parameterCounter, explode(',', $searchValue));
-                break;
-            case 'notIn':
-                $andExpr->add($qb->expr()->notIn($searchField, '?' . $parameterCounter));
-                $qb->setParameter($parameterCounter, explode(',', $searchValue));
-                break;
-            case 'isNull':
-                $andExpr->add($qb->expr()->isNull($searchField));
-                break;
-            case 'isNotNull':
-                $andExpr->add($qb->expr()->isNotNull($searchField));
-                break;
-        }
-
-        return $andExpr;
-    }
-
-    /**
-     * @param Andx         $andExpr
-     * @param QueryBuilder $qb
-     * @param string       $searchField
-     * @param mixed        $from
-     * @param mixed        $to
-     * @param int          $parameterCounter
-     *
-     * @return Andx
-     */
-    protected function getBetweenAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $from, $to, $parameterCounter)
-    {
-        $k = $parameterCounter + 1;
-        $andExpr->add($qb->expr()->between($searchField, '?' . $parameterCounter, '?' . $k));
-        $qb->setParameter($parameterCounter, $from);
-        $qb->setParameter($k, $to);
-
-        return $andExpr;
     }
 
     //-------------------------------------------------
@@ -392,5 +303,96 @@ abstract class AbstractFilter implements FilterInterface
         $this->placeholderText = $placeholderText;
 
         return $this;
+    }
+
+    //-------------------------------------------------
+    // Helper
+    //-------------------------------------------------
+
+    /**
+     * Get an andExpression.
+     *
+     * @param Andx         $andExpr
+     * @param QueryBuilder $qb
+     * @param string       $searchField
+     * @param mixed        $searchValue
+     * @param int          $parameterCounter
+     *
+     * @return Andx
+     */
+    protected function getAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, $parameterCounter)
+    {
+        switch ($this->searchType) {
+            case 'like':
+                $andExpr->add($qb->expr()->like($searchField, '?'.$parameterCounter));
+                $qb->setParameter($parameterCounter, '%'.$searchValue.'%');
+                break;
+            case 'notLike':
+                $andExpr->add($qb->expr()->notLike($searchField, '?'.$parameterCounter));
+                $qb->setParameter($parameterCounter, '%'.$searchValue.'%');
+                break;
+            case 'eq':
+                $andExpr->add($qb->expr()->eq($searchField, '?'.$parameterCounter));
+                $qb->setParameter($parameterCounter, $searchValue);
+                break;
+            case 'neq':
+                $andExpr->add($qb->expr()->neq($searchField, '?'.$parameterCounter));
+                $qb->setParameter($parameterCounter, $searchValue);
+                break;
+            case 'lt':
+                $andExpr->add($qb->expr()->lt($searchField, '?'.$parameterCounter));
+                $qb->setParameter($parameterCounter, $searchValue);
+                break;
+            case 'lte':
+                $andExpr->add($qb->expr()->lte($searchField, '?'.$parameterCounter));
+                $qb->setParameter($parameterCounter, $searchValue);
+                break;
+            case 'gt':
+                $andExpr->add($qb->expr()->gt($searchField, '?'.$parameterCounter));
+                $qb->setParameter($parameterCounter, $searchValue);
+                break;
+            case 'gte':
+                $andExpr->add($qb->expr()->gte($searchField, '?'.$parameterCounter));
+                $qb->setParameter($parameterCounter, $searchValue);
+                break;
+            case 'in':
+                $andExpr->add($qb->expr()->in($searchField, '?'.$parameterCounter));
+                $qb->setParameter($parameterCounter, explode(',', $searchValue));
+                break;
+            case 'notIn':
+                $andExpr->add($qb->expr()->notIn($searchField, '?'.$parameterCounter));
+                $qb->setParameter($parameterCounter, explode(',', $searchValue));
+                break;
+            case 'isNull':
+                $andExpr->add($qb->expr()->isNull($searchField));
+                break;
+            case 'isNotNull':
+                $andExpr->add($qb->expr()->isNotNull($searchField));
+                break;
+        }
+
+        return $andExpr;
+    }
+
+    /**
+     * Get a betweenAndExpression.
+     *
+     * @param Andx         $andExpr
+     * @param QueryBuilder $qb
+     * @param string       $searchField
+     * @param mixed        $from
+     * @param mixed        $to
+     * @param int          $parameterCounter
+     *
+     * @return Andx
+     */
+    protected function getBetweenAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $from, $to, $parameterCounter)
+    {
+        $k = $parameterCounter + 1;
+        $andExpr->add($qb->expr()->between($searchField, '?'.$parameterCounter, '?'.$k));
+        $qb->setParameter($parameterCounter, $from);
+        $qb->setParameter($k, $to);
+
+        return $andExpr;
     }
 }
