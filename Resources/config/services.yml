@@ -5,6 +5,11 @@ services:
         tags:
             - { name: twig.extension }
 
+    sg_datatables.response:
+        class: Sg\DatatablesBundle\Response\DatatableResponse
+        arguments:
+            - '@request_stack'
+
     sg_datatables.datatable.abstract:
         class: Sg\DatatablesBundle\Datatable\AbstractDatatable
         abstract: true
@@ -15,11 +20,7 @@ services:
             - '@router'
             - '@doctrine.orm.entity_manager'
             - '@twig'
-
-    sg_datatables.response:
-        class: Sg\DatatablesBundle\Response\DatatableResponse
-        arguments:
-            - '@request_stack'
+            - '@sg_datatables.response'
 
     sg_datatables.factory:
         class: Sg\DatatablesBundle\Datatable\DatatableFactory
@@ -30,3 +31,4 @@ services:
             - '@router'
             - '@doctrine.orm.entity_manager'
             - '@twig'
+            - '@sg_datatables.response'

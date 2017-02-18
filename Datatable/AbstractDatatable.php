@@ -13,6 +13,7 @@ namespace Sg\DatatablesBundle\Datatable;
 
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 
+use Sg\DatatablesBundle\Response\DatatableResponse;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -73,6 +74,13 @@ abstract class AbstractDatatable implements DatatableInterface
     protected $twig;
 
     /**
+     * The datatable response service.
+     *
+     * @var DatatableResponse
+     */
+    protected $datatableResponse;
+
+    /**
      * A ColumnBuilder instance.
      *
      * @var ColumnBuilder
@@ -122,13 +130,13 @@ abstract class AbstractDatatable implements DatatableInterface
      * AbstractDatatable constructor.
      *
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param TokenStorageInterface         $securityToken
-     * @param TranslatorInterface           $translator
-     * @param RouterInterface               $router
-     * @param EntityManagerInterface        $em
-     * @param Twig_Environment              $twig
+     * @param TokenStorageInterface $securityToken
+     * @param TranslatorInterface $translator
+     * @param RouterInterface $router
+     * @param EntityManagerInterface $em
+     * @param Twig_Environment $twig
      *
-     * @throws Exception
+     * @param DatatableResponse $datatableResponse
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -136,7 +144,8 @@ abstract class AbstractDatatable implements DatatableInterface
         TranslatorInterface $translator,
         RouterInterface $router,
         EntityManagerInterface $em,
-        Twig_Environment $twig
+        Twig_Environment $twig,
+        DatatableResponse $datatableResponse
     ) {
         $this->validateName();
 
@@ -146,6 +155,7 @@ abstract class AbstractDatatable implements DatatableInterface
         $this->router = $router;
         $this->em = $em;
         $this->twig = $twig;
+        $this->datatableResponse = $datatableResponse;
 
         $metadata = $em->getClassMetadata($this->getEntity());
         $this->columnBuilder = new ColumnBuilder($metadata, $twig, $this->getName());
@@ -161,6 +171,20 @@ abstract class AbstractDatatable implements DatatableInterface
     //-------------------------------------------------
     // DatatableInterface
     //-------------------------------------------------
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createResponse($buildQuery = true, $outputWalkers = false)
+    {
+        $responseService = $this->datatableResponse;
+        $responseService->setDatatable($this);
+
+        $datatableQueryBuilder = $responseService->getDatatableQueryBuilder();
+        $datatableQueryBuilder->buildQuery();
+
+        return $responseService->getResponse($buildQuery, $outputWalkers);
+    }
 
     /**
      * {@inheritdoc}
