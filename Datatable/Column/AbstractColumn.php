@@ -16,6 +16,7 @@ use Sg\DatatablesBundle\Datatable\AddIfTrait;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\DBAL\Types\Type as DoctrineType;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Twig_Environment;
 use Exception;
 
@@ -342,6 +343,22 @@ abstract class AbstractColumn implements ColumnInterface
     public function isAssociation()
     {
         return (false === strstr($this->dql, '.') ? false : true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isToManyAssociation()
+    {
+        if (true === $this->isAssociation()) {
+            if (in_array(ClassMetadataInfo::ONE_TO_MANY, $this->typeOfAssociation) || in_array(ClassMetadataInfo::MANY_TO_MANY, $this->typeOfAssociation)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -43,19 +43,9 @@ class Column extends AbstractColumn
      */
     public function renderCellContent(array &$row)
     {
-        if (false === $this->isAssociation()) {
+        if (false === $this->isToManyAssociation()) {
             if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
                 $this->renderEditableContent($row, $this->data);
-            }
-        } else {
-            if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
-                $toMany = strpos($this->data, ',');
-
-                if (false === $toMany) {
-                    $this->renderEditableContent($row, $this->data);
-                } else {
-                    // @todo: editable content for toMany associations
-                }
             }
         }
     }

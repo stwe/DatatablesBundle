@@ -40,11 +40,18 @@ interface ColumnInterface
     public function isUnique();
 
     /**
-     * Checks wether an association is given.
+     * Checks whether an association is given.
      *
      * @return bool
      */
     public function isAssociation();
+
+    /**
+     * Checks whether a toMany association is given.
+     *
+     * @return bool
+     */
+    public function isToManyAssociation();
 
     /**
      * Use the column data value in SELECT statement.
