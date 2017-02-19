@@ -102,7 +102,7 @@ class VirtualColumn extends Column
      */
     public function getColumnType()
     {
-        return 'virtual';
+        return parent::VIRTUAL_COLUMN;
     }
 
     //-------------------------------------------------

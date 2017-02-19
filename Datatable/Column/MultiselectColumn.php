@@ -137,7 +137,7 @@ class MultiselectColumn extends ActionColumn
      */
     public function getColumnType()
     {
-        return 'multiselect';
+        return parent::MULTISELECT_COLUMN;
     }
 
     //-------------------------------------------------

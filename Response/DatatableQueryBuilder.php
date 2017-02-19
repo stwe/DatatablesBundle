@@ -18,8 +18,8 @@ use Sg\DatatablesBundle\Datatable\Options;
 use Sg\DatatablesBundle\Datatable\Features;
 use Sg\DatatablesBundle\Datatable\Ajax;
 
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Orx;
@@ -31,7 +31,7 @@ use Exception;
 /**
  * Class DatatableQueryBuilder
  *
- * @todo: phpcs warnings
+ * @todo: remove phpcs warnings
  *
  * @package Sg\DatatablesBundle\Response
  */
@@ -509,10 +509,6 @@ class DatatableQueryBuilder
         $qb->select('count(distinct '.$this->entityShortName.'.'.$this->rootEntityIdentifier.')');
         $qb->from($this->entityName, $this->entityShortName);
 
-        /*
-         * @todo: $this->setJoins($qb);
-         */
-
         return !$qb->getDQLPart('groupBy') ?
             (int) $qb->getQuery()->getSingleScalarResult()
             : count($qb->getQuery()->getResult());
@@ -620,7 +616,6 @@ class DatatableQueryBuilder
             throw new Exception('DatatableQueryBuilder::getMetadata(): Given object '.$entityName.' is not a Doctrine Entity.');
         }
 
-        // @todo:
         return $metadata;
     }
 

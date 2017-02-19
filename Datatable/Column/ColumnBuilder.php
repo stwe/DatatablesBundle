@@ -13,7 +13,9 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Sg\DatatablesBundle\Datatable\Factory;
 
-use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\MappingException;
+use Doctrine\ORM\EntityManagerInterface;
 use Twig_Environment;
 use Exception;
 
@@ -37,6 +39,20 @@ class ColumnBuilder
      * @var Twig_Environment
      */
     private $twig;
+
+    /**
+     * The name of the associated Datatable.
+     *
+     * @var string
+     */
+    private $datatableName;
+
+    /**
+     * The doctrine orm entity manager service.
+     *
+     * @var EntityManagerInterface
+     */
+    private $em;
 
     /**
      * The generated Columns.
@@ -68,13 +84,6 @@ class ColumnBuilder
     private $multiselectColumn;
 
     /**
-     * The name of the associated Datatable.
-     *
-     * @var string
-     */
-    private $datatableName;
-
-    /**
      * The fully-qualified class name of the entity.
      *
      * @var string
@@ -88,19 +97,22 @@ class ColumnBuilder
     /**
      * ColumnBuilder constructor.
      *
-     * @param ClassMetadata    $metadata
-     * @param Twig_Environment $twig
-     * @param string           $datatableName
+     * @param ClassMetadata          $metadata
+     * @param Twig_Environment       $twig
+     * @param string                 $datatableName
+     * @param EntityManagerInterface $em
      */
-    public function __construct(ClassMetadata $metadata, Twig_Environment $twig, $datatableName)
+    public function __construct(ClassMetadata $metadata, Twig_Environment $twig, $datatableName, EntityManagerInterface $em)
     {
         $this->metadata = $metadata;
         $this->twig = $twig;
+        $this->datatableName = $datatableName;
+        $this->em = $em;
+
         $this->columns = array();
         $this->columnNames = array();
         $this->uniqueFlag = false;
         $this->multiselectColumn = null;
-        $this->datatableName = $datatableName;
         $this->entityClassName = $metadata->getName();
     }
 
@@ -138,13 +150,27 @@ class ColumnBuilder
         // resolve options - !!'data' can be modified again!!
         $column->set($options);
 
-        if (null === $column->getTypeOfField() && true === $column->isSelectColumn()) {
+        if (true === $column->isSelectColumn()) {
             if (true === $column->isAssociation()) {
-                // @todo: set type of field for association
-                $column->setTypeOfField(null);
+                $parts = explode('.', $dql);
+                $metadata = $this->metadata;
+
+                while (count($parts) > 1) {
+                    $currentPart = array_shift($parts);
+
+                    /** @noinspection PhpUndefinedMethodInspection */
+                    $column->addTypeOfAssociation($metadata->getAssociationMapping($currentPart)['type']);
+                    $metadata = $this->getMetadataFromAssociation($currentPart, $metadata);
+                }
+
+                $this->setTypeOfField($metadata, $column, $parts[0]);
             } else {
-                $column->setTypeOfField($this->metadata->getTypeOfField($dql));
+                $this->setTypeOfField($this->metadata, $column, $dql);
+                $column->setTypeOfAssociation(null);
             }
+        } else {
+            $column->setTypeOfField(null);
+            $column->setTypeOfAssociation(null);
         }
 
         if (true === $column->callAddIfClosure()) {
@@ -206,5 +232,62 @@ class ColumnBuilder
     public function getMultiselectColumn()
     {
         return $this->multiselectColumn;
+    }
+
+    //-------------------------------------------------
+    // Helper
+    //-------------------------------------------------
+
+    /**
+     * Get metadata.
+     *
+     * @param string $entityName
+     *
+     * @return ClassMetadata
+     * @throws Exception
+     */
+    private function getMetadata($entityName)
+    {
+        try {
+            $metadata = $this->em->getMetadataFactory()->getMetadataFor($entityName);
+        } catch (MappingException $e) {
+            throw new Exception('DatatableQueryBuilder::getMetadata(): Given object '.$entityName.' is not a Doctrine Entity.');
+        }
+
+        return $metadata;
+    }
+
+    /**
+     * Get metadata from association.
+     *
+     * @param string        $association
+     * @param ClassMetadata $metadata
+     *
+     * @return ClassMetadata
+     */
+    private function getMetadataFromAssociation($association, ClassMetadata $metadata)
+    {
+        $targetClass = $metadata->getAssociationTargetClass($association);
+        $targetMetadata = $this->getMetadata($targetClass);
+
+        return $targetMetadata;
+    }
+
+    /**
+     * Set typeOfField.
+     *
+     * @param ClassMetadata  $metadata
+     * @param AbstractColumn $column
+     * @param string         $field
+     *
+     * @return $this
+     */
+    private function setTypeOfField(ClassMetadata $metadata, AbstractColumn $column, $field)
+    {
+        if (null === $column->getTypeOfField()) {
+            $column->setTypeOfField($metadata->getTypeOfField($field));
+        }
+
+        return $this;
     }
 }
