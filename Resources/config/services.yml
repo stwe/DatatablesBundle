@@ -20,3 +20,13 @@ services:
         class: Sg\DatatablesBundle\Response\DatatableResponse
         arguments:
             - '@request_stack'
+
+    sg_datatables.factory:
+        class: Sg\DatatablesBundle\Datatable\DatatableFactory
+        arguments:
+            - '@security.authorization_checker'
+            - '@security.token_storage'
+            - '@translator.default'
+            - '@router'
+            - '@doctrine.orm.entity_manager'
+            - '@twig'

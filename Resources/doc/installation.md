@@ -351,7 +351,7 @@ class PostDatatable extends AbstractDatatable
 }
 ```
 
-### Step 2: Registering your Datatable as a Service
+### Step 2: (Optional) Registering your Datatable as a Service
 
 ``` yaml
 # app/config/services.yml
@@ -379,7 +379,13 @@ public function indexAction(Request $request)
 {
     $isAjax = $request->isXmlHttpRequest();
 
-    $datatable = $this->get('app.datatable.post');
+    // Get your Datatable ...
+    //$datatable = $this->get('app.datatable.post');
+    //$datatable->buildDatatable();
+
+    // or use the DatatableFactory
+    /** @var DatatableInterface $datatable */
+    $datatable = $this->get('sg_datatables.factory')->create(PostDatatable::class);
     $datatable->buildDatatable();
 
     if ($isAjax) {

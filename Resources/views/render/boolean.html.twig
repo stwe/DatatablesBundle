@@ -8,9 +8,9 @@
  #}
 {% if column_class_editable_selector is defined %}
     {% if data is same as(true) %}
-        <span class="{{ true_icon ~ ' ' ~ column_class_editable_selector }}" data-pk="{{ pk }}"></span> {{ true_label }}
+        <span class="{{ true_icon ~ ' ' ~ column_class_editable_selector }}" data-pk="{{ pk }}">{{ true_label }}</span>
     {% elseif data is same as(false) %}
-        <span class="{{ false_icon ~ ' ' ~ column_class_editable_selector }}" data-pk="{{ pk }}"></span> {{ false_label }}
+        <span class="{{ false_icon ~ ' ' ~ column_class_editable_selector }}" data-pk="{{ pk }}">{{ false_label }}</span>
     {% elseif data is same as(null) %}
         <span class="{{ column_class_editable_selector }}" data-pk="{{ pk }}">
             {% if default_content is not same as(null) %}

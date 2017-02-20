@@ -122,7 +122,7 @@ class ActionColumn extends AbstractColumn
      */
     public function getColumnType()
     {
-        return 'action';
+        return parent::ACTION_COLUMN;
     }
 
     //-------------------------------------------------
