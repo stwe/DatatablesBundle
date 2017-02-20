@@ -79,3 +79,7 @@ This [Site](https://datatables.net/examples/styling/index.html) includes some ex
 [ x ] The `sg:datatable:generate` command generates a Datatables Class for a given entity located in a given bundle.
 
 [ x ] Use the LineFormatter.
+
+[   ] Multiple Datatables on the same page.
+
+[ x ] PHP7 compatibility

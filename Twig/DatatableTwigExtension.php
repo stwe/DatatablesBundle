@@ -121,7 +121,7 @@ class DatatableTwigExtension extends Twig_Extension
         return $twig->render(
             'SgDatatablesBundle:datatable:datatable.html.twig',
             array(
-                'sg_datatables_view' => $datatable
+                'sg_datatables_view' => $datatable,
             )
         );
     }
@@ -186,11 +186,13 @@ class DatatableTwigExtension extends Twig_Extension
             $searchColumnIndex = $index;
         }
 
-        return $twig->render($filter->getTemplate(), array(
+        return $twig->render(
+            $filter->getTemplate(),
+            array(
                 'column' => $column,
                 'search_column_index' => $searchColumnIndex,
                 'datatable_name' => $datatable->getName(),
-                'position' => $position
+                'position' => $position,
             )
         );
     }
@@ -220,12 +222,14 @@ class DatatableTwigExtension extends Twig_Extension
             }
         }
 
-        return $twig->render('SgDatatablesBundle:datatable:multiselect_actions.html.twig', array(
+        return $twig->render(
+            'SgDatatablesBundle:datatable:multiselect_actions.html.twig',
+            array(
                 'actions' => $actions,
                 'set_route_parameters' => $parameters,
                 'datatable_name' => $datatableName,
                 'dom_id' => $domId,
-                'pipeline' => $pipeline
+                'pipeline' => $pipeline,
             )
         );
     }
@@ -237,7 +241,7 @@ class DatatableTwigExtension extends Twig_Extension
     /**
      * Renders: {{ var ? 'true' : 'false' }}
      *
-     * @param $value
+     * @param mixed $value
      *
      * @return string
      */

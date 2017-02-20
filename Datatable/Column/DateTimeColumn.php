@@ -62,37 +62,21 @@ class DateTimeColumn extends AbstractColumn
      */
     public function renderCellContent(array &$row)
     {
-        if (false === $this->isAssociation()) {
+        if (false === $this->isToManyAssociation()) {
             $path = Helper::getDataPropertyPath($this->data);
             $render = $this->getBaseRenderVars($row, $path);
 
             if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
                 $render = array_merge($render, array(
                     'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
-                    'pk' => $row[$this->editable->getPk()]
+                    'pk' => $row[$this->editable->getPk()],
                 ));
             }
 
             $this->renderContent($row, $render, $path);
-        } else {
-            $toMany = strpos($this->data, ',');
-
-            if (false === $toMany) {
-                $path = Helper::getDataPropertyPath($this->data);
-                $render = $this->getBaseRenderVars($row, $path);
-
-                if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
-                    $render = array_merge($render, array(
-                        'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
-                        'pk' => $row[$this->editable->getPk()]
-                    ));
-                }
-
-                $this->renderContent($row, $render, $path);
-            } else {
-                // @todo: content for toMany associations
-            }
         }
+
+        // @todo: toMany content
     }
 
     /**
@@ -115,7 +99,7 @@ class DateTimeColumn extends AbstractColumn
                     'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
                     'editable_options' => $this->editable,
                     'entity_class_name' => $this->getEntityClassName(),
-                    'column_dql' => $this->dql
+                    'column_dql' => $this->dql,
                 )
             );
         }
@@ -238,16 +222,16 @@ class DateTimeColumn extends AbstractColumn
      * Render content.
      *
      * @param array  $row
-     * @param array  $renderVars
+     * @param array  $render
      * @param string $path
      *
      * @return $this
      */
-    private function renderContent(array &$row, array $renderVars, $path)
+    private function renderContent(array &$row, array $render, $path)
     {
         $content = $this->twig->render(
             $this->getCellContentTemplate(),
-            $renderVars
+            $render
         );
 
         $this->accessor->setValue($row, $path, $content);

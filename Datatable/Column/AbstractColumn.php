@@ -15,6 +15,8 @@ use Sg\DatatablesBundle\Datatable\OptionsTrait;
 use Sg\DatatablesBundle\Datatable\AddIfTrait;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Doctrine\DBAL\Types\Type as DoctrineType;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Twig_Environment;
 use Exception;
 
@@ -34,6 +36,30 @@ abstract class AbstractColumn implements ColumnInterface
      * Use an 'add_if' option to check in ColumnBuilder if the Column can be added.
      */
     use AddIfTrait;
+
+    //-------------------------------------------------
+    // Column Types
+    //-------------------------------------------------
+
+    /**
+     * Identifies a Data Column.
+     */
+    const DATA_COLUMN = 'data';
+
+    /**
+     * Identifies an Action Column.
+     */
+    const ACTION_COLUMN = 'action';
+
+    /**
+     * Identifies a Multiselect Column.
+     */
+    const MULTISELECT_COLUMN = 'multiselect';
+
+    /**
+     * Identifies a Virtual Column.
+     */
+    const VIRTUAL_COLUMN = 'virtual';
 
     //--------------------------------------------------------------------------------------------------
     // DataTables - Columns Options
@@ -174,6 +200,7 @@ abstract class AbstractColumn implements ColumnInterface
 
     /**
      * The data type of the column.
+     * Is set automatically in ColumnBuilder when 'null'.
      * Default: null
      *
      * @var null|string
@@ -231,6 +258,14 @@ abstract class AbstractColumn implements ColumnInterface
      */
     protected $entityClassName;
 
+    /**
+     * The type of association.
+     * Is set automatically in ColumnBuilder.
+     *
+     * @var null|array
+     */
+    protected $typeOfAssociation;
+
     //-------------------------------------------------
     // Options
     //-------------------------------------------------
@@ -285,7 +320,7 @@ abstract class AbstractColumn implements ColumnInterface
 
         $resolver->setAllowedValues('cell_type', array(null, 'th', 'td'));
         $resolver->setAllowedValues('join_type', array(null, 'join', 'leftJoin', 'innerJoin'));
-        // @todo: $resolver->setAllowedValues('type_of_field', array(null, 'string', 'integer', 'boolean'));
+        $resolver->setAllowedValues('type_of_field', array(null, DoctrineType::getTypesMap()));
 
         return $this;
     }
@@ -316,6 +351,22 @@ abstract class AbstractColumn implements ColumnInterface
     public function isAssociation()
     {
         return (false === strstr($this->dql, '.') ? false : true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isToManyAssociation()
+    {
+        if (true === $this->isAssociation()) {
+            if (in_array(ClassMetadataInfo::ONE_TO_MANY, $this->typeOfAssociation) || in_array(ClassMetadataInfo::MANY_TO_MANY, $this->typeOfAssociation)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -770,7 +821,7 @@ abstract class AbstractColumn implements ColumnInterface
         if ((false == $validate) || (true === $this->dqlConstraint($dql))) {
             $this->dql = $dql;
         } else {
-            throw new Exception("AbstractColumn::setDql(): $dql is not a valid for this Column.");
+            throw new Exception("AbstractColumn::setDql(): $dql is not valid for this Column.");
         }
 
         return $this;
@@ -892,6 +943,44 @@ abstract class AbstractColumn implements ColumnInterface
     public function setEntityClassName($entityClassName)
     {
         $this->entityClassName = $entityClassName;
+
+        return $this;
+    }
+
+    /**
+     * Get typeOfAssociation.
+     *
+     * @return null|array
+     */
+    public function getTypeOfAssociation()
+    {
+        return $this->typeOfAssociation;
+    }
+
+    /**
+     * Set typeOfAssociation.
+     *
+     * @param null|array $typeOfAssociation
+     *
+     * @return $this
+     */
+    public function setTypeOfAssociation($typeOfAssociation)
+    {
+        $this->typeOfAssociation = $typeOfAssociation;
+
+        return $this;
+    }
+
+    /**
+     * Add a typeOfAssociation.
+     *
+     * @param int $typeOfAssociation
+     *
+     * @return $this
+     */
+    public function addTypeOfAssociation($typeOfAssociation)
+    {
+        $this->typeOfAssociation[] = $typeOfAssociation;
 
         return $this;
     }

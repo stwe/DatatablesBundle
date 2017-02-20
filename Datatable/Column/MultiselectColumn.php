@@ -101,7 +101,7 @@ class MultiselectColumn extends ActionColumn
         }
 
         if (true === $this->valuePrefix) {
-            $value = 'sg-datatables-' . $this->getDatatableName() . '-checkbox-' . $value;
+            $value = 'sg-datatables-'.$this->getDatatableName().'-checkbox-'.$value;
         }
 
         $row[$this->getIndex()] = $this->twig->render(
@@ -137,7 +137,7 @@ class MultiselectColumn extends ActionColumn
      */
     public function getColumnType()
     {
-        return 'multiselect';
+        return parent::MULTISELECT_COLUMN;
     }
 
     //-------------------------------------------------
@@ -221,7 +221,7 @@ class MultiselectColumn extends ActionColumn
      */
     public function setAttributes($attributes)
     {
-        $value = 'sg-datatables-' . $this->datatableName . '-multiselect-checkbox';
+        $value = 'sg-datatables-'.$this->datatableName.'-multiselect-checkbox';
 
         if (is_array($attributes)) {
             if (array_key_exists('type', $attributes)) {
@@ -233,12 +233,12 @@ class MultiselectColumn extends ActionColumn
             }
 
             if (array_key_exists('name', $attributes)) {
-                $attributes['name'] = $value . ' ' . $attributes['name'];
+                $attributes['name'] = $value.' '.$attributes['name'];
             } else {
                 $attributes['name'] = $value;
             }
             if (array_key_exists('class', $attributes)) {
-                $attributes['class'] = $value . ' ' . $attributes['class'];
+                $attributes['class'] = $value.' '.$attributes['class'];
             } else {
                 $attributes['class'] = $value;
             }

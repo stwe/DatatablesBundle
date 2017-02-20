@@ -18,8 +18,8 @@ use Sg\DatatablesBundle\Datatable\Options;
 use Sg\DatatablesBundle\Datatable\Features;
 use Sg\DatatablesBundle\Datatable\Ajax;
 
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Orx;
@@ -30,6 +30,8 @@ use Exception;
 
 /**
  * Class DatatableQueryBuilder
+ *
+ * @todo: remove phpcs warnings
  *
  * @package Sg\DatatablesBundle\Response
  */
@@ -67,18 +69,18 @@ class DatatableQueryBuilder
     private $entityName;
 
     /**
+     * The short name of the entity.
+     *
+     * @var string
+     */
+    private $entityShortName;
+
+    /**
      * The class metadata for $entityName.
      *
      * @var ClassMetadata
      */
     private $metadata;
-
-    /**
-     * The table name for $entityName.
-     *
-     * @var string
-     */
-    private $tableName;
 
     /**
      * The root ID of the entity.
@@ -178,7 +180,7 @@ class DatatableQueryBuilder
         $this->entityName = $datatable->getEntity();
 
         $this->metadata = $this->getMetadata($this->entityName);
-        $this->tableName = $this->getTableName($this->metadata);
+        $this->entityShortName = $this->getEntityShortName($this->metadata);
         $this->rootEntityIdentifier = $this->getIdentifier($this->metadata);
 
         $this->qb = $this->em->createQueryBuilder();
@@ -209,7 +211,7 @@ class DatatableQueryBuilder
             $dql = $this->accessor->getValue($column, 'dql');
             $data = $this->accessor->getValue($column, 'data');
 
-            $currentPart = $this->tableName;
+            $currentPart = $this->entityShortName;
             $currentAlias = $currentPart;
             $metadata = $this->metadata;
 
@@ -232,10 +234,10 @@ class DatatableQueryBuilder
                     $previousAlias = $currentAlias;
 
                     $currentPart = array_shift($parts);
-                    $currentAlias = ($previousPart === $this->tableName ? '' : $previousPart . '_') . $currentPart;
+                    $currentAlias = ($previousPart === $this->entityShortName ? '' : $previousPart.'_').$currentPart;
 
-                    if (!array_key_exists($previousAlias . '.' . $currentPart, $this->joins)) {
-                        $this->addJoin($previousAlias . '.' . $currentPart, $currentAlias, $this->accessor->getValue($column, 'joinType'));
+                    if (!array_key_exists($previousAlias.'.'.$currentPart, $this->joins)) {
+                        $this->addJoin($previousAlias.'.'.$currentPart, $currentAlias, $this->accessor->getValue($column, 'joinType'));
                     }
 
                     $metadata = $this->setIdentifierFromAssociation($currentAlias, $currentPart, $metadata);
@@ -249,8 +251,8 @@ class DatatableQueryBuilder
                 if ($this->accessor->isReadable($column, 'orderColumn') && true === $this->accessor->getValue($column, 'orderable')) {
                     $orderColumn = $this->accessor->getValue($column, 'orderColumn');
                     $orderParts = explode('.', $orderColumn);
-                    if(count($orderParts) < 2) {
-                        $orderColumn = $this->tableName . '.' . $orderColumn;
+                    if (count($orderParts) < 2) {
+                        $orderColumn = $this->entityShortName.'.'.$orderColumn;
                     }
                     $this->orderColumns[] = $orderColumn;
                 } else {
@@ -261,8 +263,8 @@ class DatatableQueryBuilder
                 if ($this->accessor->isReadable($column, 'searchColumn') && true === $this->accessor->getValue($column, 'searchable')) {
                     $searchColumn = $this->accessor->getValue($column, 'searchColumn');
                     $searchParts = explode('.', $searchColumn);
-                    if(count($searchParts) < 2) {
-                        $searchColumn = $this->tableName . '.' . $searchColumn;
+                    if (count($searchParts) < 2) {
+                        $searchColumn = $this->entityShortName.'.'.$searchColumn;
                     }
                     $this->searchColumns[] = $searchColumn;
                 } else {
@@ -337,7 +339,7 @@ class DatatableQueryBuilder
             }
         }
 
-        $this->qb->from($this->entityName, $this->tableName);
+        $this->qb->from($this->entityName, $this->entityShortName);
 
         return $this;
     }
@@ -352,7 +354,7 @@ class DatatableQueryBuilder
     private function setJoins(QueryBuilder $qb)
     {
         foreach ($this->joins as $key => $value) {
-            $qb->$value['type']($key, $value['alias']);
+            $qb->{$value['type']}($key, $value['alias']);
         }
 
         return $this;
@@ -370,7 +372,6 @@ class DatatableQueryBuilder
     {
         // global filtering
         if (isset($this->requestParams['search']) && '' != $this->requestParams['search']['value']) {
-
             $globalSearch = $this->requestParams['search']['value'];
 
             $orExpr = $qb->expr()->orX();
@@ -428,11 +429,10 @@ class DatatableQueryBuilder
     private function setOrderBy()
     {
         if (isset($this->requestParams['order']) && count($this->requestParams['order'])) {
-
             $counter = count($this->requestParams['order']);
 
             for ($i = 0; $i < $counter; $i++) {
-                $columnIdx = (int)$this->requestParams['order'][$i]['column'];
+                $columnIdx = (int) $this->requestParams['order'][$i]['column'];
                 $requestColumn = $this->requestParams['columns'][$columnIdx];
 
                 if ('true' == $requestColumn['orderable']) {
@@ -522,15 +522,11 @@ class DatatableQueryBuilder
     public function getCountAllResults()
     {
         $qb = $this->em->createQueryBuilder();
-        $qb->select('count(distinct ' . $this->tableName . '.' . $this->rootEntityIdentifier . ')');
-        $qb->from($this->entityName, $this->tableName);
-
-        /*
-         * @todo: $this->setJoins($qb);
-         */
+        $qb->select('count(distinct '.$this->entityShortName.'.'.$this->rootEntityIdentifier.')');
+        $qb->from($this->entityName, $this->entityShortName);
 
         return !$qb->getDQLPart('groupBy') ?
-            (int)$qb->getQuery()->getSingleScalarResult()
+            (int) $qb->getQuery()->getSingleScalarResult()
             : count($qb->getQuery()->getResult());
     }
 
@@ -646,7 +642,7 @@ class DatatableQueryBuilder
     {
         $this->joins[$columnTableName] = array(
             'alias' => $alias,
-            'type' => $type
+            'type' => $type,
         );
 
         return $this;
@@ -665,23 +661,22 @@ class DatatableQueryBuilder
         try {
             $metadata = $this->em->getMetadataFactory()->getMetadataFor($entityName);
         } catch (MappingException $e) {
-            throw new Exception('DatatableQueryBuilder::getMetadata(): Given object ' . $entityName . ' is not a Doctrine Entity.');
+            throw new Exception('DatatableQueryBuilder::getMetadata(): Given object '.$entityName.' is not a Doctrine Entity.');
         }
 
-        // @todo:
         return $metadata;
     }
 
     /**
-     * Get table name.
+     * Get entity short name.
      *
      * @param ClassMetadata $metadata
      *
      * @return string
      */
-    private function getTableName(ClassMetadata $metadata)
+    private function getEntityShortName(ClassMetadata $metadata)
     {
-        return strtolower($metadata->getTableName());
+        return strtolower($metadata->getReflectionClass()->getShortName());
     }
 
     /**
@@ -744,43 +739,43 @@ class DatatableQueryBuilder
 
         switch ($searchType) {
             case 'like':
-                $orExpr->add($qb->expr()->like($searchField, '?' . $key));
-                $qb->setParameter($key, '%' . $searchValue . '%');
+                $orExpr->add($qb->expr()->like($searchField, '?'.$key));
+                $qb->setParameter($key, '%'.$searchValue.'%');
                 break;
             case 'notLike':
-                $orExpr->add($qb->expr()->notLike($searchField, '?' . $key));
-                $qb->setParameter($key, '%' . $searchValue . '%');
+                $orExpr->add($qb->expr()->notLike($searchField, '?'.$key));
+                $qb->setParameter($key, '%'.$searchValue.'%');
                 break;
             case 'eq':
-                $orExpr->add($qb->expr()->eq($searchField, '?' . $key));
+                $orExpr->add($qb->expr()->eq($searchField, '?'.$key));
                 $qb->setParameter($key, $searchValue);
                 break;
             case 'neq':
-                $orExpr->add($qb->expr()->neq($searchField, '?' . $key));
+                $orExpr->add($qb->expr()->neq($searchField, '?'.$key));
                 $qb->setParameter($key, $searchValue);
                 break;
             case 'lt':
-                $orExpr->add($qb->expr()->lt($searchField, '?' . $key));
+                $orExpr->add($qb->expr()->lt($searchField, '?'.$key));
                 $qb->setParameter($key, $searchValue);
                 break;
             case 'lte':
-                $orExpr->add($qb->expr()->lte($searchField, '?' . $key));
+                $orExpr->add($qb->expr()->lte($searchField, '?'.$key));
                 $qb->setParameter($key, $searchValue);
                 break;
             case 'gt':
-                $orExpr->add($qb->expr()->gt($searchField, '?' . $key));
+                $orExpr->add($qb->expr()->gt($searchField, '?'.$key));
                 $qb->setParameter($key, $searchValue);
                 break;
             case 'gte':
-                $orExpr->add($qb->expr()->gte($searchField, '?' . $key));
+                $orExpr->add($qb->expr()->gte($searchField, '?'.$key));
                 $qb->setParameter($key, $searchValue);
                 break;
             case 'in':
-                $orExpr->add($qb->expr()->in($searchField, '?' . $key));
+                $orExpr->add($qb->expr()->in($searchField, '?'.$key));
                 $qb->setParameter($key, explode(',', $searchValue));
                 break;
             case 'notIn':
-                $orExpr->add($qb->expr()->notIn($searchField, '?' . $key));
+                $orExpr->add($qb->expr()->notIn($searchField, '?'.$key));
                 $qb->setParameter($key, explode(',', $searchValue));
                 break;
             case 'isNull':

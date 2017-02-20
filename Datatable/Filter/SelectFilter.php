@@ -106,7 +106,7 @@ class SelectFilter extends AbstractFilter
         $resolver->setDefaults(array(
             'select_search_types' => array(),
             'select_options' => array(),
-            'multiple' => false
+            'multiple' => false,
         ));
 
         $resolver->setAllowedTypes('select_search_types', 'array');

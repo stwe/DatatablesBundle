@@ -55,7 +55,7 @@ class TextareaEditable extends AbstractEditable
         parent::configureOptions($resolver);
 
         $resolver->setDefaults(array(
-            'rows' => 7
+            'rows' => 7,
         ));
 
         $resolver->setAllowedTypes('rows', 'int');

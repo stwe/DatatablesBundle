@@ -107,12 +107,23 @@ $this->columnBuilder
 **For one-to-many or many-to-many associations:**
 
 ``` php
+// a post has many comments
 $this->columnBuilder
     ->add('comments.title', Column::class, array(
         'title' => 'Comments',
         'data' => 'comments[,].title',
         'searchable' => true,
         'orderable' => true,
+    ))
+;
+```
+
+``` php
+// a post has many comments and each comment has an user with an username
+$this->columnBuilder
+    ->add('comments.createdBy.username', Column::class, array(
+        'title' => 'comments usernames',
+        'data' => 'comments[,].createdBy.username'
     ))
 ;
 ```
