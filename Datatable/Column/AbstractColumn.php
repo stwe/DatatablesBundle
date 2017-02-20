@@ -221,6 +221,13 @@ abstract class AbstractColumn implements ColumnInterface
     protected $dql;
 
     /**
+     * True if DQL option is provided.
+     *
+     * @var bool
+     */
+    protected $customDql;
+
+    /**
      * The Twig Environment to render Twig templates in Column rowes.
      * Is set in the ColumnBuilder.
      *
@@ -272,8 +279,8 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        // the 'data' option needs no default value
-        $resolver->setDefined('data');
+        // 'dql' and 'data' options need no default value
+        $resolver->setDefined(array('dql', 'data'));
 
         $resolver->setDefaults(array(
             'cell_type' => null,
@@ -296,6 +303,7 @@ abstract class AbstractColumn implements ColumnInterface
         $resolver->setAllowedTypes('cell_type', array('null', 'string'));
         $resolver->setAllowedTypes('class_name', array('null', 'string'));
         $resolver->setAllowedTypes('content_padding', array('null', 'string'));
+        $resolver->setAllowedTypes('dql', array('null', 'string'));
         $resolver->setAllowedTypes('data', array('null', 'string'));
         $resolver->setAllowedTypes('default_content', array('null', 'string'));
         $resolver->setAllowedTypes('name', array('null', 'string'));
@@ -803,17 +811,42 @@ abstract class AbstractColumn implements ColumnInterface
      * Set dql.
      *
      * @param null|string $dql
+     * @param bool        $validate Validates DQL.
      *
      * @return $this
      * @throws Exception
      */
-    public function setDql($dql)
+    public function setDql($dql, $validate = false)
     {
-        if (true === $this->dqlConstraint($dql)) {
+        if ((false == $validate) || (true === $this->dqlConstraint($dql))) {
             $this->dql = $dql;
         } else {
             throw new Exception("AbstractColumn::setDql(): $dql is not valid for this Column.");
         }
+
+        return $this;
+    }
+
+    /**
+     * Get customDql.
+     *
+     * @return bool
+     */
+    public function isCustomDql()
+    {
+        return $this->customDql;
+    }
+
+    /**
+     * Set customDql.
+     *
+     * @param bool $customDql
+     *
+     * @return $this
+     */
+    public function setCustomDql($customDql)
+    {
+        $this->customDql = $customDql;
 
         return $this;
     }

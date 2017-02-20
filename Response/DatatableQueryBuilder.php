@@ -208,14 +208,26 @@ class DatatableQueryBuilder
     private function initColumnArrays()
     {
         foreach ($this->columns as $key => $column) {
-            $data = $this->accessor->getValue($column, 'dql');
+            $dql = $this->accessor->getValue($column, 'dql');
+            $data = $this->accessor->getValue($column, 'data');
 
             $currentPart = $this->entityShortName;
             $currentAlias = $currentPart;
             $metadata = $this->metadata;
 
-            if (true === $this->accessor->getValue($column, 'selectColumn')) {
-                $parts = explode('.', $data);
+            if (true === $this->accessor->getValue($column, 'customDql')) {
+                $columnAlias = str_replace('.', '_', $data);
+
+                // Select
+                $selectDql = preg_replace('/\{([\w]+)\}/', '$1', $dql);
+                $this->addSelectColumn(null, $selectDql . ' ' . $columnAlias);
+                // Order on alias column name
+                $this->addOrderColumn($column, null, $columnAlias);
+                // Fix subqueries alias duplication
+                $searchDql = preg_replace('/\{([\w]+)\}/', '$1_search', $dql);
+                $this->addSearchColumn($column, null, $searchDql);
+            } elseif (true === $this->accessor->getValue($column, 'selectColumn')) {
+                $parts = explode('.', $dql);
 
                 while (count($parts) > 1) {
                     $previousPart = $currentPart;
@@ -320,7 +332,11 @@ class DatatableQueryBuilder
     private function setSelectFrom()
     {
         foreach ($this->selectColumns as $key => $value) {
-            $this->qb->addSelect('partial '.$key.'.{'.implode(',', $this->selectColumns[$key]).'}');
+            if (null != $key) {
+                $this->qb->addSelect('partial ' . $key . '.{' . implode(',', $value) . '}');
+            } else {
+                $this->qb->addSelect($value);
+            }
         }
 
         $this->qb->from($this->entityName, $this->entityShortName);
@@ -448,7 +464,7 @@ class DatatableQueryBuilder
     {
         switch ($columnType) {
             case 'integer':
-                $tempOrderColumnName = str_replace('.', '_', $columnName).'_order_as_int';
+                $tempOrderColumnName = preg_replace("/[^A-Za-z0-9 ]/", '_', $columnName) . '_order_as_int';
                 $this->qb
                     ->addSelect(sprintf(
                         'ABS(%s) AS HIDDEN %s',
@@ -565,6 +581,38 @@ class DatatableQueryBuilder
     }
 
     /**
+     * Add order column.
+     *
+     * @param object $column
+     * @param string $columnTableName
+     * @param string $data
+     *
+     * @return $this
+     */
+    private function addOrderColumn($column, $columnTableName, $data)
+    {
+        true === $this->accessor->getValue($column, 'orderable') ? $this->orderColumns[] = ($columnTableName ? $columnTableName . '.' : '') . $data : $this->orderColumns[] = null;
+
+        return $this;
+    }
+
+    /**
+     * Add search column.
+     *
+     * @param object $column
+     * @param string $columnTableName
+     * @param string $data
+     *
+     * @return $this
+     */
+    private function addSearchColumn($column, $columnTableName, $data)
+    {
+        true === $this->accessor->getValue($column, 'searchable') ? $this->searchColumns[] = ($columnTableName ? $columnTableName . '.' : '') . $data : $this->searchColumns[] = null;
+
+        return $this;
+    }
+
+    /**
      * Add search/order column.
      *
      * @param object $column
@@ -575,8 +623,8 @@ class DatatableQueryBuilder
      */
     private function addSearchOrderColumn($column, $columnTableName, $data)
     {
-        true === $this->accessor->getValue($column, 'orderable') ? $this->orderColumns[] = $columnTableName.'.'.$data : $this->orderColumns[] = null;
-        true === $this->accessor->getValue($column, 'searchable') ? $this->searchColumns[] = $columnTableName.'.'.$data : $this->searchColumns[] = null;
+        $this->addOrderColumn($column, $columnTableName, $data);
+        $this->addSearchColumn($column, $columnTableName, $data);
 
         return $this;
     }
@@ -677,6 +725,18 @@ class DatatableQueryBuilder
      */
     private function setOrExpression(Orx $orExpr, QueryBuilder $qb, $searchType, $searchField, $searchValue, $key)
     {
+        // Subqueries fields can't be search with LIKE
+        if (preg_match('/SELECT .+ FROM .+/', $searchField)) {
+            switch ($searchType) {
+                case 'like':
+                    $searchType = 'eq';
+                    break;
+                case 'notLike':
+                    $searchType = 'neq';
+                    break;
+            }
+        }
+
         switch ($searchType) {
             case 'like':
                 $orExpr->add($qb->expr()->like($searchField, '?'.$key));

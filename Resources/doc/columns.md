@@ -28,6 +28,7 @@ With 'null' initialized options uses the default value of the DataTables plugin.
 | cell_type       | null or string     | null              |          | Cell type to be created for a column. |
 | class_name      | null or string     | null              |          | Class to assign to each cell in the column. |
 | content_padding | null or string     | null              |          | Add padding to the text content used when calculating the optimal with for a table. |
+| dql             | null or string     |                   |          | Custom DQL code for the column. |
 | data            | null or string     |                   |          | The data source for the column. |
 | default_content | null or string     | null              |          | Set default, static, content for a column. |
 | name            | null or string     | null              |          | Set a descriptive name for a column. |
@@ -123,6 +124,27 @@ $this->columnBuilder
     ->add('comments.createdBy.username', Column::class, array(
         'title' => 'comments usernames',
         'data' => 'comments[,].createdBy.username'
+    ))
+;
+```
+
+**With custom DQL:**
+
+``` php
+$this->columnBuilder
+    ->add('full_name', Column::class, array(
+        'title' => 'Full name',
+        'dql' => 'CONCAT(user.fisrtname, ' ', user.lastname)',
+        'searchable' => true,
+        'orderable' => true,
+    ))
+    // If you want to use a subquery, please put subquery between parentheses and subquery aliases between braces.
+    // Note that subqueries cannot be search with a "LIKE" clause.
+    ->add('post_count', Column::class, array(
+        'title' => 'User posts count',
+        'dql' => '(SELECT COUNT({p}) FROM MyBundle:Post {p} WHERE {p}.user = user.id)',
+        'searchable' => true,
+        'orderable' => true,
     ))
 ;
 ```
