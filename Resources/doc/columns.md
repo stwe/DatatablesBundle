@@ -134,7 +134,7 @@ $this->columnBuilder
 $this->columnBuilder
     ->add('full_name', Column::class, array(
         'title' => 'Full name',
-        'dql' => 'CONCAT(user.fisrtname, ' ', user.lastname)',
+        'dql' => "CONCAT(user.{firstname}, ' ', user.{lastname})",
         'searchable' => true,
         'orderable' => true,
     ))
