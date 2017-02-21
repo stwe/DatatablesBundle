@@ -320,7 +320,7 @@ abstract class AbstractColumn implements ColumnInterface
 
         $resolver->setAllowedValues('cell_type', array(null, 'th', 'td'));
         $resolver->setAllowedValues('join_type', array(null, 'join', 'leftJoin', 'innerJoin'));
-        $resolver->setAllowedValues('type_of_field', array(null, DoctrineType::getTypesMap()));
+        $resolver->setAllowedValues('type_of_field', array_merge(array(null), array_keys(DoctrineType::getTypesMap())));
 
         return $this;
     }
