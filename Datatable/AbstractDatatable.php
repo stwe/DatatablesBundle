@@ -101,6 +101,13 @@ abstract class AbstractDatatable implements DatatableInterface
     protected $features;
 
     /**
+     * A Callbacks instance.
+     *
+     * @var Callbacks
+     */
+    protected $callbacks;
+
+    /**
      * A Language instance.
      *
      * @var Language
@@ -153,6 +160,7 @@ abstract class AbstractDatatable implements DatatableInterface
         $this->ajax = new Ajax();
         $this->options = new Options();
         $this->features = new Features();
+        $this->callbacks = new Callbacks();
         $this->language = new Language();
 
         $this->accessor = PropertyAccess::createPropertyAccessor();
@@ -216,6 +224,14 @@ abstract class AbstractDatatable implements DatatableInterface
     public function getFeatures()
     {
         return $this->features;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCallbacks()
+    {
+        return $this->callbacks;
     }
 
     /**

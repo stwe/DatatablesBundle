@@ -12,7 +12,7 @@
 
 [ x ] DataTables - Ajax/Data
 
-[   ] DataTables - Callbacks 
+[ x ] DataTables - Callbacks 
 
 [   ] DataTables - Events
 

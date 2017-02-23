@@ -31,6 +31,11 @@ trait OptionsTrait
     protected $options;
 
     /**
+     * @var null|OptionsResolver
+     */
+    protected $nestedOptionsResolver;
+
+    /**
      * The PropertyAccessor.
      *
      * @var PropertyAccessor
@@ -51,6 +56,7 @@ trait OptionsTrait
     public function initOptions($callSetOptions = true)
     {
         $this->options = array();
+        $this->nestedOptionsResolver = null;
         $this->accessor = PropertyAccess::createPropertyAccessorBuilder()
             ->enableMagicCall()
             ->getPropertyAccessor();
@@ -77,6 +83,14 @@ trait OptionsTrait
         $this->configureOptions($resolver);
 
         $this->options = $resolver->resolve($options);
+
+        if (null !== $this->nestedOptionsResolver) {
+            foreach ($options as $key => $value) {
+                /** @noinspection PhpUndefinedMethodInspection */
+                $this->configureAndResolveNestedOptions($this->options[$key]);
+            }
+        }
+
         $this->callingSettersWithOptions($this->options);
 
         return $this;

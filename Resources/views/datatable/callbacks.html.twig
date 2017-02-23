@@ -1,0 +1,120 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{% if sg_datatables_view.callbacks.createdRow is not null %}
+    {% if sg_datatables_view.callbacks.createdRow['vars'] is defined %}
+        {% set vars = sg_datatables_view.callbacks.createdRow['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    "createdRow": {% include sg_datatables_view.callbacks.createdRow['template'] with vars %},
+{% endif %}
+{% if sg_datatables_view.callbacks.drawCallback is not null %}
+    {% if sg_datatables_view.callbacks.drawCallback['vars'] is defined %}
+        {% set vars = sg_datatables_view.callbacks.drawCallback['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    "drawCallback": {% include sg_datatables_view.callbacks.drawCallback['template'] with vars %},
+{% endif %}
+{% if sg_datatables_view.callbacks.footerCallback is not null %}
+    {% if sg_datatables_view.callbacks.footerCallback['vars'] is defined %}
+        {% set vars = sg_datatables_view.callbacks.footerCallback['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    "footerCallback": {% include sg_datatables_view.callbacks.footerCallback['template'] with vars %},
+{% endif %}
+{% if sg_datatables_view.callbacks.formatNumber is not null %}
+    {% if sg_datatables_view.callbacks.formatNumber['vars'] is defined %}
+        {% set vars = sg_datatables_view.callbacks.formatNumber['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    "formatNumber": {% include sg_datatables_view.callbacks.formatNumber['template'] with vars %},
+{% endif %}
+{% if sg_datatables_view.callbacks.headerCallback is not null %}
+    {% if sg_datatables_view.callbacks.headerCallback['vars'] is defined %}
+        {% set vars = sg_datatables_view.callbacks.headerCallback['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    "headerCallback": {% include sg_datatables_view.callbacks.headerCallback['template'] with vars %},
+{% endif %}
+{% if sg_datatables_view.callbacks.infoCallback is not null %}
+    {% if sg_datatables_view.callbacks.infoCallback['vars'] is defined %}
+        {% set vars = sg_datatables_view.callbacks.infoCallback['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    "infoCallback": {% include sg_datatables_view.callbacks.infoCallback['template'] with vars %},
+{% endif %}
+{% if sg_datatables_view.callbacks.initComplete is not null %}
+    {% if sg_datatables_view.callbacks.initComplete['vars'] is defined %}
+        {% set vars = sg_datatables_view.callbacks.initComplete['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    "initComplete": {% include sg_datatables_view.callbacks.initComplete['template'] with vars %},
+{% endif %}
+{% if sg_datatables_view.callbacks.preDrawCallback is not null %}
+    {% if sg_datatables_view.callbacks.preDrawCallback['vars'] is defined %}
+        {% set vars = sg_datatables_view.callbacks.preDrawCallback['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    "preDrawCallback": {% include sg_datatables_view.callbacks.preDrawCallback['template'] with vars %},
+{% endif %}
+{% if sg_datatables_view.callbacks.rowCallback is not null %}
+    {% if sg_datatables_view.callbacks.rowCallback['vars'] is defined %}
+        {% set vars = sg_datatables_view.callbacks.rowCallback['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    "rowCallback": {% include sg_datatables_view.callbacks.rowCallback['template'] with vars%},
+{% endif %}
+{% if sg_datatables_view.callbacks.stateLoadCallback is not null %}
+    {% if sg_datatables_view.callbacks.stateLoadCallback['vars'] is defined %}
+        {% set vars = sg_datatables_view.callbacks.stateLoadCallback['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    "stateLoadCallback": {% include sg_datatables_view.callbacks.stateLoadCallback['template'] with vars %},
+{% endif %}
+{% if sg_datatables_view.callbacks.stateLoaded is not null %}
+    {% if sg_datatables_view.callbacks.stateLoaded['vars'] is defined %}
+        {% set vars = sg_datatables_view.callbacks.stateLoaded['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    "stateLoaded": {% include sg_datatables_view.callbacks.stateLoaded['template'] with vars %},
+{% endif %}
+{% if sg_datatables_view.callbacks.stateLoadParams is not null %}
+    {% if sg_datatables_view.callbacks.stateLoadParams['vars'] is defined %}
+        {% set vars = sg_datatables_view.callbacks.stateLoadParams['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    "stateLoadParams": {% include sg_datatables_view.callbacks.stateLoadParams['template'] with vars %},
+{% endif %}
+{% if sg_datatables_view.callbacks.stateSaveCallback is not null %}
+    {% if sg_datatables_view.callbacks.stateSaveCallback['vars'] is defined %}
+        {% set vars = sg_datatables_view.callbacks.stateSaveCallback['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    "stateSaveCallback": {% include sg_datatables_view.callbacks.stateSaveCallback['template'] with vars %},
+{% endif %}
+{% if sg_datatables_view.callbacks.stateSaveParams is not null %}
+    {% if sg_datatables_view.callbacks.stateSaveParams['vars'] is defined %}
+        {% set vars = sg_datatables_view.callbacks.stateSaveParams['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    "stateSaveParams": {% include sg_datatables_view.callbacks.stateSaveParams['template'] with vars %},
+{% endif %}

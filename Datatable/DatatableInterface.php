@@ -81,6 +81,13 @@ interface DatatableInterface
     public function getFeatures();
 
     /**
+     * Get Callbacks instance.
+     *
+     * @return Callbacks
+     */
+    public function getCallbacks();
+
+    /**
      * Get Language instance.
      *
      * @return Language

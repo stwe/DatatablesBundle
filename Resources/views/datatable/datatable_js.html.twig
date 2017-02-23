@@ -32,6 +32,10 @@
             {% include 'SgDatatablesBundle:datatable:features.html.twig' %}
         };
 
+        var callbacks = {
+            {% include 'SgDatatablesBundle:datatable:callbacks.html.twig' %}
+        };
+
         var columns = {
             {% include 'SgDatatablesBundle:datatable:columns.html.twig' %}
         };
@@ -53,6 +57,7 @@
             $.extend(defaults, ajax);
             $.extend(defaults, options);
             $.extend(defaults, features);
+            $.extend(defaults, callbacks);
             $.extend(defaults, columns);
             $.extend(defaults, initialSearch);
 
