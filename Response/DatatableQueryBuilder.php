@@ -438,44 +438,10 @@ class DatatableQueryBuilder
                 if ('true' == $requestColumn['orderable']) {
                     $columnName = $this->orderColumns[$columnIdx];
                     $orderDirection = $this->requestParams['order'][$i]['dir'];
-                    $columnType = $this->accessor->getValue($this->columns[$columnIdx], 'typeOfField');
 
-                    $this->createOrderBy($columnName, $orderDirection, $columnType);
+                    $this->qb->addOrderBy($columnName, $orderDirection);
                 }
             }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Create order by statements.
-     * In some case we want to order string/varchar database fields as numbers.
-     *
-     * @see http://stackoverflow.com/questions/22993336/how-to-order-varchar-as-int-in-symfony2-doctrine2#23071353
-     *
-     * @param string $columnName
-     * @param string $orderDirection
-     * @param string $columnType
-     *
-     * @return $this
-     */
-    private function createOrderBy($columnName, $orderDirection, $columnType)
-    {
-        switch ($columnType) {
-            case 'integer':
-                $tempOrderColumnName = preg_replace("/[^A-Za-z0-9 ]/", '_', $columnName) . '_order_as_int';
-                $this->qb
-                    ->addSelect(sprintf(
-                        'ABS(%s) AS HIDDEN %s',
-                        $columnName,
-                        $tempOrderColumnName
-                    ))
-                    ->addOrderBy($tempOrderColumnName, $orderDirection);
-                break;
-            default:
-                $this->qb->addOrderBy($columnName, $orderDirection);
-                break;
         }
 
         return $this;
