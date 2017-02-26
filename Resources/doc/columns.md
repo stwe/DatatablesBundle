@@ -134,7 +134,7 @@ $this->columnBuilder
 $this->columnBuilder
     ->add('full_name', Column::class, array(
         'title' => 'Full name',
-        'dql' => 'CONCAT(user.fisrtname, ' ', user.lastname)',
+        'dql' => "CONCAT(user.firstname, ' ', user.lastname)",
         'searchable' => true,
         'orderable' => true,
     ))
@@ -142,7 +142,7 @@ $this->columnBuilder
     // Note that subqueries cannot be search with a "LIKE" clause.
     ->add('post_count', Column::class, array(
         'title' => 'User posts count',
-        'dql' => '(SELECT COUNT({p}) FROM MyBundle:Post {p} WHERE {p}.user = user.id)',
+        'dql' => '(SELECT COUNT({p}) FROM MyBundle:Post {p} WHERE {p}.user = user)',
         'searchable' => true,
         'orderable' => true,
     ))
