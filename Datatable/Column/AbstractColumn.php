@@ -334,7 +334,11 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function dqlConstraint($dql)
     {
-        return preg_match('/^[a-zA-Z0-9_\\-\\.]+$/', $dql) ? true : false;
+        if (true === $this->isCustomDql()) {
+            return true;
+        } else {
+            return preg_match('/^[a-zA-Z0-9_\\-\\.]+$/', $dql) ? true : false;
+        }
     }
 
     /**
@@ -358,7 +362,7 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function isToManyAssociation()
     {
-        if (true === $this->isAssociation()) {
+        if (true === $this->isAssociation() && null !== $this->typeOfAssociation) {
             if (in_array(ClassMetadataInfo::ONE_TO_MANY, $this->typeOfAssociation) || in_array(ClassMetadataInfo::MANY_TO_MANY, $this->typeOfAssociation)) {
                 return true;
             } else {
@@ -811,14 +815,13 @@ abstract class AbstractColumn implements ColumnInterface
      * Set dql.
      *
      * @param null|string $dql
-     * @param bool        $validate Validates DQL.
      *
      * @return $this
      * @throws Exception
      */
-    public function setDql($dql, $validate = false)
+    public function setDql($dql)
     {
-        if ((false == $validate) || (true === $this->dqlConstraint($dql))) {
+        if (true === $this->dqlConstraint($dql)) {
             $this->dql = $dql;
         } else {
             throw new Exception("AbstractColumn::setDql(): $dql is not valid for this Column.");

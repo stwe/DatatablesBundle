@@ -141,8 +141,8 @@ class ColumnBuilder
         // the Column 'data' property has normally the same value as 'dql'
         $column->setData($dql);
         if (!isset($options['dql'])) {
-            $column->setDql($dql, true);
             $column->setCustomDql(false);
+            $column->setDql($dql);
         } else {
             $column->setCustomDql(true);
         }
@@ -155,7 +155,7 @@ class ColumnBuilder
         // resolve options - !!'data' can be modified again!!
         $column->set($options);
 
-        if (true === $column->isSelectColumn()) {
+        if (true === $column->isSelectColumn() && false === $column->isCustomDql()) {
             if (true === $column->isAssociation()) {
                 $parts = explode('.', $dql);
                 $metadata = $this->metadata;
