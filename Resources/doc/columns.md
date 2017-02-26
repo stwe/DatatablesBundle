@@ -359,18 +359,21 @@ SgDatatablesBundle:render:action.html.twig
 
 ### Action options
 
-| Option           | Type                   | Default | Required | Description |
-|------------------|------------------------|---------|----------|-------------|
-| route            | string                 |         | X        | The name of the Action route. |
-| route_parameters | null, array or Closure | null    |          | The route parameters. |
-| icon             | null or string         | null    |          | An icon for the Action. |
-| label            | null or string         | null    |          | A label for the Action. |
-| confirm          | bool                   | false   |          | Show confirm message if true. |
-| confirm_message  | null or string         | null    |          | The confirm message. |
-| attributes       | null or array          | null    |          | HTML <a> Tag attributes (except 'href'). |
-| render_if        | null or Closure        | null    |          | Render an Action only if conditions are TRUE. |
-| start_html       | null or string         | null    |          | HTML code before the <a> Tag. |
-| end_html         | null or string         | null    |          | HTML code after the <a> Tag. |
+| Option              | Type                   | Default | Required | Description |
+|---------------------|------------------------|---------|----------|-------------|
+| route               | null or string         | null    |          | The name of the Action route. |
+| route_parameters    | null, array or Closure | null    |          | The route parameters. |
+| icon                | null or string         | null    |          | An icon for the Action. |
+| label               | null or string         | null    |          | A label for the Action. |
+| confirm             | bool                   | false   |          | Show confirm message if true. |
+| confirm_message     | null or string         | null    |          | The confirm message. |
+| attributes          | null or array          | null    |          | HTML Tag attributes (except 'href' and 'value'). |
+| button              | bool                   | false   |          | Render a button instead of a link. |
+| button_value        | null or string         | null    |          | The button value. |
+| button_value_prefix | bool                   | false   |          | Use the Datatable-Name as prefix for the button value. |
+| render_if           | null or Closure        | null    |          | Render an Action only if conditions are TRUE. |
+| start_html          | null or string         | null    |          | HTML code before the <a> Tag. |
+| end_html            | null or string         | null    |          | HTML code after the <a> Tag. |
 
 ### Example
 
@@ -416,25 +419,48 @@ $this->columnBuilder
         'actions' => array(
             array(
                 'route' => 'post_show',
-                'label' => 'Show Posting',
                 'route_parameters' => array(
                     'id' => 'id',
+                    'type' => 'testtype',
                     '_format' => 'html',
-                    '_locale' => 'en'
+                    '_locale' => 'en',
                 ),
-                'render_if' => function($row) {
-                    return $row['createdBy']['username'] === 'user' && $this->authorizationChecker->isGranted('ROLE_USER');
-                },
+                'icon' => 'glyphicon glyphicon-eye-open',
+                'label' => 'Show Posting < a >',
+                'confirm' => true,
+                'confirm_message' => 'Are you sure?',
                 'attributes' => array(
                     'rel' => 'tooltip',
                     'title' => 'Show',
                     'class' => 'btn btn-primary btn-xs',
-                    'role' => 'button'
+                    'role' => 'button',
                 ),
+                'render_if' => function ($row) {
+                    return $row['createdBy']['username'] === 'user' && $this->authorizationChecker->isGranted('ROLE_USER');
+                },
                 'start_html' => '<div class="start_show_action">',
                 'end_html' => '</div>',
-            )
-        )
+            ),
+            array(
+                'icon' => 'glyphicon glyphicon-star',
+                'label' => 'A < button >',
+                'confirm' => false,
+                'attributes' => array(
+                    'rel' => 'tooltip',
+                    'title' => 'Show',
+                    'class' => 'btn btn-primary btn-xs',
+                    'role' => 'button',
+                ),
+                'button' => true,
+                'button_value' => 'id',
+                'button_value_prefix' => true,
+                'render_if' => function ($row) {
+                    return $this->authorizationChecker->isGranted('ROLE_ADMIN');
+                },
+                'start_html' => '<div class="start_show_action">',
+                'end_html' => '</div>',
+            ),
+        ),
     ))
 ;
 ```

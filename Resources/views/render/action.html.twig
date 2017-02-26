@@ -8,7 +8,11 @@
  #}
 {% macro link_title(action) %}
     {% if action.label is null and action.icon is null %}
-        {{ action.route }}
+        {% if action.route is not null %}
+            {{ action.route }}
+        {% else %}
+            null
+        {% endif %}
     {% else %}
         <span class="{{ action.icon }}"></span> {{ action.label }}
     {% endif %}
@@ -30,26 +34,43 @@
     {% endif %}
 {% endmacro %}
 
+{% macro href(action, route_parameters) %}
+    {% if action.routeParameters is not null %}
+        {% if app.request.locale is defined and app.request.locale is not null %}
+            {% if '_locale' in route_parameters|keys %}
+                {% set route_parameters = route_parameters|merge({ '_locale': app.request.locale }) %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+    {% if action.route is not null %}
+        href="{{ path(action.route, route_parameters) }}"
+    {% else %}
+        href="javascript:void(0);"
+    {% endif %}
+{% endmacro %}
+
+{% macro value(value) %}
+    {% if value is not null %}
+        value="{{ value }}"
+    {% endif %}
+{% endmacro %}
+
 {{ start_html_container|raw }}
 
-{% for action in actions %}
-    {% if true == render_if_actions[action.route] %}
-        {% if action.routeParameters is not null %}
-            {% if app.request.locale is defined and app.request.locale is not null %}
-                {% if '_locale' in set_route_parameters|keys %}
-                    {% set set_route_parameters = set_route_parameters|merge({ '_locale': app.request.locale }) %}
-                {% endif %}
-            {% endif %}
+{% for actionKey, action in actions %}
+    {% if true == render_if_actions[actionKey] %}
+        {% if action.button is same as(false) %}
             {{ action.startHtml|raw }}
-            <a href="{{ path(action.route, set_route_parameters) }}" {{ _self.attributes(action) }} {{ _self.confirm_dialog(action) }}>
+            <a {{ _self.href(action, route_parameters[actionKey]) }} {{ _self.attributes(action) }} {{ _self.confirm_dialog(action) }}>
                 {{ _self.link_title(action) }}
             </a>
             {{ action.endHtml|raw }}
         {% else %}
             {{ action.startHtml|raw }}
-            <a href="{{ path(action.route) }}" {{ _self.attributes(action) }} {{ _self.confirm_dialog(action) }}>
+            <button type="button" {{ _self.value(values[actionKey]) }} {{ _self.attributes(action) }} {{ _self.confirm_dialog(action) }}>
                 {{ _self.link_title(action) }}
-            </a>
+            </button>
             {{ action.endHtml|raw }}
         {% endif %}
     {% endif %}

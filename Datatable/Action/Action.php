@@ -44,9 +44,9 @@ class Action
 
     /**
      * The name of the Action route.
-     * A required option.
+     * Default: null
      *
-     * @var string
+     * @var null|string
      */
     protected $route;
 
@@ -91,12 +91,36 @@ class Action
     protected $confirmMessage;
 
     /**
-     * HTML <a> Tag attributes (except 'href').
+     * HTML attributes (except 'href' and 'value').
      * Default: null
      *
      * @var null|array
      */
     protected $attributes;
+
+    /**
+     * Render a button instead of a link.
+     * Default: false
+     *
+     * @var bool
+     */
+    protected $button;
+
+    /**
+     * The button value.
+     * Default: null
+     *
+     * @var null|string
+     */
+    protected $buttonValue;
+
+    /**
+     * Use the Datatable-Name as prefix for the button value.
+     * Default: false
+     *
+     * @var bool
+     */
+    protected $buttonValuePrefix;
 
     /**
      * The name of the associated Datatable.
@@ -125,7 +149,7 @@ class Action
     //-------------------------------------------------
 
     /**
-     * Config options.
+     * Configure options.
      *
      * @param OptionsResolver $resolver
      *
@@ -133,27 +157,32 @@ class Action
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(array('route'));
-
         $resolver->setDefaults(array(
+            'route' => null,
             'route_parameters' => null,
             'icon' => null,
             'label' => null,
             'confirm' => false,
             'confirm_message' => null,
             'attributes' => null,
+            'button' => false,
+            'button_value' => null,
+            'button_value_prefix' => false,
             'render_if' => null,
             'start_html' => null,
             'end_html' => null,
         ));
 
-        $resolver->setAllowedTypes('route', 'string');
+        $resolver->setAllowedTypes('route', array('null', 'string'));
         $resolver->setAllowedTypes('route_parameters', array('null', 'array', 'Closure'));
         $resolver->setAllowedTypes('icon', array('null', 'string'));
         $resolver->setAllowedTypes('label', array('null', 'string'));
         $resolver->setAllowedTypes('confirm', 'bool');
         $resolver->setAllowedTypes('confirm_message', array('null', 'string'));
         $resolver->setAllowedTypes('attributes', array('null', 'array'));
+        $resolver->setAllowedTypes('button', 'bool');
+        $resolver->setAllowedTypes('button_value', array('null', 'string'));
+        $resolver->setAllowedTypes('button_value_prefix', 'bool');
         $resolver->setAllowedTypes('render_if', array('null', 'Closure'));
         $resolver->setAllowedTypes('start_html', array('null', 'string'));
         $resolver->setAllowedTypes('end_html', array('null', 'string'));
@@ -168,7 +197,7 @@ class Action
     /**
      * Get route.
      *
-     * @return string
+     * @return null|string
      */
     public function getRoute()
     {
@@ -178,7 +207,7 @@ class Action
     /**
      * Set route.
      *
-     * @param string $route
+     * @param null|string $route
      *
      * @return $this
      */
@@ -331,11 +360,87 @@ class Action
     {
         if (is_array($attributes)) {
             if (array_key_exists('href', $attributes)) {
-                throw new Exception('Action::setAttributes(): The href attribute is not supported.');
+                throw new Exception('Action::setAttributes(): The href attribute is not allowed in this context.');
+            }
+
+            if (array_key_exists('value', $attributes)) {
+                throw new Exception('Action::setAttributes(): The value attribute is not allowed in this context.');
             }
         }
 
         $this->attributes = $attributes;
+
+        return $this;
+    }
+
+    /**
+     * Get button.
+     *
+     * @return bool
+     */
+    public function isButton()
+    {
+        return $this->button;
+    }
+
+    /**
+     * Set button.
+     *
+     * @param bool $button
+     *
+     * @return $this
+     */
+    public function setButton($button)
+    {
+        $this->button = $button;
+
+        return $this;
+    }
+
+    /**
+     * Get buttonValue.
+     *
+     * @return null|string
+     */
+    public function getButtonValue()
+    {
+        return $this->buttonValue;
+    }
+
+    /**
+     * Set buttonValue.
+     *
+     * @param null|string $buttonValue
+     *
+     * @return $this
+     */
+    public function setButtonValue($buttonValue)
+    {
+        $this->buttonValue = $buttonValue;
+
+        return $this;
+    }
+
+    /**
+     * Get buttonValuePrefix.
+     *
+     * @return bool
+     */
+    public function isButtonValuePrefix()
+    {
+        return $this->buttonValuePrefix;
+    }
+
+    /**
+     * Set buttonValuePrefix.
+     *
+     * @param bool $buttonValuePrefix
+     *
+     * @return $this
+     */
+    public function setButtonValuePrefix($buttonValuePrefix)
+    {
+        $this->buttonValuePrefix = $buttonValuePrefix;
 
         return $this;
     }

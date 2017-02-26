@@ -67,8 +67,8 @@ class ActionColumn extends AbstractColumn
         $actionRowItems = array();
 
         /** @var Action $action */
-        foreach ($this->actions as $action) {
-            $actionRowItems[$action->getRoute()] = $action->callRenderIfClosure($row);
+        foreach ($this->actions as $actionKey => $action) {
+            $actionRowItems[$actionKey] = $action->callRenderIfClosure($row);
         }
 
         $row['sg_datatables_actions'][$this->getIndex()] = $actionRowItems;
@@ -80,20 +80,41 @@ class ActionColumn extends AbstractColumn
     public function renderCellContent(array &$row)
     {
         $parameters = array();
+        $values = array();
 
         /** @var Action $action */
-        foreach ($this->actions as $action) {
+        foreach ($this->actions as $actionKey => $action) {
             $routeParameters = $action->getRouteParameters();
             if (is_array($routeParameters)) {
                 foreach ($routeParameters as $key => $value) {
                     if (isset($row[$value])) {
-                        $parameters[$key] = $row[$value];
+                        $parameters[$actionKey][$key] = $row[$value];
                     } else {
-                        $parameters[$key] = $value;
+                        $parameters[$actionKey][$key] = $value;
                     }
                 }
             } elseif ($routeParameters instanceof Closure) {
-                $parameters = call_user_func($routeParameters, $row);
+                $parameters[$actionKey] = call_user_func($routeParameters, $row);
+            }
+
+            if ($action->isButton()) {
+                if (null !== $action->getButtonValue()) {
+                    if (isset($row[$action->getButtonValue()])) {
+                        $values[$actionKey] = $row[$action->getButtonValue()];
+                    } else {
+                        $values[$actionKey] = $action->getButtonValue();
+                    }
+
+                    if (is_bool($values[$actionKey])) {
+                        $values[$actionKey] = (int) $values[$actionKey];
+                    }
+
+                    if (true === $action->isButtonValuePrefix()) {
+                        $values[$actionKey] = 'sg-datatables-'.$this->getDatatableName().'-button-'.$actionKey.'-'.$values[$actionKey];
+                    }
+                } else {
+                    $values[$actionKey] = null;
+                }
             }
         }
 
@@ -101,7 +122,8 @@ class ActionColumn extends AbstractColumn
             $this->getCellContentTemplate(),
             array(
                 'actions' => $this->actions,
-                'set_route_parameters' => $parameters,
+                'route_parameters' => $parameters,
+                'values' => $values,
                 'render_if_actions' => $row['sg_datatables_actions'][$this->index],
                 'start_html_container' => $this->startHtml,
                 'end_html_container' => $this->endHtml,
@@ -140,12 +162,12 @@ class ActionColumn extends AbstractColumn
     {
         parent::configureOptions($resolver);
 
+        $resolver->remove('dql');
         $resolver->remove('data');
         $resolver->remove('default_content');
 
         // the 'orderable' option is removed, but via getter it returns 'false' for the view
         $resolver->remove('orderable');
-
         $resolver->remove('order_data');
         $resolver->remove('order_sequence');
 
