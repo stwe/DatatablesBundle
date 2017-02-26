@@ -38,7 +38,7 @@ class MultiselectAction extends Action
 
         if (is_array($attributes)) {
             if (array_key_exists('href', $attributes)) {
-                throw new Exception('MultiselectAction::setAttributes(): The href attribute is not supported.');
+                throw new Exception('MultiselectAction::setAttributes(): The href attribute is not allowed in this context.');
             }
 
             if (array_key_exists('class', $attributes)) {

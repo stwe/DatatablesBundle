@@ -8,7 +8,11 @@
  #}
 {% macro link_title(action) %}
     {% if action.label is null and action.icon is null %}
-        {{ action.route }}
+        {% if action.route is not null %}
+            {{ action.route }}
+        {% else %}
+            null
+        {% endif %}
     {% else %}
         <span class="{{ action.icon }}"></span> {{ action.label }}
     {% endif %}
@@ -20,7 +24,7 @@
     {% endfor %}
 {% endmacro %}
 
-{% macro confirm_message(action) %}
+{% macro confirm_dialog(action) %}
     {% if true == action.confirm %}
         {% if action.confirmMessage is not null %}
             data-message="{{ action.confirmMessage }}"
@@ -30,25 +34,42 @@
     {% endif %}
 {% endmacro %}
 
+{% macro href(action, route_parameters) %}
+    {% if action.routeParameters is not null %}
+        {% if app.request.locale is defined and app.request.locale is not null %}
+            {% if '_locale' in route_parameters|keys %}
+                {% set route_parameters = route_parameters|merge({ '_locale': app.request.locale }) %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+    {% if action.route is not null %}
+        href="{{ path(action.route, route_parameters) }}"
+    {% else %}
+        href="javascript:void(0);"
+    {% endif %}
+{% endmacro %}
+
+{% macro value(value) %}
+    {% if value is not null %}
+        value="{{ value }}"
+    {% endif %}
+{% endmacro %}
+
 {% set multiselect_actions %}
-    {% for action in actions %}
+    {% for actionKey, action in actions %}
         {% if true == action.callRenderIfClosure %}
-            {% if action.routeParameters is not null %}
-                {% if app.request.locale is defined and app.request.locale is not null %}
-                    {% if '_locale' in set_route_parameters|keys %}
-                        {% set set_route_parameters = set_route_parameters|merge({ '_locale': app.request.locale }) %}
-                    {% endif %}
-                {% endif %}
+            {% if action.button is same as(false) %}
                 {{ action.startHtml|raw }}
-                <a href="{{ path(action.route, set_route_parameters) }}" {{ _self.attributes(action) }} {{ _self.confirm_message(action) }}>
+                <a {{ _self.href(action, route_parameters[actionKey]) }} {{ _self.attributes(action) }} {{ _self.confirm_dialog(action) }}>
                     {{ _self.link_title(action) }}
                 </a>
                 {{ action.endHtml|raw }}
             {% else %}
                 {{ action.startHtml|raw }}
-                <a href="{{ path(action.route) }}" {{ _self.attributes(action) }} {{ _self.confirm_message(action) }}>
+                <button type="button" {{ _self.value(values[actionKey]) }} {{ _self.attributes(action) }} {{ _self.confirm_dialog(action) }}>
                     {{ _self.link_title(action) }}
-                </a>
+                </button>
                 {{ action.endHtml|raw }}
             {% endif %}
         {% endif %}
@@ -135,25 +156,28 @@ $(".sg-datatables-{{ datatable_name }}-multiselect-action").on("click", function
 
         {% set token = csrf_token('multiselect') %}
 
-        $.ajax({
-            url: $(this).attr("href"),
-            type: "POST",
-            cache: false,
-            data: {
-                'data': items,
-                'token': "{{ token }}"
-            },
-            success: function(msg) {
-                if (pipeline > 0) {
-                    oTable.clearPipeline().draw();
-                } else {
-                    oTable.draw();
+        var url = $(this).attr("href");
+        if (url != null) {
+            $.ajax({
+                url: url,
+                type: "POST",
+                cache: false,
+                data: {
+                    'data': items,
+                    'token': "{{ token }}"
+                },
+                success: function(msg) {
+                    if (pipeline > 0) {
+                        oTable.clearPipeline().draw();
+                    } else {
+                        oTable.draw();
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(XMLHttpRequest + ' ' + textStatus + ' '  + errorThrown);
                 }
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log(XMLHttpRequest + ' ' + textStatus + ' '  + errorThrown);
-            }
-        })
+            })
+        }
     } else {
         alert("{{ 'sg.datatables.selectError'|trans({}, 'messages') }}");
     }

@@ -75,7 +75,7 @@
         createDatatable();
 
         {% if sg_datatables_view.multiselectColumn is not null %}
-            {{ sg_datatables_render_multiselect_actions(sg_datatables_view.multiselectColumn, sg_datatables_view.name, sg_datatables_view.ajax.pipeline) }}
+            {{ sg_datatables_render_multiselect_actions(sg_datatables_view.multiselectColumn, sg_datatables_view.ajax.pipeline) }}
         {% endif %}
     });
 

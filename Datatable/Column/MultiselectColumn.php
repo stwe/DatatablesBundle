@@ -145,7 +145,7 @@ class MultiselectColumn extends ActionColumn
     //-------------------------------------------------
 
     /**
-     * Config options.
+     * Configure options.
      *
      * @param OptionsResolver $resolver
      *

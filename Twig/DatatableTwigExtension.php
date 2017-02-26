@@ -14,6 +14,7 @@ namespace Sg\DatatablesBundle\Twig;
 use Sg\DatatablesBundle\Datatable\DatatableInterface;
 use Sg\DatatablesBundle\Datatable\Column\ColumnInterface;
 use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
+use Sg\DatatablesBundle\Datatable\Action\Action;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -21,6 +22,7 @@ use Twig_Environment;
 use Twig_Extension;
 use Twig_SimpleFunction;
 use Twig_SimpleFilter;
+use Closure;
 
 /**
  * Class DatatableTwigExtension
@@ -202,22 +204,44 @@ class DatatableTwigExtension extends Twig_Extension
      *
      * @param Twig_Environment $twig
      * @param ColumnInterface  $multiselectColumn
-     * @param string           $datatableName
      * @param int              $pipeline
      *
      * @return string
      */
-    public function datatablesRenderMultiselectActions(Twig_Environment $twig, ColumnInterface $multiselectColumn, $datatableName, $pipeline)
+    public function datatablesRenderMultiselectActions(Twig_Environment $twig, ColumnInterface $multiselectColumn, $pipeline)
     {
         $parameters = array();
+        $values = array();
         $actions = $this->accessor->getValue($multiselectColumn, 'actions');
         $domId = $this->accessor->getValue($multiselectColumn, 'renderActionsToId');
+        $datatableName = $this->accessor->getValue($multiselectColumn, 'datatableName');
 
-        foreach ($actions as $action) {
-            $routeParameters = $this->accessor->getValue($action, 'routeParameters');
-            if (null !== $routeParameters) {
+        /** @var Action $action */
+        foreach ($actions as $actionKey => $action) {
+            $routeParameters = $action->getRouteParameters();
+            if (is_array($routeParameters)) {
                 foreach ($routeParameters as $key => $value) {
-                    $parameters[$key] = $value;
+                    $parameters[$actionKey][$key] = $value;
+                }
+            } elseif ($routeParameters instanceof Closure) {
+                $parameters[$actionKey] = call_user_func($routeParameters);
+            } else {
+                $parameters[$actionKey] = array();
+            }
+
+            if ($action->isButton()) {
+                if (null !== $action->getButtonValue()) {
+                    $values[$actionKey] = $action->getButtonValue();
+
+                    if (is_bool($values[$actionKey])) {
+                        $values[$actionKey] = (int) $values[$actionKey];
+                    }
+
+                    if (true === $action->isButtonValuePrefix()) {
+                        $values[$actionKey] = 'sg-datatables-'.$datatableName.'-multiselect-button-'.$actionKey.'-'.$values[$actionKey];
+                    }
+                } else {
+                    $values[$actionKey] = null;
                 }
             }
         }
@@ -226,7 +250,8 @@ class DatatableTwigExtension extends Twig_Extension
             'SgDatatablesBundle:datatable:multiselect_actions.html.twig',
             array(
                 'actions' => $actions,
-                'set_route_parameters' => $parameters,
+                'route_parameters' => $parameters,
+                'values' => $values,
                 'datatable_name' => $datatableName,
                 'dom_id' => $domId,
                 'pipeline' => $pipeline,
