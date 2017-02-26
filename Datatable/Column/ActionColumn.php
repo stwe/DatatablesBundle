@@ -95,6 +95,8 @@ class ActionColumn extends AbstractColumn
                 }
             } elseif ($routeParameters instanceof Closure) {
                 $parameters[$actionKey] = call_user_func($routeParameters, $row);
+            } else {
+                $parameters[$actionKey] = array();
             }
 
             if ($action->isButton()) {
@@ -110,7 +112,7 @@ class ActionColumn extends AbstractColumn
                     }
 
                     if (true === $action->isButtonValuePrefix()) {
-                        $values[$actionKey] = 'sg-datatables-'.$this->getDatatableName().'-button-'.$actionKey.'-'.$values[$actionKey];
+                        $values[$actionKey] = 'sg-datatables-'.$this->getDatatableName().'-action-button-'.$actionKey.'-'.$values[$actionKey];
                     }
                 } else {
                     $values[$actionKey] = null;
