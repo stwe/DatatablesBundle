@@ -169,9 +169,7 @@ class ColumnBuilder
                 }
             }
             // set the type of the field
-            if (null === $this->getTypeOfField()) {
-                $this->setTypeOfField($metadata, $column, $parts[0]);
-            }
+            $this->setTypeOfField($metadata, $column, $parts[0]);
         }
 
         if (true === $column->callAddIfClosure()) {
