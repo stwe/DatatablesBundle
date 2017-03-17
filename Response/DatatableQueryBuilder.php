@@ -220,7 +220,7 @@ class DatatableQueryBuilder
 
                 // Select
                 $selectDql = preg_replace('/\{([\w]+)\}/', '$1', $dql);
-                $this->addSelectColumn(null, $selectDql . ' ' . $columnAlias);
+                $this->addSelectColumn(null, $selectDql.' '.$columnAlias);
                 // Order on alias column name
                 $this->addOrderColumn($column, null, $columnAlias);
                 // Fix subqueries alias duplication
@@ -333,7 +333,7 @@ class DatatableQueryBuilder
     {
         foreach ($this->selectColumns as $key => $value) {
             if (null != $key) {
-                $this->qb->addSelect('partial ' . $key . '.{' . implode(',', $value) . '}');
+                $this->qb->addSelect('partial '.$key.'.{'.implode(',', $value).'}');
             } else {
                 $this->qb->addSelect($value);
             }
@@ -557,7 +557,7 @@ class DatatableQueryBuilder
      */
     private function addOrderColumn($column, $columnTableName, $data)
     {
-        true === $this->accessor->getValue($column, 'orderable') ? $this->orderColumns[] = ($columnTableName ? $columnTableName . '.' : '') . $data : $this->orderColumns[] = null;
+        true === $this->accessor->getValue($column, 'orderable') ? $this->orderColumns[] = ($columnTableName ? $columnTableName.'.' : '').$data : $this->orderColumns[] = null;
 
         return $this;
     }
@@ -573,7 +573,7 @@ class DatatableQueryBuilder
      */
     private function addSearchColumn($column, $columnTableName, $data)
     {
-        true === $this->accessor->getValue($column, 'searchable') ? $this->searchColumns[] = ($columnTableName ? $columnTableName . '.' : '') . $data : $this->searchColumns[] = null;
+        true === $this->accessor->getValue($column, 'searchable') ? $this->searchColumns[] = ($columnTableName ? $columnTableName.'.' : '').$data : $this->searchColumns[] = null;
 
         return $this;
     }

@@ -70,7 +70,6 @@ class DatatableFormatter
         $columns = $datatable->getColumns();
 
         foreach ($paginator as $row) {
-
             // Adding custom DQL fields make PARTIAL columns stored in key 0
             if (isset($row[0])) {
                 $row = array_merge($row, $row[0]);
@@ -79,9 +78,13 @@ class DatatableFormatter
 
             // Format custom DQL fields output ('custom.dql.name' => $row['custom']['dql']['name'] = 'value')
             foreach ($columns as $column) {
+                /** @noinspection PhpUndefinedMethodInspection */
                 if (true === $column->isCustomDql()) {
+                    /** @noinspection PhpUndefinedMethodInspection */
                     $columnAlias = str_replace('.', '_', $column->getData());
-                    $columnPath = '[' . str_replace('.', '][', $column->getData()) . ']';
+                    /** @noinspection PhpUndefinedMethodInspection */
+                    $columnPath = '['.str_replace('.', '][', $column->getData()).']';
+                    /** @noinspection PhpUndefinedMethodInspection */
                     if ($columnAlias !== $column->getData()) {
                         $this->accessor->setValue($row, $columnPath, $row[$columnAlias]);
                         unset($row[$columnAlias]);

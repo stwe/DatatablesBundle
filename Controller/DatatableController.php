@@ -120,6 +120,7 @@ class DatatableController extends Controller
      */
     private function prepareValue($entityClassName, $field, $value)
     {
+        /** @var \Doctrine\ORM\EntityManagerInterface $em */
         $em = $this->getDoctrine()->getManager();
         $metadata = $em->getClassMetadata($entityClassName);
 
