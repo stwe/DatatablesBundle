@@ -156,10 +156,10 @@ class ColumnBuilder
         $column->set($options);
 
         if (true === $column->isSelectColumn() && false === $column->isCustomDql()) {
+            $metadata = $this->metadata;
+            $parts = explode('.', $dql);
+            // add associations types
             if (true === $column->isAssociation()) {
-                $parts = explode('.', $dql);
-                $metadata = $this->metadata;
-
                 while (count($parts) > 1) {
                     $currentPart = array_shift($parts);
 
@@ -167,15 +167,9 @@ class ColumnBuilder
                     $column->addTypeOfAssociation($metadata->getAssociationMapping($currentPart)['type']);
                     $metadata = $this->getMetadataFromAssociation($currentPart, $metadata);
                 }
-
-                $this->setTypeOfField($metadata, $column, $parts[0]);
-            } else {
-                $this->setTypeOfField($this->metadata, $column, $dql);
-                $column->setTypeOfAssociation(null);
             }
-        } else {
-            $column->setTypeOfField(null);
-            $column->setTypeOfAssociation(null);
+            // set the type of the field
+            $this->setTypeOfField($metadata, $column, $parts[0]);
         }
 
         if (true === $column->callAddIfClosure()) {
