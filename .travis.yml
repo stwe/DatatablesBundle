@@ -29,5 +29,5 @@ before_install:
 install: composer update --prefer-dist --no-interaction $COMPOSER_FLAGS
 
 script:
-  - ./vendor/bin/phpunit --version
-  - ./vendor/bin/phpunit --coverage-text
+  - vendor/bin/phpunit --version
+  - vendor/bin/phpunit --coverage-text
