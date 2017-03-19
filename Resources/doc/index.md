@@ -16,4 +16,4 @@
 
 [Internationalisation](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/internationalisation.md)
 
-[Sytle](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/style.md)
+[Style](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/style.md)
