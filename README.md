@@ -18,57 +18,15 @@ This bundle is currently under heavy development and the dev-master branch conta
 
 ### v0.13
 
-[Installation](https://github.com/stwe/DatatablesBundle/blob/v0.13/Resources/doc/installation.md)
+[Documentation for v0.13](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/index013.md)
 
-[Column types](https://github.com/stwe/DatatablesBundle/blob/v0.13/Resources/doc/columns.md)
-
-[In-place editing](https://github.com/stwe/DatatablesBundle/blob/v0.13/Resources/doc/editable.md)
-
-[How to use the ColumnBuilder](https://github.com/stwe/DatatablesBundle/blob/v0.13/Resources/doc/columnBuilder.md)
-
-[Setup Datatable Class](https://github.com/stwe/DatatablesBundle/blob/v0.13/Resources/doc/setup.md)
-
-[Filtering](https://github.com/stwe/DatatablesBundle/blob/v0.13/Resources/doc/filter.md)
-
-[To use a line formatter](https://github.com/stwe/DatatablesBundle/blob/v0.13/Resources/doc/lineFormatter.md)
-
-[Query callbacks](https://github.com/stwe/DatatablesBundle/blob/v0.13/Resources/doc/query.md)
-
-[Extensions like Buttons or Responsive](https://github.com/stwe/DatatablesBundle/blob/v0.13/Resources/doc/extensions.md)
-
-[Options of the generator](https://github.com/stwe/DatatablesBundle/blob/v0.13/Resources/doc/generator.md)
-
-[Reference configuration](https://github.com/stwe/DatatablesBundle/blob/v0.13/Resources/doc/configuration.md)
-
-[Integrate Bootstrap3](https://github.com/stwe/DatatablesBundle/blob/v0.13/Resources/doc/bootstrap3.md)
-
-[Integrate the Translatable behavior extension for Doctrine 2](https://github.com/stwe/DatatablesBundle/blob/v0.13/Resources/doc/translatable.md)
-
-[Integrate the LiipImagineBundle / ImageColumn, GalleryColumn and thumbnails](https://github.com/stwe/DatatablesBundle/blob/v0.13/Resources/doc/thumbs.md)
+[Demo Application for v0.13](https://github.com/stwe/DtBundleDemo)
 
 ### Dev-master
 
-[Installation](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/installation.md)
+[Documentation for dev-master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/index.md)
 
-[Console Command](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/command.md)
-
-[Columns](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/columns.md)
-
-[Filters](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/filters.md)
-
-[In-place editing](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/editable.md)
-
-[Options](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/options.md)
-
-[Features](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/features.md)
-
-[Callbacks](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/callbacks.md)
-
-[Internationalisation](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/internationalisation.md)
-
-## Example
-
-[Demo Application for v0.13](https://github.com/stwe/DtBundleDemo)
+[Demo Application for dev-master](https://github.com/stwe/DtBundleDemo10)
 
 ## Friendly License
 
