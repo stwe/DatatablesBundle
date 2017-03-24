@@ -383,6 +383,10 @@ class DatatableQueryBuilder
                     $searchField = $this->searchColumns[$key];
                     // Subqueries and arithmetics fields can't be search with LIKE
                     if ($column->isCustomDql() && ('string' != $column->getTypeOfField()) || preg_match('/SELECT .+ FROM .+/', $searchField)) {
+                        if (!is_numeric($globalSearch)) {
+                            continue;
+                        }
+                        $globalSearch = floatval($globalSearch);
                         switch ($searchType) {
                             case 'like':
                                 $searchType = 'eq';
