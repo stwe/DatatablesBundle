@@ -47,8 +47,6 @@ class SgDatatablesExtension extends Extension implements PrependExtensionInterfa
             'framework',
             array(
                 'assets' => array(
-                    'version' => '1.10.13',
-                    'version_format' => '%%s?version=%%s',
                     'packages' => array(
                         'datatables_cdn' => array(
                             'base_path' => '//cdn.datatables.net/plug-ins/1.10.13/i18n/',
