@@ -186,7 +186,7 @@ class DatatableQueryBuilder
         $this->qb = $this->em->createQueryBuilder();
         $this->accessor = PropertyAccess::createPropertyAccessor();
 
-        $this->columns = $datatable->getColumns();
+        $this->columns = $datatable->getColumnBuilder()->getColumns();
 
         $this->selectColumns = array();
         $this->searchColumns = array();

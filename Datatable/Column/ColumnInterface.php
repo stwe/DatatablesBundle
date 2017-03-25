@@ -117,4 +117,13 @@ interface ColumnInterface
      * @return string
      */
     public function getColumnType();
+
+    /**
+     * Does special content need to be rendered for editable?
+     *
+     * @param array $row
+     *
+     * @return bool
+     */
+    public function isEditableContentRequired(array $row);
 }

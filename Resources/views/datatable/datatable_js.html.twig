@@ -45,7 +45,7 @@
         };
 
         function postCreateDatatable(pipeline) {
-            {% for column in sg_datatables_view.columns %}
+            {% for column in sg_datatables_view.columnBuilder.columns %}
                 {% if column.renderPostCreateDatatableJsContent is not null %}
                     {{ column.renderPostCreateDatatableJsContent|raw }}
                 {% endif %}
@@ -74,8 +74,8 @@
 
         createDatatable();
 
-        {% if sg_datatables_view.multiselectColumn is not null %}
-            {{ sg_datatables_render_multiselect_actions(sg_datatables_view.multiselectColumn, sg_datatables_view.ajax.pipeline) }}
+        {% if sg_datatables_view.columnBuilder.uniqueColumn('multiselect') is not null %}
+            {{ sg_datatables_render_multiselect_actions( sg_datatables_view.columnBuilder.uniqueColumn('multiselect'), sg_datatables_view.ajax.pipeline) }}
         {% endif %}
     });
 

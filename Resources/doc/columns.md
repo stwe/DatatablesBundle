@@ -3,9 +3,10 @@
 1. [Column](#1-column)
 2. [Boolean Column](#2-boolean-column)
 3. [DateTime Column](#3-datetime-column)
-4. [Virtual Column](#4-virtual-column)
-5. [Action Column](#5-action-column)
-6. [Multiselect Column](#6-multiselect-column)
+4. [Image Column](#4-image-column)
+5. [Virtual Column](#5-virtual-column)
+6. [Action Column](#6-action-column)
+7. [Multiselect Column](#7-multiselect-column)
 
 ## 1. Column
 
@@ -264,7 +265,57 @@ $this->columnBuilder
 ```
 ___
 
-## 4. Virtual column
+## 4. Image column
+
+Represents a column, optimized for images.
+
+**The LiipImagineBundle is required. Please follow all steps as described [here](http://symfony.com/doc/master/bundles/LiipImagineBundle/installation.html).**
+
+**To upload images, I recommend the VichUploaderBundle. You can follow all steps as described [here](https://github.com/dustin10/VichUploaderBundle/blob/master/Resources/doc/index.md).**
+
+**Be sure to install the [Featherlight.js](http://noelboss.github.io/featherlight/) plugin before using this column.**
+
+### Options template
+
+SgDatatablesBundle:column:column.html.twig
+
+### Cell content template
+
+SgDatatablesBundle:render:thumb.html.twig
+
+### Options
+
+All options of [Column](#1-column), except `editable`.
+
+**Additional:**
+
+| Option                   | Type           | Default | Required | Description              |
+|--------------------------|----------------|---------|----------|--------------------------|
+| imagine_filter           | string         |         | x        | The imagine filter used to display image preview. |
+| relative_path            | string         |         | x        | The relative path. |
+| imagine_filter_enlarged  | string or null | null    |          | The imagine filter used to display the enlarged image's size. |
+| holder_url               | string or null | null    |          | The placeholder url (e.g. "http://placehold.it"). |
+| holder_width             | string         | '50'    |          | The default width of the placeholder. |
+| holder_height            | string         | '50'    |          | The default height of the placeholder. |
+| enlarge                  | bool           | false   |          | Enlarge thumbnail. |
+
+### Example
+
+``` php
+$this->columnBuilder
+    ->add('image', ImageColumn::class, array(
+        'title' => 'Image',
+        'imagine_filter' => 'thumbnail_50_x_50',
+        'imagine_filter_enlarged' => 'thumbnail_250_x_250',
+        'relative_path' => 'images',
+        'holder_url' => 'https://placehold.it',
+        'enlarge' => true,
+    ))
+;
+```
+___
+
+## 5. Virtual column
 
 Represents a virtual column.
 
@@ -274,7 +325,7 @@ SgDatatablesBundle:Column:column.html.twig
 
 ### Options
 
-All options of [Column](#1-column), except `data`, `join_type`, `editable` and `editable_if`.
+All options of [Column](#1-column), except `data`, `join_type` and `editable`.
 
 The options `searchable` and `orderable` are set to `false` by default.
 
@@ -329,7 +380,7 @@ public function buildDatatable(array $options = array())
 ```
 ___
 
-## 5. Action column
+## 6. Action column
 
 A Column to display CRUD action labels or buttons.
 
@@ -377,7 +428,7 @@ SgDatatablesBundle:render:action.html.twig
 
 ### Example
 
-**Don't forget to add the following to your route annotation:**
+**Don't forget to add the following to your route annotations:**
 
 ``` php
 options = {"expose" = true}
@@ -466,7 +517,7 @@ $this->columnBuilder
 ```
 ___
 
-## 6. Multiselect column
+## 7. Multiselect column
 
 Support for Bulk Actions.
 

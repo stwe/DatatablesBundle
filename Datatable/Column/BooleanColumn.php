@@ -35,6 +35,16 @@ class BooleanColumn extends AbstractColumn
     use FilterableTrait;
 
     /**
+     * @internal
+     */
+    const RENDER_TRUE_VALUE = 'true';
+
+    /**
+     * @internal
+     */
+    const RENDER_FALSE_VALUE = 'false';
+
+    /**
      * The icon for a value that is true.
      * Default: null
      *
@@ -76,18 +86,18 @@ class BooleanColumn extends AbstractColumn
     public function renderCellContent(array &$row)
     {
         if (null === $this->trueIcon && null === $this->trueLabel) {
-            $this->trueLabel = 'true';
+            $this->trueLabel = self::RENDER_TRUE_VALUE;
         }
 
         if (null === $this->falseIcon && null === $this->falseLabel) {
-            $this->falseLabel = 'false';
+            $this->falseLabel = self::RENDER_FALSE_VALUE;
         }
 
         if (false === $this->isToManyAssociation()) {
             $path = Helper::getDataPropertyPath($this->data);
             $render = $this->getBaseRenderVars($row, $path);
 
-            if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
+            if (true === $this->isEditableContentRequired($row)) {
                 $render = array_merge($render, array(
                     'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
                     'pk' => $row[$this->editable->getPk()],

@@ -49,19 +49,20 @@ trait OptionsTrait
     /**
      * Init optionsTrait.
      *
-     * @param bool $callSetOptions
+     * @param bool $resolve
      *
      * @return $this
      */
-    public function initOptions($callSetOptions = true)
+    public function initOptions($resolve = true)
     {
         $this->options = array();
         $this->nestedOptionsResolver = null;
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->accessor = PropertyAccess::createPropertyAccessorBuilder()
             ->enableMagicCall()
             ->getPropertyAccessor();
 
-        if (true === $callSetOptions) {
+        if (true === $resolve) {
             $this->set($this->options);
         }
 

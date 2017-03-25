@@ -13,6 +13,7 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
 use Sg\DatatablesBundle\Datatable\AddIfTrait;
+use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\DBAL\Types\Type as DoctrineType;
@@ -207,21 +208,22 @@ abstract class AbstractColumn implements ColumnInterface
      */
     protected $typeOfField;
 
-    //-------------------------------------------------
-    // Other Properties
-    //-------------------------------------------------
-
     /**
      * The first argument of ColumnBuilders 'add' function.
      * The DatatableQuery class works with this property.
-     * Is set in the ColumnBuilder.
+     * If $dql is used as an option, the ColumnBuilder sets $customDql to true.
      *
      * @var null|string
      */
     protected $dql;
 
+    //-------------------------------------------------
+    // Other Properties
+    //-------------------------------------------------
+
     /**
      * True if DQL option is provided.
+     * Is set in the ColumnBuilder.
      *
      * @var bool
      */
@@ -252,7 +254,8 @@ abstract class AbstractColumn implements ColumnInterface
     protected $datatableName;
 
     /**
-     * The fully-qualified class name of the entity.
+     * The fully-qualified class name of the entity (e.g. AppBundle\Entity\Post).
+     * Is set in the ColumnBuilder.
      *
      * @var string
      */
@@ -260,7 +263,7 @@ abstract class AbstractColumn implements ColumnInterface
 
     /**
      * The type of association.
-     * Is set automatically in ColumnBuilder.
+     * Is set in the ColumnBuilder.
      *
      * @var null|array
      */
@@ -426,7 +429,21 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function getColumnType()
     {
-        return 'data';
+        return self::DATA_COLUMN;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEditableContentRequired(array $row)
+    {
+        if (isset($this->editable)) {
+            if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     //-------------------------------------------------

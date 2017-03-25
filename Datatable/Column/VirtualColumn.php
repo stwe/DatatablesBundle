@@ -54,7 +54,6 @@ class VirtualColumn extends Column
         $resolver->remove('data');
         $resolver->remove('join_type');
         $resolver->remove('editable');
-        $resolver->remove('editable_if');
 
         $resolver->setDefaults(array(
             'orderable' => false,

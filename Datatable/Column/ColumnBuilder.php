@@ -70,21 +70,14 @@ class ColumnBuilder
     private $columnNames;
 
     /**
-     * True when a unique Column was created.
+     * Unique Columns.
      *
-     * @var bool
+     * @var array
      */
-    private $uniqueFlag;
+    private $uniqueColumns;
 
     /**
-     * A generated MultiselectColumn.
-     *
-     * @var null|ColumnInterface
-     */
-    private $multiselectColumn;
-
-    /**
-     * The fully-qualified class name of the entity.
+     * The fully-qualified class name of the entity (e.g. AppBundle\Entity\Post).
      *
      * @var string
      */
@@ -111,8 +104,7 @@ class ColumnBuilder
 
         $this->columns = array();
         $this->columnNames = array();
-        $this->uniqueFlag = false;
-        $this->multiselectColumn = null;
+        $this->uniqueColumns = array();
         $this->entityClassName = $metadata->getName();
     }
 
@@ -132,69 +124,17 @@ class ColumnBuilder
      */
     public function add($dql, $class, array $options = array())
     {
-        /**
-         * @var AbstractColumn $column
-         */
         $column = Factory::create($class, ColumnInterface::class);
-        // creates the empty Column Options array and the Property Accessor
         $column->initOptions(false);
-        // the Column 'data' property has normally the same value as 'dql'
-        $column->setData($dql);
-        if (!isset($options['dql'])) {
-            $column->setCustomDql(false);
-            $column->setDql($dql);
-        } else {
-            $column->setCustomDql(true);
-        }
-        // set the name of the Datatable
-        $column->setDatatableName($this->datatableName);
-        // set the table name
-        $column->setEntityClassName($this->entityClassName);
-        // inject twig for rendering special Column content
-        $column->setTwig($this->twig);
-        // resolve options - !!'data' can be modified again!!
+
+        $this->handleDqlProperties($dql, $options, $column);
+        $this->setEnvironmentProperties($column);
         $column->set($options);
 
-        if (true === $column->isSelectColumn() && false === $column->isCustomDql()) {
-            $metadata = $this->metadata;
-            $parts = explode('.', $dql);
-            // add associations types
-            if (true === $column->isAssociation()) {
-                while (count($parts) > 1) {
-                    $currentPart = array_shift($parts);
+        $this->setTypeProperties($dql, $column);
+        $this->addColumn($dql, $column);
 
-                    /** @noinspection PhpUndefinedMethodInspection */
-                    $column->addTypeOfAssociation($metadata->getAssociationMapping($currentPart)['type']);
-                    $metadata = $this->getMetadataFromAssociation($currentPart, $metadata);
-                }
-            }
-            // set the type of the field
-            $this->setTypeOfField($metadata, $column, $parts[0]);
-        }
-
-        if (true === $column->callAddIfClosure()) {
-            $this->columns[] = $column;
-            $index = count($this->columns) - 1;
-            $this->columnNames[$dql] = $index;
-            $column->setIndex($index);
-
-            // Use the Column-Index as data source for Columns with 'dql' === null
-            if (null === $column->getDql() && null === $column->getData()) {
-                $column->setData($index);
-            }
-        }
-
-        // @todo: two or more unique column types
-        if (true === $column->isUnique()) {
-            if (false === $this->uniqueFlag) {
-                $this->uniqueFlag = true;
-                if ('multiselect' === $column->getColumnType()) {
-                    $this->multiselectColumn = $column;
-                }
-            } else {
-                throw new Exception('ColumnBuilder::add(): There is only one unique Column allowed. Check the Column with index: '.$column->getIndex().'.');
-            }
-        }
+        $this->checkUnique();
 
         return $this;
     }
@@ -224,13 +164,15 @@ class ColumnBuilder
     }
 
     /**
-     * Get multiselectColumn.
+     * Get a unique Column by his type.
      *
-     * @return null|ColumnInterface
+     * @param string $columnType
+     *
+     * @return mixed|null
      */
-    public function getMultiselectColumn()
+    public function getUniqueColumn($columnType)
     {
-        return $this->multiselectColumn;
+        return array_key_exists($columnType, $this->uniqueColumns) ? $this->uniqueColumns[$columnType] : null;
     }
 
     //-------------------------------------------------
@@ -285,6 +227,127 @@ class ColumnBuilder
     {
         if (null === $column->getTypeOfField()) {
             $column->setTypeOfField($metadata->getTypeOfField($field));
+        }
+
+        return $this;
+    }
+
+    /**
+     * Handle dql properties.
+     *
+     * @param string         $dql
+     * @param array          $options
+     * @param AbstractColumn $column
+     *
+     * @return $this
+     */
+    private function handleDqlProperties($dql, array $options, AbstractColumn $column)
+    {
+        // the Column 'data' property has normally the same value as 'dql'
+        $column->setData($dql);
+
+        if (!isset($options['dql'])) {
+            $column->setCustomDql(false);
+            $column->setDql($dql);
+        } else {
+            $column->setCustomDql(true);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set environment properties.
+     *
+     * @param AbstractColumn $column
+     *
+     * @return $this
+     */
+    private function setEnvironmentProperties(AbstractColumn $column)
+    {
+        $column->setDatatableName($this->datatableName);
+        $column->setEntityClassName($this->entityClassName);
+        $column->setTwig($this->twig);
+
+        return $this;
+    }
+
+    /**
+     * Sets some types.
+     *
+     * @param string         $dql
+     * @param AbstractColumn $column
+     *
+     * @return $this
+     */
+    private function setTypeProperties($dql, AbstractColumn $column)
+    {
+        if (true === $column->isSelectColumn() && false === $column->isCustomDql()) {
+            $metadata = $this->metadata;
+            $parts = explode('.', $dql);
+            // add associations types
+            if (true === $column->isAssociation()) {
+                while (count($parts) > 1) {
+                    $currentPart = array_shift($parts);
+
+                    /** @noinspection PhpUndefinedMethodInspection */
+                    $column->addTypeOfAssociation($metadata->getAssociationMapping($currentPart)['type']);
+                    $metadata = $this->getMetadataFromAssociation($currentPart, $metadata);
+                }
+            } else {
+                $column->setTypeOfAssociation(null);
+            }
+
+            // set the type of the field
+            $this->setTypeOfField($metadata, $column, $parts[0]);
+        } else {
+            $column->setTypeOfAssociation(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Adds a Column.
+     *
+     * @param string         $dql
+     * @param AbstractColumn $column
+     *
+     * @return $this
+     */
+    private function addColumn($dql, AbstractColumn $column)
+    {
+        if (true === $column->callAddIfClosure()) {
+            $this->columns[] = $column;
+            $index = count($this->columns) - 1;
+            $this->columnNames[$dql] = $index;
+            $column->setIndex($index);
+
+            // Use the Column-Index as data source for Columns with 'dql' === null
+            if (null === $column->getDql() && null === $column->getData()) {
+                $column->setData($index);
+            }
+
+            if (true === $column->isUnique()) {
+                $this->uniqueColumns[$column->getColumnType()] = $column;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Check unique.
+     *
+     * @return $this
+     * @throws Exception
+     */
+    private function checkUnique()
+    {
+        $unique = $this->uniqueColumns;
+
+        if (count(array_unique($unique)) < count($unique)) {
+            throw new Exception('ColumnBuilder::checkUnique(): Unique columns are only allowed once.');
         }
 
         return $this;

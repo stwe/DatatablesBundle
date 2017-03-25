@@ -67,7 +67,7 @@ class DatatableFormatter
     public function runFormatter(Paginator $paginator, DatatableInterface $datatable)
     {
         $lineFormatter = $datatable->getLineFormatter();
-        $columns = $datatable->getColumns();
+        $columns = $datatable->getColumnBuilder()->getColumns();
 
         foreach ($paginator as $row) {
             // Adding custom DQL fields make PARTIAL columns stored in key 0

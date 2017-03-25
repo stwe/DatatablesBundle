@@ -199,7 +199,7 @@ class DatatableResponse
      */
     private function validateColumnsPositions(DatatableInterface $datatable)
     {
-        $columns = $datatable->getColumns();
+        $columns = $datatable->getColumnBuilder()->getColumns();
         $lastPosition = count($columns);
 
         /** @var ColumnInterface $column */

@@ -43,11 +43,14 @@ class Column extends AbstractColumn
      */
     public function renderCellContent(array &$row)
     {
+        // in-place editing
         if (false === $this->isToManyAssociation()) {
-            if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
+            if (true === $this->isEditableContentRequired($row)) {
                 $this->renderEditableContent($row, $this->data);
             }
         }
+
+        // @todo: in-place editing for toMany content
     }
 
     /**

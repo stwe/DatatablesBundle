@@ -11,7 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
-use Sg\DatatablesBundle\Datatable\Column\ColumnInterface;
+use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -39,25 +39,11 @@ interface DatatableInterface
     public function getLineFormatter();
 
     /**
-     * Get all generated Columns.
+     * Get ColumnBuilder.
      *
-     * @return array
+     * @return ColumnBuilder
      */
-    public function getColumns();
-
-    /**
-     * Get an array of Column names as keys and Column ids as values.
-     *
-     * @return array
-     */
-    public function getColumnNames();
-
-    /**
-     * Returns a MultiselectColumn if it exists.
-     *
-     * @return null|ColumnInterface
-     */
-    public function getMultiselectColumn();
+    public function getColumnBuilder();
 
     /**
      * Get Ajax instance.

@@ -66,7 +66,7 @@ class DateTimeColumn extends AbstractColumn
             $path = Helper::getDataPropertyPath($this->data);
             $render = $this->getBaseRenderVars($row, $path);
 
-            if ($this->editable instanceof EditableInterface && true === $this->editable->callEditableIfClosure($row)) {
+            if (true === $this->isEditableContentRequired($row)) {
                 $render = array_merge($render, array(
                     'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
                     'pk' => $row[$this->editable->getPk()],
