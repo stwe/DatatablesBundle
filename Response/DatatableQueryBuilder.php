@@ -375,11 +375,27 @@ class DatatableQueryBuilder
             $globalSearch = $this->requestParams['search']['value'];
 
             $orExpr = $qb->expr()->orX();
-            $searchType = $this->options->getGlobalSearchType();
+            $globalSearchType = $this->options->getGlobalSearchType();
 
             foreach ($this->columns as $key => $column) {
                 if (true === $this->isSearchableColumn($column)) {
+                    $searchType = $globalSearchType;
                     $searchField = $this->searchColumns[$key];
+                    // Subqueries and arithmetics fields can't be search with LIKE
+                    if ($column->isCustomDql() && ('string' != $column->getTypeOfField()) || preg_match('/SELECT .+ FROM .+/', $searchField)) {
+                        if (!is_numeric($globalSearch)) {
+                            continue;
+                        }
+                        $globalSearch = floatval($globalSearch);
+                        switch ($searchType) {
+                            case 'like':
+                                $searchType = 'eq';
+                                break;
+                            case 'notLike':
+                                $searchType = 'neq';
+                                break;
+                        }
+                    }
                     $this->setOrExpression($orExpr, $qb, $searchType, $searchField, $globalSearch, $key);
                 }
             }
@@ -691,18 +707,6 @@ class DatatableQueryBuilder
      */
     private function setOrExpression(Orx $orExpr, QueryBuilder $qb, $searchType, $searchField, $searchValue, $key)
     {
-        // Subqueries fields can't be search with LIKE
-        if (preg_match('/SELECT .+ FROM .+/', $searchField)) {
-            switch ($searchType) {
-                case 'like':
-                    $searchType = 'eq';
-                    break;
-                case 'notLike':
-                    $searchType = 'neq';
-                    break;
-            }
-        }
-
         switch ($searchType) {
             case 'like':
                 $orExpr->add($qb->expr()->like($searchField, '?'.$key));
