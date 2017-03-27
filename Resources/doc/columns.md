@@ -301,6 +301,8 @@ All options of [Column](#1-column), except `editable`.
 
 ### Example
 
+#### Image
+
 ``` php
 $this->columnBuilder
     ->add('image', ImageColumn::class, array(
@@ -313,6 +315,21 @@ $this->columnBuilder
     ))
 ;
 ```
+
+#### Gallery (one-to-many association)
+
+``` php
+$this->columnBuilder
+    ->add('images.fileName', ImageColumn::class, array(
+        'title' => 'Images',
+        'data' => 'images[ ].fileName',
+        'imagine_filter' => 'thumbnail_50_x_50',
+        'imagine_filter_enlarged' => 'thumbnail_250_x_250',
+        'relative_path' => 'images',
+        'holder_url' => 'https://placehold.it',
+        'enlarge' => true,
+    ))
+;
 ___
 
 ## 5. Virtual column

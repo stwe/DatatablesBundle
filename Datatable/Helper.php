@@ -42,14 +42,14 @@ class Helper
      */
     public static function getDataPropertyPath($data, &$value = null)
     {
-        // remove all whitespaces from $data
-        $data = str_replace(' ', '', $data);
-
         // handle nested array case
-        if (true === is_int(strpos($data, '[,]'))) {
-            $before = strstr($data, '[,]', true);
-            $value = strstr($data, '[,]', false);
-            $value = '['.str_replace('[,].', '', $value).']';
+        if (true === is_int(strpos($data, '['))) {
+            $before = strstr($data, '[', true);
+            $value = strstr($data, ']', false);
+
+            // remove needle
+            $value = '['.str_replace('].', '', $value).']';
+
             $data = $before;
         }
 
