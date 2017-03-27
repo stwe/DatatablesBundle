@@ -34,7 +34,7 @@
 
 [ x ] Multiselect Column
 
-[ ! ] Image / Gallery Column
+[ x ] Image / Gallery Column
 
 ## Filter Types
 

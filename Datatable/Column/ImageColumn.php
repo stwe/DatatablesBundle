@@ -102,11 +102,7 @@ class ImageColumn extends AbstractColumn
      */
     public function renderCellContent(array &$row)
     {
-        if (false === $this->isToManyAssociation()) {
-            $this->renderContent($row, $this->data);
-        }
-
-        // @todo: toMany content
+        $this->isToManyAssociation() ? $this->renderGallery($row) : $this->renderImage($row);
     }
 
     /**
@@ -341,16 +337,15 @@ class ImageColumn extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Render editable content.
+     * Render image.
      *
-     * @param array  $row
-     * @param string $data
+     * @param array $row
      *
      * @return $this
      */
-    private function renderContent(array &$row, $data)
+    private function renderImage(array &$row)
     {
-        $path = Helper::getDataPropertyPath($data);
+        $path = Helper::getDataPropertyPath($this->data);
 
         $content = $this->twig->render(
             $this->getCellContentTemplate(),
@@ -362,6 +357,42 @@ class ImageColumn extends AbstractColumn
         );
 
         $this->accessor->setValue($row, $path, $content);
+
+        return $this;
+    }
+
+    /**
+     * Render gallery.
+     *
+     * @param array $row
+     *
+     * @return $this
+     */
+    private function renderGallery(array &$row)
+    {
+        // e.g. images[, ].fileName
+        //     => $path = [images]
+        //     => $value = [fileName]
+        $value = null;
+        $path = Helper::getDataPropertyPath($this->data, $value);
+
+        $images = $this->accessor->getValue($row, $path);
+
+        if (count($images) > 0) {
+            foreach ($images as $key => $image) {
+                $currentPath = $path.'['.$key.']'.$value;
+                $content = $this->twig->render(
+                    $this->getCellContentTemplate(),
+                    array(
+                        'data' => $this->accessor->getValue($row, $currentPath),
+                        'image' => $this,
+                        'image_class' => 'sg-datatables-'.$this->getDatatableName().'-gallery-image',
+                    )
+                );
+
+                $this->accessor->setValue($row, $currentPath, $content);
+            }
+        }
 
         return $this;
     }

@@ -35,12 +35,25 @@ class Helper
     /**
      * Returns a property path for the Accessor.
      *
-     * @param string $data
+     * @param string      $data
+     * @param null|string $value
      *
      * @return string
      */
-    public static function getDataPropertyPath($data)
+    public static function getDataPropertyPath($data, &$value = null)
     {
+        // remove all whitespaces from $data
+        $data = str_replace(' ', '', $data);
+
+        // handle nested array case
+        if (true === is_int(strpos($data, '[,]'))) {
+            $before = strstr($data, '[,]', true);
+            $value = strstr($data, '[,]', false);
+            $value = '['.str_replace('[,].', '', $value).']';
+            $data = $before;
+        }
+
+        // e.g. 'createdBy.allowed' => [createdBy][allowed]
         return '['.str_replace('.', '][', $data).']';
     }
 }
