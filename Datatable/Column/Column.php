@@ -46,7 +46,7 @@ class Column extends AbstractColumn
         // in-place editing
         if (false === $this->isToManyAssociation()) {
             if (true === $this->isEditableContentRequired($row)) {
-                $this->renderEditableContent($row, $this->data);
+                $this->renderEditableContent($row);
             }
         }
 
@@ -114,14 +114,13 @@ class Column extends AbstractColumn
     /**
      * Render editable content.
      *
-     * @param array  $row
-     * @param string $data
+     * @param array $row
      *
      * @return $this
      */
-    private function renderEditableContent(array &$row, $data)
+    private function renderEditableContent(array &$row)
     {
-        $path = Helper::getDataPropertyPath($data);
+        $path = Helper::getDataPropertyPath($this->data);
 
         $render = array(
             'data' => $this->accessor->getValue($row, $path),
