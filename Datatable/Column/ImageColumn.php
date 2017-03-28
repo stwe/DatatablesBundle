@@ -347,14 +347,7 @@ class ImageColumn extends AbstractColumn
     {
         $path = Helper::getDataPropertyPath($this->data);
 
-        $content = $this->twig->render(
-            $this->getCellContentTemplate(),
-            array(
-                'data' => $this->accessor->getValue($row, $path),
-                'image' => $this,
-                'image_class' => 'sg-datatables-'.$this->getDatatableName().'-image',
-            )
-        );
+        $content = $this->renderImageTemplate($this->accessor->getValue($row, $path), '-image');
 
         $this->accessor->setValue($row, $path, $content);
 
@@ -370,7 +363,7 @@ class ImageColumn extends AbstractColumn
      */
     private function renderGallery(array &$row)
     {
-        // e.g. images[, ].fileName
+        // e.g. images[ ].fileName
         //     => $path = [images]
         //     => $value = [fileName]
         $value = null;
@@ -381,19 +374,36 @@ class ImageColumn extends AbstractColumn
         if (count($images) > 0) {
             foreach ($images as $key => $image) {
                 $currentPath = $path.'['.$key.']'.$value;
-                $content = $this->twig->render(
-                    $this->getCellContentTemplate(),
-                    array(
-                        'data' => $this->accessor->getValue($row, $currentPath),
-                        'image' => $this,
-                        'image_class' => 'sg-datatables-'.$this->getDatatableName().'-gallery-image',
-                    )
-                );
-
+                $content = $this->renderImageTemplate($this->accessor->getValue($row, $currentPath), '-gallery-image');
                 $this->accessor->setValue($row, $currentPath, $content);
             }
+        } else {
+            // create an entry for the placeholder image
+            $currentPath = $path.'[0]'.$value;
+            $content = $this->renderImageTemplate(null, '-gallery-image');
+            $this->accessor->setValue($row, $currentPath, $content);
         }
 
         return $this;
+    }
+
+    /**
+     * Render image template.
+     *
+     * @param $data
+     * @param $classSuffix
+     *
+     * @return mixed|string
+     */
+    private function renderImageTemplate($data, $classSuffix)
+    {
+        return $this->twig->render(
+            $this->getCellContentTemplate(),
+            array(
+                'data' => $data,
+                'image' => $this,
+                'image_class' => 'sg-datatables-'.$this->getDatatableName().$classSuffix,
+            )
+        );
     }
 }
