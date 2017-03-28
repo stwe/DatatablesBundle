@@ -330,8 +330,8 @@ $this->columnBuilder
         'enlarge' => true,
     ))
 ;
+```
 ___
-
 ## 5. Virtual column
 
 Represents a virtual column.
