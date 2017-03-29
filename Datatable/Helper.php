@@ -48,7 +48,9 @@ class Helper
             $value = strstr($data, ']', false);
 
             // remove needle
-            $value = '['.str_replace('].', '', $value).']';
+            $value = str_replace('].', '', $value);
+            // format value
+            $value = '['.str_replace('.', '][', $value).']';
 
             $data = $before;
         }
