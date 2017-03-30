@@ -390,8 +390,8 @@ class ImageColumn extends AbstractColumn
     /**
      * Render image template.
      *
-     * @param $data
-     * @param $classSuffix
+     * @param string $data
+     * @param string $classSuffix
      *
      * @return mixed|string
      */

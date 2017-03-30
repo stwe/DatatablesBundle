@@ -43,14 +43,7 @@ class Column extends AbstractColumn
      */
     public function renderCellContent(array &$row)
     {
-        // in-place editing
-        if (false === $this->isToManyAssociation()) {
-            if (true === $this->isEditableContentRequired($row)) {
-                $this->renderEditableContent($row);
-            }
-        }
-
-        // @todo: in-place editing for toMany content
+        $this->isToManyAssociation() ? $this->renderToMany($row) : $this->renderSingleField($row);
     }
 
     /**
@@ -112,29 +105,77 @@ class Column extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Render editable content.
+     * Render single field.
      *
      * @param array $row
      *
      * @return $this
      */
-    private function renderEditableContent(array &$row)
+    private function renderSingleField(array &$row)
     {
-        $path = Helper::getDataPropertyPath($this->data);
+        if ($this->isEditableContentRequired($row)) {
+            $path = Helper::getDataPropertyPath($this->data);
 
-        $render = array(
-            'data' => $this->accessor->getValue($row, $path),
-            'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
-            'pk' => $row[$this->editable->getPk()],
-        );
+            $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
 
-        $content = $this->twig->render(
-            $this->getCellContentTemplate(),
-            $render
-        );
-
-        $this->accessor->setValue($row, $path, $content);
+            $this->accessor->setValue($row, $path, $content);
+        }
 
         return $this;
+    }
+
+    /**
+     * Render toMany.
+     *
+     * @param array $row
+     *
+     * @return $this
+     */
+    private function renderToMany(array &$row)
+    {
+        if ($this->isEditableContentRequired($row)) {
+            // e.g. comments[ ].createdBy.username
+            //     => $path = [comments]
+            //     => $value = [createdBy][username]
+            $value = null;
+            $path = Helper::getDataPropertyPath($this->data, $value);
+
+            $entries = $this->accessor->getValue($row, $path);
+
+            if (count($entries) > 0) {
+                foreach ($entries as $key => $entry) {
+                    $currentPath = $path.'['.$key.']'.$value;
+                    $content = $this->renderTemplate(
+                        $this->accessor->getValue($row, $currentPath),
+                        $row[$this->editable->getPk()]
+                    );
+                    $this->accessor->setValue($row, $currentPath, $content);
+                }
+            } else {
+                // no placeholder - leave this blank
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Render template.
+     *
+     * @param string $data
+     * @param string $pk
+     *
+     * @return mixed|string
+     */
+    private function renderTemplate($data, $pk)
+    {
+        return $this->twig->render(
+            $this->getCellContentTemplate(),
+            array(
+                'data' => $data,
+                'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
+                'pk' => $pk,
+            )
+        );
     }
 }
