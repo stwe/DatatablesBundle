@@ -269,6 +269,14 @@ abstract class AbstractColumn implements ColumnInterface
      */
     protected $typeOfAssociation;
 
+    /**
+     * Saves the original type of the field.
+     * Is set in the ColumnBuilder.
+     *
+     * @var null|string
+     */
+    protected $originalTypeOfField;
+
     //-------------------------------------------------
     // Options
     //-------------------------------------------------
@@ -1001,6 +1009,30 @@ abstract class AbstractColumn implements ColumnInterface
     public function addTypeOfAssociation($typeOfAssociation)
     {
         $this->typeOfAssociation[] = $typeOfAssociation;
+
+        return $this;
+    }
+
+    /**
+     * Get originalTypeOfField.
+     *
+     * @return null|string
+     */
+    public function getOriginalTypeOfField()
+    {
+        return $this->originalTypeOfField;
+    }
+
+    /**
+     * Set originalTypeOfField.
+     *
+     * @param null|string $originalTypeOfField
+     *
+     * @return $this
+     */
+    public function setOriginalTypeOfField($originalTypeOfField)
+    {
+        $this->originalTypeOfField = $originalTypeOfField;
 
         return $this;
     }

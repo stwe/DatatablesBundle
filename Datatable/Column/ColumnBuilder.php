@@ -229,6 +229,8 @@ class ColumnBuilder
             $column->setTypeOfField($metadata->getTypeOfField($field));
         }
 
+        $column->setOriginalTypeOfField($metadata->getTypeOfField($field));
+
         return $this;
     }
 

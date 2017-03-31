@@ -13,6 +13,8 @@ $(".{{ column_class_editable_selector|raw }}").editable({
     params: function (params) {
         params.entityClassName = '{{ entity_class_name }}';
         params.token = '{{ token }}';
+        params.originalTypeOfField = '{{ original_type_of_field }}';
+        params.path = $(this).editable().data('path');
 
         {% if editable_options.params is not null %}
             {% for key, param in editable_options.params %}

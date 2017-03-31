@@ -33,7 +33,7 @@ class Helper
     }
 
     /**
-     * Returns a property path for the Accessor.
+     * Returns a array notated property path for the Accessor.
      *
      * @param string      $data
      * @param null|string $value
@@ -57,5 +57,22 @@ class Helper
 
         // e.g. 'createdBy.allowed' => [createdBy][allowed]
         return '['.str_replace('.', '][', $data).']';
+    }
+
+    /**
+     * Returns object notated property path.
+     *
+     * @param string $path
+     * @param int    $key
+     * @param string $value
+     *
+     * @return string
+     */
+    public static function getPropertyPathObjectNotation($path, $key, $value)
+    {
+        $objectValue = str_replace('][', '.', $value);
+        $objectValue = str_replace(array('[', ']'), '', $objectValue);
+
+        return str_replace(array('[', ']'), '', $path).'['.$key.'].'.$objectValue;
     }
 }

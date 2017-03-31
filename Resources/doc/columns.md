@@ -332,6 +332,7 @@ $this->columnBuilder
 ;
 ```
 ___
+
 ## 5. Virtual column
 
 Represents a virtual column.

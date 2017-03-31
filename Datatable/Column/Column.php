@@ -67,6 +67,7 @@ class Column extends AbstractColumn
                     'editable_options' => $this->editable,
                     'entity_class_name' => $this->getEntityClassName(),
                     'column_dql' => $this->dql,
+                    'original_type_of_field' => $this->getOriginalTypeOfField(),
                 )
             );
         }
@@ -145,9 +146,12 @@ class Column extends AbstractColumn
             if (count($entries) > 0) {
                 foreach ($entries as $key => $entry) {
                     $currentPath = $path.'['.$key.']'.$value;
+                    $currentObjectPath = Helper::getPropertyPathObjectNotation($path, $key, $value);
+
                     $content = $this->renderTemplate(
                         $this->accessor->getValue($row, $currentPath),
-                        $row[$this->editable->getPk()]
+                        $row[$this->editable->getPk()],
+                        $currentObjectPath
                     );
                     $this->accessor->setValue($row, $currentPath, $content);
                 }
@@ -162,12 +166,13 @@ class Column extends AbstractColumn
     /**
      * Render template.
      *
-     * @param string $data
-     * @param string $pk
+     * @param string      $data
+     * @param string      $pk
+     * @param string|null $path
      *
      * @return mixed|string
      */
-    private function renderTemplate($data, $pk)
+    private function renderTemplate($data, $pk, $path = null)
     {
         return $this->twig->render(
             $this->getCellContentTemplate(),
@@ -175,6 +180,7 @@ class Column extends AbstractColumn
                 'data' => $data,
                 'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
                 'pk' => $pk,
+                'path' => $path,
             )
         );
     }

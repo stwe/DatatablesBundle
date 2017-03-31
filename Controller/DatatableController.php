@@ -14,6 +14,7 @@ namespace Sg\DatatablesBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -47,14 +48,16 @@ class DatatableController extends Controller
     public function editAction(Request $request)
     {
         if ($request->isXmlHttpRequest()) {
-            // default params
-            $pk = $request->request->get('pk');
-            $field = $request->request->get('name');
-            $value = $request->request->get('value');
+            // x-editable sends some default parameters
+            $pk = $request->request->get('pk');       // entity primary key
+            $field = $request->request->get('name');  // e.g. comments.createdBy.username
+            $value = $request->request->get('value'); // the new value
 
             // additional params
-            $entityClassName = $request->request->get('entityClassName');
+            $entityClassName = $request->request->get('entityClassName'); // e.g. AppBundle\Entity\Post
             $token = $request->request->get('token');
+            $originalTypeOfField = $request->request->get('originalTypeOfField');
+            $path = $request->request->get('path'); // for toMany - the current element
 
             // check token
             if (!$this->isCsrfTokenValid('sg-datatables-editable', $token)) {
@@ -64,16 +67,19 @@ class DatatableController extends Controller
             // get an object by its primary key
             $entity = $this->getEntityByPk($entityClassName, $pk);
 
-            // generate accessor
-            $accessor = PropertyAccess::createPropertyAccessor();
+            /** @var PropertyAccessor $accessor */
+            /** @noinspection PhpUndefinedMethodInspection */
+            $accessor = PropertyAccess::createPropertyAccessorBuilder()
+                ->enableMagicCall()
+                ->getPropertyAccessor();
 
-            // prepare value
-            $value = $this->prepareValue($entityClassName, $field, $value);
+            // normalize the new value
+            $value = $this->normalizeValue($originalTypeOfField, $value);
 
-            // write value
-            $accessor->setValue($entity, $field, $value);
+            // set new value
+            null !== $path ? $accessor->setValue($entity, $path, $value) : $accessor->setValue($entity, $field, $value);
 
-            // save
+            // save all
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -109,32 +115,17 @@ class DatatableController extends Controller
     }
 
     /**
-     * Prepare value.
+     * Normalize value.
      *
-     * @param string $entityClassName
-     * @param string $field
+     * @param string $originalTypeOfField
      * @param mixed  $value
      *
-     * @return bool|\DateTime|float|int
+     * @return bool|DateTime|float|int|null|string
      * @throws Exception
      */
-    private function prepareValue($entityClassName, $field, $value)
+    private function normalizeValue($originalTypeOfField, $value)
     {
-        /** @var \Doctrine\ORM\EntityManagerInterface $em */
-        $em = $this->getDoctrine()->getManager();
-        $metadata = $em->getClassMetadata($entityClassName);
-
-        if (false === strstr($field, '.')) {
-            $fieldType = $metadata->getTypeOfField($field);
-        } else {
-            // @todo: unlim. associations
-            $parts = explode('.', $field);
-            $targetClass = $metadata->getAssociationTargetClass($parts[0]);
-            $targetMeta = $em->getClassMetadata($targetClass);
-            $fieldType = $targetMeta->getTypeOfField($parts[1]);
-        }
-
-        switch ($fieldType) {
+        switch ($originalTypeOfField) {
             case Type::DATETIME:
                 $value = new DateTime($value);
                 break;
@@ -156,7 +147,7 @@ class DatatableController extends Controller
                 $value = (float) $value;
                 break;
             default:
-                throw new Exception("DatatableController::prepareValue(): The field type {$fieldType} is not supported.");
+                throw new Exception("DatatableController::prepareValue(): The field type {$originalTypeOfField} is not editable.");
         }
 
         return $value;
