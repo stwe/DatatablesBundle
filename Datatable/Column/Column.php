@@ -153,6 +153,7 @@ class Column extends AbstractColumn
                         $row[$this->editable->getPk()],
                         $currentObjectPath
                     );
+
                     $this->accessor->setValue($row, $currentPath, $content);
                 }
             } else {
@@ -166,7 +167,7 @@ class Column extends AbstractColumn
     /**
      * Render template.
      *
-     * @param string      $data
+     * @param string|null $data
      * @param string      $pk
      * @param string|null $path
      *

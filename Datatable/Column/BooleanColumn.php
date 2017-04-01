@@ -93,22 +93,7 @@ class BooleanColumn extends AbstractColumn
             $this->falseLabel = self::RENDER_FALSE_VALUE;
         }
 
-        if (false === $this->isToManyAssociation()) {
-            $path = Helper::getDataPropertyPath($this->data);
-            $render = $this->getBaseRenderVars($row, $path);
-
-            if (true === $this->isEditableContentRequired($row)) {
-                $render = array_merge($render, array(
-                    'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
-                    'pk' => $row[$this->editable->getPk()],
-                    'empty_text' => $this->editable->getEmptyText(),
-                ));
-            }
-
-            $this->renderContent($row, $render, $path);
-        }
-
-        // @todo: toMany content
+        $this->isToManyAssociation() ? $this->renderToMany($row) : $this->renderSingleField($row);
     }
 
     /**
@@ -132,6 +117,7 @@ class BooleanColumn extends AbstractColumn
                     'editable_options' => $this->editable,
                     'entity_class_name' => $this->getEntityClassName(),
                     'column_dql' => $this->dql,
+                    'original_type_of_field' => $this->getOriginalTypeOfField(),
                 )
             );
         }
@@ -286,43 +272,98 @@ class BooleanColumn extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Get base render vars.
+     * Render single field.
      *
-     * @param array  $row
-     * @param string $path
+     * @param array $row
      *
-     * @return array
+     * @return $this
      */
-    private function getBaseRenderVars(array $row, $path)
+    private function renderSingleField(array &$row)
     {
-        return array(
-            'data' => $this->accessor->getValue($row, $path),
+        $path = Helper::getDataPropertyPath($this->data);
+
+        if (true === $this->isEditableContentRequired($row)) {
+            $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
+        } else {
+            $content = $this->renderTemplate($this->accessor->getValue($row, $path));
+        }
+
+        $this->accessor->setValue($row, $path, $content);
+
+        return $this;
+    }
+
+    /**
+     * Render toMany.
+     *
+     * @param array $row
+     *
+     * @return $this
+     */
+    private function renderToMany(array &$row)
+    {
+        $value = null;
+        $path = Helper::getDataPropertyPath($this->data, $value);
+
+        $entries = $this->accessor->getValue($row, $path);
+
+        if (count($entries) > 0) {
+            foreach ($entries as $key => $entry) {
+                $currentPath = $path.'['.$key.']'.$value;
+                $currentObjectPath = Helper::getPropertyPathObjectNotation($path, $key, $value);
+
+                if (true === $this->isEditableContentRequired($row)) {
+                    $content = $this->renderTemplate(
+                        $this->accessor->getValue($row, $currentPath),
+                        $row[$this->editable->getPk()],
+                        $currentObjectPath
+                    );
+                } else {
+                    $content = $this->renderTemplate($this->accessor->getValue($row, $currentPath));
+                }
+
+                $this->accessor->setValue($row, $currentPath, $content);
+            }
+        } else {
+            // no placeholder - leave this blank
+        }
+
+        return $this;
+    }
+
+    /**
+     * Render template.
+     *
+     * @param string|null $data
+     * @param string|null $pk
+     * @param string|null $path
+     *
+     * @return mixed|string
+     */
+    private function renderTemplate($data, $pk = null, $path = null)
+    {
+        $renderVars = array(
+            'data' => $data,
             'default_content' => $this->getDefaultContent(),
             'true_label' => $this->trueLabel,
             'true_icon' => $this->trueIcon,
             'false_label' => $this->falseLabel,
             'false_icon' => $this->falseIcon,
         );
-    }
 
-    /**
-     * Render content.
-     *
-     * @param array  $row
-     * @param array  $render
-     * @param string $path
-     *
-     * @return $this
-     */
-    private function renderContent(array &$row, array $render, $path)
-    {
-        $content = $this->twig->render(
+        // editable vars
+        if (null !== $pk) {
+            $renderVars = array_merge($renderVars, array(
+                'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
+                'pk' => $pk,
+                'path' => $path,
+                'empty_text' => $this->editable->getEmptyText(),
+            ));
+        }
+
+        return $this->twig->render(
             $this->getCellContentTemplate(),
-            $render
+            $renderVars
         );
-
-        $this->accessor->setValue($row, $path, $content);
-
-        return $this;
     }
 }
