@@ -70,7 +70,7 @@ This [Site](https://datatables.net/examples/styling/index.html) includes some ex
 
 [ x ] Boolean Column
 
-[ ! ] DateTime Column (currently not for to-many associations)
+[ x ] DateTime Column
 
 ## Other
 
