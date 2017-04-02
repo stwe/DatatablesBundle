@@ -55,6 +55,17 @@ $(".{{ column_class_editable_selector|raw }}").editable({
     {% if editable_options.viewFormat is defined and editable_options.viewFormat is not null %}
     viewformat: '{{ editable_options.viewFormat }}',
     {% endif %}
+
+    {% if 'combodate' == editable_options.type %}
+        combodate: {
+            minYear: {{ editable_options.minYear }},
+            maxYear: {{ editable_options.maxYear }},
+            minuteStep: {{ editable_options.minuteStep }},
+            secondStep: {{ editable_options.secondStep }},
+            smartDays: {{ editable_options.smartDays|sg_datatables_bool_var }},
+        },
+    {% endif %}
+
     success: function() {
         if (pipeline > 0) {
             oTable.clearPipeline().draw();

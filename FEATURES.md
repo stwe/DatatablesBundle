@@ -62,7 +62,7 @@ This [Site](https://datatables.net/examples/styling/index.html) includes some ex
 
 [ x ] Select Editable
 
-[ ! ] Combodate Editable
+[ x ] Combodate Editable
 
 ## In-place Editing Columns
 
