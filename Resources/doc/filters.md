@@ -4,7 +4,8 @@
 2. [Text Filter](#2-text-filter)
 3. [Number Filter](#3-number-filter)
 4. [Select Filter](#4-select-filter)
-5. [DateRange Filter](#5-daterange-filter)
+5. [Select2 Filter](#5-select2-filter)
+6. [DateRange Filter](#6-daterange-filter)
 
 ## 1. Enable or disable the search abilities
 
@@ -177,7 +178,94 @@ $this->columnBuilder
 ```
 __
 
-## 5. DateRange Filter
+## 5. Select2 Filter
+
+**Be sure to install the [Select2](https://select2.github.io/) plugin before using the Filter.**
+
+### Default template
+
+SgDatatablesBundle:filter:select2.html.twig
+
+### Options
+
+All options of [Select Filter](#4-select-filter).
+
+**Additional:**
+
+| Option      | Type           | Default           | Description    |
+|-------------|----------------|-------------------|----------------|
+| placeholder | string or null | null              | Displaying a placeholder. |
+| allow_clear | bool or null   | null              | Will reset the selection. |
+| tags        | bool or null   | null              | Tagging support. |
+| language    | string or null | null (get locale) | i18n language code. |
+| url         | string or null | null              | URL to get the results from. |
+| delay       | integer        | 250               | Wait some milliseconds before triggering the request. |
+| cache       | bool           | true              | The AJAX cache. |
+
+### Example
+
+``` php
+$this->columnBuilder
+    ->add('createdBy.username', Column::class, array(
+        'title' => 'Created by',
+        'searchable' => true,
+        'orderable' => true,
+        'filter' => array(Select2Filter::class, array(
+            'select_options' => array('' => 'All') + $this->getOptionsArrayFromEntities($users, 'username', 'username'),
+            'search_type' => 'eq',
+            'cancel_button' => true,
+        )),
+;
+```
+
+**Remote example:**
+
+``` php
+$this->columnBuilder
+    ->add('createdBy.username', Column::class, array(
+        'title' => 'Created by',
+        'searchable' => true,
+        'orderable' => true,
+        'width' => '100%', // the input field is otherwise too narrow
+        'filter' => array(Select2Filter::class, array(
+            //'select_options' => array('' => 'All') + $this->getOptionsArrayFromEntities($users, 'username', 'username'),
+            'search_type' => 'eq',
+            'cancel_button' => true,
+            'url' => 'select2_createdby_usernames',
+        )),
+    ))
+;
+```
+
+``` php
+/**
+ * @param Request $request
+ *
+ * @Route("/select2-usernames", name="select2_createdby_usernames")
+ *
+ * @return JsonResponse|Response
+ */
+public function select2CreatedByUsersnames(Request $request)
+{
+    if ($request->isXmlHttpRequest()) {
+        $em = $this->getDoctrine()->getManager();
+        $users = $em->getRepository('AppBundle:User')->findAll();
+
+        $result = array();
+
+        foreach ($users as $user) {
+            $result[$user->getId()] = $user->getUsername();
+        }
+
+        return new JsonResponse($result);
+    }
+
+    return new Response('Bad request.', 400);
+}
+```
+__
+
+## 6. DateRange Filter
 
 **Be sure to install the [Moment.js](https://momentjs.com/) and the [Bootstrap Date Range Picker](http://www.daterangepicker.com/) plugins before using the Filter.**
 

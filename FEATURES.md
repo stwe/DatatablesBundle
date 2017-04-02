@@ -46,7 +46,7 @@
 
 [ x ] DateRange Filter
 
-[   ] Select2 Filter
+[ x ] Select2 Filter
 
 ## Styling
 
