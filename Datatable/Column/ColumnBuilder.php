@@ -304,6 +304,7 @@ class ColumnBuilder
             $this->setTypeOfField($metadata, $column, $parts[0]);
         } else {
             $column->setTypeOfAssociation(null);
+            $column->setOriginalTypeOfField(null);
         }
 
         return $this;

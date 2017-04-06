@@ -24,27 +24,28 @@ SgDatatablesBundle:render:column.html.twig
 
 With 'null' initialized options uses the default value of the DataTables plugin.
 
-| Option          | Type               | Default           | Required | Description |
-|-----------------|--------------------|-------------------|----------|-------------|
-| cell_type       | null or string     | null              |          | Cell type to be created for a column. |
-| class_name      | null or string     | null              |          | Class to assign to each cell in the column. |
-| content_padding | null or string     | null              |          | Add padding to the text content used when calculating the optimal with for a table. |
-| dql             | null or string     |                   |          | Custom DQL code for the column. |
-| data            | null or string     |                   |          | The data source for the column. |
-| default_content | null or string     | null              |          | Set default, static, content for a column. |
-| name            | null or string     | null              |          | Set a descriptive name for a column. |
-| orderable       | bool               | true              |          | Enable or disable ordering on this column. |
-| order_data      | null, array or int | null              |          | Define multiple column ordering as the default order for a column. |
-| order_sequence  | null or array      | null              |          | Order direction application sequence. |
-| searchable      | bool               | true              |          | Enable or disable filtering on the data in this column. |
-| title           | null or string     | null              |          | Set the column title. |
-| visible         | bool               | true              |          | Enable or disable the display of this column. |
-| width           | null or string     | null              |          | Column width assignment. |
-| add_if          | null or Closure    | null              |          | Add column only if conditions are TRUE. |
-| join_type       | string             | 'leftJoin'        |          | Join type (default: 'leftJoin'), if the column represents an association. |
-| type_of_field   | null or string     | null (autodetect) |          | Set the data type itself for ordering (example: integer instead string). |
-| filter          | array              | TextFilter        |          | A Filter instance for individual filtering. |
-| editable        | array or null      | null              |          | An Editable instance for in-place editing. |
+| Option              | Type               | Default           | Required | Description |
+|---------------------|--------------------|-------------------|----------|-------------|
+| cell_type           | null or string     | null              |          | Cell type to be created for a column. |
+| class_name          | null or string     | null              |          | Class to assign to each cell in the column. |
+| content_padding     | null or string     | null              |          | Add padding to the text content used when calculating the optimal with for a table. |
+| dql                 | null or string     |                   |          | Custom DQL code for the column. |
+| data                | null or string     |                   |          | The data source for the column. |
+| default_content     | null or string     | null              |          | Set default, static, content for a column. |
+| name                | null or string     | null              |          | Set a descriptive name for a column. |
+| orderable           | bool               | true              |          | Enable or disable ordering on this column. |
+| order_data          | null, array or int | null              |          | Define multiple column ordering as the default order for a column. |
+| order_sequence      | null or array      | null              |          | Order direction application sequence. |
+| searchable          | bool               | true              |          | Enable or disable filtering on the data in this column. |
+| title               | null or string     | null              |          | Set the column title. |
+| visible             | bool               | true              |          | Enable or disable the display of this column. |
+| width               | null or string     | null              |          | Column width assignment. |
+| add_if              | null or Closure    | null              |          | Add column only if conditions are TRUE. |
+| join_type           | string             | 'leftJoin'        |          | Join type (default: 'leftJoin'), if the column represents an association. |
+| type_of_field       | null or string     | null (autodetect) |          | Set the data type itself for ordering (example: integer instead string). |
+| responsive_priority | null or int        | null              |          | Set column's visibility priority. Requires the Responsive extension. |
+| filter              | array              | TextFilter        |          | A Filter instance for individual filtering. |
+| editable            | array or null      | null              |          | An Editable instance for in-place editing. |
 
 ### Example
 

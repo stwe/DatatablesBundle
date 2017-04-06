@@ -132,7 +132,7 @@ class Callbacks
     //-------------------------------------------------
 
     /**
-     * Ajax constructor.
+     * Callbacks constructor.
      */
     public function __construct()
     {

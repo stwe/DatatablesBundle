@@ -218,6 +218,19 @@ abstract class AbstractColumn implements ColumnInterface
     protected $dql;
 
     //-------------------------------------------------
+    // Extensions Options
+    //-------------------------------------------------
+
+    /**
+     * Set column's visibility priority.
+     * Requires the Responsive extension.
+     * Default: null
+     *
+     * @var null|int
+     */
+    protected $responsivePriority;
+
+    //-------------------------------------------------
     // Other Properties
     //-------------------------------------------------
 
@@ -270,7 +283,7 @@ abstract class AbstractColumn implements ColumnInterface
     protected $typeOfAssociation;
 
     /**
-     * Saves the original type of the field.
+     * Saves the original type of field for the DatatableController editAction.
      * Is set in the ColumnBuilder.
      *
      * @var null|string
@@ -309,6 +322,7 @@ abstract class AbstractColumn implements ColumnInterface
             'add_if' => null,
             'join_type' => 'leftJoin',
             'type_of_field' => null,
+            'responsive_priority' => null,
         ));
 
         $resolver->setAllowedTypes('cell_type', array('null', 'string'));
@@ -328,6 +342,7 @@ abstract class AbstractColumn implements ColumnInterface
         $resolver->setAllowedTypes('add_if', array('null', 'Closure'));
         $resolver->setAllowedTypes('join_type', 'string');
         $resolver->setAllowedTypes('type_of_field', array('null', 'string'));
+        $resolver->setAllowedTypes('responsive_priority', array('null', 'int'));
 
         $resolver->setAllowedValues('cell_type', array(null, 'th', 'td'));
         $resolver->setAllowedValues('join_type', array(null, 'join', 'leftJoin', 'innerJoin'));
@@ -822,6 +837,30 @@ abstract class AbstractColumn implements ColumnInterface
     public function setTypeOfField($typeOfField)
     {
         $this->typeOfField = $typeOfField;
+
+        return $this;
+    }
+
+    /**
+     * Get responsivePriority.
+     *
+     * @return int|null
+     */
+    public function getResponsivePriority()
+    {
+        return $this->responsivePriority;
+    }
+
+    /**
+     * Set responsivePriority.
+     *
+     * @param int|null $responsivePriority
+     *
+     * @return $this
+     */
+    public function setResponsivePriority($responsivePriority)
+    {
+        $this->responsivePriority = $responsivePriority;
 
         return $this;
     }

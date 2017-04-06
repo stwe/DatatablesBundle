@@ -80,14 +80,12 @@ trait OptionsTrait
     public function set(array $options)
     {
         $resolver = new OptionsResolver();
-        /** @noinspection PhpUndefinedMethodInspection */
         $this->configureOptions($resolver);
 
         $this->options = $resolver->resolve($options);
 
         if (null !== $this->nestedOptionsResolver) {
             foreach ($options as $key => $value) {
-                /** @noinspection PhpUndefinedMethodInspection */
                 $this->configureAndResolveNestedOptions($this->options[$key]);
             }
         }

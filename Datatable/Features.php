@@ -135,7 +135,7 @@ class Features
     //-------------------------------------------------
 
     /**
-     * Options constructor.
+     * Features constructor.
      */
     public function __construct()
     {

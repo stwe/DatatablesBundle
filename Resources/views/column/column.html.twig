@@ -53,6 +53,9 @@
         {% if column.orderable is same as(false) %}
             "orderable": false,
         {% endif %}
+        {% if column.responsivePriority is not same as(null) %}
+            "responsivePriority": {{ column.responsivePriority }},
+        {% endif %}
     {% endblock %}
 
     {% block data %}
