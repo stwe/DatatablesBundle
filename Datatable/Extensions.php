@@ -35,9 +35,8 @@ class Extensions
     /**
      * The Buttons extension.
      * Default: null
-     * @todo: implement extension
      *
-     * @var null|array|Buttons
+     * @var null|array|bool|Buttons
      */
     protected $buttons;
 
@@ -80,7 +79,7 @@ class Extensions
             'responsive' => null,
         ));
 
-        $resolver->setAllowedTypes('buttons', array('null', 'array'));
+        $resolver->setAllowedTypes('buttons', array('null', 'array', 'bool'));
         $resolver->setAllowedTypes('responsive', array('null', 'array', 'bool'));
 
         return $this;
@@ -93,7 +92,7 @@ class Extensions
     /**
      * Get buttons.
      *
-     * @return null|array|Buttons
+     * @return null|array|bool|Buttons
      */
     public function getButtons()
     {
@@ -103,7 +102,7 @@ class Extensions
     /**
      * Set buttons.
      *
-     * @param null|array $buttons
+     * @param null|array|bool $buttons
      *
      * @return $this
      */

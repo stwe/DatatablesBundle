@@ -29,11 +29,15 @@ class Responsive
      */
     use OptionsTrait;
 
+    //-------------------------------------------------
+    // DataTables - Responsive Extension
+    //-------------------------------------------------
+
     /**
      * Responsive details options.
-     * Default: null
+     * Required option.
      *
-     * @var null|array|bool
+     * @var array|bool
      */
     protected $details;
 
@@ -64,7 +68,7 @@ class Responsive
     {
         $resolver->setRequired('details');
 
-        $resolver->setAllowedTypes('details', array('null', 'array', 'bool'));
+        $resolver->setAllowedTypes('details', array('array', 'bool'));
 
         /** @noinspection PhpUnusedParameterInspection */
         $resolver->setNormalizer('details', function (Options $options, $value) {
@@ -113,7 +117,7 @@ class Responsive
     /**
      * Get details.
      *
-     * @return null|array|bool
+     * @return array|bool
      */
     public function getDetails()
     {
@@ -123,7 +127,7 @@ class Responsive
     /**
      * Set details.
      *
-     * @param null|array|bool $details
+     * @param array|bool $details
      *
      * @return $this
      * @throws Exception
@@ -131,20 +135,23 @@ class Responsive
     public function setDetails($details)
     {
         if (is_array($details)) {
-            $allowedOptions = array('template', 'vars');
+            $nestedOptions = array('renderer', 'display');
+            $allowedNewNestedOptions = array('template', 'vars');
 
-            foreach ($details as $detail) {
-                if (false === array_key_exists('template', $detail)) {
-                    throw new Exception(
-                        'Responsive::setDetails(): The "template" option is required.'
-                    );
-                }
-
-                foreach ($detail as $key => $value) {
-                    if (false === in_array($key, $allowedOptions)) {
+            foreach ($details as $detailKey => $detailValue) {
+                if (true === in_array($detailKey, $nestedOptions)) {
+                    if (false === array_key_exists('template', $detailValue)) {
                         throw new Exception(
-                            "Responsive::setDetails(): $key is not an valid option."
+                            'Responsive::setDetails(): The "template" option is required.'
                         );
+                    }
+
+                    foreach ($detailValue as $key => $value) {
+                        if (false === in_array($key, $allowedNewNestedOptions)) {
+                            throw new Exception(
+                                "Responsive::setDetails(): $key is not an valid option."
+                            );
+                        }
                     }
                 }
             }
