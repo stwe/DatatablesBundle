@@ -74,6 +74,13 @@ interface DatatableInterface
     public function getCallbacks();
 
     /**
+     * Get Extensions instance.
+     *
+     * @return Extensions
+     */
+    public function getExtensions();
+
+    /**
      * Get Language instance.
      *
      * @return Language

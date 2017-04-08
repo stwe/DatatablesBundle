@@ -2,6 +2,8 @@
 
 **[ x ] = ready to use**
 
+**[ o ] = currently work in progress**
+
 **[ ! ] = partly ready to use**
 
 ## DataTables
@@ -16,7 +18,7 @@
 
 [   ] DataTables - Events
 
-[   ] DataTables - Extensions (e.g. Buttons, FixedColumns)
+[ o ] DataTables - Extensions (in v1.0 Buttons and Responsive)
 
 [ x ] DataTables - Internationalisation
 
