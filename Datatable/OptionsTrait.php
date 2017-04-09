@@ -31,6 +31,13 @@ trait OptionsTrait
     protected $options;
 
     /**
+     * A list of options that have nested options.
+     *
+     * @var null|array
+     */
+    protected $hasNestedOptions;
+
+    /**
      * @var null|OptionsResolver
      */
     protected $nestedOptionsResolver;
@@ -56,6 +63,7 @@ trait OptionsTrait
     public function initOptions($resolve = true)
     {
         $this->options = array();
+        $this->hasNestedOptions = null;
         $this->nestedOptionsResolver = null;
         /** @noinspection PhpUndefinedMethodInspection */
         $this->accessor = PropertyAccess::createPropertyAccessorBuilder()
@@ -85,7 +93,15 @@ trait OptionsTrait
         $this->options = $resolver->resolve($options);
 
         if (null !== $this->nestedOptionsResolver) {
-            foreach ($options as $key => $value) {
+            if (null === $this->hasNestedOptions) {
+                // all options has nested options
+                $hasNestedOptions = $options;
+            } else {
+                // only the given options has nested options
+                $hasNestedOptions = array_flip($this->hasNestedOptions);
+            }
+
+            foreach ($hasNestedOptions as $key => $value) {
                 $this->configureAndResolveNestedOptions($this->options[$key]);
             }
         }
