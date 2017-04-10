@@ -118,4 +118,32 @@ trait OptionsTrait
 
         return $value;
     }
+
+    /**
+     * Validates an array whether the "template" and "vars" options are set.
+     *
+     * @param array $array
+     * @param array $other
+     *
+     * @return bool
+     * @throws Exception
+     */
+    protected function validateArrayForTemplateAndOther(array $array, array $other = array('template', 'vars'))
+    {
+        if (false === array_key_exists('template', $array)) {
+            throw new Exception(
+                'OptionsTrait::validateArrayForTemplateAndOther(): The "template" option is required.'
+            );
+        }
+
+        foreach ($array as $key => $value) {
+            if (false === in_array($key, $other)) {
+                throw new Exception(
+                    "OptionsTrait::validateArrayForTemplateAndOther(): $key is not an valid option."
+                );
+            }
+        }
+
+        return true;
+    }
 }

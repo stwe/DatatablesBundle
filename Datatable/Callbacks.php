@@ -12,7 +12,6 @@
 namespace Sg\DatatablesBundle\Datatable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Exception;
 
 /**
  * Class Callbacks
@@ -211,7 +210,9 @@ class Callbacks
      */
     public function setCreatedRow($createdRow)
     {
-        $this->validateNestedOptions($createdRow);
+        if (is_array($createdRow)) {
+            $this->validateArrayForTemplateAndOther($createdRow);
+        }
 
         $this->createdRow = $createdRow;
 
@@ -237,7 +238,9 @@ class Callbacks
      */
     public function setDrawCallback($drawCallback)
     {
-        $this->validateNestedOptions($drawCallback);
+        if (is_array($drawCallback)) {
+            $this->validateArrayForTemplateAndOther($drawCallback);
+        }
 
         $this->drawCallback = $drawCallback;
 
@@ -263,7 +266,9 @@ class Callbacks
      */
     public function setFooterCallback($footerCallback)
     {
-        $this->validateNestedOptions($footerCallback);
+        if (is_array($footerCallback)) {
+            $this->validateArrayForTemplateAndOther($footerCallback);
+        }
 
         $this->footerCallback = $footerCallback;
 
@@ -289,7 +294,9 @@ class Callbacks
      */
     public function setFormatNumber($formatNumber)
     {
-        $this->validateNestedOptions($formatNumber);
+        if (is_array($formatNumber)) {
+            $this->validateArrayForTemplateAndOther($formatNumber);
+        }
 
         $this->formatNumber = $formatNumber;
 
@@ -315,7 +322,9 @@ class Callbacks
      */
     public function setHeaderCallback($headerCallback)
     {
-        $this->validateNestedOptions($headerCallback);
+        if (is_array($headerCallback)) {
+            $this->validateArrayForTemplateAndOther($headerCallback);
+        }
 
         $this->headerCallback = $headerCallback;
 
@@ -341,7 +350,9 @@ class Callbacks
      */
     public function setInfoCallback($infoCallback)
     {
-        $this->validateNestedOptions($infoCallback);
+        if (is_array($infoCallback)) {
+            $this->validateArrayForTemplateAndOther($infoCallback);
+        }
 
         $this->infoCallback = $infoCallback;
 
@@ -367,7 +378,9 @@ class Callbacks
      */
     public function setInitComplete($initComplete)
     {
-        $this->validateNestedOptions($initComplete);
+        if (is_array($initComplete)) {
+            $this->validateArrayForTemplateAndOther($initComplete);
+        }
 
         $this->initComplete = $initComplete;
 
@@ -393,7 +406,9 @@ class Callbacks
      */
     public function setPreDrawCallback($preDrawCallback)
     {
-        $this->validateNestedOptions($preDrawCallback);
+        if (is_array($preDrawCallback)) {
+            $this->validateArrayForTemplateAndOther($preDrawCallback);
+        }
 
         $this->preDrawCallback = $preDrawCallback;
 
@@ -419,7 +434,9 @@ class Callbacks
      */
     public function setRowCallback($rowCallback)
     {
-        $this->validateNestedOptions($rowCallback);
+        if (is_array($rowCallback)) {
+            $this->validateArrayForTemplateAndOther($rowCallback);
+        }
 
         $this->rowCallback = $rowCallback;
 
@@ -445,7 +462,9 @@ class Callbacks
      */
     public function setStateLoadCallback($stateLoadCallback)
     {
-        $this->validateNestedOptions($stateLoadCallback);
+        if (is_array($stateLoadCallback)) {
+            $this->validateArrayForTemplateAndOther($stateLoadCallback);
+        }
 
         $this->stateLoadCallback = $stateLoadCallback;
 
@@ -471,7 +490,9 @@ class Callbacks
      */
     public function setStateLoaded($stateLoaded)
     {
-        $this->validateNestedOptions($stateLoaded);
+        if (is_array($stateLoaded)) {
+            $this->validateArrayForTemplateAndOther($stateLoaded);
+        }
 
         $this->stateLoaded = $stateLoaded;
 
@@ -497,7 +518,9 @@ class Callbacks
      */
     public function setStateLoadParams($stateLoadParams)
     {
-        $this->validateNestedOptions($stateLoadParams);
+        if (is_array($stateLoadParams)) {
+            $this->validateArrayForTemplateAndOther($stateLoadParams);
+        }
 
         $this->stateLoadParams = $stateLoadParams;
 
@@ -523,7 +546,9 @@ class Callbacks
      */
     public function setStateSaveCallback($stateSaveCallback)
     {
-        $this->validateNestedOptions($stateSaveCallback);
+        if (is_array($stateSaveCallback)) {
+            $this->validateArrayForTemplateAndOther($stateSaveCallback);
+        }
 
         $this->stateSaveCallback = $stateSaveCallback;
 
@@ -549,44 +574,12 @@ class Callbacks
      */
     public function setStateSaveParams($stateSaveParams)
     {
-        $this->validateNestedOptions($stateSaveParams);
+        if (is_array($stateSaveParams)) {
+            $this->validateArrayForTemplateAndOther($stateSaveParams);
+        }
 
         $this->stateSaveParams = $stateSaveParams;
 
         return $this;
-    }
-
-    //-------------------------------------------------
-    // Helper
-    //-------------------------------------------------
-
-    /**
-     * Validate nested options.
-     *
-     * @param mixed $option
-     *
-     * @return bool
-     * @throws Exception
-     */
-    private function validateNestedOptions($option)
-    {
-        if (is_array($option)) {
-            if (false === array_key_exists('template', $option)) {
-                throw new Exception(
-                    'Callbacks::validateNestedOptions(): The "template" option is required.'
-                );
-            }
-
-            $allowedNestedOptions = array('template', 'vars');
-            foreach ($option as $key => $value) {
-                if (false === in_array($key, $allowedNestedOptions)) {
-                    throw new Exception(
-                        "Callbacks::validateNestedOptions(): $key is not an valid option."
-                    );
-                }
-            }
-        }
-
-        return true;
     }
 }

@@ -18,7 +18,7 @@
 
 [   ] DataTables - Events
 
-[ o ] DataTables - Extensions (in v1.0 Buttons and Responsive)
+[ x ] DataTables - Extensions (in v1.0 Buttons and Responsive)
 
 [ x ] DataTables - Internationalisation
 

@@ -13,7 +13,6 @@ namespace Sg\DatatablesBundle\Datatable\Extension;
 
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
 
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Exception;
 
@@ -50,7 +49,7 @@ class Responsive
      */
     public function __construct()
     {
-        $this->initOptions(false);
+        $this->initOptions();
     }
 
     //-------------------------------------------------
@@ -69,43 +68,6 @@ class Responsive
         $resolver->setRequired('details');
 
         $resolver->setAllowedTypes('details', array('array', 'bool'));
-
-        /** @noinspection PhpUnusedParameterInspection */
-        $resolver->setNormalizer('details', function (Options $options, $value) {
-            if (is_array($value)) {
-                $this->nestedOptionsResolver = new OptionsResolver();
-            }
-
-            return $value;
-        });
-
-        return $this;
-    }
-
-    /**
-     * Configure and resolve nested options.
-     *
-     * @param array $options
-     *
-     * @return $this
-     */
-    public function configureAndResolveNestedOptions(array $options)
-    {
-        $this->nestedOptionsResolver->setDefaults(array(
-            'type' => null,
-            'target' => null,
-            'renderer' => null,
-            'display' => null,
-        ));
-
-        $this->nestedOptionsResolver->setAllowedTypes('type', array('string', 'null'));
-        $this->nestedOptionsResolver->setAllowedTypes('target', array('int', 'string', 'null'));
-        $this->nestedOptionsResolver->setAllowedTypes('renderer', array('array', 'null'));
-        $this->nestedOptionsResolver->setAllowedTypes('display', array('array', 'null'));
-
-        $this->nestedOptionsResolver->setAllowedValues('type', array(null, 'inline', 'column'));
-
-        $this->nestedOptionsResolver->resolve($options);
 
         return $this;
     }
@@ -135,25 +97,20 @@ class Responsive
     public function setDetails($details)
     {
         if (is_array($details)) {
-            $nestedOptions = array('renderer', 'display');
-            $allowedNewNestedOptions = array('template', 'vars');
-
-            foreach ($details as $detailKey => $detailValue) {
-                if (true === in_array($detailKey, $nestedOptions)) {
-                    if (false === array_key_exists('template', $detailValue)) {
-                        throw new Exception(
-                            'Responsive::setDetails(): The "template" option is required.'
-                        );
-                    }
-
-                    foreach ($detailValue as $key => $value) {
-                        if (false === in_array($key, $allowedNewNestedOptions)) {
-                            throw new Exception(
-                                "Responsive::setDetails(): $key is not an valid option."
-                            );
-                        }
-                    }
+            foreach ($details as $key => $value) {
+                if (false === in_array($key, array('type', 'target', 'renderer', 'display'))) {
+                    throw new Exception(
+                        "Responsive::setDetails(): $key is not an valid option."
+                    );
                 }
+            }
+
+            if (is_array($details['renderer'])) {
+                $this->validateArrayForTemplateAndOther($details['renderer']);
+            }
+
+            if (is_array($details['display'])) {
+                $this->validateArrayForTemplateAndOther($details['display']);
             }
         }
 
