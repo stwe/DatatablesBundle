@@ -9,20 +9,20 @@
 
 {# Buttons Extension #}
 {% if sg_datatables_view.extensions.buttons is not same as(null) %}
-    {# the easiest way to activate the extension - buttons is a boolean value (true) #}
     {% if sg_datatables_view.extensions.buttons is same as(true) %}
+        {# the easiest way to activate the extension - buttons is a boolean value (true) #}
         buttons: true,
-    {% endif %}
-    {# buttons is given as an object - handle the 'showButtons' option #}
-    {% if sg_datatables_view.extensions.buttons.showButtons is defined and sg_datatables_view.extensions.buttons.showButtons is not same as(null) %}
-        buttons: {{ sg_datatables_view.extensions.buttons.showButtons|raw }},
-    {% endif %}
-    {# buttons is given as an object - render the created buttons #}
-    {% if sg_datatables_view.extensions.buttons.createButtons is defined and sg_datatables_view.extensions.buttons.createButtons is not same as(null) %}
+    {% else %}
+        {# buttons is defined and not boolean, rather given as an object - handle the Buttons class options #}
         buttons: [
-            {% for button in sg_datatables_view.extensions.buttons.createButtons %}
-                {% include 'SgDatatablesBundle:datatable:button.html.twig' %}
-            {% endfor %}
+            {% if sg_datatables_view.extensions.buttons.showButtons is defined and sg_datatables_view.extensions.buttons.showButtons is not same as(null) %}
+                {{ sg_datatables_view.extensions.buttons.showButtons|raw }},
+            {% endif %}
+            {% if sg_datatables_view.extensions.buttons.createButtons is defined and sg_datatables_view.extensions.buttons.createButtons is not same as(null) %}
+                {% for button in sg_datatables_view.extensions.buttons.createButtons %}
+                    {% include 'SgDatatablesBundle:datatable:button.html.twig' %}
+                {% endfor %}
+            {% endif %}
         ],
     {% endif %}
 {% endif %}
