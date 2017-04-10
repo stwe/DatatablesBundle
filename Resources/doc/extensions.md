@@ -5,7 +5,7 @@
 
 ## 1. Buttons
 
-***!currently not implemented!***
+**Be sure to install the [Buttons Extension](https://datatables.net/extensions/buttons/) before using.**
 
 ### Template
 
@@ -13,7 +13,85 @@ SgDatatablesBundle:datatable:extensions.html.twig
 
 ### Initialisation
 
+#### The easiest way
+
+The easiest way is to add `buttons` to your extensions options with a boolean value.
+
+``` php
+public function buildDatatable(array $options = array())
+{
+    // ...
+
+    $this->extensions->set(array(
+        'buttons' => true,
+    ));
+    
+    // ...
+}
+```
+
+#### Advanced example
+
+This example shows two built-in and two custom buttons.
+
+``` php
+public function buildDatatable(array $options = array())
+{
+    // ...
+
+    $this->extensions->set(array(
+        //'buttons' => true,
+        'buttons' => array(
+            'show_buttons' => array('copy', 'print'),    // built-in buttons
+            'create_buttons' => array(                   // custom buttons 
+                array(
+                    'action' => array(
+                        'template' => ':post:action.js.twig',
+                        //'vars' => array('id' => '2', 'test' => 'new value'),
+                    ),
+                    'text' => 'alert',
+                ),
+                array(
+                    'extend' => 'csv',
+                    'text' => 'custom csv button',
+                ),
+            ),
+        ),
+    ));
+    
+    // ...
+}
+```
+
+``` twig
+{# action.js.twig #}
+
+action = function (e, dt, node, config) {
+    alert('Activated!');
+    this.disable(); // disable the button
+}
+```
+
 ### Buttons class options
+
+With the Responsive class you can set the `show_buttons` and the `create_buttons` options.
+
+With the `create_buttons` option you can create custom buttons. Each button has the following properties:
+
+| Option     | Type           | Default |  Description                       |
+|------------|----------------|---------|------------------------------------|
+| action     | array or null  | null    | Function describing the action to take on activation. |
+| available  | array or null  | null    | Ensure that any requirements have been satisfied before initialising a button. |
+| class_name | string or null | null    | Button class name. |
+| destroy    | array or null  | null    | Function that is called when the button is destroyed. |
+| enabled    | bool or null   | null    | Initial enabled state. |
+| extend     | string or null | null    | Based extends object. |
+| init       | array or null  | null    | Button initialisation callback function. |
+| key        | string or null | null    | Key activation configuration. |
+| name       | string or null | null    | Button name for use in selectors. |
+| namespace  | string or null | null    | Unique namespace for every button. |
+| text       | string or null | null    | Visible text. |
+| title_attr | string or null | null    | Button title attribute text. |
 
 ___
 
@@ -41,6 +119,7 @@ public function buildDatatable(array $options = array())
     ));
     
     // ...
+}
 ```
 
 #### Advanced example
@@ -69,6 +148,7 @@ public function buildDatatable(array $options = array())
     ));
     
     // ...
+}
 ```
 
 ``` twig
