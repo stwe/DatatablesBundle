@@ -13,6 +13,24 @@ SgDatatablesBundle:datatable:extensions.html.twig
 
 ### Initialisation
 
+**For display the buttons somewhere on the page you must put the `B` character to the `dom` option:**
+
+**Example:**
+
+``` php
+public function buildDatatable(array $options = array())
+{
+    // ...
+
+    $this->options->set(array(
+        // ...
+        'dom' => 'Bfrtip',
+    ));
+    
+    // ...
+}
+```
+
 #### The easiest way
 
 The easiest way is to add `buttons` to your extensions options with a boolean value.
