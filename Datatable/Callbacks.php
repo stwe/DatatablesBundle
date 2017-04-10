@@ -12,6 +12,7 @@
 namespace Sg\DatatablesBundle\Datatable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Exception;
 
 /**
  * Class Callbacks
@@ -136,7 +137,7 @@ class Callbacks
      */
     public function __construct()
     {
-        $this->initOptions(false);
+        $this->initOptions();
     }
 
     //-------------------------------------------------
@@ -184,31 +185,6 @@ class Callbacks
         $resolver->setAllowedTypes('state_save_callback', array('null', 'array'));
         $resolver->setAllowedTypes('state_save_params', array('null', 'array'));
 
-        $this->nestedOptionsResolver = new OptionsResolver();
-
-        return $this;
-    }
-
-    /**
-     * Configure and resolve nested options.
-     *
-     * @param array $options
-     *
-     * @return $this
-     */
-    public function configureAndResolveNestedOptions(array $options)
-    {
-        $this->nestedOptionsResolver->setRequired('template');
-
-        $this->nestedOptionsResolver->setDefaults(array(
-            'vars' => null,
-        ));
-
-        $this->nestedOptionsResolver->setAllowedTypes('template', 'string');
-        $this->nestedOptionsResolver->setAllowedTypes('vars', array('array', 'null'));
-
-        $this->nestedOptionsResolver->resolve($options);
-
         return $this;
     }
 
@@ -235,6 +211,8 @@ class Callbacks
      */
     public function setCreatedRow($createdRow)
     {
+        $this->validateNestedOptions($createdRow);
+
         $this->createdRow = $createdRow;
 
         return $this;
@@ -259,6 +237,8 @@ class Callbacks
      */
     public function setDrawCallback($drawCallback)
     {
+        $this->validateNestedOptions($drawCallback);
+
         $this->drawCallback = $drawCallback;
 
         return $this;
@@ -283,6 +263,8 @@ class Callbacks
      */
     public function setFooterCallback($footerCallback)
     {
+        $this->validateNestedOptions($footerCallback);
+
         $this->footerCallback = $footerCallback;
 
         return $this;
@@ -307,6 +289,8 @@ class Callbacks
      */
     public function setFormatNumber($formatNumber)
     {
+        $this->validateNestedOptions($formatNumber);
+
         $this->formatNumber = $formatNumber;
 
         return $this;
@@ -331,6 +315,8 @@ class Callbacks
      */
     public function setHeaderCallback($headerCallback)
     {
+        $this->validateNestedOptions($headerCallback);
+
         $this->headerCallback = $headerCallback;
 
         return $this;
@@ -355,6 +341,8 @@ class Callbacks
      */
     public function setInfoCallback($infoCallback)
     {
+        $this->validateNestedOptions($infoCallback);
+
         $this->infoCallback = $infoCallback;
 
         return $this;
@@ -379,6 +367,8 @@ class Callbacks
      */
     public function setInitComplete($initComplete)
     {
+        $this->validateNestedOptions($initComplete);
+
         $this->initComplete = $initComplete;
 
         return $this;
@@ -403,6 +393,8 @@ class Callbacks
      */
     public function setPreDrawCallback($preDrawCallback)
     {
+        $this->validateNestedOptions($preDrawCallback);
+
         $this->preDrawCallback = $preDrawCallback;
 
         return $this;
@@ -427,6 +419,8 @@ class Callbacks
      */
     public function setRowCallback($rowCallback)
     {
+        $this->validateNestedOptions($rowCallback);
+
         $this->rowCallback = $rowCallback;
 
         return $this;
@@ -451,6 +445,8 @@ class Callbacks
      */
     public function setStateLoadCallback($stateLoadCallback)
     {
+        $this->validateNestedOptions($stateLoadCallback);
+
         $this->stateLoadCallback = $stateLoadCallback;
 
         return $this;
@@ -475,6 +471,8 @@ class Callbacks
      */
     public function setStateLoaded($stateLoaded)
     {
+        $this->validateNestedOptions($stateLoaded);
+
         $this->stateLoaded = $stateLoaded;
 
         return $this;
@@ -499,6 +497,8 @@ class Callbacks
      */
     public function setStateLoadParams($stateLoadParams)
     {
+        $this->validateNestedOptions($stateLoadParams);
+
         $this->stateLoadParams = $stateLoadParams;
 
         return $this;
@@ -523,6 +523,8 @@ class Callbacks
      */
     public function setStateSaveCallback($stateSaveCallback)
     {
+        $this->validateNestedOptions($stateSaveCallback);
+
         $this->stateSaveCallback = $stateSaveCallback;
 
         return $this;
@@ -547,8 +549,44 @@ class Callbacks
      */
     public function setStateSaveParams($stateSaveParams)
     {
+        $this->validateNestedOptions($stateSaveParams);
+
         $this->stateSaveParams = $stateSaveParams;
 
         return $this;
+    }
+
+    //-------------------------------------------------
+    // Helper
+    //-------------------------------------------------
+
+    /**
+     * Validate nested options.
+     *
+     * @param mixed $option
+     *
+     * @return bool
+     * @throws Exception
+     */
+    private function validateNestedOptions($option)
+    {
+        if (is_array($option)) {
+            if (false === array_key_exists('template', $option)) {
+                throw new Exception(
+                    'Callbacks::validateNestedOptions(): The "template" option is required.'
+                );
+            }
+
+            $allowedNestedOptions = array('template', 'vars');
+            foreach ($option as $key => $value) {
+                if (false === in_array($key, $allowedNestedOptions)) {
+                    throw new Exception(
+                        "Callbacks::validateNestedOptions(): $key is not an valid option."
+                    );
+                }
+            }
+        }
+
+        return true;
     }
 }

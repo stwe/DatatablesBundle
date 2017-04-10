@@ -31,18 +31,6 @@ trait OptionsTrait
     protected $options;
 
     /**
-     * A list of options that have nested options.
-     *
-     * @var null|array
-     */
-    protected $hasNestedOptions;
-
-    /**
-     * @var null|OptionsResolver
-     */
-    protected $nestedOptionsResolver;
-
-    /**
      * The PropertyAccessor.
      *
      * @var PropertyAccessor
@@ -60,11 +48,10 @@ trait OptionsTrait
      *
      * @return $this
      */
-    public function initOptions($resolve = true)
+    public function initOptions($resolve = false)
     {
         $this->options = array();
-        $this->hasNestedOptions = null;
-        $this->nestedOptionsResolver = null;
+
         /** @noinspection PhpUndefinedMethodInspection */
         $this->accessor = PropertyAccess::createPropertyAccessorBuilder()
             ->enableMagicCall()
@@ -91,21 +78,6 @@ trait OptionsTrait
         $this->configureOptions($resolver);
 
         $this->options = $resolver->resolve($options);
-
-        if (null !== $this->nestedOptionsResolver) {
-            if (null === $this->hasNestedOptions) {
-                // all options has nested options
-                $hasNestedOptions = $options;
-            } else {
-                // only the given options has nested options
-                $hasNestedOptions = array_flip($this->hasNestedOptions);
-            }
-
-            foreach ($hasNestedOptions as $key => $value) {
-                $this->configureAndResolveNestedOptions($this->options[$key]);
-            }
-        }
-
         $this->callingSettersWithOptions($this->options);
 
         return $this;

@@ -139,7 +139,7 @@ class Features
      */
     public function __construct()
     {
-        $this->initOptions(false);
+        $this->initOptions();
     }
 
     //-------------------------------------------------

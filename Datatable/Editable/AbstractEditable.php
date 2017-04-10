@@ -124,7 +124,7 @@ abstract class AbstractEditable implements EditableInterface
      */
     public function __construct()
     {
-        $this->initOptions(false);
+        $this->initOptions();
     }
 
     //-------------------------------------------------

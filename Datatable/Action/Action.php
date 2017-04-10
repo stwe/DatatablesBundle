@@ -140,7 +140,7 @@ class Action
      */
     public function __construct($datatableName)
     {
-        $this->initOptions(false);
+        $this->initOptions();
         $this->datatableName = $datatableName;
     }
 

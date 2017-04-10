@@ -125,7 +125,7 @@ class ColumnBuilder
     public function add($dql, $class, array $options = array())
     {
         $column = Factory::create($class, ColumnInterface::class);
-        $column->initOptions(false);
+        $column->initOptions();
 
         $this->handleDqlProperties($dql, $options, $column);
         $this->setEnvironmentProperties($column);

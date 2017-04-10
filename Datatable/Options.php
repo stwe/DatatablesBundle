@@ -251,7 +251,7 @@ class Options
      */
     public function __construct()
     {
-        $this->initOptions(false);
+        $this->initOptions();
     }
 
     //-------------------------------------------------
