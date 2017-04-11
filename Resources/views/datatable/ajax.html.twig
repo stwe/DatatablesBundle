@@ -7,11 +7,11 @@
  # file that was distributed with this source code.
  #}
 {% set ajax_vars %}
-    {% if sg_datatables_view.ajax.url is not null %}
+    {% if sg_datatables_view.ajax.url is not same as(null) %}
         "url": "{{ sg_datatables_view.ajax.url|raw }}",
     {% endif %}
     "type": "{{ sg_datatables_view.ajax.type }}",
-    {% if sg_datatables_view.ajax.data is not null %}
+    {% if sg_datatables_view.ajax.data is not same as(null) %}
         "data": {{ sg_datatables_view.ajax.data|raw }},
     {% endif %}
 {% endset %}

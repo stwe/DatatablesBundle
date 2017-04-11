@@ -12,6 +12,7 @@
 namespace Sg\DatatablesBundle\Datatable\Editable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Exception;
 
 /**
  * Class SelectEditable
@@ -55,9 +56,7 @@ class SelectEditable extends AbstractEditable
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefaults(array(
-            'source' => array(),
-        ));
+        $resolver->setRequired('source');
 
         $resolver->setAllowedTypes('source', 'array');
 
@@ -84,9 +83,14 @@ class SelectEditable extends AbstractEditable
      * @param array $source
      *
      * @return $this
+     * @throws Exception
      */
     public function setSource(array $source)
     {
+        if (empty($source)) {
+            throw new Exception('SelectEditable::setSource(): The source array should contain at least one element.');
+        }
+
         $this->source = $source;
 
         return $this;

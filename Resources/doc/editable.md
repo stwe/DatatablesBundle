@@ -135,9 +135,9 @@ All options of [Text Editable](#2-text-editable).
 
 **Additional:**
 
-| Option | Type  | Default | Description           |
-|--------|-------|---------|-----------------------|
-| source | array | array() | Source data for list. |
+| Option | Type  | Default | Required | Description          |
+|--------|-------|---------|----------|----------------------|
+| source | array |         | x        |Source data for list. |
 
 ### Example
 

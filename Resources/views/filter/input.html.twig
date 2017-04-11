@@ -19,16 +19,16 @@
 {%- endset -%}
 
 {% set filter_classes %}
-    class="sg-datatables-individual-filtering{% if column.filter.classes is not null %} {{ column.filter.classes }}{% endif %}"
+    class="sg-datatables-individual-filtering{% if column.filter.classes is not same as(null) %} {{ column.filter.classes }}{% endif %}"
 {% endset %}
 
 {% set filter_width %}
-    {% if column.width is not null %}style="width:{{ column.width }};"{% endif %}
+    {% if column.width is not same as(null) %}style="width:{{ column.width }};"{% endif %}
 {% endset %}
 
 {% set filter_input_placeholder %}
-    {% if true == column.filter.placeholder %}
-        placeholder="{% if column.filter.placeholderText is not null %}{{ column.filter.placeholderText }}{% else %}{{ column.title|striptags|trim }}{% endif %}"
+    {% if column.filter.placeholder is same as(true) %}
+        placeholder="{% if column.filter.placeholderText is not same as(null) %}{{ column.filter.placeholderText }}{% else %}{{ column.title|striptags|trim }}{% endif %}"
     {% endif %}
 {% endset %}
 
@@ -37,7 +37,7 @@
 {% endset %}
 
 {% set filter_column_name %}
-    {% if column.name is not null %}name="{{ column.name }}"{% endif %}
+    {% if column.name is not same as(null) %}name="{{ column.name }}"{% endif %}
 {% endset %}
 
 {% set filter_input_minmax %}
@@ -48,7 +48,7 @@
 
 {% set filter_input_datalist %}
     {% if 'number' == column.filter.type or 'range' == column.filter.type %}
-        {% if column.filter.datalist is not null %}
+        {% if column.filter.datalist is not same as(null) %}
             list="{{ filter_id_selector }}-datalist"
         {% endif %}
     {% endif %}
@@ -60,7 +60,7 @@
 
 {% set filter_input_datalist_values %}
     {% if 'number' == column.filter.type or 'range' == column.filter.type %}
-        {% if column.filter.datalist is not null %}
+        {% if column.filter.datalist is not same as(null) %}
             <datalist id="{{ filter_id_selector }}-datalist">
                 {% for key, name in column.filter.datalist %}
                     <option>{{ name }}</option>
@@ -75,7 +75,7 @@
 {%- endset -%}
 
 {% set cancel_button_html %}
-    {% if true == column.filter.cancelButton %}
+    {% if column.filter.cancelButton is same as(true) %}
         <button type="button"
                 id="{{ cancel_button_id_selector }}"
                 class="btn btn-default btn-xs"
@@ -85,14 +85,14 @@
 
 {% set filter_input_range_label_html %}
     {% if 'number' == column.filter.type or 'range' == column.filter.type %}
-        {% if true == column.filter.showLabel %}
+        {% if column.filter.showLabel is same as(true) %}
             <span id="{{ filter_id_selector }}-range-label"></span>
         {% endif %}
     {% endif %}
 {% endset %}
 
 {% set cancel_button_js %}
-    {% if true == column.filter.cancelButton %}
+    {% if column.filter.cancelButton is same as(true) %}
         <script type="text/javascript">
             $("#{{ cancel_button_id_selector }}").click(function() {
                 if ('' != $("#{{ filter_id_selector }}").val()) {
@@ -107,7 +107,7 @@
 
 {% set filter_input_range_label_js %}
     {% if 'number' == column.filter.type or 'range' == column.filter.type %}
-        {% if true == column.filter.showLabel %}
+        {% if column.filter.showLabel is same as(true) %}
             <script type="text/javascript">
                 var interval;
 

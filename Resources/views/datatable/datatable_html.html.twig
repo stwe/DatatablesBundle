@@ -54,6 +54,6 @@
     </tbody>
 </table>
 
-{% if sg_datatables_view.columnBuilder.uniqueColumn('multiselect') is not null %}
+{% if sg_datatables_view.columnBuilder.uniqueColumn('multiselect') is not same as(null) %}
     <div id="sg-datatables-{{ sg_datatables_view.name }}-multiselect-actions"></div>
 {% endif %}

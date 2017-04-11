@@ -16,7 +16,7 @@ $(".{{ column_class_editable_selector|raw }}").editable({
         params.originalTypeOfField = '{{ original_type_of_field }}';
         params.path = $(this).editable().data('path');
 
-        {% if editable_options.params is not null %}
+        {% if editable_options.params is not same as(null) %}
             {% for key, param in editable_options.params %}
                 params.{{ key }} = '{{ param }}';
             {% endfor %}
@@ -24,26 +24,26 @@ $(".{{ column_class_editable_selector|raw }}").editable({
 
         return params;
     },
-    {% if editable_options.defaultValue is not null %}
+    {% if editable_options.defaultValue is not same as(null) %}
     defaultValue: '{{ editable_options.defaultValue }}',
     {% endif %}
     emptyclass: '{{ editable_options.emptyClass|raw }}',
     emptytext: '{{ editable_options.emptyText|raw }}',
     highlight: '{{ editable_options.highlight|raw }}',
     mode: '{{ editable_options.mode }}',
-    {% if editable_options.name is not null %}
+    {% if editable_options.name is not same as(null) %}
     name: '{{ editable_options.name }}',
     {% else %}
     name: '{{ column_dql }}',
     {% endif %}
     type: '{{ editable_options.type }}',
-    {% if editable_options.source is defined and editable_options.source is not null %}
+    {% if editable_options.source is defined %}
     source: {{ editable_options.source|raw }},
     {% endif %}
     {% if editable_options.clear is defined %}
     clear: {{ editable_options.clear|sg_datatables_bool_var }},
     {% endif %}
-    {% if editable_options.placeholder is defined and editable_options.placeholder is not null %}
+    {% if editable_options.placeholder is defined and editable_options.placeholder is not same as(null) %}
     placeholder: '{{ editable_options.placeholder|raw }}',
     {% endif %}
     {% if editable_options.rows is defined %}
@@ -52,7 +52,7 @@ $(".{{ column_class_editable_selector|raw }}").editable({
     {% if editable_options.format is defined %}
     format: '{{ editable_options.format }}',
     {% endif %}
-    {% if editable_options.viewFormat is defined and editable_options.viewFormat is not null %}
+    {% if editable_options.viewFormat is defined and editable_options.viewFormat is not same as(null) %}
     viewformat: '{{ editable_options.viewFormat }}',
     {% endif %}
 

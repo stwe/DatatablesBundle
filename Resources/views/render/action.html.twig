@@ -7,8 +7,8 @@
  # file that was distributed with this source code.
  #}
 {% macro link_title(action) %}
-    {% if action.label is null and action.icon is null %}
-        {% if action.route is not null %}
+    {% if action.label is same as(null) and action.icon is same as(null) %}
+        {% if action.route is not same as(null) %}
             {{ action.route }}
         {% else %}
             null
@@ -25,8 +25,8 @@
 {% endmacro %}
 
 {% macro confirm_dialog(action) %}
-    {% if true == action.confirm %}
-        {% if action.confirmMessage is not null %}
+    {% if action.confirm is same as(true) %}
+        {% if action.confirmMessage is not same as(null) %}
             onclick="return confirm('{{ action.confirmMessage }}')"
         {% else %}
             onclick="return confirm('{{ 'sg.datatables.confirmMessage'|trans({}, 'messages') }}')"
@@ -35,7 +35,7 @@
 {% endmacro %}
 
 {% macro href(action, route_parameters) %}
-    {% if action.routeParameters is not null %}
+    {% if action.routeParameters is not same as(null) %}
         {% if app.request.locale is defined and app.request.locale is not null %}
             {% if '_locale' in route_parameters|keys %}
                 {% set route_parameters = route_parameters|merge({ '_locale': app.request.locale }) %}
@@ -43,7 +43,7 @@
         {% endif %}
     {% endif %}
 
-    {% if action.route is not null %}
+    {% if action.route is not same as(null) %}
         href="{{ path(action.route, route_parameters) }}"
     {% else %}
         href="javascript:void(0);"
@@ -59,7 +59,7 @@
 {{ start_html_container|raw }}
 
 {% for actionKey, action in actions %}
-    {% if true == render_if_actions[actionKey] %}
+    {% if render_if_actions[actionKey] is same as(true) %}
         {% if action.button is same as(false) %}
             {{ action.startHtml|raw }}
             <a {{ _self.href(action, route_parameters[actionKey]) }} {{ _self.attributes(action) }} {{ _self.confirm_dialog(action) }}>

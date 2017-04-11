@@ -6,58 +6,58 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-{% if sg_datatables_view.options.deferLoading is not null %}
+{% if sg_datatables_view.options.deferLoading is not same as(null) %}
     "deferLoading": {{ sg_datatables_view.options.deferLoading }},
 {% endif %}
-{% if sg_datatables_view.options.displayStart is not null %}
+{% if sg_datatables_view.options.displayStart is not same as(null) %}
     "displayStart": {{ sg_datatables_view.options.displayStart }},
 {% endif %}
-{% if sg_datatables_view.options.dom is not null %}
+{% if sg_datatables_view.options.dom is not same as(null) %}
     "dom": "{{ sg_datatables_view.options.dom|e('js') }}",
 {% endif %}
-{% if sg_datatables_view.options.lengthMenu is not null %}
+{% if sg_datatables_view.options.lengthMenu is not same as(null) %}
     "lengthMenu": {{ sg_datatables_view.options.lengthMenu|raw }},
 {% endif %}
-{% if sg_datatables_view.options.order is not null %}
+{% if sg_datatables_view.options.order is not same as(null) %}
     "order": {{ sg_datatables_view.options.order|raw }},
 {% endif %}
-{% if sg_datatables_view.options.orderCellsTop is not null %}
+{% if sg_datatables_view.options.orderCellsTop is not same as(null) %}
     "orderCellsTop": {{ sg_datatables_view.options.orderCellsTop|sg_datatables_bool_var }},
 {% endif %}
-{% if sg_datatables_view.options.orderClasses is not null %}
+{% if sg_datatables_view.options.orderClasses is not same as(null) %}
     "orderClasses": {{ sg_datatables_view.options.orderClasses|sg_datatables_bool_var }},
 {% endif %}
-{% if sg_datatables_view.options.orderFixed is not null %}
+{% if sg_datatables_view.options.orderFixed is not same as(null) %}
     "orderFixed": {{ sg_datatables_view.options.orderFixed|raw }},
 {% endif %}
-{% if sg_datatables_view.options.orderMulti is not null %}
+{% if sg_datatables_view.options.orderMulti is not same as(null) %}
     "orderMulti": {{ sg_datatables_view.options.orderMulti|sg_datatables_bool_var }},
 {% endif %}
-{% if sg_datatables_view.options.pageLength is not null %}
+{% if sg_datatables_view.options.pageLength is not same as(null) %}
     "pageLength": {{ sg_datatables_view.options.pageLength }},
 {% endif %}
-{% if sg_datatables_view.options.pagingType is not null %}
+{% if sg_datatables_view.options.pagingType is not same as(null) %}
     "pagingType": "{{ sg_datatables_view.options.pagingType }}",
 {% endif %}
-{% if sg_datatables_view.options.renderer is not null %}
+{% if sg_datatables_view.options.renderer is not same as(null) %}
     "renderer": "{{ sg_datatables_view.options.renderer }}",
 {% endif %}
-{% if sg_datatables_view.options.retrieve is not null %}
+{% if sg_datatables_view.options.retrieve is not same as(null) %}
     "retrieve": {{ sg_datatables_view.options.retrieve|sg_datatables_bool_var }},
 {% endif %}
-{% if sg_datatables_view.options.rowId is not null %}
+{% if sg_datatables_view.options.rowId is not same as(null) %}
     "rowId": "{{ sg_datatables_view.options.rowId }}",
 {% endif %}
-{% if sg_datatables_view.options.scrollCollapse is not null %}
+{% if sg_datatables_view.options.scrollCollapse is not same as(null) %}
     "scrollCollapse": {{ sg_datatables_view.options.scrollCollapse|sg_datatables_bool_var }},
 {% endif %}
-{% if sg_datatables_view.options.searchDelay is not null %}
+{% if sg_datatables_view.options.searchDelay is not same as(null) %}
     "searchDelay": {{ sg_datatables_view.options.searchDelay }},
 {% endif %}
-{% if sg_datatables_view.options.stateDuration is not null %}
+{% if sg_datatables_view.options.stateDuration is not same as(null) %}
     "stateDuration": {{ sg_datatables_view.options.stateDuration }},
 {% endif %}
-{% if sg_datatables_view.options.stripeClasses is not null %}
+{% if sg_datatables_view.options.stripeClasses is not same as(null) %}
     "stripeClasses": {{ sg_datatables_view.options.stripeClasses|raw }},
 {% endif %}
 

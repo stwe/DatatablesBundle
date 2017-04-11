@@ -7,7 +7,7 @@
  # file that was distributed with this source code.
  #}
 {% set filter_select_multiple %}
-    {% if true == column.filter.multiple %}
+    {% if column.filter.multiple is same as(true) %}
         multiple="multiple"
     {% endif %}
 {% endset %}
@@ -21,11 +21,11 @@
 {%- endset -%}
 
 {% set filter_classes %}
-    class="sg-datatables-individual-filtering{% if column.filter.classes is not null %} {{ column.filter.classes }}{% endif %}"
+    class="sg-datatables-individual-filtering{% if column.filter.classes is not same as(null) %} {{ column.filter.classes }}{% endif %}"
 {% endset %}
 
 {% set filter_width %}
-    {% if column.width is not null %}style="width:{{ column.width }};"{% endif %}
+    {% if column.width is not same as(null) %}style="width:{{ column.width }};"{% endif %}
 {% endset %}
 
 {% set filter_search_column_index %}
@@ -33,11 +33,11 @@
 {% endset %}
 
 {% set filter_column_name %}
-    {% if column.name is not null %}name="{{ column.name }}"{% endif %}
+    {% if column.name is not same as(null) %}name="{{ column.name }}"{% endif %}
 {% endset %}
 
 {% set filter_select_initial_search %}
-    {% if column.filter.initialSearch is not null %}
+    {% if column.filter.initialSearch is not same as(null) %}
         <option value="{{ column.filter.initialSearch }}">
             {{ column.filter.searchColumn }}
         </option>
@@ -55,7 +55,7 @@
 {%- endset -%}
 
 {% set cancel_button_html %}
-    {% if true == column.filter.cancelButton %}
+    {% if column.filter.cancelButton is same as(true) %}
         <button type="button"
                 id="{{ cancel_button_id_selector }}"
                 class="btn btn-default btn-xs"
@@ -64,7 +64,7 @@
 {% endset %}
 
 {% set cancel_button_js %}
-    {% if true == column.filter.cancelButton %}
+    {% if column.filter.cancelButton is same as(true) %}
         <script type="text/javascript">
             $("#{{ cancel_button_id_selector }}").click(function() {
                 if ('' != $("#{{ filter_id_selector }}").val()) {
