@@ -14,6 +14,8 @@
 
 [Callbacks](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/callbacks.md)
 
+[Events](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/events.md)
+
 [Extensions](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/extensions.md)
 
 [Internationalisation](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/internationalisation.md)
