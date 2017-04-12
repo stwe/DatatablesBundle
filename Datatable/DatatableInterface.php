@@ -74,6 +74,13 @@ interface DatatableInterface
     public function getCallbacks();
 
     /**
+     * Get Events instance.
+     *
+     * @return Events
+     */
+    public function getEvents();
+
+    /**
      * Get Extensions instance.
      *
      * @return Extensions

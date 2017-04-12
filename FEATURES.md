@@ -16,7 +16,7 @@
 
 [ x ] DataTables - Callbacks 
 
-[   ] DataTables - Events
+[ x ] DataTables - Events
 
 [ x ] DataTables - Extensions (in v1.0 Buttons and Responsive)
 

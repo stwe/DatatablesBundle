@@ -69,7 +69,9 @@
             if (!$.fn.dataTable.isDataTable(selector)) {
                 oTable = $(selector)
                     .DataTable(defaults)
-                        .on('draw.dt', function() { postCreateDatatable({{ sg_datatables_view.ajax.pipeline}}) });
+                        .on('draw.dt', function() { postCreateDatatable({{ sg_datatables_view.ajax.pipeline}}) })
+                        {% include 'SgDatatablesBundle:datatable:events.html.twig' %}
+                    ;
 
                 {% if true == sg_datatables_view.options.individualFiltering %}
                     {% include 'SgDatatablesBundle:datatable:search.js.twig' %}

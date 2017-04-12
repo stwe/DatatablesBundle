@@ -108,6 +108,13 @@ abstract class AbstractDatatable implements DatatableInterface
     protected $callbacks;
 
     /**
+     * A Events instance.
+     *
+     * @var Events
+     */
+    protected $events;
+
+    /**
      * An Extensions instance.
      *
      * @var Extensions
@@ -168,6 +175,7 @@ abstract class AbstractDatatable implements DatatableInterface
         $this->options = new Options();
         $this->features = new Features();
         $this->callbacks = new Callbacks();
+        $this->events = new Events();
         $this->extensions = new Extensions();
         $this->language = new Language();
 
@@ -224,6 +232,14 @@ abstract class AbstractDatatable implements DatatableInterface
     public function getCallbacks()
     {
         return $this->callbacks;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEvents()
+    {
+        return $this->events;
     }
 
     /**
