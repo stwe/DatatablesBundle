@@ -15,6 +15,7 @@ use Sg\DatatablesBundle\Datatable\Filter\SelectFilter;
 use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
 use Sg\DatatablesBundle\Datatable\Helper;
 
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -85,14 +86,6 @@ class BooleanColumn extends AbstractColumn
      */
     public function renderCellContent(array &$row)
     {
-        if (null === $this->trueIcon && null === $this->trueLabel) {
-            $this->trueLabel = self::RENDER_TRUE_VALUE;
-        }
-
-        if (null === $this->falseIcon && null === $this->falseLabel) {
-            $this->falseLabel = self::RENDER_FALSE_VALUE;
-        }
-
         $this->isToManyAssociation() ? $this->renderToMany($row) : $this->renderSingleField($row);
     }
 
@@ -163,6 +156,22 @@ class BooleanColumn extends AbstractColumn
         $resolver->setAllowedTypes('true_label', array('null', 'string'));
         $resolver->setAllowedTypes('false_label', array('null', 'string'));
         $resolver->setAllowedTypes('editable', array('null', 'array'));
+
+        $resolver->setNormalizer('true_label', function (Options $options, $value) {
+            if (null === $options['true_icon'] && null === $value) {
+                $value = self::RENDER_TRUE_VALUE;
+            }
+
+            return $value;
+        });
+
+        $resolver->setNormalizer('false_label', function (Options $options, $value) {
+            if (null === $options['false_icon'] && null === $value) {
+                $value = self::RENDER_FALSE_VALUE;
+            }
+
+            return $value;
+        });
 
         return $this;
     }
