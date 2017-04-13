@@ -116,6 +116,17 @@ class Button
     protected $titleAttr;
 
     //-------------------------------------------------
+    // All special button options
+    //-------------------------------------------------
+
+    /**
+     * Button options.
+     *
+     * @var array|null
+     */
+    protected $buttonOptions;
+
+    //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
 
@@ -153,6 +164,7 @@ class Button
             'namespace' => null,
             'text' => null,
             'title_attr' => null,
+            'button_options' => null,
         ));
 
         $resolver->setAllowedTypes('action', array('array', 'null'));
@@ -167,6 +179,7 @@ class Button
         $resolver->setAllowedTypes('namespace', array('string', 'null'));
         $resolver->setAllowedTypes('text', array('string', 'null'));
         $resolver->setAllowedTypes('title_attr', array('string', 'null'));
+        $resolver->setAllowedTypes('button_options', array('array', 'null'));
 
         return $this;
     }
@@ -475,6 +488,30 @@ class Button
     public function setTitleAttr($titleAttr)
     {
         $this->titleAttr = $titleAttr;
+
+        return $this;
+    }
+
+    /**
+     * Get buttonOptions.
+     *
+     * @return array|null
+     */
+    public function getButtonOptions()
+    {
+        return $this->buttonOptions;
+    }
+
+    /**
+     * Set buttonOptions.
+     *
+     * @param array|null $buttonOptions
+     *
+     * @return $this
+     */
+    public function setButtonOptions($buttonOptions)
+    {
+        $this->buttonOptions = $buttonOptions;
 
         return $this;
     }

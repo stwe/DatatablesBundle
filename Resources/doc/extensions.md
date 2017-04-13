@@ -73,6 +73,15 @@ public function buildDatatable(array $options = array())
                     'extend' => 'csv',
                     'text' => 'custom csv button',
                 ),
+                array(
+                    'extend' => 'pdf',
+                    'text' => 'my pdf',
+                    'button_options' => array(
+                        'exportOptions' => array(
+                            'columns' => array('1', '2'),
+                        ),
+                    ),
+                ),
             ),
         ),
     ));
@@ -96,20 +105,21 @@ With the Responsive class you can set the `show_buttons` and the `create_buttons
 
 With the `create_buttons` option you can create custom buttons. Each button has the following properties:
 
-| Option     | Type           | Default |  Description                       |
-|------------|----------------|---------|------------------------------------|
-| action     | array or null  | null    | Function describing the action to take on activation. |
-| available  | array or null  | null    | Ensure that any requirements have been satisfied before initialising a button. |
-| class_name | string or null | null    | Button class name. |
-| destroy    | array or null  | null    | Function that is called when the button is destroyed. |
-| enabled    | bool or null   | null    | Initial enabled state. |
-| extend     | string or null | null    | Based extends object. |
-| init       | array or null  | null    | Button initialisation callback function. |
-| key        | string or null | null    | Key activation configuration. |
-| name       | string or null | null    | Button name for use in selectors. |
-| namespace  | string or null | null    | Unique namespace for every button. |
-| text       | string or null | null    | Visible text. |
-| title_attr | string or null | null    | Button title attribute text. |
+| Option         | Type           | Default |  Description                       |
+|----------------|----------------|---------|------------------------------------|
+| action         | array or null  | null    | Function describing the action to take on activation. |
+| available      | array or null  | null    | Ensure that any requirements have been satisfied before initialising a button. |
+| class_name     | string or null | null    | Button class name. |
+| destroy        | array or null  | null    | Function that is called when the button is destroyed. |
+| enabled        | bool or null   | null    | Initial enabled state. |
+| extend         | string or null | null    | Based extends object. |
+| init           | array or null  | null    | Button initialisation callback function. |
+| key            | string or null | null    | Key activation configuration. |
+| name           | string or null | null    | Button name for use in selectors. |
+| namespace      | string or null | null    | Unique namespace for every button. |
+| text           | string or null | null    | Visible text. |
+| title_attr     | string or null | null    | Button title attribute text. |
+| button_options | array or null  | null    | All special button options. |
 
 ___
 

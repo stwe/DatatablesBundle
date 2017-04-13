@@ -145,9 +145,9 @@ class Buttons
             } else {
                 throw new Exception('Buttons::setCreateButtons(): The createButtons array should contain at least one element.');
             }
+        } else {
+            $this->createButtons = $createButtons;
         }
-
-        $this->createButtons = $createButtons;
 
         return $this;
     }

@@ -55,4 +55,9 @@
     {% if button.titleAttr is defined and button.titleAttr is not same as(null) %}
         titleAttr: "{{ button.titleAttr }}",
     {% endif %}
+    {% if button.buttonOptions is defined and button.buttonOptions is not same as(null) %}
+        {% for key, option in button.buttonOptions %}
+            {{ key }}: {{ option|json_encode|raw }},
+        {% endfor %}
+    {% endif %}
 },
