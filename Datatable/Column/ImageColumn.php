@@ -102,7 +102,7 @@ class ImageColumn extends AbstractColumn
      */
     public function renderCellContent(array &$row)
     {
-        $this->isToManyAssociation() ? $this->renderGallery($row) : $this->renderImage($row);
+        $this->isToManyAssociation() ? $this->renderToMany($row) : $this->renderSingleField($row);
     }
 
     /**
@@ -337,13 +337,13 @@ class ImageColumn extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Render image.
+     * Render an image.
      *
      * @param array $row
      *
      * @return $this
      */
-    private function renderImage(array &$row)
+    private function renderSingleField(array &$row)
     {
         $path = Helper::getDataPropertyPath($this->data);
 
@@ -361,7 +361,7 @@ class ImageColumn extends AbstractColumn
      *
      * @return $this
      */
-    private function renderGallery(array &$row)
+    private function renderToMany(array &$row)
     {
         // e.g. images[ ].fileName
         //     => $path = [images]
