@@ -6,7 +6,7 @@ Doctrine Query when creating response for DataTable.
 
 ## Using cache with Datatable
 
-```php
+``` php
 <?php
 // ...
 if ($isAjax) {
@@ -55,7 +55,7 @@ Besicly all you need is to configure `metadata_cache_driver` and `query_cache_dr
 * service
 
 The most basic configuration in `config.yml` might look like so:
-```yaml
+``` yaml
 doctrine:
   orm:
     entity_managers:
@@ -84,7 +84,7 @@ section.
 
 To use provider from DoctrineCacheBundle first you need to configure it. In your `config.yml` file you might do it like so:
 
-```yaml
+``` yaml
 doctrine_cache:
   providers:
     metadata_cache:
@@ -106,7 +106,7 @@ implementation of quite impressive list of built-in providers. Configuration of 
 Next step after configuration of providers is to enable usage of those in entity manager. Lets just change configuration
 in `config.yml` file in doctrine>orm>entity_managers section:
 
-```yaml
+``` yaml
 doctrine:
   # ...
   orm:
