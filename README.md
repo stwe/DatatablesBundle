@@ -22,6 +22,13 @@
 
 ### Dev-master
 
+### Info about PostgreSQL
+
+**Hey folks. Bad news: I'm not working with PostgreSQL. I have no idea about it and therefore can not write any good software supporting PostgreSQL. 
+I also don' t like it. For those reasons I will close all issues on this subject. Feel free to forke the bundle. Thanks for your understanding.**
+
+### Documentation
+
 [Documentation for dev-master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/index.md)
 
 [Demo Application for dev-master](https://github.com/stwe/DtBundleDemo10)
