@@ -1,4 +1,4 @@
-# Planned Features v1.0
+# Current Status of v1.0: Beta1 (17.04.2017)
 
 **[ x ] = ready to use**
 
@@ -18,7 +18,7 @@
 
 [ x ] DataTables - Events
 
-[ x ] DataTables - Extensions (in v1.0 Buttons and Responsive)
+[ ! ] DataTables - Extensions (in v1.0 Buttons and Responsive, currently the Buttons Extension has some problems with the export of columns)
 
 [ x ] DataTables - Internationalisation
 
@@ -80,6 +80,8 @@ This [Site](https://datatables.net/examples/styling/index.html) includes some ex
 
 [ x ] LineFormatter
 
-[   ] Multiple Datatables on the same page.
+[ x ] Custom DQL subqueries [thanks to Seb33300](https://github.com/Seb33300)
+
+[ x ] Doctrine Cache support [thanks to Eloar](https://github.com/Eloar)
 
 [ x ] PHP7 compatibility
