@@ -89,6 +89,24 @@ interface ColumnInterface
     public function renderCellContent(array &$row);
 
     /**
+     * Render single field.
+     *
+     * @param array $row
+     *
+     * @return $this
+     */
+    public function renderSingleField(array &$row);
+
+    /**
+     * Render toMany.
+     *
+     * @param array $row
+     *
+     * @return $this
+     */
+    public function renderToMany(array &$row);
+
+    /**
      * Get the template for the 'renderCellContent' function.
      *
      * @return string

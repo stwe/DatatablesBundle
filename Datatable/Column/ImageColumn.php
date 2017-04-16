@@ -100,9 +100,44 @@ class ImageColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function renderCellContent(array &$row)
+    public function renderSingleField(array &$row)
     {
-        $this->isToManyAssociation() ? $this->renderToMany($row) : $this->renderSingleField($row);
+        $path = Helper::getDataPropertyPath($this->data);
+
+        $content = $this->renderImageTemplate($this->accessor->getValue($row, $path), '-image');
+
+        $this->accessor->setValue($row, $path, $content);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function renderToMany(array &$row)
+    {
+        // e.g. images[ ].fileName
+        //     => $path = [images]
+        //     => $value = [fileName]
+        $value = null;
+        $path = Helper::getDataPropertyPath($this->data, $value);
+
+        $images = $this->accessor->getValue($row, $path);
+
+        if (count($images) > 0) {
+            foreach ($images as $key => $image) {
+                $currentPath = $path.'['.$key.']'.$value;
+                $content = $this->renderImageTemplate($this->accessor->getValue($row, $currentPath), '-gallery-image');
+                $this->accessor->setValue($row, $currentPath, $content);
+            }
+        } else {
+            // create an entry for the placeholder image
+            $currentPath = $path.'[0]'.$value;
+            $content = $this->renderImageTemplate(null, '-gallery-image');
+            $this->accessor->setValue($row, $currentPath, $content);
+        }
+
+        return $this;
     }
 
     /**
@@ -335,57 +370,6 @@ class ImageColumn extends AbstractColumn
     //-------------------------------------------------
     // Helper
     //-------------------------------------------------
-
-    /**
-     * Render an image.
-     *
-     * @param array $row
-     *
-     * @return $this
-     */
-    private function renderSingleField(array &$row)
-    {
-        $path = Helper::getDataPropertyPath($this->data);
-
-        $content = $this->renderImageTemplate($this->accessor->getValue($row, $path), '-image');
-
-        $this->accessor->setValue($row, $path, $content);
-
-        return $this;
-    }
-
-    /**
-     * Render gallery.
-     *
-     * @param array $row
-     *
-     * @return $this
-     */
-    private function renderToMany(array &$row)
-    {
-        // e.g. images[ ].fileName
-        //     => $path = [images]
-        //     => $value = [fileName]
-        $value = null;
-        $path = Helper::getDataPropertyPath($this->data, $value);
-
-        $images = $this->accessor->getValue($row, $path);
-
-        if (count($images) > 0) {
-            foreach ($images as $key => $image) {
-                $currentPath = $path.'['.$key.']'.$value;
-                $content = $this->renderImageTemplate($this->accessor->getValue($row, $currentPath), '-gallery-image');
-                $this->accessor->setValue($row, $currentPath, $content);
-            }
-        } else {
-            // create an entry for the placeholder image
-            $currentPath = $path.'[0]'.$value;
-            $content = $this->renderImageTemplate(null, '-gallery-image');
-            $this->accessor->setValue($row, $currentPath, $content);
-        }
-
-        return $this;
-    }
 
     /**
      * Render image template.

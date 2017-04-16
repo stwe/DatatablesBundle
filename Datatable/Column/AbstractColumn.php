@@ -428,7 +428,7 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function renderCellContent(array &$row)
     {
-        return null;
+        $this->isToManyAssociation() ? $this->renderToMany($row) : $this->renderSingleField($row);
     }
 
     /**

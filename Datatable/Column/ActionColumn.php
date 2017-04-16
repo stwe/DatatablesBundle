@@ -77,7 +77,7 @@ class ActionColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function renderCellContent(array &$row)
+    public function renderSingleField(array &$row)
     {
         $parameters = array();
         $values = array();
@@ -131,6 +131,14 @@ class ActionColumn extends AbstractColumn
                 'end_html_container' => $this->endHtml,
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function renderToMany(array &$row)
+    {
+        throw new Exception('ActionColumn::renderToMany(): This function should never be called.');
     }
 
     /**

@@ -84,9 +84,53 @@ class BooleanColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function renderCellContent(array &$row)
+    public function renderSingleField(array &$row)
     {
-        $this->isToManyAssociation() ? $this->renderToMany($row) : $this->renderSingleField($row);
+        $path = Helper::getDataPropertyPath($this->data);
+
+        if (true === $this->isEditableContentRequired($row)) {
+            $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
+        } else {
+            $content = $this->renderTemplate($this->accessor->getValue($row, $path));
+        }
+
+        $this->accessor->setValue($row, $path, $content);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function renderToMany(array &$row)
+    {
+        $value = null;
+        $path = Helper::getDataPropertyPath($this->data, $value);
+
+        $entries = $this->accessor->getValue($row, $path);
+
+        if (count($entries) > 0) {
+            foreach ($entries as $key => $entry) {
+                $currentPath = $path.'['.$key.']'.$value;
+                $currentObjectPath = Helper::getPropertyPathObjectNotation($path, $key, $value);
+
+                if (true === $this->isEditableContentRequired($row)) {
+                    $content = $this->renderTemplate(
+                        $this->accessor->getValue($row, $currentPath),
+                        $row[$this->editable->getPk()],
+                        $currentObjectPath
+                    );
+                } else {
+                    $content = $this->renderTemplate($this->accessor->getValue($row, $currentPath));
+                }
+
+                $this->accessor->setValue($row, $currentPath, $content);
+            }
+        } else {
+            // no placeholder - leave this blank
+        }
+
+        return $this;
     }
 
     /**
@@ -279,66 +323,6 @@ class BooleanColumn extends AbstractColumn
     //-------------------------------------------------
     // Helper
     //-------------------------------------------------
-
-    /**
-     * Render single field.
-     *
-     * @param array $row
-     *
-     * @return $this
-     */
-    private function renderSingleField(array &$row)
-    {
-        $path = Helper::getDataPropertyPath($this->data);
-
-        if (true === $this->isEditableContentRequired($row)) {
-            $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
-        } else {
-            $content = $this->renderTemplate($this->accessor->getValue($row, $path));
-        }
-
-        $this->accessor->setValue($row, $path, $content);
-
-        return $this;
-    }
-
-    /**
-     * Render toMany.
-     *
-     * @param array $row
-     *
-     * @return $this
-     */
-    private function renderToMany(array &$row)
-    {
-        $value = null;
-        $path = Helper::getDataPropertyPath($this->data, $value);
-
-        $entries = $this->accessor->getValue($row, $path);
-
-        if (count($entries) > 0) {
-            foreach ($entries as $key => $entry) {
-                $currentPath = $path.'['.$key.']'.$value;
-                $currentObjectPath = Helper::getPropertyPathObjectNotation($path, $key, $value);
-
-                if (true === $this->isEditableContentRequired($row)) {
-                    $content = $this->renderTemplate(
-                        $this->accessor->getValue($row, $currentPath),
-                        $row[$this->editable->getPk()],
-                        $currentObjectPath
-                    );
-                } else {
-                    $content = $this->renderTemplate($this->accessor->getValue($row, $currentPath));
-                }
-
-                $this->accessor->setValue($row, $currentPath, $content);
-            }
-        } else {
-            // no placeholder - leave this blank
-        }
-
-        return $this;
-    }
 
     /**
      * Render template.

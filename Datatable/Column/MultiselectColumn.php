@@ -92,7 +92,7 @@ class MultiselectColumn extends ActionColumn
     /**
      * {@inheritdoc}
      */
-    public function renderCellContent(array &$row)
+    public function renderSingleField(array &$row)
     {
         $value = $row[$this->value];
 

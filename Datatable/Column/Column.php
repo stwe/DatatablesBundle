@@ -41,9 +41,52 @@ class Column extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function renderCellContent(array &$row)
+    public function renderSingleField(array &$row)
     {
-        $this->isToManyAssociation() ? $this->renderToMany($row) : $this->renderSingleField($row);
+        if ($this->isEditableContentRequired($row)) {
+            $path = Helper::getDataPropertyPath($this->data);
+
+            $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
+
+            $this->accessor->setValue($row, $path, $content);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function renderToMany(array &$row)
+    {
+        if ($this->isEditableContentRequired($row)) {
+            // e.g. comments[ ].createdBy.username
+            //     => $path = [comments]
+            //     => $value = [createdBy][username]
+            $value = null;
+            $path = Helper::getDataPropertyPath($this->data, $value);
+
+            $entries = $this->accessor->getValue($row, $path);
+
+            if (count($entries) > 0) {
+                foreach ($entries as $key => $entry) {
+                    $currentPath = $path.'['.$key.']'.$value;
+                    $currentObjectPath = Helper::getPropertyPathObjectNotation($path, $key, $value);
+
+                    $content = $this->renderTemplate(
+                        $this->accessor->getValue($row, $currentPath),
+                        $row[$this->editable->getPk()],
+                        $currentObjectPath
+                    );
+
+                    $this->accessor->setValue($row, $currentPath, $content);
+                }
+            } else {
+                // no placeholder - leave this blank
+            }
+        }
+
+        return $this;
     }
 
     /**
@@ -104,65 +147,6 @@ class Column extends AbstractColumn
     //-------------------------------------------------
     // Helper
     //-------------------------------------------------
-
-    /**
-     * Render single field.
-     *
-     * @param array $row
-     *
-     * @return $this
-     */
-    private function renderSingleField(array &$row)
-    {
-        if ($this->isEditableContentRequired($row)) {
-            $path = Helper::getDataPropertyPath($this->data);
-
-            $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
-
-            $this->accessor->setValue($row, $path, $content);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Render toMany.
-     *
-     * @param array $row
-     *
-     * @return $this
-     */
-    private function renderToMany(array &$row)
-    {
-        if ($this->isEditableContentRequired($row)) {
-            // e.g. comments[ ].createdBy.username
-            //     => $path = [comments]
-            //     => $value = [createdBy][username]
-            $value = null;
-            $path = Helper::getDataPropertyPath($this->data, $value);
-
-            $entries = $this->accessor->getValue($row, $path);
-
-            if (count($entries) > 0) {
-                foreach ($entries as $key => $entry) {
-                    $currentPath = $path.'['.$key.']'.$value;
-                    $currentObjectPath = Helper::getPropertyPathObjectNotation($path, $key, $value);
-
-                    $content = $this->renderTemplate(
-                        $this->accessor->getValue($row, $currentPath),
-                        $row[$this->editable->getPk()],
-                        $currentObjectPath
-                    );
-
-                    $this->accessor->setValue($row, $currentPath, $content);
-                }
-            } else {
-                // no placeholder - leave this blank
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * Render template.
