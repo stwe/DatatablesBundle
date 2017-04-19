@@ -6,6 +6,8 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
+{% import _self as forms %}
+
 {% macro link_title(action) %}
     {% if action.label is same as(null) and action.icon is same as(null) %}
         {% if action.route is not same as(null) %}
@@ -62,14 +64,14 @@
     {% if render_if_actions[actionKey] is same as(true) %}
         {% if action.button is same as(false) %}
             {{ action.startHtml|raw }}
-            <a {{ _self.href(action, route_parameters[actionKey]) }} {{ _self.attributes(action) }} {{ _self.confirm_dialog(action) }}>
-                {{ _self.link_title(action) }}
+            <a {{ forms.href(action, route_parameters[actionKey]) }} {{ forms.attributes(action) }} {{ forms.confirm_dialog(action) }}>
+                {{ forms.link_title(action) }}
             </a>
             {{ action.endHtml|raw }}
         {% else %}
             {{ action.startHtml|raw }}
-            <button type="button" {{ _self.value(values[actionKey]) }} {{ _self.attributes(action) }} {{ _self.confirm_dialog(action) }}>
-                {{ _self.link_title(action) }}
+            <button type="button" {{ forms.value(values[actionKey]) }} {{ forms.attributes(action) }} {{ forms.confirm_dialog(action) }}>
+                {{ forms.link_title(action) }}
             </button>
             {{ action.endHtml|raw }}
         {% endif %}
