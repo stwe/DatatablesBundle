@@ -84,24 +84,24 @@ class ActionColumn extends AbstractColumn
      *
      * This function takes an array by reference and will modify it.
      *
-     * @param array  &$messages The array that will be flattened
+     * @param array  &$fields   The array that will be flattened
      * @param array  $subnode   Current subnode being parsed, used internally for recursive calls
      * @param string $path      Current path being parsed, used internally for recursive calls
      */
-    private function flattenRow(array &$messages, array $subnode = null, $path = null)
+    private function flattenRow(array &$fields, array $subnode = null, $path = null)
     {
         if (null === $subnode) {
-            $subnode = &$messages;
+            $subnode = &$fields;
         }
         foreach ($subnode as $key => $value) {
             if (is_array($value)) {
                 $nodePath = $path ? $path.'.'.$key : $key;
-                $this->flattenRow($messages, $value, $nodePath);
+                $this->flattenRow($fields, $value, $nodePath);
                 if (null === $path) {
-                    unset($messages[$key]);
+                    unset($fields[$key]);
                 }
             } elseif (null !== $path) {
-                $messages[$path.'.'.$key] = $value;
+                $fields[$path.'.'.$key] = $value;
             }
         }
     }
