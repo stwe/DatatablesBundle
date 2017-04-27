@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    $(document).ready(function () {
+    document.onreadystatechange = function () {
 
         if (typeof window.pipelineFunctionAlreadyLoaded == 'undefined') {
             {% if view_ajax.pipeline > 0 %}
@@ -145,7 +145,7 @@
             {% endif %}
 
         }, features.delay);
-    });
+    };
 
 </script>
 
