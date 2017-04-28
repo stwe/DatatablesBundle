@@ -6,7 +6,7 @@
 ## 1. Customize the Doctrine Query
 
 The query is automatically generated and contains the fields of the Datatables class. 
-Of course it is sometimes necessary necessary to customize your query. This can be done in the **controller action**.
+Of course it is sometimes necessary to customize your query. This can be done in the **controller action**.
 
 Suppose your `PostEntity` has a `createdBy` ManyToOne association:
 
