@@ -1,10 +1,14 @@
 # Caching
 
+1. [Using cache with Datatable](#1-using-cache-with-datatable)
+2. [Doctrine configuration](#2-doctrine-configuration)
+3. [Using Doctrine Cache for advanced cases](#3-using-doctrine-cache-for-advanced-cases)
+
 It is possible to cache query and its result using Doctrine cache. Beside Doctrine Second Level Cache accessible through
 QueryBuilder there is regular cache available through Doctrine Query. Below example shows how to setup usage of cache on
 Doctrine Query when creating response for DataTable.
 
-## Using cache with Datatable
+## 1. Using cache with Datatable
 
 ``` php
 <?php
@@ -35,7 +39,7 @@ datatable. As you may easily see some lines are marked (1) through (4). Meaning 
 
 The signature of methods is 100% compatible with signatures of similar methods on Doctrine Query object.
 
-## Doctrine configuration
+## 2. Doctrine configuration
 
 Under the hood `use*Cache` methods parameters are passed to Doctrine Query object when one is created and ready to be
 executed. To use this kind of caching you need to configure doctrine cache as it is described in
@@ -74,7 +78,7 @@ This is simplest possible configuration. All caches are setup to use simple arra
 specification it might or might not provide any advantage over non-cached queries, but it is subject of general caching
 and not this documentation.
 
-## Using Doctrine Cache for advanced cases
+## 3. Using Doctrine Cache for advanced cases
 
 Lets not reinvent the wheel and not use service type driver with our own cache providers implementations if there is
 bundle for it. DoctrineCacheBundle provides impressive collection of ready providers for different technologies. To use
