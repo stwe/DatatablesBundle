@@ -227,12 +227,27 @@ class ActionColumn extends AbstractColumn
     {
         if (count($actions) > 0) {
             foreach ($actions as $action) {
-                $newAction = new Action($this->datatableName);
-                $this->actions[] = $newAction->set($action);
+                $this->addAction($action);
             }
         } else {
             throw new Exception('ActionColumn::setActions(): The actions array should contain at least one element.');
         }
+
+        return $this;
+    }
+
+    /**
+     * Add action.
+     *
+     * @param array $action
+     *
+     * @return $this
+     * @throws Exception
+     */
+    public function addAction(array $action)
+    {
+        $newAction = new Action($this->datatableName);
+        $this->actions[] = $newAction->set($action);
 
         return $this;
     }
