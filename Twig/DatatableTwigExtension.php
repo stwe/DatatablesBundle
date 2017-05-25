@@ -181,12 +181,7 @@ class DatatableTwigExtension extends Twig_Extension
         $index = $this->accessor->getValue($column, 'index');
         $searchColumn = $this->accessor->getValue($filter, 'searchColumn');
 
-        if (null !== $searchColumn) {
-            $columns = $datatable->getColumnNames();
-            $searchColumnIndex = $columns[$searchColumn];
-        } else {
-            $searchColumnIndex = $index;
-        }
+        $searchColumnIndex = null !== $searchColumn? $datatable->getColumnNames()[$searchColumn] : $index;
 
         return $twig->render(
             $filter->getTemplate(),
@@ -272,10 +267,6 @@ class DatatableTwigExtension extends Twig_Extension
      */
     public function boolVar($value)
     {
-        if ($value) {
-            return 'true';
-        } else {
-            return 'false';
-        }
+        return $value? 'true' : 'false';
     }
 }
