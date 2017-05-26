@@ -112,7 +112,7 @@ trait OptionsTrait
      */
     protected function optionToJson($value)
     {
-        if (is_array($value) && !empty($value)) {
+        if (is_array($value)) {
             return json_encode($value);
         }
 
