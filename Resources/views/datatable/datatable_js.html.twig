@@ -8,7 +8,7 @@
  #}
 <script type="text/javascript">
 
-    $(document).ready(function () {
+    document.onreadystatechange = function () {
 
         var selector = "#sg-datatables-{{ sg_datatables_view.name }}";
         var oTable;
@@ -84,6 +84,6 @@
         {% if sg_datatables_view.columnBuilder.uniqueColumn('multiselect') is not null %}
             {{ sg_datatables_render_multiselect_actions( sg_datatables_view.columnBuilder.uniqueColumn('multiselect'), sg_datatables_view.ajax.pipeline) }}
         {% endif %}
-    });
+    };
 
 </script>
