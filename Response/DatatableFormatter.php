@@ -106,6 +106,19 @@ class DatatableFormatter
                         unset($row[$dql]);
                     }
                 }
+				else if(false === $this->accessor->isReadable($row, $path))
+                {
+                	// Set empty values for the path of an association without object
+                	$pathParts = explode('.', $column->getData());
+                	$buildPath = '';
+                	foreach($pathParts as $part)
+                	{
+                		if(false === $this->accessor->isReadable($row, $buildPath.'['.$part.']'))
+                			$this->accessor->setValue($row, $buildPath, array($part => null));
+                		
+                		$buildPath .= '['.$part.']';
+                	}
+                }
             }
 
             // 2. Call the the lineFormatter to format row items
