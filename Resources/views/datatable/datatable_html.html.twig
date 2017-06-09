@@ -14,7 +14,7 @@
     {% endif %}
 {% endif %}
 
-<table id="sg-datatables-{{ sg_datatables_view.name }}" class="{{ sg_datatables_view.options.classes }}" cellspacing="0" width="100%">
+<table id="sg-datatables-{{ sg_datatables_view.name }}" class="{{ sg_datatables_view.options.classes }}" cellspacing="0">
     <thead>
         {% if true == individual_filtering %}
             {% if 'head' == sg_datatables_view.options.individualFilteringPosition or 'both' == sg_datatables_view.options.individualFilteringPosition%}
