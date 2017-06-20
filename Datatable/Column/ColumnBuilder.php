@@ -139,6 +139,25 @@ class ColumnBuilder
         return $this;
     }
 
+    /**
+     * Remove Column.
+     *
+     * @param null|string $dql
+     *
+     * @return $this
+     */
+    public function remove($dql)
+    {
+        foreach ($this->columns as $column) {
+            if ($column->getDql() == $dql) {
+                $this->removeColumn($column);
+                break;
+            }
+        }
+
+        return $this;
+    }
+
     //-------------------------------------------------
     // Getters && Setters
     //-------------------------------------------------
@@ -333,6 +352,32 @@ class ColumnBuilder
 
             if (true === $column->isUnique()) {
                 $this->uniqueColumns[$column->getColumnType()] = $column;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Removes a Column.
+     *
+     * @param AbstractColumn $column
+     *
+     * @return $this
+     */
+    private function removeColumn(AbstractColumn $column)
+    {
+        foreach ($this->columns as $k => $c) {
+            if ($c == $column) {
+                unset($this->columns[$k]);
+                break;
+            }
+        }
+
+        foreach ($this->uniqueColumns as $k => $c) {
+            if ($c == $column) {
+                unset($this->uniqueColumns[$k]);
+                break;
             }
         }
 
