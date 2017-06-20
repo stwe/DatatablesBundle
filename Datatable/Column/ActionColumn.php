@@ -208,7 +208,7 @@ class ActionColumn extends AbstractColumn
     /**
      * Get actions.
      *
-     * @return array
+     * @return Action[]
      */
     public function getActions()
     {
@@ -242,12 +242,30 @@ class ActionColumn extends AbstractColumn
      * @param array $action
      *
      * @return $this
-     * @throws Exception
      */
     public function addAction(array $action)
     {
         $newAction = new Action($this->datatableName);
         $this->actions[] = $newAction->set($action);
+
+        return $this;
+    }
+
+    /**
+     * Remove action.
+     *
+     * @param Action $action
+     *
+     * @return $this
+     */
+    public function removeAction(Action $action)
+    {
+        foreach ($this->actions as $k => $a) {
+            if ($action == $a) {
+                unset($this->actions[$k]);
+                break;
+            }
+        }
 
         return $this;
     }
