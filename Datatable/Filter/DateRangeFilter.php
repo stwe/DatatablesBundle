@@ -11,9 +11,10 @@
 
 namespace Sg\DatatablesBundle\Datatable\Filter;
 
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Query\Expr\Andx;
 use DateTime;
+use Doctrine\ORM\Query\Expr\Andx;
+use Doctrine\ORM\QueryBuilder;
+use \IntlDateFormatter;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -23,6 +24,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class DateRangeFilter extends AbstractFilter
 {
+    protected $locale;
+
     //-------------------------------------------------
     // FilterInterface
     //-------------------------------------------------
@@ -41,14 +44,49 @@ class DateRangeFilter extends AbstractFilter
     public function addAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, &$parameterCounter)
     {
         list($_dateStart, $_dateEnd) = explode(' - ', $searchValue);
-        $dateStart = new DateTime($_dateStart);
-        $dateEnd = new DateTime($_dateEnd);
+        $dateStart = $this->getDateTime($_dateStart);
+        $dateEnd = $this->getDateTime($_dateEnd);
         $dateEnd->setTime(23, 59, 59);
 
         $andExpr = $this->getBetweenAndExpression($andExpr, $qb, $searchField, $dateStart->format('Y-m-d H:i:s'), $dateEnd->format('Y-m-d H:i:s'), $parameterCounter);
         $parameterCounter += 2;
 
         return $andExpr;
+    }
+
+    /**
+     * @param string $date
+     * @return DateTime
+     */
+    protected function getDateTime($date)
+    {
+        $dateFormatter = IntlDateFormatter::create(
+            $this->locale, 
+            IntlDateFormatter::SHORT, 
+            IntlDateFormatter::SHORT
+        );
+        $timestamp = $dateFormatter->parse($date);
+        
+        return new \DateTime($timestamp);
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * @param string $locale
+     * @return $this
+     */
+    public function setLocale($locale)  
+    {
+        $this->locale = $locale;
+        
+        return $this;
     }
 
     //-------------------------------------------------
@@ -65,7 +103,9 @@ class DateRangeFilter extends AbstractFilter
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
-
+        
+        $resolver->setDefault('locale', 'en');
+        $resolver->setAllowedTypes('locale', 'string');
         $resolver->remove('search_type');
 
         return $this;
