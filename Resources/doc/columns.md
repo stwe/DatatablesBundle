@@ -7,6 +7,7 @@
 5. [Virtual Column](#5-virtual-column)
 6. [Action Column](#6-action-column)
 7. [Multiselect Column](#7-multiselect-column)
+8. [Number Column](#8-number-column)
 
 ## 1. Column
 
@@ -657,3 +658,56 @@ $this->columnBuilder
 ```
 ___
 
+## 8. Number column
+
+Represents a column, optimized for numbers.
+
+**The intl extension is needed.**
+
+### Options template
+
+SgDatatablesBundle:Column:column.html.twig
+
+### Options
+
+All options of [Column](#1-column).
+
+**Additional:**
+
+| Option              | Type                   | Default                               | Required | Description     |
+|---------------------|------------------------|---------------------------------------|----------|-----------------|
+| formatter           | NumberFormatter Object |                                       | X        | A NumberFormatter instance. |
+| use_format_currency | bool                   | false                                 |          | Use NumberFormatter::formatCurrency instead NumberFormatter::format to format the value. |
+| currency            | null or string         | NumberFormatter::INTL_CURRENCY_SYMBOL |          | The currency code (e.g. EUR). |
+
+### Example
+
+``` php
+public function buildDatatable(array $options = array())
+{
+    // ...
+
+    $formatter = new \NumberFormatter("de_DE", \NumberFormatter::CURRENCY);
+    
+    // other example:
+    // $numberFormatter = new \NumberFormatter('en_US', \NumberFormatter::DECIMAL);
+    // $numberFormatter->setAttribute(\NumberFormatter::FRACTION_DIGITS, 2);
+
+    $this->columnBuilder
+        ->add('currency', NumberColumn::class, array(
+            'formatter' => $formatter,
+            'use_format_currency' => true, // needed for \NumberFormatter::CURRENCY
+            'currency' => 'EUR',
+            'searchable' => true,
+            'orderable' => true,
+            'editable' => array(TextEditable::class, array(
+                'pk' => 'id',
+                'mode' => 'inline',
+            )),
+        ))
+
+        // ...
+    ;
+}
+```
+___
