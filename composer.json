@@ -27,6 +27,5 @@
     },
     "autoload": {
         "psr-0": { "Sg\\DatatablesBundle": "" }
-    },
-    "target-dir": "Sg/DatatablesBundle"
+    }
 }
