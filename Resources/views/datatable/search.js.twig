@@ -8,9 +8,9 @@
  #}
 function drawTable() {
     {% if sg_datatables_view.ajax.pipeline > 0 %}
-    oTable.clearPipeline().draw();
+        oTable.clearPipeline().draw();
     {% else %}
-    oTable.draw();
+        oTable.draw();
     {% endif %}
 }
 
