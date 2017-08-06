@@ -67,10 +67,13 @@
             $.extend(defaults, initialSearch);
 
             if (!$.fn.dataTable.isDataTable(selector)) {
+                $(selector)
+                    {% include 'SgDatatablesBundle:datatable:events.html.twig' %}
+                ;
+            
                 oTable = $(selector)
                     .DataTable(defaults)
                         .on('draw.dt', function() { postCreateDatatable({{ sg_datatables_view.ajax.pipeline}}) })
-                        {% include 'SgDatatablesBundle:datatable:events.html.twig' %}
                     ;
 
                 {% if true == sg_datatables_view.options.individualFiltering %}
