@@ -75,6 +75,38 @@ class ActionColumn extends AbstractColumn
     }
 
     /**
+     * Flattens an nested array representing a row.
+     *
+     * The scheme used is:
+     *   'key' => array('key2' => array('key3' => 'value'))
+     * Becomes:
+     *   'key.key2.key3' => 'value'
+     *
+     * This function takes an array by reference and will modify it.
+     *
+     * @param array  &$fields   The array that will be flattened
+     * @param array  $subnode   Current subnode being parsed, used internally for recursive calls
+     * @param string $path      Current path being parsed, used internally for recursive calls
+     */
+    private function flattenRow(array &$fields, array $subnode = null, $path = null)
+    {
+        if (null === $subnode) {
+            $subnode = &$fields;
+        }
+        foreach ($subnode as $key => $value) {
+            if (is_array($value)) {
+                $nodePath = $path ? $path.'.'.$key : $key;
+                $this->flattenRow($fields, $value, $nodePath);
+                if (null === $path) {
+                    unset($fields[$key]);
+                }
+            } elseif (null !== $path) {
+                $fields[$path.'.'.$key] = $value;
+            }
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function renderSingleField(array &$row)
@@ -82,13 +114,16 @@ class ActionColumn extends AbstractColumn
         $parameters = array();
         $values = array();
 
+        $flatRow = $row;
+        $this->flattenRow($flatRow);
+
         /** @var Action $action */
         foreach ($this->actions as $actionKey => $action) {
             $routeParameters = $action->getRouteParameters();
             if (is_array($routeParameters)) {
                 foreach ($routeParameters as $key => $value) {
-                    if (isset($row[$value])) {
-                        $parameters[$actionKey][$key] = $row[$value];
+                    if (isset($flatRow[$value])) {
+                        $parameters[$actionKey][$key] = $flatRow[$value];
                     } else {
                         $path = Helper::getDataPropertyPath($value);
                         $entry = $this->accessor->getValue($row, $path);
