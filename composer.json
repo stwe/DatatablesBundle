@@ -26,7 +26,6 @@
         "friendsofsymfony/jsrouting-bundle": "1.6.0"
     },
     "autoload": {
-        "psr-0": { "Sg\\DatatablesBundle": "" }
-    },
-    "target-dir": "Sg/DatatablesBundle"
+        "psr-4": { "Sg\\DatatablesBundle\\": "" }
+    }
 }
