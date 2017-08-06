@@ -90,7 +90,14 @@ class ActionColumn extends AbstractColumn
                     if (isset($row[$value])) {
                         $parameters[$actionKey][$key] = $row[$value];
                     } else {
-                        $parameters[$actionKey][$key] = $value;
+                        $path = Helper::getDataPropertyPath($value);
+                        $entry = $this->accessor->getValue($row, $path);
+
+                        if (!empty($entry)) {
+                            $parameters[$actionKey][$key] = $entry;
+                        } else {
+                            $parameters[$actionKey][$key] = $value;
+                        }
                     }
                 }
             } elseif ($routeParameters instanceof Closure) {
