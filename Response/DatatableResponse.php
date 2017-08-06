@@ -25,7 +25,7 @@ use Exception;
  *
  * @package Sg\DatatablesBundle\Response
  */
-class DatatableResponse
+class DatatableResponse implements DatatableResponseInterface
 {
     /**
      * The current Request.
@@ -79,12 +79,7 @@ class DatatableResponse
     //-------------------------------------------------
 
     /**
-     * Set datatable.
-     *
-     * @param DatatableInterface $datatable
-     *
-     * @return $this
-     * @throws Exception
+     * {@inheritdoc}
      */
     public function setDatatable(DatatableInterface $datatable)
     {
@@ -100,9 +95,7 @@ class DatatableResponse
     }
 
     /**
-     * Get DatatableQueryBuilder instance.
-     *
-     * @return DatatableQueryBuilder
+     * {@inheritdoc}
      */
     public function getDatatableQueryBuilder()
     {
@@ -114,13 +107,7 @@ class DatatableResponse
     //-------------------------------------------------
 
     /**
-     * Get response.
-     *
-     * @param bool $countAllResults
-     * @param bool $outputWalkers
-     *
-     * @return JsonResponse
-     * @throws Exception
+     * {@inheritdoc}
      */
     public function getResponse($countAllResults = true, $outputWalkers = false)
     {

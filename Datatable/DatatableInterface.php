@@ -32,6 +32,17 @@ interface DatatableInterface
     public function buildDatatable(array $options = array());
 
     /**
+     * Get response.
+     *
+     * @param bool $buildQuery
+     * @param bool $outputWalkers
+     *
+     * @return Response
+     * @throws Exception
+     */
+    public function createResponse($buildQuery = true, $outputWalkers = false);
+
+    /**
      * Returns a callable that modify the data row.
      *
      * @return callable

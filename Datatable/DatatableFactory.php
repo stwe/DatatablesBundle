@@ -11,6 +11,8 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
+use Sg\DatatablesBundle\Response\DatatableResponse;
+use Sg\DatatablesBundle\Response\DatatableResponseInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -68,6 +70,13 @@ class DatatableFactory
      */
     protected $twig;
 
+    /**
+     * The datatable response service.
+     *
+     * @var DatatableResponseInterface
+     */
+    protected $datatableResponse;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -76,11 +85,12 @@ class DatatableFactory
      * DatatableFactory constructor.
      *
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param TokenStorageInterface         $securityToken
-     * @param TranslatorInterface           $translator
-     * @param RouterInterface               $router
-     * @param EntityManagerInterface        $em
-     * @param Twig_Environment              $twig
+     * @param TokenStorageInterface $securityToken
+     * @param TranslatorInterface $translator
+     * @param RouterInterface $router
+     * @param EntityManagerInterface $em
+     * @param Twig_Environment $twig
+     * @param DatatableResponseInterface $datatableResponse
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -88,7 +98,8 @@ class DatatableFactory
         TranslatorInterface $translator,
         RouterInterface $router,
         EntityManagerInterface $em,
-        Twig_Environment $twig
+        Twig_Environment $twig,
+        DatatableResponseInterface $datatableResponse
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->securityToken = $securityToken;
@@ -96,6 +107,7 @@ class DatatableFactory
         $this->router = $router;
         $this->em = $em;
         $this->twig = $twig;
+        $this->datatableResponse = $datatableResponse;
     }
 
     //-------------------------------------------------
@@ -128,7 +140,8 @@ class DatatableFactory
                 $this->translator,
                 $this->router,
                 $this->em,
-                $this->twig
+                $this->twig,
+                $this->datatableResponse
             );
         } else {
             throw new Exception("DatatableFactory::create(): The class $class should implement the DatatableInterface.");
