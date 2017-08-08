@@ -11,7 +11,7 @@
 {%- endset -%}
 
 {%- set datetime_selector -%}
-    id="{{ datetime_id_selector }}"
+    class="{{ datetime_id_selector }}"
 {%- endset -%}
 
 {% if column_class_editable_selector is defined %}
@@ -30,9 +30,9 @@
             moment.locale("{{ app.request.locale }}");
 
             {% if timeago is same as(false) %}
-                $("#{{ datetime_id_selector }}").html(moment.unix({{ data|date('U') }}).format("{{ date_format }}"));
+                $(".{{ datetime_id_selector }}").html(moment.unix({{ data|date('U') }}).format("{{ date_format }}"));
             {% else %}
-                $("#{{ datetime_id_selector }}").html(moment.unix({{ data|date('U') }}).fromNow());
+                $(".{{ datetime_id_selector }}").html(moment.unix({{ data|date('U') }}).fromNow());
             {% endif %}
         });
     </script>
