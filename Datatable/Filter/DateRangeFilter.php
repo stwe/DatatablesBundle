@@ -63,7 +63,7 @@ class DateRangeFilter extends AbstractFilter
         $dateFormatter = IntlDateFormatter::create(
             $this->locale, 
             IntlDateFormatter::SHORT, 
-            IntlDateFormatter::SHORT
+            IntlDateFormatter::NONE
         );
         $timestamp = $dateFormatter->parse($date);
         
