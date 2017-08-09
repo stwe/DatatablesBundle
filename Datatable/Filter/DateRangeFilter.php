@@ -67,7 +67,7 @@ class DateRangeFilter extends AbstractFilter
         );
         $timestamp = $dateFormatter->parse($date);
         
-        return new \DateTime($timestamp);
+        return new \DateTime('@' . $timestamp);
     }
 
     /**
