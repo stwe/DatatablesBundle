@@ -12,6 +12,7 @@
 namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Sg\DatatablesBundle\Datatable\Action\Action;
+use Sg\DatatablesBundle\Datatable\Helper;
 use Sg\DatatablesBundle\Datatable\HtmlContainerTrait;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -86,11 +87,18 @@ class ActionColumn extends AbstractColumn
         foreach ($this->actions as $actionKey => $action) {
             $routeParameters = $action->getRouteParameters();
             if (is_array($routeParameters)) {
-                foreach ($routeParameters as $key => $value) {
+                    foreach ($routeParameters as $key => $value) {
                     if (isset($row[$value])) {
                         $parameters[$actionKey][$key] = $row[$value];
                     } else {
-                        $parameters[$actionKey][$key] = $value;
+                        $path = Helper::getDataPropertyPath($value);
+                        $entry = $this->accessor->getValue($row, $path);
+
+                        if (!empty($entry)) {
+                            $parameters[$actionKey][$key] = $entry;
+                        } else {
+                            $parameters[$actionKey][$key] = $value;
+                        }
                     }
                 }
             } elseif ($routeParameters instanceof Closure) {
