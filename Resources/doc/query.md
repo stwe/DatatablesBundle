@@ -61,7 +61,7 @@ public function indexAction(Request $request)
         //Or Using Base Query Implementation. This wiil 
         $criteria = Criteria::create();
         $criteria->andWhere(Criteria::expr()->eq('createdBy.username', 'root'));
-        $datatableQueryBuilder->setCriteria($criteria);
+        $datatableQueryBuilder->setBaseCriteria($criteria);
 
         return $responseService->getResponse();
     }
