@@ -536,8 +536,7 @@ class DatatableQueryBuilder
         $qb = $this->getBuiltQb();
 
         $query = $qb->getQuery();
-        $query->setHydrationMode(Query::HYDRATE_ARRAY)
-            ->useQueryCache($this->useQueryCache);
+        $query->setHydrationMode(Query::HYDRATE_ARRAY)->useQueryCache($this->useQueryCache);
         call_user_func_array([$query, 'useResultCache'], $this->useResultCacheArgs);
 
         return $query;
@@ -552,6 +551,8 @@ class DatatableQueryBuilder
     {
         $qb = clone $this->qb;
         $qb->select('count(distinct '.$this->entityShortName.'.'.$this->rootEntityIdentifier.')');
+        $this->setJoins($qb);
+
         $query = $qb->getQuery();
         $query->useQueryCache($this->useCountQueryCache);
         call_user_func_array([$query, 'useResultCache'], $this->useCountResultCacheArgs);
