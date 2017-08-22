@@ -370,6 +370,7 @@ class ColumnBuilder
         foreach ($this->columns as $k => $c) {
             if ($c == $column) {
                 unset($this->columns[$k]);
+                $this->columns = array_values($this->columns);
                 break;
             }
         }
@@ -377,6 +378,7 @@ class ColumnBuilder
         foreach ($this->uniqueColumns as $k => $c) {
             if ($c == $column) {
                 unset($this->uniqueColumns[$k]);
+                $this->uniqueColumns = array_values($this->uniqueColumns);
                 break;
             }
         }
