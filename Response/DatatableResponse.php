@@ -139,10 +139,11 @@ class DatatableResponse
         $formatter = new DatatableFormatter();
         $formatter->runFormatter($paginator, $this->datatable);
 
+        $recordsFiltered = count($paginator);
         $outputHeader = array(
             'draw' => (int) $this->requestParams['draw'],
-            'recordsFiltered' => count($paginator),
-            'recordsTotal' => true === $countAllResults ? (int) $this->datatableQueryBuilder->getCountAllResults() : 0,
+            'recordsFiltered' => $recordsFiltered,
+            'recordsTotal' => true === $countAllResults ? (int) $this->datatableQueryBuilder->getCountAllResults() : $recordsFiltered,
         );
 
         return new JsonResponse(array_merge($outputHeader, $formatter->getOutput()));
