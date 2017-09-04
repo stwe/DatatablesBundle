@@ -208,7 +208,7 @@ class DatatableQueryBuilder
         $this->entityShortName = $this->getEntityShortName($this->metadata);
         $this->rootEntityIdentifier = $this->getIdentifier($this->metadata);
 
-        $this->qb = $this->em->createQueryBuilder();
+        $this->qb = $this->em->createQueryBuilder()->from($this->entityName, $this->entityShortName);
         $this->accessor = PropertyAccess::createPropertyAccessor();
 
         $this->columns = $datatable->getColumnBuilder()->getColumns();
@@ -308,16 +308,12 @@ class DatatableQueryBuilder
     /**
      * Build query.
      *
+     * @deprecated No longer used by internal code.
+     *
      * @return $this
      */
     public function buildQuery()
     {
-        $this->setSelectFrom();
-        $this->setJoins($this->qb);
-        $this->setWhere($this->qb);
-        $this->setOrderBy();
-        $this->setLimit();
-
         return $this;
     }
 
@@ -345,6 +341,24 @@ class DatatableQueryBuilder
         return $this;
     }
 
+    /**
+     * Get the built qb.
+     *
+     * @return QueryBuilder
+     */
+    public function getBuiltQb()
+    {
+        $qb = clone $this->qb;
+
+        $this->setSelectFrom($qb);
+        $this->setJoins($qb);
+        $this->setWhere($qb);
+        $this->setOrderBy($qb);
+        $this->setLimit($qb);
+
+        return $qb;
+    }
+
     //-------------------------------------------------
     // Private/Public - Setup query
     //-------------------------------------------------
@@ -352,19 +366,19 @@ class DatatableQueryBuilder
     /**
      * Set select from.
      *
+     * @param QueryBuilder $qb
+     *
      * @return $this
      */
-    private function setSelectFrom()
+    private function setSelectFrom(QueryBuilder $qb)
     {
         foreach ($this->selectColumns as $key => $value) {
             if (false === empty($key)) {
-                $this->qb->addSelect('partial '.$key.'.{'.implode(',', $value).'}');
+                $qb->addSelect('partial '.$key.'.{'.implode(',', $value).'}');
             } else {
-                $this->qb->addSelect($value);
+                $qb->addSelect($value);
             }
         }
-
-        $this->qb->from($this->entityName, $this->entityShortName);
 
         return $this;
     }
@@ -426,7 +440,7 @@ class DatatableQueryBuilder
             }
 
             if ($orExpr->count() > 0) {
-                $qb->where($orExpr);
+                $qb->andWhere($orExpr);
             }
         }
 
@@ -465,9 +479,11 @@ class DatatableQueryBuilder
      * Ordering.
      * Construct the ORDER BY clause for server-side processing SQL query.
      *
+     * @param QueryBuilder $qb
+     *
      * @return $this
      */
-    private function setOrderBy()
+    private function setOrderBy(QueryBuilder $qb)
     {
         if (isset($this->requestParams['order']) && count($this->requestParams['order'])) {
             $counter = count($this->requestParams['order']);
@@ -480,7 +496,7 @@ class DatatableQueryBuilder
                     $columnName = $this->orderColumns[$columnIdx];
                     $orderDirection = $this->requestParams['order'][$i]['dir'];
 
-                    $this->qb->addOrderBy($columnName, $orderDirection);
+                    $qb->addOrderBy($columnName, $orderDirection);
                 }
             }
         }
@@ -492,14 +508,16 @@ class DatatableQueryBuilder
      * Paging.
      * Construct the LIMIT clause for server-side processing SQL query.
      *
+     * @param QueryBuilder $qb
+     *
      * @return $this
      * @throws Exception
      */
-    private function setLimit()
+    private function setLimit(QueryBuilder $qb)
     {
         if (true === $this->features->getPaging() || null === $this->features->getPaging()) {
             if (isset($this->requestParams['start']) && DatatableQueryBuilder::DISABLE_PAGINATION != $this->requestParams['length']) {
-                $this->qb->setFirstResult($this->requestParams['start'])->setMaxResults($this->requestParams['length']);
+                $qb->setFirstResult($this->requestParams['start'])->setMaxResults($this->requestParams['length']);
             }
         } elseif ($this->ajax->getPipeline() > 0) {
             throw new Exception('DatatableQueryBuilder::setLimit(): For disabled paging, the ajax Pipeline-Option must be turned off.');
@@ -515,9 +533,10 @@ class DatatableQueryBuilder
      */
     public function execute()
     {
-        $query = $this->qb->getQuery();
-        $query->setHydrationMode(Query::HYDRATE_ARRAY)
-            ->useQueryCache($this->useQueryCache);
+        $qb = $this->getBuiltQb();
+
+        $query = $qb->getQuery();
+        $query->setHydrationMode(Query::HYDRATE_ARRAY)->useQueryCache($this->useQueryCache);
         call_user_func_array([$query, 'useResultCache'], $this->useResultCacheArgs);
 
         return $query;
@@ -530,15 +549,16 @@ class DatatableQueryBuilder
      */
     public function getCountAllResults()
     {
-        $qb = $this->em->createQueryBuilder();
+        $qb = clone $this->qb;
         $qb->select('count(distinct '.$this->entityShortName.'.'.$this->rootEntityIdentifier.')');
-        $qb->from($this->entityName, $this->entityShortName);
+        $this->setJoins($qb);
+
         $query = $qb->getQuery();
         $query->useQueryCache($this->useCountQueryCache);
         call_user_func_array([$query, 'useResultCache'], $this->useCountResultCacheArgs);
 
-        return !$qb->getDQLPart('groupBy') ?
-            (int) $query->getSingleScalarResult()
+        return !$qb->getDQLPart('groupBy')
+            ? (int) $query->getSingleScalarResult()
             : count($query->getResult());
     }
 

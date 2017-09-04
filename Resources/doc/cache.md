@@ -18,7 +18,6 @@ if ($isAjax) {
     $responseService->setDatatable($datatable);
 
     $datatableQueryBuilder = $responseService->getDatatableQueryBuilder();
-    $datatableQueryBuilder->buildQuery();
 
     $datatableQueryBuilder->useQueryCache(true);            // (1)
     $datatableQueryBuilder->useCountQueryCache(true);       // (2)

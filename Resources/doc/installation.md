@@ -398,11 +398,7 @@ public function indexAction(Request $request)
     if ($isAjax) {
         $responseService = $this->get('sg_datatables.response');
         $responseService->setDatatable($datatable);
-
-        $datatableQueryBuilder = $responseService->getDatatableQueryBuilder();
-        $datatableQueryBuilder->buildQuery();
-
-        //dump($datatableQueryBuilder->getQb()->getDQL()); die();
+        $responseService->getDatatableQueryBuilder();
 
         return $responseService->getResponse();
     }
