@@ -1,0 +1,20 @@
+{
+    {% if select.blurable is defined and select.blurable is not same as(null) %}
+        blurable: {{ select.blurable|sg_datatables_bool_var }},
+    {% endif %}
+    {% if select.className is defined and select.className is not same as(null) %}
+        className: "{{ select.className }}",
+    {% endif %}
+    {% if select.info is defined and select.infoblurable is not same as(null) %}
+        info: {{ select.info|sg_datatables_bool_var }},
+    {% endif %}
+    {% if select.items is defined and select.items is not same as(null) %}
+        items: "{{ select.items }}",
+    {% endif %}
+    {% if select.selector is defined and select.selector is not same as(null) %}
+        selector: "{{ select.selector }}",
+    {% endif %}
+    {% if select.style is defined and select.style is not same as(null) %}
+        style: "{{ select.style }}",
+    {% endif %}
+},

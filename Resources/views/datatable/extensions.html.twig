@@ -68,3 +68,14 @@
         },
     {% endif %}
 {% endif %}
+
+{# Buttons Extension #}
+{% if sg_datatables_view.extensions.select is not same as(null) %}
+    {% if sg_datatables_view.extensions.select is same as(true) %}
+        {# the easiest way to activate the extension - select is a boolean value (true) #}
+        select: true,
+    {% else %}
+        {# select is defined and not boolean, rather given as an object - handle the Select class options #}
+        select: {% include 'SgDatatablesBundle:datatable:select.html.twig' %}
+    {% endif %}
+{% endif %}

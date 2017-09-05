@@ -13,6 +13,7 @@ namespace Sg\DatatablesBundle\Datatable;
 
 use Sg\DatatablesBundle\Datatable\Extension\Buttons;
 use Sg\DatatablesBundle\Datatable\Extension\Responsive;
+use Sg\DatatablesBundle\Datatable\Extension\Select;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -49,6 +50,15 @@ class Extensions
      */
     protected $responsive;
 
+    /**
+     * The Select Extension.
+     * Select adds item selection capabilities to a DataTable.
+     * Default: null
+     *
+     * @var null|array|bool|Select
+     */
+    protected $select;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -77,10 +87,12 @@ class Extensions
         $resolver->setDefaults(array(
             'buttons' => null,
             'responsive' => null,
+            'select' => null,
         ));
 
         $resolver->setAllowedTypes('buttons', array('null', 'array', 'bool'));
         $resolver->setAllowedTypes('responsive', array('null', 'array', 'bool'));
+        $resolver->setAllowedTypes('select', array('null', 'array', 'bool'));
 
         return $this;
     }
@@ -142,6 +154,35 @@ class Extensions
             $this->responsive = $newResponsive->set($responsive);
         } else {
             $this->responsive = $responsive;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get select.
+     *
+     * @return null|array|bool|Select
+     */
+    public function getSelect()
+    {
+        return $this->select;
+    }
+
+    /**
+     * Set select.
+     *
+     * @param null|array|bool $select
+     *
+     * @return $this
+     */
+    public function setSelect($select)
+    {
+        if (is_array($select)) {
+            $newSelect = new Select();
+            $this->select = $newSelect->set($select);
+        } else {
+            $this->select = $select;
         }
 
         return $this;
