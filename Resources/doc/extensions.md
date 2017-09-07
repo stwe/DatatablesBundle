@@ -2,7 +2,7 @@
 
 1. [Buttons](#1-buttons)
 2. [Responsive](#2-responsive)
-2. [Select](#3-select)
+3. [Select](#3-select)
 
 ## 1. Buttons
 
