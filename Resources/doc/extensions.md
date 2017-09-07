@@ -257,12 +257,14 @@ public function buildDatatable(array $options = array())
     // ...
 
     $this->extensions->set(array(
-        'blurable' => false,
-        'className': 'selected',
-        'info': true,
-        'items': 'rows',
-        'selector': 'td, th',
-        'style': 'os',
+        'select' => array(
+            'blurable' => false,
+            'className' => 'selected',
+            'info' => true,
+            'items' => 'row',
+            'selector' => 'td, th',
+            'style' => 'os',
+        ),
     ));
     
     // ...
