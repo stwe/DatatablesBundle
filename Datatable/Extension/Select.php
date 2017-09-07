@@ -135,7 +135,7 @@ class Select {
      *
      * @return $this
      */
-    public function setAction($blurable) {
+    public function setBlurable($blurable) {
         $this->blurable = $blurable;
 
         return $this;
