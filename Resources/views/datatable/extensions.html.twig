@@ -41,28 +41,28 @@
             {% else %}
                 {# details is an array #}
                 details: {
-                {% if sg_datatables_view.extensions.responsive.details.type is defined %}
-                    type: "sg_datatables_view.extensions.responsive.details.type",
-                {% endif %}
-                {% if sg_datatables_view.extensions.responsive.details.target is defined %}
-                    target: "sg_datatables_view.extensions.responsive.details.target",
-                {% endif %}
-                {% if sg_datatables_view.extensions.responsive.details.renderer is defined %}
-                    {% if sg_datatables_view.extensions.responsive.details.renderer['vars'] is defined %}
-                        {% set vars = sg_datatables_view.extensions.responsive.details.renderer['vars'] %}
-                    {% else %}
-                        {% set vars = {} %}
+                    {% if sg_datatables_view.extensions.responsive.details.type is defined %}
+                        type: "sg_datatables_view.extensions.responsive.details.type",
                     {% endif %}
-                    renderer: {% include sg_datatables_view.extensions.responsive.details.renderer['template'] with vars %},
-                {% endif %}
-                {% if sg_datatables_view.extensions.responsive.details.display is defined %}
-                    {% if sg_datatables_view.extensions.responsive.details.display['vars'] is defined %}
-                        {% set vars = sg_datatables_view.extensions.responsive.details.display['vars'] %}
-                    {% else %}
-                        {% set vars = {} %}
+                    {% if sg_datatables_view.extensions.responsive.details.target is defined %}
+                        target: "sg_datatables_view.extensions.responsive.details.target",
                     {% endif %}
-                    display: {% include sg_datatables_view.extensions.responsive.details.display['template'] with vars %},
-                {% endif %}
+                    {% if sg_datatables_view.extensions.responsive.details.renderer is defined %}
+                        {% if sg_datatables_view.extensions.responsive.details.renderer['vars'] is defined %}
+                            {% set vars = sg_datatables_view.extensions.responsive.details.renderer['vars'] %}
+                        {% else %}
+                            {% set vars = {} %}
+                        {% endif %}
+                        renderer: {% include sg_datatables_view.extensions.responsive.details.renderer['template'] with vars %},
+                    {% endif %}
+                    {% if sg_datatables_view.extensions.responsive.details.display is defined %}
+                        {% if sg_datatables_view.extensions.responsive.details.display['vars'] is defined %}
+                            {% set vars = sg_datatables_view.extensions.responsive.details.display['vars'] %}
+                        {% else %}
+                            {% set vars = {} %}
+                        {% endif %}
+                        display: {% include sg_datatables_view.extensions.responsive.details.display['template'] with vars %},
+                    {% endif %}
                 },
             {% endif %}
         },
