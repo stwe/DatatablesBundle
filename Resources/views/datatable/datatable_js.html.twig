@@ -65,6 +65,14 @@
             $.extend(defaults, extensions);
             $.extend(defaults, columns);
             $.extend(defaults, initialSearch);
+            $.extend(defaults, {
+                stateSaveCallback: function(settings,data) {
+                    localStorage.setItem(settings.sInstance, JSON.stringify(data) )
+                },
+                stateLoadCallback: function(settings) {
+                    return JSON.parse( localStorage.getItem(settings.sInstance ) )
+                }
+            });
 
             if (!$.fn.dataTable.isDataTable(selector)) {
                 $(selector)
