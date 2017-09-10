@@ -1,5 +1,5 @@
 {
-    "name": "sg/datatablesbundle",
+    "name": "roldan/datatablesbundle",
     "type": "symfony-bundle",
     "description": "Symfony Datatable Bundle For Doctrine2 Entities",
     "keywords": ["symfony3", "datatable", "datatables", "data-table", "grid", "table", "datagrid", "pagination"],
