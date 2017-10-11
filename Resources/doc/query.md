@@ -44,7 +44,7 @@ public function indexAction(Request $request)
 {
     // ...
 
-    if ($isAjax) {
+    if ($request->isXmlHttpRequest()) {
         $responseService = $this->get('sg_datatables.response');
         $responseService->setDatatable($datatable);
 
