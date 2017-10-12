@@ -820,6 +820,9 @@ class DatatableQueryBuilder
      */
     private function setOrExpression(Orx $orExpr, QueryBuilder $qb, $searchType, $searchField, $searchValue, $key)
     {
+        // Prevent doctrine issue with "?0" (https://github.com/doctrine/doctrine2/issues/6699)
+        $key++;
+
         switch ($searchType) {
             case 'like':
                 $orExpr->add($qb->expr()->like($searchField, '?'.$key));
