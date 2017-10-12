@@ -67,10 +67,20 @@ class DateTimeColumn extends AbstractColumn
         if (true === $this->isEditableContentRequired($row)) {
             $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
         } else {
-            $content = $this->renderTemplate($this->accessor->getValue($row, $path));
+            try {
+                $content = $this->renderTemplate($this->accessor->getValue($row, $path));
+            }
+            catch (\Exception $ex) {
+                $content = $this->renderTemplate(null);
+            }
         }
 
-        $this->accessor->setValue($row, $path, $content);
+        try {
+            $this->accessor->setValue($row, $path, $content);
+        }
+        catch (\Exception $ex) {
+        }
+
 
         return $this;
     }
