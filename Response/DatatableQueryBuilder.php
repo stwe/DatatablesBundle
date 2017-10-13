@@ -411,21 +411,27 @@ class DatatableQueryBuilder
     {
         // global filtering
         if (isset($this->requestParams['search']) && '' != $this->requestParams['search']['value']) {
-            $globalSearch = $this->requestParams['search']['value'];
 
             $orExpr = $qb->expr()->orX();
+            $globalSearch = $this->requestParams['search']['value'];
             $globalSearchType = $this->options->getGlobalSearchType();
 
             foreach ($this->columns as $key => $column) {
                 if (true === $this->isSearchableColumn($column)) {
+
                     $searchType = $globalSearchType;
+                    $searchValue = $globalSearch;
                     $searchField = $this->searchColumns[$key];
-                    // Subqueries and arithmetics fields can't be search with LIKE
-                    if ($column->isCustomDql() && ('string' != $column->getTypeOfField()) || preg_match('/SELECT .+ FROM .+/', $searchField)) {
-                        if (!is_numeric($globalSearch)) {
-                            continue;
-                        }
-                        $globalSearch = floatval($globalSearch);
+
+                    // Only StringExpression can be searched with LIKE (https://github.com/doctrine/doctrine2/issues/6363)
+                    if (
+                        // Not a StringExpression
+                        !preg_match('/string|date|time/', $column->getTypeOfField())
+                        // Subqueries can't be search with LIKE
+                        || preg_match('/SELECT.+FROM.+/is', $searchField)
+                        // CASE WHEN can't be search with LIKE
+                        || preg_match('/CASE.+WHEN.+END/is', $searchField)
+                    ) {
                         switch ($searchType) {
                             case 'like':
                                 $searchType = 'eq';
@@ -435,7 +441,31 @@ class DatatableQueryBuilder
                                 break;
                         }
                     }
-                    $this->setOrExpression($orExpr, $qb, $searchType, $searchField, $globalSearch, $key);
+
+                    // Skip search on columns when column type don't match search value type
+                    // (Prevent converting data type errors)
+                    switch ($column->getTypeOfField()) {
+                        case 'decimal':
+                        case 'float':
+                            if (is_numeric($searchValue)) {
+                                $searchValue = floatval($searchValue);
+                            } else {
+                                continue 2;
+                            }
+                            break;
+                        case 'integer':
+                        case 'bigint':
+                        case 'smallint':
+                            if ($searchValue == strval(intval($searchValue))) {
+                                $searchValue = intval($searchValue);
+                            } else {
+                                continue 2;
+                            }
+                            break;
+                    }
+
+                    $this->setOrExpression($orExpr, $qb, $searchType, $searchField, $searchValue, $key);
+
                 }
             }
 
