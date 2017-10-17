@@ -456,6 +456,7 @@ class DatatableQueryBuilder
                         case 'integer':
                         case 'bigint':
                         case 'smallint':
+                        case 'boolean':
                             if ($searchValue == strval(intval($searchValue))) {
                                 $searchValue = intval($searchValue);
                             } else {
