@@ -68,3 +68,33 @@
         },
     {% endif %}
 {% endif %}
+
+{# Select Extension #}
+{% if sg_datatables_view.extensions.select is not same as(null) %}
+    {% if sg_datatables_view.extensions.select is same as(true) %}
+        {# the easiest way to activate the extension - select is a boolean value (true) #}
+        select: true,
+    {% else %}
+        {# select is defined and not boolean, rather given as an object - handle the Select class options #}
+        select: {
+            {% if sg_datatables_view.extensions.select.blurable is defined and sg_datatables_view.extensions.select.blurable is not same as(null) %}
+                blurable: {{ sg_datatables_view.extensions.select.blurable|sg_datatables_bool_var }},
+            {% endif %}
+            {% if select.className is defined and select.className is not same as(null) %}
+                className: "{{ select.className }}",
+            {% endif %}
+            {% if sg_datatables_view.extensions.select.info is defined and sg_datatables_view.extensions.select.info is not same as(null) %}
+                info: {{ sg_datatables_view.extensions.select.info|sg_datatables_bool_var }},
+            {% endif %}
+            {% if sg_datatables_view.extensions.select.items is defined and sg_datatables_view.extensions.select.items is not same as(null) %}
+                items: "{{ sg_datatables_view.extensions.select.items }}",
+            {% endif %}
+            {% if sg_datatables_view.extensions.select.selector is defined and sg_datatables_view.extensions.select.selector is not same as(null) %}
+                selector: "{{ sg_datatables_view.extensions.select.selector }}",
+            {% endif %}
+            {% if sg_datatables_view.extensions.select.style is defined and sg_datatables_view.extensions.select.style is not same as(null) %}
+                style: "{{ sg_datatables_view.extensions.select.style }}",
+            {% endif %}
+        },
+    {% endif %}
+{% endif %}
