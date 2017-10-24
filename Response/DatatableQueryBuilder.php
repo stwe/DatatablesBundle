@@ -426,7 +426,7 @@ class DatatableQueryBuilder
                     // Only StringExpression can be searched with LIKE (https://github.com/doctrine/doctrine2/issues/6363)
                     if (
                         // Not a StringExpression
-                        !preg_match('/string|date|time/', $column->getTypeOfField())
+                        !preg_match('/text|string|date|time/', $column->getTypeOfField())
                         // Subqueries can't be search with LIKE
                         || preg_match('/SELECT.+FROM.+/is', $searchField)
                         // CASE WHEN can't be search with LIKE
