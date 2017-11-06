@@ -72,9 +72,6 @@
                 stateLoadCallback: function(settings) {
                     return JSON.parse( localStorage.getItem(settings.sInstance ) )
                 },
-                fixedColumns: {
-                    leftColumns: 2
-                }
             });
 
             if (!$.fn.dataTable.isDataTable(selector)) {
@@ -94,6 +91,10 @@
         }
 
         createDatatable();
+        
+        new $.fn.dataTable.FixedColumns( oTable, {
+                leftColumns: 2
+        } );
 
         {% if sg_datatables_view.columnBuilder.uniqueColumn('multiselect') is not null %}
             {{ sg_datatables_render_multiselect_actions( sg_datatables_view.columnBuilder.uniqueColumn('multiselect'), sg_datatables_view.ajax.pipeline) }}
