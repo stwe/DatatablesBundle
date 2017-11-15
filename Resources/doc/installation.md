@@ -17,7 +17,7 @@ This bundle requires the following additional packages:
 * jQuery (choose a Version, I use 3.1.1)
 * DataTables 1.10.12 or higher
 * Moment.js 2.8.4 or higher (choose a Version, I use 2.15.1)
-* FOSJsRoutingBundle 1.6.0 ***Please follow all steps described [here](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/1.6.0/Resources/doc/index.md).***
+* FOSJsRoutingBundle 2.0.0 ***Please follow all steps described [here](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/2.0.0/Resources/doc/installation.rst).***
 
 ### Translations
 
