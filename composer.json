@@ -23,7 +23,7 @@
         "doctrine/orm": "^2.5",
         "symfony/options-resolver": "^3.0",
         "symfony/property-access": "^3.0",
-        "friendsofsymfony/jsrouting-bundle": "^2.0"
+        "friendsofsymfony/jsrouting-bundle": "^1.6|^2.0"
     },
     "autoload": {
         "psr-4": { "Sg\\DatatablesBundle\\": "" }
