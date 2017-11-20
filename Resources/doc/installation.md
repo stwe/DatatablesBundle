@@ -69,7 +69,7 @@ Load the routes of the bundle by adding this configuration to the app/config/rou
 sg_datatables_bundle:
     resource: "@SgDatatablesBundle/Controller/"
     type:     annotation
-    prefix:     /sg
+    prefix:   /sg
 ```
 
 ### Step 4: Assetic Configuration
