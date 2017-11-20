@@ -1,0 +1,19 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{% if column.filter.cancelButton is same as(true) %}
+        <script type="text/javascript">
+            $("#{{ cancel_button_id_selector }}").click(function() {
+                if ('' != $("#{{ filter_id_selector }}").val()) {
+                    $("#{{ filter_id_selector }}")
+                        .val('')
+                        .change();
+                }
+            });
+        </script>
+{% endif %}
