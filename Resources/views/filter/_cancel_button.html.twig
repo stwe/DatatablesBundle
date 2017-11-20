@@ -7,15 +7,15 @@
  # file that was distributed with this source code.
  #}
 {% if column.filter.cancelButton is same as(true) %}
-    document.addEventListener("DOMContentLoaded", function () {
-        <script type="text/javascript">
-            $("#{{ cancel_button_id_selector }}").click(function() {
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            $("#{{ cancel_button_id_selector }}").click(function () {
                 if ('' != $("#{{ filter_id_selector }}").val()) {
                     $("#{{ filter_id_selector }}")
                         .val('')
                         .change();
                 }
             });
-        </script>
-    }, false);
+        }, false);
+    </script>
 {% endif %}
