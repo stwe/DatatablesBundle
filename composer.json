@@ -1,29 +1,32 @@
 {
-    "name": "sg/datatablesbundle",
+    "name": "sweoggy/datatablesbundle",
     "type": "symfony-bundle",
     "description": "Symfony Datatable Bundle For Doctrine2 Entities",
     "keywords": ["symfony3", "datatable", "datatables", "data-table", "grid", "table", "datagrid", "pagination"],
-    "homepage": "https://github.com/stwe/DatatablesBundle",
+    "homepage": "https://github.com/sweoggy/DatatablesBundle",
     "license": "MIT",
     "authors": [
         {
             "name": "stwe"
         },
         {
+            "name": "sweoggy"
+        },
+        {
             "name": "SgDatatablesBundle contributors",
-            "homepage": "https://github.com/stwe/DatatablesBundle/graphs/contributors"
+            "homepage": "https://github.com/sweoggy/DatatablesBundle/graphs/contributors"
         }
     ],
     "support": {
-        "issues": "https://github.com/stwe/DatatablesBundle/issues"
+        "issues": "https://github.com/sweoggy/DatatablesBundle/issues"
     },
     "require": {
-        "php": ">=5.5.9",
-        "symfony/framework-bundle": "~3.0",
+        "php": ">=7.1.0",
+        "symfony/framework-bundle": "^3.0",
         "doctrine/orm": "^2.5",
-        "symfony/options-resolver": "~3.0",
-        "symfony/property-access": "~3.0",
-        "friendsofsymfony/jsrouting-bundle": "1.6.0"
+        "symfony/options-resolver": "^3.0",
+        "symfony/property-access": "^3.0",
+        "friendsofsymfony/jsrouting-bundle": "^1.6|^2.0"
     },
     "autoload": {
         "psr-4": { "Sg\\DatatablesBundle\\": "" }
