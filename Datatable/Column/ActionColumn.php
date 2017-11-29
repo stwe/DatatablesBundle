@@ -107,6 +107,11 @@ class ActionColumn extends AbstractColumn
                 $parameters[$actionKey] = array();
             }
 
+            $actionAttributes = $action->getAttributes();
+            if ($actionAttributes instanceof Closure) {
+                $action->setAttributes(call_user_func($actionAttributes, $row));
+            }
+
             if ($action->isButton()) {
                 if (null !== $action->getButtonValue()) {
                     if (isset($row[$action->getButtonValue()])) {

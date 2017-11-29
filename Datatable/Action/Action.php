@@ -94,7 +94,7 @@ class Action
      * HTML attributes (except 'href' and 'value').
      * Default: null
      *
-     * @var null|array
+     * @var null|array|Closure
      */
     protected $attributes;
 
@@ -179,7 +179,7 @@ class Action
         $resolver->setAllowedTypes('label', array('null', 'string'));
         $resolver->setAllowedTypes('confirm', 'bool');
         $resolver->setAllowedTypes('confirm_message', array('null', 'string'));
-        $resolver->setAllowedTypes('attributes', array('null', 'array'));
+        $resolver->setAllowedTypes('attributes', array('null', 'array', 'Closure'));
         $resolver->setAllowedTypes('button', 'bool');
         $resolver->setAllowedTypes('button_value', array('null', 'string'));
         $resolver->setAllowedTypes('button_value_prefix', 'bool');
@@ -341,7 +341,7 @@ class Action
     /**
      * Get attributes.
      *
-     * @return null|array
+     * @return null|array|Closure
      */
     public function getAttributes()
     {
