@@ -81,13 +81,14 @@ class ActionColumn extends AbstractColumn
     public function renderSingleField(array &$row)
     {
         $parameters = array();
+        $attributes = array();
         $values = array();
 
         /** @var Action $action */
         foreach ($this->actions as $actionKey => $action) {
             $routeParameters = $action->getRouteParameters();
             if (is_array($routeParameters)) {
-                    foreach ($routeParameters as $key => $value) {
+                foreach ($routeParameters as $key => $value) {
                     if (isset($row[$value])) {
                         $parameters[$actionKey][$key] = $row[$value];
                     } else {
@@ -108,8 +109,12 @@ class ActionColumn extends AbstractColumn
             }
 
             $actionAttributes = $action->getAttributes();
-            if ($actionAttributes instanceof Closure) {
-                $action->setAttributes(call_user_func($actionAttributes, $row));
+            if (is_array($actionAttributes)) {
+                $attributes[$actionKey] = $actionAttributes;
+            } elseif ($actionAttributes instanceof Closure) {
+                $attributes[$actionKey] = call_user_func($actionAttributes, $row);
+            } else {
+                $attributes[$actionKey] = array();
             }
 
             if ($action->isButton()) {
@@ -138,6 +143,7 @@ class ActionColumn extends AbstractColumn
             array(
                 'actions' => $this->actions,
                 'route_parameters' => $parameters,
+                'attributes' => $attributes,
                 'values' => $values,
                 'render_if_actions' => $row['sg_datatables_actions'][$this->index],
                 'start_html_container' => $this->startHtml,
