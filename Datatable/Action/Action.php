@@ -351,7 +351,7 @@ class Action
     /**
      * Set attributes.
      *
-     * @param null|array $attributes
+     * @param null|array|Closure $attributes
      *
      * @return $this
      * @throws Exception

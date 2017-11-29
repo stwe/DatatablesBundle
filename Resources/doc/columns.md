@@ -440,7 +440,7 @@ SgDatatablesBundle:render:action.html.twig
 | label               | null or string           | null    |          | A label for the Action. |
 | confirm             | bool                     | false   |          | Show confirm message if true. |
 | confirm_message     | null or string           | null    |          | The confirm message. |
-| attributes          | null or array or Closure | null    |          | HTML Tag attributes (except 'href' and 'value'). |
+| attributes          | null, array or Closure   | null    |          | HTML Tag attributes (except 'href' and 'value'). |
 | button              | bool                     | false   |          | Render a button instead of a link. |
 | button_value        | null or string           | null    |          | The button value. |
 | button_value_prefix | bool                     | false   |          | Use the Datatable-Name as prefix for the button value. |
