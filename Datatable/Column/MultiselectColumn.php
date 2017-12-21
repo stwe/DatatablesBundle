@@ -78,7 +78,7 @@ class MultiselectColumn extends ActionColumn
      */
     public function getOptionsTemplate()
     {
-        return 'SgDatatablesBundle:column:multiselect.html.twig';
+        return '@SgDatatables/column/multiselect.html.twig';
     }
 
     /**
@@ -121,7 +121,7 @@ class MultiselectColumn extends ActionColumn
      */
     public function getCellContentTemplate()
     {
-        return 'SgDatatablesBundle:render:multiselect.html.twig';
+        return '@SgDatatables/render/multiselect.html.twig';
     }
 
     /**

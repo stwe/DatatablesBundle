@@ -56,7 +56,7 @@ class SelectFilter extends AbstractFilter
      */
     public function getTemplate()
     {
-        return 'SgDatatablesBundle:filter:select.html.twig';
+        return '@SgDatatables/filter/select.html.twig';
     }
 
     /**

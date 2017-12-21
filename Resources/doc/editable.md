@@ -55,7 +55,7 @@ __
 
 ### Template
 
-SgDatatablesBundle:column:column_post_create_dt.js.twig
+@SgDatatables/column/column_post_create_dt.js.twig
 
 ### Options
 
@@ -96,7 +96,7 @@ __
 
 ### Template
 
-SgDatatablesBundle:column:column_post_create_dt.js.twig
+@SgDatatables/column/column_post_create_dt.js.twig
 
 ### Options
 
@@ -127,7 +127,7 @@ __
 
 ### Template
 
-SgDatatablesBundle:column:column_post_create_dt.js.twig
+@SgDatatables/column/column_post_create_dt.js.twig
 
 ### Options
 
@@ -187,7 +187,7 @@ __
 
 ### Template
 
-SgDatatablesBundle:column:column_post_create_dt.js.twig
+@SgDatatables/column/column_post_create_dt.js.twig
 
 ### Options
 

@@ -20,7 +20,7 @@
             {% endif %}
             {% if sg_datatables_view.extensions.buttons.createButtons is defined and sg_datatables_view.extensions.buttons.createButtons is not same as(null) %}
                 {% for button in sg_datatables_view.extensions.buttons.createButtons %}
-                    {% include 'SgDatatablesBundle:datatable:button.html.twig' %}
+                    {% include '@SgDatatables/datatable/button.html.twig' %}
                 {% endfor %}
             {% endif %}
         ],

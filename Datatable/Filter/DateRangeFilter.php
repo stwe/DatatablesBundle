@@ -32,7 +32,7 @@ class DateRangeFilter extends AbstractFilter
      */
     public function getTemplate()
     {
-        return 'SgDatatablesBundle:filter:daterange.html.twig';
+        return '@SgDatatables/filter/daterange.html.twig';
     }
 
     /**

@@ -28,7 +28,7 @@ __
 
 ### Default template
 
-SgDatatablesBundle:filter:input.html.twig
+@SgDatatables/filter/input.html.twig
 
 ### Options
 
@@ -64,7 +64,7 @@ __
 
 ### Default template
 
-SgDatatablesBundle:filter:input.html.twig
+@SgDatatables/filter/input.html.twig
 
 ### Options
 
@@ -109,7 +109,7 @@ __
 
 ### Default template
 
-SgDatatablesBundle:filter:select.html.twig
+@SgDatatables/filter/select.html.twig
 
 ### Options
 
@@ -184,7 +184,7 @@ __
 
 ### Default template
 
-SgDatatablesBundle:filter:select2.html.twig
+@SgDatatables/filter/select2.html.twig
 
 ### Options
 
@@ -271,7 +271,7 @@ __
 
 ### Default template
 
-SgDatatablesBundle:filter:daterange.html.twig
+@SgDatatables/filter/daterange.html.twig
 
 ### Options
 

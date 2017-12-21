@@ -30,7 +30,7 @@ class TextFilter extends AbstractFilter
      */
     public function getTemplate()
     {
-        return 'SgDatatablesBundle:filter:input.html.twig';
+        return '@SgDatatables/filter/input.html.twig';
     }
 
     /**

@@ -15,11 +15,11 @@ Represents the most basic column.
 
 ### Options template
 
-SgDatatablesBundle:column:column.html.twig
+@SgDatatables/column/column.html.twig
 
 ### Cell content template
 
-SgDatatablesBundle:render:column.html.twig
+@SgDatatables/render/column.html.twig
 
 ### Options
 
@@ -159,11 +159,11 @@ Represents a column, optimized for boolean values.
 
 ### Options template
 
-SgDatatablesBundle:column:column.html.twig
+@SgDatatables/column/column.html.twig
 
 ### Cell content template
 
-SgDatatablesBundle:render:boolean.html.twig
+@SgDatatables/render/boolean.html.twig
 
 ### Options
 
@@ -228,11 +228,11 @@ Represents a column, optimized for date time values.
 
 ### Options template
 
-SgDatatablesBundle:column:column.html.twig
+@SgDatatables/column/column.html.twig
 
 ### Cell content template
 
-SgDatatablesBundle:render:datetime.html.twig
+@SgDatatables/render/datetime.html.twig
 
 ### Options
 
@@ -281,11 +281,11 @@ A complete example of an ImageColumn can be found in the [demo bundle](https://g
 
 ### Options template
 
-SgDatatablesBundle:column:column.html.twig
+@SgDatatables/column/column.html.twig
 
 ### Cell content template
 
-SgDatatablesBundle:render:thumb.html.twig
+@SgDatatables/render/thumb.html.twig
 
 ### Options
 
@@ -343,7 +343,7 @@ Represents a virtual column.
 
 ### Options template
 
-SgDatatablesBundle:Column:column.html.twig
+@SgDatatables/column/column.html.twig
 
 ### Options
 
@@ -408,11 +408,11 @@ A Column to display CRUD action labels or buttons.
 
 ### Options template
 
-SgDatatablesBundle:Column:column.html.twig
+@SgDatatables/column/column.html.twig
 
 ### Cell content template
 
-SgDatatablesBundle:render:action.html.twig
+@SgDatatables/render/action.html.twig
 
 ### Action column options
 
@@ -545,11 +545,11 @@ Support for Bulk Actions.
 
 ### Options template
 
-SgDatatablesBundle:Column:multiselect.html.twig
+@SgDatatables/column/multiselect.html.twig
 
 ### Cell content template
 
-SgDatatablesBundle:render:multiselect.html.twig
+@SgDatatables/render/multiselect.html.twig
 
 ### Options
 
@@ -666,7 +666,7 @@ Represents a column, optimized for numbers.
 
 ### Options template
 
-SgDatatablesBundle:Column:column.html.twig
+@SgDatatables/column/column.html.twig
 
 ### Options
 

@@ -145,7 +145,7 @@ class ImageColumn extends AbstractColumn
      */
     public function getCellContentTemplate()
     {
-        return 'SgDatatablesBundle:render:thumb.html.twig';
+        return '@SgDatatables/render/thumb.html.twig';
     }
 
     //-------------------------------------------------

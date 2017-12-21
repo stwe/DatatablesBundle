@@ -10,7 +10,7 @@
 
 ### Template
 
-SgDatatablesBundle:datatable:extensions.html.twig
+@SgDatatables/datatable/extensions.html.twig
 
 ### Initialisation
 
@@ -130,7 +130,7 @@ ___
 
 ### Template
 
-SgDatatablesBundle:datatable:extensions.html.twig
+@SgDatatables/datatable/extensions.html.twig
 
 ### Initialisation
 
@@ -226,7 +226,7 @@ ___
 
 ### Template
 
-SgDatatablesBundle:datatable:extensions.html.twig
+@SgDatatables/datatable/extensions.html.twig
 
 ### Initialisation
 
