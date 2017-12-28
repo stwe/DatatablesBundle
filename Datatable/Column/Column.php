@@ -34,6 +34,7 @@ class Column extends AbstractColumn
      */
     use FilterableTrait;
 
+    protected $htmlspecialchars;
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -49,6 +50,10 @@ class Column extends AbstractColumn
             $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
 
             $this->accessor->setValue($row, $path, $content);
+        }
+
+        if ($this->htmlspecialchars && isset($row[$this->data])) {
+            $row[$this->data] = htmlspecialchars($row[$this->data]);
         }
 
         return $this;
@@ -136,12 +141,19 @@ class Column extends AbstractColumn
         $resolver->setDefaults(array(
             'filter' => array(TextFilter::class, array()),
             'editable' => null,
+            'htmlspecialchars' => false,
         ));
 
         $resolver->setAllowedTypes('filter', 'array');
         $resolver->setAllowedTypes('editable', array('null', 'array'));
+        $resolver->setAllowedTypes('htmlspecialchars', 'boolean');
 
         return $this;
+    }
+
+    public function setHtmlspecialchars($htmlspecialchars)
+    {
+        $this->htmlspecialchars = $htmlspecialchars;
     }
 
     //-------------------------------------------------
