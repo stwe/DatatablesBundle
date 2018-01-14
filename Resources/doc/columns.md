@@ -138,6 +138,7 @@ $this->columnBuilder
     ->add('full_name', Column::class, array(
         'title' => 'Full name',
         'dql' => "CONCAT(user.firstname, ' ', user.lastname)",
+        'type_of_field' => 'string',
         'searchable' => true,
         'orderable' => true,
     ))
@@ -146,6 +147,7 @@ $this->columnBuilder
     ->add('post_count', Column::class, array(
         'title' => 'User posts count',
         'dql' => '(SELECT COUNT({p}) FROM MyBundle:Post {p} WHERE {p}.user = user)',
+        'type_of_field' => 'integer',
         'searchable' => true,
         'orderable' => true,
     ))
