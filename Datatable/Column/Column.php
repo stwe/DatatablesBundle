@@ -34,7 +34,21 @@ class Column extends AbstractColumn
      */
     use FilterableTrait;
 
-    protected $htmlspecialchars;
+    /**
+     * Render with htmlspecialchars function
+     */
+    protected $htmlSpecialChars;
+
+    /**
+     * Render with closure function
+     */
+    protected $renderClosure;
+
+    /**
+     * Render with twig template
+     */
+    protected $renderTwig;
+
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -52,8 +66,32 @@ class Column extends AbstractColumn
             $this->accessor->setValue($row, $path, $content);
         }
 
-        if ($this->htmlspecialchars && isset($row[$this->data])) {
+        /**
+         * HtmlSpecialChars column
+         */
+        if ($this->htmlSpecialChars && isset($row[$this->data])) {
             $row[$this->data] = htmlspecialchars($row[$this->data]);
+        }
+
+        /**
+         * Closure render
+         */
+        $closure = $this->renderClosure;
+        if (is_object($closure) && ($closure instanceof \Closure)) {
+            $row[$this->data] = $closure($row[$this->data], $row, $this->data);
+        }
+
+        /**
+         * Twig render
+         */
+        if ($this->renderTwig) {
+            $row[$this->data] = $this->twig->render(
+                $this->renderTwig,
+                array(
+                    'row' => $row,
+                    'data' => $this->data,
+                    'column' => $row[$this->data],
+                ));
         }
 
         return $this;
@@ -75,7 +113,7 @@ class Column extends AbstractColumn
 
             if (count($entries) > 0) {
                 foreach ($entries as $key => $entry) {
-                    $currentPath = $path.'['.$key.']'.$value;
+                    $currentPath = $path . '[' . $key . ']' . $value;
                     $currentObjectPath = Helper::getPropertyPathObjectNotation($path, $key, $value);
 
                     $content = $this->renderTemplate(
@@ -141,19 +179,31 @@ class Column extends AbstractColumn
         $resolver->setDefaults(array(
             'filter' => array(TextFilter::class, array()),
             'editable' => null,
-            'htmlspecialchars' => false,
+            'htmlSpecialChars' => false,
+            'renderTwig' => false,
+            'renderClosure' => false,
         ));
 
         $resolver->setAllowedTypes('filter', 'array');
         $resolver->setAllowedTypes('editable', array('null', 'array'));
-        $resolver->setAllowedTypes('htmlspecialchars', 'boolean');
+        $resolver->setAllowedTypes('htmlSpecialChars', 'boolean');
 
         return $this;
     }
 
-    public function setHtmlspecialchars($htmlspecialchars)
+    public function setHtmlSpecialChars($htmlSpecialChars)
     {
-        $this->htmlspecialchars = $htmlspecialchars;
+        $this->htmlSpecialChars = $htmlSpecialChars;
+    }
+
+    public function setRenderTwig($renderTwig)
+    {
+        $this->renderTwig = $renderTwig;
+    }
+
+    public function setRenderClosure($renderClosure)
+    {
+        $this->renderClosure = $renderClosure;
     }
 
     //-------------------------------------------------
@@ -164,7 +214,7 @@ class Column extends AbstractColumn
      * Render template.
      *
      * @param string|null $data
-     * @param string      $pk
+     * @param string $pk
      * @param string|null $path
      *
      * @return mixed|string
