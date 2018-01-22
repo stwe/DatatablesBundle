@@ -1,21 +1,17 @@
 {
-    "name": "sg/datatablesbundle",
+    "name": "buntan/datatablesbundle",
     "type": "symfony-bundle",
-    "description": "Symfony Datatable Bundle For Doctrine2 Entities",
+    "description": "Fork Symfony Datatable Bundle For Doctrine2 Entities",
     "keywords": ["symfony3", "datatable", "datatables", "data-table", "grid", "table", "datagrid", "pagination"],
-    "homepage": "https://github.com/stwe/DatatablesBundle",
+    "homepage": "https://github.com/buntan/DatatablesBundle",
     "license": "MIT",
     "authors": [
         {
-            "name": "stwe"
-        },
-        {
-            "name": "SgDatatablesBundle contributors",
-            "homepage": "https://github.com/stwe/DatatablesBundle/graphs/contributors"
+            "name": "Buntan"
         }
     ],
     "support": {
-        "issues": "https://github.com/stwe/DatatablesBundle/issues"
+        "issues": "https://github.com/buntan/DatatablesBundle/issues"
     },
     "require": {
         "php": ">=5.5.9",
