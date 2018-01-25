@@ -134,7 +134,7 @@ The easiest way is to load all files with your base layout with CDN.
 
 ### Step 1: Create a Datatable class
 
-The `sg:datatable:generate` [Console Command](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/command.md) generates a Datatable for a given entity located in a given bundle.
+The `sg:datatable:generate` [Console Command](https://github.com/sweoggy/DatatablesBundle/blob/master/Resources/doc/command.md) generates a Datatable for a given entity located in a given bundle.
 
 **Example:**
 
