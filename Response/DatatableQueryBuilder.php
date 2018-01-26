@@ -11,6 +11,7 @@
 
 namespace Sg\DatatablesBundle\Response;
 
+use Doctrine\DBAL\DBALException;
 use Sg\DatatablesBundle\Datatable\Column\ColumnInterface;
 use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
 use Sg\DatatablesBundle\Datatable\DatatableInterface;
@@ -205,7 +206,7 @@ class DatatableQueryBuilder
         $this->entityName = $datatable->getEntity();
 
         $this->metadata = $this->getMetadata($this->entityName);
-        $this->entityShortName = $this->getEntityShortName($this->metadata);
+        $this->entityShortName = $this->getEntityShortName($this->metadata, $this->em);
         $this->rootEntityIdentifier = $this->getIdentifier($this->metadata);
 
         $this->qb = $this->em->createQueryBuilder()->from($this->entityName, $this->entityShortName);
@@ -797,12 +798,21 @@ class DatatableQueryBuilder
      * Get entity short name.
      *
      * @param ClassMetadata $metadata
+     * @param EntityManagerInterface $entityManager
      *
      * @return string
      */
-    private function getEntityShortName(ClassMetadata $metadata)
+    private function getEntityShortName(ClassMetadata $metadata, EntityManagerInterface $entityManager)
     {
-        return strtolower($metadata->getReflectionClass()->getShortName());
+        $entityShortName = strtolower($metadata->getReflectionClass()->getShortName());
+        try {
+            $reservedKeywordsList = $entityManager->getConnection()->getDatabasePlatform()->getReservedKeywordsList();
+            $isReservedKeyword = $reservedKeywordsList->isKeyword($entityShortName);
+        } catch (DBALException $exception) {
+            $isReservedKeyword = false;
+        }
+
+        return $isReservedKeyword ? "_{$entityShortName}" : $entityShortName;
     }
 
     /**
