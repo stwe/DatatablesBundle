@@ -418,7 +418,7 @@ class DatatableQueryBuilder
             $globalSearchType = $this->options->getGlobalSearchType();
 
             foreach ($this->columns as $key => $column) {
-                if (true === $this->isSearchableColumn($column)) {
+                if (true === $this->isGlobalSearchableColumn($column)) {
 
                     $searchType = $globalSearchType;
                     $searchValue = $globalSearch;
@@ -838,13 +838,39 @@ class DatatableQueryBuilder
      */
     private function isSearchableColumn(ColumnInterface $column)
     {
-        $searchColumn = null !== $this->accessor->getValue($column, 'dql') && true === $this->accessor->getValue($column, 'searchable');
-
-        if (false === $this->options->isSearchInNonVisibleColumns()) {
-            return $searchColumn && true === $this->accessor->getValue($column, 'visible');
+        if (false === $this->accessor->getValue($column, 'searchable')) {
+            return false;
         }
 
-        return $searchColumn;
+        if (null === $this->accessor->getValue($column, 'dql')) {
+            return false;
+        }
+
+        if (false === $this->options->isSearchInNonVisibleColumns()) {
+            return true === $this->accessor->getValue($column, 'visible');
+        }
+
+        return true;
+    }
+
+    /**
+     * Is global searchable column.
+     *
+     * @param ColumnInterface $column
+     *
+     * @return bool
+     */
+    private function isGlobalSearchableColumn(ColumnInterface $column)
+    {
+        if (false === $this->isSearchableColumn($column)) {
+            return false;
+        }
+
+        if (false === $this->accessor->getValue($column, 'global_searchable')) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

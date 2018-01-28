@@ -161,6 +161,15 @@ abstract class AbstractColumn implements ColumnInterface
     protected $searchable;
 
     /**
+     * Enable or disable global filtering on the data in this column.
+     * DataTables default: true
+     * Default: true
+     *
+     * @var bool
+     */
+    protected $globalSearchable;
+
+    /**
      * Set the column title.
      * DataTables default: Value read from the column's header cell.
      * Default: null
@@ -316,6 +325,7 @@ abstract class AbstractColumn implements ColumnInterface
             'order_data' => null,
             'order_sequence' => null,
             'searchable' => true,
+            'global_searchable' => true,
             'title' => null,
             'visible' => true,
             'width' => null,
@@ -336,6 +346,7 @@ abstract class AbstractColumn implements ColumnInterface
         $resolver->setAllowedTypes('order_data', array('null', 'array', 'int'));
         $resolver->setAllowedTypes('order_sequence', array('null', 'array'));
         $resolver->setAllowedTypes('searchable', 'bool');
+        $resolver->setAllowedTypes('global_searchable', 'bool');
         $resolver->setAllowedTypes('title', array('null', 'string'));
         $resolver->setAllowedTypes('visible', 'bool');
         $resolver->setAllowedTypes('width', array('null', 'string'));
@@ -717,6 +728,26 @@ abstract class AbstractColumn implements ColumnInterface
     public function setSearchable($searchable)
     {
         $this->searchable = $searchable;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGlobalSearchable()
+    {
+        return $this->globalSearchable;
+    }
+
+    /**
+     * @param bool $globalSearchable
+     *
+     * @return $this
+     */
+    public function setGlobalSearchable($globalSearchable)
+    {
+        $this->globalSearchable = $globalSearchable;
 
         return $this;
     }
