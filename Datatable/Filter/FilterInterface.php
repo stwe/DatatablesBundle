@@ -29,15 +29,16 @@ interface FilterInterface
     public function getTemplate();
 
     /**
-     * Add a condition.
+     * Add an and condition.
      *
      * @param Andx         $andExpr
      * @param QueryBuilder $qb
      * @param string       $searchField
      * @param mixed        $searchValue
+     * @param string       $searchTypeOfField
      * @param int          $parameterCounter
      *
      * @return Andx
      */
-    public function addAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, &$parameterCounter);
+    public function addAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, $searchTypeOfField, &$parameterCounter);
 }

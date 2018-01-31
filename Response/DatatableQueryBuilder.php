@@ -13,6 +13,7 @@ namespace Sg\DatatablesBundle\Response;
 
 use Doctrine\DBAL\DBALException;
 use Sg\DatatablesBundle\Datatable\Column\ColumnInterface;
+use Sg\DatatablesBundle\Datatable\Filter\AbstractFilter;
 use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
 use Sg\DatatablesBundle\Datatable\DatatableInterface;
 use Sg\DatatablesBundle\Datatable\Options;
@@ -414,60 +415,19 @@ class DatatableQueryBuilder
         if (isset($this->requestParams['search']) && '' != $this->requestParams['search']['value']) {
 
             $orExpr = $qb->expr()->orX();
+
             $globalSearch = $this->requestParams['search']['value'];
             $globalSearchType = $this->options->getGlobalSearchType();
 
             foreach ($this->columns as $key => $column) {
                 if (true === $this->isSearchableColumn($column)) {
-
+                    /** @var AbstractFilter $filter */
+                    $filter = $this->accessor->getValue($column, 'filter');
                     $searchType = $globalSearchType;
-                    $searchValue = $globalSearch;
                     $searchField = $this->searchColumns[$key];
-
-                    // Only StringExpression can be searched with LIKE (https://github.com/doctrine/doctrine2/issues/6363)
-                    if (
-                        // Not a StringExpression
-                        !preg_match('/text|string|date|time/', $column->getTypeOfField())
-                        // Subqueries can't be search with LIKE
-                        || preg_match('/SELECT.+FROM.+/is', $searchField)
-                        // CASE WHEN can't be search with LIKE
-                        || preg_match('/CASE.+WHEN.+END/is', $searchField)
-                    ) {
-                        switch ($searchType) {
-                            case 'like':
-                                $searchType = 'eq';
-                                break;
-                            case 'notLike':
-                                $searchType = 'neq';
-                                break;
-                        }
-                    }
-
-                    // Skip search on columns when column type don't match search value type
-                    // (Prevent converting data type errors)
-                    switch ($column->getTypeOfField()) {
-                        case 'decimal':
-                        case 'float':
-                            if (is_numeric($searchValue)) {
-                                $searchValue = floatval($searchValue);
-                            } else {
-                                continue 2;
-                            }
-                            break;
-                        case 'integer':
-                        case 'bigint':
-                        case 'smallint':
-                        case 'boolean':
-                            if ($searchValue == strval(intval($searchValue))) {
-                                $searchValue = intval($searchValue);
-                            } else {
-                                continue 2;
-                            }
-                            break;
-                    }
-
-                    $this->setOrExpression($orExpr, $qb, $searchType, $searchField, $searchValue, $key);
-
+                    $searchValue = $globalSearch;
+                    $searchTypeOfField = $column->getTypeOfField();
+                    $orExpr = $filter->addOrExpression($orExpr, $qb, $searchType, $searchField, $searchValue, $searchTypeOfField, $key);
                 }
             }
 
@@ -494,7 +454,8 @@ class DatatableQueryBuilder
                         /** @var FilterInterface $filter */
                         $filter = $this->accessor->getValue($column, 'filter');
                         $searchField = $this->searchColumns[$key];
-                        $andExpr = $filter->addAndExpression($andExpr, $qb, $searchField, $searchValue, $parameterCounter);
+                        $searchTypeOfField = $column->getTypeOfField();
+                        $andExpr = $filter->addAndExpression($andExpr, $qb, $searchField, $searchValue, $searchTypeOfField, $parameterCounter);
                     }
                 }
             }
@@ -845,74 +806,5 @@ class DatatableQueryBuilder
         }
 
         return $searchColumn;
-    }
-
-    /**
-     * Set Orx Expression.
-     *
-     * @param Orx          $orExpr
-     * @param QueryBuilder $qb
-     * @param string       $searchType
-     * @param string       $searchField
-     * @param mixed        $searchValue
-     * @param integer      $key
-     *
-     * @return $this
-     */
-    private function setOrExpression(Orx $orExpr, QueryBuilder $qb, $searchType, $searchField, $searchValue, $key)
-    {
-        // Prevent doctrine issue with "?0" (https://github.com/doctrine/doctrine2/issues/6699)
-        $key++;
-
-        switch ($searchType) {
-            case 'like':
-                $orExpr->add($qb->expr()->like($searchField, '?'.$key));
-                $qb->setParameter($key, '%'.$searchValue.'%');
-                break;
-            case 'notLike':
-                $orExpr->add($qb->expr()->notLike($searchField, '?'.$key));
-                $qb->setParameter($key, '%'.$searchValue.'%');
-                break;
-            case 'eq':
-                $orExpr->add($qb->expr()->eq($searchField, '?'.$key));
-                $qb->setParameter($key, $searchValue);
-                break;
-            case 'neq':
-                $orExpr->add($qb->expr()->neq($searchField, '?'.$key));
-                $qb->setParameter($key, $searchValue);
-                break;
-            case 'lt':
-                $orExpr->add($qb->expr()->lt($searchField, '?'.$key));
-                $qb->setParameter($key, $searchValue);
-                break;
-            case 'lte':
-                $orExpr->add($qb->expr()->lte($searchField, '?'.$key));
-                $qb->setParameter($key, $searchValue);
-                break;
-            case 'gt':
-                $orExpr->add($qb->expr()->gt($searchField, '?'.$key));
-                $qb->setParameter($key, $searchValue);
-                break;
-            case 'gte':
-                $orExpr->add($qb->expr()->gte($searchField, '?'.$key));
-                $qb->setParameter($key, $searchValue);
-                break;
-            case 'in':
-                $orExpr->add($qb->expr()->in($searchField, '?'.$key));
-                $qb->setParameter($key, explode(',', $searchValue));
-                break;
-            case 'notIn':
-                $orExpr->add($qb->expr()->notIn($searchField, '?'.$key));
-                $qb->setParameter($key, explode(',', $searchValue));
-                break;
-            case 'isNull':
-                $orExpr->add($qb->expr()->isNull($searchField));
-                break;
-            case 'isNotNull':
-                $orExpr->add($qb->expr()->isNotNull($searchField));
-                break;
-        }
-
-        return $this;
     }
 }

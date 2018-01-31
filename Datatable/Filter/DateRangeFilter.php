@@ -38,7 +38,7 @@ class DateRangeFilter extends AbstractFilter
     /**
      * {@inheritdoc}
      */
-    public function addAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, &$parameterCounter)
+    public function addAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, $searchTypeOfField, &$parameterCounter)
     {
         list($_dateStart, $_dateEnd) = explode(' - ', $searchValue);
         $dateStart = new DateTime($_dateStart);

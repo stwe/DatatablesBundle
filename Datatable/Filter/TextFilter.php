@@ -36,12 +36,9 @@ class TextFilter extends AbstractFilter
     /**
      * {@inheritdoc}
      */
-    public function addAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, &$parameterCounter)
+    public function addAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, $searchTypeOfField, &$parameterCounter)
     {
-        $andExpr = $this->getAndExpression($andExpr, $qb, $searchField, $searchValue, $parameterCounter);
-        $parameterCounter++;
-
-        return $andExpr;
+        return $this->getExpression($andExpr, $qb, $this->searchType, $searchField, $searchValue, $searchTypeOfField, $parameterCounter);
     }
 
     //-------------------------------------------------
