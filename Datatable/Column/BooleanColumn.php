@@ -336,7 +336,7 @@ class BooleanColumn extends AbstractColumn
     private function renderTemplate($data, $pk = null, $path = null)
     {
         $renderVars = array(
-            'data' => $data,
+            'data' => $this->isCustomDql() && in_array($data, array(0, 1, '0', '1'), true) ? boolval($data) : $data,
             'default_content' => $this->getDefaultContent(),
             'true_label' => $this->trueLabel,
             'true_icon' => $this->trueIcon,
