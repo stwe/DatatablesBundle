@@ -104,7 +104,7 @@ function updateCheckAll() {
 }
 
 {# handle row <tr> click #}
-$("#sg-datatables-{{ datatable_name }} tbody").on("click", "tr", function () {
+$("#sg-datatables-{{ datatable_name }} tbody").on("click", "tr {% if row_tr_click == false %}> td:first {% endif %}", function () {
     {# add 'selected' class #}
     if ($(this).find("input").length) {
         $(this).toggleClass("selected");

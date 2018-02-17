@@ -566,6 +566,7 @@ All options of [Action Column](#4-action-column), except `title`.
 | value_prefix         | bool               | false   |          | Use the Datatable-Name as prefix for the value. |
 | render_actions_to_id | null or string     | null    |          | Id selector where all multiselect actions are rendered. |
 | render_if            | null or Closure    | null    |          | Render a Checkbox only if conditions are TRUE. |
+| row_tr_click         | bool               | true    |          | Click on the entire line to select the checkbox if the value is true. If the value is false, the chechbox is selected only on the first column. |
 
 ### Example
 
