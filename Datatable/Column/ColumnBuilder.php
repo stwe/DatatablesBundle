@@ -150,7 +150,7 @@ class ColumnBuilder
     {
         foreach ($this->columns as $column) {
             if ($column->getDql() == $dql) {
-                $this->removeColumn($column);
+                $this->removeColumn($dql, $column);
                 break;
             }
         }
@@ -361,12 +361,14 @@ class ColumnBuilder
     /**
      * Removes a Column.
      *
+     * @param string         $dql
      * @param AbstractColumn $column
      *
      * @return $this
      */
-    private function removeColumn(AbstractColumn $column)
+    private function removeColumn($dql, AbstractColumn $column)
     {
+        // Remove column from columns
         foreach ($this->columns as $k => $c) {
             if ($c == $column) {
                 unset($this->columns[$k]);
@@ -375,6 +377,17 @@ class ColumnBuilder
             }
         }
 
+        // Remove column from columnNames
+        if (array_key_exists($dql, $this->columnNames)) {
+            unset($this->columnNames[$dql]);
+        }
+
+        // Reindex columnNames
+        foreach ($this->columns as $k => $c) {
+            $this->columnNames[$c->getDql()] = $k;
+        }
+
+        // Remove column from uniqueColumns
         foreach ($this->uniqueColumns as $k => $c) {
             if ($c == $column) {
                 unset($this->uniqueColumns[$k]);
