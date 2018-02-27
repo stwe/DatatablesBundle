@@ -211,6 +211,7 @@ class MultiselectColumn extends ActionColumn
     {
         $newAction = new MultiselectAction($this->datatableName);
         $this->actions[] = $newAction->set($action);
+        
         return $this;
     }
 
