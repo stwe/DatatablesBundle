@@ -1,0 +1,12 @@
+sg:
+    datatables:
+        confirmMessage: "Ste si istý?"
+        selectError: "Musíte vybrať aspoň jeden prvok."
+        actions:
+            title: "Akcie"
+            show: "Zobraziť"
+            edit: "Upraviť"
+        daterange:
+            apply: "Aplikovať"
+            cancel: "Zrušiť"
+            format: "DD.MM.YYYY"
