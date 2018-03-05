@@ -84,6 +84,23 @@
     >
         {{ filter_select_select_options }}
     </select>
+
+    <script type="text/javascript">
+        var currentValue = ""
+        if (typeof(Storage) !== "undefined") {
+            var datatableState = localStorage['sg-datatables-{{ datatable_name }}'];
+            if(datatableState){
+                datatableState = JSON.parse(datatableState);
+                var columns = datatableState['columns'];
+                currentValue = columns[{{ search_column_index }}]['search']['search'];
+                {% if column.filter.multiple is same as(true) %}
+                currentValue = currentValue.split(",");
+                {% endif %}
+            }
+        }
+        $("#{{ filter_id_selector }}").val(currentValue);
+    </script>
+
     {{ cancel_button_html }}
 {% endblock %}
 

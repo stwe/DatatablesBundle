@@ -65,6 +65,14 @@
             $.extend(defaults, extensions);
             $.extend(defaults, columns);
             $.extend(defaults, initialSearch);
+            $.extend(defaults, {
+                stateSaveCallback: function(settings,data) {
+                    localStorage.setItem(settings.sInstance, JSON.stringify(data) )
+                },
+                stateLoadCallback: function(settings) {
+                    return JSON.parse( localStorage.getItem(settings.sInstance ) )
+                },
+            });
 
             if (!$.fn.dataTable.isDataTable(selector)) {
                 $(selector)
@@ -83,6 +91,10 @@
         }
 
         createDatatable();
+        
+        new $.fn.dataTable.FixedColumns( oTable, {
+                leftColumns: 2
+        } );
 
         {% if sg_datatables_view.columnBuilder.uniqueColumn('multiselect') is not null %}
             {{ sg_datatables_render_multiselect_actions( sg_datatables_view.columnBuilder.uniqueColumn('multiselect'), sg_datatables_view.ajax.pipeline) }}
