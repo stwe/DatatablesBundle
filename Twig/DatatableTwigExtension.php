@@ -103,6 +103,7 @@ class DatatableTwigExtension extends Twig_Extension
     {
         return array(
             new Twig_SimpleFilter('sg_datatables_bool_var', array($this, 'boolVar')),
+            new Twig_SimpleFilter('sg_datatables_option_encode', array($this, 'optionEncode'), ['needs_environment' => true]),
         );
     }
 
@@ -277,5 +278,27 @@ class DatatableTwigExtension extends Twig_Extension
         } else {
             return 'false';
         }
+    }
+
+
+    /**
+     * Renders: A json encode, except a template for the body. Useful for export pdf
+     *
+     * @param mixed $value
+     *
+     * @return string
+     */
+    public function optionEncode(Twig_Environment $twig, $value)
+    {
+        $value = json_encode($value);
+
+        preg_match('@\{\"template\"\:\".*?\"\}@si', $value, $matches);
+
+        foreach ($matches as $match){
+            $template = json_decode($match, true)["template"];
+            $value = str_replace($match, $twig->render($template), $value);
+        }
+
+        return $value;
     }
 }
