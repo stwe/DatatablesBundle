@@ -140,7 +140,7 @@ $("#sg-datatables-{{ datatable_name }}").on("click", "input.sg-datatables-{{ dat
 });
 
 {# handle multiselect action click #}
-$(".sg-datatables-{{ datatable_name }}-multiselect-action").on("click", function(event) {
+$("#sg-datatables-{{ datatable_name }}-multiselect-actions .sg-datatables-multiselect-action").on("click", function(event) {
     event.preventDefault();
 
     if (oTable.rows(".selected").data().length > 0) {

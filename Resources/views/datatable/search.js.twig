@@ -47,3 +47,11 @@ $(oTable.table().container()).find("tr select.sg-datatables-individual-filtering
             .search(searchValue);
     drawTable();
 });
+
+{# responsive fix #}
+oTable.on( 'responsive-resize', function ( e, datatable, columns ) {
+    $.each(columns, function(index, isVisible){
+        !isVisible && $(selector+'-filterrow th').eq(index).hide();
+        isVisible && $(selector+'-filterrow th').eq(index).show();
+    });
+} );

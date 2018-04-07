@@ -205,16 +205,17 @@ class DatatableTwigExtension extends Twig_Extension
      * @param Twig_Environment $twig
      * @param ColumnInterface  $multiselectColumn
      * @param int              $pipeline
+     * @param string           $datatableName
      *
      * @return string
      */
-    public function datatablesRenderMultiselectActions(Twig_Environment $twig, ColumnInterface $multiselectColumn, $pipeline)
+    public function datatablesRenderMultiselectActions(Twig_Environment $twig, ColumnInterface $multiselectColumn, $pipeline, $datatableName = '')
     {
         $parameters = array();
         $values = array();
         $actions = $this->accessor->getValue($multiselectColumn, 'actions');
         $domId = $this->accessor->getValue($multiselectColumn, 'renderActionsToId');
-        $datatableName = $this->accessor->getValue($multiselectColumn, 'datatableName');
+        $datatableName = $datatableName ?: $this->accessor->getValue($multiselectColumn, 'datatableName');
 
         /** @var Action $action */
         foreach ($actions as $actionKey => $action) {
