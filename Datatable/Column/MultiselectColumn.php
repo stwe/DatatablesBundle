@@ -215,6 +215,14 @@ class MultiselectColumn extends ActionColumn
         return $this;
     }
 
+    public function addAction(array $action)
+    {
+        $newAction = new MultiselectAction($this->datatableName);
+        $this->actions[] = $newAction->set($action);
+
+        return $this;
+    }
+
     /**
      * Get attributes.
      *
