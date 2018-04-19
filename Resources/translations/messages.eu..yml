@@ -1,0 +1,12 @@
+sg:
+    datatables:
+        confirmMessage: "Ziur zaude?"
+        selectError: "Beharrezkoa da gutxienez elementu bat aukeratzea."
+        actions:
+            title: "Ekintzak"
+            show: "Erakutsi"
+            edit: "Aldatu"
+        daterange:
+            apply: "Ezarri"
+            cancel: "Ezeztatu"
+            format: "YYYY-MM-DD"
