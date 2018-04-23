@@ -24,7 +24,7 @@
         "symfony/options-resolver": "^3.0|^4.0",
         "symfony/property-access": "^3.0|^4.0",
         "friendsofsymfony/jsrouting-bundle": "^1.6|^2.0",
-        "sensio/generator-bundle": "^3.0",
+        "sensio/generator-bundle": "^3.0"
     },
     "autoload": {
         "psr-4": { "Sg\\DatatablesBundle\\": "" }
