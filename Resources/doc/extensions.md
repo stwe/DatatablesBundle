@@ -221,8 +221,74 @@ With the Responsive class you can set some `display` options to define how the h
 ___
 
 ## 3. Select
+   
+   **Be sure to install the [Select Extension](https://datatables.net/extensions/select/) before using.**
+   
+   ### Template
+   
+   @SgDatatables/datatable/extensions.html.twig
+   
+   ### Initialisation
+   
+   #### The easiest way
+   
+   The easiest way is to add `select` to your extensions options with a boolean value.
+   
+   ``` php
+   public function buildDatatable(array $options = array())
+   {
+       // ...
+   
+       $this->extensions->set(array(
+           'select' => true,
+       ));
+       
+       // ...
+   }
+   ```
+   
+   #### Advanced example
+   
+   The Bootstrap modal example:
+   
+   ``` php
+   public function buildDatatable(array $options = array())
+   {
+       // ...
+   
+       $this->extensions->set(array(
+           'select' => array(
+               'blurable' => false,
+               'className' => 'selected',
+               'info' => true,
+               'items' => 'row',
+               'selector' => 'td, th',
+               'style' => 'os',
+           ),
+       ));
+       
+       // ...
+   }
+   ```
+   
+   ### Select class options
+   
+   With the Select class you can set the following options, for details see the [Plugin documentation](https://datatables.net/reference/option/#select).
+   
+   | Option    | Type            | Default |  Description                       |
+   |-----------|-----------------|---------|------------------------------------|
+   | blurable  | boolean or null | null    | Indicate if the selected items will be removed when clicking outside of the table |
+   | classname | string or null  | null    | Set the class name that will be applied to selected items |
+   | info      | boolean or null | null    | Enable / disable the display for item selection information in the table summary |
+   | items     | string or null  | null    | Set which table items to select (rows, columns or cells) |
+   | selector  | string or null  | null    | Set the element selector used for mouse event capture to select items |
+   | style     | string or null  | null    | Set the selection style for end user interaction with the table |
+   ___
 
-**Be sure to install the [Select Extension](https://datatables.net/extensions/select/) before using.**
+
+## 4. RowGroup
+
+**Be sure to install the [RowGroup Extension](https://datatables.net/extensions/rowgroup/) before using.**
 
 ### Template
 
@@ -232,7 +298,7 @@ ___
 
 #### The easiest way
 
-The easiest way is to add `select` to your extensions options with a boolean value.
+The easiest way is to add `row_group` to your extensions options with the column's name string value in the `data_src` option to define the data source to use for initial grouping.
 
 ``` php
 public function buildDatatable(array $options = array())
@@ -240,7 +306,9 @@ public function buildDatatable(array $options = array())
     // ...
 
     $this->extensions->set(array(
-        'select' => true,
+        'row_group' => array(
+            'data_src' => 'title'
+        ),
     ));
     
     // ...
@@ -249,7 +317,7 @@ public function buildDatatable(array $options = array())
 
 #### Advanced example
 
-The Bootstrap modal example:
+This example shows a custom start render:
 
 ``` php
 public function buildDatatable(array $options = array())
@@ -258,12 +326,12 @@ public function buildDatatable(array $options = array())
 
     $this->extensions->set(array(
         'select' => array(
-            'blurable' => false,
-            'className' => 'selected',
-            'info' => true,
-            'items' => 'row',
-            'selector' => 'td, th',
-            'style' => 'os',
+            'row_group' => array(
+                'data_src' => 'title',
+                'start_render' => [
+                    'template' => ':extension/row_group_start_renderer.js.twig',
+                ]
+            ),
         ),
     ));
     
@@ -271,16 +339,28 @@ public function buildDatatable(array $options = array())
 }
 ```
 
-### Select class options
 
-With the Select class you can set the following options, for details see the [Plugin documentation](https://datatables.net/reference/option/#select).
+``` twig
+{# row_group_start_renderer.js.twig #}
+
+startRenderer = function (rows, group) {
+    return $('<tr/>').append( '<td>Post title: '+group+'</td>' );
+}
+```
+
+### RowGroup class options
+
+With the RowGroup class you can set the following options, for details see the [Plugin documentation](https://datatables.net/reference/option/#rowgroup).
 
 | Option    | Type            | Default |  Description                       |
 |-----------|-----------------|---------|------------------------------------|
-| blurable  | boolean or null | null    | Indicate if the selected items will be removed when clicking outside of the table |
-| classname | string or null  | null    | Set the class name that will be applied to selected items |
-| info      | boolean or null | null    | Enable / disable the display for item selection information in the table summary |
-| items     | string or null  | null    | Set which table items to select (rows, columns or cells) |
-| selector  | string or null  | null    | Set the element selector used for mouse event capture to select items |
-| style     | string or null  | null    | Set the selection style for end user interaction with the table |
+| dataSrc           | string or null  | null  | Set the data point to use as the grouping data source |
+| enable            | boolean         | true  | Provides the ability to disable row grouping at initialisation |
+| className         | array or null   | null  | Set the class name to be used for the grouping rows |
+| emptyDataGroup    | string or null  | null  | Text to show for rows which have null or undefined group data |
+| startClassName    | string or null  | null  | Set the class name to be used for the grouping start rows |
+| endClassName      | string or null  | null  | Set the class name to be used for the grouping end rows |
+| endRender         | array or null   | null  | Provide a function that can be used to control the data shown in the end grouping row. |
+| startRender       | array or null   | null  | Provide a function that can be used to control the data shown in the start grouping row. |
 ___
+
