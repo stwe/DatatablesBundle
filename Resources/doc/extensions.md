@@ -3,6 +3,7 @@
 1. [Buttons](#1-buttons)
 2. [Responsive](#2-responsive)
 3. [Select](#3-select)
+4. [RowGroup](#4.-rowgroup)
 
 ## 1. Buttons
 
@@ -325,13 +326,12 @@ public function buildDatatable(array $options = array())
     // ...
 
     $this->extensions->set(array(
-        'select' => array(
-            'row_group' => array(
-                'data_src' => 'title',
-                'start_render' => [
-                    'template' => ':extension/row_group_start_renderer.js.twig',
-                ]
-            ),
+        'row_group' => array(
+            'data_src' => 'title',
+            'start_render' => [
+                'template' => ':extension/row_group_start_renderer.js.twig',
+                //'vars' => array('id' => '2', 'test' => 'new value'),
+            ]
         ),
     ));
     
