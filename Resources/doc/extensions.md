@@ -3,7 +3,7 @@
 1. [Buttons](#1-buttons)
 2. [Responsive](#2-responsive)
 3. [Select](#3-select)
-4. [RowGroup](#4.-rowgroup)
+4. [RowGroup](#4-rowgroup)
 
 ## 1. Buttons
 
