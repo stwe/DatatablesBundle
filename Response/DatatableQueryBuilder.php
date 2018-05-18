@@ -215,11 +215,6 @@ class DatatableQueryBuilder
 
         $this->columns = $datatable->getColumnBuilder()->getColumns();
 
-        $this->selectColumns = array();
-        $this->searchColumns = array();
-        $this->orderColumns = array();
-        $this->joins = array();
-
         $this->options = $datatable->getOptions();
         $this->features = $datatable->getFeatures();
         $this->ajax = $datatable->getAjax();
@@ -234,6 +229,11 @@ class DatatableQueryBuilder
      */
     private function initColumnArrays()
     {
+        $this->selectColumns = array();
+        $this->searchColumns = array();
+        $this->orderColumns = array();
+        $this->joins = array();
+
         foreach ($this->columns as $key => $column) {
             $dql = $this->accessor->getValue($column, 'dql');
             $data = $this->accessor->getValue($column, 'data');
@@ -774,6 +774,23 @@ class DatatableQueryBuilder
         }
 
         return $isReservedKeyword ? "_{$entityShortName}" : $entityShortName;
+    }
+
+    /**
+     * Set entity short name.
+     *
+     * @param string $entityShortName
+     *
+     * @return $this
+     */
+    public function setEntityShortName($entityShortName)
+    {
+        $this->entityShortName = $entityShortName;
+
+        $this->qb = $this->em->createQueryBuilder()->from($this->entityName, $this->entityShortName);
+        $this->initColumnArrays();
+
+        return $this;
     }
 
     /**
