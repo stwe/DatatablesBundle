@@ -62,6 +62,33 @@ public function indexAction(Request $request)
 }
 ```
 
+If you need to override the entity alias, set the entity short name.
+
+``` php
+public function indexAction(Request $request)
+{
+    // ...
+
+    if ($request->isXmlHttpRequest()) {
+        $responseService = $this->get('sg_datatables.response');
+        $responseService->setDatatable($datatable);
+
+        $datatableQueryBuilder = $responseService->getDatatableQueryBuilder();
+        $datatableQueryBuilder->setEntityShortName('p');
+        
+        /** @var QueryBuilder $qb */
+        $qb = $datatableQueryBuilder->getQb();
+        $qb->andWhere('createdBy.username = :username');
+        $qb->setParameter('username', 'root');
+        $qb->andWhere('p.deleted = 0');
+
+        return $responseService->getResponse();
+    }
+
+    // ...
+}
+```
+
 ## 2. Subqueries
 
 Sometimes it is needed to count the number of rows or concatenate multiple fields.
