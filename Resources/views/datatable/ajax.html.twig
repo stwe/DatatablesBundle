@@ -11,10 +11,20 @@
         "url": "{{ sg_datatables_view.ajax.url|raw }}",
     {% endif %}
     "type": "{{ sg_datatables_view.ajax.type }}",
-    {% if sg_datatables_view.ajax.data is not same as(null) %}
-        "data": function ( d ) {
-            callbacks.serverParamsCallback($.extend(true, d, {{ sg_datatables_view.ajax.data|raw }}));
-        },
+    {% if sg_datatables_view.callbacks.serverParamsCallback is not same as(null) %}
+        {% if sg_datatables_view.ajax.data is not same as(null) %}
+            "data": function (d) {
+                callbacks.serverParamsCallback($.extend(true, d, {{ sg_datatables_view.ajax.data|raw }}));
+            },
+        {% else %}
+            "data": function (d) {
+                callbacks.serverParamsCallback(d);
+            },
+        {% endif %}
+    {% else %}
+        {% if sg_datatables_view.ajax.data is not same as(null) %}
+            "data": {{ sg_datatables_view.ajax.data|raw }},
+        {% endif %}
     {% endif %}
 {% endset %}
 
