@@ -78,6 +78,14 @@
     {% endif %}
     "rowCallback": {% include sg_datatables_view.callbacks.rowCallback['template'] with vars%},
 {% endif %}
+{% if sg_datatables_view.callbacks.serverParamsCallback is not same as(null) %}
+    {% if sg_datatables_view.callbacks.serverParamsCallback['vars'] is defined %}
+        {% set vars = sg_datatables_view.callbacks.serverParamsCallback['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    "serverParamsCallback": {% include sg_datatables_view.callbacks.serverParamsCallback['template'] with vars %},
+{% endif %}
 {% if sg_datatables_view.callbacks.stateLoadCallback is not same as(null) %}
     {% if sg_datatables_view.callbacks.stateLoadCallback['vars'] is defined %}
         {% set vars = sg_datatables_view.callbacks.stateLoadCallback['vars'] %}
