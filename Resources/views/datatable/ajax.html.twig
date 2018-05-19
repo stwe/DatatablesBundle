@@ -12,7 +12,9 @@
     {% endif %}
     "type": "{{ sg_datatables_view.ajax.type }}",
     {% if sg_datatables_view.ajax.data is not same as(null) %}
-        "data": {{ sg_datatables_view.ajax.data|raw }},
+        "data": function ( d ) {
+            callbacks.serverParamsCallback($.extend(true, d, {{ sg_datatables_view.ajax.data|raw }}));
+        },
     {% endif %}
 {% endset %}
 

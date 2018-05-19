@@ -93,6 +93,13 @@ class Callbacks
     protected $rowCallback;
 
     /**
+     * Callback that can be used to add custom ajax data.
+     *
+     * @var null|array
+     */
+    protected $serverParamsCallback;
+
+    /**
      * Callback that defines where and how a saved state should be loaded.
      *
      * @var null|array
@@ -162,6 +169,7 @@ class Callbacks
             'init_complete' => null,
             'pre_draw_callback' => null,
             'row_callback' => null,
+            'server_params_callback' => null,
             'state_load_callback' => null,
             'state_loaded' => null,
             'state_load_params' => null,
@@ -178,6 +186,7 @@ class Callbacks
         $resolver->setAllowedTypes('init_complete', array('null', 'array'));
         $resolver->setAllowedTypes('pre_draw_callback', array('null', 'array'));
         $resolver->setAllowedTypes('row_callback', array('null', 'array'));
+        $resolver->setAllowedTypes('server_params_callback', array('null', 'array'));
         $resolver->setAllowedTypes('state_load_callback', array('null', 'array'));
         $resolver->setAllowedTypes('state_loaded', array('null', 'array'));
         $resolver->setAllowedTypes('state_load_params', array('null', 'array'));
@@ -439,6 +448,34 @@ class Callbacks
         }
 
         $this->rowCallback = $rowCallback;
+
+        return $this;
+    }
+
+    /**
+     * Get serverParamsCallback.
+     *
+     * @return array|null
+     */
+    public function getServerParamsCallback()
+    {
+        return $this->serverParamsCallback;
+    }
+
+    /**
+     * Set serverParamsCallback.
+     *
+     * @param array|null $serverParamsCallback
+     *
+     * @return $this
+     */
+    public function setServerParamsCallback($serverParamsCallback)
+    {
+        if (is_array($serverParamsCallback)) {
+            $this->validateArrayForTemplateAndOther($serverParamsCallback);
+        }
+
+        $this->serverParamsCallback = $serverParamsCallback;
 
         return $this;
     }

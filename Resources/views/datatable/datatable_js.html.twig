@@ -20,6 +20,10 @@
             {% include '@SgDatatables/datatable/language.html.twig' %}
         };
 
+        var callbacks = {
+            {% include '@SgDatatables/datatable/callbacks.html.twig' %}
+        };
+
         var ajax = {
             {% include '@SgDatatables/datatable/ajax.html.twig' %}
         };
@@ -30,10 +34,6 @@
 
         var features = {
             {% include '@SgDatatables/datatable/features.html.twig' %}
-        };
-
-        var callbacks = {
-            {% include '@SgDatatables/datatable/callbacks.html.twig' %}
         };
 
         var extensions = {
