@@ -80,8 +80,8 @@
             {% if sg_datatables_view.extensions.select.blurable is defined and sg_datatables_view.extensions.select.blurable is not same as(null) %}
                 blurable: {{ sg_datatables_view.extensions.select.blurable|sg_datatables_bool_var }},
             {% endif %}
-            {% if select.className is defined and select.className is not same as(null) %}
-                className: "{{ select.className }}",
+            {% if sg_datatables_view.extensions.select.className is defined and sg_datatables_view.extensions.select.className is not same as(null) %}
+                className: "{{ sg_datatables_view.extensions.select.className }}",
             {% endif %}
             {% if sg_datatables_view.extensions.select.info is defined and sg_datatables_view.extensions.select.info is not same as(null) %}
                 info: {{ sg_datatables_view.extensions.select.info|sg_datatables_bool_var }},

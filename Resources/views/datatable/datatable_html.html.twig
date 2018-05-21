@@ -14,7 +14,7 @@
     {% endif %}
 {% endif %}
 
-<table id="sg-datatables-{{ sg_datatables_view.name }}" class="{{ sg_datatables_view.options.classes }}" cellspacing="0" width="100%">
+<table id="sg-datatables-{{ sg_datatables_view.uniqueName }}" class="{{ sg_datatables_view.options.classes }}" cellspacing="0" width="100%">
     <thead>
         {% if true == individual_filtering %}
             {% if 'head' == sg_datatables_view.options.individualFilteringPosition or 'both' == sg_datatables_view.options.individualFilteringPosition%}
@@ -23,7 +23,7 @@
                         <th>{{ column.title }}</th>
                     {% endfor %}
                 </tr>
-                <tr id="sg-datatables-{{ sg_datatables_view.name }}-filterrow">
+                <tr id="sg-datatables-{{ sg_datatables_view.uniqueName }}-filterrow">
                     {% for column in sg_datatables_view.columnBuilder.columns %}
                         <th>
                             {% if column.searchable %}
@@ -55,5 +55,5 @@
 </table>
 
 {% if sg_datatables_view.columnBuilder.uniqueColumn('multiselect') is not same as(null) %}
-    <div id="sg-datatables-{{ sg_datatables_view.name }}-multiselect-actions"></div>
+    <div id="sg-datatables-{{ sg_datatables_view.uniqueName }}-multiselect-actions"></div>
 {% endif %}
