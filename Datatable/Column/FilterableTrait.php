@@ -15,6 +15,7 @@ use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
 use Sg\DatatablesBundle\Datatable\Factory;
 
 use Exception;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * Class FilterableTrait
@@ -23,6 +24,8 @@ use Exception;
  */
 trait FilterableTrait
 {
+    use ContainerAwareTrait;
+
     /**
      * A FilterInterface instance for individual filtering.
      * Default: See the column type.
@@ -67,7 +70,7 @@ trait FilterableTrait
             throw new Exception('AbstractColumn::setFilter(): Set an options array.');
         }
 
-        $newFilter = Factory::create($filterClassAndOptions[0], FilterInterface::class);
+        $newFilter = Factory::create($this->container, $filterClassAndOptions[0], FilterInterface::class);
         $this->filter = $newFilter->set($filterClassAndOptions[1]);
 
         return $this;

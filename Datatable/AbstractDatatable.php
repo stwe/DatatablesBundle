@@ -13,6 +13,7 @@ namespace Sg\DatatablesBundle\Datatable;
 
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -149,6 +150,7 @@ abstract class AbstractDatatable implements DatatableInterface
     /**
      * AbstractDatatable constructor.
      *
+     * @param ContainerInterface            $container
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param TokenStorageInterface         $securityToken
      * @param TranslatorInterface           $translator
@@ -159,6 +161,7 @@ abstract class AbstractDatatable implements DatatableInterface
      * @throws Exception
      */
     public function __construct(
+        ContainerInterface $container,
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $securityToken,
         TranslatorInterface $translator,
@@ -178,6 +181,7 @@ abstract class AbstractDatatable implements DatatableInterface
 
         $metadata = $em->getClassMetadata($this->getEntity());
         $this->columnBuilder = new ColumnBuilder($metadata, $twig, $this->getName(), $em);
+        $this->columnBuilder->setContainer($container);
 
         $this->ajax = new Ajax();
         $this->options = new Options();

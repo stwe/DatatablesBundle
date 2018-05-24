@@ -16,6 +16,7 @@ use Sg\DatatablesBundle\Datatable\Factory;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Twig_Environment;
 use Exception;
 
@@ -26,6 +27,8 @@ use Exception;
  */
 class ColumnBuilder
 {
+    use ContainerAwareTrait;
+
     /**
      * The class metadata.
      *
@@ -124,7 +127,7 @@ class ColumnBuilder
      */
     public function add($dql, $class, array $options = array())
     {
-        $column = Factory::create($class, ColumnInterface::class);
+        $column = Factory::create($this->container, $class, ColumnInterface::class);
         $column->initOptions();
 
         $this->handleDqlProperties($dql, $options, $column);

@@ -12,6 +12,7 @@
 namespace Sg\DatatablesBundle\Datatable;
 
 use Exception;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class Factory
@@ -23,13 +24,14 @@ class Factory
     /**
      * Create.
      *
+     * @param ContainerInterface $container
      * @param mixed $class
      * @param mixed $interface
      *
      * @return mixed
      * @throws Exception
      */
-    public static function create($class, $interface)
+    public static function create(ContainerInterface $container, $class, $interface)
     {
         if (empty($class) || !is_string($class) && !$class instanceof $interface) {
             throw new Exception("Factory::create(): String or $interface expected.");
@@ -40,7 +42,11 @@ class Factory
         }
 
         if (is_string($class) && class_exists($class)) {
-            $instance = new $class();
+            if ($container->has($class)) {
+                $instance = $container->get($class);
+            } else {
+                $instance = new $class($container);
+            }
 
             if (!$instance instanceof $interface) {
                 throw new Exception("Factory::create(): String or $interface expected.");

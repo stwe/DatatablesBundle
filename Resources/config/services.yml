@@ -32,3 +32,5 @@ services:
             - '@router'
             - '@doctrine.orm.entity_manager'
             - '@twig'
+        calls:
+            - [ setContainer, ['@service_container'] ]

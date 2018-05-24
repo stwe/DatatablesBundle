@@ -11,6 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -26,6 +27,8 @@ use Exception;
  */
 class DatatableFactory
 {
+    use ContainerAwareTrait;
+
     /**
      * The AuthorizationChecker service.
      *
@@ -122,6 +125,13 @@ class DatatableFactory
         }
 
         if (in_array(DatatableInterface::class, class_implements($class))) {
+            if ($this->container->has($class)) {
+                /** @var DatatableInterface $datatable */
+                $datatable = $this->container->get($class);
+
+                return $datatable;
+            }
+
             return new $class(
                 $this->authorizationChecker,
                 $this->securityToken,

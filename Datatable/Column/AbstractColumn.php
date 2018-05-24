@@ -15,6 +15,8 @@ use Sg\DatatablesBundle\Datatable\OptionsTrait;
 use Sg\DatatablesBundle\Datatable\AddIfTrait;
 use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
 
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\DBAL\Types\Type as DoctrineType;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -28,6 +30,8 @@ use Exception;
  */
 abstract class AbstractColumn implements ColumnInterface
 {
+    use ContainerAwareTrait;
+
     /**
      * Use the OptionsResolver.
      */
@@ -295,6 +299,16 @@ abstract class AbstractColumn implements ColumnInterface
     //-------------------------------------------------
 
     /**
+     * AbstractColumn constructor.
+     * @param ContainerInterface $container
+     */
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
+
+        /**
      * Config options.
      *
      * @param OptionsResolver $resolver

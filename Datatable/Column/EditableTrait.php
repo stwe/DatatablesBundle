@@ -15,6 +15,7 @@ use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
 use Sg\DatatablesBundle\Datatable\Factory;
 
 use Exception;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * Class EditableTrait
@@ -23,6 +24,8 @@ use Exception;
  */
 trait EditableTrait
 {
+    use ContainerAwareTrait;
+
     /**
      * An EditableInterface instance.
      * Default: null
@@ -68,7 +71,7 @@ trait EditableTrait
                 throw new Exception('EditableTrait::setEditable(): Set an options array.');
             }
 
-            $newEditable = Factory::create($editableClassAndOptions[0], EditableInterface::class);
+            $newEditable = Factory::create($this->container, $editableClassAndOptions[0], EditableInterface::class);
             $this->editable = $newEditable->set($editableClassAndOptions[1]);
         } else {
             $this->editable = $editableClassAndOptions;
