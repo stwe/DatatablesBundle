@@ -47,6 +47,7 @@ trait OptionsTrait
      * @param bool $resolve
      *
      * @return $this
+     * @throws Exception
      */
     public function initOptions($resolve = false)
     {
