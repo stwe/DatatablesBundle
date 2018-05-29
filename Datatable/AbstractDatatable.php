@@ -170,7 +170,7 @@ abstract class AbstractDatatable implements DatatableInterface
         Twig_Environment $twig
     ) {
         $this->validateName();
-        $this->uniqueName = uniqid($this->getName().'-', true);
+        $this->uniqueName = uniqid($this->getName().'-', false);
 
         $this->authorizationChecker = $authorizationChecker;
         $this->securityToken = $securityToken;
