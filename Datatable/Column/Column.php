@@ -15,6 +15,7 @@ use Sg\DatatablesBundle\Datatable\Helper;
 use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
 use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
 
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -24,6 +25,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Column extends AbstractColumn
 {
+    use ContainerAwareTrait;
+
     /**
      * The Column is editable.
      */

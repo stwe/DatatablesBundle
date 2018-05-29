@@ -24,8 +24,6 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
  */
 trait FilterableTrait
 {
-    use ContainerAwareTrait;
-
     /**
      * A FilterInterface instance for individual filtering.
      * Default: See the column type.

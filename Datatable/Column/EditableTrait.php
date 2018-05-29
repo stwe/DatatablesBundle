@@ -24,8 +24,6 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
  */
 trait EditableTrait
 {
-    use ContainerAwareTrait;
-
     /**
      * An EditableInterface instance.
      * Default: null

@@ -14,8 +14,6 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
 use Sg\DatatablesBundle\Datatable\AddIfTrait;
 use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
-
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\DBAL\Types\Type as DoctrineType;
@@ -30,8 +28,6 @@ use Exception;
  */
 abstract class AbstractColumn implements ColumnInterface
 {
-    use ContainerAwareTrait;
-
     /**
      * Use the OptionsResolver.
      */
@@ -74,6 +70,11 @@ abstract class AbstractColumn implements ColumnInterface
     // 'searchable', 'orderable', and 'visible' are required in the QueryBuilder and are therefore
     // pre-assigned with a value (true or false).
     //--------------------------------------------------------------------------------------------------
+
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
 
     /**
      * Change the cell type created for the column - either TD cells or TH cells.
