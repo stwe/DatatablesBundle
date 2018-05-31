@@ -66,6 +66,9 @@
             $.extend(defaults, columns);
             $.extend(defaults, initialSearch);
 
+            // Disables the alert when datatable fails to get data
+            $.fn.dataTable.ext.errMode = 'none';
+
             if (!$.fn.dataTable.isDataTable(selector)) {
                 $(selector)
                     {% include '@SgDatatables/datatable/events.html.twig' %}
