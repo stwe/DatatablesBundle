@@ -70,7 +70,7 @@ class SelectFilter extends AbstractFilter
 
             foreach ($searchValues as $searchItem) {
                 $this->setSelectSearchType($searchItem);
-                $orExpr->add($this->getExpression($qb->expr()->andX(), $qb, $this->searchType, $searchField, $searchValue, $searchTypeOfField, $parameterCounter));
+                $orExpr->add($this->getExpression($qb->expr()->andX(), $qb, $this->searchType, $searchField, $searchItem, $searchTypeOfField, $parameterCounter));
             }
 
             return $andExpr->add($orExpr);
