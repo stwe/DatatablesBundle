@@ -43,12 +43,15 @@ class Column extends AbstractColumn
      */
     public function renderSingleField(array &$row)
     {
-        if ($this->isEditableContentRequired($row)) {
-            $path = Helper::getDataPropertyPath($this->data);
+        $path = Helper::getDataPropertyPath($this->data);
 
-            $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
+        if ($this->accessor->isReadable($row, $path)) {
 
-            $this->accessor->setValue($row, $path, $content);
+            if ($this->isEditableContentRequired($row)) {
+                $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
+                $this->accessor->setValue($row, $path, $content);
+            }
+
         }
 
         return $this;
@@ -59,31 +62,36 @@ class Column extends AbstractColumn
      */
     public function renderToMany(array &$row)
     {
-        if ($this->isEditableContentRequired($row)) {
-            // e.g. comments[ ].createdBy.username
-            //     => $path = [comments]
-            //     => $value = [createdBy][username]
-            $value = null;
-            $path = Helper::getDataPropertyPath($this->data, $value);
+        $value = null;
+        $path = Helper::getDataPropertyPath($this->data, $value);
 
-            $entries = $this->accessor->getValue($row, $path);
+        if ($this->accessor->isReadable($row, $path)) {
 
-            if (count($entries) > 0) {
-                foreach ($entries as $key => $entry) {
-                    $currentPath = $path.'['.$key.']'.$value;
-                    $currentObjectPath = Helper::getPropertyPathObjectNotation($path, $key, $value);
+            if ($this->isEditableContentRequired($row)) {
+                // e.g. comments[ ].createdBy.username
+                //     => $path = [comments]
+                //     => $value = [createdBy][username]
 
-                    $content = $this->renderTemplate(
-                        $this->accessor->getValue($row, $currentPath),
-                        $row[$this->editable->getPk()],
-                        $currentObjectPath
-                    );
+                $entries = $this->accessor->getValue($row, $path);
 
-                    $this->accessor->setValue($row, $currentPath, $content);
+                if (count($entries) > 0) {
+                    foreach ($entries as $key => $entry) {
+                        $currentPath = $path . '[' . $key . ']' . $value;
+                        $currentObjectPath = Helper::getPropertyPathObjectNotation($path, $key, $value);
+
+                        $content = $this->renderTemplate(
+                            $this->accessor->getValue($row, $currentPath),
+                            $row[$this->editable->getPk()],
+                            $currentObjectPath
+                        );
+
+                        $this->accessor->setValue($row, $currentPath, $content);
+                    }
+                } else {
+                    // no placeholder - leave this blank
                 }
-            } else {
-                // no placeholder - leave this blank
             }
+
         }
 
         return $this;

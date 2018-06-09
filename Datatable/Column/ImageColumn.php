@@ -104,9 +104,13 @@ class ImageColumn extends AbstractColumn
     {
         $path = Helper::getDataPropertyPath($this->data);
 
-        $content = $this->renderImageTemplate($this->accessor->getValue($row, $path), '-image');
+        if ($this->accessor->isReadable($row, $path)) {
 
-        $this->accessor->setValue($row, $path, $content);
+            $content = $this->renderImageTemplate($this->accessor->getValue($row, $path), '-image');
+
+            $this->accessor->setValue($row, $path, $content);
+
+        }
 
         return $this;
     }
@@ -122,19 +126,23 @@ class ImageColumn extends AbstractColumn
         $value = null;
         $path = Helper::getDataPropertyPath($this->data, $value);
 
-        $images = $this->accessor->getValue($row, $path);
+        if ($this->accessor->isReadable($row, $path)) {
 
-        if (count($images) > 0) {
-            foreach ($images as $key => $image) {
-                $currentPath = $path.'['.$key.']'.$value;
-                $content = $this->renderImageTemplate($this->accessor->getValue($row, $currentPath), '-gallery-image');
+            $images = $this->accessor->getValue($row, $path);
+
+            if (count($images) > 0) {
+                foreach ($images as $key => $image) {
+                    $currentPath = $path . '[' . $key . ']' . $value;
+                    $content = $this->renderImageTemplate($this->accessor->getValue($row, $currentPath), '-gallery-image');
+                    $this->accessor->setValue($row, $currentPath, $content);
+                }
+            } else {
+                // create an entry for the placeholder image
+                $currentPath = $path . '[0]' . $value;
+                $content = $this->renderImageTemplate(null, '-gallery-image');
                 $this->accessor->setValue($row, $currentPath, $content);
             }
-        } else {
-            // create an entry for the placeholder image
-            $currentPath = $path.'[0]'.$value;
-            $content = $this->renderImageTemplate(null, '-gallery-image');
-            $this->accessor->setValue($row, $currentPath, $content);
+
         }
 
         return $this;
