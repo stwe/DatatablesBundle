@@ -68,8 +68,8 @@ class SelectFilter extends AbstractFilter
         if (true === $this->multiple && is_array($searchValues) && count($searchValues) > 1) {
             $orExpr = $qb->expr()->orX();
 
-            foreach ($searchValues as $searchItem) {
-                $this->setSelectSearchType($searchItem);
+            foreach ($searchValues as $searchValue) {
+                $this->setSelectSearchType($searchValue);
                 $orExpr->add($this->getExpression($qb->expr()->andX(), $qb, $this->searchType, $searchField, $searchValue, $searchTypeOfField, $parameterCounter));
             }
 
