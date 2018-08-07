@@ -122,7 +122,6 @@ With the `create_buttons` option you can create custom buttons. Each button has 
 | text           | string or null | null    | Visible text. |
 | title_attr     | string or null | null    | Button title attribute text. |
 | button_options | array or null  | null    | All special button options. |
-
 ___
 
 ## 2. Responsive
@@ -218,74 +217,72 @@ With the Responsive class you can set some `display` options to define how the h
 | target   | string, int or null | null    | Column / selector for child row display control. |
 | renderer | array or null       | null    | Define the renderer used to display the child rows.   |
 | display  | array or null       | null    | Define how the hidden information should be displayed to the end user. |
-
 ___
 
 ## 3. Select
    
-   **Be sure to install the [Select Extension](https://datatables.net/extensions/select/) before using.**
-   
-   ### Template
-   
-   @SgDatatables/datatable/extensions.html.twig
-   
-   ### Initialisation
-   
-   #### The easiest way
-   
-   The easiest way is to add `select` to your extensions options with a boolean value.
-   
-   ``` php
-   public function buildDatatable(array $options = array())
-   {
-       // ...
-   
-       $this->extensions->set(array(
-           'select' => true,
-       ));
-       
-       // ...
-   }
-   ```
-   
-   #### Advanced example
-   
-   The Bootstrap modal example:
-   
-   ``` php
-   public function buildDatatable(array $options = array())
-   {
-       // ...
-   
-       $this->extensions->set(array(
-           'select' => array(
-               'blurable' => false,
-               'className' => 'selected',
-               'info' => true,
-               'items' => 'row',
-               'selector' => 'td, th',
-               'style' => 'os',
-           ),
-       ));
-       
-       // ...
-   }
-   ```
-   
-   ### Select class options
-   
-   With the Select class you can set the following options, for details see the [Plugin documentation](https://datatables.net/reference/option/#select).
-   
-   | Option    | Type            | Default |  Description                       |
-   |-----------|-----------------|---------|------------------------------------|
-   | blurable  | boolean or null | null    | Indicate if the selected items will be removed when clicking outside of the table |
-   | classname | string or null  | null    | Set the class name that will be applied to selected items |
-   | info      | boolean or null | null    | Enable / disable the display for item selection information in the table summary |
-   | items     | string or null  | null    | Set which table items to select (rows, columns or cells) |
-   | selector  | string or null  | null    | Set the element selector used for mouse event capture to select items |
-   | style     | string or null  | null    | Set the selection style for end user interaction with the table |
-   ___
+**Be sure to install the [Select Extension](https://datatables.net/extensions/select/) before using.**
 
+### Template
+
+@SgDatatables/datatable/extensions.html.twig
+
+### Initialisation
+
+#### The easiest way
+
+The easiest way is to add `select` to your extensions options with a boolean value.
+
+``` php
+public function buildDatatable(array $options = array())
+{
+   // ...
+
+   $this->extensions->set(array(
+       'select' => true,
+   ));
+   
+   // ...
+}
+```
+
+#### Advanced example
+
+The Bootstrap modal example:
+
+``` php
+public function buildDatatable(array $options = array())
+{
+   // ...
+
+   $this->extensions->set(array(
+       'select' => array(
+           'blurable' => false,
+           'className' => 'selected',
+           'info' => true,
+           'items' => 'row',
+           'selector' => 'td, th',
+           'style' => 'os',
+       ),
+   ));
+   
+   // ...
+}
+```
+
+### Select class options
+
+With the Select class you can set the following options, for details see the [Plugin documentation](https://datatables.net/reference/option/#select).
+
+| Option    | Type            | Default |  Description                       |
+|-----------|-----------------|---------|------------------------------------|
+| blurable  | boolean or null | null    | Indicate if the selected items will be removed when clicking outside of the table |
+| classname | string or null  | null    | Set the class name that will be applied to selected items |
+| info      | boolean or null | null    | Enable / disable the display for item selection information in the table summary |
+| items     | string or null  | null    | Set which table items to select (rows, columns or cells) |
+| selector  | string or null  | null    | Set the element selector used for mouse event capture to select items |
+| style     | string or null  | null    | Set the selection style for end user interaction with the table |
+___
 
 ## 4. RowGroup
 
@@ -363,4 +360,3 @@ With the RowGroup class you can set the following options, for details see the [
 | endRender         | array or null   | null  | Provide a function that can be used to control the data shown in the end grouping row. |
 | startRender       | array or null   | null  | Provide a function that can be used to control the data shown in the start grouping row. |
 ___
-
