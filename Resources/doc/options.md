@@ -4,6 +4,7 @@ With 'null' initialized options uses the default value of the DataTables plugin.
 
 | Option                        | Type               | Default   | Description |
 |-------------------------------|--------------------|-----------|-------------|
+| col_reorder                   | null or bool       | null      | Allow the reordering of columns. |
 | defer_loading                 | null, int or array | null      | Delay the loading of server-side data until second draw. |
 | display_start                 | null or int        | null      | Initial paging start point. |
 | dom                           | null or string     | null      | Define the table control elements to appear on the page and in what order. |

@@ -33,6 +33,15 @@ class Options
     //--------------------------------------------------------------------------------------------------
 
     /**
+     * Give the possibility to change the order of the columns
+     * DataTables default: false
+     * Default: null
+     *
+     * @var null|bool
+     */
+    protected $colReorder;
+
+    /**
      * Delay the loading of server-side data until second draw.
      * DataTables default: null
      * Default: null
@@ -268,6 +277,7 @@ class Options
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
+            'col_reorder' => null,
             'defer_loading' => null,
             'display_start' => null,
             'dom' => null,
@@ -293,6 +303,7 @@ class Options
             'global_search_type' => 'like',
         ));
 
+        $resolver->setAllowedTypes('col_reorder', array('null', 'bool'));
         $resolver->setAllowedTypes('defer_loading', array('null', 'int', 'array'));
         $resolver->setAllowedTypes('display_start', array('null', 'int'));
         $resolver->setAllowedTypes('dom', array('null', 'string'));
@@ -326,6 +337,34 @@ class Options
     //-------------------------------------------------
     // Getters && Setters
     //-------------------------------------------------
+
+    /**
+     * Get colReorder.
+     *
+     * @return null|bool
+     */
+    public function isColReorder()
+    {
+        if (is_array($this->colReorder)) {
+            return $this->optionToJson($this->colReorder);
+        }
+
+        return $this->colReorder;
+    }
+
+    /**
+     * Set colReorder.
+     *
+     * @param null|bool $colReorder
+     *
+     * @return $this
+     */
+    public function setColReorder($colReorder)
+    {
+        $this->colReorder = $colReorder;
+
+        return $this;
+    }
 
     /**
      * Get deferLoading.
