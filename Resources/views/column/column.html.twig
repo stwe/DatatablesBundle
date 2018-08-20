@@ -23,11 +23,6 @@
         {% if column.width is not same as(null) %}
             "width": "{{ column.width }}",
         {% endif %}
-        {% block title %}
-            {% if column.title is not same as(null) %}
-                "title": "{{ column.title|raw }}",
-            {% endif %}
-        {% endblock %}
         {% if column.searchable is same as(true) or column.searchable is same as(false) %}
             "searchable": {{ column.searchable|sg_datatables_bool_var }},
         {% endif %}

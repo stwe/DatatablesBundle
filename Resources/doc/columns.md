@@ -40,6 +40,7 @@ With 'null' initialized options uses the default value of the DataTables plugin.
 | searchable          | bool               | true              |          | Enable or disable filtering on the data in this column. |
 | title               | null or string     | null              |          | Set the column title. |
 | visible             | bool               | true              |          | Enable or disable the display of this column. |
+| sent_in_response    | bool               | true              |          | When set to `false`, allows to access to this field in the `$row` array in Closures without sending this column to the browser (parameter `visible` set to `false` only hides the column in the rendered table). |
 | width               | null or string     | null              |          | Column width assignment. |
 | add_if              | null or Closure    | null              |          | Add column only if conditions are TRUE. |
 | join_type           | string             | 'leftJoin'        |          | Join type (default: 'leftJoin'), if the column represents an association. |

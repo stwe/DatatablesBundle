@@ -121,6 +121,12 @@ class DatatableFormatter
                 $column->renderCellContent($row);
             }
 
+            foreach ($columns as $column) {
+                if (!$column->getSentInResponse()) {
+                    unset($row[$column->getDql()]);
+                }
+            }
+
             $this->output['data'][] = $row;
         }
     }

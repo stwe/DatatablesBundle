@@ -20,31 +20,44 @@
             {% if 'head' == sg_datatables_view.options.individualFilteringPosition or 'both' == sg_datatables_view.options.individualFilteringPosition%}
                 <tr>
                     {% for column in sg_datatables_view.columnBuilder.columns %}
-                        <th>{{ column.title }}</th>
+                        {% if column.sentInResponse %}
+                            <th>{{ column.title }}</th>
+                        {% endif %}
                     {% endfor %}
                 </tr>
                 <tr id="sg-datatables-{{ sg_datatables_view.uniqueName }}-filterrow">
                     {% for column in sg_datatables_view.columnBuilder.columns %}
-                        <th>
-                            {% if column.searchable %}
-                                {{ sg_datatables_render_filter(sg_datatables_view, column, 'head') }}
-                            {% endif %}
-                        </th>
+                        {% if column.sentInResponse %}
+                            <th>
+                                {% if column.searchable %}
+                                    {{ sg_datatables_render_filter(sg_datatables_view, column, 'head') }}
+                                {% endif %}
+                            </th>
+                        {% endif %}
                     {% endfor %}
                 </tr>
             {% endif %}
         {% endif %}
+        <tr>
+            {% for column in sg_datatables_view.columnBuilder.columns %}
+                {% if column.sentInResponse %}
+                    <th>{{ column.title }}</th>
+                {% endif %}
+            {% endfor %}
+        </tr>
     </thead>
         {% if true == individual_filtering %}
             {% if 'foot' == sg_datatables_view.options.individualFilteringPosition or 'both' == sg_datatables_view.options.individualFilteringPosition%}
             <tfoot>
                     <tr>
                         {% for column in sg_datatables_view.columnBuilder.columns %}
-                            <td>
-                                {% if column.searchable %}
-                                    {{ sg_datatables_render_filter(sg_datatables_view, column, 'foot') }}
-                                {% endif %}
-                            </td>
+                            {% if column.sentInResponse %}
+                                <td>
+                                    {% if column.searchable %}
+                                        {{ sg_datatables_render_filter(sg_datatables_view, column, 'foot') }}
+                                    {% endif %}
+                                </td>
+                            {% endif %}
                         {% endfor %}
                     </tr>
                 </tfoot>
