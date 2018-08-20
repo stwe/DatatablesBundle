@@ -136,3 +136,8 @@
     {% endif %}
     },
 {% endif %}
+
+{# ColReorder Extension #}
+{% if sg_datatables_view.extensions.colReorder is same as(true) %}
+    colReorder: true,
+{% endif %}
