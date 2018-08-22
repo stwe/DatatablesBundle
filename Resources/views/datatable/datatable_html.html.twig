@@ -45,6 +45,19 @@
                 {% endif %}
             {% endfor %}
         </tr>
+        {% if sg_datatables_view.displayTotals %}
+            <tr>
+                {% for column in sg_datatables_view.columnBuilder.columns %}
+                    {% if column.sentInResponse %}
+                        <th>
+                            {% if column.computeTotal %}
+                                TOTAL: {{ column.total }}
+                            {% endif %}
+                        </th>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endif %}
     </thead>
         {% if true == individual_filtering %}
             {% if 'foot' == sg_datatables_view.options.individualFilteringPosition or 'both' == sg_datatables_view.options.individualFilteringPosition%}

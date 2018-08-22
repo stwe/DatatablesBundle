@@ -598,6 +598,29 @@ class DatatableQueryBuilder
         return $this;
     }
 
+    public function getComputedTotals()
+    {
+        $qb = clone $this->qb;
+
+        $queryString = "";
+
+        foreach ($this->columns as $column) {
+            if ($column->getComputeTotal()) {
+                $queryString .= 'SUM(' . $this->entityShortName . '.' . $column->getDql() . ') AS ' . $column->getDql() . ' ';
+            }
+        }
+
+        $qb->select($queryString);
+        $qb->resetDQLPart('orderBy');
+        $this->setJoins($qb);
+
+        $query = $qb->getQuery();
+        $query->useQueryCache($this->useCountQueryCache);
+        call_user_func_array([$query, 'useResultCache'], $this->useCountResultCacheArgs);
+
+        return $query->getOneOrNullResult();
+    }
+
     //-------------------------------------------------
     // Private - Helper
     //-------------------------------------------------

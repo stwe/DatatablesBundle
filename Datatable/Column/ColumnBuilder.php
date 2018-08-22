@@ -185,6 +185,16 @@ class ColumnBuilder
         return \array_key_exists($columnType, $this->uniqueColumns) ? $this->uniqueColumns[$columnType] : null;
     }
 
+    public function setColumnTotal($dql, $total)
+    {
+        foreach ($this->columns as $column) {
+            if ($column->getDql() == $dql) {
+                $column->setTotal($total);
+                break;
+            }
+        }
+    }
+
     //-------------------------------------------------
     // Helper
     //-------------------------------------------------

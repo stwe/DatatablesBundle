@@ -365,7 +365,6 @@ abstract class AbstractColumn implements ColumnInterface
             'data_source' => null,
         ]);
 
-        $resolver->setAllowedTypes('cell_type', ['null', 'string']);
         $resolver->setAllowedTypes('class_name', ['null', 'string']);
         $resolver->setAllowedTypes('content_padding', ['null', 'string']);
         $resolver->setAllowedTypes('dql', ['null', 'string']);
@@ -380,15 +379,12 @@ abstract class AbstractColumn implements ColumnInterface
         $resolver->setAllowedTypes('visible', 'bool');
         $resolver->setAllowedTypes('width', ['null', 'string']);
         $resolver->setAllowedTypes('add_if', ['null', 'Closure']);
-        $resolver->setAllowedTypes('join_type', 'string');
-        $resolver->setAllowedTypes('type_of_field', ['null', 'string']);
         $resolver->setAllowedTypes('responsive_priority', ['null', 'int']);
         $resolver->setAllowedTypes('sent_in_response', ['bool']);
         $resolver->setAllowedTypes('compute_total', ['bool']);
         $resolver->setAllowedTypes('mapped', ['bool']);
         $resolver->setAllowedTypes('is_association', ['bool']);
         $resolver->setAllowedTypes('data_source', ['string', 'null']);
-
         $resolver->setAllowedValues('cell_type', [null, 'th', 'td']);
         $resolver->setAllowedValues('join_type', [null, 'join', 'leftJoin', 'innerJoin']);
         $resolver->setAllowedValues('type_of_field', array_merge([null], array_keys(DoctrineType::getTypesMap())));
