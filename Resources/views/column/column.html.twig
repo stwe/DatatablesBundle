@@ -15,7 +15,7 @@
             "contentPadding": "{{ column.contentPadding }}",
         {% endif %}
         {% if column.defaultContent is not same as(null) %}
-            "defaultContent": "{{ column.defaultContent }}",
+            "defaultContent": {{ column.defaultContent|json_encode|raw }},
         {% endif %}
         {% if column.name is not same as(null) %}
             "name": "{{ column.name }}",
@@ -25,7 +25,7 @@
         {% endif %}
         {% block title %}
             {% if column.title is not same as(null) %}
-                "title": "{{ column.title|raw }}",
+                "title": {{ column.title|json_encode|raw }},
             {% endif %}
         {% endblock %}
         {% if column.searchable is same as(true) or column.searchable is same as(false) %}
