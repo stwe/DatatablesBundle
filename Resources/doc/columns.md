@@ -118,6 +118,7 @@ $this->columnBuilder
         'data' => 'comments[,].title',
         'searchable' => true,
         'orderable' => true,
+        'join_conditions' => 'comments.reviewed = 1',
     ))
 ;
 ```
