@@ -200,12 +200,12 @@ abstract class AbstractColumn implements ColumnInterface
     protected $joinType;
 
     /**
-     * With expression, if the column represents an association.
+     * Join conditions, if the column represents an association.
      * Default: null
      *
      * @var null|string
      */
-    protected $withExpr;
+    protected $joinConditions;
 
     /**
      * The data type of the column.
@@ -329,7 +329,7 @@ abstract class AbstractColumn implements ColumnInterface
             'width' => null,
             'add_if' => null,
             'join_type' => 'leftJoin',
-            'with_expr' => null,
+            'join_conditions' => null,
             'type_of_field' => null,
             'responsive_priority' => null,
         ));
@@ -350,7 +350,7 @@ abstract class AbstractColumn implements ColumnInterface
         $resolver->setAllowedTypes('width', array('null', 'string'));
         $resolver->setAllowedTypes('add_if', array('null', 'Closure'));
         $resolver->setAllowedTypes('join_type', 'string');
-        $resolver->setAllowedTypes('with_expr', array('null', 'string'));
+        $resolver->setAllowedTypes('join_conditions', array('null', 'string'));
         $resolver->setAllowedTypes('type_of_field', array('null', 'string'));
         $resolver->setAllowedTypes('responsive_priority', array('null', 'int'));
 
@@ -828,25 +828,25 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get WITH expression.
+     * Get join conditions.
      *
      * @return string
      */
-    public function getWithExpr()
+    public function getJoinConditions()
     {
-        return $this->withExpr;
+        return $this->joinConditions;
     }
 
     /**
-     * Set WITH expression.
+     * Set join conditions.
      *
-     * @param string $withExpr
+     * @param string $joinConditions
      *
      * @return $this
      */
-    public function setWithExpr($withExpr = null)
+    public function setJoinConditions($joinConditions = null)
     {
-        $this->withExpr = $withExpr;
+        $this->joinConditions = $joinConditions;
 
         return $this;
     }

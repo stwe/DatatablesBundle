@@ -255,7 +255,7 @@ class DatatableQueryBuilder
                 $this->addSearchColumn($column, null, $searchDql);
             } elseif (true === $this->accessor->getValue($column, 'selectColumn')) {
                 $parts = explode('.', $dql);
-                $withExpr = $this->accessor->getValue($column, 'withExpr');
+                $withExpr = $this->accessor->getValue($column, 'joinConditions');
 
                 while (count($parts) > 1) {
                     $previousPart = $currentPart;
