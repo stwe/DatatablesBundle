@@ -43,6 +43,7 @@ With 'null' initialized options uses the default value of the DataTables plugin.
 | width               | null or string     | null              |          | Column width assignment. |
 | add_if              | null or Closure    | null              |          | Add column only if conditions are TRUE. |
 | join_type           | string             | 'leftJoin'        |          | Join type (default: 'leftJoin'), if the column represents an association. |
+| with_expr           | null or string     | null              |          | WITH expression for join, if the column represents an association. |
 | type_of_field       | null or string     | null (autodetect) |          | Set the data type itself for ordering (example: integer instead string). |
 | responsive_priority | null or int        | null              |          | Set column's visibility priority. Requires the Responsive extension. |
 | filter              | array              | TextFilter        |          | A Filter instance for individual filtering. |
