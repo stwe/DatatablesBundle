@@ -1,0 +1,8 @@
+services:
+  sg_datatables.maker:
+    class: Sg\DatatablesBundle\Maker\MakeDatatable
+    public: true
+    arguments:
+    - '@maker.doctrine_helper'
+    tags:
+    - { name: maker.command }
