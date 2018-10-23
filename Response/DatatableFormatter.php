@@ -113,15 +113,23 @@ class DatatableFormatter
                 $row = call_user_func($datatable->getLineFormatter(), $row);
             }
 
+            $resultRow = $row;
+
             /** @var ColumnInterface $column */
             foreach ($columns as $column) {
                 // 3. Add some special data to the output array. For example, the visibility of actions.
                 $column->addDataToOutputArray($row);
                 // 4. Call Columns renderContent method to format row items (e.g. for images or boolean values)
-                $column->renderCellContent($row);
+                $column->renderCellContent($row, $resultRow);
             }
 
-            $this->output['data'][] = $row;
+            foreach ($columns as $column) {
+                if (!$column->getSentInResponse()) {
+                    unset($resultRow[$column->getDql()]);
+                }
+            }
+
+            $this->output['data'][] = $resultRow;
         }
     }
 
