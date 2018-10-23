@@ -193,7 +193,7 @@ abstract class AbstractDatatable implements DatatableInterface
         $metadata = $em->getClassMetadata($this->getEntity());
         $this->columnBuilder = new ColumnBuilder($metadata, $twig, $this->getName(), $em);
 
-        $this->ajax = new Ajax();
+        $this->ajax = new Ajax($this->getUniqueName());
         $this->options = new Options();
         $this->features = new Features();
         $this->callbacks = new Callbacks();

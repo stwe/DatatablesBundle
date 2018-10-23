@@ -30,6 +30,14 @@ class Ajax
     //-------------------------------------------------
 
     /**
+     * Datatable name, used to precise the table name during the ajax data loading
+     * Set in the constructor, in AbstractDatatable constructor
+     *
+     * @var string
+     */
+    private $name;
+
+    /**
      * URL set as the Ajax data source for the table.
      * Default: null
      *
@@ -69,10 +77,14 @@ class Ajax
 
     /**
      * Ajax constructor.
+     *
+     * @param string $name The table name
      */
-    public function __construct()
+    public function __construct($name)
     {
         $this->initOptions();
+
+        $this->name = $name;
     }
 
     //-------------------------------------------------
@@ -164,11 +176,18 @@ class Ajax
      */
     public function getData()
     {
-        if (is_array($this->data)) {
-            return $this->optionToJson($this->data);
+        $dataResponse = $this->data;
+        $nameResponse = $this->optionToJson(array('name' => $this->getName()));
+
+        if (!is_array($dataResponse)) {
+            $dataResponse = $this->optionToJson($this->data);
         }
 
-        return $this->data;
+        if ($dataResponse === null) {
+            return $nameResponse;
+        }
+
+        return array_merge($nameResponse, $dataResponse);
     }
 
     /**
@@ -205,6 +224,30 @@ class Ajax
     public function setPipeline($pipeline)
     {
         $this->pipeline = $pipeline;
+
+        return $this;
+    }
+
+    /**
+     * Get name.
+     *
+     * @return int
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set name.
+     *
+     * @param int $name
+     *
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
 
         return $this;
     }

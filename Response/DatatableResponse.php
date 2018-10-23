@@ -100,6 +100,27 @@ class DatatableResponse
     }
 
     /**
+     * Set datatables
+     * Wrapper to call setDatatable from many datatables instances,
+     * based on the table name.
+     *
+     * @param array $datatables
+     *
+     * @return $this
+     * @throws Exception
+     */
+    public function setDatatables($datatables)
+    {
+        foreach($datatables as $datatable) {
+            if ($datatable->getUniqueName() === $this->getRequestParamsByType($datatable->getAjax()->getType())['name']) {
+                return $this->setDatatable($datatable);
+            }
+        }
+
+        throw new Exception("Datatable not found.");
+    }
+
+    /**
      * Get DatatableQueryBuilder instance.
      *
      * @return DatatableQueryBuilder
@@ -148,6 +169,16 @@ class DatatableResponse
         return new JsonResponse(array_merge($outputHeader, $formatter->getOutput()));
     }
 
+    /**
+     * Get datatable name
+     *
+     * @return string
+     */
+    public function getDatatableName()
+    {
+        return $this->datatable->getUniqueName();
+    }
+
     //-------------------------------------------------
     // Private
     //-------------------------------------------------
@@ -177,8 +208,12 @@ class DatatableResponse
      */
     private function getRequestParams()
     {
+        return $this->getRequestParamsByType($this->datatable->getAjax()->getType());
+    }
+
+    private function getRequestParamsByType($type)
+    {
         $parameterBag = null;
-        $type = $this->datatable->getAjax()->getType();
 
         if ('GET' === strtoupper($type)) {
             $parameterBag = $this->request->query;
