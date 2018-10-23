@@ -47,6 +47,9 @@ With 'null' initialized options uses the default value of the DataTables plugin.
 | responsive_priority | null or int        | null              |          | Set column's visibility priority. Requires the Responsive extension. |
 | filter              | array              | TextFilter        |          | A Filter instance for individual filtering. |
 | editable            | array or null      | null              |          | An Editable instance for in-place editing. |
+| mapped              | bool               | true              |          | Allow to create columns not mapped in entity neither defined by DQL. |
+| is_association      | bool               | false             |          | Allow to force if the column is an association, usally used with `mapped` and `data_source`. |
+| data_source         | null or string     | null              |          | Specify the column source of the data to manipulate in the current column. Usally used with `mapped` and `data_source`. | 
 
 ### Example
 
