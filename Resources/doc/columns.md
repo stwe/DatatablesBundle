@@ -8,6 +8,7 @@
 6. [Action Column](#6-action-column)
 7. [Multiselect Column](#7-multiselect-column)
 8. [Number Column](#8-number-column)
+9. [Attribute Column](#9-number-column)
 
 ## 1. Column
 
@@ -713,3 +714,44 @@ public function buildDatatable(array $options = array())
 }
 ```
 ___
+## 9. Attribute column
+
+Represents a column, with a `span` tag with `data-*` attributes. The displayed data is in the `span` tag.
+
+
+### Options template
+
+@SgDatatables/column/attributeColumn.html.twig
+
+### Options
+
+All options of [Column](#1-column).
+
+**Additional:**
+
+| Option              | Type                      | Default                               | Required | Description     |
+|---------------------|---------------------------|---------------------------------------|----------|-----------------|
+| attributes          | null or string or Closure |                                       | X        | Attributes to display in `data-*` attributes |
+
+
+### Example
+
+``` php
+public function buildDatatable(array $options = array())
+{
+    // ...
+
+    $this->columnBuilder
+        ->add('description', AttributeColumn::class, array(
+            'title'      => 'Message',
+            'attributes' => function($row) {
+                return array(
+                    'severity' => $row['severity']
+                );
+            }
+        ))
+
+        // ...
+    ;
+}
+```
