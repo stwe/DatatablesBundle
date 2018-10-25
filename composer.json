@@ -1,21 +1,21 @@
 {
-    "name": "sg/datatablesbundle",
+    "name": "miofair/datatablesbundle",
     "type": "symfony-bundle",
     "description": "Symfony Datatable Bundle For Doctrine2 Entities",
     "keywords": ["symfony3", "datatable", "datatables", "data-table", "grid", "table", "datagrid", "pagination"],
-    "homepage": "https://github.com/stwe/DatatablesBundle",
+    "homepage": "https://github.com/msprotte/DatatablesBundle",
     "license": "MIT",
     "authors": [
         {
-            "name": "stwe"
+            "name": "msprotte"
         },
         {
-            "name": "SgDatatablesBundle contributors",
-            "homepage": "https://github.com/stwe/DatatablesBundle/graphs/contributors"
+            "name": "MiofairDatatablesBundle contributors",
+            "homepage": "https://github.com/msprotte/DatatablesBundle/graphs/contributors"
         }
     ],
     "support": {
-        "issues": "https://github.com/stwe/DatatablesBundle/issues"
+        "issues": "https://github.com/msprotte/DatatablesBundle/issues"
     },
     "require": {
         "php": ">=5.5.9",
