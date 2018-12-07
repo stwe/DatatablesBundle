@@ -49,9 +49,11 @@ class Column extends AbstractColumn
 
             if ($this->isEditableContentRequired($row)) {
                 $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
-                $this->accessor->setValue($row, $path, $content);
             }
-
+            else {
+                $content = htmlspecialchars($this->accessor->getValue($row, $path));
+            }
+            $this->accessor->setValue($row, $path, $content);
         }
 
         return $this;
