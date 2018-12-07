@@ -13,8 +13,6 @@ namespace Sg\DatatablesBundle\Datatable\Editable;
 
 /**
  * Interface EditableInterface
- *
- * @package Sg\DatatablesBundle\Datatable\Editable
  */
 interface EditableInterface
 {
@@ -32,7 +30,7 @@ interface EditableInterface
      *
      * @return bool
      */
-    public function callEditableIfClosure(array $row = array());
+    public function callEditableIfClosure(array $row = []);
 
     /**
      * Get pk.

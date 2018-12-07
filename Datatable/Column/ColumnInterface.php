@@ -13,15 +13,10 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 
 /**
  * Interface ColumnInterface
- *
- * @package Sg\DatatablesBundle\Datatable\Column
  */
 interface ColumnInterface
 {
-    /**
-     * @var int
-     */
-    const LAST_POSITION = -1;
+    public const LAST_POSITION = -1;
 
     /**
      * Validates $dql. Normally a non-empty string is expected.
@@ -125,7 +120,7 @@ interface ColumnInterface
     /**
      * The allowed Column positions as array.
      *
-     * @return null|array
+     * @return array|null
      */
     public function allowedPositions();
 

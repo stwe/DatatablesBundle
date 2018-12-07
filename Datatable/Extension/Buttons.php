@@ -11,15 +11,14 @@
 
 namespace Sg\DatatablesBundle\Datatable\Extension;
 
-use Sg\DatatablesBundle\Datatable\OptionsTrait;
-
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Exception;
+use Sg\DatatablesBundle\Datatable\OptionsTrait;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use function count;
+use function is_array;
 
 /**
  * Class Buttons
- *
- * @package Sg\DatatablesBundle\Datatable\Extension
  */
 class Buttons
 {
@@ -52,9 +51,6 @@ class Buttons
     // Ctor.
     //-------------------------------------------------
 
-    /**
-     * Buttons constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -73,13 +69,13 @@ class Buttons
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'show_buttons' => null,
             'create_buttons' => null,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('show_buttons', array('null', 'array'));
-        $resolver->setAllowedTypes('create_buttons', array('null', 'array'));
+        $resolver->setAllowedTypes('show_buttons', ['null', 'array']);
+        $resolver->setAllowedTypes('create_buttons', ['null', 'array']);
 
         return $this;
     }
@@ -132,18 +128,19 @@ class Buttons
      * @param array|null $createButtons
      *
      * @return $this
+     *
      * @throws Exception
      */
     public function setCreateButtons($createButtons)
     {
         if (is_array($createButtons)) {
-            if (count($createButtons) > 0) {
-                foreach ($createButtons as $button) {
-                    $newButton = new Button();
-                    $this->createButtons[] = $newButton->set($button);
-                }
-            } else {
+            if (count($createButtons) <= 0) {
                 throw new Exception('Buttons::setCreateButtons(): The createButtons array should contain at least one element.');
+            }
+
+            foreach ($createButtons as $button) {
+                $newButton             = new Button();
+                $this->createButtons[] = $newButton->set($button);
             }
         } else {
             $this->createButtons = $createButtons;

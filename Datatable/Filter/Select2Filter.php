@@ -11,14 +11,12 @@
 
 namespace Sg\DatatablesBundle\Datatable\Filter;
 
+use Exception;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Exception;
 
 /**
  * Class Select2Filter
- *
- * @package Sg\DatatablesBundle\Datatable\Filter
  */
 class Select2Filter extends SelectFilter
 {
@@ -101,7 +99,7 @@ class Select2Filter extends SelectFilter
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'placeholder' => null,
             'allow_clear' => null,
             'tags' => null,
@@ -109,18 +107,18 @@ class Select2Filter extends SelectFilter
             'url' => null,
             'delay' => 250,
             'cache' => true,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('placeholder', array('string', 'null'));
-        $resolver->setAllowedTypes('allow_clear', array('bool', 'null'));
-        $resolver->setAllowedTypes('tags', array('bool', 'null'));
-        $resolver->setAllowedTypes('language', array('string', 'null'));
-        $resolver->setAllowedTypes('url', array('string', 'null'));
+        $resolver->setAllowedTypes('placeholder', ['string', 'null']);
+        $resolver->setAllowedTypes('allow_clear', ['bool', 'null']);
+        $resolver->setAllowedTypes('tags', ['bool', 'null']);
+        $resolver->setAllowedTypes('language', ['string', 'null']);
+        $resolver->setAllowedTypes('url', ['string', 'null']);
         $resolver->setAllowedTypes('delay', 'int');
         $resolver->setAllowedTypes('cache', 'bool');
 
-        $resolver->setNormalizer('allow_clear', function (Options $options, $value) {
-            if (null === $options['placeholder'] && true === $value) {
+        $resolver->setNormalizer('allow_clear', static function (Options $options, $value) {
+            if ($options['placeholder'] === null && $value === true) {
                 throw new Exception('Select2Filter::configureOptions(): The allow_clear option will only work if a placeholder is set.');
             }
 
@@ -137,7 +135,7 @@ class Select2Filter extends SelectFilter
     /**
      * Get placeholder.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getPlaceholder()
     {
@@ -147,7 +145,7 @@ class Select2Filter extends SelectFilter
     /**
      * Set placeholder.
      *
-     * @param null|string $placeholder
+     * @param string|null $placeholder
      *
      * @return $this
      */
@@ -209,7 +207,7 @@ class Select2Filter extends SelectFilter
     /**
      * Get language.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getLanguage()
     {
@@ -219,7 +217,7 @@ class Select2Filter extends SelectFilter
     /**
      * Set language.
      *
-     * @param null|string $language
+     * @param string|null $language
      *
      * @return $this
      */
@@ -233,7 +231,7 @@ class Select2Filter extends SelectFilter
     /**
      * Get url.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getUrl()
     {
@@ -243,7 +241,7 @@ class Select2Filter extends SelectFilter
     /**
      * Set url.
      *
-     * @param null|string $url
+     * @param string|null $url
      *
      * @return $this
      */

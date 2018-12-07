@@ -12,11 +12,11 @@
 namespace Sg\DatatablesBundle\Datatable\Action;
 
 use Exception;
+use function array_key_exists;
+use function is_array;
 
 /**
  * Class MultiselectAction
- *
- * @package Sg\DatatablesBundle\Datatable\Action
  */
 class MultiselectAction extends Action
 {
@@ -27,14 +27,15 @@ class MultiselectAction extends Action
     /**
      * Set attributes.
      *
-     * @param null|array $attributes
+     * @param array|null $attributes
      *
      * @return $this
+     *
      * @throws Exception
      */
     public function setAttributes($attributes)
     {
-        $value = 'sg-datatables-'.$this->datatableName.'-multiselect-action';
+        $value = 'sg-datatables-' . $this->datatableName . '-multiselect-action';
 
         if (is_array($attributes)) {
             if (array_key_exists('href', $attributes)) {
@@ -42,7 +43,7 @@ class MultiselectAction extends Action
             }
 
             if (array_key_exists('class', $attributes)) {
-                $attributes['class'] = $value.' '.$attributes['class'];
+                $attributes['class'] = $value . ' ' . $attributes['class'];
             } else {
                 $attributes['class'] = $value;
             }

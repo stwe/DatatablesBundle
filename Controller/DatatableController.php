@@ -11,22 +11,21 @@
 
 namespace Sg\DatatablesBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use DateTime;
 use Doctrine\DBAL\Types\Type;
 use Exception;
-use DateTime;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use function strtolower;
 
 /**
  * Class DatatableController
- *
- * @package Sg\DatatablesBundle\Controller
  */
 class DatatableController extends Controller
 {
@@ -39,28 +38,29 @@ class DatatableController extends Controller
      *
      * @param Request $request
      *
+     * @return Response
+     *
+     * @throws Exception
+     *
      * @Route("/datatables/edit/field", name="sg_datatables_edit")
      * @Method("POST")
-     *
-     * @return Response
-     * @throws Exception
      */
     public function editAction(Request $request)
     {
         if ($request->isXmlHttpRequest()) {
             // x-editable sends some default parameters
-            $pk = $request->request->get('pk');       // entity primary key
+            $pk    = $request->request->get('pk');       // entity primary key
             $field = $request->request->get('name');  // e.g. comments.createdBy.username
             $value = $request->request->get('value'); // the new value
 
             // additional params
-            $entityClassName = $request->request->get('entityClassName'); // e.g. AppBundle\Entity\Post
-            $token = $request->request->get('token');
+            $entityClassName     = $request->request->get('entityClassName'); // e.g. AppBundle\Entity\Post
+            $token               = $request->request->get('token');
             $originalTypeOfField = $request->request->get('originalTypeOfField');
-            $path = $request->request->get('path'); // for toMany - the current element
+            $path                = $request->request->get('path'); // for toMany - the current element
 
             // check token
-            if (!$this->isCsrfTokenValid('sg-datatables-editable', $token)) {
+            if (! $this->isCsrfTokenValid('sg-datatables-editable', $token)) {
                 throw new AccessDeniedException('DatatableController::editAction(): The CSRF token is invalid.');
             }
 
@@ -76,8 +76,8 @@ class DatatableController extends Controller
             // normalize the new value
             $value = $this->normalizeValue($originalTypeOfField, $value);
 
-            // set new value
-            null !== $path ? $accessor->setValue($entity, $path, $value) : $accessor->setValue($entity, $field, $value);
+            $path !== // set new value
+            null ? $accessor->setValue($entity, $path, $value) : $accessor->setValue($entity, $field, $value);
 
             // save all
             $em = $this->getDoctrine()->getManager();
@@ -107,7 +107,7 @@ class DatatableController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository($entityClassName)->find($pk);
-        if (!$entity) {
+        if (! $entity) {
             throw $this->createNotFoundException('DatatableController::getEntityByPk(): The entity does not exist.');
         }
 
@@ -120,7 +120,8 @@ class DatatableController extends Controller
      * @param string $originalTypeOfField
      * @param mixed  $value
      *
-     * @return bool|DateTime|float|int|null|string
+     * @return bool|DateTime|float|int|string|null
+     *
      * @throws Exception
      */
     private function normalizeValue($originalTypeOfField, $value)
@@ -158,23 +159,26 @@ class DatatableController extends Controller
      *
      * @param string $str
      *
-     * @return null|bool
+     * @return bool|null
+     *
      * @throws Exception
      */
     private function strToBool($str)
     {
         $str = strtolower($str);
 
-        if ('null' === $str) {
+        if ($str === 'null') {
             return null;
         }
 
         if ($str === 'true' || $str === '1') {
             return true;
-        } elseif ($str === 'false' || $str === '0') {
-            return false;
-        } else {
-            throw new Exception('DatatableController::strToBool(): Cannot convert string to boolean, expected string "true" or "false".');
         }
+
+        if ($str === 'false' || $str === '0') {
+            return false;
+        }
+
+        throw new Exception('DatatableController::strToBool(): Cannot convert string to boolean, expected string "true" or "false".');
     }
 }

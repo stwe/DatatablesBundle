@@ -15,8 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class TextareaEditable
- *
- * @package Sg\DatatablesBundle\Datatable\Editable
  */
 class TextareaEditable extends AbstractEditable
 {
@@ -54,9 +52,9 @@ class TextareaEditable extends AbstractEditable
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'rows' => 7,
-        ));
+        ]);
 
         $resolver->setAllowedTypes('rows', 'int');
 

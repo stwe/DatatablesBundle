@@ -11,25 +11,22 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
-use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
-
 use Doctrine\ORM\EntityManagerInterface;
+use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 
 /**
  * Interface DatatableInterface
- *
- * @package Sg\DatatablesBundle\Datatable
  */
 interface DatatableInterface
 {
-    const NAME_REGEX = '/[a-zA-Z0-9\-\_]+/';
+    public const NAME_REGEX = '/[a-zA-Z0-9\-\_]+/';
 
     /**
      * Builds the datatable.
      *
      * @param array $options
      */
-    public function buildDatatable(array $options = array());
+    public function buildDatatable(array $options = []);
 
     /**
      * Returns a callable that modify the data row.

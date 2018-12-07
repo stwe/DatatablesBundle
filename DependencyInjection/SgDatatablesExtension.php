@@ -11,16 +11,14 @@
 
 namespace Sg\DatatablesBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * Class SgDatatablesExtension
- *
- * @package Sg\DatatablesBundle\DependencyInjection
  */
 class SgDatatablesExtension extends Extension implements PrependExtensionInterface
 {
@@ -30,9 +28,9 @@ class SgDatatablesExtension extends Extension implements PrependExtensionInterfa
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
+        $config        = $this->processConfiguration($configuration, $configs);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
 
         $container->setParameter('sg_datatables.datatable.query', $config['datatable']['query']);
@@ -45,15 +43,15 @@ class SgDatatablesExtension extends Extension implements PrependExtensionInterfa
     {
         $container->prependExtensionConfig(
             'framework',
-            array(
-                'assets' => array(
-                    'packages' => array(
-                        'datatables_cdn' => array(
+            [
+                'assets' => [
+                    'packages' => [
+                        'datatables_cdn' => [
                             'base_url' => 'https://cdn.datatables.net/plug-ins/1.10.13/i18n/',
-                        ),
-                    ),
-                ),
-            )
+                        ],
+                    ],
+                ],
+            ]
         );
     }
 }

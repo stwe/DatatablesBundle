@@ -15,8 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class TextEditable
- *
- * @package Sg\DatatablesBundle\Datatable\Editable
  */
 class TextEditable extends AbstractEditable
 {
@@ -34,7 +32,7 @@ class TextEditable extends AbstractEditable
      * Placeholder attribute of input. Shown when input is empty.
      * Default: null
      *
-     * @var null|string
+     * @var string|null
      */
     protected $placeholder;
 
@@ -65,13 +63,13 @@ class TextEditable extends AbstractEditable
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'clear' => true,
             'placeholder' => null,
-        ));
+        ]);
 
         $resolver->setAllowedTypes('clear', 'bool');
-        $resolver->setAllowedTypes('placeholder', array('null', 'string'));
+        $resolver->setAllowedTypes('placeholder', ['null', 'string']);
 
         return $this;
     }
@@ -107,7 +105,7 @@ class TextEditable extends AbstractEditable
     /**
      * Get placeholder.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getPlaceholder()
     {
@@ -117,7 +115,7 @@ class TextEditable extends AbstractEditable
     /**
      * Set placeholder.
      *
-     * @param null|string $placeholder
+     * @param string|null $placeholder
      *
      * @return $this
      */

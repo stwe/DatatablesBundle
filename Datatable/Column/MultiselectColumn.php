@@ -11,16 +11,17 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Exception;
 use Sg\DatatablesBundle\Datatable\Action\MultiselectAction;
 use Sg\DatatablesBundle\Datatable\RenderIfTrait;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Exception;
+use function array_key_exists;
+use function count;
+use function is_array;
+use function is_bool;
 
 /**
  * Class MultiselectColumn
- *
- * @package Sg\DatatablesBundle\Datatable\Column
  */
 class MultiselectColumn extends ActionColumn
 {
@@ -33,7 +34,7 @@ class MultiselectColumn extends ActionColumn
      * HTML <input> Tag attributes (except 'type' and 'value').
      * Default: null
      *
-     * @var null|array
+     * @var array|null
      */
     protected $attributes;
 
@@ -57,7 +58,7 @@ class MultiselectColumn extends ActionColumn
      * Id selector where all multiselect actions are rendered.
      * Default: null ('sg-datatables-{{ sg_datatables_view.name }}-multiselect-actions')
      *
-     * @var null|string
+     * @var string|null
      */
     protected $renderActionsToId;
 
@@ -100,19 +101,19 @@ class MultiselectColumn extends ActionColumn
             $value = (int) $value;
         }
 
-        if (true === $this->valuePrefix) {
-            $value = 'sg-datatables-'.$this->getDatatableName().'-checkbox-'.$value;
+        if ($this->valuePrefix === true) {
+            $value = 'sg-datatables-' . $this->getDatatableName() . '-checkbox-' . $value;
         }
 
         $row[$this->getIndex()] = $this->twig->render(
             $this->getCellContentTemplate(),
-            array(
+            [
                 'attributes' => $this->attributes,
                 'value' => $value,
                 'start_html' => $this->startHtml,
                 'end_html' => $this->endHtml,
                 'render_if_cbox' => $row['sg_datatables_cbox'],
-            )
+            ]
         );
     }
 
@@ -129,7 +130,7 @@ class MultiselectColumn extends ActionColumn
      */
     public function allowedPositions()
     {
-        return array(0, self::LAST_POSITION);
+        return [0, self::LAST_POSITION];
     }
 
     /**
@@ -158,19 +159,19 @@ class MultiselectColumn extends ActionColumn
         // predefined in the view as Checkbox
         $resolver->remove('title');
 
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'attributes' => null,
             'value' => 'id',
             'value_prefix' => false,
             'render_actions_to_id' => null,
             'render_if' => null,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('attributes', array('null', 'array'));
+        $resolver->setAllowedTypes('attributes', ['null', 'array']);
         $resolver->setAllowedTypes('value', 'string');
         $resolver->setAllowedTypes('value_prefix', 'bool');
-        $resolver->setAllowedTypes('render_actions_to_id', array('null', 'string'));
-        $resolver->setAllowedTypes('render_if', array('null', 'Closure'));
+        $resolver->setAllowedTypes('render_actions_to_id', ['null', 'string']);
+        $resolver->setAllowedTypes('render_if', ['null', 'Closure']);
 
         return $this;
     }
@@ -185,21 +186,22 @@ class MultiselectColumn extends ActionColumn
      * @param array $actions
      *
      * @return $this
+     *
      * @throws Exception
      */
     public function setActions(array $actions)
     {
-        if (count($actions) > 0) {
-            foreach ($actions as $action) {
-                $this->addAction($action);
-            }
-        } else {
+        if (count($actions) <= 0) {
             throw new Exception('MultiselectColumn::setActions(): The actions array should contain at least one element.');
+        }
+
+        foreach ($actions as $action) {
+            $this->addAction($action);
         }
 
         return $this;
     }
-    
+
     /**
      * Add action.
      *
@@ -209,16 +211,16 @@ class MultiselectColumn extends ActionColumn
      */
     public function addAction(array $action)
     {
-        $newAction = new MultiselectAction($this->datatableName);
+        $newAction       = new MultiselectAction($this->datatableName);
         $this->actions[] = $newAction->set($action);
-        
+
         return $this;
     }
 
     /**
      * Get attributes.
      *
-     * @return null|array
+     * @return array|null
      */
     public function getAttributes()
     {
@@ -228,14 +230,15 @@ class MultiselectColumn extends ActionColumn
     /**
      * Set attributes.
      *
-     * @param null|array $attributes
+     * @param array|null $attributes
      *
      * @return $this
+     *
      * @throws Exception
      */
     public function setAttributes($attributes)
     {
-        $value = 'sg-datatables-'.$this->datatableName.'-multiselect-checkbox';
+        $value = 'sg-datatables-' . $this->datatableName . '-multiselect-checkbox';
 
         if (is_array($attributes)) {
             if (array_key_exists('type', $attributes)) {
@@ -247,17 +250,17 @@ class MultiselectColumn extends ActionColumn
             }
 
             if (array_key_exists('name', $attributes)) {
-                $attributes['name'] = $value.' '.$attributes['name'];
+                $attributes['name'] = $value . ' ' . $attributes['name'];
             } else {
                 $attributes['name'] = $value;
             }
             if (array_key_exists('class', $attributes)) {
-                $attributes['class'] = $value.' '.$attributes['class'];
+                $attributes['class'] = $value . ' ' . $attributes['class'];
             } else {
                 $attributes['class'] = $value;
             }
         } else {
-            $attributes['name'] = $value;
+            $attributes['name']  = $value;
             $attributes['class'] = $value;
         }
 
@@ -317,7 +320,7 @@ class MultiselectColumn extends ActionColumn
     /**
      * Get renderActionsToId.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getRenderActionsToId()
     {
@@ -327,7 +330,7 @@ class MultiselectColumn extends ActionColumn
     /**
      * Set renderActionsToId.
      *
-     * @param null|string $renderActionsToId
+     * @param string|null $renderActionsToId
      *
      * @return $this
      */

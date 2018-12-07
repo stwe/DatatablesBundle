@@ -15,8 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class CombodateEditable
- *
- * @package Sg\DatatablesBundle\Datatable\Editable
  */
 class CombodateEditable extends AbstractEditable
 {
@@ -30,7 +28,7 @@ class CombodateEditable extends AbstractEditable
     /**
      * Format used for displaying date. If not specified equals to $format.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $viewFormat;
 
@@ -102,7 +100,7 @@ class CombodateEditable extends AbstractEditable
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'format' => 'YYYY-MM-DD',
             'view_format' => null,
             'min_year' => 1970,
@@ -110,10 +108,10 @@ class CombodateEditable extends AbstractEditable
             'minute_step' => 5,
             'second_step' => 1,
             'smart_days' => false,
-        ));
+        ]);
 
         $resolver->setAllowedTypes('format', 'string');
-        $resolver->setAllowedTypes('view_format', array('string', 'null'));
+        $resolver->setAllowedTypes('view_format', ['string', 'null']);
         $resolver->setAllowedTypes('min_year', 'int');
         $resolver->setAllowedTypes('max_year', 'int');
         $resolver->setAllowedTypes('minute_step', 'int');
@@ -154,7 +152,7 @@ class CombodateEditable extends AbstractEditable
     /**
      * Get viewFormat.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getViewFormat()
     {
@@ -164,7 +162,7 @@ class CombodateEditable extends AbstractEditable
     /**
      * Set viewFormat.
      *
-     * @param null|string $viewFormat
+     * @param string|null $viewFormat
      *
      * @return $this
      */

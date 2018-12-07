@@ -12,11 +12,10 @@
 namespace Sg\DatatablesBundle\Datatable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function is_array;
 
 /**
  * Class Ajax
- *
- * @package Sg\DatatablesBundle\Datatable
  */
 class Ajax
 {
@@ -33,7 +32,7 @@ class Ajax
      * URL set as the Ajax data source for the table.
      * Default: null
      *
-     * @var null|string
+     * @var string|null
      */
     protected $url;
 
@@ -49,7 +48,7 @@ class Ajax
      * Data to be sent.
      * Default: null
      *
-     * @var null|array
+     * @var array|null
      */
     protected $data;
 
@@ -58,7 +57,6 @@ class Ajax
      * Default: 0 (disable)
      *
      * @see https://datatables.net/examples/server_side/pipeline.html
-     *
      * @var int Number of pages to cache. Set to zero to disable feature.
      */
     protected $pipeline;
@@ -67,9 +65,6 @@ class Ajax
     // Ctor.
     //-------------------------------------------------
 
-    /**
-     * Ajax constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -88,19 +83,19 @@ class Ajax
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'url' => null,
             'type' => 'GET',
             'data' => null,
             'pipeline' => 0,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('url', array('null', 'string'));
+        $resolver->setAllowedTypes('url', ['null', 'string']);
         $resolver->setAllowedTypes('type', 'string');
-        $resolver->setAllowedTypes('data', array('null', 'array'));
+        $resolver->setAllowedTypes('data', ['null', 'array']);
         $resolver->setAllowedTypes('pipeline', 'int');
 
-        $resolver->setAllowedValues('type', array('GET', 'POST'));
+        $resolver->setAllowedValues('type', ['GET', 'POST']);
 
         return $this;
     }
@@ -112,7 +107,7 @@ class Ajax
     /**
      * Get url.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getUrl()
     {
@@ -122,7 +117,7 @@ class Ajax
     /**
      * Set url.
      *
-     * @param null|string $url
+     * @param string|null $url
      *
      * @return $this
      */
@@ -160,7 +155,7 @@ class Ajax
     /**
      * Get data.
      *
-     * @return null|array
+     * @return array|null
      */
     public function getData()
     {
@@ -174,7 +169,7 @@ class Ajax
     /**
      * Set data.
      *
-     * @param null|array $data
+     * @param array|null $data
      *
      * @return $this
      */

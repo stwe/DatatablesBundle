@@ -11,15 +11,15 @@
 
 namespace Sg\DatatablesBundle\Datatable\Extension;
 
-use Sg\DatatablesBundle\Datatable\OptionsTrait;
-
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Exception;
+use Sg\DatatablesBundle\Datatable\OptionsTrait;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use function array_key_exists;
+use function in_array;
+use function is_string;
 
 /**
  * Class RowGroup
- *
- * @package Sg\DatatablesBundle\Datatable\Extension
  */
 class RowGroup
 {
@@ -100,9 +100,6 @@ class RowGroup
     // Ctor.
     //-------------------------------------------------
 
-    /**
-     * RowGroup constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -130,18 +127,18 @@ class RowGroup
         $resolver->setDefined('end_class_name');
         $resolver->setDefined('start_class_name');
 
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'enable' => true,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('data_src', array('string'));
-        $resolver->setAllowedTypes('start_render', array('array'));
-        $resolver->setAllowedTypes('end_render', array('array'));
-        $resolver->setAllowedTypes('enable', array('bool'));
-        $resolver->setAllowedTypes('class_name', array('string'));
-        $resolver->setAllowedTypes('empty_data_group', array('string'));
-        $resolver->setAllowedTypes('end_class_name', array('string'));
-        $resolver->setAllowedTypes('start_class_name', array('string'));
+        $resolver->setAllowedTypes('data_src', ['string']);
+        $resolver->setAllowedTypes('start_render', ['array']);
+        $resolver->setAllowedTypes('end_render', ['array']);
+        $resolver->setAllowedTypes('enable', ['bool']);
+        $resolver->setAllowedTypes('class_name', ['string']);
+        $resolver->setAllowedTypes('empty_data_group', ['string']);
+        $resolver->setAllowedTypes('end_class_name', ['string']);
+        $resolver->setAllowedTypes('start_class_name', ['string']);
 
         return $this;
     }
@@ -166,13 +163,14 @@ class RowGroup
      * @param string $dataSrc
      *
      * @return $this
+     *
      * @throws Exception
      */
     public function setDataSrc($dataSrc)
     {
         if (is_string($dataSrc) && empty($dataSrc)) {
-            throw new \Exception(
-                "RowGroup::setDataSrc(): the column name is empty."
+            throw new Exception(
+                'RowGroup::setDataSrc(): the column name is empty.'
             );
         }
 
@@ -191,18 +189,19 @@ class RowGroup
 
     /**
      * @param string $startRender
+     *
      * @return RowGroup
      */
     public function setStartRender($startRender)
     {
-        if (false === array_key_exists('template', $startRender)) {
+        if (array_key_exists('template', $startRender) === false) {
             throw new Exception(
                 'RowGroup::setStartRender(): The "template" option is required.'
             );
         }
 
         foreach ($startRender as $key => $value) {
-            if (false === in_array($key, array('template', 'vars',))) {
+            if (in_array($key, ['template', 'vars']) === false) {
                 throw new Exception(
                     "RowGroup::setStartRender(): $key is not a valid option."
                 );
@@ -224,18 +223,19 @@ class RowGroup
 
     /**
      * @param string $endRender
+     *
      * @return RowGroup
      */
     public function setEndRender($endRender)
     {
-        if (false === array_key_exists('template', $startRender)) {
+        if (array_key_exists('template', $startRender) === false) {
             throw new Exception(
                 'RowGroup::setEndRender(): The "template" option is required.'
             );
         }
 
         foreach ($startRender as $key => $value) {
-            if (false === in_array($key, array('template', 'vars',))) {
+            if (in_array($key, ['template', 'vars']) === false) {
                 throw new Exception(
                     "RowGroup::setEndRender(): $key is not a valid option."
                 );
@@ -257,13 +257,14 @@ class RowGroup
 
     /**
      * @param string $className
+     *
      * @return RowGroup
      */
     public function setClassName($className)
     {
         if (is_string($className) && empty($className)) {
-            throw new \Exception(
-                "RowGroup::setClassName(): the class name is empty."
+            throw new Exception(
+                'RowGroup::setClassName(): the class name is empty.'
             );
         }
 
@@ -282,13 +283,14 @@ class RowGroup
 
     /**
      * @param string $emptyDataGroup
+     *
      * @return RowGroup
      */
     public function setEmptyDataGroup($emptyDataGroup)
     {
         if (is_string($emptyDataGroup) && empty($emptyDataGroup)) {
-            throw new \Exception(
-                "RowGroup::setEmptyDataGroup(): the empty data group text is empty."
+            throw new Exception(
+                'RowGroup::setEmptyDataGroup(): the empty data group text is empty.'
             );
         }
 
@@ -307,6 +309,7 @@ class RowGroup
 
     /**
      * @param bool $enable
+     *
      * @return RowGroup
      */
     public function setEnable($enable)
@@ -326,13 +329,14 @@ class RowGroup
 
     /**
      * @param string $endClassName
+     *
      * @return RowGroup
      */
     public function setEndClassName($endClassName)
     {
         if (is_string($endClassName) && empty($endClassName)) {
-            throw new \Exception(
-                "RowGroup::setEndClassName(): the end class name is empty."
+            throw new Exception(
+                'RowGroup::setEndClassName(): the end class name is empty.'
             );
         }
 
@@ -351,13 +355,14 @@ class RowGroup
 
     /**
      * @param string $startClassName
+     *
      * @return RowGroup
      */
     public function setStartClassName($startClassName)
     {
         if (is_string($startClassName) && empty($startClassName)) {
-            throw new \Exception(
-                "RowGroup::setStartClassName(): the start class name is empty."
+            throw new Exception(
+                'RowGroup::setStartClassName(): the start class name is empty.'
             );
         }
 

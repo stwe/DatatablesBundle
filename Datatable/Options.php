@@ -12,11 +12,10 @@
 namespace Sg\DatatablesBundle\Datatable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function is_array;
 
 /**
  * Class Options
- *
- * @package Sg\DatatablesBundle\Datatable
  */
 class Options
 {
@@ -37,7 +36,7 @@ class Options
      * DataTables default: null
      * Default: null
      *
-     * @var null|int|array
+     * @var int|array|null
      */
     protected $deferLoading;
 
@@ -46,7 +45,7 @@ class Options
      * DataTables default: 0
      * Default: null
      *
-     * @var null|int
+     * @var int|null
      */
     protected $displayStart;
 
@@ -55,7 +54,7 @@ class Options
      * DataTables default: lfrtip
      * Default: null
      *
-     * @var null|string
+     * @var string|null
      */
     protected $dom;
 
@@ -64,7 +63,7 @@ class Options
      * DataTables default: [10, 25, 50, 100]
      * Default: null
      *
-     * @var null|array
+     * @var array|null
      */
     protected $lengthMenu;
 
@@ -73,7 +72,7 @@ class Options
      * DataTables default: [[0, 'asc']]
      * Default: null
      *
-     * @var null|array
+     * @var array|null
      */
     protected $order;
 
@@ -82,7 +81,7 @@ class Options
      * DataTables default: false
      * Default: null
      *
-     * @var null|bool
+     * @var bool|null
      */
     protected $orderCellsTop;
 
@@ -91,7 +90,7 @@ class Options
      * DataTables default: true
      * Default: null
      *
-     * @var null|bool
+     * @var bool|null
      */
     protected $orderClasses;
 
@@ -99,7 +98,7 @@ class Options
      * Ordering to always be applied to the table.
      * Default: null
      *
-     * @var null|array
+     * @var array|null
      */
     protected $orderFixed;
 
@@ -108,7 +107,7 @@ class Options
      * DataTables default: true
      * Default: null
      *
-     * @var null|bool
+     * @var bool|null
      */
     protected $orderMulti;
 
@@ -117,7 +116,7 @@ class Options
      * DataTables default: 10
      * Default: null
      *
-     * @var null|int
+     * @var int|null
      */
     protected $pageLength;
 
@@ -133,7 +132,7 @@ class Options
      * DataTables default: simple_numbers
      * Default: null
      *
-     * @var null|string
+     * @var string|null
      */
     protected $pagingType;
 
@@ -141,7 +140,7 @@ class Options
      * Display component renderer types.
      * Default: null
      *
-     * @var null|string
+     * @var string|null
      */
     protected $renderer;
 
@@ -150,7 +149,7 @@ class Options
      * DataTables default: false
      * Default: null
      *
-     * @var null|bool
+     * @var bool|null
      */
     protected $retrieve;
 
@@ -159,7 +158,7 @@ class Options
      * DataTables default: DT_RowId
      * Default: null
      *
-     * @var null|string
+     * @var string|null
      */
     protected $rowId;
 
@@ -168,7 +167,7 @@ class Options
      * DataTables default: false
      * Default: null
      *
-     * @var null|bool
+     * @var bool|null
      */
     protected $scrollCollapse;
 
@@ -177,7 +176,7 @@ class Options
      * DataTables default: null (400mS)
      * Default: null
      *
-     * @var null|int
+     * @var int|null
      */
     protected $searchDelay;
 
@@ -186,7 +185,7 @@ class Options
      * DataTables default: 7200
      * Default: null
      *
-     * @var null|int
+     * @var int|null
      */
     protected $stateDuration;
 
@@ -194,7 +193,7 @@ class Options
      * Set the zebra stripe class names for the rows in the table.
      * Default: null
      *
-     * @var null|array
+     * @var array|null
      */
     protected $stripeClasses;
 
@@ -246,9 +245,6 @@ class Options
     // Ctor.
     //-------------------------------------------------
 
-    /**
-     * Options constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -267,7 +263,7 @@ class Options
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'defer_loading' => null,
             'display_start' => null,
             'dom' => null,
@@ -291,34 +287,34 @@ class Options
             'individual_filtering_position' => 'head',
             'search_in_non_visible_columns' => false,
             'global_search_type' => 'like',
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('defer_loading', array('null', 'int', 'array'));
-        $resolver->setAllowedTypes('display_start', array('null', 'int'));
-        $resolver->setAllowedTypes('dom', array('null', 'string'));
-        $resolver->setAllowedTypes('length_menu', array('null', 'array'));
-        $resolver->setAllowedTypes('order', array('null', 'array'));
-        $resolver->setAllowedTypes('order_cells_top', array('null', 'bool'));
-        $resolver->setAllowedTypes('order_classes', array('null', 'bool'));
-        $resolver->setAllowedTypes('order_fixed', array('null', 'array'));
-        $resolver->setAllowedTypes('order_multi', array('null', 'bool'));
-        $resolver->setAllowedTypes('page_length', array('null', 'int'));
-        $resolver->setAllowedTypes('paging_type', array('null', 'string'));
-        $resolver->setAllowedTypes('renderer', array('null', 'string'));
-        $resolver->setAllowedTypes('retrieve', array('null', 'bool'));
-        $resolver->setAllowedTypes('row_id', array('null', 'string'));
-        $resolver->setAllowedTypes('scroll_collapse', array('null', 'bool'));
-        $resolver->setAllowedTypes('search_delay', array('null', 'int'));
-        $resolver->setAllowedTypes('state_duration', array('null', 'int'));
-        $resolver->setAllowedTypes('stripe_classes', array('null', 'array'));
+        $resolver->setAllowedTypes('defer_loading', ['null', 'int', 'array']);
+        $resolver->setAllowedTypes('display_start', ['null', 'int']);
+        $resolver->setAllowedTypes('dom', ['null', 'string']);
+        $resolver->setAllowedTypes('length_menu', ['null', 'array']);
+        $resolver->setAllowedTypes('order', ['null', 'array']);
+        $resolver->setAllowedTypes('order_cells_top', ['null', 'bool']);
+        $resolver->setAllowedTypes('order_classes', ['null', 'bool']);
+        $resolver->setAllowedTypes('order_fixed', ['null', 'array']);
+        $resolver->setAllowedTypes('order_multi', ['null', 'bool']);
+        $resolver->setAllowedTypes('page_length', ['null', 'int']);
+        $resolver->setAllowedTypes('paging_type', ['null', 'string']);
+        $resolver->setAllowedTypes('renderer', ['null', 'string']);
+        $resolver->setAllowedTypes('retrieve', ['null', 'bool']);
+        $resolver->setAllowedTypes('row_id', ['null', 'string']);
+        $resolver->setAllowedTypes('scroll_collapse', ['null', 'bool']);
+        $resolver->setAllowedTypes('search_delay', ['null', 'int']);
+        $resolver->setAllowedTypes('state_duration', ['null', 'int']);
+        $resolver->setAllowedTypes('stripe_classes', ['null', 'array']);
         $resolver->setAllowedTypes('classes', 'string');
         $resolver->setAllowedTypes('individual_filtering', 'bool');
         $resolver->setAllowedTypes('individual_filtering_position', 'string');
         $resolver->setAllowedTypes('search_in_non_visible_columns', 'bool');
         $resolver->setAllowedTypes('global_search_type', 'string');
 
-        $resolver->setAllowedValues('individual_filtering_position', array('head', 'foot', 'both'));
-        $resolver->setAllowedValues('global_search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
+        $resolver->setAllowedValues('individual_filtering_position', ['head', 'foot', 'both']);
+        $resolver->setAllowedValues('global_search_type', ['like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull']);
 
         return $this;
     }
@@ -358,7 +354,7 @@ class Options
     /**
      * Get displayStart.
      *
-     * @return null|int
+     * @return int|null
      */
     public function getDisplayStart()
     {
@@ -368,7 +364,7 @@ class Options
     /**
      * Set displayStart.
      *
-     * @param null|int $displayStart
+     * @param int|null $displayStart
      *
      * @return $this
      */
@@ -382,7 +378,7 @@ class Options
     /**
      * Get dom.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getDom()
     {
@@ -392,7 +388,7 @@ class Options
     /**
      * Set dom.
      *
-     * @param null|string $dom
+     * @param string|null $dom
      *
      * @return $this
      */
@@ -406,7 +402,7 @@ class Options
     /**
      * Get lengthMenu.
      *
-     * @return null|array
+     * @return array|null
      */
     public function getLengthMenu()
     {
@@ -420,7 +416,7 @@ class Options
     /**
      * Set lengthMenu.
      *
-     * @param null|array $lengthMenu
+     * @param array|null $lengthMenu
      *
      * @return $this
      */
@@ -434,7 +430,7 @@ class Options
     /**
      * Get order.
      *
-     * @return null|array
+     * @return array|null
      */
     public function getOrder()
     {
@@ -448,7 +444,7 @@ class Options
     /**
      * Set order.
      *
-     * @param null|array $order
+     * @param array|null $order
      *
      * @return $this
      */
@@ -462,7 +458,7 @@ class Options
     /**
      * Get orderCellsTop.
      *
-     * @return null|bool
+     * @return bool|null
      */
     public function isOrderCellsTop()
     {
@@ -472,7 +468,7 @@ class Options
     /**
      * Set orderCellsTop.
      *
-     * @param null|bool $orderCellsTop
+     * @param bool|null $orderCellsTop
      *
      * @return $this
      */
@@ -486,7 +482,7 @@ class Options
     /**
      * Get orderClasses.
      *
-     * @return null|bool
+     * @return bool|null
      */
     public function isOrderClasses()
     {
@@ -496,7 +492,7 @@ class Options
     /**
      * Set orderClasses.
      *
-     * @param null|bool $orderClasses
+     * @param bool|null $orderClasses
      *
      * @return $this
      */
@@ -510,7 +506,7 @@ class Options
     /**
      * Get orderFixed.
      *
-     * @return null|array
+     * @return array|null
      */
     public function getOrderFixed()
     {
@@ -524,7 +520,7 @@ class Options
     /**
      * Set orderFixed.
      *
-     * @param null|array $orderFixed
+     * @param array|null $orderFixed
      *
      * @return $this
      */
@@ -538,7 +534,7 @@ class Options
     /**
      * Get orderMulti.
      *
-     * @return null|bool
+     * @return bool|null
      */
     public function isOrderMulti()
     {
@@ -548,7 +544,7 @@ class Options
     /**
      * Set orderMulti.
      *
-     * @param null|bool $orderMulti
+     * @param bool|null $orderMulti
      *
      * @return $this
      */
@@ -562,7 +558,7 @@ class Options
     /**
      * Get pageLength.
      *
-     * @return null|int
+     * @return int|null
      */
     public function getPageLength()
     {
@@ -572,7 +568,7 @@ class Options
     /**
      * Set pageLength.
      *
-     * @param null|int $pageLength
+     * @param int|null $pageLength
      *
      * @return $this
      */
@@ -586,7 +582,7 @@ class Options
     /**
      * Get pagingType.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getPagingType()
     {
@@ -596,7 +592,7 @@ class Options
     /**
      * Set pagingType.
      *
-     * @param null|string $pagingType
+     * @param string|null $pagingType
      *
      * @return $this
      */
@@ -610,7 +606,7 @@ class Options
     /**
      * Get renderer.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getRenderer()
     {
@@ -620,7 +616,7 @@ class Options
     /**
      * Set renderer.
      *
-     * @param null|string $renderer
+     * @param string|null $renderer
      *
      * @return $this
      */
@@ -634,7 +630,7 @@ class Options
     /**
      * Get retrieve.
      *
-     * @return null|bool
+     * @return bool|null
      */
     public function isRetrieve()
     {
@@ -644,7 +640,7 @@ class Options
     /**
      * Set retrieve.
      *
-     * @param null|bool $retrieve
+     * @param bool|null $retrieve
      *
      * @return $this
      */
@@ -658,7 +654,7 @@ class Options
     /**
      * Get rowId.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getRowId()
     {
@@ -668,7 +664,7 @@ class Options
     /**
      * Set rowId.
      *
-     * @param null|string $rowId
+     * @param string|null $rowId
      *
      * @return $this
      */
@@ -682,7 +678,7 @@ class Options
     /**
      * Get scrollCollapse.
      *
-     * @return null|bool
+     * @return bool|null
      */
     public function isScrollCollapse()
     {
@@ -692,7 +688,7 @@ class Options
     /**
      * Set scrollCollapse.
      *
-     * @param null|bool $scrollCollapse
+     * @param bool|null $scrollCollapse
      *
      * @return $this
      */
@@ -730,7 +726,7 @@ class Options
     /**
      * Get stateDuration.
      *
-     * @return null|int
+     * @return int|null
      */
     public function getStateDuration()
     {
@@ -740,7 +736,7 @@ class Options
     /**
      * Set stateDuration.
      *
-     * @param null|int $stateDuration
+     * @param int|null $stateDuration
      *
      * @return $this
      */
@@ -754,7 +750,7 @@ class Options
     /**
      * Get stripeClasses.
      *
-     * @return null|array
+     * @return array|null
      */
     public function getStripeClasses()
     {
@@ -768,7 +764,7 @@ class Options
     /**
      * Set stripeClasses.
      *
-     * @param null|array $stripeClasses
+     * @param array|null $stripeClasses
      *
      * @return $this
      */
@@ -806,7 +802,7 @@ class Options
     /**
      * Get individualFiltering.
      *
-     * @return boolean
+     * @return bool
      */
     public function isIndividualFiltering()
     {
@@ -816,7 +812,7 @@ class Options
     /**
      * Set individualFiltering.
      *
-     * @param boolean $individualFiltering
+     * @param bool $individualFiltering
      *
      * @return $this
      */
@@ -854,7 +850,7 @@ class Options
     /**
      * Get searchInNonVisibleColumns.
      *
-     * @return boolean
+     * @return bool
      */
     public function isSearchInNonVisibleColumns()
     {
@@ -864,7 +860,7 @@ class Options
     /**
      * Set searchInNonVisibleColumns.
      *
-     * @param boolean $searchInNonVisibleColumns
+     * @param bool $searchInNonVisibleColumns
      *
      * @return $this
      */

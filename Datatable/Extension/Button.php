@@ -12,13 +12,11 @@
 namespace Sg\DatatablesBundle\Datatable\Extension;
 
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function is_array;
 
 /**
  * Class Button
- *
- * @package Sg\DatatablesBundle\Datatable\Extension
  */
 class Button
 {
@@ -130,9 +128,6 @@ class Button
     // Ctor.
     //-------------------------------------------------
 
-    /**
-     * Button constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -151,7 +146,7 @@ class Button
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'action' => null,
             'available' => null,
             'class_name' => null,
@@ -165,21 +160,21 @@ class Button
             'text' => null,
             'title_attr' => null,
             'button_options' => null,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('action', array('array', 'null'));
-        $resolver->setAllowedTypes('available', array('array', 'null'));
-        $resolver->setAllowedTypes('class_name', array('string', 'null'));
-        $resolver->setAllowedTypes('destroy', array('array', 'null'));
-        $resolver->setAllowedTypes('enabled', array('bool', 'null'));
-        $resolver->setAllowedTypes('extend', array('string', 'null'));
-        $resolver->setAllowedTypes('init', array('array', 'null'));
-        $resolver->setAllowedTypes('key', array('string', 'null'));
-        $resolver->setAllowedTypes('name', array('string', 'null'));
-        $resolver->setAllowedTypes('namespace', array('string', 'null'));
-        $resolver->setAllowedTypes('text', array('string', 'null'));
-        $resolver->setAllowedTypes('title_attr', array('string', 'null'));
-        $resolver->setAllowedTypes('button_options', array('array', 'null'));
+        $resolver->setAllowedTypes('action', ['array', 'null']);
+        $resolver->setAllowedTypes('available', ['array', 'null']);
+        $resolver->setAllowedTypes('class_name', ['string', 'null']);
+        $resolver->setAllowedTypes('destroy', ['array', 'null']);
+        $resolver->setAllowedTypes('enabled', ['bool', 'null']);
+        $resolver->setAllowedTypes('extend', ['string', 'null']);
+        $resolver->setAllowedTypes('init', ['array', 'null']);
+        $resolver->setAllowedTypes('key', ['string', 'null']);
+        $resolver->setAllowedTypes('name', ['string', 'null']);
+        $resolver->setAllowedTypes('namespace', ['string', 'null']);
+        $resolver->setAllowedTypes('text', ['string', 'null']);
+        $resolver->setAllowedTypes('title_attr', ['string', 'null']);
+        $resolver->setAllowedTypes('button_options', ['array', 'null']);
 
         return $this;
     }
@@ -247,7 +242,7 @@ class Button
     /**
      * Get className.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getClassName()
     {
@@ -257,7 +252,7 @@ class Button
     /**
      * Set className.
      *
-     * @param null|string $className
+     * @param string|null $className
      *
      * @return $this
      */
@@ -323,7 +318,7 @@ class Button
     /**
      * Get extend.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getExtend()
     {
@@ -333,7 +328,7 @@ class Button
     /**
      * Set extend.
      *
-     * @param null|string $extend
+     * @param string|null $extend
      *
      * @return $this
      */
@@ -375,7 +370,7 @@ class Button
     /**
      * Get key.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getKey()
     {
@@ -385,7 +380,7 @@ class Button
     /**
      * Set key.
      *
-     * @param null|string $key
+     * @param string|null $key
      *
      * @return $this
      */
@@ -399,7 +394,7 @@ class Button
     /**
      * Get name.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getName()
     {
@@ -409,7 +404,7 @@ class Button
     /**
      * Set name.
      *
-     * @param null|string $name
+     * @param string|null $name
      *
      * @return $this
      */
@@ -423,7 +418,7 @@ class Button
     /**
      * Get namespace.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getNamespace()
     {
@@ -433,7 +428,7 @@ class Button
     /**
      * Set namespace.
      *
-     * @param null|string $namespace
+     * @param string|null $namespace
      *
      * @return $this
      */
@@ -447,7 +442,7 @@ class Button
     /**
      * Get text.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getText()
     {
@@ -457,7 +452,7 @@ class Button
     /**
      * Set text.
      *
-     * @param null|string $text
+     * @param string|null $text
      *
      * @return $this
      */
@@ -471,7 +466,7 @@ class Button
     /**
      * Get titleAttr.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getTitleAttr()
     {
@@ -481,7 +476,7 @@ class Button
     /**
      * Set titleAttr.
      *
-     * @param null|string $titleAttr
+     * @param string|null $titleAttr
      *
      * @return $this
      */

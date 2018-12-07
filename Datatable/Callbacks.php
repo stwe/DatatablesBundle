@@ -12,11 +12,10 @@
 namespace Sg\DatatablesBundle\Datatable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function is_array;
 
 /**
  * Class Callbacks
- *
- * @package Sg\DatatablesBundle\Datatable
  */
 class Callbacks
 {
@@ -32,98 +31,98 @@ class Callbacks
     /**
      * Callback for whenever a TR element is created for the table's body.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $createdRow;
 
     /**
      * Function that is called every time DataTables performs a draw.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $drawCallback;
 
     /**
      * Footer display callback function.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $footerCallback;
 
     /**
      * Number formatting callback function.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $formatNumber;
 
     /**
      * Header display callback function.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $headerCallback;
 
     /**
      * Table summary information display callback.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $infoCallback;
 
     /**
      * Initialisation complete callback.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $initComplete;
 
     /**
      * Pre-draw callback.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $preDrawCallback;
 
     /**
      * Row draw callback.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $rowCallback;
 
     /**
      * Callback that defines where and how a saved state should be loaded.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $stateLoadCallback;
 
     /**
      * State loaded callback.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $stateLoaded;
 
     /**
      * State loaded - data manipulation callback.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $stateLoadParams;
 
     /**
      * Callback that defines how the table state is stored and where.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $stateSaveCallback;
 
     /**
      * State save - data manipulation callback.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $stateSaveParams;
 
@@ -131,9 +130,6 @@ class Callbacks
     // Ctor.
     //-------------------------------------------------
 
-    /**
-     * Callbacks constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -152,7 +148,7 @@ class Callbacks
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'created_row' => null,
             'draw_callback' => null,
             'footer_callback' => null,
@@ -167,22 +163,22 @@ class Callbacks
             'state_load_params' => null,
             'state_save_callback' => null,
             'state_save_params' => null,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('created_row', array('null', 'array'));
-        $resolver->setAllowedTypes('draw_callback', array('null', 'array'));
-        $resolver->setAllowedTypes('footer_callback', array('null', 'array'));
-        $resolver->setAllowedTypes('format_number', array('null', 'array'));
-        $resolver->setAllowedTypes('header_callback', array('null', 'array'));
-        $resolver->setAllowedTypes('info_callback', array('null', 'array'));
-        $resolver->setAllowedTypes('init_complete', array('null', 'array'));
-        $resolver->setAllowedTypes('pre_draw_callback', array('null', 'array'));
-        $resolver->setAllowedTypes('row_callback', array('null', 'array'));
-        $resolver->setAllowedTypes('state_load_callback', array('null', 'array'));
-        $resolver->setAllowedTypes('state_loaded', array('null', 'array'));
-        $resolver->setAllowedTypes('state_load_params', array('null', 'array'));
-        $resolver->setAllowedTypes('state_save_callback', array('null', 'array'));
-        $resolver->setAllowedTypes('state_save_params', array('null', 'array'));
+        $resolver->setAllowedTypes('created_row', ['null', 'array']);
+        $resolver->setAllowedTypes('draw_callback', ['null', 'array']);
+        $resolver->setAllowedTypes('footer_callback', ['null', 'array']);
+        $resolver->setAllowedTypes('format_number', ['null', 'array']);
+        $resolver->setAllowedTypes('header_callback', ['null', 'array']);
+        $resolver->setAllowedTypes('info_callback', ['null', 'array']);
+        $resolver->setAllowedTypes('init_complete', ['null', 'array']);
+        $resolver->setAllowedTypes('pre_draw_callback', ['null', 'array']);
+        $resolver->setAllowedTypes('row_callback', ['null', 'array']);
+        $resolver->setAllowedTypes('state_load_callback', ['null', 'array']);
+        $resolver->setAllowedTypes('state_loaded', ['null', 'array']);
+        $resolver->setAllowedTypes('state_load_params', ['null', 'array']);
+        $resolver->setAllowedTypes('state_save_callback', ['null', 'array']);
+        $resolver->setAllowedTypes('state_save_params', ['null', 'array']);
 
         return $this;
     }

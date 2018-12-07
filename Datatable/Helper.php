@@ -11,10 +11,16 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
+use function is_int;
+use function microtime;
+use function mt_rand;
+use function sha1;
+use function str_replace;
+use function strpos;
+use function strstr;
+
 /**
  * Class Helper
- *
- * @package Sg\DatatablesBundle\Datatable
  */
 class Helper
 {
@@ -27,36 +33,36 @@ class Helper
      */
     public static function generateUniqueID($prefix = '')
     {
-        $id = sha1(microtime(true).mt_rand(10000, 90000));
+        $id = sha1(microtime(true) . mt_rand(10000, 90000));
 
-        return $prefix ? $prefix.'-'.$id : $id;
+        return $prefix ? $prefix . '-' . $id : $id;
     }
 
     /**
      * Returns a array notated property path for the Accessor.
      *
      * @param string      $data
-     * @param null|string $value
+     * @param string|null $value
      *
      * @return string
      */
     public static function getDataPropertyPath($data, &$value = null)
     {
         // handle nested array case
-        if (true === is_int(strpos($data, '['))) {
+        if (is_int(strpos($data, '[')) === true) {
             $before = strstr($data, '[', true);
-            $value = strstr($data, ']', false);
+            $value  = strstr($data, ']', false);
 
             // remove needle
             $value = str_replace('].', '', $value);
             // format value
-            $value = '['.str_replace('.', '][', $value).']';
+            $value = '[' . str_replace('.', '][', $value) . ']';
 
             $data = $before;
         }
 
         // e.g. 'createdBy.allowed' => [createdBy][allowed]
-        return '['.str_replace('.', '][', $data).']';
+        return '[' . str_replace('.', '][', $data) . ']';
     }
 
     /**
@@ -71,8 +77,8 @@ class Helper
     public static function getPropertyPathObjectNotation($path, $key, $value)
     {
         $objectValue = str_replace('][', '.', $value);
-        $objectValue = str_replace(array('[', ']'), '', $objectValue);
+        $objectValue = str_replace(['[', ']'], '', $objectValue);
 
-        return str_replace(array('[', ']'), '', $path).'['.$key.'].'.$objectValue;
+        return str_replace(['[', ']'], '', $path) . '[' . $key . '].' . $objectValue;
     }
 }

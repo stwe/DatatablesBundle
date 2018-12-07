@@ -11,15 +11,17 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
+use Exception;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Exception;
+use function array_key_exists;
+use function in_array;
+use function is_array;
+use function json_encode;
 
 /**
  * Class OptionsTrait
- *
- * @package Sg\DatatablesBundle\Datatable
  */
 trait OptionsTrait
 {
@@ -50,14 +52,14 @@ trait OptionsTrait
      */
     public function initOptions($resolve = false)
     {
-        $this->options = array();
+        $this->options = [];
 
         /** @noinspection PhpUndefinedMethodInspection */
         $this->accessor = PropertyAccess::createPropertyAccessorBuilder()
             ->enableMagicCall()
             ->getPropertyAccessor();
 
-        if (true === $resolve) {
+        if ($resolve === true) {
             $this->set($this->options);
         }
 
@@ -70,6 +72,7 @@ trait OptionsTrait
      * @param array $options
      *
      * @return $this
+     *
      * @throws Exception
      */
     public function set(array $options)
@@ -126,18 +129,19 @@ trait OptionsTrait
      * @param array $other
      *
      * @return bool
+     *
      * @throws Exception
      */
-    protected function validateArrayForTemplateAndOther(array $array, array $other = array('template', 'vars'))
+    protected function validateArrayForTemplateAndOther(array $array, array $other = ['template', 'vars'])
     {
-        if (false === array_key_exists('template', $array)) {
+        if (array_key_exists('template', $array) === false) {
             throw new Exception(
                 'OptionsTrait::validateArrayForTemplateAndOther(): The "template" option is required.'
             );
         }
 
         foreach ($array as $key => $value) {
-            if (false === in_array($key, $other)) {
+            if (in_array($key, $other) === false) {
                 throw new Exception(
                     "OptionsTrait::validateArrayForTemplateAndOther(): $key is not an valid option."
                 );

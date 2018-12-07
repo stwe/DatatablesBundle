@@ -11,17 +11,16 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
+use Exception;
 use Sg\DatatablesBundle\Datatable\Extension\Buttons;
 use Sg\DatatablesBundle\Datatable\Extension\Responsive;
-use Sg\DatatablesBundle\Datatable\Extension\Select;
 use Sg\DatatablesBundle\Datatable\Extension\RowGroup;
-
+use Sg\DatatablesBundle\Datatable\Extension\Select;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function is_array;
 
 /**
  * Class Extensions
- *
- * @package Sg\DatatablesBundle\Datatable
  */
 class Extensions
 {
@@ -38,7 +37,7 @@ class Extensions
      * The Buttons extension.
      * Default: null
      *
-     * @var null|array|bool|Buttons
+     * @var array|bool|Buttons|null
      */
     protected $buttons;
 
@@ -47,7 +46,7 @@ class Extensions
      * Automatically optimise the layout for different screen sizes.
      * Default: null
      *
-     * @var null|array|bool|Responsive
+     * @var array|bool|Responsive|null
      */
     protected $responsive;
 
@@ -56,7 +55,7 @@ class Extensions
      * Select adds item selection capabilities to a DataTable.
      * Default: null
      *
-     * @var null|array|bool|Select
+     * @var array|bool|Select|null
      */
     protected $select;
 
@@ -65,7 +64,7 @@ class Extensions
      * Automatically group rows.
      * Default: null
      *
-     * @var null|array|bool|RowGroup
+     * @var array|bool|RowGroup|null
      */
     protected $rowGroup;
 
@@ -73,9 +72,6 @@ class Extensions
     // Ctor.
     //-------------------------------------------------
 
-    /**
-     * Extensions constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -94,17 +90,17 @@ class Extensions
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'buttons' => null,
             'responsive' => null,
             'select' => null,
             'row_group' => null,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('buttons', array('null', 'array', 'bool'));
-        $resolver->setAllowedTypes('responsive', array('null', 'array', 'bool'));
-        $resolver->setAllowedTypes('select', array('null', 'array', 'bool'));
-        $resolver->setAllowedTypes('row_group', array('null', 'array', 'bool'));
+        $resolver->setAllowedTypes('buttons', ['null', 'array', 'bool']);
+        $resolver->setAllowedTypes('responsive', ['null', 'array', 'bool']);
+        $resolver->setAllowedTypes('select', ['null', 'array', 'bool']);
+        $resolver->setAllowedTypes('row_group', ['null', 'array', 'bool']);
 
         return $this;
     }
@@ -116,7 +112,7 @@ class Extensions
     /**
      * Get buttons.
      *
-     * @return null|array|bool|Buttons
+     * @return array|bool|Buttons|null
      */
     public function getButtons()
     {
@@ -126,14 +122,14 @@ class Extensions
     /**
      * Set buttons.
      *
-     * @param null|array|bool $buttons
+     * @param array|bool|null $buttons
      *
      * @return $this
      */
     public function setButtons($buttons)
     {
         if (is_array($buttons)) {
-            $newButton = new Buttons();
+            $newButton     = new Buttons();
             $this->buttons = $newButton->set($buttons);
         } else {
             $this->buttons = $buttons;
@@ -145,7 +141,7 @@ class Extensions
     /**
      * Get responsive.
      *
-     * @return null|array|bool|Responsive
+     * @return array|bool|Responsive|null
      */
     public function getResponsive()
     {
@@ -155,14 +151,14 @@ class Extensions
     /**
      * Set responsive.
      *
-     * @param null|array|bool $responsive
+     * @param array|bool|null $responsive
      *
      * @return $this
      */
     public function setResponsive($responsive)
     {
         if (is_array($responsive)) {
-            $newResponsive = new Responsive();
+            $newResponsive    = new Responsive();
             $this->responsive = $newResponsive->set($responsive);
         } else {
             $this->responsive = $responsive;
@@ -174,7 +170,7 @@ class Extensions
     /**
      * Get select.
      *
-     * @return null|array|bool|Select
+     * @return array|bool|Select|null
      */
     public function getSelect()
     {
@@ -184,14 +180,14 @@ class Extensions
     /**
      * Set select.
      *
-     * @param null|array|bool $select
+     * @param array|bool|null $select
      *
      * @return $this
      */
     public function setSelect($select)
     {
         if (is_array($select)) {
-            $newSelect = new Select();
+            $newSelect    = new Select();
             $this->select = $newSelect->set($select);
         } else {
             $this->select = $select;
@@ -203,7 +199,7 @@ class Extensions
     /**
      * Get rowGroup.
      *
-     * @return null|array|bool|RowGroup
+     * @return array|bool|RowGroup|null
      */
     public function getRowGroup()
     {
@@ -213,14 +209,16 @@ class Extensions
     /**
      * Set rowGroup.
      *
-     * @param null|array|bool $rowGroup
+     * @param array|bool|null $rowGroup
+     *
      * @return $this
-     * @throws \Exception
+     *
+     * @throws Exception
      */
     public function setRowGroup($rowGroup)
     {
         if (is_array($rowGroup)) {
-            $newRowGroup = new RowGroup();
+            $newRowGroup    = new RowGroup();
             $this->rowGroup = $newRowGroup->set($rowGroup);
         } else {
             $this->rowGroup = $rowGroup;

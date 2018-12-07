@@ -12,11 +12,10 @@
 namespace Sg\DatatablesBundle\Datatable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function is_array;
 
 /**
  * Class Events
- *
- * @package Sg\DatatablesBundle\Datatable
  */
 class Events
 {
@@ -35,105 +34,105 @@ class Events
     /**
      * Fired when the column widths are recalculated.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $columnSizing;
 
     /**
      * Fired when the visibility of a column changes.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $columnVisibility;
 
     /**
      * Fired when a table is destroyed.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $destroy;
 
     /**
      * An error has occurred during DataTables processing of data.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $error;
 
     /**
      * Fired when the page length is changed.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $length;
 
     /**
      * Fired when the data contained in the table is ordered.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $order;
 
     /**
      * Fired when the table's paging is updated.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $page;
 
     /**
      * Triggered immediately before data load.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $preInit;
 
     /**
      * Fired before an Ajax request is made.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $preXhr;
 
     /**
      * Fired when DataTables is processing data.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $processing;
 
     /**
      * Fired when the table is filtered.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $search;
 
     /**
      * Fired once state has been loaded and applied.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $stateLoaded;
 
     /**
      * Fired when loading state from storage.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $stateLoadParams;
 
     /**
      * Fired when saving table state information.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $stateSaveParams;
 
     /**
      * Fired when an Ajax request is completed.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $xhr;
 
@@ -141,9 +140,6 @@ class Events
     // Ctor.
     //-------------------------------------------------
 
-    /**
-     * Callbacks constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -162,7 +158,7 @@ class Events
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'column_sizing' => null,
             'column_visibility' => null,
             'destroy' => null,
@@ -178,23 +174,23 @@ class Events
             'state_load_params' => null,
             'state_save_params' => null,
             'xhr' => null,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('column_sizing', array('null', 'array'));
-        $resolver->setAllowedTypes('column_visibility', array('null', 'array'));
-        $resolver->setAllowedTypes('destroy', array('null', 'array'));
-        $resolver->setAllowedTypes('error', array('null', 'array'));
-        $resolver->setAllowedTypes('length', array('null', 'array'));
-        $resolver->setAllowedTypes('order', array('null', 'array'));
-        $resolver->setAllowedTypes('page', array('null', 'array'));
-        $resolver->setAllowedTypes('pre_init', array('null', 'array'));
-        $resolver->setAllowedTypes('pre_xhr', array('null', 'array'));
-        $resolver->setAllowedTypes('processing', array('null', 'array'));
-        $resolver->setAllowedTypes('search', array('null', 'array'));
-        $resolver->setAllowedTypes('state_loaded', array('null', 'array'));
-        $resolver->setAllowedTypes('state_load_params', array('null', 'array'));
-        $resolver->setAllowedTypes('state_save_params', array('null', 'array'));
-        $resolver->setAllowedTypes('xhr', array('null', 'array'));
+        $resolver->setAllowedTypes('column_sizing', ['null', 'array']);
+        $resolver->setAllowedTypes('column_visibility', ['null', 'array']);
+        $resolver->setAllowedTypes('destroy', ['null', 'array']);
+        $resolver->setAllowedTypes('error', ['null', 'array']);
+        $resolver->setAllowedTypes('length', ['null', 'array']);
+        $resolver->setAllowedTypes('order', ['null', 'array']);
+        $resolver->setAllowedTypes('page', ['null', 'array']);
+        $resolver->setAllowedTypes('pre_init', ['null', 'array']);
+        $resolver->setAllowedTypes('pre_xhr', ['null', 'array']);
+        $resolver->setAllowedTypes('processing', ['null', 'array']);
+        $resolver->setAllowedTypes('search', ['null', 'array']);
+        $resolver->setAllowedTypes('state_loaded', ['null', 'array']);
+        $resolver->setAllowedTypes('state_load_params', ['null', 'array']);
+        $resolver->setAllowedTypes('state_save_params', ['null', 'array']);
+        $resolver->setAllowedTypes('xhr', ['null', 'array']);
 
         return $this;
     }

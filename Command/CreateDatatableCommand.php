@@ -11,22 +11,24 @@
 
 namespace Sg\DatatablesBundle\Command;
 
-use Sg\DatatablesBundle\Generator\DatatableGenerator;
-
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCommand;
-use Sensio\Bundle\GeneratorBundle\Command\Validators;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Exception;
+use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCommand;
+use Sensio\Bundle\GeneratorBundle\Command\Validators;
+use Sg\DatatablesBundle\Generator\DatatableGenerator;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
+use function count;
+use function explode;
+use function sprintf;
+use function str_replace;
+use function ucwords;
 
 /**
  * Class CreateDatatableCommand
- *
- * @package Sg\DatatablesBundle\Command
  */
 class CreateDatatableCommand extends GenerateDoctrineCommand
 {
@@ -41,7 +43,7 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
     {
         $this
             ->setName('sg:datatable:generate')
-            ->setAliases(array('sg:datatables:generate', 'sg:generate:datatable', 'sg:generate:datatables'))
+            ->setAliases(['sg:datatables:generate', 'sg:generate:datatable', 'sg:generate:datatables'])
             ->setDescription('Generates a new Datatable based on a Doctrine entity.')
             ->addArgument('entity', InputArgument::REQUIRED, 'The entity class name (shortcut notation).')
             ->addOption('fields', 'f', InputOption::VALUE_OPTIONAL, 'The fields to create columns in the new Datatable.')
@@ -54,16 +56,16 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // get entity argument
-        $entity = Validators::validateEntityName($input->getArgument('entity'));
-        list($bundle, $entity) = $this->parseShortcutNotation($entity);
+        $entity            = Validators::validateEntityName($input->getArgument('entity'));
+        [$bundle, $entity] = $this->parseShortcutNotation($entity);
 
         // get entity's metadata
-        $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle)."\\".$entity;
-        $metadata = $this->getEntityMetadata($entityClass);
+        $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle) . '\\' . $entity;
+        $metadata    = $this->getEntityMetadata($entityClass);
 
         // get fields option
-        $fieldsOption = $input->getOption('fields');
-        null === $fieldsOption ? $fields = $this->getFieldsFromMetadata($metadata[0]) : $fields = $this->parseFields($fieldsOption);
+        $fieldsOption                    = $input->getOption('fields');
+        $fieldsOption === null ? $fields = $this->getFieldsFromMetadata($metadata[0]) : $fields = $this->parseFields($fieldsOption);
 
         // get overwrite option
         $overwrite = $input->getOption('overwrite');
@@ -98,9 +100,9 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
     /**
      * {@inheritdoc}
      */
-    protected function getSkeletonDirs(BundleInterface $bundle = null)
+    protected function getSkeletonDirs(?BundleInterface $bundle = null)
     {
-        $skeletonDirs = array();
+        $skeletonDirs   = [];
         $skeletonDirs[] = $this->getContainer()->get('kernel')->locateResource('@SgDatatablesBundle/Resources/views/skeleton');
 
         return $skeletonDirs;
@@ -119,16 +121,16 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
      */
     private static function parseFields($input)
     {
-        $fields = array();
+        $fields = [];
 
         foreach (explode(' ', $input) as $value) {
             $elements = explode(':', $value);
 
-            $row = array();
-            $row['property'] = $elements[0];
+            $row                = [];
+            $row['property']    = $elements[0];
             $row['column_type'] = 'Column::class';
-            $row['data'] = null;
-            $row['title'] = ucwords(str_replace('.', ' ', $elements[0]));
+            $row['data']        = null;
+            $row['title']       = ucwords(str_replace('.', ' ', $elements[0]));
 
             if (isset($elements[1])) {
                 switch ($elements[1]) {
@@ -153,6 +155,7 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
      * @param array $metadata
      *
      * @return mixed
+     *
      * @throws Exception
      */
     private function getIdentifierFromMetadata(array $metadata)
@@ -174,10 +177,10 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
      */
     private function getFieldsFromMetadata(ClassMetadataInfo $metadata)
     {
-        $fields = array();
+        $fields = [];
 
         foreach ($metadata->fieldMappings as $field) {
-            $row = array();
+            $row             = [];
             $row['property'] = $field['fieldName'];
 
             switch ($field['type']) {
@@ -192,21 +195,21 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
             }
 
             $row['title'] = ucwords($field['fieldName']);
-            $row['data'] = null;
-            $fields[] = $row;
+            $row['data']  = null;
+            $fields[]     = $row;
         }
 
         foreach ($metadata->associationMappings as $relation) {
-            $targetClass = $relation['targetEntity'];
+            $targetClass    = $relation['targetEntity'];
             $targetMetadata = $this->getEntityMetadata($targetClass);
 
             foreach ($targetMetadata[0]->fieldMappings as $field) {
-                $row = array();
-                $row['property'] = $relation['fieldName'].'.'.$field['fieldName'];
+                $row                = [];
+                $row['property']    = $relation['fieldName'] . '.' . $field['fieldName'];
                 $row['column_type'] = 'Column::class';
-                $row['title'] = ucwords(str_replace('.', ' ', $row['property']));
+                $row['title']       = ucwords(str_replace('.', ' ', $row['property']));
                 if ($relation['type'] === ClassMetadataInfo::ONE_TO_MANY || $relation['type'] === ClassMetadataInfo::MANY_TO_MANY) {
-                    $row['data'] = $relation['fieldName'].'[, ].'.$field['fieldName'];
+                    $row['data'] = $relation['fieldName'] . '[, ].' . $field['fieldName'];
                 } else {
                     $row['data'] = null;
                 }

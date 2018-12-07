@@ -11,14 +11,14 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use NumberFormatter;
 use Sg\DatatablesBundle\Datatable\Helper;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function count;
+use function is_float;
 
 /**
  * Class NumberColumn
- *
- * @package Sg\DatatablesBundle\Datatable\Column
  */
 class NumberColumn extends Column
 {
@@ -26,7 +26,7 @@ class NumberColumn extends Column
      * A NumberFormatter instance.
      * A required option.
      *
-     * @var \NumberFormatter
+     * @var NumberFormatter
      */
     protected $formatter;
 
@@ -42,7 +42,7 @@ class NumberColumn extends Column
      * The currency code.
      * Default: null => NumberFormatter::INTL_CURRENCY_SYMBOL is used
      *
-     * @var null|string
+     * @var string|null
      */
     protected $currency;
 
@@ -58,15 +58,13 @@ class NumberColumn extends Column
         $path = Helper::getDataPropertyPath($this->data);
 
         if ($this->accessor->isReadable($row, $path)) {
-
-            if (true === $this->isEditableContentRequired($row)) {
+            if ($this->isEditableContentRequired($row) === true) {
                 $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
             } else {
                 $content = $this->renderTemplate($this->accessor->getValue($row, $path));
             }
 
             $this->accessor->setValue($row, $path, $content);
-
         }
 
         return $this;
@@ -78,18 +76,17 @@ class NumberColumn extends Column
     public function renderToMany(array &$row)
     {
         $value = null;
-        $path = Helper::getDataPropertyPath($this->data, $value);
+        $path  = Helper::getDataPropertyPath($this->data, $value);
 
         $entries = $this->accessor->getValue($row, $path);
 
         if ($this->accessor->isReadable($row, $path)) {
-
             if (count($entries) > 0) {
                 foreach ($entries as $key => $entry) {
-                    $currentPath = $path . '[' . $key . ']' . $value;
+                    $currentPath       = $path . '[' . $key . ']' . $value;
                     $currentObjectPath = Helper::getPropertyPathObjectNotation($path, $key, $value);
 
-                    if (true === $this->isEditableContentRequired($row)) {
+                    if ($this->isEditableContentRequired($row) === true) {
                         $content = $this->renderTemplate(
                             $this->accessor->getValue($row, $currentPath),
                             $row[$this->editable->getPk()],
@@ -104,7 +101,6 @@ class NumberColumn extends Column
             } else {
                 // no placeholder - leave this blank
             }
-
         }
 
         return $this;
@@ -128,18 +124,18 @@ class NumberColumn extends Column
         $resolver->setRequired('formatter');
 
         $resolver->setDefaults(
-            array(
+            [
                 'use_format_currency' => false,
                 'currency' => null,
-            )
+            ]
         );
 
-        $resolver->setAllowedTypes('formatter', array('object'));
-        $resolver->setAllowedTypes('use_format_currency', array('bool'));
-        $resolver->setAllowedTypes('currency', array('null', 'string'));
+        $resolver->setAllowedTypes('formatter', ['object']);
+        $resolver->setAllowedTypes('use_format_currency', ['bool']);
+        $resolver->setAllowedTypes('currency', ['null', 'string']);
 
-        $resolver->setAllowedValues('formatter', function ($formatter) {
-            if (!$formatter instanceof \NumberFormatter) {
+        $resolver->setAllowedValues('formatter', static function ($formatter) {
+            if (! $formatter instanceof NumberFormatter) {
                 return false;
             }
 
@@ -156,7 +152,7 @@ class NumberColumn extends Column
     /**
      * Get formatter.
      *
-     * @return \NumberFormatter
+     * @return NumberFormatter
      */
     public function getFormatter()
     {
@@ -166,11 +162,11 @@ class NumberColumn extends Column
     /**
      * Set formatter.
      *
-     * @param \NumberFormatter $formatter
+     * @param NumberFormatter $formatter
      *
      * @return $this
      */
-    public function setFormatter(\NumberFormatter  $formatter)
+    public function setFormatter(NumberFormatter $formatter)
     {
         $this->formatter = $formatter;
 
@@ -204,7 +200,7 @@ class NumberColumn extends Column
     /**
      * Get currency.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getCurrency()
     {
@@ -214,7 +210,7 @@ class NumberColumn extends Column
     /**
      * Set currency.
      *
-     * @param null|string $currency
+     * @param string|null $currency
      *
      * @return $this
      */
@@ -240,13 +236,13 @@ class NumberColumn extends Column
      */
     private function renderTemplate($data, $pk = null, $path = null)
     {
-        if (true === $this->useFormatCurrency) {
-            if (false === is_float($data)) {
+        if ($this->useFormatCurrency === true) {
+            if (is_float($data) === false) {
                 $data = (float) $data;
             }
 
-            if (null === $this->currency) {
-                $this->currency = $this->formatter->getSymbol(\NumberFormatter::INTL_CURRENCY_SYMBOL);
+            if ($this->currency === null) {
+                $this->currency = $this->formatter->getSymbol(NumberFormatter::INTL_CURRENCY_SYMBOL);
             }
 
             $data = $this->formatter->formatCurrency($data, $this->currency);
@@ -257,12 +253,12 @@ class NumberColumn extends Column
 
         return $this->twig->render(
             $this->getCellContentTemplate(),
-            array(
+            [
                 'data' => $data,
                 'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
                 'pk' => $pk,
                 'path' => $path,
-            )
+            ]
         );
     }
 }

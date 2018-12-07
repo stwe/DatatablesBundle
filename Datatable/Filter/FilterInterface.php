@@ -11,13 +11,11 @@
 
 namespace Sg\DatatablesBundle\Datatable\Filter;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Andx;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * Interface FilterInterface
- *
- * @package Sg\DatatablesBundle\Datatable\Filter
  */
 interface FilterInterface
 {

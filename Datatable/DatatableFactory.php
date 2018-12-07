@@ -11,18 +11,21 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Twig_Environment;
 use Exception;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Twig_Environment;
+use function class_exists;
+use function class_implements;
+use function gettype;
+use function in_array;
+use function is_string;
 
 /**
  * Class DatatableFactory
- *
- * @package Sg\DatatablesBundle\Datatable
  */
 class DatatableFactory
 {
@@ -73,8 +76,6 @@ class DatatableFactory
     //-------------------------------------------------
 
     /**
-     * DatatableFactory constructor.
-     *
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param TokenStorageInterface         $securityToken
      * @param TranslatorInterface           $translator
@@ -91,11 +92,11 @@ class DatatableFactory
         Twig_Environment $twig
     ) {
         $this->authorizationChecker = $authorizationChecker;
-        $this->securityToken = $securityToken;
-        $this->translator = $translator;
-        $this->router = $router;
-        $this->em = $em;
-        $this->twig = $twig;
+        $this->securityToken        = $securityToken;
+        $this->translator           = $translator;
+        $this->router               = $router;
+        $this->em                   = $em;
+        $this->twig                 = $twig;
     }
 
     //-------------------------------------------------
@@ -108,16 +109,17 @@ class DatatableFactory
      * @param string $class
      *
      * @return DatatableInterface
+     *
      * @throws Exception
      */
     public function create($class)
     {
-        if (!is_string($class)) {
+        if (! is_string($class)) {
             $type = gettype($class);
             throw new Exception("DatatableFactory::create(): String expected, $type given");
         }
 
-        if (false === class_exists($class)) {
+        if (class_exists($class) === false) {
             throw new Exception("DatatableFactory::create(): $class does not exist");
         }
 
@@ -130,8 +132,8 @@ class DatatableFactory
                 $this->em,
                 $this->twig
             );
-        } else {
-            throw new Exception("DatatableFactory::create(): The class $class should implement the DatatableInterface.");
         }
+
+        throw new Exception("DatatableFactory::create(): The class $class should implement the DatatableInterface.");
     }
 }

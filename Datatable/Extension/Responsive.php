@@ -11,15 +11,14 @@
 
 namespace Sg\DatatablesBundle\Datatable\Extension;
 
-use Sg\DatatablesBundle\Datatable\OptionsTrait;
-
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Exception;
+use Sg\DatatablesBundle\Datatable\OptionsTrait;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use function in_array;
+use function is_array;
 
 /**
  * Class Responsive
- *
- * @package Sg\DatatablesBundle\Datatable\Extension
  */
 class Responsive
 {
@@ -44,9 +43,6 @@ class Responsive
     // Ctor.
     //-------------------------------------------------
 
-    /**
-     * Responsive constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -67,7 +63,7 @@ class Responsive
     {
         $resolver->setRequired('details');
 
-        $resolver->setAllowedTypes('details', array('array', 'bool'));
+        $resolver->setAllowedTypes('details', ['array', 'bool']);
 
         return $this;
     }
@@ -92,13 +88,14 @@ class Responsive
      * @param array|bool $details
      *
      * @return $this
+     *
      * @throws Exception
      */
     public function setDetails($details)
     {
         if (is_array($details)) {
             foreach ($details as $key => $value) {
-                if (false === in_array($key, array('type', 'target', 'renderer', 'display'))) {
+                if (in_array($key, ['type', 'target', 'renderer', 'display']) === false) {
                     throw new Exception(
                         "Responsive::setDetails(): $key is not an valid option."
                     );

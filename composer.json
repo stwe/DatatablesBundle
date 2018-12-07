@@ -27,5 +27,12 @@
     },
     "autoload": {
         "psr-4": { "Sg\\DatatablesBundle\\": "" }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "require-dev": {
+        "doctrine/coding-standard": "^5.0",
+        "squizlabs/php_codesniffer": "3.*"
     }
 }

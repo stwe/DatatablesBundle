@@ -11,15 +11,14 @@
 
 namespace Sg\DatatablesBundle\Datatable\Filter;
 
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Query\Expr\Andx;
 use DateTime;
+use Doctrine\ORM\Query\Expr\Andx;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function explode;
 
 /**
  * Class DateRangeFilter
- *
- * @package Sg\DatatablesBundle\Datatable\Filter
  */
 class DateRangeFilter extends AbstractFilter
 {
@@ -40,12 +39,12 @@ class DateRangeFilter extends AbstractFilter
      */
     public function addAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, $searchTypeOfField, &$parameterCounter)
     {
-        list($_dateStart, $_dateEnd) = explode(' - ', $searchValue);
-        $dateStart = new DateTime($_dateStart);
-        $dateEnd = new DateTime($_dateEnd);
+        [$_dateStart, $_dateEnd] = explode(' - ', $searchValue);
+        $dateStart               = new DateTime($_dateStart);
+        $dateEnd                 = new DateTime($_dateEnd);
         $dateEnd->setTime(23, 59, 59);
 
-        $andExpr = $this->getBetweenAndExpression($andExpr, $qb, $searchField, $dateStart->format('Y-m-d H:i:s'), $dateEnd->format('Y-m-d H:i:s'), $parameterCounter);
+        $andExpr           = $this->getBetweenAndExpression($andExpr, $qb, $searchField, $dateStart->format('Y-m-d H:i:s'), $dateEnd->format('Y-m-d H:i:s'), $parameterCounter);
         $parameterCounter += 2;
 
         return $andExpr;

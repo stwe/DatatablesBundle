@@ -11,15 +11,15 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Exception;
 use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
 use Sg\DatatablesBundle\Datatable\Factory;
-
-use Exception;
+use function count;
+use function is_array;
+use function is_string;
 
 /**
  * Class EditableTrait
- *
- * @package Sg\DatatablesBundle\Datatable\Column
  */
 trait EditableTrait
 {
@@ -27,7 +27,7 @@ trait EditableTrait
      * An EditableInterface instance.
      * Default: null
      *
-     * @var null|EditableInterface
+     * @var EditableInterface|null
      */
     protected $editable;
 
@@ -38,7 +38,7 @@ trait EditableTrait
     /**
      * Get editable.
      *
-     * @return null|EditableInterface
+     * @return EditableInterface|null
      */
     public function getEditable()
     {
@@ -48,27 +48,28 @@ trait EditableTrait
     /**
      * Set editable.
      *
-     * @param null|array $editableClassAndOptions
+     * @param array|null $editableClassAndOptions
      *
      * @return $this
+     *
      * @throws Exception
      */
     public function setEditable($editableClassAndOptions)
     {
         if (is_array($editableClassAndOptions)) {
-            if (count($editableClassAndOptions) != 2) {
+            if (count($editableClassAndOptions) !== 2) {
                 throw new Exception('EditableTrait::setEditable(): Two arguments expected.');
             }
 
-            if (!isset($editableClassAndOptions[0]) || !is_string($editableClassAndOptions[0]) && !$editableClassAndOptions[0] instanceof EditableInterface) {
+            if (! isset($editableClassAndOptions[0]) || ! is_string($editableClassAndOptions[0]) && ! $editableClassAndOptions[0] instanceof EditableInterface) {
                 throw new Exception('EditableTrait::setEditable(): Set a Editable class.');
             }
 
-            if (!isset($editableClassAndOptions[1]) || !is_array($editableClassAndOptions[1])) {
+            if (! isset($editableClassAndOptions[1]) || ! is_array($editableClassAndOptions[1])) {
                 throw new Exception('EditableTrait::setEditable(): Set an options array.');
             }
 
-            $newEditable = Factory::create($editableClassAndOptions[0], EditableInterface::class);
+            $newEditable    = Factory::create($editableClassAndOptions[0], EditableInterface::class);
             $this->editable = $newEditable->set($editableClassAndOptions[1]);
         } else {
             $this->editable = $editableClassAndOptions;
@@ -88,6 +89,6 @@ trait EditableTrait
      */
     protected function getColumnClassEditableSelector()
     {
-        return 'sg-datatables-'.$this->getDatatableName().'-editable-column-'.$this->index;
+        return 'sg-datatables-' . $this->getDatatableName() . '-editable-column-' . $this->index;
     }
 }

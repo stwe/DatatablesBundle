@@ -11,22 +11,20 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
-
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Twig_Environment;
-use Exception;
+use function preg_match;
 
 /**
  * Class AbstractDatatable
- *
- * @package Sg\DatatablesBundle\Datatable
  */
 abstract class AbstractDatatable implements DatatableInterface
 {
@@ -149,15 +147,13 @@ abstract class AbstractDatatable implements DatatableInterface
      *
      * @var array
      */
-    protected static $uniqueCounter = array();
+    protected static $uniqueCounter = [];
 
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
 
     /**
-     * AbstractDatatable constructor.
-     *
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param TokenStorageInterface         $securityToken
      * @param TranslatorInterface           $translator
@@ -184,22 +180,22 @@ abstract class AbstractDatatable implements DatatableInterface
         }
 
         $this->authorizationChecker = $authorizationChecker;
-        $this->securityToken = $securityToken;
-        $this->translator = $translator;
-        $this->router = $router;
-        $this->em = $em;
-        $this->twig = $twig;
+        $this->securityToken        = $securityToken;
+        $this->translator           = $translator;
+        $this->router               = $router;
+        $this->em                   = $em;
+        $this->twig                 = $twig;
 
-        $metadata = $em->getClassMetadata($this->getEntity());
+        $metadata            = $em->getClassMetadata($this->getEntity());
         $this->columnBuilder = new ColumnBuilder($metadata, $twig, $this->getName(), $em);
 
-        $this->ajax = new Ajax();
-        $this->options = new Options();
-        $this->features = new Features();
-        $this->callbacks = new Callbacks();
-        $this->events = new Events();
+        $this->ajax       = new Ajax();
+        $this->options    = new Options();
+        $this->features   = new Features();
+        $this->callbacks  = new Callbacks();
+        $this->events     = new Events();
         $this->extensions = new Extensions();
-        $this->language = new Language();
+        $this->language   = new Language();
 
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
@@ -293,12 +289,14 @@ abstract class AbstractDatatable implements DatatableInterface
      */
     public function getOptionsArrayFromEntities($entities, $keyFrom = 'id', $valueFrom = 'name')
     {
-        $options = array();
+        $options = [];
 
         foreach ($entities as $entity) {
-            if (true === $this->accessor->isReadable($entity, $keyFrom) && true === $this->accessor->isReadable($entity, $valueFrom)) {
-                $options[$this->accessor->getValue($entity, $keyFrom)] = $this->accessor->getValue($entity, $valueFrom);
+            if ($this->accessor->isReadable($entity, $keyFrom) !== true || $this->accessor->isReadable($entity, $valueFrom) !== true) {
+                continue;
             }
+
+            $options[$this->accessor->getValue($entity, $keyFrom)] = $this->accessor->getValue($entity, $valueFrom);
         }
 
         return $options;
@@ -317,7 +315,7 @@ abstract class AbstractDatatable implements DatatableInterface
      */
     public function getUniqueName()
     {
-        return $this->getName().($this->getUniqueId() > 1 ? '-'.$this->getUniqueId() : '');
+        return $this->getName() . ($this->getUniqueId() > 1 ? '-' . $this->getUniqueId() : '');
     }
 
     //-------------------------------------------------
@@ -331,7 +329,7 @@ abstract class AbstractDatatable implements DatatableInterface
      */
     private function validateName()
     {
-        if (1 !== preg_match(self::NAME_REGEX, $this->getName())) {
+        if (preg_match(self::NAME_REGEX, $this->getName()) !== 1) {
             throw new Exception('AbstractDatatable::validateName(): The result of the getName method can only contain letters, numbers, underscore and dashes.');
         }
     }

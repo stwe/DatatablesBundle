@@ -11,17 +11,18 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Datatable\Filter\SelectFilter;
 use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
+use Sg\DatatablesBundle\Datatable\Filter\SelectFilter;
 use Sg\DatatablesBundle\Datatable\Helper;
-
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function array_merge;
+use function boolval;
+use function count;
+use function in_array;
 
 /**
  * Class BooleanColumn
- *
- * @package Sg\DatatablesBundle\Datatable\Column
  */
 class BooleanColumn extends AbstractColumn
 {
@@ -29,27 +30,23 @@ class BooleanColumn extends AbstractColumn
      * This Column is editable.
      */
     use EditableTrait;
-
-    /**
-     * The Column is filterable.
-     */
     use FilterableTrait;
 
     /**
      * @internal
      */
-    const RENDER_TRUE_VALUE = 'true';
+    public const RENDER_TRUE_VALUE = 'true';
 
     /**
      * @internal
      */
-    const RENDER_FALSE_VALUE = 'false';
+    public const RENDER_FALSE_VALUE = 'false';
 
     /**
      * The icon for a value that is true.
      * Default: null
      *
-     * @var null|string
+     * @var string|null
      */
     protected $trueIcon;
 
@@ -57,7 +54,7 @@ class BooleanColumn extends AbstractColumn
      * The icon for a value that is false.
      * Default: null
      *
-     * @var null|string
+     * @var string|null
      */
     protected $falseIcon;
 
@@ -65,7 +62,7 @@ class BooleanColumn extends AbstractColumn
      * The label for a value that is true.
      * Default: null
      *
-     * @var null|string
+     * @var string|null
      */
     protected $trueLabel;
 
@@ -73,7 +70,7 @@ class BooleanColumn extends AbstractColumn
      * The label for a value that is false.
      * Default: null
      *
-     * @var null|string
+     * @var string|null
      */
     protected $falseLabel;
 
@@ -89,15 +86,13 @@ class BooleanColumn extends AbstractColumn
         $path = Helper::getDataPropertyPath($this->data);
 
         if ($this->accessor->isReadable($row, $path)) {
-
-            if (true === $this->isEditableContentRequired($row)) {
+            if ($this->isEditableContentRequired($row) === true) {
                 $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
             } else {
                 $content = $this->renderTemplate($this->accessor->getValue($row, $path));
             }
 
             $this->accessor->setValue($row, $path, $content);
-
         }
 
         return $this;
@@ -109,18 +104,17 @@ class BooleanColumn extends AbstractColumn
     public function renderToMany(array &$row)
     {
         $value = null;
-        $path = Helper::getDataPropertyPath($this->data, $value);
+        $path  = Helper::getDataPropertyPath($this->data, $value);
 
         if ($this->accessor->isReadable($row, $path)) {
-
             $entries = $this->accessor->getValue($row, $path);
 
             if (count($entries) > 0) {
                 foreach ($entries as $key => $entry) {
-                    $currentPath = $path . '[' . $key . ']' . $value;
+                    $currentPath       = $path . '[' . $key . ']' . $value;
                     $currentObjectPath = Helper::getPropertyPathObjectNotation($path, $key, $value);
 
-                    if (true === $this->isEditableContentRequired($row)) {
+                    if ($this->isEditableContentRequired($row) === true) {
                         $content = $this->renderTemplate(
                             $this->accessor->getValue($row, $currentPath),
                             $row[$this->editable->getPk()],
@@ -135,7 +129,6 @@ class BooleanColumn extends AbstractColumn
             } else {
                 // no placeholder - leave this blank
             }
-
         }
 
         return $this;
@@ -157,13 +150,13 @@ class BooleanColumn extends AbstractColumn
         if ($this->editable instanceof EditableInterface) {
             return $this->twig->render(
                 '@SgDatatables/column/column_post_create_dt.js.twig',
-                array(
+                [
                     'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
                     'editable_options' => $this->editable,
                     'entity_class_name' => $this->getEntityClassName(),
                     'column_dql' => $this->dql,
                     'original_type_of_field' => $this->getOriginalTypeOfField(),
-                )
+                ]
             );
         }
 
@@ -186,39 +179,39 @@ class BooleanColumn extends AbstractColumn
         parent::configureOptions($resolver);
 
         $resolver->setDefaults(
-            array(
-                'filter' => array(
+            [
+                'filter' => [
                     SelectFilter::class,
-                    array(
+                    [
                         'search_type' => 'eq',
-                        'select_options' => array('' => 'Any', '1' => 'Yes', '0' => 'No'),
-                    ),
-                ),
+                        'select_options' => ['' => 'Any', '1' => 'Yes', '0' => 'No'],
+                    ],
+                ],
                 'true_icon' => null,
                 'false_icon' => null,
                 'true_label' => null,
                 'false_label' => null,
                 'editable' => null,
-            )
+            ]
         );
 
         $resolver->setAllowedTypes('filter', 'array');
-        $resolver->setAllowedTypes('true_icon', array('null', 'string'));
-        $resolver->setAllowedTypes('false_icon', array('null', 'string'));
-        $resolver->setAllowedTypes('true_label', array('null', 'string'));
-        $resolver->setAllowedTypes('false_label', array('null', 'string'));
-        $resolver->setAllowedTypes('editable', array('null', 'array'));
+        $resolver->setAllowedTypes('true_icon', ['null', 'string']);
+        $resolver->setAllowedTypes('false_icon', ['null', 'string']);
+        $resolver->setAllowedTypes('true_label', ['null', 'string']);
+        $resolver->setAllowedTypes('false_label', ['null', 'string']);
+        $resolver->setAllowedTypes('editable', ['null', 'array']);
 
-        $resolver->setNormalizer('true_label', function (Options $options, $value) {
-            if (null === $options['true_icon'] && null === $value) {
+        $resolver->setNormalizer('true_label', static function (Options $options, $value) {
+            if ($options['true_icon'] === null && $value === null) {
                 $value = self::RENDER_TRUE_VALUE;
             }
 
             return $value;
         });
 
-        $resolver->setNormalizer('false_label', function (Options $options, $value) {
-            if (null === $options['false_icon'] && null === $value) {
+        $resolver->setNormalizer('false_label', static function (Options $options, $value) {
+            if ($options['false_icon'] === null && $value === null) {
                 $value = self::RENDER_FALSE_VALUE;
             }
 
@@ -235,7 +228,7 @@ class BooleanColumn extends AbstractColumn
     /**
      * Get trueIcon.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getTrueIcon()
     {
@@ -245,7 +238,7 @@ class BooleanColumn extends AbstractColumn
     /**
      * Set trueIcon.
      *
-     * @param null|string $trueIcon
+     * @param string|null $trueIcon
      *
      * @return $this
      */
@@ -259,7 +252,7 @@ class BooleanColumn extends AbstractColumn
     /**
      * Get falseIcon.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getFalseIcon()
     {
@@ -269,7 +262,7 @@ class BooleanColumn extends AbstractColumn
     /**
      * Set falseIcon.
      *
-     * @param null|string $falseIcon
+     * @param string|null $falseIcon
      *
      * @return $this
      */
@@ -283,7 +276,7 @@ class BooleanColumn extends AbstractColumn
     /**
      * Get trueLabel.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getTrueLabel()
     {
@@ -293,7 +286,7 @@ class BooleanColumn extends AbstractColumn
     /**
      * Set trueLabel.
      *
-     * @param null|string $trueLabel
+     * @param string|null $trueLabel
      *
      * @return $this
      */
@@ -307,7 +300,7 @@ class BooleanColumn extends AbstractColumn
     /**
      * Get falseLabel.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getFalseLabel()
     {
@@ -317,7 +310,7 @@ class BooleanColumn extends AbstractColumn
     /**
      * Set falseLabel.
      *
-     * @param null|string $falseLabel
+     * @param string|null $falseLabel
      *
      * @return $this
      */
@@ -343,23 +336,23 @@ class BooleanColumn extends AbstractColumn
      */
     private function renderTemplate($data, $pk = null, $path = null)
     {
-        $renderVars = array(
-            'data' => $this->isCustomDql() && in_array($data, array(0, 1, '0', '1'), true) ? boolval($data) : $data,
+        $renderVars = [
+            'data' => $this->isCustomDql() && in_array($data, [0, 1, '0', '1'], true) ? boolval($data) : $data,
             'default_content' => $this->getDefaultContent(),
             'true_label' => $this->trueLabel,
             'true_icon' => $this->trueIcon,
             'false_label' => $this->falseLabel,
             'false_icon' => $this->falseIcon,
-        );
+        ];
 
         // editable vars
-        if (null !== $pk) {
-            $renderVars = array_merge($renderVars, array(
+        if ($pk !== null) {
+            $renderVars = array_merge($renderVars, [
                 'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
                 'pk' => $pk,
                 'path' => $path,
                 'empty_text' => $this->editable->getEmptyText(),
-            ));
+            ]);
         }
 
         return $this->twig->render(

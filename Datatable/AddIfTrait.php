@@ -12,18 +12,17 @@
 namespace Sg\DatatablesBundle\Datatable;
 
 use Closure;
+use function call_user_func;
 
 /**
  * Class AddIfTrait
- *
- * @package Sg\DatatablesBundle\Datatable
  */
 trait AddIfTrait
 {
     /**
      * Add an object only if conditions are TRUE.
      *
-     * @var null|Closure
+     * @var Closure|null
      */
     protected $addIf;
 
@@ -52,7 +51,7 @@ trait AddIfTrait
     /**
      * Get addIf.
      *
-     * @return null|Closure
+     * @return Closure|null
      */
     public function getAddIf()
     {
@@ -62,7 +61,7 @@ trait AddIfTrait
     /**
      * Set addIf.
      *
-     * @param null|Closure $addIf
+     * @param Closure|null $addIf
      *
      * @return $this
      */

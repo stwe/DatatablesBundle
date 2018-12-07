@@ -12,11 +12,11 @@
 namespace Sg\DatatablesBundle\Datatable;
 
 use Exception;
+use function class_exists;
+use function is_string;
 
 /**
  * Class Factory
- *
- * @package Sg\DatatablesBundle\Datatable
  */
 class Factory
 {
@@ -27,11 +27,12 @@ class Factory
      * @param mixed $interface
      *
      * @return mixed
+     *
      * @throws Exception
      */
     public static function create($class, $interface)
     {
-        if (empty($class) || !is_string($class) && !$class instanceof $interface) {
+        if (empty($class) || ! is_string($class) && ! $class instanceof $interface) {
             throw new Exception("Factory::create(): String or $interface expected.");
         }
 
@@ -42,13 +43,13 @@ class Factory
         if (is_string($class) && class_exists($class)) {
             $instance = new $class();
 
-            if (!$instance instanceof $interface) {
+            if (! $instance instanceof $interface) {
                 throw new Exception("Factory::create(): String or $interface expected.");
-            } else {
-                return $instance;
             }
-        } else {
-            throw new Exception("Factory::create(): $class is not callable.");
+
+            return $instance;
         }
+
+        throw new Exception("Factory::create(): $class is not callable.");
     }
 }

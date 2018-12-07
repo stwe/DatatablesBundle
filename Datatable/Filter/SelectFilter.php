@@ -11,15 +11,16 @@
 
 namespace Sg\DatatablesBundle\Datatable\Filter;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Andx;
+use Doctrine\ORM\QueryBuilder;
 use Exception;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use function count;
+use function explode;
+use function is_array;
 
 /**
  * Class SelectFilter
- *
- * @package Sg\DatatablesBundle\Datatable\Filter
  */
 class SelectFilter extends AbstractFilter
 {
@@ -65,7 +66,7 @@ class SelectFilter extends AbstractFilter
     public function addAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, $searchTypeOfField, &$parameterCounter)
     {
         $searchValues = explode(',', $searchValue);
-        if (true === $this->multiple && is_array($searchValues) && count($searchValues) > 1) {
+        if ($this->multiple === true && is_array($searchValues) && count($searchValues) > 1) {
             $orExpr = $qb->expr()->orX();
 
             foreach ($searchValues as $searchValue) {
@@ -100,11 +101,11 @@ class SelectFilter extends AbstractFilter
         $resolver->remove('placeholder');
         $resolver->remove('placeholder_text');
 
-        $resolver->setDefaults(array(
-            'select_search_types' => array(),
-            'select_options' => array(),
+        $resolver->setDefaults([
+            'select_search_types' => [],
+            'select_options' => [],
             'multiple' => false,
-        ));
+        ]);
 
         $resolver->setAllowedTypes('select_search_types', 'array');
         $resolver->setAllowedTypes('select_options', 'array');
@@ -204,12 +205,14 @@ class SelectFilter extends AbstractFilter
     {
         $searchTypesCount = count($this->selectSearchTypes);
 
-        if ($searchTypesCount > 0) {
-            if ($searchTypesCount === count($this->selectOptions)) {
-                $this->searchType = $this->selectSearchTypes[$searchValue];
-            } else {
-                throw new Exception('SelectFilter::setSelectSearchType(): The search types array is not valid.');
-            }
+        if ($searchTypesCount <= 0) {
+            return;
         }
+
+        if ($searchTypesCount !== count($this->selectOptions)) {
+            throw new Exception('SelectFilter::setSelectSearchType(): The search types array is not valid.');
+        }
+
+        $this->searchType = $this->selectSearchTypes[$searchValue];
     }
 }

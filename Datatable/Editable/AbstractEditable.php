@@ -11,15 +11,13 @@
 
 namespace Sg\DatatablesBundle\Datatable\Editable;
 
-use Sg\DatatablesBundle\Datatable\OptionsTrait;
-
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Closure;
+use Sg\DatatablesBundle\Datatable\OptionsTrait;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use function call_user_func;
 
 /**
  * Class AbstractEditable
- *
- * @package Sg\DatatablesBundle\Datatable\Editable
  */
 abstract class AbstractEditable implements EditableInterface
 {
@@ -44,7 +42,7 @@ abstract class AbstractEditable implements EditableInterface
      * Additional params for submit It is appended to original ajax data (pk, name and value).
      * Default: null
      *
-     * @var null|array
+     * @var array|null
      */
     protected $params;
 
@@ -52,7 +50,7 @@ abstract class AbstractEditable implements EditableInterface
      * Value that will be displayed in input if original field value is empty (null|undefined|'').
      * Default: null
      *
-     * @var null|string
+     * @var string|null
      */
     protected $defaultValue;
 
@@ -92,7 +90,7 @@ abstract class AbstractEditable implements EditableInterface
      * Name of field. Will be submitted on server. Can be taken from id attribute.
      * Default: null
      *
-     * @var null|string
+     * @var string|null
      */
     protected $name;
 
@@ -111,7 +109,7 @@ abstract class AbstractEditable implements EditableInterface
     /**
      * Editable only if conditions are True.
      *
-     * @var null|Closure
+     * @var Closure|null
      */
     protected $editableIf;
 
@@ -119,9 +117,6 @@ abstract class AbstractEditable implements EditableInterface
     // Ctor.
     //-------------------------------------------------
 
-    /**
-     * AbstractEditable constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -134,7 +129,7 @@ abstract class AbstractEditable implements EditableInterface
     /**
      * {@inheritdoc}
      */
-    public function callEditableIfClosure(array $row = array())
+    public function callEditableIfClosure(array $row = [])
     {
         if ($this->editableIf instanceof Closure) {
             return call_user_func($this->editableIf, $row);
@@ -172,7 +167,7 @@ abstract class AbstractEditable implements EditableInterface
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'url' => 'sg_datatables_edit',
             'params' => null,
             'default_value' => null,
@@ -183,20 +178,20 @@ abstract class AbstractEditable implements EditableInterface
             'name' => null,
             'pk' => 'id',
             'editable_if' => null,
-        ));
+        ]);
 
         $resolver->setAllowedTypes('url', 'string');
-        $resolver->setAllowedTypes('params', array('null', 'array'));
-        $resolver->setAllowedTypes('default_value', array('string', 'null'));
+        $resolver->setAllowedTypes('params', ['null', 'array']);
+        $resolver->setAllowedTypes('default_value', ['string', 'null']);
         $resolver->setAllowedTypes('empty_class', 'string');
         $resolver->setAllowedTypes('empty_text', 'string');
         $resolver->setAllowedTypes('highlight', 'string');
         $resolver->setAllowedTypes('mode', 'string');
-        $resolver->setAllowedTypes('name', array('string', 'null'));
+        $resolver->setAllowedTypes('name', ['string', 'null']);
         $resolver->setAllowedTypes('pk', 'string');
-        $resolver->setAllowedTypes('editable_if', array('Closure', 'null'));
+        $resolver->setAllowedTypes('editable_if', ['Closure', 'null']);
 
-        $resolver->setAllowedValues('mode', array('popup', 'inline'));
+        $resolver->setAllowedValues('mode', ['popup', 'inline']);
 
         return $this;
     }
@@ -232,7 +227,7 @@ abstract class AbstractEditable implements EditableInterface
     /**
      * Get params.
      *
-     * @return null|array
+     * @return array|null
      */
     public function getParams()
     {
@@ -242,7 +237,7 @@ abstract class AbstractEditable implements EditableInterface
     /**
      * Set params.
      *
-     * @param null|array $params
+     * @param array|null $params
      *
      * @return $this
      */
@@ -256,7 +251,7 @@ abstract class AbstractEditable implements EditableInterface
     /**
      * Get defaultValue.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getDefaultValue()
     {
@@ -266,7 +261,7 @@ abstract class AbstractEditable implements EditableInterface
     /**
      * Set defaultValue.
      *
-     * @param null|string $defaultValue
+     * @param string|null $defaultValue
      *
      * @return $this
      */
@@ -366,7 +361,7 @@ abstract class AbstractEditable implements EditableInterface
     /**
      * Get name.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getName()
     {
@@ -376,7 +371,7 @@ abstract class AbstractEditable implements EditableInterface
     /**
      * Set name.
      *
-     * @param null|string $name
+     * @param string|null $name
      *
      * @return $this
      */
@@ -404,7 +399,7 @@ abstract class AbstractEditable implements EditableInterface
     /**
      * Get editableIf.
      *
-     * @return null|Closure
+     * @return Closure|null
      */
     public function getEditableIf()
     {
@@ -414,7 +409,7 @@ abstract class AbstractEditable implements EditableInterface
     /**
      * Set editableIf.
      *
-     * @param null|Closure $editableIf
+     * @param Closure|null $editableIf
      *
      * @return $this
      */

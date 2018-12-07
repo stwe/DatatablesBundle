@@ -11,34 +11,32 @@
 
 namespace Sg\DatatablesBundle\Generator;
 
+use Exception;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-use Exception;
+use function array_pop;
+use function explode;
+use function file_exists;
+use function implode;
+use function sprintf;
+use function str_replace;
+use function strtolower;
 
 /**
  * Class DatatableGenerator
- *
- * @package Sg\DatatablesBundle\Generator
  */
 class DatatableGenerator extends Generator
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $className;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $classPath;
 
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
 
-    /**
-     * DatatableGenerator constructor.
-     */
     public function __construct()
     {
         $this->className = '';
@@ -62,15 +60,15 @@ class DatatableGenerator extends Generator
      */
     public function generate(BundleInterface $bundle, $entity, array $fields, $id, $overwrite)
     {
-        $parts = explode("\\", $entity);
-        $entityClass = array_pop($parts);
+        $parts                = explode('\\', $entity);
+        $entityClass          = array_pop($parts);
         $entityClassLowerCase = strtolower($entityClass);
 
-        $this->className = $entityClass.'Datatable';
-        $dirPath = $bundle->getPath().'/Datatables';
-        $this->classPath = $dirPath.'/'.str_replace('\\', '/', $entity).'Datatable.php';
+        $this->className = $entityClass . 'Datatable';
+        $dirPath         = $bundle->getPath() . '/Datatables';
+        $this->classPath = $dirPath . '/' . str_replace('\\', '/', $entity) . 'Datatable.php';
 
-        if (!$overwrite) {
+        if (! $overwrite) {
             if (file_exists($this->classPath)) {
                 throw new Exception(
                     sprintf(
@@ -85,17 +83,17 @@ class DatatableGenerator extends Generator
         $parts = explode('\\', $entity);
         array_pop($parts);
 
-        $this->renderFile('datatable.php.twig', $this->classPath, array(
+        $this->renderFile('datatable.php.twig', $this->classPath, [
             'namespace' => $bundle->getNamespace(),
             'entity_namespace' => implode('\\', $parts),
             'entity_class' => $entityClass,
             'bundle' => $bundle->getName(),
             'datatable_class' => $this->className,
-            'datatable_name' => $entityClassLowerCase.'_datatable',
+            'datatable_name' => $entityClassLowerCase . '_datatable',
             'fields' => $fields,
             'route_pref' => $entityClassLowerCase,
             'id' => $id,
-        ));
+        ]);
     }
 
     //-------------------------------------------------

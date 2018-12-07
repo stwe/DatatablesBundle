@@ -15,8 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class Language
- *
- * @package Sg\DatatablesBundle\Datatable
  */
 class Language
 {
@@ -25,10 +23,8 @@ class Language
      */
     use OptionsTrait;
 
-    /**
-     * @var array
-     */
-    protected $languageCDNFile = array(
+    /** @var array */
+    protected $languageCDNFile = [
         'af' => 'Afrikaans.json',
         'ar' => 'Arabic.json',
         'az' => 'Azerbaijan.json',
@@ -92,7 +88,7 @@ class Language
         'uz' => 'Uzbek.json',
         'vi' => 'Vietnamese.json',
         'zh' => 'Chinese.json',
-    );
+    ];
 
     /**
      * Get the actual language file by app.request.locale from CDN.
@@ -114,7 +110,7 @@ class Language
      * Set a language by given ISO 639-1 code.
      * Default: null
      *
-     * @var null|string
+     * @var string|null
      */
     protected $language;
 
@@ -122,9 +118,6 @@ class Language
     // Ctor.
     //-------------------------------------------------
 
-    /**
-     * Options constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -143,15 +136,15 @@ class Language
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'cdn_language_by_locale' => false,
             'language_by_locale' => false,
             'language' => null,
-        ));
+        ]);
 
         $resolver->setAllowedTypes('cdn_language_by_locale', 'bool');
         $resolver->setAllowedTypes('language_by_locale', 'bool');
-        $resolver->setAllowedTypes('language', array('null', 'string'));
+        $resolver->setAllowedTypes('language', ['null', 'string']);
 
         return $this;
     }
@@ -221,7 +214,7 @@ class Language
     /**
      * Get language.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getLanguage()
     {
@@ -231,7 +224,7 @@ class Language
     /**
      * Set language.
      *
-     * @param null|string $language
+     * @param string|null $language
      *
      * @return $this
      */

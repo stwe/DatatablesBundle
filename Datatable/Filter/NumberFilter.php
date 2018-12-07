@@ -15,8 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class NumberFilter
- *
- * @package Sg\DatatablesBundle\Datatable\Filter
  */
 class NumberFilter extends TextFilter
 {
@@ -56,7 +54,7 @@ class NumberFilter extends TextFilter
      * Pre-defined values.
      * Default: null
      *
-     * @var null|array
+     * @var array|null
      */
     protected $datalist;
 
@@ -86,23 +84,23 @@ class NumberFilter extends TextFilter
         $resolver->remove('placeholder');
         $resolver->remove('placeholder_text');
 
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'min' => '0',
             'max' => '100',
             'step' => '1',
             'show_label' => false,
             'datalist' => null,
             'type' => 'number',
-        ));
+        ]);
 
         $resolver->setAllowedTypes('min', 'string');
         $resolver->setAllowedTypes('max', 'string');
         $resolver->setAllowedTypes('step', 'string');
         $resolver->setAllowedTypes('show_label', 'bool');
-        $resolver->setAllowedTypes('datalist', array('null', 'array'));
+        $resolver->setAllowedTypes('datalist', ['null', 'array']);
         $resolver->setAllowedTypes('type', 'string');
 
-        $resolver->addAllowedValues('type', array('number', 'range'));
+        $resolver->addAllowedValues('type', ['number', 'range']);
 
         return $this;
     }
@@ -210,7 +208,7 @@ class NumberFilter extends TextFilter
     /**
      * Get datalist.
      *
-     * @return null|array
+     * @return array|null
      */
     public function getDatalist()
     {
@@ -220,7 +218,7 @@ class NumberFilter extends TextFilter
     /**
      * Set datalist.
      *
-     * @param null|array $datalist
+     * @param array|null $datalist
      *
      * @return $this
      */

@@ -13,8 +13,6 @@ namespace Sg\DatatablesBundle\Datatable;
 
 /**
  * Class Style
- *
- * @package Sg\DatatablesBundle\Datatable
  */
 class Style
 {
@@ -24,108 +22,78 @@ class Style
 
     /**
      * Default style.
-     *
-     * @var string
      */
-    const BASE_STYLE = 'display';
+    public const BASE_STYLE = 'display';
 
     /**
      * Default style with none of the additional feature style classes.
-     *
-     * @var string
      */
-    const BASE_STYLE_NO_CLASSES = '';
+    public const BASE_STYLE_NO_CLASSES = '';
 
     /**
      * Default style with cell border.
-     *
-     * @var string
      */
-    const BASE_STYLE_CELL_BORDERS = 'cell-border';
+    public const BASE_STYLE_CELL_BORDERS = 'cell-border';
 
     /**
      * Reduce the amount of white-spaces.
-     *
-     * @var string
      */
-    const BASE_STYLE_COMPACT = 'display compact';
+    public const BASE_STYLE_COMPACT = 'display compact';
 
     /**
      * Default style with hover class.
-     *
-     * @var string
      */
-    const BASE_STYLE_HOVER = 'hover';
+    public const BASE_STYLE_HOVER = 'hover';
 
     /**
      * Default style with order-column class.
-     *
-     * @var string
      */
-    const BASE_STYLE_ORDER_COLUMN = 'order-column';
+    public const BASE_STYLE_ORDER_COLUMN = 'order-column';
 
     /**
      * Default style with row border.
-     *
-     * @var string
      */
-    const BASE_STYLE_ROW_BORDERS = 'row-border';
+    public const BASE_STYLE_ROW_BORDERS = 'row-border';
 
     /**
      * Default style with stripe class.
-     *
-     * @var string
      */
-    const BASE_STYLE_STRIPE = 'stripe';
+    public const BASE_STYLE_STRIPE = 'stripe';
 
     /**
      * Bootstrap3 table styling options.
-     *
-     * @var string
      */
-    const BOOTSTRAP_3_STYLE = 'table table-striped table-bordered';
+    public const BOOTSTRAP_3_STYLE = 'table table-striped table-bordered';
 
     /**
      * Foundations's table styling options.
-     *
-     * @var string
      */
-    const FOUNDATION_STYLE = 'display';
+    public const FOUNDATION_STYLE = 'display';
 
     /**
      * Semantic UI styling options.
-     *
-     * @var string
      */
-    const SEMANTIC_UI_STYLE = 'ui celled table';
+    public const SEMANTIC_UI_STYLE = 'ui celled table';
 
     /**
      * jQuery UI's ThemeRoller styles.
-     *
-     * @var string
      */
-    const JQUERY_UI_STYLE = 'display';
+    public const JQUERY_UI_STYLE = 'display';
 
     /**
      * Bootstrap4 table styling options.
-     *
-     * @var string
      */
-    const BOOTSTRAP_4_STYLE = 'table table-striped table-bordered';
+    public const BOOTSTRAP_4_STYLE = 'table table-striped table-bordered';
 
     /**
      * Material Design style.
-     *
-     * @var string
      */
-    const MATERIAL_DESIGN = 'mdl-data-table';
+    public const MATERIAL_DESIGN = 'mdl-data-table';
 
     /**
      * Uikit styling options.
-     *
-     * @var string
      */
-    const UI_KIT = 'uk-table uk-table-hover uk-table-striped';
+    public const UI_KIT = 'uk-table uk-table-hover uk-table-striped';
 
     //-------------------------------------------------
     // Built-in paging button arrangements
@@ -133,43 +101,31 @@ class Style
 
     /**
      * Page number buttons only.
-     *
-     * @var string
      */
-    const NUMBERS_PAGINATION = 'numbers';
+    public const NUMBERS_PAGINATION = 'numbers';
 
     /**
      * "Previous" and "Next" buttons only.
-     *
-     * @var string
      */
-    const SIMPLE_PAGINATION = 'simple';
+    public const SIMPLE_PAGINATION = 'simple';
 
     /**
      * "Previous" and "Next" buttons, plus page numbers.
-     *
-     * @var string
      */
-    const SIMPLE_NUMBERS_PAGINATION = 'simple_numbers';
+    public const SIMPLE_NUMBERS_PAGINATION = 'simple_numbers';
 
     /**
      * "First", "Previous", "Next" and "Last" buttons.
-     *
-     * @var string
      */
-    const FULL_PAGINATION = 'full';
+    public const FULL_PAGINATION = 'full';
 
     /**
      * "First", "Previous", "Next" and "Last" buttons, plus page numbers.
-     *
-     * @var string
      */
-    const FULL_NUMBERS_PAGINATION = 'full_numbers';
+    public const FULL_NUMBERS_PAGINATION = 'full_numbers';
 
     /**
      * "First" and "Last" buttons, plus page numbers.
-     *
-     * @var string
      */
-    const FIRST_LAST_NUMBERS_PAGINATION = 'first_last_numbers';
+    public const FIRST_LAST_NUMBERS_PAGINATION = 'first_last_numbers';
 }
