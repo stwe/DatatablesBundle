@@ -382,7 +382,7 @@ abstract class AbstractFilter implements FilterInterface
             case 'bigint':
             case 'smallint':
             case 'boolean':
-                if ( $searchValue == (string) (int) $searchValue ) {
+                if ($searchValue == (string) (int) $searchValue) {
                     $searchValue = (int) $searchValue;
                 } else {
                     $incompatibleTypeOfField = true;
