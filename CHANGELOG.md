@@ -1,3 +1,7 @@
+# Version 1.1.1
+
+* Bugfix: DateRangeFilter overwrites other filter (#803)
+
 # Version 1.1.0
 
 * Dropped support for PHP 5 and PHP 7.0. (#850)
