@@ -45,7 +45,6 @@ class DateRangeFilter extends AbstractFilter
         $dateEnd = new DateTime($_dateEnd);
         $dateEnd->setTime(23, 59, 59);
 
-        $parameterCounter += 1;
         $andExpr = $this->getBetweenAndExpression($andExpr, $qb, $searchField, $dateStart->format('Y-m-d H:i:s'), $dateEnd->format('Y-m-d H:i:s'), $parameterCounter);
         $parameterCounter += 2;
 
