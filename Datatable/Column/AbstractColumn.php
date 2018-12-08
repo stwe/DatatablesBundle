@@ -290,6 +290,47 @@ abstract class AbstractColumn implements ColumnInterface
      */
     protected $originalTypeOfField;
 
+    /**
+     * If the field is sent in the response, to show in the webpage
+     * Is set in the ColumnBuilder.
+     * Default: true
+     *
+     * @var bool
+     */
+    protected $sentInResponse;
+
+    /**
+     * If this column displays the total of its cells in its head
+     * Default: false
+     *
+     * @var bool
+     */
+    protected $computeTotal;
+
+    /**
+     * Contains the eventually computed total of the column
+     *
+     * @var mixed
+     */
+    protected $total;
+
+    /**
+     * If the column represents a real column in the database
+     *
+     * @var bool
+     */
+    protected $mapped;
+
+    /**
+     * Force the association property
+     */
+    protected $isAssociation;
+
+    /**
+     * The source of data, if different from title and no dql specified
+     */
+    protected $dataSource;
+
     //-------------------------------------------------
     // Options
     //-------------------------------------------------
@@ -323,6 +364,11 @@ abstract class AbstractColumn implements ColumnInterface
             'join_type' => 'leftJoin',
             'type_of_field' => null,
             'responsive_priority' => null,
+            'sent_in_response' => true,
+            'compute_total' => false,
+            'mapped' => true,
+            'is_association' => false,
+            'data_source' => null
         ));
 
         $resolver->setAllowedTypes('cell_type', array('null', 'string'));
@@ -343,6 +389,11 @@ abstract class AbstractColumn implements ColumnInterface
         $resolver->setAllowedTypes('join_type', 'string');
         $resolver->setAllowedTypes('type_of_field', array('null', 'string'));
         $resolver->setAllowedTypes('responsive_priority', array('null', 'int'));
+        $resolver->setAllowedTypes('sent_in_response', array('bool'));
+        $resolver->setAllowedTypes('compute_total', array('bool'));
+        $resolver->setAllowedTypes('mapped', array('bool'));
+        $resolver->setAllowedTypes('is_association', array('bool'));
+        $resolver->setAllowedTypes('data_source', array('string', 'null'));
 
         $resolver->setAllowedValues('cell_type', array(null, 'th', 'td'));
         $resolver->setAllowedValues('join_type', array(null, 'join', 'leftJoin', 'innerJoin'));
@@ -388,6 +439,10 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function isToManyAssociation()
     {
+        if ($this->isAssociation) {
+            return true;
+        }
+
         if (true === $this->isAssociation() && null !== $this->typeOfAssociation) {
             if (in_array(ClassMetadataInfo::ONE_TO_MANY, $this->typeOfAssociation) || in_array(ClassMetadataInfo::MANY_TO_MANY, $this->typeOfAssociation)) {
                 return true;
@@ -426,9 +481,9 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function renderCellContent(array &$row)
+    public function renderCellContent(array &$row, array &$resultRow)
     {
-        $this->isToManyAssociation() ? $this->renderToMany($row) : $this->renderSingleField($row);
+        $this->isToManyAssociation() ? $this->renderToMany($row, $resultRow) : $this->renderSingleField($row, $resultRow);
     }
 
     /**
@@ -1072,6 +1127,150 @@ abstract class AbstractColumn implements ColumnInterface
     public function setOriginalTypeOfField($originalTypeOfField)
     {
         $this->originalTypeOfField = $originalTypeOfField;
+
+        return $this;
+    }
+
+    /**
+     * Get sentInResponse.
+     *
+     * @return bool
+     */
+    public function getSentInResponse()
+    {
+        return $this->sentInResponse;
+    }
+
+    /**
+     * Set sentIntResponse.
+     *
+     * @param bool $sentInResponse
+     *
+     * @return $this
+     */
+    public function setSentInResponse($sentInResponse)
+    {
+        $this->sentInResponse = $sentInResponse;
+
+        return $this;
+    }
+
+    /**
+     * Get computeTotal.
+     *
+     * @return bool
+     */
+    public function getComputeTotal()
+    {
+        return $this->computeTotal;
+    }
+
+    /**
+     * Set sentIntResponse.
+     *
+     * @param bool $computeTotal
+     *
+     * @return $this
+     */
+    public function setComputeTotal($computeTotal)
+    {
+        $this->computeTotal = $computeTotal;
+
+        return $this;
+    }
+
+    /**
+     * Get total
+     *
+     * @return mixed
+     */
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
+    /**
+     * Set total
+     *
+     * @param $total
+     *
+     * @return $this
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    /**
+     * Get mapped
+     *
+     * @return bool
+     */
+    public function getMapped()
+    {
+        return $this->mapped;
+    }
+
+    /**
+     * Set mapped
+     *
+     * @param bool $mapped
+     *
+     * @return $this
+     */
+    public function setMapped($mapped)
+    {
+        $this->mapped = $mapped;
+
+        return $this;
+    }
+
+    /**
+     * Get isAssociation
+     *
+     * @return bool
+     */
+    public function getIsAssociation()
+    {
+        return $this->isAssociation;
+    }
+
+    /**
+     * Set isAssociation
+     *
+     * @param bool $isAssociation
+     *
+     * @return $this
+     */
+    public function setIsAssociation($isAssociation)
+    {
+        $this->isAssociation = $isAssociation;
+
+        return $this;
+    }
+
+    /**
+     * Get data source
+     *
+     * @return null|string
+     */
+    public function getDataSource()
+    {
+        return $this->isAssociation;
+    }
+
+    /**
+     * Set data source
+     *
+     * @param null|string $dataSource
+     *
+     * @return $this
+     */
+    public function setDataSource($dataSource)
+    {
+        $this->dataSource = $dataSource;
 
         return $this;
     }

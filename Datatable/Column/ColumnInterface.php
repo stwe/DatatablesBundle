@@ -86,7 +86,7 @@ interface ColumnInterface
      *
      * @return mixed
      */
-    public function renderCellContent(array &$row);
+    public function renderCellContent(array &$row, array &$resultRow);
 
     /**
      * Render single field.
@@ -95,7 +95,7 @@ interface ColumnInterface
      *
      * @return $this
      */
-    public function renderSingleField(array &$row);
+    public function renderSingleField(array &$row, array &$resultRow);
 
     /**
      * Render toMany.
@@ -104,7 +104,7 @@ interface ColumnInterface
      *
      * @return $this
      */
-    public function renderToMany(array &$row);
+    public function renderToMany(array &$row, array &$resultRow);
 
     /**
      * Get the template for the 'renderCellContent' function.
