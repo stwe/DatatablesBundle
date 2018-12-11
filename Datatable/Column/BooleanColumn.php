@@ -89,7 +89,6 @@ class BooleanColumn extends AbstractColumn
         $path = Helper::getDataPropertyPath($this->data);
 
         if ($this->accessor->isReadable($row, $path)) {
-
             if (true === $this->isEditableContentRequired($row)) {
                 $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
             } else {
@@ -97,7 +96,6 @@ class BooleanColumn extends AbstractColumn
             }
 
             $this->accessor->setValue($row, $path, $content);
-
         }
 
         return $this;
@@ -112,7 +110,6 @@ class BooleanColumn extends AbstractColumn
         $path = Helper::getDataPropertyPath($this->data, $value);
 
         if ($this->accessor->isReadable($row, $path)) {
-
             $entries = $this->accessor->getValue($row, $path);
 
             if (count($entries) > 0) {
@@ -135,7 +132,6 @@ class BooleanColumn extends AbstractColumn
             } else {
                 // no placeholder - leave this blank
             }
-
         }
 
         return $this;

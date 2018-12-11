@@ -46,12 +46,10 @@ class Column extends AbstractColumn
         $path = Helper::getDataPropertyPath($this->data);
 
         if ($this->accessor->isReadable($row, $path)) {
-
             if ($this->isEditableContentRequired($row)) {
                 $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
                 $this->accessor->setValue($row, $path, $content);
             }
-
         }
 
         return $this;
@@ -66,7 +64,6 @@ class Column extends AbstractColumn
         $path = Helper::getDataPropertyPath($this->data, $value);
 
         if ($this->accessor->isReadable($row, $path)) {
-
             if ($this->isEditableContentRequired($row)) {
                 // e.g. comments[ ].createdBy.username
                 //     => $path = [comments]
@@ -91,7 +88,6 @@ class Column extends AbstractColumn
                     // no placeholder - leave this blank
                 }
             }
-
         }
 
         return $this;
