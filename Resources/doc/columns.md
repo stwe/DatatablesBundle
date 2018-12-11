@@ -681,6 +681,7 @@ All options of [Column](#1-column).
 | formatter           | NumberFormatter Object |                                       | X        | A NumberFormatter instance. |
 | use_format_currency | bool                   | false                                 |          | Use NumberFormatter::formatCurrency instead NumberFormatter::format to format the value. |
 | currency            | null or string         | NumberFormatter::INTL_CURRENCY_SYMBOL |          | The currency code (e.g. EUR). |
+| suffix_string       | null or string         | null                                  |          | An optionna string to display after the number. |
 
 ### Example
 
