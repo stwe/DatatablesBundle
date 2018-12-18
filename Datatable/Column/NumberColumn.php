@@ -46,14 +46,6 @@ class NumberColumn extends Column
      */
     protected $currency;
 
-    /**
-     * Suffix to display after the number
-     * Default: null
-     *
-     * @var string
-     */
-    protected $suffixString;
-
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -134,15 +126,13 @@ class NumberColumn extends Column
         $resolver->setDefaults(
             array(
                 'use_format_currency' => false,
-                'currency'            => null,
-                'suffix_string'       => null
+                'currency' => null,
             )
         );
 
         $resolver->setAllowedTypes('formatter', array('object'));
         $resolver->setAllowedTypes('use_format_currency', array('bool'));
         $resolver->setAllowedTypes('currency', array('null', 'string'));
-        $resolver->setAllowedTypes('suffix_string', array('null', 'string'));
 
         $resolver->setAllowedValues('formatter', function ($formatter) {
             if (!$formatter instanceof \NumberFormatter) {
@@ -231,30 +221,6 @@ class NumberColumn extends Column
         return $this;
     }
 
-    /**
-     * Get suffix string
-     *
-     * @return null|string
-     */
-    public function getSuffixString()
-    {
-        return $this->suffixString;
-    }
-
-    /**
-     * Set suffix string
-     *
-     * @param null|string $suffixString
-     *
-     * @return $this
-     */
-    public function setSuffixString($suffixString)
-    {
-        $this->suffixString = $suffixString;
-
-        return $this;
-    }
-
     //-------------------------------------------------
     // Helper
     //-------------------------------------------------
@@ -283,10 +249,6 @@ class NumberColumn extends Column
         } else {
             // expected number (int or float), other values will be converted to a numeric value
             $data = $this->formatter->format($data);
-        }
-
-        if ($this->getSuffixString() !== null) {
-            $data .= $this->getSuffixString();
         }
 
         return $this->twig->render(
