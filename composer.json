@@ -18,12 +18,12 @@
         "issues": "https://github.com/stwe/DatatablesBundle/issues"
     },
     "require": {
-        "php": ">=5.5.9",
-        "symfony/framework-bundle": "~3.0",
+        "php": ">=7.1",
+        "symfony/framework-bundle": "^3.0|^4.0",
         "doctrine/orm": "^2.5",
-        "symfony/options-resolver": "~3.0",
-        "symfony/property-access": "~3.0",
-        "friendsofsymfony/jsrouting-bundle": "1.6.0"
+        "symfony/options-resolver": "^3.0|^4.0",
+        "symfony/property-access": "^3.0|^4.0",
+        "friendsofsymfony/jsrouting-bundle": "^1.6|^2.0"
     },
     "autoload": {
         "psr-4": { "Sg\\DatatablesBundle\\": "" }

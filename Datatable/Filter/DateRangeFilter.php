@@ -32,13 +32,13 @@ class DateRangeFilter extends AbstractFilter
      */
     public function getTemplate()
     {
-        return 'SgDatatablesBundle:filter:daterange.html.twig';
+        return '@SgDatatables/filter/daterange.html.twig';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, &$parameterCounter)
+    public function addAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, $searchTypeOfField, &$parameterCounter)
     {
         list($_dateStart, $_dateEnd) = explode(' - ', $searchValue);
         $dateStart = new DateTime($_dateStart);

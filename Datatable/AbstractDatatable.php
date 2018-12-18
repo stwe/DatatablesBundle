@@ -129,11 +129,27 @@ abstract class AbstractDatatable implements DatatableInterface
     protected $language;
 
     /**
+     * The unique id for this instance.
+     *
+     * @var int
+     */
+    protected $uniqueId;
+
+    /**
      * The PropertyAccessor.
      *
      * @var PropertyAccessor
      */
     protected $accessor;
+
+    //-------------------------------------------------
+
+    /**
+     * Used to generate unique names.
+     *
+     * @var array
+     */
+    protected static $uniqueCounter = array();
 
     //-------------------------------------------------
     // Ctor.
@@ -160,6 +176,12 @@ abstract class AbstractDatatable implements DatatableInterface
         Twig_Environment $twig
     ) {
         $this->validateName();
+
+        if (isset(self::$uniqueCounter[$this->getName()])) {
+            $this->uniqueId = ++self::$uniqueCounter[$this->getName()];
+        } else {
+            $this->uniqueId = self::$uniqueCounter[$this->getName()] = 1;
+        }
 
         $this->authorizationChecker = $authorizationChecker;
         $this->securityToken = $securityToken;
@@ -280,6 +302,22 @@ abstract class AbstractDatatable implements DatatableInterface
         }
 
         return $options;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUniqueId()
+    {
+        return $this->uniqueId;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUniqueName()
+    {
+        return $this->getName().($this->getUniqueId() > 1 ? '-'.$this->getUniqueId() : '');
     }
 
     //-------------------------------------------------

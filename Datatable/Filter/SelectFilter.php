@@ -56,32 +56,29 @@ class SelectFilter extends AbstractFilter
      */
     public function getTemplate()
     {
-        return 'SgDatatablesBundle:filter:select.html.twig';
+        return '@SgDatatables/filter/select.html.twig';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, &$parameterCounter)
+    public function addAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, $searchTypeOfField, &$parameterCounter)
     {
         $searchValues = explode(',', $searchValue);
         if (true === $this->multiple && is_array($searchValues) && count($searchValues) > 1) {
             $orExpr = $qb->expr()->orX();
 
-            foreach ($searchValues as $searchItem) {
-                $this->setSelectSearchType($searchItem);
-                $orExpr->add($this->getAndExpression($qb->expr()->andX(), $qb, $searchField, $searchItem, $parameterCounter));
-                $parameterCounter++;
+            foreach ($searchValues as $searchValue) {
+                $this->setSelectSearchType($searchValue);
+                $orExpr->add($this->getExpression($qb->expr()->andX(), $qb, $this->searchType, $searchField, $searchValue, $searchTypeOfField, $parameterCounter));
             }
 
             return $andExpr->add($orExpr);
         }
 
         $this->setSelectSearchType($searchValue);
-        $andExpr = $this->getAndExpression($andExpr, $qb, $searchField, $searchValue, $parameterCounter);
-        $parameterCounter++;
 
-        return $andExpr;
+        return $this->getExpression($andExpr, $qb, $this->searchType, $searchField, $searchValue, $searchTypeOfField, $parameterCounter);
     }
 
     //-------------------------------------------------

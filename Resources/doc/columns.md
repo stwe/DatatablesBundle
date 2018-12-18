@@ -15,11 +15,11 @@ Represents the most basic column.
 
 ### Options template
 
-SgDatatablesBundle:column:column.html.twig
+@SgDatatables/column/column.html.twig
 
 ### Cell content template
 
-SgDatatablesBundle:render:column.html.twig
+@SgDatatables/render/column.html.twig
 
 ### Options
 
@@ -138,6 +138,7 @@ $this->columnBuilder
     ->add('full_name', Column::class, array(
         'title' => 'Full name',
         'dql' => "CONCAT(user.firstname, ' ', user.lastname)",
+        'type_of_field' => 'string',
         'searchable' => true,
         'orderable' => true,
     ))
@@ -146,6 +147,7 @@ $this->columnBuilder
     ->add('post_count', Column::class, array(
         'title' => 'User posts count',
         'dql' => '(SELECT COUNT({p}) FROM MyBundle:Post {p} WHERE {p}.user = user)',
+        'type_of_field' => 'integer',
         'searchable' => true,
         'orderable' => true,
     ))
@@ -159,11 +161,11 @@ Represents a column, optimized for boolean values.
 
 ### Options template
 
-SgDatatablesBundle:column:column.html.twig
+@SgDatatables/column/column.html.twig
 
 ### Cell content template
 
-SgDatatablesBundle:render:boolean.html.twig
+@SgDatatables/render/boolean.html.twig
 
 ### Options
 
@@ -228,11 +230,11 @@ Represents a column, optimized for date time values.
 
 ### Options template
 
-SgDatatablesBundle:column:column.html.twig
+@SgDatatables/column/column.html.twig
 
 ### Cell content template
 
-SgDatatablesBundle:render:datetime.html.twig
+@SgDatatables/render/datetime.html.twig
 
 ### Options
 
@@ -281,11 +283,11 @@ A complete example of an ImageColumn can be found in the [demo bundle](https://g
 
 ### Options template
 
-SgDatatablesBundle:column:column.html.twig
+@SgDatatables/column/column.html.twig
 
 ### Cell content template
 
-SgDatatablesBundle:render:thumb.html.twig
+@SgDatatables/render/thumb.html.twig
 
 ### Options
 
@@ -343,7 +345,7 @@ Represents a virtual column.
 
 ### Options template
 
-SgDatatablesBundle:Column:column.html.twig
+@SgDatatables/column/column.html.twig
 
 ### Options
 
@@ -408,11 +410,11 @@ A Column to display CRUD action labels or buttons.
 
 ### Options template
 
-SgDatatablesBundle:Column:column.html.twig
+@SgDatatables/column/column.html.twig
 
 ### Cell content template
 
-SgDatatablesBundle:render:action.html.twig
+@SgDatatables/render/action.html.twig
 
 ### Action column options
 
@@ -440,7 +442,7 @@ SgDatatablesBundle:render:action.html.twig
 | label               | null or string         | null    |          | A label for the Action. |
 | confirm             | bool                   | false   |          | Show confirm message if true. |
 | confirm_message     | null or string         | null    |          | The confirm message. |
-| attributes          | null or array          | null    |          | HTML Tag attributes (except 'href' and 'value'). |
+| attributes          | null, array or Closure | null    |          | HTML Tag attributes (except 'href' and 'value'). |
 | button              | bool                   | false   |          | Render a button instead of a link. |
 | button_value        | null or string         | null    |          | The button value. |
 | button_value_prefix | bool                   | false   |          | Use the Datatable-Name as prefix for the button value. |
@@ -545,11 +547,11 @@ Support for Bulk Actions.
 
 ### Options template
 
-SgDatatablesBundle:Column:multiselect.html.twig
+@SgDatatables/column/multiselect.html.twig
 
 ### Cell content template
 
-SgDatatablesBundle:render:multiselect.html.twig
+@SgDatatables/render/multiselect.html.twig
 
 ### Options
 
@@ -666,7 +668,7 @@ Represents a column, optimized for numbers.
 
 ### Options template
 
-SgDatatablesBundle:Column:column.html.twig
+@SgDatatables/column/column.html.twig
 
 ### Options
 

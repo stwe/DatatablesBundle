@@ -125,4 +125,18 @@ interface DatatableInterface
      * @return string
      */
     public function getName();
+
+    /**
+     * Returns the unique id of this datatable view.
+     *
+     * @return int
+     */
+    public function getUniqueId();
+
+    /**
+     * Returns the unique name of this datatable view.
+     *
+     * @return string
+     */
+    public function getUniqueName();
 }

@@ -6,8 +6,8 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-{% extends 'SgDatatablesBundle:column:column.html.twig' %}
+{% extends '@SgDatatables/column/column.html.twig' %}
 
 {% block title %}
-    "title": "<input type='checkbox' name='sg-datatables-{{ sg_datatables_view.name }}-multiselect-checkall' class='sg-datatables-{{ sg_datatables_view.name }}-multiselect-checkall' />",
+    "title": "<input type='checkbox' name='sg-datatables-{{ sg_datatables_view.uniqueName }}-multiselect-checkall' class='sg-datatables-{{ sg_datatables_view.uniqueName }}-multiselect-checkall' />",
 {% endblock %}

@@ -13,6 +13,8 @@ namespace Sg\DatatablesBundle\Datatable;
 
 use Sg\DatatablesBundle\Datatable\Extension\Buttons;
 use Sg\DatatablesBundle\Datatable\Extension\Responsive;
+use Sg\DatatablesBundle\Datatable\Extension\Select;
+use Sg\DatatablesBundle\Datatable\Extension\RowGroup;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -49,6 +51,24 @@ class Extensions
      */
     protected $responsive;
 
+    /**
+     * The Select Extension.
+     * Select adds item selection capabilities to a DataTable.
+     * Default: null
+     *
+     * @var null|array|bool|Select
+     */
+    protected $select;
+
+    /**
+     * The RowGroup Extension.
+     * Automatically group rows.
+     * Default: null
+     *
+     * @var null|array|bool|RowGroup
+     */
+    protected $rowGroup;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -77,10 +97,14 @@ class Extensions
         $resolver->setDefaults(array(
             'buttons' => null,
             'responsive' => null,
+            'select' => null,
+            'row_group' => null,
         ));
 
         $resolver->setAllowedTypes('buttons', array('null', 'array', 'bool'));
         $resolver->setAllowedTypes('responsive', array('null', 'array', 'bool'));
+        $resolver->setAllowedTypes('select', array('null', 'array', 'bool'));
+        $resolver->setAllowedTypes('row_group', array('null', 'array', 'bool'));
 
         return $this;
     }
@@ -142,6 +166,64 @@ class Extensions
             $this->responsive = $newResponsive->set($responsive);
         } else {
             $this->responsive = $responsive;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get select.
+     *
+     * @return null|array|bool|Select
+     */
+    public function getSelect()
+    {
+        return $this->select;
+    }
+
+    /**
+     * Set select.
+     *
+     * @param null|array|bool $select
+     *
+     * @return $this
+     */
+    public function setSelect($select)
+    {
+        if (is_array($select)) {
+            $newSelect = new Select();
+            $this->select = $newSelect->set($select);
+        } else {
+            $this->select = $select;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get rowGroup.
+     *
+     * @return null|array|bool|RowGroup
+     */
+    public function getRowGroup()
+    {
+        return $this->rowGroup;
+    }
+
+    /**
+     * Set rowGroup.
+     *
+     * @param null|array|bool $rowGroup
+     * @return $this
+     * @throws \Exception
+     */
+    public function setRowGroup($rowGroup)
+    {
+        if (is_array($rowGroup)) {
+            $newRowGroup = new RowGroup();
+            $this->rowGroup = $newRowGroup->set($rowGroup);
+        } else {
+            $this->rowGroup = $rowGroup;
         }
 
         return $this;

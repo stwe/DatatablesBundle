@@ -10,42 +10,42 @@
 
     $(document).ready(function () {
 
-        var selector = "#sg-datatables-{{ sg_datatables_view.name }}";
+        var selector = "#sg-datatables-{{ sg_datatables_view.uniqueName }}";
         var oTable;
 
         var defaults = {
         };
 
         var language = {
-            {% include 'SgDatatablesBundle:datatable:language.html.twig' %}
+            {% include '@SgDatatables/datatable/language.html.twig' %}
         };
 
         var ajax = {
-            {% include 'SgDatatablesBundle:datatable:ajax.html.twig' %}
+            {% include '@SgDatatables/datatable/ajax.html.twig' %}
         };
 
         var options = {
-            {% include 'SgDatatablesBundle:datatable:options.html.twig' %}
+            {% include '@SgDatatables/datatable/options.html.twig' %}
         };
 
         var features = {
-            {% include 'SgDatatablesBundle:datatable:features.html.twig' %}
+            {% include '@SgDatatables/datatable/features.html.twig' %}
         };
 
         var callbacks = {
-            {% include 'SgDatatablesBundle:datatable:callbacks.html.twig' %}
+            {% include '@SgDatatables/datatable/callbacks.html.twig' %}
         };
 
         var extensions = {
-            {% include 'SgDatatablesBundle:datatable:extensions.html.twig' %}
+            {% include '@SgDatatables/datatable/extensions.html.twig' %}
         };
 
         var columns = {
-            {% include 'SgDatatablesBundle:datatable:columns.html.twig' %}
+            {% include '@SgDatatables/datatable/columns.html.twig' %}
         };
 
         var initialSearch = {
-            {% include 'SgDatatablesBundle:datatable:initial_search.html.twig' %}
+            {% include '@SgDatatables/datatable/initial_search.html.twig' %}
         };
 
         function postCreateDatatable(pipeline) {
@@ -68,7 +68,7 @@
 
             if (!$.fn.dataTable.isDataTable(selector)) {
                 $(selector)
-                    {% include 'SgDatatablesBundle:datatable:events.html.twig' %}
+                    {% include '@SgDatatables/datatable/events.html.twig' %}
                 ;
             
                 oTable = $(selector)
@@ -77,7 +77,7 @@
                     ;
 
                 {% if true == sg_datatables_view.options.individualFiltering %}
-                    {% include 'SgDatatablesBundle:datatable:search.js.twig' %}
+                    {% include '@SgDatatables/datatable/search.js.twig' %}
                 {% endif %}
             }
         }

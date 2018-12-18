@@ -88,13 +88,17 @@ class BooleanColumn extends AbstractColumn
     {
         $path = Helper::getDataPropertyPath($this->data);
 
-        if (true === $this->isEditableContentRequired($row)) {
-            $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
-        } else {
-            $content = $this->renderTemplate($this->accessor->getValue($row, $path));
-        }
+        if ($this->accessor->isReadable($row, $path)) {
 
-        $this->accessor->setValue($row, $path, $content);
+            if (true === $this->isEditableContentRequired($row)) {
+                $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
+            } else {
+                $content = $this->renderTemplate($this->accessor->getValue($row, $path));
+            }
+
+            $this->accessor->setValue($row, $path, $content);
+
+        }
 
         return $this;
     }
@@ -107,27 +111,31 @@ class BooleanColumn extends AbstractColumn
         $value = null;
         $path = Helper::getDataPropertyPath($this->data, $value);
 
-        $entries = $this->accessor->getValue($row, $path);
+        if ($this->accessor->isReadable($row, $path)) {
 
-        if (count($entries) > 0) {
-            foreach ($entries as $key => $entry) {
-                $currentPath = $path.'['.$key.']'.$value;
-                $currentObjectPath = Helper::getPropertyPathObjectNotation($path, $key, $value);
+            $entries = $this->accessor->getValue($row, $path);
 
-                if (true === $this->isEditableContentRequired($row)) {
-                    $content = $this->renderTemplate(
-                        $this->accessor->getValue($row, $currentPath),
-                        $row[$this->editable->getPk()],
-                        $currentObjectPath
-                    );
-                } else {
-                    $content = $this->renderTemplate($this->accessor->getValue($row, $currentPath));
+            if (count($entries) > 0) {
+                foreach ($entries as $key => $entry) {
+                    $currentPath = $path . '[' . $key . ']' . $value;
+                    $currentObjectPath = Helper::getPropertyPathObjectNotation($path, $key, $value);
+
+                    if (true === $this->isEditableContentRequired($row)) {
+                        $content = $this->renderTemplate(
+                            $this->accessor->getValue($row, $currentPath),
+                            $row[$this->editable->getPk()],
+                            $currentObjectPath
+                        );
+                    } else {
+                        $content = $this->renderTemplate($this->accessor->getValue($row, $currentPath));
+                    }
+
+                    $this->accessor->setValue($row, $currentPath, $content);
                 }
-
-                $this->accessor->setValue($row, $currentPath, $content);
+            } else {
+                // no placeholder - leave this blank
             }
-        } else {
-            // no placeholder - leave this blank
+
         }
 
         return $this;
@@ -138,7 +146,7 @@ class BooleanColumn extends AbstractColumn
      */
     public function getCellContentTemplate()
     {
-        return 'SgDatatablesBundle:render:boolean.html.twig';
+        return '@SgDatatables/render/boolean.html.twig';
     }
 
     /**
@@ -148,7 +156,7 @@ class BooleanColumn extends AbstractColumn
     {
         if ($this->editable instanceof EditableInterface) {
             return $this->twig->render(
-                'SgDatatablesBundle:column:column_post_create_dt.js.twig',
+                '@SgDatatables/column/column_post_create_dt.js.twig',
                 array(
                     'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
                     'editable_options' => $this->editable,
@@ -336,7 +344,7 @@ class BooleanColumn extends AbstractColumn
     private function renderTemplate($data, $pk = null, $path = null)
     {
         $renderVars = array(
-            'data' => $data,
+            'data' => $this->isCustomDql() && in_array($data, array(0, 1, '0', '1'), true) ? boolval($data) : $data,
             'default_content' => $this->getDefaultContent(),
             'true_label' => $this->trueLabel,
             'true_icon' => $this->trueIcon,
