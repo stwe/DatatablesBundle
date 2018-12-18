@@ -98,3 +98,41 @@
         },
     {% endif %}
 {% endif %}
+
+{# RowGroup Extension #}
+{% if sg_datatables_view.extensions.rowGroup is not same as(null) %}
+    rowGroup: {
+    {% if sg_datatables_view.extensions.rowGroup.enable is same as(true) %}
+        enable: true,
+    {% endif %}
+    {% if sg_datatables_view.extensions.rowGroup.dataSrc is defined and sg_datatables_view.extensions.rowGroup.dataSrc is not same as(null) %}
+        dataSrc: '{{ sg_datatables_view.extensions.rowGroup.dataSrc }}',
+    {% endif %}
+    {% if sg_datatables_view.extensions.rowGroup.startRender is defined and sg_datatables_view.extensions.rowGroup.startRender is not same as(null) %}
+        {% set vars = {} %}
+        {% if sg_datatables_view.extensions.rowGroup.startRender.vars is defined %}
+            {% set vars = sg_datatables_view.extensions.rowGroup.startRender.vars %}
+        {% endif %}
+        startRender: {% include sg_datatables_view.extensions.rowGroup.startRender.template with vars %},
+    {% endif %}
+    {% if sg_datatables_view.extensions.rowGroup.endRender is defined and sg_datatables_view.extensions.rowGroup.endRender is not same as(null) %}
+        {% set vars = {} %}
+        {% if sg_datatables_view.extensions.rowGroup.endRender.vars is defined %}
+            {% set vars = sg_datatables_view.extensions.rowGroup.endRender.vars %}
+        {% endif %}
+        endRender: {% include sg_datatables_view.extensions.rowGroup.endRender.template with vars %},
+    {% endif %}
+    {% if sg_datatables_view.extensions.rowGroup.className is defined and sg_datatables_view.extensions.rowGroup.className is not same as(null) %}
+        className: '{{ sg_datatables_view.extensions.rowGroup.className }}'
+    {% endif %}
+    {% if sg_datatables_view.extensions.rowGroup.emptyDataGroup is defined and sg_datatables_view.extensions.rowGroup.emptyDataGroup is not same as(null) %}
+        emptyDataGroup: '{{ sg_datatables_view.extensions.rowGroup.emptyDataGroup }}'
+    {% endif %}
+    {% if sg_datatables_view.extensions.rowGroup.endClassName is defined and sg_datatables_view.extensions.rowGroup.endClassName is not same as(null) %}
+        endClassName: '{{ sg_datatables_view.extensions.rowGroup.endClassName }}'
+    {% endif %}
+    {% if sg_datatables_view.extensions.rowGroup.startClassName is defined and sg_datatables_view.extensions.rowGroup.startClassName is not same as(null) %}
+        startClassName: '{{ sg_datatables_view.extensions.rowGroup.startClassName }}'
+    {% endif %}
+    },
+{% endif %}

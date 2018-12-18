@@ -373,7 +373,7 @@ abstract class AbstractFilter implements FilterInterface
             case 'decimal':
             case 'float':
                 if (is_numeric($searchValue)) {
-                    $searchValue = floatval($searchValue);
+                    $searchValue = (float) $searchValue;
                 } else {
                     $incompatibleTypeOfField = true;
                 }
@@ -382,8 +382,8 @@ abstract class AbstractFilter implements FilterInterface
             case 'bigint':
             case 'smallint':
             case 'boolean':
-                if ($searchValue == strval(intval($searchValue))) {
-                    $searchValue = intval($searchValue);
+                if ($searchValue == (string) (int) $searchValue) {
+                    $searchValue = (int) $searchValue;
                 } else {
                     $incompatibleTypeOfField = true;
                 }
@@ -465,6 +465,8 @@ abstract class AbstractFilter implements FilterInterface
      */
     protected function getBetweenAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $from, $to, $parameterCounter)
     {
+        $parameterCounter++;
+
         $k = $parameterCounter + 1;
         $andExpr->add($qb->expr()->between($searchField, '?'.$parameterCounter, '?'.$k));
         $qb->setParameter($parameterCounter, $from);

@@ -1,7 +1,5 @@
 # SgDatatablesBundle
 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/61803d08-17ab-4a69-ad13-6ec448762332/big.png)](https://insight.sensiolabs.com/projects/61803d08-17ab-4a69-ad13-6ec448762332)
-
 [![knpbundles.com](http://knpbundles.com/stwe/DatatablesBundle/badge)](http://knpbundles.com/stwe/DatatablesBundle)
 
 [![Build Status](https://travis-ci.org/stwe/DatatablesBundle.svg?branch=master)](https://travis-ci.org/stwe/DatatablesBundle)
