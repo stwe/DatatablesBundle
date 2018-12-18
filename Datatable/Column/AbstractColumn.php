@@ -351,6 +351,39 @@ abstract class AbstractColumn implements ColumnInterface
         return $this;
     }
 
+    public function getTwigOptions()
+    {
+        $options = [
+            'cellType' => $this->cellType,
+            'contentPadding' => $this->contentPadding,
+            'defaultContent' => $this->defaultContent,
+            'name' => $this->name,
+            'width' => $this->width,
+            'title' => $this->title,
+            'searchable' => $this->searchable,
+            'visible' => $this->visible,
+            'orderable' => $this->orderable,
+            'responsivePriority' => $this->responsivePriority,
+            'data' => $this->data
+        ];
+
+        if (true === $this->visible) {
+            $options['className'] = $this->className;
+        }
+
+        if (false === $this->visible) {
+            $options['className'] = ' never' . $this->className;
+        }
+
+        if (true === $this->orderable) {
+            $options['orderSequence'] = $this->orderSequence;
+            $options['orderData'] = $this->orderData;
+        }
+
+        // ignore null values
+        return array_filter($options);
+    }
+
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -362,9 +395,9 @@ abstract class AbstractColumn implements ColumnInterface
     {
         if (true === $this->isCustomDql()) {
             return true;
-        } else {
-            return preg_match('/^[a-zA-Z0-9_\\-\\.]+$/', $dql) ? true : false;
         }
+
+        return preg_match('/^[a-zA-Z0-9_\\-\\.]+$/', $dql) ? true : false;
     }
 
     /**
@@ -391,9 +424,9 @@ abstract class AbstractColumn implements ColumnInterface
         if (true === $this->isAssociation() && null !== $this->typeOfAssociation) {
             if (in_array(ClassMetadataInfo::ONE_TO_MANY, $this->typeOfAssociation) || in_array(ClassMetadataInfo::MANY_TO_MANY, $this->typeOfAssociation)) {
                 return true;
-            } else {
-                return false;
             }
+
+            return false;
         }
 
         return false;
