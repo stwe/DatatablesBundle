@@ -162,7 +162,7 @@ $(".sg-datatables-{{ datatable_name }}-multiselect-action").on("click", function
         if (url != null) {
             $.ajax({
                 url: url,
-                type: "POST",
+                method: "POST",
                 cache: false,
                 data: {
                     'data': items,
