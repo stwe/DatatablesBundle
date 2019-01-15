@@ -9,4 +9,4 @@ sg:
         daterange:
             apply: "Appliquer"
             cancel: "Annuler"
-            format: "DD/MM/YYYY"
+            format: "YYYY-MM-DD"
