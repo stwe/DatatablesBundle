@@ -130,7 +130,7 @@ abstract class AbstractFilter implements FilterInterface
         $resolver->setAllowedTypes('placeholder', 'bool');
         $resolver->setAllowedTypes('placeholder_text', array('null', 'string'));
 
-        $resolver->setAllowedValues('search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
+        $resolver->setAllowedValues('search_type', array('like','%like','like%','notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
 
         return $this;
     }
@@ -400,6 +400,14 @@ abstract class AbstractFilter implements FilterInterface
         }
 
         switch ($searchType) {
+            case 'like%':
+                $expr->add($qb->expr()->like($searchField, '?'.$parameterCounter));
+                $qb->setParameter($parameterCounter, $searchValue.'%');
+                break;
+            case '%like':
+                $expr->add($qb->expr()->like($searchField, '?'.$parameterCounter));
+                $qb->setParameter($parameterCounter, '%'.$searchValue);
+                break;
             case 'like':
                 $expr->add($qb->expr()->like($searchField, '?'.$parameterCounter));
                 $qb->setParameter($parameterCounter, '%'.$searchValue.'%');

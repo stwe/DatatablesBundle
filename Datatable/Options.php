@@ -318,7 +318,7 @@ class Options
         $resolver->setAllowedTypes('global_search_type', 'string');
 
         $resolver->setAllowedValues('individual_filtering_position', array('head', 'foot', 'both'));
-        $resolver->setAllowedValues('global_search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
+        $resolver->setAllowedValues('global_search_type', array('like','%like','like%','notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
 
         return $this;
     }
