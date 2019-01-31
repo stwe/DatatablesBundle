@@ -38,7 +38,15 @@
 
 {% set filter_select_select_options %}
     {% for key, name in column.filter.selectOptions %}
-        {% if column.filter.initialSearch is not same as(null) and column.filter.initialSearch is same as(key) %}
+        {% if column.filter.initialSearch is iterable %}
+            {% set selected = '' %}
+            {% for fi in column.filter.initialSearch %}
+                {% if fi is not same as(null) and fi is same as(key) %}
+                    {% set selected = 'selected="selected"' %}
+                {% endif %}
+            {% endfor %}
+            <option value="{{ key }}" {{ selected }}>{{ name }}</option>
+        {% elseif column.filter.initialSearch is not same as(null) and column.filter.initialSearch is same as(key) %}
             <option value="{{ key }}" selected="selected">{{ name }}</option>
         {% else %}
             <option value="{{ key }}">{{ name }}</option>

@@ -5,9 +5,18 @@
  #
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
- #}
+#}
+
 "searchCols": [
-    {% for column in sg_datatables_view.columnBuilder.columns %}
-        {% if column.filter.initialSearch is defined and column.filter.initialSearch|length > 0 %}{"search" : "{{ column.filter.initialSearch }}"}{% else %}null{% endif %},
-    {% endfor %}
+{% for column in sg_datatables_view.columnBuilder.columns %}
+    {% if column.filter.initialSearch is defined %}
+        {% if column.filter.initialSearch is iterable %}
+            {"search" : "{% for fi in column.filter.initialSearch %}{{ fi }},{% endfor %}"},
+        {% elseif column.filter.initialSearch|length > 0 %}
+            {"search" : "{{ column.filter.initialSearch }}"},
+        {% else %}
+            null,
+        {% endif %}
+    {% endif %}
+{% endfor %}
 ]
