@@ -19,4 +19,5 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  * @package Sg\DatatablesBundle
  */
 class SgDatatablesBundle extends Bundle
-{}
+{
+}

@@ -413,7 +413,6 @@ class DatatableQueryBuilder
     {
         // global filtering
         if (isset($this->requestParams['search']) && '' != $this->requestParams['search']['value']) {
-
             $orExpr = $qb->expr()->orX();
 
             $globalSearch = $this->requestParams['search']['value'];
