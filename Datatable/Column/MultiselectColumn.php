@@ -61,6 +61,14 @@ class MultiselectColumn extends ActionColumn
      */
     protected $renderActionsToId;
 
+    /**
+     * Click on the entire line for the checkbox otherwise only on the first column.
+     * Default: true
+     *
+     * @var bool
+     */
+    protected $rowTrClick;
+
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -164,6 +172,7 @@ class MultiselectColumn extends ActionColumn
             'value_prefix' => false,
             'render_actions_to_id' => null,
             'render_if' => null,
+            'row_tr_click' => true,
         ));
 
         $resolver->setAllowedTypes('attributes', array('null', 'array'));
@@ -171,6 +180,7 @@ class MultiselectColumn extends ActionColumn
         $resolver->setAllowedTypes('value_prefix', 'bool');
         $resolver->setAllowedTypes('render_actions_to_id', array('null', 'string'));
         $resolver->setAllowedTypes('render_if', array('null', 'Closure'));
+        $resolver->setAllowedTypes('row_tr_click', 'bool');
 
         return $this;
     }
@@ -337,4 +347,29 @@ class MultiselectColumn extends ActionColumn
 
         return $this;
     }
+
+    /**
+     * Get row tr click.
+     *
+     * @return bool
+     */
+    public function isRowTrClick()
+    {
+        return $this->rowTrClick;
+    }
+
+    /**
+     * Set row tr click.
+     *
+     * @param bool $rowTrClick
+     *
+     * @return $this
+     */
+    public function setRowTrClick($rowTrClick)
+    {
+        $this->rowTrClick = $rowTrClick;
+
+        return $this;
+    }
+
 }

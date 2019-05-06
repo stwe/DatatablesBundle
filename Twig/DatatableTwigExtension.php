@@ -215,6 +215,7 @@ class DatatableTwigExtension extends Twig_Extension
         $actions = $this->accessor->getValue($multiselectColumn, 'actions');
         $domId = $this->accessor->getValue($multiselectColumn, 'renderActionsToId');
         $datatableName = $this->accessor->getValue($multiselectColumn, 'datatableName');
+        $rowTrClick = $this->accessor->getValue($multiselectColumn, 'rowTrClick');
 
         /** @var Action $action */
         foreach ($actions as $actionKey => $action) {
@@ -255,6 +256,7 @@ class DatatableTwigExtension extends Twig_Extension
                 'datatable_name' => $datatableName,
                 'dom_id' => $domId,
                 'pipeline' => $pipeline,
+                'row_tr_click' => $rowTrClick
             )
         );
     }
