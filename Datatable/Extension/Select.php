@@ -17,7 +17,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * @package Sg\DatatablesBundle\Datatable\Extension
  */
-class Select {
+class Select
+{
     /**
      * Use the OptionsResolver.
      */
@@ -76,7 +77,8 @@ class Select {
     /**
      * Select constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->initOptions();
     }
 
@@ -91,7 +93,8 @@ class Select {
      *
      * @return $this
      */
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver)
+    {
         $resolver->setDefaults(
             array(
                 'blurable'   => null,
@@ -124,7 +127,8 @@ class Select {
      *
      * @return boolean|null
      */
-    public function getBlurable() {
+    public function getBlurable()
+    {
         return $this->blurable;
     }
 
@@ -135,7 +139,8 @@ class Select {
      *
      * @return $this
      */
-    public function setBlurable($blurable) {
+    public function setBlurable($blurable)
+    {
         $this->blurable = $blurable;
 
         return $this;
@@ -146,7 +151,8 @@ class Select {
      *
      * @return null|string
      */
-    public function getClassName() {
+    public function getClassName()
+    {
         return $this->className;
     }
 
@@ -157,7 +163,8 @@ class Select {
      *
      * @return $this
      */
-    public function setClassName($className) {
+    public function setClassName($className)
+    {
         $this->className = $className;
 
         return $this;
@@ -168,7 +175,8 @@ class Select {
      *
      * @return boolean|null
      */
-    public function getInfo() {
+    public function getInfo()
+    {
         return $this->info;
     }
 
@@ -179,7 +187,8 @@ class Select {
      *
      * @return $this
      */
-    public function setInfo($info) {
+    public function setInfo($info)
+    {
         $this->info = $info;
 
         return $this;
@@ -190,7 +199,8 @@ class Select {
      *
      * @return string|null
      */
-    public function getItems() {
+    public function getItems()
+    {
         return $this->items;
     }
 
@@ -201,7 +211,8 @@ class Select {
      *
      * @return $this
      */
-    public function setItems($items) {
+    public function setItems($items)
+    {
         $this->items = $items;
 
         return $this;
@@ -212,7 +223,8 @@ class Select {
      *
      * @return string|null
      */
-    public function getSelector() {
+    public function getSelector()
+    {
         return $this->selector;
     }
 
@@ -223,7 +235,8 @@ class Select {
      *
      * @return $this
      */
-    public function setSelector($selector) {
+    public function setSelector($selector)
+    {
         $this->selector = $selector;
 
         return $this;
@@ -234,7 +247,8 @@ class Select {
      *
      * @return string|null
      */
-    public function getStyle() {
+    public function getStyle()
+    {
         return $this->style;
     }
 
@@ -245,7 +259,8 @@ class Select {
      *
      * @return $this
      */
-    public function setStyle($style) {
+    public function setStyle($style)
+    {
         $this->style = $style;
 
         return $this;
