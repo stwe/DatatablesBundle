@@ -43,7 +43,7 @@ class Ajax
      *
      * @var string
      */
-    protected $type;
+    protected $method;
 
     /**
      * Data to be sent.
@@ -90,17 +90,17 @@ class Ajax
     {
         $resolver->setDefaults(array(
             'url' => null,
-            'type' => 'GET',
+            'method' => 'GET',
             'data' => null,
             'pipeline' => 0,
         ));
 
         $resolver->setAllowedTypes('url', array('null', 'string'));
-        $resolver->setAllowedTypes('type', 'string');
+        $resolver->setAllowedTypes('method', 'string');
         $resolver->setAllowedTypes('data', array('null', 'array'));
         $resolver->setAllowedTypes('pipeline', 'int');
 
-        $resolver->setAllowedValues('type', array('GET', 'POST'));
+        $resolver->setAllowedValues('method', array('GET', 'POST'));
 
         return $this;
     }
@@ -134,27 +134,47 @@ class Ajax
     }
 
     /**
-     * Get type.
+     * Get method.
      *
      * @return string
      */
-    public function getType()
+    public function getMethod()
     {
-        return $this->type;
+        return $this->method;
     }
 
     /**
-     * Set type.
+     * @return string
+     * @deprecated Use getMethod() instead
+     */
+    public function getType()
+    {
+        return $this->getMethod();
+    }
+
+    /**
+     * Set method.
      *
-     * @param string $type
+     * @param string $method
      *
      * @return $this
      */
-    public function setType($type)
+    public function setMethod($method)
     {
-        $this->type = $type;
+        $this->method = $method;
 
         return $this;
+    }
+
+    /**
+     * @param $method
+     *
+     * @return \Sg\DatatablesBundle\Datatable\Ajax
+     * @deprecated Use setMethod() instead
+     */
+    public function setType($method)
+    {
+        return $this->setMethod($method);
     }
 
     /**

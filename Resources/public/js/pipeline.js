@@ -5,7 +5,7 @@ $.fn.dataTable.pipeline = function ( opts ) {
         url: '',      // script url
         data: null,   // function or object with parameters to send to the server
                       // matching how `ajax.data` works in DataTables
-        method: 'GET' // Ajax HTTP method
+        method: opts.method // Ajax HTTP method
     }, opts );
 
     // Private variables for storing the cache
@@ -73,7 +73,7 @@ $.fn.dataTable.pipeline = function ( opts ) {
             }
 
             settings.jqXHR = $.ajax( {
-                "type":     conf.method,
+                "method":   conf.method,
                 "url":      conf.url,
                 "data":     request,
                 "dataType": "json",

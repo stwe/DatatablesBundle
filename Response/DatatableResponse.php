@@ -193,7 +193,7 @@ class DatatableResponse
     private function getRequestParams()
     {
         $parameterBag = null;
-        $type = $this->datatable->getAjax()->getType();
+        $type = $this->datatable->getAjax()->getMethod();
 
         if ('GET' === strtoupper($type)) {
             $parameterBag = $this->request->query;
