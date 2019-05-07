@@ -25,6 +25,12 @@
         "symfony/property-access": "^3.0|^4.0",
         "friendsofsymfony/jsrouting-bundle": "^1.6|^2.0"
     },
+    "require-dev": {
+        "phpunit/phpunit": "5.7.*",
+        "symfony/security": "^4.2",
+        "symfony/translation": "^4.2",
+        "twig/twig": "^2.9"
+    },
     "autoload": {
         "psr-4": { "Sg\\DatatablesBundle\\": "" }
     }

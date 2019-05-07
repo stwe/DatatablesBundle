@@ -12,7 +12,13 @@
 namespace Sg\DatatablesBundle\Tests\Datatables;
 
 use Sg\DatatablesBundle\Datatable\AbstractDatatable;
+use Sg\DatatablesBundle\Datatable\Column\ActionColumn;
+use Sg\DatatablesBundle\Datatable\Column\BooleanColumn;
 use Sg\DatatablesBundle\Datatable\Column\Column;
+use Sg\DatatablesBundle\Datatable\Column\DateTimeColumn;
+use Sg\DatatablesBundle\Datatable\Column\ImageColumn;
+use Sg\DatatablesBundle\Datatable\Column\NumberColumn;
+use Sg\DatatablesBundle\Datatable\Column\VirtualColumn;
 
 /**
  * Class PostDatatable
@@ -41,6 +47,29 @@ class PostDatatable extends AbstractDatatable
             ))
             ->add('title', Column::class, array(
                 'title' => 'Title',
+            ))
+            ->add('boolean', BooleanColumn::class, array(
+                'title' => 'Boolean',
+            ))
+            ->add('datetime', DateTimeColumn::class, array(
+                'title' => 'DateTimeColumn',
+            ))
+            ->add('image', ImageColumn::class, array(
+                'title' => 'ImageColumn',
+                'imagine_filter' => '',
+                'relative_path' => '',
+            ))
+            ->add(null, ActionColumn::class, array(
+                'title' => 'ActionColumn',
+                'actions' => [
+                ]
+            ))
+            ->add('number', NumberColumn::class, array(
+                'title' => 'NumberColumn',
+                'formatter' => new \NumberFormatter('en_US', \NumberFormatter::DECIMAL)
+            ))
+            ->add('virtual', VirtualColumn::class, array(
+                'title' => 'VirtualColumn',
             ))
         ;
     }
