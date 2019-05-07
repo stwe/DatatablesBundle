@@ -18,7 +18,7 @@
         "issues": "https://github.com/stwe/DatatablesBundle/issues"
     },
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.2",
         "symfony/framework-bundle": "^3.0|^4.0",
         "doctrine/orm": "^2.5",
         "symfony/options-resolver": "^3.0|^4.0",
@@ -27,8 +27,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "5.7.*",
-        "symfony/security": "^4.2",
-        "symfony/translation": "^4.2",
+        "symfony/security": "^3.0|^4.0",
+        "symfony/translation": "^3.0|^4.0",
         "twig/twig": "^2.9"
     },
     "autoload": {
