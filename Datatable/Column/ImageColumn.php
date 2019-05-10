@@ -105,11 +105,9 @@ class ImageColumn extends AbstractColumn
         $path = Helper::getDataPropertyPath($this->data);
 
         if ($this->accessor->isReadable($row, $path)) {
-
             $content = $this->renderImageTemplate($this->accessor->getValue($row, $path), '-image');
 
             $this->accessor->setValue($row, $path, $content);
-
         }
 
         return $this;
@@ -127,7 +125,6 @@ class ImageColumn extends AbstractColumn
         $path = Helper::getDataPropertyPath($this->data, $value);
 
         if ($this->accessor->isReadable($row, $path)) {
-
             $images = $this->accessor->getValue($row, $path);
 
             if (count($images) > 0) {
@@ -142,7 +139,6 @@ class ImageColumn extends AbstractColumn
                 $content = $this->renderImageTemplate(null, '-gallery-image');
                 $this->accessor->setValue($row, $currentPath, $content);
             }
-
         }
 
         return $this;

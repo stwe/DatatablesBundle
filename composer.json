@@ -18,7 +18,7 @@
         "issues": "https://github.com/stwe/DatatablesBundle/issues"
     },
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.1",
         "symfony/framework-bundle": "^3.0|^4.0",
         "doctrine/orm": "^2.5",
         "symfony/options-resolver": "^3.0|^4.0",

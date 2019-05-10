@@ -299,6 +299,14 @@ abstract class AbstractColumn implements ColumnInterface
      */
     protected $originalTypeOfField;
 
+    /**
+     * If the field is sent in the response, to show in the webpage
+     * Is set in the ColumnBuilder.
+     * Default: true
+     *
+     * @var bool
+     */
+    protected $sentInResponse;
     //-------------------------------------------------
     // Options
     //-------------------------------------------------
@@ -332,6 +340,7 @@ abstract class AbstractColumn implements ColumnInterface
             'join_type' => 'leftJoin',
             'type_of_field' => null,
             'responsive_priority' => null,
+            'sent_in_response' => true,
         ));
 
         $resolver->setAllowedTypes('cell_type', array('null', 'string'));
@@ -352,6 +361,7 @@ abstract class AbstractColumn implements ColumnInterface
         $resolver->setAllowedTypes('join_type', 'string');
         $resolver->setAllowedTypes('type_of_field', array('null', 'string'));
         $resolver->setAllowedTypes('responsive_priority', array('null', 'int'));
+        $resolver->setAllowedTypes('sent_in_response', array('bool'));
 
         $resolver->setAllowedValues('cell_type', array(null, 'th', 'td'));
         $resolver->setAllowedValues('join_type', array(null, 'join', 'leftJoin', 'innerJoin'));
@@ -1108,4 +1118,29 @@ abstract class AbstractColumn implements ColumnInterface
 
         return $this;
     }
+
+    /**
+     * Get sentInResponse.
+     *
+     * @return bool
+     */
+    public function getSentInResponse()
+    {
+        return $this->sentInResponse;
+    }
+
+    /**
+     * Set sentIntResponse.
+     *
+     * @param bool $sentInResponse
+     *
+     * @return $this
+     */
+    public function setSentInResponse($sentInResponse)
+    {
+        $this->sentInResponse = $sentInResponse;
+
+        return $this;
+    }
+
 }

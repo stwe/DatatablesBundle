@@ -17,8 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\DBAL\Types\Type;
 use Exception;
 use DateTime;
@@ -39,8 +38,7 @@ class DatatableController extends Controller
      *
      * @param Request $request
      *
-     * @Route("/datatables/edit/field", name="sg_datatables_edit")
-     * @Method("POST")
+     * @Route("/datatables/edit/field", methods={"POST"}, name="sg_datatables_edit")
      *
      * @return Response
      * @throws Exception

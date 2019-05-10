@@ -760,7 +760,6 @@ public function buildDatatable(array $options = array())
 }
 ```
 
-
 ## 10. Link column
 
 Represents a column, with a link in each cell.

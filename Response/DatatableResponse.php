@@ -114,16 +114,16 @@ class DatatableResponse
     //-------------------------------------------------
 
     /**
-     * Get response.
+     * Get response data as array.
      *
      * @param bool $countAllResults
      * @param bool $outputWalkers
      * @param bool $fetchJoinCollection
      *
-     * @return JsonResponse
+     * @return array
      * @throws Exception
      */
-    public function getResponse($countAllResults = true, $outputWalkers = false, $fetchJoinCollection = true)
+    public function getData($countAllResults = true, $outputWalkers = false, $fetchJoinCollection = true)
     {
         if (null === $this->datatable) {
             throw new Exception('DatatableResponse::getResponse(): Set a Datatable class with setDatatable().');
@@ -145,7 +145,22 @@ class DatatableResponse
             'recordsTotal' => true === $countAllResults ? (int) $this->datatableQueryBuilder->getCountAllResults() : 0,
         );
 
-        return new JsonResponse(array_merge($outputHeader, $formatter->getOutput()));
+        return array_merge($outputHeader, $formatter->getOutput());
+    }
+
+    /**
+     * Get response.
+     *
+     * @param bool $countAllResults
+     * @param bool $outputWalkers
+     * @param bool $fetchJoinCollection
+     *
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function getResponse($countAllResults = true, $outputWalkers = false, $fetchJoinCollection = true)
+    {
+        return new JsonResponse($this->getData($countAllResults, $outputWalkers, $fetchJoinCollection));
     }
 
     //-------------------------------------------------
@@ -178,7 +193,7 @@ class DatatableResponse
     private function getRequestParams()
     {
         $parameterBag = null;
-        $type = $this->datatable->getAjax()->getType();
+        $type = $this->datatable->getAjax()->getMethod();
 
         if ('GET' === strtoupper($type)) {
             $parameterBag = $this->request->query;
