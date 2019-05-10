@@ -9,6 +9,7 @@
 7. [Multiselect Column](#7-multiselect-column)
 8. [Number Column](#8-number-column)
 9. [Attribute Column](#9-number-column)
+10. [Link Column](#10-link-column)
 
 ## 1. Column
 
@@ -49,6 +50,9 @@ With 'null' initialized options uses the default value of the DataTables plugin.
 | responsive_priority | null or int        | null              |          | Set column's visibility priority. Requires the Responsive extension. |
 | filter              | array              | TextFilter        |          | A Filter instance for individual filtering. |
 | editable            | array or null      | null              |          | An Editable instance for in-place editing. |
+| mapped              | bool               | true              |          | Allow to create columns not mapped in entity neither defined by DQL. |
+| is_association      | bool               | false             |          | Allow to force if the column is an association, usally used with `mapped` and `data_source`. |
+| data_source         | null or string     | null              |          | Specify the column source of the data to manipulate in the current column. Usally used with `mapped` and `data_source`. | 
 
 ### Example
 
@@ -227,7 +231,6 @@ ___
 
 Represents a column, optimized for date time values.
 
-**Be sure to install the [Moment.js](https://momentjs.com/) plugin before using this column.**
 **Be sure to install the [Bootstrap Date Range Picker](http://www.daterangepicker.com/) plugin before using the DateRangeFilter.**
 
 ### Options template
@@ -246,8 +249,7 @@ All options of [Column](#1-column).
 
 | Option      | Type   | Default | Required | Description              |
 |-------------|--------|---------|----------|--------------------------|
-| date_format | string | lll     |          | Moment.js date format.   |
-| timeago     | bool   | false   |          | Use the time ago format. |
+| date_format | string | lll     |          | PHP date format.         |
 
 ### Example
 
@@ -683,6 +685,7 @@ All options of [Column](#1-column).
 | formatter           | NumberFormatter Object |                                       | X        | A NumberFormatter instance. |
 | use_format_currency | bool                   | false                                 |          | Use NumberFormatter::formatCurrency instead NumberFormatter::format to format the value. |
 | currency            | null or string         | NumberFormatter::INTL_CURRENCY_SYMBOL |          | The currency code (e.g. EUR). |
+| suffix_string       | null or string         | null                                  |          | An optionna string to display after the number. |
 
 ### Example
 
@@ -748,6 +751,59 @@ public function buildDatatable(array $options = array())
             'attributes' => function($row) {
                 return array(
                     'severity' => $row['severity']
+                );
+            }
+        ))
+
+        // ...
+    ;
+}
+```
+
+## 10. Link column
+
+Represents a column, with a link in each cell.
+
+
+### Options
+
+All options of [Column](#1-column).
+
+**Additional:**
+
+| Option              | Type                      | Default                               | Required | Description     |
+|---------------------|---------------------------|---------------------------------------|----------|-----------------|
+| route               | string                    | an empty string                       |          | Name of the route to generate. |
+| route_params        | array or Closure          | an empty array                        |          | Parameters needed to generate the route. |
+| empty_value         | string                    | an empty string                       |          | String to display if the content is empty. |
+| text                | null or Closure           | null                                  |          | An eventual function to transform the text of the link to display. |
+| separator           | string                    | an empty string                       |          | The separator between each element to display when there is an association. |
+| filterFunction      | null or Closure           | null                                  |          | An eventual function to filter the elements to display if there is an association. |
+| email               | bool                      | false                                 |          | Generate a link to an email address. |
+
+
+### Example
+
+``` php
+public function buildDatatable(array $options = array())
+{
+    // ...
+
+    $this->columnBuilder
+        ->add('referents', LinkColumn::class, array(
+            'title'           => "Referents",
+            'empty_value'     => '<span class="comment">none</span>',
+            'separator'       => ', ',
+            'filterFunction'  => function($projectPerson) {
+                return $projectPerson['isInChargeOf'] === false; // I want to display only person not in charge, this data is selected with a column with sent_in_response=False
+            },
+            'text'            => function($projectPerson) {
+                return $projectPerson['person']['firstName'] . " " . $projectPerson['person']['lastName'];
+            },
+            'route'           => 'subvention_person_view',
+            'route_params'    => function($projectPerson) {
+                return array(
+                    'id' => $projectPerson['person']['id']
                 );
             }
         ))
