@@ -69,6 +69,15 @@ class Extensions
      */
     protected $rowGroup;
 
+    /**
+     * The ColReorder Extension.
+     * Reorder columns
+     * Default: null
+     *
+     * @var null|bool
+     */
+    protected $colReorder;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -99,12 +108,14 @@ class Extensions
             'responsive' => null,
             'select' => null,
             'row_group' => null,
+            'col_reorder' => null,
         ));
 
         $resolver->setAllowedTypes('buttons', array('null', 'array', 'bool'));
         $resolver->setAllowedTypes('responsive', array('null', 'array', 'bool'));
         $resolver->setAllowedTypes('select', array('null', 'array', 'bool'));
         $resolver->setAllowedTypes('row_group', array('null', 'array', 'bool'));
+        $resolver->setAllowedTypes('col_reorder', array('null', 'bool'));
 
         return $this;
     }
@@ -225,6 +236,29 @@ class Extensions
         } else {
             $this->rowGroup = $rowGroup;
         }
+
+        return $this;
+    }
+
+    /**
+     * Get colReorder.
+     *
+     * @return null|bool
+     */
+    public function getColReorder()
+    {
+        return $this->colReorder;
+    }
+
+    /**
+     * Set colReorder.
+     *
+     * @param null|bool
+     * @return $this
+     */
+    public function setColReorder($colReorder)
+    {
+        $this->colReorder = $colReorder;
 
         return $this;
     }

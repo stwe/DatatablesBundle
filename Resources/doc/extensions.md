@@ -4,6 +4,7 @@
 2. [Responsive](#2-responsive)
 3. [Select](#3-select)
 4. [RowGroup](#4-rowgroup)
+5. [ColReorder](#4-colreorder)
 
 ## 1. Buttons
 
@@ -360,3 +361,29 @@ With the RowGroup class you can set the following options, for details see the [
 | endRender         | array or null   | null  | Provide a function that can be used to control the data shown in the end grouping row. |
 | startRender       | array or null   | null  | Provide a function that can be used to control the data shown in the start grouping row. |
 ___
+
+
+## 5. ColReorder
+
+**Be sure to install the [ColReorder Extension](https://datatables.net/extensions/colreorder/) before using.**
+
+### Template
+
+@SgDatatables/datatable/extensions.html.twig
+
+### Initialisation
+
+Just add `col_reorder` to your extensions options with the value `true`:
+
+``` php
+public function buildDatatable(array $options = array())
+{
+    // ...
+
+    $this->extensions->set(array(
+        'col_reorder' => true,
+    ));
+    
+    // ...
+}
+```
