@@ -38,7 +38,7 @@ class DatatableController extends Controller
      *
      * @param Request $request
      *
-     * @Route("/datatables/edit/field", method={"POST"}, name="sg_datatables_edit")
+     * @Route("/datatables/edit/field", methods={"POST"}, name="sg_datatables_edit")
      *
      * @return Response
      * @throws Exception
