@@ -251,7 +251,12 @@ class DatatableQueryBuilder
                 // Order on alias column name
                 $this->addOrderColumn($column, null, $columnAlias);
                 // Fix subqueries alias duplication
-                $searchDql = preg_replace('/\{([\w]+)\}/', '$1_search', $dql);
+                // Another fix customDql to identify field select from base request and Subrequest
+                if (preg_match('/^SELECT/i', $dql)) {
+                    $searchDql = preg_replace('/\{([\w]+)\}/', '$1_search', $dql); // original
+                } else {
+                    $searchDql = preg_replace('/\{([\w]+)\}/', '$1', $dql);
+                }
                 $this->addSearchColumn($column, null, $searchDql);
             } elseif (true === $this->accessor->getValue($column, 'selectColumn')) {
                 $parts = explode('.', $dql);
