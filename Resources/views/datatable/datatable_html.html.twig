@@ -38,13 +38,6 @@
                 </tr>
             {% endif %}
         {% endif %}
-        <tr>
-            {% for column in sg_datatables_view.columnBuilder.columns %}
-                {% if column.sentInResponse %}
-                    <th>{{ column.title }}</th>
-                {% endif %}
-            {% endfor %}
-        </tr>
     </thead>
         {% if true == individual_filtering %}
             {% if 'foot' == sg_datatables_view.options.individualFilteringPosition or 'both' == sg_datatables_view.options.individualFilteringPosition%}
