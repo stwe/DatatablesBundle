@@ -8,7 +8,7 @@
  #}
 {% import _self as macros %}
 
-{% macro link_title(action) %}
+{% macro link_title(action, label) %}
     {% if action.label is same as(null) and action.icon is same as(null) %}
         {% if action.route is not same as(null) %}
             {{ action.route }}
@@ -16,7 +16,7 @@
             null
         {% endif %}
     {% else %}
-        <span class="{{ action.icon }}"></span> {{ action.label }}
+        <span class="{{ action.icon }}"></span> {{ label }}
     {% endif %}
 {% endmacro %}
 
@@ -65,13 +65,13 @@
         {% if action.button is same as(false) %}
             {{ action.startHtml|raw }}
             <a {{ macros.href(action, route_parameters[actionKey]) }} {{ macros.attributes(attributes[actionKey]) }} {{ macros.confirm_dialog(action) }}>
-                {{ macros.link_title(action) }}
+                {{ macros.link_title(action, labels[actionKey]) }}
             </a>
             {{ action.endHtml|raw }}
         {% else %}
             {{ action.startHtml|raw }}
             <button type="button" {{ macros.value(values[actionKey]) }} {{ macros.attributes(attributes[actionKey]) }} {{ macros.confirm_dialog(action) }}>
-                {{ macros.link_title(action) }}
+                {{ macros.link_title(action, labels[actionKey]) }}
             </button>
             {{ action.endHtml|raw }}
         {% endif %}
