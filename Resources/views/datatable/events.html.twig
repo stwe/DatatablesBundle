@@ -126,3 +126,11 @@
     {% endif %}
     .on('xhr.dt', {% include sg_datatables_view.events.xhr['template'] with vars %})
 {% endif %}
+{% if sg_datatables_view.events.responsiveResize is not same as(null) %}
+    {% if sg_datatables_view.events.responsiveResize['vars'] is defined %}
+        {% set vars = sg_datatables_view.events.responsiveResize['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('responsive-resize.dt', {% include sg_datatables_view.events.responsiveResize['template'] with vars %})
+{% endif %}

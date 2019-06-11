@@ -137,6 +137,13 @@ class Events
      */
     protected $xhr;
 
+    /**
+     * Fired when responsive extension resizing table.
+     *
+     * @var null|array
+     */
+    protected $responsiveResize;
+
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -178,6 +185,7 @@ class Events
             'state_load_params' => null,
             'state_save_params' => null,
             'xhr' => null,
+            'responsive_resize' => null,
         ));
 
         $resolver->setAllowedTypes('column_sizing', array('null', 'array'));
@@ -195,6 +203,7 @@ class Events
         $resolver->setAllowedTypes('state_load_params', array('null', 'array'));
         $resolver->setAllowedTypes('state_save_params', array('null', 'array'));
         $resolver->setAllowedTypes('xhr', array('null', 'array'));
+        $resolver->setAllowedTypes('responsive_resize', array('null', 'array'));
 
         return $this;
     }
@@ -619,6 +628,34 @@ class Events
         }
 
         $this->xhr = $xhr;
+
+        return $this;
+    }
+
+    /**
+     * Get ResponsiveResize.
+     *
+     * @return array|null
+     */
+    public function getResponsiveResize()
+    {
+        return $this->responsiveResize;
+    }
+
+    /**
+     * Set responsiveResize.
+     *
+     * @param array|null $responsiveResize
+     *
+     * @return $this
+     */
+    public function setResponsiveResize($responsiveResize)
+    {
+        if (is_array($responsiveResize)) {
+            $this->validateArrayForTemplateAndOther($responsiveResize);
+        }
+
+        $this->responsiveResize = $responsiveResize;
 
         return $this;
     }
