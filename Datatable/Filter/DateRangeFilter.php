@@ -58,7 +58,7 @@ class DateRangeFilter extends AbstractFilter
      * @param string $date
      * @return DateTime
      */
-    protected function getDateTime($date)
+    protected function getDateTime($date) : \DateTime
     {
         $dateFormatter = IntlDateFormatter::create(
             $this->locale, 
