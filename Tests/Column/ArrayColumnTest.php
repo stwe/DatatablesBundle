@@ -24,8 +24,8 @@ class ArrayColumnTest extends \PHPUnit_Framework_TestCase
     public function testIsAssociative()
     {
         $arrayColumn = new ArrayColumn();
-        $this->assertFalse($this->callMethod($arrayColumn, 'isAssociative', ['a', 'b']));
-        $this->assertTrue($this->callMethod($arrayColumn, 'isAssociative', ['a' => 1, 'b' => 1]));
+        $this->assertFalse($this->callMethod($arrayColumn, 'isAssociative', [['a', 'b']]));
+        $this->assertTrue($this->callMethod($arrayColumn, 'isAssociative', [['a' => 1, 'b' => 1]]));
     }
 
     /**
@@ -34,7 +34,7 @@ class ArrayColumnTest extends \PHPUnit_Framework_TestCase
     public function testArrayToString()
     {
         $arrayColumn = new ArrayColumn();
-        $result = $this->callMethod($arrayColumn, 'arrayToString', ['a', 'b' => [ 'd' => new \DateTime()]]);
+        $result = $this->callMethod($arrayColumn, 'arrayToString', [['a', 'b' => [ 'd' => new \DateTime()]]]);
         $this->assertNotEmpty($result);
         $this->assertTrue(is_string($result));
     }
