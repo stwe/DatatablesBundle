@@ -10,6 +10,7 @@
 8. [Number Column](#8-number-column)
 9. [Attribute Column](#9-number-column)
 10. [Link Column](#10-link-column)
+11. [Array Column](#11-array-column)
 
 ## 1. Column
 
@@ -810,5 +811,25 @@ public function buildDatatable(array $options = array())
 
         // ...
     ;
+}
+```
+
+## 11. Array column
+
+Represents a column, with array content from column types (array, json_array, simple_array)
+public function buildDatatable(array $options = array())
+
+### Example
+{
+    // ...
+
+    $this->columnBuilder
+        ->add('notes', ArrayColumn::class, array(
+            'title'           => "Notes",
+            'empty_value'     => [],
+        ))
+
+    // ...
+   
 }
 ```
