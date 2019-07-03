@@ -1,12 +1,16 @@
 services:
-    sg_datatables.twig.extension:
-        class: Sg\DatatablesBundle\Twig\DatatableTwigExtension
-        public: false
-        tags:
-            - { name: twig.extension }
+    _defaults:
+        autoconfigure: true
+        autowire: true
 
-    sg_datatables.datatable.abstract:
-        class: Sg\DatatablesBundle\Datatable\AbstractDatatable
+    _instanceof:
+        Sg\DatatablesBundle\Datatable\Column\Column:
+            tags: ['sg_datatables.column']
+
+    Sg\DatatablesBundle\Datatable\Column\:
+        resource: '../../Datatable/Column/*'
+
+    Sg\DatatablesBundle\Datatable\AbstractDatatable:
         abstract: true
         arguments:
             - '@security.authorization_checker'
@@ -15,15 +19,14 @@ services:
             - '@router'
             - '@doctrine.orm.entity_manager'
             - '@twig'
+            - ! tagged sg_datatables.column
 
-    sg_datatables.response:
-        class: Sg\DatatablesBundle\Response\DatatableResponse
+    Sg\DatatablesBundle\Response\DatatableResponse:
         public: true
         arguments:
             - '@request_stack'
 
-    sg_datatables.factory:
-        class: Sg\DatatablesBundle\Datatable\DatatableFactory
+    Sg\DatatablesBundle\Datatable\DatatableFactory:
         public: true
         arguments:
             - '@security.authorization_checker'
@@ -32,3 +35,5 @@ services:
             - '@router'
             - '@doctrine.orm.entity_manager'
             - '@twig'
+
+    Sg\DatatablesBundle\Twig\DatatableTwigExtension: ~

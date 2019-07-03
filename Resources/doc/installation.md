@@ -365,14 +365,19 @@ class PostDatatable extends AbstractDatatable
 # app/config/services.yml
 
 services:
-    app.datatable.post:
-        class: AppBundle\Datatables\PostDatatable
-        parent: sg_datatables.datatable.abstract
+    _defaults:
+        autoconfigure: true
+        autowire: true
+    AppBundle\Datatables\PostDatatable:
+      bind:
+        $columns: !tagged sg_datatables.column
 ```
 
 ### Step 3: The Controller actions
 
 ``` php
+use Sg\DatatablesBundle\Datatable\DatatableFactory;
+use Sg\DatatablesBundle\Response\DatatableResponse;
 /**
  * Lists all Post entities.
  *
@@ -393,11 +398,11 @@ public function indexAction(Request $request)
 
     // or use the DatatableFactory
     /** @var DatatableInterface $datatable */
-    $datatable = $this->get('sg_datatables.factory')->create(PostDatatable::class);
+    $datatable = $this->get(DatatableFactory::class)->create(PostDatatable::class);
     $datatable->buildDatatable();
 
     if ($isAjax) {
-        $responseService = $this->get('sg_datatables.response');
+        $responseService = $this->get(DatatableResponse::class);
         $responseService->setDatatable($datatable);
         $responseService->getDatatableQueryBuilder();
 

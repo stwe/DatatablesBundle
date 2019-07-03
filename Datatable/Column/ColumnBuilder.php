@@ -11,11 +11,10 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Datatable\Factory;
-
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Twig_Environment;
 use Exception;
 
@@ -83,6 +82,12 @@ class ColumnBuilder
      */
     private $entityClassName;
 
+    /**
+     * Column services
+     *
+     * @var \Symfony\Component\DependencyInjection\Argument\RewindableGenerator
+     */
+    private $columnTypes;
     //-------------------------------------------------
     // Ctor.
     //-------------------------------------------------
@@ -94,8 +99,9 @@ class ColumnBuilder
      * @param Twig_Environment       $twig
      * @param string                 $datatableName
      * @param EntityManagerInterface $em
+     * @param RewindableGenerator    $columnTypes
      */
-    public function __construct(ClassMetadata $metadata, Twig_Environment $twig, $datatableName, EntityManagerInterface $em)
+    public function __construct(ClassMetadata $metadata, Twig_Environment $twig, $datatableName, EntityManagerInterface $em, $columnTypes)
     {
         $this->metadata = $metadata;
         $this->twig = $twig;
@@ -106,6 +112,7 @@ class ColumnBuilder
         $this->columnNames = array();
         $this->uniqueColumns = array();
         $this->entityClassName = $metadata->getName();
+        $this->columnTypes = $columnTypes;
     }
 
     //-------------------------------------------------
@@ -124,7 +131,20 @@ class ColumnBuilder
      */
     public function add($dql, $class, array $options = array())
     {
-        $column = Factory::create($class, ColumnInterface::class);
+        if (is_object($class)) {
+            throw new \RuntimeException('Use FCQN instead of object: ' . get_class($class));
+        }
+
+        $columns = [];
+        foreach ($this->columnTypes as $column) {
+            $columns[get_class($column)] = $column;
+        }
+
+        if (! array_key_exists($class, $columns)) {
+            throw new \RuntimeException(sprintf('Column %s is not a service', $class));
+        }
+
+        $column = clone $columns[$class];
         $column->initOptions();
 
         $this->handleDqlProperties($dql, $options, $column);

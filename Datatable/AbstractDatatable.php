@@ -173,7 +173,8 @@ abstract class AbstractDatatable implements DatatableInterface
         TranslatorInterface $translator,
         RouterInterface $router,
         EntityManagerInterface $em,
-        Twig_Environment $twig
+        Twig_Environment $twig,
+        $columns
     ) {
         $this->validateName();
 
@@ -191,7 +192,7 @@ abstract class AbstractDatatable implements DatatableInterface
         $this->twig = $twig;
 
         $metadata = $em->getClassMetadata($this->getEntity());
-        $this->columnBuilder = new ColumnBuilder($metadata, $twig, $this->getName(), $em);
+        $this->columnBuilder = new ColumnBuilder($metadata, $twig, $this->getName(), $em, $columns);
 
         $this->ajax = new Ajax();
         $this->options = new Options();

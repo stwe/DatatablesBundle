@@ -40,12 +40,14 @@ class Post
 Now you can view all posts created by `root`. The additional `where statement` now works like a filter.
 
 ``` php
+use Sg\DatatablesBundle\Response\DatatableResponse;
+
 public function indexAction(Request $request)
 {
     // ...
 
     if ($request->isXmlHttpRequest()) {
-        $responseService = $this->get('sg_datatables.response');
+        $responseService = $this->get(DatatableResponse::class);
         $responseService->setDatatable($datatable);
 
         $datatableQueryBuilder = $responseService->getDatatableQueryBuilder();
