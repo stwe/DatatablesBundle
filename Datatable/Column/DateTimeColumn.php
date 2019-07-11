@@ -88,7 +88,7 @@ class DateTimeColumn extends AbstractColumn
         if ($this->accessor->isReadable($row, $path)) {
             $entries = $this->accessor->getValue($row, $path);
 
-            if (count($entries) > 0) {
+            if (!is_null($entries) && count($entries) > 0) {
                 foreach ($entries as $key => $entry) {
                     $currentPath = $path . '[' . $key . ']' . $value;
                     $currentObjectPath = Helper::getPropertyPathObjectNotation($path, $key, $value);

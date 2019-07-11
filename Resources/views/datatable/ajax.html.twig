@@ -10,7 +10,7 @@
     {% if sg_datatables_view.ajax.url is not same as(null) %}
         "url": "{{ sg_datatables_view.ajax.url|raw }}",
     {% endif %}
-    "type": "{{ sg_datatables_view.ajax.type }}",
+    "method": "{{ sg_datatables_view.ajax.method }}",
     {% if sg_datatables_view.ajax.data is not same as(null) %}
         "data": {{ sg_datatables_view.ajax.data|raw }},
     {% endif %}
@@ -27,6 +27,3 @@
         {{ ajax_vars }}
     },
 {% endif %}
-
-
-

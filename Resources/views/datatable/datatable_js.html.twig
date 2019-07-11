@@ -50,7 +50,7 @@
 
         function postCreateDatatable(pipeline) {
             {% for column in sg_datatables_view.columnBuilder.columns %}
-                {% if column.renderPostCreateDatatableJsContent is not null %}
+                {% if column.sentInResponse and column.renderPostCreateDatatableJsContent is not null %}
                     {{ column.renderPostCreateDatatableJsContent|raw }}
                 {% endif %}
             {% endfor %}

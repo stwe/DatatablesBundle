@@ -90,18 +90,30 @@ function updateCheckAll() {
     var cbox_all = $("#sg-datatables-{{ datatable_name }} tbody input.sg-datatables-{{ datatable_name }}-multiselect-checkbox:checkbox");
     var cbox_checked = $("#sg-datatables-{{ datatable_name }} tbody input.sg-datatables-{{ datatable_name }}-multiselect-checkbox:checkbox:checked");
     var cbox_checkall = $("#sg-datatables-{{ datatable_name }} input.sg-datatables-{{ datatable_name }}-multiselect-checkall:checkbox");
+    var action_links = $(".sg-datatables-{{ datatable_name }}-multiselect-action");
 
     if(cbox_checked.length === 0){
         cbox_checkall.prop('checked', false);
         cbox_checkall.prop('indeterminate', false);
+        action_links.prop('disabled', true);
+        action_links.addClass('disabled');
     } else if (cbox_checked.length === cbox_all.length){
         cbox_checkall.prop('checked', true);
         cbox_checkall.prop('indeterminate', false);
+        action_links.prop('disabled', false);
+        action_links.removeClass('disabled');
     } else {
         cbox_checkall.prop('checked', false);
         cbox_checkall.prop('indeterminate', true);
+        action_links.prop('disabled', false);
+        action_links.removeClass('disabled');
     }
 }
+
+{# handle table redraw #}
+$("#sg-datatables-{{ datatable_name }}").on("draw.dt", function () {
+    updateCheckAll();
+});
 
 {# handle row <tr> click #}
 $("#sg-datatables-{{ datatable_name }} tbody").on("click", "tr", function () {
@@ -137,6 +149,7 @@ $("#sg-datatables-{{ datatable_name }}").on("click", "input.sg-datatables-{{ dat
             }
         }
     });
+    updateCheckAll();
 });
 
 {# handle multiselect action click #}
@@ -162,7 +175,7 @@ $(".sg-datatables-{{ datatable_name }}-multiselect-action").on("click", function
         if (url != null) {
             $.ajax({
                 url: url,
-                type: "POST",
+                method: "POST",
                 cache: false,
                 data: {
                     'data': items,

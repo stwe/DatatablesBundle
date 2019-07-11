@@ -247,9 +247,9 @@ class MultiselectColumn extends ActionColumn
             }
 
             if (array_key_exists('name', $attributes)) {
-                $attributes['name'] = $value.' '.$attributes['name'];
+                $attributes['name'] = $attributes['name'].'[]';
             } else {
-                $attributes['name'] = $value;
+                $attributes['name'] = $value.'[]';
             }
             if (array_key_exists('class', $attributes)) {
                 $attributes['class'] = $value.' '.$attributes['class'];
@@ -257,7 +257,7 @@ class MultiselectColumn extends ActionColumn
                 $attributes['class'] = $value;
             }
         } else {
-            $attributes['name'] = $value;
+            $attributes['name'] = $value.'[]';
             $attributes['class'] = $value;
         }
 

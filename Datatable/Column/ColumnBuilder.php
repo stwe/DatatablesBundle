@@ -17,6 +17,7 @@ use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\Routing\RouterInterface;
 use Twig_Environment;
 use Exception;
 
@@ -42,6 +43,13 @@ class ColumnBuilder
      * @var Twig_Environment
      */
     private $twig;
+
+    /**
+     * The router.
+     *
+     * @var RouterInterface
+     */
+    private $router;
 
     /**
      * The name of the associated Datatable.
@@ -95,13 +103,15 @@ class ColumnBuilder
      *
      * @param ClassMetadata          $metadata
      * @param Twig_Environment       $twig
+     * @param RouterInterface        $router
      * @param string                 $datatableName
      * @param EntityManagerInterface $em
      */
-    public function __construct(ClassMetadata $metadata, Twig_Environment $twig, $datatableName, EntityManagerInterface $em)
+    public function __construct(ClassMetadata $metadata, Twig_Environment $twig, RouterInterface $router, $datatableName, EntityManagerInterface $em)
     {
         $this->metadata = $metadata;
         $this->twig = $twig;
+        $this->router = $router;
         $this->datatableName = $datatableName;
         $this->em = $em;
 
@@ -292,6 +302,7 @@ class ColumnBuilder
         $column->setDatatableName($this->datatableName);
         $column->setEntityClassName($this->entityClassName);
         $column->setTwig($this->twig);
+        $column->setRouter($this->router);
 
         return $this;
     }

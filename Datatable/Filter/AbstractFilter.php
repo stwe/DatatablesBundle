@@ -130,7 +130,7 @@ abstract class AbstractFilter implements FilterInterface
         $resolver->setAllowedTypes('placeholder', 'bool');
         $resolver->setAllowedTypes('placeholder_text', array('null', 'string'));
 
-        $resolver->setAllowedValues('search_type', array('like', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
+        $resolver->setAllowedValues('search_type', array('like', '%like', 'like%', 'notLike', 'eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in', 'notIn', 'isNull', 'isNotNull'));
 
         return $this;
     }
@@ -350,7 +350,7 @@ abstract class AbstractFilter implements FilterInterface
         // Only StringExpression can be searched with LIKE (https://github.com/doctrine/doctrine2/issues/6363)
         if (
             // Not a StringExpression
-            !preg_match('/text|string|date|time/', $searchTypeOfField)
+            !preg_match('/text|string|date|time|array|json_array|simple_array/', $searchTypeOfField)
             // Subqueries can't be search with LIKE
             || preg_match('/SELECT.+FROM.+/is', $searchField)
             // CASE WHEN can't be search with LIKE
@@ -403,6 +403,14 @@ abstract class AbstractFilter implements FilterInterface
             case 'like':
                 $expr->add($qb->expr()->like($searchField, '?'.$parameterCounter));
                 $qb->setParameter($parameterCounter, '%'.$searchValue.'%');
+                break;
+            case '%like':
+                $expr->add($qb->expr()->like($searchField, '?'.$parameterCounter));
+                $qb->setParameter($parameterCounter, '%'.$searchValue);
+                break;
+            case 'like%':
+                $expr->add($qb->expr()->like($searchField, '?'.$parameterCounter));
+                $qb->setParameter($parameterCounter, $searchValue.'%');
                 break;
             case 'notLike':
                 $expr->add($qb->expr()->notLike($searchField, '?'.$parameterCounter));
