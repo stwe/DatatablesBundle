@@ -12,6 +12,7 @@
 namespace Sg\DatatablesBundle\Response;
 
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Platforms\Keywords\KeywordList;
 use Sg\DatatablesBundle\Datatable\Column\ColumnInterface;
 use Sg\DatatablesBundle\Datatable\Filter\AbstractFilter;
 use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
@@ -187,6 +188,11 @@ class DatatableQueryBuilder
      */
     private $useCountResultCacheArgs = [false];
 
+    /**
+     * @var KeywordList
+     */
+    private $reservedKeywordsList;
+
     //-------------------------------------------------
     // Ctor. && Init column arrays
     //-------------------------------------------------
@@ -204,6 +210,7 @@ class DatatableQueryBuilder
         $this->requestParams = $requestParams;
 
         $this->em = $datatable->getEntityManager();
+        $this->reservedKeywordsList = $this->em->getConnection()->getDatabasePlatform()->getReservedKeywordsList();
         $this->entityName = $datatable->getEntity();
 
         $this->metadata = $this->getMetadata($this->entityName);
@@ -262,6 +269,14 @@ class DatatableQueryBuilder
 
                     $currentPart = array_shift($parts);
                     $currentAlias = ($previousPart === $this->entityShortName ? '' : $previousPart.'_').$currentPart;
+
+                    try {
+                        $isReservedKeyword = $this->reservedKeywordsList->isKeyword($currentAlias);
+                    } catch (DBALException $exception) {
+                        $isReservedKeyword = false;
+                    }
+
+                    $currentAlias = $isReservedKeyword ? "_{$currentAlias}" : $currentAlias;
 
                     if (!array_key_exists($previousAlias.'.'.$currentPart, $this->joins)) {
                         $this->addJoin($previousAlias.'.'.$currentPart, $currentAlias, $this->accessor->getValue($column, 'joinType'));
@@ -727,6 +742,14 @@ class DatatableQueryBuilder
      */
     private function addJoin($columnTableName, $alias, $type)
     {
+        try {
+            $isReservedKeyword = $this->reservedKeywordsList->isKeyword($alias);
+        } catch (DBALException $exception) {
+            $isReservedKeyword = false;
+        }
+
+        $alias = $isReservedKeyword ? "_{$alias}" : $alias;
+
         $this->joins[$columnTableName] = array(
             'alias' => $alias,
             'type' => $type,
@@ -765,9 +788,9 @@ class DatatableQueryBuilder
     private function getEntityShortName(ClassMetadata $metadata, EntityManagerInterface $entityManager)
     {
         $entityShortName = strtolower($metadata->getReflectionClass()->getShortName());
+
         try {
-            $reservedKeywordsList = $entityManager->getConnection()->getDatabasePlatform()->getReservedKeywordsList();
-            $isReservedKeyword = $reservedKeywordsList->isKeyword($entityShortName);
+            $isReservedKeyword = $this->reservedKeywordsList->isKeyword($entityShortName);
         } catch (DBALException $exception) {
             $isReservedKeyword = false;
         }
