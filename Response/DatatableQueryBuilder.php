@@ -12,7 +12,6 @@
 namespace Sg\DatatablesBundle\Response;
 
 use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Platforms\Keywords\KeywordList;
 use Sg\DatatablesBundle\Datatable\Column\ColumnInterface;
 use Sg\DatatablesBundle\Datatable\Filter\AbstractFilter;
 use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
@@ -263,7 +262,7 @@ class DatatableQueryBuilder
                     $previousAlias = $currentAlias;
 
                     $currentPart = array_shift($parts);
-                    $currentAlias = ($previousPart === $this->entityShortName ? '' : $previousPart . '_') . $currentPart;
+                    $currentAlias = ($previousPart === $this->entityShortName ? '' : $previousPart.'_') . $currentPart;
                     $currentAlias = $this->getSafeName($currentAlias);
 
                     if (!array_key_exists($previousAlias.'.'.$currentPart, $this->joins)) {
