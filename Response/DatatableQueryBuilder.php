@@ -188,11 +188,6 @@ class DatatableQueryBuilder
      */
     private $useCountResultCacheArgs = [false];
 
-    /**
-     * @var KeywordList
-     */
-    private $reservedKeywordsList;
-
     //-------------------------------------------------
     // Ctor. && Init column arrays
     //-------------------------------------------------
@@ -210,7 +205,6 @@ class DatatableQueryBuilder
         $this->requestParams = $requestParams;
 
         $this->em = $datatable->getEntityManager();
-        $this->reservedKeywordsList = $this->em->getConnection()->getDatabasePlatform()->getReservedKeywordsList();
         $this->entityName = $datatable->getEntity();
 
         $this->metadata = $this->getMetadata($this->entityName);
@@ -246,7 +240,7 @@ class DatatableQueryBuilder
             $dql = $this->accessor->getValue($column, 'dql');
             $data = $this->accessor->getValue($column, 'data');
 
-            $currentPart = $this->getSafeName(array_shift($parts));
+            $currentPart = $this->entityShortName;
             $currentAlias = $currentPart;
             $metadata = $this->metadata;
 
@@ -736,8 +730,6 @@ class DatatableQueryBuilder
      */
     private function addJoin($columnTableName, $alias, $type)
     {
-        $alias = $this->getSafeName($alias);
-
         $this->joins[$columnTableName] = array(
             'alias' => $alias,
             'type' => $type,
@@ -773,8 +765,10 @@ class DatatableQueryBuilder
      */
     private function getSafeName($name)
     {
+        $reservedKeywordsList = $this->em->getConnection()->getDatabasePlatform()->getReservedKeywordsList();
+
         try {
-            $isReservedKeyword = $this->reservedKeywordsList->isKeyword($name);
+            $isReservedKeyword = $reservedKeywordsList->isKeyword($name);
         } catch (DBALException $exception) {
             $isReservedKeyword = false;
         }
