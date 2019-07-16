@@ -101,7 +101,7 @@ class ColumnBuilder
      * @param EntityManagerInterface $em
      * @param RewindableGenerator    $columnTypes
      */
-    public function __construct(ClassMetadata $metadata, Twig_Environment $twig, $datatableName, EntityManagerInterface $em, $columnTypes)
+    public function __construct(ClassMetadata $metadata, Twig_Environment $twig, $datatableName, EntityManagerInterface $em, iterable $columnTypes)
     {
         $this->metadata = $metadata;
         $this->twig = $twig;

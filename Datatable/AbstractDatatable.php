@@ -11,6 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
+use phpDocumentor\Reflection\Types\Iterable_;
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -164,6 +165,7 @@ abstract class AbstractDatatable implements DatatableInterface
      * @param RouterInterface               $router
      * @param EntityManagerInterface        $em
      * @param Twig_Environment              $twig
+     * @param iterable                      $columnTypes
      *
      * @throws Exception
      */
@@ -174,7 +176,7 @@ abstract class AbstractDatatable implements DatatableInterface
         RouterInterface $router,
         EntityManagerInterface $em,
         Twig_Environment $twig,
-        $columns
+        iterable $columnTypes
     ) {
         $this->validateName();
 
@@ -192,7 +194,7 @@ abstract class AbstractDatatable implements DatatableInterface
         $this->twig = $twig;
 
         $metadata = $em->getClassMetadata($this->getEntity());
-        $this->columnBuilder = new ColumnBuilder($metadata, $twig, $this->getName(), $em, $columns);
+        $this->columnBuilder = new ColumnBuilder($metadata, $twig, $this->getName(), $em, $columnTypes);
 
         $this->ajax = new Ajax();
         $this->options = new Options();
