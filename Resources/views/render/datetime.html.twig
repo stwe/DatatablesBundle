@@ -6,34 +6,34 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-{%- set datetime_id_selector -%}
-    sg-datatables-{{ datatable_name }}-datetime-{{ row_id }}
+ {%- set datetime_id_selector -%}
+ sg-datatables-{{ datatable_name }}-datetime-{{ row_id }}
 {%- endset -%}
 
 {%- set datetime_selector -%}
-    id="{{ datetime_id_selector }}"
+ id="{{ datetime_id_selector }}"
 {%- endset -%}
 
 {% if column_class_editable_selector is defined %}
-    <div {{ datetime_selector }} class="{{ column_class_editable_selector }}" data-pk="{{ pk }}" {% if path is not same as(null) %}data-path="{{ path }}"{% endif %}></div>
+ <span {{ datetime_selector }} class="{{ datetime_id_selector }} {{ column_class_editable_selector }}" data-pk="{{ pk }}" {% if path is not same as(null) %}data-path="{{ path }}"{% endif %}></span>
 {% else %}
-    <div {{ datetime_selector }}>
-        {% if data is same as(null) and default_content is not same as(null) %}
-            {{ default_content }}
-        {% endif %}
-    </div>
+ <span {{ datetime_selector }} class="{{ datetime_id_selector }}">
+     {% if data is same as(null) and default_content is not same as(null) %}
+         {{ default_content }}
+     {% endif %}
+ </span>
 {% endif %}
 
 {% if data is not same as(null) %}
-    <script type="text/javascript">
-        $(function() {
-            moment.locale("{{ app.request.locale }}");
+ <script type="text/javascript">
+     $(function() {
+         moment.locale("{{ app.request.locale }}");
 
-            {% if timeago is same as(false) %}
-                $("#{{ datetime_id_selector }}").html(moment.unix({{ data|date('U') }}).format("{{ date_format }}"));
-            {% else %}
-                $("#{{ datetime_id_selector }}").html(moment.unix({{ data|date('U') }}).fromNow());
-            {% endif %}
-        });
-    </script>
+         {% if timeago is same as(false) %}
+             $(".{{ datetime_id_selector }}").html(moment.unix({{ data|date('U') }}).format("{{ date_format }}"));
+         {% else %}
+             $(".{{ datetime_id_selector }}").html(moment.unix({{ data|date('U') }}).fromNow());
+         {% endif %}
+     });
+ </script>
 {% endif %}
