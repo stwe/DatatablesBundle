@@ -14,9 +14,15 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\EntityManagerInterface;
+use Sg\DatatablesBundle\Datatable\Factory;
 use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Twig_Environment;
 use Exception;
+use function array_key_exists;
+use function sprintf;
+use function trigger_error;
+use const E_USER_DEPRECATED;
+use function get_class;
 
 /**
  * Class ColumnBuilder
@@ -88,9 +94,6 @@ class ColumnBuilder
      * @var \Symfony\Component\DependencyInjection\Argument\RewindableGenerator
      */
     private $columnTypes;
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
 
     /**
      * ColumnBuilder constructor.
@@ -132,19 +135,21 @@ class ColumnBuilder
     public function add($dql, $class, array $options = array())
     {
         if (is_object($class)) {
-            throw new \RuntimeException('Use FCQN instead of object: ' . get_class($class));
+            $column = Factory::create($class, ColumnInterface::class);
+            @trigger_error(sprintf('Using an object as column type is deprecated since 1.3 and will be removed in 2.0. Use a class name (FQCN) instead.'), E_USER_DEPRECATED);
+        } else {
+            $columns = [];
+            foreach ($this->columnTypes as $column) {
+                $columns[get_class($column)] = $column;
+            }
+
+            if (! array_key_exists($class, $columns)) {
+                throw new \RuntimeException(sprintf('Column %s is not a service', $class));
+            }
+
+            $column = clone $columns[$class];
         }
 
-        $columns = [];
-        foreach ($this->columnTypes as $column) {
-            $columns[get_class($column)] = $column;
-        }
-
-        if (! array_key_exists($class, $columns)) {
-            throw new \RuntimeException(sprintf('Column %s is not a service', $class));
-        }
-
-        $column = clone $columns[$class];
         $column->initOptions();
 
         $this->handleDqlProperties($dql, $options, $column);

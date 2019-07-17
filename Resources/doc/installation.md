@@ -370,7 +370,7 @@ services:
         autowire: true
     AppBundle\Datatables\PostDatatable:
       bind:
-        $columns: !tagged sg_datatables.column
+        $columnTypes: !tagged sg_datatables.column
 ```
 
 ### Step 3: The Controller actions

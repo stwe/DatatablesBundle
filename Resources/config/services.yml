@@ -37,3 +37,18 @@ services:
             - '@twig'
 
     Sg\DatatablesBundle\Twig\DatatableTwigExtension: ~
+
+    # aliases for backwards compatibility, will be removed in 2.0
+    sg_datatables.twig.extension:
+        alias: Sg\DatatablesBundle\Twig\DatatableTwigExtension
+
+    sg_datatables.datatable.abstract:
+        alias: Sg\DatatablesBundle\Datatable\AbstractDatatable
+
+    sg_datatables.response:
+        alias: Sg\DatatablesBundle\Response\DatatableResponse
+        public: true
+
+    sg_datatables.factory:
+        alias: Sg\DatatablesBundle\Datatable\DatatableFactory
+        public: true

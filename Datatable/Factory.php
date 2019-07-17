@@ -31,7 +31,7 @@ class Factory
      */
     public static function create($class, $interface)
     {
-        if (empty($class) || !is_string($class) && !$class instanceof $interface) {
+        if (empty($class) || ( ! is_string($class) && ! $class instanceof $interface)) {
             throw new Exception("Factory::create(): String or $interface expected.");
         }
 
@@ -44,11 +44,11 @@ class Factory
 
             if (!$instance instanceof $interface) {
                 throw new Exception("Factory::create(): String or $interface expected.");
-            } else {
-                return $instance;
             }
-        } else {
-            throw new Exception("Factory::create(): $class is not callable.");
+
+            return $instance;
         }
+
+        throw new Exception("Factory::create(): $class is not callable.");
     }
 }
