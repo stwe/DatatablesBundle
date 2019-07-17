@@ -11,9 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
-use phpDocumentor\Reflection\Types\Iterable_;
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
-
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
