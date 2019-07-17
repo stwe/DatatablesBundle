@@ -15,7 +15,6 @@ use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\EntityManagerInterface;
 use Sg\DatatablesBundle\Datatable\Factory;
-use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Twig_Environment;
 use Exception;
 use function array_key_exists;
@@ -102,7 +101,7 @@ class ColumnBuilder
      * @param Twig_Environment       $twig
      * @param string                 $datatableName
      * @param EntityManagerInterface $em
-     * @param RewindableGenerator    $columnTypes
+     * @param iterable               $columnTypes
      */
     public function __construct(ClassMetadata $metadata, Twig_Environment $twig, $datatableName, EntityManagerInterface $em, iterable $columnTypes)
     {
