@@ -11,6 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable\Filter;
 
+use Sg\DatatablesBundle\Datatable\Extension\Select;
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -124,7 +125,14 @@ abstract class AbstractFilter implements FilterInterface
 
         $resolver->setAllowedTypes('search_type', 'string');
         $resolver->setAllowedTypes('search_column', array('null', 'string'));
-        $resolver->setAllowedTypes('initial_search', array('null', 'string'));
+
+        $allowedInitialSearchTypes = ['null', 'string'];
+        if($this instanceof Select2Filter or $this instanceof Select) {
+            // Add ability to set initial search as array only for Select & Select2 filters
+            $allowedInitialSearchTypes[] = 'array';
+        }
+
+        $resolver->setAllowedTypes('initial_search', $allowedInitialSearchTypes);
         $resolver->setAllowedTypes('classes', array('null', 'string'));
         $resolver->setAllowedTypes('cancel_button', 'bool');
         $resolver->setAllowedTypes('placeholder', 'bool');
@@ -382,7 +390,7 @@ abstract class AbstractFilter implements FilterInterface
             case 'bigint':
             case 'smallint':
             case 'boolean':
-                if ($searchValue == (string) (int) $searchValue) {
+                if ( $searchValue == (string) (int) $searchValue ) {
                     $searchValue = (int) $searchValue;
                 } else {
                     $incompatibleTypeOfField = true;
