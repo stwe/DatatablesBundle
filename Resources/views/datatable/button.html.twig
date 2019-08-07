@@ -57,7 +57,7 @@
     {% endif %}
     {% if button.buttonOptions is defined and button.buttonOptions is not same as(null) %}
         {% for key, option in button.buttonOptions %}
-            {{ key }}: {{ option|json_encode|raw }},
+            {{ key }}: {{ option|sg_datatables_option_encode|raw }},
         {% endfor %}
     {% endif %}
 },
