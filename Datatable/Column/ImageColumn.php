@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,30 +11,25 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Exception;
 use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
 use Sg\DatatablesBundle\Datatable\Helper;
-
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Exception;
 
 /**
- * Class ImageColumn
- *
- * @package Sg\DatatablesBundle\Datatable\Column
+ * Class ImageColumn.
  */
 class ImageColumn extends AbstractColumn
 {
-    /**
-     * The Column is filterable.
-     */
+    // The Column is filterable.
     use FilterableTrait;
 
     /**
      * The imagine filter used to display image preview.
      * Required option.
      *
-     * @link https://github.com/liip/LiipImagineBundle#create-thumbnails
+     * @see https://github.com/liip/LiipImagineBundle#create-thumbnails
      *
      * @var string
      */
@@ -44,11 +39,11 @@ class ImageColumn extends AbstractColumn
      * The imagine filter used to display the enlarged image's size;
      * if not set or null, no filter will be applied;
      * $enlarged need to be set to true.
-     * Default: null
+     * Default: null.
      *
-     * @link https://github.com/liip/LiipImagineBundle#create-thumbnails
+     * @see https://github.com/liip/LiipImagineBundle#create-thumbnails
      *
-     * @var null|string
+     * @var string|null
      */
     protected $imagineFilterEnlarged;
 
@@ -63,15 +58,15 @@ class ImageColumn extends AbstractColumn
     /**
      * The placeholder url.
      * e.g. "http://placehold.it"
-     * Default: null
+     * Default: null.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $holderUrl;
 
     /**
      * The default width of the placeholder.
-     * Default: '50'
+     * Default: '50'.
      *
      * @var string
      */
@@ -79,7 +74,7 @@ class ImageColumn extends AbstractColumn
 
     /**
      * The default height of the placeholder.
-     * Default: '50'
+     * Default: '50'.
      *
      * @var string
      */
@@ -87,7 +82,7 @@ class ImageColumn extends AbstractColumn
 
     /**
      * Enlarge thumbnail.
-     * Default: false
+     * Default: false.
      *
      * @var bool
      */
@@ -127,15 +122,15 @@ class ImageColumn extends AbstractColumn
         if ($this->accessor->isReadable($row, $path)) {
             $images = $this->accessor->getValue($row, $path);
 
-            if (count($images) > 0) {
+            if (\count($images) > 0) {
                 foreach ($images as $key => $image) {
-                    $currentPath = $path . '[' . $key . ']' . $value;
+                    $currentPath = $path.'['.$key.']'.$value;
                     $content = $this->renderImageTemplate($this->accessor->getValue($row, $currentPath), '-gallery-image');
                     $this->accessor->setValue($row, $currentPath, $content);
                 }
             } else {
                 // create an entry for the placeholder image
-                $currentPath = $path . '[0]' . $value;
+                $currentPath = $path.'[0]'.$value;
                 $content = $this->renderImageTemplate(null, '-gallery-image');
                 $this->accessor->setValue($row, $currentPath, $content);
             }
@@ -159,31 +154,29 @@ class ImageColumn extends AbstractColumn
     /**
      * Config options.
      *
-     * @param OptionsResolver $resolver
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
 
-        $resolver->setRequired(array('imagine_filter'));
-        $resolver->setRequired(array('relative_path'));
+        $resolver->setRequired(['imagine_filter']);
+        $resolver->setRequired(['relative_path']);
 
-        $resolver->setDefaults(array(
-            'filter' => array(TextFilter::class, array()),
+        $resolver->setDefaults([
+            'filter' => [TextFilter::class, []],
             'imagine_filter_enlarged' => null,
             'holder_url' => null,
             'holder_width' => '50',
             'holder_height' => '50',
             'enlarge' => false,
-        ));
+        ]);
 
         $resolver->setAllowedTypes('filter', 'array');
         $resolver->setAllowedTypes('imagine_filter', 'string');
-        $resolver->setAllowedTypes('imagine_filter_enlarged', array('null', 'string'));
+        $resolver->setAllowedTypes('imagine_filter_enlarged', ['null', 'string']);
         $resolver->setAllowedTypes('relative_path', 'string');
-        $resolver->setAllowedTypes('holder_url', array('null', 'string'));
+        $resolver->setAllowedTypes('holder_url', ['null', 'string']);
         $resolver->setAllowedTypes('holder_width', 'string');
         $resolver->setAllowedTypes('holder_height', 'string');
         $resolver->setAllowedTypes('enlarge', 'bool');
@@ -230,7 +223,7 @@ class ImageColumn extends AbstractColumn
     /**
      * Get imagineFilterEnlarged.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getImagineFilterEnlarged()
     {
@@ -240,7 +233,7 @@ class ImageColumn extends AbstractColumn
     /**
      * Set imagineFilterEnlarged.
      *
-     * @param null|string $imagineFilterEnlarged
+     * @param string|null $imagineFilterEnlarged
      *
      * @return $this
      */
@@ -387,11 +380,11 @@ class ImageColumn extends AbstractColumn
     {
         return $this->twig->render(
             $this->getCellContentTemplate(),
-            array(
+            [
                 'data' => $data,
                 'image' => $this,
                 'image_class' => 'sg-datatables-'.$this->getDatatableName().$classSuffix,
-            )
+            ]
         );
     }
 }

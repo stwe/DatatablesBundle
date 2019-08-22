@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -14,21 +14,17 @@ namespace Sg\DatatablesBundle\Datatable;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class Language
- *
- * @package Sg\DatatablesBundle\Datatable
+ * Class Language.
  */
 class Language
 {
-    /**
-     * Use the OptionsResolver.
-     */
+    // Use the OptionsResolver.
     use OptionsTrait;
 
     /**
      * @var array
      */
-    protected $languageCDNFile = array(
+    protected $languageCDNFile = [
         'af' => 'Afrikaans.json',
         'ar' => 'Arabic.json',
         'az' => 'Azerbaijan.json',
@@ -92,11 +88,11 @@ class Language
         'uz' => 'Uzbek.json',
         'vi' => 'Vietnamese.json',
         'zh' => 'Chinese.json',
-    );
+    ];
 
     /**
      * Get the actual language file by app.request.locale from CDN.
-     * Default: false
+     * Default: false.
      *
      * @var bool
      */
@@ -104,7 +100,7 @@ class Language
 
     /**
      * Get the actual language by app.request.locale.
-     * Default: false
+     * Default: false.
      *
      * @var bool
      */
@@ -112,9 +108,9 @@ class Language
 
     /**
      * Set a language by given ISO 639-1 code.
-     * Default: null
+     * Default: null.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $language;
 
@@ -137,21 +133,19 @@ class Language
     /**
      * Config options.
      *
-     * @param OptionsResolver $resolver
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'cdn_language_by_locale' => false,
             'language_by_locale' => false,
             'language' => null,
-        ));
+        ]);
 
         $resolver->setAllowedTypes('cdn_language_by_locale', 'bool');
         $resolver->setAllowedTypes('language_by_locale', 'bool');
-        $resolver->setAllowedTypes('language', array('null', 'string'));
+        $resolver->setAllowedTypes('language', ['null', 'string']);
 
         return $this;
     }
@@ -221,7 +215,7 @@ class Language
     /**
      * Get language.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getLanguage()
     {
@@ -231,7 +225,7 @@ class Language
     /**
      * Set language.
      *
-     * @param null|string $language
+     * @param string|null $language
      *
      * @return $this
      */

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -14,9 +14,7 @@ namespace Sg\DatatablesBundle\Datatable\Editable;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class CombodateEditable
- *
- * @package Sg\DatatablesBundle\Datatable\Editable
+ * Class CombodateEditable.
  */
 class CombodateEditable extends AbstractEditable
 {
@@ -30,13 +28,13 @@ class CombodateEditable extends AbstractEditable
     /**
      * Format used for displaying date. If not specified equals to $format.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $viewFormat;
 
     /**
      * Minimum value in years dropdown.
-     * Default: 1970
+     * Default: 1970.
      *
      * @var int
      */
@@ -44,7 +42,7 @@ class CombodateEditable extends AbstractEditable
 
     /**
      * Maximum value in years dropdown.
-     * Default: 2035
+     * Default: 2035.
      *
      * @var int
      */
@@ -52,7 +50,7 @@ class CombodateEditable extends AbstractEditable
 
     /**
      * Step of values in minutes dropdown.
-     * Default: 5
+     * Default: 5.
      *
      * @var int
      */
@@ -60,7 +58,7 @@ class CombodateEditable extends AbstractEditable
 
     /**
      * Step of values in seconds dropdown.
-     * Default: 1
+     * Default: 1.
      *
      * @var int
      */
@@ -69,7 +67,7 @@ class CombodateEditable extends AbstractEditable
     /**
      * If false - number of days in dropdown is always 31.
      * If true - number of days depends on selected month and year.
-     * Default: false
+     * Default: false.
      *
      * @var bool
      */
@@ -94,15 +92,13 @@ class CombodateEditable extends AbstractEditable
     /**
      * Config options.
      *
-     * @param OptionsResolver $resolver
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'format' => 'YYYY-MM-DD',
             'view_format' => null,
             'min_year' => 1970,
@@ -110,10 +106,10 @@ class CombodateEditable extends AbstractEditable
             'minute_step' => 5,
             'second_step' => 1,
             'smart_days' => false,
-        ));
+        ]);
 
         $resolver->setAllowedTypes('format', 'string');
-        $resolver->setAllowedTypes('view_format', array('string', 'null'));
+        $resolver->setAllowedTypes('view_format', ['string', 'null']);
         $resolver->setAllowedTypes('min_year', 'int');
         $resolver->setAllowedTypes('max_year', 'int');
         $resolver->setAllowedTypes('minute_step', 'int');
@@ -154,7 +150,7 @@ class CombodateEditable extends AbstractEditable
     /**
      * Get viewFormat.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getViewFormat()
     {
@@ -164,7 +160,7 @@ class CombodateEditable extends AbstractEditable
     /**
      * Set viewFormat.
      *
-     * @param null|string $viewFormat
+     * @param string|null $viewFormat
      *
      * @return $this
      */

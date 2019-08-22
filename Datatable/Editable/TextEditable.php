@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -14,15 +14,13 @@ namespace Sg\DatatablesBundle\Datatable\Editable;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class TextEditable
- *
- * @package Sg\DatatablesBundle\Datatable\Editable
+ * Class TextEditable.
  */
 class TextEditable extends AbstractEditable
 {
     /**
      * Whether to show clear button.
-     * Default: true
+     * Default: true.
      *
      * Currently not usable: x-editable bug https://github.com/vitalets/x-editable/issues/977
      *
@@ -32,9 +30,9 @@ class TextEditable extends AbstractEditable
 
     /**
      * Placeholder attribute of input. Shown when input is empty.
-     * Default: null
+     * Default: null.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $placeholder;
 
@@ -57,21 +55,19 @@ class TextEditable extends AbstractEditable
     /**
      * Config options.
      *
-     * @param OptionsResolver $resolver
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'clear' => true,
             'placeholder' => null,
-        ));
+        ]);
 
         $resolver->setAllowedTypes('clear', 'bool');
-        $resolver->setAllowedTypes('placeholder', array('null', 'string'));
+        $resolver->setAllowedTypes('placeholder', ['null', 'string']);
 
         return $this;
     }
@@ -107,7 +103,7 @@ class TextEditable extends AbstractEditable
     /**
      * Get placeholder.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getPlaceholder()
     {
@@ -117,7 +113,7 @@ class TextEditable extends AbstractEditable
     /**
      * Set placeholder.
      *
-     * @param null|string $placeholder
+     * @param string|null $placeholder
      *
      * @return $this
      */

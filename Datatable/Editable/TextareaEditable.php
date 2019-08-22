@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -14,9 +14,7 @@ namespace Sg\DatatablesBundle\Datatable\Editable;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class TextareaEditable
- *
- * @package Sg\DatatablesBundle\Datatable\Editable
+ * Class TextareaEditable.
  */
 class TextareaEditable extends AbstractEditable
 {
@@ -46,17 +44,15 @@ class TextareaEditable extends AbstractEditable
     /**
      * Config options.
      *
-     * @param OptionsResolver $resolver
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'rows' => 7,
-        ));
+        ]);
 
         $resolver->setAllowedTypes('rows', 'int');
 

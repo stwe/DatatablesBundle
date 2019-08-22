@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,22 +11,19 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
-
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Twig_Environment;
-use Exception;
 
 /**
- * Class AbstractDatatable
- *
- * @package Sg\DatatablesBundle\Datatable
+ * Class AbstractDatatable.
  */
 abstract class AbstractDatatable implements DatatableInterface
 {
@@ -149,7 +146,7 @@ abstract class AbstractDatatable implements DatatableInterface
      *
      * @var array
      */
-    protected static $uniqueCounter = array();
+    protected static $uniqueCounter = [];
 
     //-------------------------------------------------
     // Ctor.
@@ -157,13 +154,6 @@ abstract class AbstractDatatable implements DatatableInterface
 
     /**
      * AbstractDatatable constructor.
-     *
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param TokenStorageInterface         $securityToken
-     * @param TranslatorInterface           $translator
-     * @param RouterInterface               $router
-     * @param EntityManagerInterface        $em
-     * @param Twig_Environment              $twig
      *
      * @throws Exception
      */
@@ -293,7 +283,7 @@ abstract class AbstractDatatable implements DatatableInterface
      */
     public function getOptionsArrayFromEntities($entities, $keyFrom = 'id', $valueFrom = 'name')
     {
-        $options = array();
+        $options = [];
 
         foreach ($entities as $entity) {
             if (true === $this->accessor->isReadable($entity, $keyFrom) && true === $this->accessor->isReadable($entity, $valueFrom)) {

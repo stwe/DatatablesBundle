@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -12,9 +12,7 @@
 namespace Sg\DatatablesBundle\Datatable\Editable;
 
 /**
- * Interface EditableInterface
- *
- * @package Sg\DatatablesBundle\Datatable\Editable
+ * Interface EditableInterface.
  */
 interface EditableInterface
 {
@@ -28,11 +26,9 @@ interface EditableInterface
     /**
      * Checks whether the object may be editable.
      *
-     * @param array $row
-     *
      * @return bool
      */
-    public function callEditableIfClosure(array $row = array());
+    public function callEditableIfClosure(array $row = []);
 
     /**
      * Get pk.

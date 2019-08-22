@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -14,15 +14,11 @@ namespace Sg\DatatablesBundle\Datatable;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class Features
- *
- * @package Sg\DatatablesBundle\Datatable
+ * Class Features.
  */
 class Features
 {
-    /**
-     * Use the OptionsResolver.
-     */
+    // Use the OptionsResolver.
     use OptionsTrait;
 
     //--------------------------------------------------------------------------------------------------
@@ -35,98 +31,98 @@ class Features
     /**
      * Feature control DataTables' smart column width handling.
      * DataTables default: true
-     * Default: null
+     * Default: null.
      *
-     * @var null|bool
+     * @var bool|null
      */
     protected $autoWidth;
 
     /**
      * Feature control deferred rendering for additional speed of initialisation.
      * DataTables default: false
-     * Default: null
+     * Default: null.
      *
-     * @var null|bool
+     * @var bool|null
      */
     protected $deferRender;
 
     /**
      * Feature control table information display field.
      * DataTables default: true
-     * Default: null
+     * Default: null.
      *
-     * @var null|bool
+     * @var bool|null
      */
     protected $info;
 
     /**
      * Feature control the end user's ability to change the paging display length of the table.
      * DataTables default: true
-     * Default: null
+     * Default: null.
      *
-     * @var null|bool
+     * @var bool|null
      */
     protected $lengthChange;
 
     /**
      * Feature control ordering (sorting) abilities in DataTables.
      * DataTables default: true
-     * Default: null
+     * Default: null.
      *
-     * @var null|bool
+     * @var bool|null
      */
     protected $ordering;
 
     /**
      * Enable or disable table pagination.
      * DataTables default: true
-     * Default: null
+     * Default: null.
      *
-     * @var null|bool
+     * @var bool|null
      */
     protected $paging;
 
     /**
      * Feature control the processing indicator.
      * DataTables default: false
-     * Default: null
+     * Default: null.
      *
-     * @var null|bool
+     * @var bool|null
      */
     protected $processing;
 
     /**
      * Horizontal scrolling.
      * DataTables default: false
-     * Default: null
+     * Default: null.
      *
-     * @var null|bool
+     * @var bool|null
      */
     protected $scrollX;
 
     /**
      * Vertical scrolling.
-     * Default: null
+     * Default: null.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $scrollY;
 
     /**
      * Feature control search (filtering) abilities.
      * DataTables default: true
-     * Default: null
+     * Default: null.
      *
-     * @var null|bool
+     * @var bool|null
      */
     protected $searching;
 
     /**
      * State saving - restore table state on page reload.
      * DataTables default: false
-     * Default: null
+     * Default: null.
      *
-     * @var null|bool
+     * @var bool|null
      */
     protected $stateSave;
 
@@ -149,13 +145,11 @@ class Features
     /**
      * Config options.
      *
-     * @param OptionsResolver $resolver
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'auto_width' => null,
             'defer_render' => null,
             'info' => null,
@@ -167,19 +161,19 @@ class Features
             'scroll_y' => null,
             'searching' => null,
             'state_save' => null,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('auto_width', array('null', 'bool'));
-        $resolver->setAllowedTypes('defer_render', array('null', 'bool'));
-        $resolver->setAllowedTypes('info', array('null', 'bool'));
-        $resolver->setAllowedTypes('length_change', array('null', 'bool'));
-        $resolver->setAllowedTypes('ordering', array('null', 'bool'));
-        $resolver->setAllowedTypes('paging', array('null', 'bool'));
-        $resolver->setAllowedTypes('processing', array('null', 'bool'));
-        $resolver->setAllowedTypes('scroll_x', array('null', 'bool'));
-        $resolver->setAllowedTypes('scroll_y', array('null', 'string'));
-        $resolver->setAllowedTypes('searching', array('null', 'bool'));
-        $resolver->setAllowedTypes('state_save', array('null', 'bool'));
+        $resolver->setAllowedTypes('auto_width', ['null', 'bool']);
+        $resolver->setAllowedTypes('defer_render', ['null', 'bool']);
+        $resolver->setAllowedTypes('info', ['null', 'bool']);
+        $resolver->setAllowedTypes('length_change', ['null', 'bool']);
+        $resolver->setAllowedTypes('ordering', ['null', 'bool']);
+        $resolver->setAllowedTypes('paging', ['null', 'bool']);
+        $resolver->setAllowedTypes('processing', ['null', 'bool']);
+        $resolver->setAllowedTypes('scroll_x', ['null', 'bool']);
+        $resolver->setAllowedTypes('scroll_y', ['null', 'string']);
+        $resolver->setAllowedTypes('searching', ['null', 'bool']);
+        $resolver->setAllowedTypes('state_save', ['null', 'bool']);
 
         return $this;
     }
@@ -383,7 +377,7 @@ class Features
     /**
      * Get scrollY.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getScrollY()
     {
@@ -393,7 +387,7 @@ class Features
     /**
      * Set scrollY.
      *
-     * @param null|string $scrollY
+     * @param string|null $scrollY
      *
      * @return $this
      */

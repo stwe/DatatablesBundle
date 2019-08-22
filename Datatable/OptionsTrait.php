@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,15 +11,13 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
+use Exception;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Exception;
 
 /**
- * Class OptionsTrait
- *
- * @package Sg\DatatablesBundle\Datatable
+ * Class OptionsTrait.
  */
 trait OptionsTrait
 {
@@ -50,12 +48,13 @@ trait OptionsTrait
      */
     public function initOptions($resolve = false)
     {
-        $this->options = array();
+        $this->options = [];
 
-        /** @noinspection PhpUndefinedMethodInspection */
+        // @noinspection PhpUndefinedMethodInspection
         $this->accessor = PropertyAccess::createPropertyAccessorBuilder()
             ->enableMagicCall()
-            ->getPropertyAccessor();
+            ->getPropertyAccessor()
+        ;
 
         if (true === $resolve) {
             $this->set($this->options);
@@ -67,10 +66,9 @@ trait OptionsTrait
     /**
      * Set options.
      *
-     * @param array $options
+     * @throws Exception
      *
      * @return $this
-     * @throws Exception
      */
     public function set(array $options)
     {
@@ -83,14 +81,50 @@ trait OptionsTrait
         return $this;
     }
 
+    /**
+     * Option to JSON.
+     */
+    protected function optionToJson($value)
+    {
+        if (\is_array($value)) {
+            return json_encode($value);
+        }
+
+        return $value;
+    }
+
+    /**
+     * Validates an array whether the "template" and "vars" options are set.
+     *
+     * @throws Exception
+     *
+     * @return bool
+     */
+    protected function validateArrayForTemplateAndOther(array $array, array $other = ['template', 'vars'])
+    {
+        if (false === \array_key_exists('template', $array)) {
+            throw new Exception(
+                'OptionsTrait::validateArrayForTemplateAndOther(): The "template" option is required.'
+            );
+        }
+
+        foreach ($array as $key => $value) {
+            if (false === \in_array($key, $other, true)) {
+                throw new Exception(
+                    "OptionsTrait::validateArrayForTemplateAndOther(): {$key} is not an valid option."
+                );
+            }
+        }
+
+        return true;
+    }
+
     //-------------------------------------------------
     // Helper
     //-------------------------------------------------
 
     /**
      * Calls the setters.
-     *
-     * @param array $options
      *
      * @return $this
      */
@@ -101,49 +135,5 @@ trait OptionsTrait
         }
 
         return $this;
-    }
-
-    /**
-     * Option to JSON.
-     *
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    protected function optionToJson($value)
-    {
-        if (is_array($value)) {
-            return json_encode($value);
-        }
-
-        return $value;
-    }
-
-    /**
-     * Validates an array whether the "template" and "vars" options are set.
-     *
-     * @param array $array
-     * @param array $other
-     *
-     * @return bool
-     * @throws Exception
-     */
-    protected function validateArrayForTemplateAndOther(array $array, array $other = array('template', 'vars'))
-    {
-        if (false === array_key_exists('template', $array)) {
-            throw new Exception(
-                'OptionsTrait::validateArrayForTemplateAndOther(): The "template" option is required.'
-            );
-        }
-
-        foreach ($array as $key => $value) {
-            if (false === in_array($key, $other)) {
-                throw new Exception(
-                    "OptionsTrait::validateArrayForTemplateAndOther(): $key is not an valid option."
-                );
-            }
-        }
-
-        return true;
     }
 }

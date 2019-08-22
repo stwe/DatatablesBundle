@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,21 +11,16 @@
 
 namespace Sg\DatatablesBundle\Datatable\Extension;
 
-use Sg\DatatablesBundle\Datatable\OptionsTrait;
-
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Exception;
+use Sg\DatatablesBundle\Datatable\OptionsTrait;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class Buttons
- *
- * @package Sg\DatatablesBundle\Datatable\Extension
+ * Class Buttons.
  */
 class Buttons
 {
-    /**
-     * Use the OptionsResolver.
-     */
+    // Use the OptionsResolver.
     use OptionsTrait;
 
     //-------------------------------------------------
@@ -34,7 +29,7 @@ class Buttons
 
     /**
      * List of built-in buttons to show.
-     * Default: null
+     * Default: null.
      *
      * @var array|null
      */
@@ -42,7 +37,7 @@ class Buttons
 
     /**
      * List of buttons to be created.
-     * Default: null
+     * Default: null.
      *
      * @var array|null
      */
@@ -67,19 +62,17 @@ class Buttons
     /**
      * Config options.
      *
-     * @param OptionsResolver $resolver
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'show_buttons' => null,
             'create_buttons' => null,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('show_buttons', array('null', 'array'));
-        $resolver->setAllowedTypes('create_buttons', array('null', 'array'));
+        $resolver->setAllowedTypes('show_buttons', ['null', 'array']);
+        $resolver->setAllowedTypes('create_buttons', ['null', 'array']);
 
         return $this;
     }
@@ -95,7 +88,7 @@ class Buttons
      */
     public function getShowButtons()
     {
-        if (is_array($this->showButtons)) {
+        if (\is_array($this->showButtons)) {
             return $this->optionToJson($this->showButtons);
         }
 
@@ -131,13 +124,14 @@ class Buttons
      *
      * @param array|null $createButtons
      *
-     * @return $this
      * @throws Exception
+     *
+     * @return $this
      */
     public function setCreateButtons($createButtons)
     {
-        if (is_array($createButtons)) {
-            if (count($createButtons) > 0) {
+        if (\is_array($createButtons)) {
+            if (\count($createButtons) > 0) {
                 foreach ($createButtons as $button) {
                     $newButton = new Button();
                     $this->createButtons[] = $newButton->set($button);

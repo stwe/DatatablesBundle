@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,19 +11,17 @@
 
 namespace Sg\DatatablesBundle\Datatable\Editable;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Exception;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class SelectEditable
- *
- * @package Sg\DatatablesBundle\Datatable\Editable
+ * Class SelectEditable.
  */
 class SelectEditable extends AbstractEditable
 {
     /**
      * Source data for list.
-     * Default: array()
+     * Default: array().
      *
      * @var array
      */
@@ -47,8 +45,6 @@ class SelectEditable extends AbstractEditable
 
     /**
      * Config options.
-     *
-     * @param OptionsResolver $resolver
      *
      * @return $this
      */
@@ -80,10 +76,9 @@ class SelectEditable extends AbstractEditable
     /**
      * Set source.
      *
-     * @param array $source
+     * @throws Exception
      *
      * @return $this
-     * @throws Exception
      */
     public function setSource(array $source)
     {

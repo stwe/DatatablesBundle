@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -12,23 +12,21 @@
 namespace Sg\DatatablesBundle\Datatable;
 
 /**
- * Class HtmlContainerTrait
- *
- * @package Sg\DatatablesBundle\Datatable
+ * Class HtmlContainerTrait.
  */
 trait HtmlContainerTrait
 {
     /**
      * Start HTML code.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $startHtml;
 
     /**
      * End HTML code.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $endHtml;
 
@@ -39,7 +37,7 @@ trait HtmlContainerTrait
     /**
      * Get startHtml.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getStartHtml()
     {
@@ -49,7 +47,7 @@ trait HtmlContainerTrait
     /**
      * Set startHtml.
      *
-     * @param null|string $startHtml
+     * @param string|null $startHtml
      *
      * @return $this
      */
@@ -63,7 +61,7 @@ trait HtmlContainerTrait
     /**
      * Get endHtml.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getEndHtml()
     {
@@ -73,7 +71,7 @@ trait HtmlContainerTrait
     /**
      * Set endHtml.
      *
-     * @param null|string $endHtml
+     * @param string|null $endHtml
      *
      * @return $this
      */

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -14,16 +14,14 @@ namespace Sg\DatatablesBundle\Datatable;
 use Closure;
 
 /**
- * Class RenderIfTrait
- *
- * @package Sg\DatatablesBundle\Datatable
+ * Class RenderIfTrait.
  */
 trait RenderIfTrait
 {
     /**
      * Render an object only if conditions are TRUE.
      *
-     * @var null|Closure
+     * @var Closure|null
      */
     protected $renderIf;
 
@@ -34,14 +32,12 @@ trait RenderIfTrait
     /**
      * Checks whether the object may be added.
      *
-     * @param array $row
-     *
      * @return bool
      */
-    public function callRenderIfClosure(array $row = array())
+    public function callRenderIfClosure(array $row = [])
     {
         if ($this->renderIf instanceof Closure) {
-            return call_user_func($this->renderIf, $row);
+            return \call_user_func($this->renderIf, $row);
         }
 
         return true;
@@ -54,7 +50,7 @@ trait RenderIfTrait
     /**
      * Get renderIf.
      *
-     * @return null|Closure
+     * @return Closure|null
      */
     public function getRenderIf()
     {
@@ -64,7 +60,7 @@ trait RenderIfTrait
     /**
      * Set renderIf.
      *
-     * @param null|Closure $renderIf
+     * @param Closure|null $renderIf
      *
      * @return $this
      */

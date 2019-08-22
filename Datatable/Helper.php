@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -12,9 +12,7 @@
 namespace Sg\DatatablesBundle\Datatable;
 
 /**
- * Class Helper
- *
- * @package Sg\DatatablesBundle\Datatable
+ * Class Helper.
  */
 class Helper
 {
@@ -36,14 +34,14 @@ class Helper
      * Returns a array notated property path for the Accessor.
      *
      * @param string      $data
-     * @param null|string $value
+     * @param string|null $value
      *
      * @return string
      */
     public static function getDataPropertyPath($data, &$value = null)
     {
         // handle nested array case
-        if (true === is_int(strpos($data, '['))) {
+        if (true === \is_int(strpos($data, '['))) {
             $before = strstr($data, '[', true);
             $value = strstr($data, ']', false);
 
@@ -71,8 +69,8 @@ class Helper
     public static function getPropertyPathObjectNotation($path, $key, $value)
     {
         $objectValue = str_replace('][', '.', $value);
-        $objectValue = str_replace(array('[', ']'), '', $objectValue);
+        $objectValue = str_replace(['[', ']'], '', $objectValue);
 
-        return str_replace(array('[', ']'), '', $path).'['.$key.'].'.$objectValue;
+        return str_replace(['[', ']'], '', $path).'['.$key.'].'.$objectValue;
     }
 }

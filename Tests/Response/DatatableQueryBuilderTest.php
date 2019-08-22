@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -25,45 +25,49 @@ use Sg\DatatablesBundle\Datatable\Features;
 use Sg\DatatablesBundle\Datatable\Options;
 use Sg\DatatablesBundle\Response\DatatableQueryBuilder;
 
-class DatatableQueryBuilderTest extends \PHPUnit_Framework_TestCase
+/**
+ * @internal
+ * @coversNothing
+ */
+final class DatatableQueryBuilderTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var ObjectProphecy|EntityManagerInterface */
+    /** @var EntityManagerInterface|ObjectProphecy */
     private $entityManager;
 
-    /** @var ObjectProphecy|ClassMetadataFactory */
+    /** @var ClassMetadataFactory|ObjectProphecy */
     private $classMetadataFactory;
 
-    /** @var ObjectProphecy|Connection */
+    /** @var Connection|ObjectProphecy */
     private $connection;
 
     /** @var ObjectProphecy|QueryBuilder */
     private $queryBuilder;
 
-    /** @var ObjectProphecy|ClassMetadata */
+    /** @var ClassMetadata|ObjectProphecy */
     private $classMetadata;
 
     /** @var ObjectProphecy|\ReflectionClass */
     private $reflectionClass;
 
-    /** @var ObjectProphecy|ColumnBuilder */
+    /** @var ColumnBuilder|ObjectProphecy */
     private $columnBuilder;
 
     /** @var ObjectProphecy|Options */
     private $options;
 
-    /** @var ObjectProphecy|Features */
+    /** @var Features|ObjectProphecy */
     private $features;
 
-    /** @var ObjectProphecy|Ajax */
+    /** @var Ajax|ObjectProphecy */
     private $ajax;
 
-    /** @var ObjectProphecy|DatatableInterface */
+    /** @var DatatableInterface|ObjectProphecy */
     private $dataTable;
 
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->entityManager = $this->prophesize(EntityManagerInterface::class);
         $this->classMetadataFactory = $this->prophesize(ClassMetadataFactory::class);
@@ -99,6 +103,7 @@ class DatatableQueryBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string $entityName
      * @param string $shortName
+     *
      * @return DatatableQueryBuilder
      */
     private function getDataTableQueryBuilder($entityName, $shortName)

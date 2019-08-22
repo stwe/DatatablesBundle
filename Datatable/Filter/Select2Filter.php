@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,20 +11,18 @@
 
 namespace Sg\DatatablesBundle\Datatable\Filter;
 
+use Exception;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Exception;
 
 /**
- * Class Select2Filter
- *
- * @package Sg\DatatablesBundle\Datatable\Filter
+ * Class Select2Filter.
  */
 class Select2Filter extends SelectFilter
 {
     /**
      * Select2 supports displaying a placeholder by default using the placeholder option.
-     * Default: null
+     * Default: null.
      *
      * @var string|null
      */
@@ -32,7 +30,7 @@ class Select2Filter extends SelectFilter
 
     /**
      * Setting this option to true will enable an "x" icon that will reset the selection to the placeholder.
-     * Default: null
+     * Default: null.
      *
      * @var bool|null
      */
@@ -40,7 +38,7 @@ class Select2Filter extends SelectFilter
 
     /**
      * Tagging support.
-     * Default: null
+     * Default: null.
      *
      * @var bool|null
      */
@@ -48,7 +46,7 @@ class Select2Filter extends SelectFilter
 
     /**
      * i18n language code.
-     * Default: null (get locale)
+     * Default: null (get locale).
      *
      * @var string|null
      */
@@ -56,7 +54,7 @@ class Select2Filter extends SelectFilter
 
     /**
      * URL to get the results from.
-     * Default: null
+     * Default: null.
      *
      * @var string|null
      */
@@ -64,7 +62,7 @@ class Select2Filter extends SelectFilter
 
     /**
      * Wait some milliseconds before triggering the request.
-     * Default: 250
+     * Default: 250.
      *
      * @var int
      */
@@ -72,7 +70,7 @@ class Select2Filter extends SelectFilter
 
     /**
      * The AJAX cache.
-     * Default: true
+     * Default: true.
      *
      * @var bool
      */
@@ -101,7 +99,7 @@ class Select2Filter extends SelectFilter
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'placeholder' => null,
             'allow_clear' => null,
             'tags' => null,
@@ -109,13 +107,13 @@ class Select2Filter extends SelectFilter
             'url' => null,
             'delay' => 250,
             'cache' => true,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('placeholder', array('string', 'null'));
-        $resolver->setAllowedTypes('allow_clear', array('bool', 'null'));
-        $resolver->setAllowedTypes('tags', array('bool', 'null'));
-        $resolver->setAllowedTypes('language', array('string', 'null'));
-        $resolver->setAllowedTypes('url', array('string', 'null'));
+        $resolver->setAllowedTypes('placeholder', ['string', 'null']);
+        $resolver->setAllowedTypes('allow_clear', ['bool', 'null']);
+        $resolver->setAllowedTypes('tags', ['bool', 'null']);
+        $resolver->setAllowedTypes('language', ['string', 'null']);
+        $resolver->setAllowedTypes('url', ['string', 'null']);
         $resolver->setAllowedTypes('delay', 'int');
         $resolver->setAllowedTypes('cache', 'bool');
 
@@ -137,7 +135,7 @@ class Select2Filter extends SelectFilter
     /**
      * Get placeholder.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getPlaceholder()
     {
@@ -147,7 +145,7 @@ class Select2Filter extends SelectFilter
     /**
      * Set placeholder.
      *
-     * @param null|string $placeholder
+     * @param string|null $placeholder
      *
      * @return $this
      */
@@ -209,7 +207,7 @@ class Select2Filter extends SelectFilter
     /**
      * Get language.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getLanguage()
     {
@@ -219,7 +217,7 @@ class Select2Filter extends SelectFilter
     /**
      * Set language.
      *
-     * @param null|string $language
+     * @param string|null $language
      *
      * @return $this
      */
@@ -233,7 +231,7 @@ class Select2Filter extends SelectFilter
     /**
      * Get url.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getUrl()
     {
@@ -243,7 +241,7 @@ class Select2Filter extends SelectFilter
     /**
      * Set url.
      *
-     * @param null|string $url
+     * @param string|null $url
      *
      * @return $this
      */

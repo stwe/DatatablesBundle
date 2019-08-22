@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,15 +11,13 @@
 
 namespace Sg\DatatablesBundle\Datatable\Filter;
 
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Query\Expr\Andx;
 use DateTime;
+use Doctrine\ORM\Query\Expr\Andx;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class DateRangeFilter
- *
- * @package Sg\DatatablesBundle\Datatable\Filter
+ * Class DateRangeFilter.
  */
 class DateRangeFilter extends AbstractFilter
 {
@@ -57,8 +55,6 @@ class DateRangeFilter extends AbstractFilter
 
     /**
      * Config options.
-     *
-     * @param OptionsResolver $resolver
      *
      * @return $this
      */

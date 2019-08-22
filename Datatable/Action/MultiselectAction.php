@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -14,9 +14,7 @@ namespace Sg\DatatablesBundle\Datatable\Action;
 use Exception;
 
 /**
- * Class MultiselectAction
- *
- * @package Sg\DatatablesBundle\Datatable\Action
+ * Class MultiselectAction.
  */
 class MultiselectAction extends Action
 {
@@ -27,21 +25,22 @@ class MultiselectAction extends Action
     /**
      * Set attributes.
      *
-     * @param null|array $attributes
+     * @param array|null $attributes
+     *
+     * @throws Exception
      *
      * @return $this
-     * @throws Exception
      */
     public function setAttributes($attributes)
     {
         $value = 'sg-datatables-'.$this->datatableName.'-multiselect-action';
 
-        if (is_array($attributes)) {
-            if (array_key_exists('href', $attributes)) {
+        if (\is_array($attributes)) {
+            if (\array_key_exists('href', $attributes)) {
                 throw new Exception('MultiselectAction::setAttributes(): The href attribute is not allowed in this context.');
             }
 
-            if (array_key_exists('class', $attributes)) {
+            if (\array_key_exists('class', $attributes)) {
                 $attributes['class'] = $value.' '.$attributes['class'];
             } else {
                 $attributes['class'] = $value;
