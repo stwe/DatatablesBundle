@@ -207,7 +207,8 @@ class DatatableQueryBuilder
         $this->entityName = $datatable->getEntity();
 
         $this->metadata = $this->getMetadata($this->entityName);
-        $this->entityShortName = $this->getEntityShortName($this->metadata, $this->em);
+        $this->entityShortName = $this->getSafeName(strtolower($this->metadata->getReflectionClass()->getShortName()));
+
         $this->rootEntityIdentifier = $this->getIdentifier($this->metadata);
 
         $this->qb = $this->em->createQueryBuilder()->from($this->entityName, $this->entityShortName);
@@ -262,6 +263,7 @@ class DatatableQueryBuilder
 
                     $currentPart = array_shift($parts);
                     $currentAlias = ($previousPart === $this->entityShortName ? '' : $previousPart.'_').$currentPart;
+                    $currentAlias = $this->getSafeName($currentAlias);
 
                     if (!array_key_exists($previousAlias.'.'.$currentPart, $this->joins)) {
                         $this->addJoin($previousAlias.'.'.$currentPart, $currentAlias, $this->accessor->getValue($column, 'joinType'));
@@ -755,24 +757,21 @@ class DatatableQueryBuilder
     }
 
     /**
-     * Get entity short name.
+     * Get safe name.
      *
-     * @param ClassMetadata $metadata
-     * @param EntityManagerInterface $entityManager
-     *
+     * @param $name
      * @return string
      */
-    private function getEntityShortName(ClassMetadata $metadata, EntityManagerInterface $entityManager)
+    private function getSafeName($name)
     {
-        $entityShortName = strtolower($metadata->getReflectionClass()->getShortName());
         try {
-            $reservedKeywordsList = $entityManager->getConnection()->getDatabasePlatform()->getReservedKeywordsList();
-            $isReservedKeyword = $reservedKeywordsList->isKeyword($entityShortName);
+            $reservedKeywordsList = $this->em->getConnection()->getDatabasePlatform()->getReservedKeywordsList();
+            $isReservedKeyword = $reservedKeywordsList->isKeyword($name);
         } catch (DBALException $exception) {
             $isReservedKeyword = false;
         }
 
-        return $isReservedKeyword ? "_{$entityShortName}" : $entityShortName;
+        return $isReservedKeyword ? "_{$name}" : $name;
     }
 
     /**

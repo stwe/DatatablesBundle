@@ -182,7 +182,7 @@ class DatatableTwigExtension extends Twig_Extension
         $searchColumn = $this->accessor->getValue($filter, 'searchColumn');
 
         if (null !== $searchColumn) {
-            $columns = $datatable->getColumnNames();
+            $columns = $datatable->getColumnBuilder()->getColumnNames();
             $searchColumnIndex = $columns[$searchColumn];
         } else {
             $searchColumnIndex = $index;

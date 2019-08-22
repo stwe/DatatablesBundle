@@ -350,7 +350,7 @@ abstract class AbstractFilter implements FilterInterface
         // Only StringExpression can be searched with LIKE (https://github.com/doctrine/doctrine2/issues/6363)
         if (
             // Not a StringExpression
-            !preg_match('/text|string|date|time/', $searchTypeOfField)
+            !preg_match('/text|string|date|time|array|json_array|simple_array/', $searchTypeOfField)
             // Subqueries can't be search with LIKE
             || preg_match('/SELECT.+FROM.+/is', $searchField)
             // CASE WHEN can't be search with LIKE
