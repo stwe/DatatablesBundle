@@ -17,11 +17,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sg\DatatablesBundle\Datatable\Factory;
 use Twig_Environment;
 use Exception;
-use function array_key_exists;
-use function sprintf;
-use function trigger_error;
-use const E_USER_DEPRECATED;
-use function get_class;
 
 /**
  * Class ColumnBuilder
@@ -90,7 +85,7 @@ class ColumnBuilder
     /**
      * Column services
      *
-     * @var \Symfony\Component\DependencyInjection\Argument\RewindableGenerator
+     * @var iterable
      */
     private $columnTypes;
 
