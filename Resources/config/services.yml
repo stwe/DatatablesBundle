@@ -28,13 +28,6 @@ services:
 
     Sg\DatatablesBundle\Datatable\DatatableFactory:
         public: true
-        arguments:
-            - '@security.authorization_checker'
-            - '@security.token_storage'
-            - '@translator'
-            - '@router'
-            - '@doctrine.orm.entity_manager'
-            - '@twig'
 
     Sg\DatatablesBundle\Twig\DatatableTwigExtension: ~
 
