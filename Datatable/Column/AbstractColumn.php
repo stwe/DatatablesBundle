@@ -252,14 +252,6 @@ abstract class AbstractColumn implements ColumnInterface
     protected $twig;
 
     /**
-     * The Router.
-     * Is set in the ColumnBuilder.
-     *
-     * @var RouterInterface
-     */
-    protected $router;
-
-    /**
      * The position in the Columns array.
      * Is set in the ColumnBuilder.
      *
@@ -957,30 +949,6 @@ abstract class AbstractColumn implements ColumnInterface
     public function setTwig(Twig_Environment $twig)
     {
         $this->twig = $twig;
-
-        return $this;
-    }
-
-    /**
-     * Get Router.
-     *
-     * @return RouterInterface
-     */
-    public function getRouter()
-    {
-        return $this->router;
-    }
-
-    /**
-     * Set Router.
-     *
-     * @param RouterInterface $router
-     *
-     * @return $this
-     */
-    public function setRouter(RouterInterface $router)
-    {
-        $this->router = $router;
 
         return $this;
     }

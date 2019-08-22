@@ -15,6 +15,7 @@ use Sg\DatatablesBundle\Datatable\Helper;
 use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class LinkColumn
@@ -75,6 +76,16 @@ class LinkColumn extends AbstractColumn
      * Boolean to indicate if it's an email link
      */
     protected $email;
+
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    public function __construct (RouterInterface $router)
+    {
+        $this->router = $router;
+    }
 
     //-------------------------------------------------
     // ColumnInterface
