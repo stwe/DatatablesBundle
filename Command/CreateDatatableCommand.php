@@ -22,9 +22,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
-/**
- * Class CreateDatatableCommand.
- */
 class CreateDatatableCommand extends GenerateDoctrineCommand
 {
     //-------------------------------------------------

@@ -15,9 +15,6 @@ use Exception;
 use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
 use Sg\DatatablesBundle\Datatable\Factory;
 
-/**
- * Class EditableTrait.
- */
 trait EditableTrait
 {
     /**
@@ -33,8 +30,6 @@ trait EditableTrait
     //-------------------------------------------------
 
     /**
-     * Get editable.
-     *
      * @return EditableInterface|null
      */
     public function getEditable()
@@ -43,8 +38,6 @@ trait EditableTrait
     }
 
     /**
-     * Set editable.
-     *
      * @param array|null $editableClassAndOptions
      *
      * @throws Exception

@@ -13,9 +13,6 @@ namespace Sg\DatatablesBundle\Datatable;
 
 use Closure;
 
-/**
- * Class RenderIfTrait.
- */
 trait RenderIfTrait
 {
     /**
@@ -48,8 +45,6 @@ trait RenderIfTrait
     //-------------------------------------------------
 
     /**
-     * Get renderIf.
-     *
      * @return Closure|null
      */
     public function getRenderIf()
@@ -58,8 +53,6 @@ trait RenderIfTrait
     }
 
     /**
-     * Set renderIf.
-     *
      * @param Closure|null $renderIf
      *
      * @return $this

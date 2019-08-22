@@ -16,15 +16,11 @@ use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
 use Sg\DatatablesBundle\Datatable\Helper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class Column.
- */
 class Column extends AbstractColumn
 {
     // The Column is editable.
     use EditableTrait;
 
-    // The Column is filterable.
     use FilterableTrait;
 
     //-------------------------------------------------
@@ -119,8 +115,6 @@ class Column extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)

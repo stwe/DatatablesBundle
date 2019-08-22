@@ -15,9 +15,6 @@ use Exception;
 use Sg\DatatablesBundle\Datatable\Factory;
 use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
 
-/**
- * Class FilterableTrait.
- */
 trait FilterableTrait
 {
     /**

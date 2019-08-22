@@ -19,9 +19,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-/**
- * Class DatatableResponse.
- */
 class DatatableResponse
 {
     /**
@@ -55,13 +52,6 @@ class DatatableResponse
      */
     private $datatableQueryBuilder;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * DatatableResponse constructor.
-     */
     public function __construct(RequestStack $requestStack)
     {
         $this->request = $requestStack->getCurrentRequest();
@@ -74,8 +64,6 @@ class DatatableResponse
     //-------------------------------------------------
 
     /**
-     * Set datatable.
-     *
      * @throws Exception
      *
      * @return $this
@@ -144,8 +132,6 @@ class DatatableResponse
     }
 
     /**
-     * Get response.
-     *
      * @param bool $countAllResults
      * @param bool $outputWalkers
      * @param bool $fetchJoinCollection

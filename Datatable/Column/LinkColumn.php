@@ -15,9 +15,6 @@ use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
 use Sg\DatatablesBundle\Datatable\Helper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class LinkColumn.
- */
 class LinkColumn extends AbstractColumn
 {
     // The LinkColumn is filterable.
@@ -246,8 +243,6 @@ class LinkColumn extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -278,8 +273,6 @@ class LinkColumn extends AbstractColumn
     }
 
     /**
-     * Get route.
-     *
      * @return string
      */
     public function getRoute()
@@ -288,8 +281,6 @@ class LinkColumn extends AbstractColumn
     }
 
     /**
-     * Set route.
-     *
      * @param string $route
      *
      * @return $this
@@ -350,8 +341,6 @@ class LinkColumn extends AbstractColumn
     }
 
     /**
-     * Get text.
-     *
      * @return Closure|null
      */
     public function getText()
@@ -360,8 +349,6 @@ class LinkColumn extends AbstractColumn
     }
 
     /**
-     * Set text.
-     *
      * @param Closure|null $text
      *
      * @return $this
@@ -374,8 +361,6 @@ class LinkColumn extends AbstractColumn
     }
 
     /**
-     * Get separator.
-     *
      * @return string
      */
     public function getSeparator()
@@ -384,8 +369,6 @@ class LinkColumn extends AbstractColumn
     }
 
     /**
-     * Set separator.
-     *
      * @param string $separator
      *
      * @return $this

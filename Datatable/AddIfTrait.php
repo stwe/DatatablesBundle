@@ -13,9 +13,6 @@ namespace Sg\DatatablesBundle\Datatable;
 
 use Closure;
 
-/**
- * Class AddIfTrait.
- */
 trait AddIfTrait
 {
     /**
@@ -48,8 +45,6 @@ trait AddIfTrait
     //-------------------------------------------------
 
     /**
-     * Get addIf.
-     *
      * @return Closure|null
      */
     public function getAddIf()
@@ -58,8 +53,6 @@ trait AddIfTrait
     }
 
     /**
-     * Set addIf.
-     *
      * @param Closure|null $addIf
      *
      * @return $this

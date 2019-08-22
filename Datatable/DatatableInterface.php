@@ -34,8 +34,6 @@ interface DatatableInterface
     public function getLineFormatter();
 
     /**
-     * Get ColumnBuilder.
-     *
      * @return ColumnBuilder
      */
     public function getColumnBuilder();

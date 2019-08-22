@@ -20,8 +20,6 @@ use Doctrine\ORM\QueryBuilder;
 interface FilterInterface
 {
     /**
-     * Get template.
-     *
      * @return string
      */
     public function getTemplate();

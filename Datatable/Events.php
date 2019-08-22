@@ -13,12 +13,8 @@ namespace Sg\DatatablesBundle\Datatable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class Events.
- */
 class Events
 {
-    // Use the OptionsResolver.
     use OptionsTrait;
 
     //-------------------------------------------------
@@ -133,13 +129,6 @@ class Events
      */
     protected $xhr;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Callbacks constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -198,8 +187,6 @@ class Events
     //-------------------------------------------------
 
     /**
-     * Get columnSizing.
-     *
      * @return array|null
      */
     public function getColumnSizing()
@@ -208,8 +195,6 @@ class Events
     }
 
     /**
-     * Set columnSizing.
-     *
      * @param array|null $columnSizing
      *
      * @return $this
@@ -226,8 +211,6 @@ class Events
     }
 
     /**
-     * Get columnVisibility.
-     *
      * @return array|null
      */
     public function getColumnVisibility()
@@ -236,8 +219,6 @@ class Events
     }
 
     /**
-     * Set columnVisibility.
-     *
      * @param array|null $columnVisibility
      *
      * @return $this
@@ -254,8 +235,6 @@ class Events
     }
 
     /**
-     * Get destroy.
-     *
      * @return array|null
      */
     public function getDestroy()
@@ -264,8 +243,6 @@ class Events
     }
 
     /**
-     * Set destroy.
-     *
      * @param array|null $destroy
      *
      * @return $this
@@ -282,8 +259,6 @@ class Events
     }
 
     /**
-     * Get error.
-     *
      * @return array|null
      */
     public function getError()
@@ -292,8 +267,6 @@ class Events
     }
 
     /**
-     * Set error.
-     *
      * @param array|null $error
      *
      * @return $this
@@ -310,8 +283,6 @@ class Events
     }
 
     /**
-     * Get length.
-     *
      * @return array|null
      */
     public function getLength()
@@ -320,8 +291,6 @@ class Events
     }
 
     /**
-     * Set length.
-     *
      * @param array|null $length
      *
      * @return $this
@@ -338,8 +307,6 @@ class Events
     }
 
     /**
-     * Get order.
-     *
      * @return array|null
      */
     public function getOrder()
@@ -348,8 +315,6 @@ class Events
     }
 
     /**
-     * Set order.
-     *
      * @param array|null $order
      *
      * @return $this
@@ -366,8 +331,6 @@ class Events
     }
 
     /**
-     * Get page.
-     *
      * @return array|null
      */
     public function getPage()
@@ -376,8 +339,6 @@ class Events
     }
 
     /**
-     * Set page.
-     *
      * @param array|null $page
      *
      * @return $this
@@ -394,8 +355,6 @@ class Events
     }
 
     /**
-     * Get preInit.
-     *
      * @return array|null
      */
     public function getPreInit()
@@ -404,8 +363,6 @@ class Events
     }
 
     /**
-     * Set preInit.
-     *
      * @param array|null $preInit
      *
      * @return $this
@@ -422,8 +379,6 @@ class Events
     }
 
     /**
-     * Get preXhr.
-     *
      * @return array|null
      */
     public function getPreXhr()
@@ -432,8 +387,6 @@ class Events
     }
 
     /**
-     * Set preXhr.
-     *
      * @param array|null $preXhr
      *
      * @return $this
@@ -450,8 +403,6 @@ class Events
     }
 
     /**
-     * Get processing.
-     *
      * @return array|null
      */
     public function getProcessing()
@@ -460,8 +411,6 @@ class Events
     }
 
     /**
-     * Set processing.
-     *
      * @param array|null $processing
      *
      * @return $this
@@ -478,8 +427,6 @@ class Events
     }
 
     /**
-     * Get search.
-     *
      * @return array|null
      */
     public function getSearch()
@@ -488,8 +435,6 @@ class Events
     }
 
     /**
-     * Set search.
-     *
      * @param array|null $search
      *
      * @return $this
@@ -506,8 +451,6 @@ class Events
     }
 
     /**
-     * Get stateLoaded.
-     *
      * @return array|null
      */
     public function getStateLoaded()
@@ -516,8 +459,6 @@ class Events
     }
 
     /**
-     * Set stateLoaded.
-     *
      * @param array|null $stateLoaded
      *
      * @return $this
@@ -534,8 +475,6 @@ class Events
     }
 
     /**
-     * Get stateLoadParams.
-     *
      * @return array|null
      */
     public function getStateLoadParams()
@@ -544,8 +483,6 @@ class Events
     }
 
     /**
-     * Set stateLoadParams.
-     *
      * @param array|null $stateLoadParams
      *
      * @return $this
@@ -562,8 +499,6 @@ class Events
     }
 
     /**
-     * Get stateSaveParams.
-     *
      * @return array|null
      */
     public function getStateSaveParams()
@@ -572,8 +507,6 @@ class Events
     }
 
     /**
-     * Set stateSaveParams.
-     *
      * @param array|null $stateSaveParams
      *
      * @return $this
@@ -590,8 +523,6 @@ class Events
     }
 
     /**
-     * Get xhr.
-     *
      * @return array|null
      */
     public function getXhr()
@@ -600,8 +531,6 @@ class Events
     }
 
     /**
-     * Set xhr.
-     *
      * @param array|null $xhr
      *
      * @return $this

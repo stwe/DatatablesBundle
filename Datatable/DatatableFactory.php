@@ -19,9 +19,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig_Environment;
 
-/**
- * Class DatatableFactory.
- */
 class DatatableFactory
 {
     /**
@@ -66,13 +63,6 @@ class DatatableFactory
      */
     protected $twig;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * DatatableFactory constructor.
-     */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $securityToken,
@@ -94,8 +84,6 @@ class DatatableFactory
     //-------------------------------------------------
 
     /**
-     * Create Datatable.
-     *
      * @param string $class
      *
      * @throws Exception

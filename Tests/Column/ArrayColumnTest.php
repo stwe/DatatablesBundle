@@ -14,8 +14,6 @@ namespace Sg\DatatablesBundle\Tests\Column;
 use Sg\DatatablesBundle\Datatable\Column\ArrayColumn;
 
 /**
- * Class ArrayColumnTest.
- *
  * @internal
  * @coversNothing
  */

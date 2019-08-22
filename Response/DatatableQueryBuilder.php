@@ -29,8 +29,6 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
- * Class DatatableQueryBuilder.
- *
  * @todo: remove phpcs warnings
  */
 class DatatableQueryBuilder
@@ -192,8 +190,6 @@ class DatatableQueryBuilder
     //-------------------------------------------------
 
     /**
-     * DatatableQuery constructor.
-     *
      * @throws Exception
      */
     public function __construct(array $requestParams, DatatableInterface $datatable)
@@ -242,8 +238,6 @@ class DatatableQueryBuilder
     }
 
     /**
-     * Get qb.
-     *
      * @return QueryBuilder
      */
     public function getQb()
@@ -252,8 +246,6 @@ class DatatableQueryBuilder
     }
 
     /**
-     * Set qb.
-     *
      * @param QueryBuilder $qb
      *
      * @return $this
@@ -482,8 +474,6 @@ class DatatableQueryBuilder
     }
 
     /**
-     * Set joins.
-     *
      * @return $this
      */
     private function setJoins(QueryBuilder $qb)
@@ -727,8 +717,6 @@ class DatatableQueryBuilder
     }
 
     /**
-     * Get metadata.
-     *
      * @param string $entityName
      *
      * @throws Exception
@@ -765,9 +753,6 @@ class DatatableQueryBuilder
         return $isReservedKeyword ? "_{$name}" : $name;
     }
 
-    /**
-     * Get identifier.
-     */
     private function getIdentifier(ClassMetadata $metadata)
     {
         $identifiers = $metadata->getIdentifierFieldNames();

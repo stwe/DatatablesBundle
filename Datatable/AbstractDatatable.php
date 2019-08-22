@@ -22,9 +22,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig_Environment;
 
-/**
- * Class AbstractDatatable.
- */
 abstract class AbstractDatatable implements DatatableInterface
 {
     /**
@@ -148,13 +145,7 @@ abstract class AbstractDatatable implements DatatableInterface
      */
     protected static $uniqueCounter = [];
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
     /**
-     * AbstractDatatable constructor.
-     *
      * @throws Exception
      */
     public function __construct(

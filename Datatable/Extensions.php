@@ -17,12 +17,8 @@ use Sg\DatatablesBundle\Datatable\Extension\RowGroup;
 use Sg\DatatablesBundle\Datatable\Extension\Select;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class Extensions.
- */
 class Extensions
 {
-    // Use the OptionsResolver.
     use OptionsTrait;
 
     //-------------------------------------------------
@@ -64,13 +60,6 @@ class Extensions
      */
     protected $rowGroup;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Extensions constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -81,8 +70,6 @@ class Extensions
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -107,8 +94,6 @@ class Extensions
     //-------------------------------------------------
 
     /**
-     * Get buttons.
-     *
      * @return array|bool|Buttons|null
      */
     public function getButtons()
@@ -117,8 +102,6 @@ class Extensions
     }
 
     /**
-     * Set buttons.
-     *
      * @param array|bool|null $buttons
      *
      * @return $this
@@ -136,8 +119,6 @@ class Extensions
     }
 
     /**
-     * Get responsive.
-     *
      * @return array|bool|Responsive|null
      */
     public function getResponsive()
@@ -146,8 +127,6 @@ class Extensions
     }
 
     /**
-     * Set responsive.
-     *
      * @param array|bool|null $responsive
      *
      * @return $this
@@ -165,8 +144,6 @@ class Extensions
     }
 
     /**
-     * Get select.
-     *
      * @return array|bool|Select|null
      */
     public function getSelect()
@@ -175,8 +152,6 @@ class Extensions
     }
 
     /**
-     * Set select.
-     *
      * @param array|bool|null $select
      *
      * @return $this
@@ -194,8 +169,6 @@ class Extensions
     }
 
     /**
-     * Get rowGroup.
-     *
      * @return array|bool|RowGroup|null
      */
     public function getRowGroup()
@@ -204,8 +177,6 @@ class Extensions
     }
 
     /**
-     * Set rowGroup.
-     *
      * @param array|bool|null $rowGroup
      *
      * @throws \Exception

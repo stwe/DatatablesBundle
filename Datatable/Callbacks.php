@@ -13,12 +13,8 @@ namespace Sg\DatatablesBundle\Datatable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class Callbacks.
- */
 class Callbacks
 {
-    // Use the OptionsResolver.
     use OptionsTrait;
 
     //-------------------------------------------------
@@ -123,13 +119,6 @@ class Callbacks
      */
     protected $stateSaveParams;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Callbacks constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -186,8 +175,6 @@ class Callbacks
     //-------------------------------------------------
 
     /**
-     * Get createdRow.
-     *
      * @return array|null
      */
     public function getCreatedRow()
@@ -196,8 +183,6 @@ class Callbacks
     }
 
     /**
-     * Set createdRow.
-     *
      * @param array|null $createdRow
      *
      * @return $this
@@ -214,8 +199,6 @@ class Callbacks
     }
 
     /**
-     * Get drawCallback.
-     *
      * @return array|null
      */
     public function getDrawCallback()
@@ -224,8 +207,6 @@ class Callbacks
     }
 
     /**
-     * Set drawCallback.
-     *
      * @param array|null $drawCallback
      *
      * @return $this
@@ -242,8 +223,6 @@ class Callbacks
     }
 
     /**
-     * Get footerCallback.
-     *
      * @return array|null
      */
     public function getFooterCallback()
@@ -252,8 +231,6 @@ class Callbacks
     }
 
     /**
-     * Set footerCallback.
-     *
      * @param array|null $footerCallback
      *
      * @return $this
@@ -270,8 +247,6 @@ class Callbacks
     }
 
     /**
-     * Get formatNumber.
-     *
      * @return array|null
      */
     public function getFormatNumber()
@@ -280,8 +255,6 @@ class Callbacks
     }
 
     /**
-     * Set formatNumber.
-     *
      * @param array|null $formatNumber
      *
      * @return $this
@@ -298,8 +271,6 @@ class Callbacks
     }
 
     /**
-     * Get headerCallback.
-     *
      * @return array|null
      */
     public function getHeaderCallback()
@@ -308,8 +279,6 @@ class Callbacks
     }
 
     /**
-     * Set headerCallback.
-     *
      * @param array|null $headerCallback
      *
      * @return $this
@@ -326,8 +295,6 @@ class Callbacks
     }
 
     /**
-     * Get infoCallback.
-     *
      * @return array|null
      */
     public function getInfoCallback()
@@ -336,8 +303,6 @@ class Callbacks
     }
 
     /**
-     * Set infoCallback.
-     *
      * @param array|null $infoCallback
      *
      * @return $this
@@ -354,8 +319,6 @@ class Callbacks
     }
 
     /**
-     * Get initComplete.
-     *
      * @return array|null
      */
     public function getInitComplete()
@@ -364,8 +327,6 @@ class Callbacks
     }
 
     /**
-     * Set initComplete.
-     *
      * @param array|null $initComplete
      *
      * @return $this
@@ -382,8 +343,6 @@ class Callbacks
     }
 
     /**
-     * Get preDrawCallback.
-     *
      * @return array|null
      */
     public function getPreDrawCallback()
@@ -392,8 +351,6 @@ class Callbacks
     }
 
     /**
-     * Set preDrawCallback.
-     *
      * @param array|null $preDrawCallback
      *
      * @return $this
@@ -410,8 +367,6 @@ class Callbacks
     }
 
     /**
-     * Get rowCallback.
-     *
      * @return array|null
      */
     public function getRowCallback()
@@ -420,8 +375,6 @@ class Callbacks
     }
 
     /**
-     * Set rowCallback.
-     *
      * @param array|null $rowCallback
      *
      * @return $this
@@ -438,8 +391,6 @@ class Callbacks
     }
 
     /**
-     * Get stateLoadCallback.
-     *
      * @return array|null
      */
     public function getStateLoadCallback()
@@ -448,8 +399,6 @@ class Callbacks
     }
 
     /**
-     * Set stateLoadCallback.
-     *
      * @param array|null $stateLoadCallback
      *
      * @return $this
@@ -466,8 +415,6 @@ class Callbacks
     }
 
     /**
-     * Get stateLoaded.
-     *
      * @return array|null
      */
     public function getStateLoaded()
@@ -476,8 +423,6 @@ class Callbacks
     }
 
     /**
-     * Set stateLoaded.
-     *
      * @param array|null $stateLoaded
      *
      * @return $this
@@ -494,8 +439,6 @@ class Callbacks
     }
 
     /**
-     * Get stateLoadParams.
-     *
      * @return array|null
      */
     public function getStateLoadParams()
@@ -504,8 +447,6 @@ class Callbacks
     }
 
     /**
-     * Set stateLoadParams.
-     *
      * @param array|null $stateLoadParams
      *
      * @return $this
@@ -522,8 +463,6 @@ class Callbacks
     }
 
     /**
-     * Get stateSaveCallback.
-     *
      * @return array|null
      */
     public function getStateSaveCallback()
@@ -532,8 +471,6 @@ class Callbacks
     }
 
     /**
-     * Set stateSaveCallback.
-     *
      * @param array|null $stateSaveCallback
      *
      * @return $this
@@ -550,8 +487,6 @@ class Callbacks
     }
 
     /**
-     * Get stateSaveParams.
-     *
      * @return array|null
      */
     public function getStateSaveParams()
@@ -560,8 +495,6 @@ class Callbacks
     }
 
     /**
-     * Set stateSaveParams.
-     *
      * @param array|null $stateSaveParams
      *
      * @return $this

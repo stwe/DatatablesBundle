@@ -15,9 +15,6 @@ use Exception;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class Select2Filter.
- */
 class Select2Filter extends SelectFilter
 {
     /**
@@ -133,8 +130,6 @@ class Select2Filter extends SelectFilter
     //-------------------------------------------------
 
     /**
-     * Get placeholder.
-     *
      * @return string|null
      */
     public function getPlaceholder()
@@ -143,8 +138,6 @@ class Select2Filter extends SelectFilter
     }
 
     /**
-     * Set placeholder.
-     *
      * @param string|null $placeholder
      *
      * @return $this
@@ -157,8 +150,6 @@ class Select2Filter extends SelectFilter
     }
 
     /**
-     * Get allowClear.
-     *
      * @return bool|null
      */
     public function getAllowClear()
@@ -167,8 +158,6 @@ class Select2Filter extends SelectFilter
     }
 
     /**
-     * Set allowClear.
-     *
      * @param bool|null $allowClear
      *
      * @return $this
@@ -181,8 +170,6 @@ class Select2Filter extends SelectFilter
     }
 
     /**
-     * Get tags.
-     *
      * @return bool|null
      */
     public function getTags()
@@ -191,8 +178,6 @@ class Select2Filter extends SelectFilter
     }
 
     /**
-     * Set tags.
-     *
      * @param bool|null $tags
      *
      * @return $this
@@ -205,8 +190,6 @@ class Select2Filter extends SelectFilter
     }
 
     /**
-     * Get language.
-     *
      * @return string|null
      */
     public function getLanguage()
@@ -215,8 +198,6 @@ class Select2Filter extends SelectFilter
     }
 
     /**
-     * Set language.
-     *
      * @param string|null $language
      *
      * @return $this
@@ -229,8 +210,6 @@ class Select2Filter extends SelectFilter
     }
 
     /**
-     * Get url.
-     *
      * @return string|null
      */
     public function getUrl()
@@ -239,8 +218,6 @@ class Select2Filter extends SelectFilter
     }
 
     /**
-     * Set url.
-     *
      * @param string|null $url
      *
      * @return $this
@@ -253,8 +230,6 @@ class Select2Filter extends SelectFilter
     }
 
     /**
-     * Get delay.
-     *
      * @return int
      */
     public function getDelay()
@@ -263,8 +238,6 @@ class Select2Filter extends SelectFilter
     }
 
     /**
-     * Set delay.
-     *
      * @param int $delay
      *
      * @return $this
@@ -277,8 +250,6 @@ class Select2Filter extends SelectFilter
     }
 
     /**
-     * Get cache.
-     *
      * @return bool
      */
     public function isCache()
@@ -287,8 +258,6 @@ class Select2Filter extends SelectFilter
     }
 
     /**
-     * Set cache.
-     *
      * @param bool $cache
      *
      * @return $this

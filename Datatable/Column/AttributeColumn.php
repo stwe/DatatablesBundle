@@ -17,9 +17,6 @@ use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
 use Sg\DatatablesBundle\Datatable\Helper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class AttributeColumn.
- */
 class AttributeColumn extends AbstractColumn
 {
     // The AttributeColumn is filterable.
@@ -125,8 +122,6 @@ class AttributeColumn extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -145,8 +140,6 @@ class AttributeColumn extends AbstractColumn
     }
 
     /**
-     * Get attributes.
-     *
      * @return Attributes[]
      */
     public function getAttributes()
@@ -155,8 +148,6 @@ class AttributeColumn extends AbstractColumn
     }
 
     /**
-     * Set attributes.
-     *
      * @param Closure $attributes
      *
      * @throws Exception

@@ -13,9 +13,6 @@ namespace Sg\DatatablesBundle\Datatable\Editable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class TextEditable.
- */
 class TextEditable extends AbstractEditable
 {
     /**
@@ -53,8 +50,6 @@ class TextEditable extends AbstractEditable
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -77,8 +72,6 @@ class TextEditable extends AbstractEditable
     //-------------------------------------------------
 
     /**
-     * Get clear.
-     *
      * @return bool
      */
     public function isClear()
@@ -87,8 +80,6 @@ class TextEditable extends AbstractEditable
     }
 
     /**
-     * Set clear.
-     *
      * @param bool $clear
      *
      * @return $this
@@ -101,8 +92,6 @@ class TextEditable extends AbstractEditable
     }
 
     /**
-     * Get placeholder.
-     *
      * @return string|null
      */
     public function getPlaceholder()
@@ -111,8 +100,6 @@ class TextEditable extends AbstractEditable
     }
 
     /**
-     * Set placeholder.
-     *
      * @param string|null $placeholder
      *
      * @return $this

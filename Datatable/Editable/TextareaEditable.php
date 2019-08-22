@@ -13,9 +13,6 @@ namespace Sg\DatatablesBundle\Datatable\Editable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class TextareaEditable.
- */
 class TextareaEditable extends AbstractEditable
 {
     /**
@@ -42,8 +39,6 @@ class TextareaEditable extends AbstractEditable
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -64,8 +59,6 @@ class TextareaEditable extends AbstractEditable
     //-------------------------------------------------
 
     /**
-     * Get rows.
-     *
      * @return int
      */
     public function getRows()
@@ -74,8 +67,6 @@ class TextareaEditable extends AbstractEditable
     }
 
     /**
-     * Set rows.
-     *
      * @param int $rows
      *
      * @return $this

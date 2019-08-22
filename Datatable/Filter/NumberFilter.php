@@ -13,9 +13,6 @@ namespace Sg\DatatablesBundle\Datatable\Filter;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class NumberFilter.
- */
 class NumberFilter extends TextFilter
 {
     /**
@@ -71,8 +68,6 @@ class NumberFilter extends TextFilter
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -108,8 +103,6 @@ class NumberFilter extends TextFilter
     //-------------------------------------------------
 
     /**
-     * Get min.
-     *
      * @return string
      */
     public function getMin()
@@ -118,8 +111,6 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Set min.
-     *
      * @param string $min
      *
      * @return $this
@@ -132,8 +123,6 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Get max.
-     *
      * @return string
      */
     public function getMax()
@@ -142,8 +131,6 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Set max.
-     *
      * @param string $max
      *
      * @return $this
@@ -156,8 +143,6 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Get step.
-     *
      * @return string
      */
     public function getStep()
@@ -166,8 +151,6 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Set step.
-     *
      * @param string $step
      *
      * @return $this
@@ -180,8 +163,6 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Get showLabel.
-     *
      * @return bool
      */
     public function isShowLabel()
@@ -190,8 +171,6 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Set showLabel.
-     *
      * @param bool $showLabel
      *
      * @return $this
@@ -204,8 +183,6 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Get datalist.
-     *
      * @return array|null
      */
     public function getDatalist()
@@ -214,8 +191,6 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Set datalist.
-     *
      * @param array|null $datalist
      *
      * @return $this
@@ -228,8 +203,6 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Get type.
-     *
      * @return string
      */
     public function getType()
@@ -238,8 +211,6 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Set type.
-     *
      * @param string $type
      *
      * @return $this

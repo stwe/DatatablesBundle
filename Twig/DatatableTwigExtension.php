@@ -23,9 +23,6 @@ use Twig_Extension;
 use Twig_SimpleFilter;
 use Twig_SimpleFunction;
 
-/**
- * Class DatatableTwigExtension.
- */
 class DatatableTwigExtension extends Twig_Extension
 {
     /**
@@ -35,13 +32,6 @@ class DatatableTwigExtension extends Twig_Extension
      */
     protected $accessor;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * DatatableTwigExtension constructor.
-     */
     public function __construct()
     {
         $this->accessor = PropertyAccess::createPropertyAccessor();

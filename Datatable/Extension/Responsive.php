@@ -15,12 +15,8 @@ use Exception;
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class Responsive.
- */
 class Responsive
 {
-    // Use the OptionsResolver.
     use OptionsTrait;
 
     //-------------------------------------------------
@@ -35,13 +31,6 @@ class Responsive
      */
     protected $details;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Responsive constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -52,8 +41,6 @@ class Responsive
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -70,8 +57,6 @@ class Responsive
     //-------------------------------------------------
 
     /**
-     * Get details.
-     *
      * @return array|bool
      */
     public function getDetails()
@@ -80,8 +65,6 @@ class Responsive
     }
 
     /**
-     * Set details.
-     *
      * @param array|bool $details
      *
      * @throws Exception

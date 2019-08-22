@@ -16,9 +16,6 @@ use Doctrine\ORM\QueryBuilder;
 use Exception;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class SelectFilter.
- */
 class SelectFilter extends AbstractFilter
 {
     /**
@@ -84,8 +81,6 @@ class SelectFilter extends AbstractFilter
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -114,8 +109,6 @@ class SelectFilter extends AbstractFilter
     //-------------------------------------------------
 
     /**
-     * Get selectSearchTypes.
-     *
      * @return array
      */
     public function getSelectSearchTypes()
@@ -124,8 +117,6 @@ class SelectFilter extends AbstractFilter
     }
 
     /**
-     * Set selectSearchTypes.
-     *
      * @return $this
      */
     public function setSelectSearchTypes(array $selectSearchTypes)
@@ -136,8 +127,6 @@ class SelectFilter extends AbstractFilter
     }
 
     /**
-     * Get selectOptions.
-     *
      * @return array
      */
     public function getSelectOptions()
@@ -146,8 +135,6 @@ class SelectFilter extends AbstractFilter
     }
 
     /**
-     * Set selectOptions.
-     *
      * @return $this
      */
     public function setSelectOptions(array $selectOptions)
@@ -158,8 +145,6 @@ class SelectFilter extends AbstractFilter
     }
 
     /**
-     * Get multiple.
-     *
      * @return bool
      */
     public function isMultiple()
@@ -168,8 +153,6 @@ class SelectFilter extends AbstractFilter
     }
 
     /**
-     * Set multiple.
-     *
      * @param bool $multiple
      *
      * @return $this
@@ -186,8 +169,6 @@ class SelectFilter extends AbstractFilter
     //-------------------------------------------------
 
     /**
-     * Set selectSearchType.
-     *
      * @throws Exception
      */
     private function setSelectSearchType(string $searchValue)

@@ -16,9 +16,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
-/**
- * Class OptionsTrait.
- */
 trait OptionsTrait
 {
     /**
@@ -64,8 +61,6 @@ trait OptionsTrait
     }
 
     /**
-     * Set options.
-     *
      * @throws Exception
      *
      * @return $this

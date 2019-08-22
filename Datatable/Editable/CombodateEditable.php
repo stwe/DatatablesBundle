@@ -13,9 +13,6 @@ namespace Sg\DatatablesBundle\Datatable\Editable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class CombodateEditable.
- */
 class CombodateEditable extends AbstractEditable
 {
     /**
@@ -90,8 +87,6 @@ class CombodateEditable extends AbstractEditable
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -124,8 +119,6 @@ class CombodateEditable extends AbstractEditable
     //-------------------------------------------------
 
     /**
-     * Get format.
-     *
      * @return string
      */
     public function getFormat()
@@ -134,8 +127,6 @@ class CombodateEditable extends AbstractEditable
     }
 
     /**
-     * Set format.
-     *
      * @param string $format
      *
      * @return $this
@@ -148,8 +139,6 @@ class CombodateEditable extends AbstractEditable
     }
 
     /**
-     * Get viewFormat.
-     *
      * @return string|null
      */
     public function getViewFormat()
@@ -158,8 +147,6 @@ class CombodateEditable extends AbstractEditable
     }
 
     /**
-     * Set viewFormat.
-     *
      * @param string|null $viewFormat
      *
      * @return $this
@@ -172,8 +159,6 @@ class CombodateEditable extends AbstractEditable
     }
 
     /**
-     * Get minYear.
-     *
      * @return int
      */
     public function getMinYear()
@@ -182,8 +167,6 @@ class CombodateEditable extends AbstractEditable
     }
 
     /**
-     * Set minYear.
-     *
      * @param int $minYear
      *
      * @return $this
@@ -196,8 +179,6 @@ class CombodateEditable extends AbstractEditable
     }
 
     /**
-     * Get maxYear.
-     *
      * @return int
      */
     public function getMaxYear()
@@ -206,8 +187,6 @@ class CombodateEditable extends AbstractEditable
     }
 
     /**
-     * Set maxYear.
-     *
      * @param int $maxYear
      *
      * @return $this
@@ -220,8 +199,6 @@ class CombodateEditable extends AbstractEditable
     }
 
     /**
-     * Get minuteStep.
-     *
      * @return int
      */
     public function getMinuteStep()
@@ -230,8 +207,6 @@ class CombodateEditable extends AbstractEditable
     }
 
     /**
-     * Set minuteStep.
-     *
      * @param int $minuteStep
      *
      * @return $this
@@ -244,8 +219,6 @@ class CombodateEditable extends AbstractEditable
     }
 
     /**
-     * Get secondStep.
-     *
      * @return int
      */
     public function getSecondStep()
@@ -254,8 +227,6 @@ class CombodateEditable extends AbstractEditable
     }
 
     /**
-     * Set secondStep.
-     *
      * @param int $secondStep
      *
      * @return $this
@@ -268,8 +239,6 @@ class CombodateEditable extends AbstractEditable
     }
 
     /**
-     * Get smartDays.
-     *
      * @return bool
      */
     public function isSmartDays()
@@ -278,8 +247,6 @@ class CombodateEditable extends AbstractEditable
     }
 
     /**
-     * Set smartDays.
-     *
      * @param bool $smartDays
      *
      * @return $this

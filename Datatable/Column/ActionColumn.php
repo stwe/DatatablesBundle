@@ -18,9 +18,6 @@ use Sg\DatatablesBundle\Datatable\Helper;
 use Sg\DatatablesBundle\Datatable\HtmlContainerTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class ActionColumn.
- */
 class ActionColumn extends AbstractColumn
 {
     /*
@@ -178,8 +175,6 @@ class ActionColumn extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -220,8 +215,6 @@ class ActionColumn extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Get actions.
-     *
      * @return Action[]
      */
     public function getActions()
@@ -230,8 +223,6 @@ class ActionColumn extends AbstractColumn
     }
 
     /**
-     * Set actions.
-     *
      * @throws Exception
      *
      * @return $this
@@ -281,8 +272,6 @@ class ActionColumn extends AbstractColumn
     }
 
     /**
-     * Get orderable.
-     *
      * @return bool
      */
     public function getOrderable()
@@ -291,8 +280,6 @@ class ActionColumn extends AbstractColumn
     }
 
     /**
-     * Get searchable.
-     *
      * @return bool
      */
     public function getSearchable()

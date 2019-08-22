@@ -15,12 +15,8 @@ use Exception;
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class Buttons.
- */
 class Buttons
 {
-    // Use the OptionsResolver.
     use OptionsTrait;
 
     //-------------------------------------------------
@@ -43,13 +39,6 @@ class Buttons
      */
     protected $createButtons;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Buttons constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -60,8 +49,6 @@ class Buttons
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -82,8 +69,6 @@ class Buttons
     //-------------------------------------------------
 
     /**
-     * Get showButtons.
-     *
      * @return array|null
      */
     public function getShowButtons()
@@ -96,8 +81,6 @@ class Buttons
     }
 
     /**
-     * Set showButtons.
-     *
      * @param array|null $showButtons
      *
      * @return $this
@@ -110,8 +93,6 @@ class Buttons
     }
 
     /**
-     * Get createButtons.
-     *
      * @return array|null
      */
     public function getCreateButtons()
@@ -120,8 +101,6 @@ class Buttons
     }
 
     /**
-     * Set createButtons.
-     *
      * @param array|null $createButtons
      *
      * @throws Exception

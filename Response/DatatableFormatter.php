@@ -17,9 +17,6 @@ use Sg\DatatablesBundle\Datatable\DatatableInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
-/**
- * Class DatatableFormatter.
- */
 class DatatableFormatter
 {
     /**
@@ -37,13 +34,6 @@ class DatatableFormatter
      */
     private $accessor;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * DatatableFormatter constructor.
-     */
     public function __construct()
     {
         $this->output = ['data' => []];
@@ -130,8 +120,6 @@ class DatatableFormatter
     //-------------------------------------------------
 
     /**
-     * Get output.
-     *
      * @return array
      */
     public function getOutput()

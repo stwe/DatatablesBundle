@@ -15,12 +15,8 @@ use Exception;
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class RowGroup.
- */
 class RowGroup
 {
-    // Use the OptionsResolver.
     use OptionsTrait;
 
     //-------------------------------------------------
@@ -91,13 +87,6 @@ class RowGroup
      */
     protected $startClassName;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * RowGroup constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -108,8 +97,6 @@ class RowGroup
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -144,8 +131,6 @@ class RowGroup
     //-------------------------------------------------
 
     /**
-     * Get details.
-     *
      * @return string
      */
     public function getDataSrc()
@@ -154,8 +139,6 @@ class RowGroup
     }
 
     /**
-     * Set details.
-     *
      * @param string $dataSrc
      *
      * @throws Exception

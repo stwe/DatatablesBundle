@@ -13,9 +13,6 @@ namespace Sg\DatatablesBundle\Datatable\Action;
 
 use Exception;
 
-/**
- * Class MultiselectAction.
- */
 class MultiselectAction extends Action
 {
     //-------------------------------------------------
@@ -23,8 +20,6 @@ class MultiselectAction extends Action
     //-------------------------------------------------
 
     /**
-     * Set attributes.
-     *
      * @param array|null $attributes
      *
      * @throws Exception

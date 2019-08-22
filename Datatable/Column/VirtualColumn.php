@@ -15,9 +15,6 @@ use Exception;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class VirtualColumn.
- */
 class VirtualColumn extends Column
 {
     /**
@@ -39,8 +36,6 @@ class VirtualColumn extends Column
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -105,8 +100,6 @@ class VirtualColumn extends Column
     //-------------------------------------------------
 
     /**
-     * Get orderColumn.
-     *
      * @return string|null
      */
     public function getOrderColumn()
@@ -115,8 +108,6 @@ class VirtualColumn extends Column
     }
 
     /**
-     * Set orderColumn.
-     *
      * @param string|null $orderColumn
      *
      * @return $this
@@ -129,8 +120,6 @@ class VirtualColumn extends Column
     }
 
     /**
-     * Get searchColumn.
-     *
      * @return string|null
      */
     public function getSearchColumn()
@@ -139,8 +128,6 @@ class VirtualColumn extends Column
     }
 
     /**
-     * Set searchColumn.
-     *
      * @param string|null $searchColumn
      *
      * @return $this

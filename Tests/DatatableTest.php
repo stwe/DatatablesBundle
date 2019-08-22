@@ -20,8 +20,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Twig_Environment;
 
 /**
- * Class DatatableTest.
- *
  * @internal
  * @coversNothing
  */
@@ -69,9 +67,6 @@ final class DatatableTest extends \PHPUnit\Framework\TestCase
         $table->buildDatatable();
     }
 
-    /**
-     * Get classMetadataMock.
-     */
     public function getClassMetadataMock()
     {
         /** @noinspection PhpUndefinedMethodInspection */

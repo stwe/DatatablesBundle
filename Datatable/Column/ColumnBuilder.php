@@ -19,9 +19,6 @@ use Sg\DatatablesBundle\Datatable\Factory;
 use Symfony\Component\Routing\RouterInterface;
 use Twig_Environment;
 
-/**
- * Class ColumnBuilder.
- */
 class ColumnBuilder
 {
     /**
@@ -88,13 +85,7 @@ class ColumnBuilder
      */
     private $entityClassName;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
     /**
-     * ColumnBuilder constructor.
-     *
      * @param string $datatableName
      */
     public function __construct(ClassMetadata $metadata, Twig_Environment $twig, RouterInterface $router, $datatableName, EntityManagerInterface $em)
@@ -167,8 +158,6 @@ class ColumnBuilder
     //-------------------------------------------------
 
     /**
-     * Get columns.
-     *
      * @return array
      */
     public function getColumns()
@@ -177,8 +166,6 @@ class ColumnBuilder
     }
 
     /**
-     * Get columnNames.
-     *
      * @return array
      */
     public function getColumnNames()
@@ -203,8 +190,6 @@ class ColumnBuilder
     //-------------------------------------------------
 
     /**
-     * Get metadata.
-     *
      * @param string $entityName
      *
      * @throws Exception
@@ -237,8 +222,6 @@ class ColumnBuilder
     }
 
     /**
-     * Set typeOfField.
-     *
      * @param string $field
      *
      * @return $this

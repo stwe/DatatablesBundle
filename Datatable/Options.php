@@ -13,12 +13,8 @@ namespace Sg\DatatablesBundle\Datatable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class Options.
- */
 class Options
 {
-    // Use the OptionsResolver.
     use OptionsTrait;
 
     //--------------------------------------------------------------------------------------------------
@@ -238,13 +234,6 @@ class Options
      */
     protected $globalSearchType;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Options constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -255,8 +244,6 @@ class Options
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -322,8 +309,6 @@ class Options
     //-------------------------------------------------
 
     /**
-     * Get deferLoading.
-     *
      * @return array|int|null
      */
     public function getDeferLoading()
@@ -336,8 +321,6 @@ class Options
     }
 
     /**
-     * Set deferLoading.
-     *
      * @param array|int|null $deferLoading
      *
      * @return $this
@@ -350,8 +333,6 @@ class Options
     }
 
     /**
-     * Get displayStart.
-     *
      * @return int|null
      */
     public function getDisplayStart()
@@ -360,8 +341,6 @@ class Options
     }
 
     /**
-     * Set displayStart.
-     *
      * @param int|null $displayStart
      *
      * @return $this
@@ -374,8 +353,6 @@ class Options
     }
 
     /**
-     * Get dom.
-     *
      * @return string|null
      */
     public function getDom()
@@ -384,8 +361,6 @@ class Options
     }
 
     /**
-     * Set dom.
-     *
      * @param string|null $dom
      *
      * @return $this
@@ -398,8 +373,6 @@ class Options
     }
 
     /**
-     * Get lengthMenu.
-     *
      * @return array|null
      */
     public function getLengthMenu()
@@ -412,8 +385,6 @@ class Options
     }
 
     /**
-     * Set lengthMenu.
-     *
      * @param array|null $lengthMenu
      *
      * @return $this
@@ -426,8 +397,6 @@ class Options
     }
 
     /**
-     * Get order.
-     *
      * @return array|null
      */
     public function getOrder()
@@ -440,8 +409,6 @@ class Options
     }
 
     /**
-     * Set order.
-     *
      * @param array|null $order
      *
      * @return $this
@@ -454,8 +421,6 @@ class Options
     }
 
     /**
-     * Get orderCellsTop.
-     *
      * @return bool|null
      */
     public function isOrderCellsTop()
@@ -464,8 +429,6 @@ class Options
     }
 
     /**
-     * Set orderCellsTop.
-     *
      * @param bool|null $orderCellsTop
      *
      * @return $this
@@ -478,8 +441,6 @@ class Options
     }
 
     /**
-     * Get orderClasses.
-     *
      * @return bool|null
      */
     public function isOrderClasses()
@@ -488,8 +449,6 @@ class Options
     }
 
     /**
-     * Set orderClasses.
-     *
      * @param bool|null $orderClasses
      *
      * @return $this
@@ -502,8 +461,6 @@ class Options
     }
 
     /**
-     * Get orderFixed.
-     *
      * @return array|null
      */
     public function getOrderFixed()
@@ -516,8 +473,6 @@ class Options
     }
 
     /**
-     * Set orderFixed.
-     *
      * @param array|null $orderFixed
      *
      * @return $this
@@ -530,8 +485,6 @@ class Options
     }
 
     /**
-     * Get orderMulti.
-     *
      * @return bool|null
      */
     public function isOrderMulti()
@@ -540,8 +493,6 @@ class Options
     }
 
     /**
-     * Set orderMulti.
-     *
      * @param bool|null $orderMulti
      *
      * @return $this
@@ -554,8 +505,6 @@ class Options
     }
 
     /**
-     * Get pageLength.
-     *
      * @return int|null
      */
     public function getPageLength()
@@ -564,8 +513,6 @@ class Options
     }
 
     /**
-     * Set pageLength.
-     *
      * @param int|null $pageLength
      *
      * @return $this
@@ -578,8 +525,6 @@ class Options
     }
 
     /**
-     * Get pagingType.
-     *
      * @return string|null
      */
     public function getPagingType()
@@ -588,8 +533,6 @@ class Options
     }
 
     /**
-     * Set pagingType.
-     *
      * @param string|null $pagingType
      *
      * @return $this
@@ -602,8 +545,6 @@ class Options
     }
 
     /**
-     * Get renderer.
-     *
      * @return string|null
      */
     public function getRenderer()
@@ -612,8 +553,6 @@ class Options
     }
 
     /**
-     * Set renderer.
-     *
      * @param string|null $renderer
      *
      * @return $this
@@ -626,8 +565,6 @@ class Options
     }
 
     /**
-     * Get retrieve.
-     *
      * @return bool|null
      */
     public function isRetrieve()
@@ -636,8 +573,6 @@ class Options
     }
 
     /**
-     * Set retrieve.
-     *
      * @param bool|null $retrieve
      *
      * @return $this
@@ -650,8 +585,6 @@ class Options
     }
 
     /**
-     * Get rowId.
-     *
      * @return string|null
      */
     public function getRowId()
@@ -660,8 +593,6 @@ class Options
     }
 
     /**
-     * Set rowId.
-     *
      * @param string|null $rowId
      *
      * @return $this
@@ -674,8 +605,6 @@ class Options
     }
 
     /**
-     * Get scrollCollapse.
-     *
      * @return bool|null
      */
     public function isScrollCollapse()
@@ -684,8 +613,6 @@ class Options
     }
 
     /**
-     * Set scrollCollapse.
-     *
      * @param bool|null $scrollCollapse
      *
      * @return $this
@@ -698,8 +625,6 @@ class Options
     }
 
     /**
-     * Get searchDelay.
-     *
      * @return int|null
      */
     public function getSearchDelay()
@@ -708,8 +633,6 @@ class Options
     }
 
     /**
-     * Set searchDelay.
-     *
      * @param int|null $searchDelay
      *
      * @return $this
@@ -722,8 +645,6 @@ class Options
     }
 
     /**
-     * Get stateDuration.
-     *
      * @return int|null
      */
     public function getStateDuration()
@@ -732,8 +653,6 @@ class Options
     }
 
     /**
-     * Set stateDuration.
-     *
      * @param int|null $stateDuration
      *
      * @return $this
@@ -746,8 +665,6 @@ class Options
     }
 
     /**
-     * Get stripeClasses.
-     *
      * @return array|null
      */
     public function getStripeClasses()
@@ -760,8 +677,6 @@ class Options
     }
 
     /**
-     * Set stripeClasses.
-     *
      * @param array|null $stripeClasses
      *
      * @return $this
@@ -774,8 +689,6 @@ class Options
     }
 
     /**
-     * Get classes.
-     *
      * @return string
      */
     public function getClasses()
@@ -784,8 +697,6 @@ class Options
     }
 
     /**
-     * Set classes.
-     *
      * @param string $classes
      *
      * @return $this
@@ -798,8 +709,6 @@ class Options
     }
 
     /**
-     * Get individualFiltering.
-     *
      * @return bool
      */
     public function isIndividualFiltering()
@@ -808,8 +717,6 @@ class Options
     }
 
     /**
-     * Set individualFiltering.
-     *
      * @param bool $individualFiltering
      *
      * @return $this
@@ -822,8 +729,6 @@ class Options
     }
 
     /**
-     * Get individualFilteringPosition.
-     *
      * @return string
      */
     public function getIndividualFilteringPosition()
@@ -832,8 +737,6 @@ class Options
     }
 
     /**
-     * Set individualFilteringPosition.
-     *
      * @param string $individualFilteringPosition
      *
      * @return $this
@@ -846,8 +749,6 @@ class Options
     }
 
     /**
-     * Get searchInNonVisibleColumns.
-     *
      * @return bool
      */
     public function isSearchInNonVisibleColumns()
@@ -856,8 +757,6 @@ class Options
     }
 
     /**
-     * Set searchInNonVisibleColumns.
-     *
      * @param bool $searchInNonVisibleColumns
      *
      * @return $this
@@ -870,8 +769,6 @@ class Options
     }
 
     /**
-     * Get globalSearchType.
-     *
      * @return string
      */
     public function getGlobalSearchType()
@@ -880,8 +777,6 @@ class Options
     }
 
     /**
-     * Set globalSearchType.
-     *
      * @param string $globalSearchType
      *
      * @return $this

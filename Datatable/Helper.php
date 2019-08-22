@@ -11,9 +11,6 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
-/**
- * Class Helper.
- */
 class Helper
 {
     /**

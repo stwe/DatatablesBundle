@@ -14,9 +14,6 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 use Sg\DatatablesBundle\Datatable\Helper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class NumberColumn.
- */
 class NumberColumn extends Column
 {
     /**
@@ -107,8 +104,6 @@ class NumberColumn extends Column
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -144,8 +139,6 @@ class NumberColumn extends Column
     //-------------------------------------------------
 
     /**
-     * Get formatter.
-     *
      * @return \NumberFormatter
      */
     public function getFormatter()
@@ -154,8 +147,6 @@ class NumberColumn extends Column
     }
 
     /**
-     * Set formatter.
-     *
      * @return $this
      */
     public function setFormatter(\NumberFormatter  $formatter)
@@ -166,8 +157,6 @@ class NumberColumn extends Column
     }
 
     /**
-     * Get useFormatCurrency.
-     *
      * @return bool
      */
     public function isUseFormatCurrency()
@@ -176,8 +165,6 @@ class NumberColumn extends Column
     }
 
     /**
-     * Set useFormatCurrency.
-     *
      * @param bool $useFormatCurrency
      *
      * @return $this
@@ -190,8 +177,6 @@ class NumberColumn extends Column
     }
 
     /**
-     * Get currency.
-     *
      * @return string|null
      */
     public function getCurrency()
@@ -200,8 +185,6 @@ class NumberColumn extends Column
     }
 
     /**
-     * Set currency.
-     *
      * @param string|null $currency
      *
      * @return $this

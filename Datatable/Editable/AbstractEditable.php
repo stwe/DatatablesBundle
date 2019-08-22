@@ -15,12 +15,8 @@ use Closure;
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class AbstractEditable.
- */
 abstract class AbstractEditable implements EditableInterface
 {
-    // Use the OptionsResolver.
     use OptionsTrait;
 
     //-------------------------------------------------
@@ -110,13 +106,6 @@ abstract class AbstractEditable implements EditableInterface
      */
     protected $editableIf;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * AbstractEditable constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -159,8 +148,6 @@ abstract class AbstractEditable implements EditableInterface
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -199,8 +186,6 @@ abstract class AbstractEditable implements EditableInterface
     //-------------------------------------------------
 
     /**
-     * Get url.
-     *
      * @return string
      */
     public function getUrl()
@@ -209,8 +194,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Set url.
-     *
      * @param string $url
      *
      * @return $this
@@ -223,8 +206,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Get params.
-     *
      * @return array|null
      */
     public function getParams()
@@ -233,8 +214,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Set params.
-     *
      * @param array|null $params
      *
      * @return $this
@@ -247,8 +226,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Get defaultValue.
-     *
      * @return string|null
      */
     public function getDefaultValue()
@@ -257,8 +234,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Set defaultValue.
-     *
      * @param string|null $defaultValue
      *
      * @return $this
@@ -271,8 +246,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Get emptyClass.
-     *
      * @return string
      */
     public function getEmptyClass()
@@ -281,8 +254,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Set emptyClass.
-     *
      * @param string $emptyClass
      *
      * @return $this
@@ -295,8 +266,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Set emptyText.
-     *
      * @param string $emptyText
      *
      * @return $this
@@ -309,8 +278,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Get highlight.
-     *
      * @return string
      */
     public function getHighlight()
@@ -319,8 +286,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Set highlight.
-     *
      * @param string $highlight
      *
      * @return $this
@@ -333,8 +298,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Get mode.
-     *
      * @return string
      */
     public function getMode()
@@ -343,8 +306,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Set mode.
-     *
      * @param string $mode
      *
      * @return $this
@@ -357,8 +318,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Get name.
-     *
      * @return string|null
      */
     public function getName()
@@ -367,8 +326,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Set name.
-     *
      * @param string|null $name
      *
      * @return $this
@@ -381,8 +338,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Set pk.
-     *
      * @param string $pk
      *
      * @return $this
@@ -395,8 +350,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Get editableIf.
-     *
      * @return Closure|null
      */
     public function getEditableIf()
@@ -405,8 +358,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Set editableIf.
-     *
      * @param Closure|null $editableIf
      *
      * @return $this

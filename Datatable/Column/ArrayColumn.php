@@ -11,9 +11,6 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-/**
- * Class ArrayColumn.
- */
 class ArrayColumn extends Column
 {
     /**

@@ -13,12 +13,8 @@ namespace Sg\DatatablesBundle\Datatable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class Ajax.
- */
 class Ajax
 {
-    // Use the OptionsResolver.
     use OptionsTrait;
 
     //-------------------------------------------------
@@ -59,13 +55,6 @@ class Ajax
      */
     protected $pipeline;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Ajax constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -76,8 +65,6 @@ class Ajax
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -104,8 +91,6 @@ class Ajax
     //-------------------------------------------------
 
     /**
-     * Get url.
-     *
      * @return string|null
      */
     public function getUrl()
@@ -114,8 +99,6 @@ class Ajax
     }
 
     /**
-     * Set url.
-     *
      * @param string|null $url
      *
      * @return $this
@@ -128,8 +111,6 @@ class Ajax
     }
 
     /**
-     * Get method.
-     *
      * @return string
      */
     public function getMethod()
@@ -148,8 +129,6 @@ class Ajax
     }
 
     /**
-     * Set method.
-     *
      * @param string $method
      *
      * @return $this
@@ -174,8 +153,6 @@ class Ajax
     }
 
     /**
-     * Get data.
-     *
      * @return array|null
      */
     public function getData()
@@ -188,8 +165,6 @@ class Ajax
     }
 
     /**
-     * Set data.
-     *
      * @param array|null $data
      *
      * @return $this
@@ -202,8 +177,6 @@ class Ajax
     }
 
     /**
-     * Get pipeline.
-     *
      * @return int
      */
     public function getPipeline()
@@ -212,8 +185,6 @@ class Ajax
     }
 
     /**
-     * Set pipeline.
-     *
      * @param int $pipeline
      *
      * @return $this

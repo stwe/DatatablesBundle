@@ -14,12 +14,8 @@ namespace Sg\DatatablesBundle\Datatable\Extension;
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class Button.
- */
 class Button
 {
-    // Use the OptionsResolver.
     use OptionsTrait;
 
     //-------------------------------------------------
@@ -121,13 +117,6 @@ class Button
      */
     protected $buttonOptions;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Button constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -182,8 +171,6 @@ class Button
     //-------------------------------------------------
 
     /**
-     * Get action.
-     *
      * @return array|null
      */
     public function getAction()
@@ -192,8 +179,6 @@ class Button
     }
 
     /**
-     * Set action.
-     *
      * @param array|null $action
      *
      * @return $this
@@ -210,8 +195,6 @@ class Button
     }
 
     /**
-     * Get available.
-     *
      * @return array|null
      */
     public function getAvailable()
@@ -220,8 +203,6 @@ class Button
     }
 
     /**
-     * Set available.
-     *
      * @param array|null $available
      *
      * @return $this
@@ -238,8 +219,6 @@ class Button
     }
 
     /**
-     * Get className.
-     *
      * @return string|null
      */
     public function getClassName()
@@ -248,8 +227,6 @@ class Button
     }
 
     /**
-     * Set className.
-     *
      * @param string|null $className
      *
      * @return $this
@@ -262,8 +239,6 @@ class Button
     }
 
     /**
-     * Get destroy.
-     *
      * @return array|null
      */
     public function getDestroy()
@@ -272,8 +247,6 @@ class Button
     }
 
     /**
-     * Set destroy.
-     *
      * @param array|null $destroy
      *
      * @return $this
@@ -290,8 +263,6 @@ class Button
     }
 
     /**
-     * Get enabled.
-     *
      * @return bool|null
      */
     public function getEnabled()
@@ -300,8 +271,6 @@ class Button
     }
 
     /**
-     * Set enabled.
-     *
      * @param bool|null $enabled
      *
      * @return $this
@@ -314,8 +283,6 @@ class Button
     }
 
     /**
-     * Get extend.
-     *
      * @return string|null
      */
     public function getExtend()
@@ -324,8 +291,6 @@ class Button
     }
 
     /**
-     * Set extend.
-     *
      * @param string|null $extend
      *
      * @return $this
@@ -338,8 +303,6 @@ class Button
     }
 
     /**
-     * Get init.
-     *
      * @return array|null
      */
     public function getInit()
@@ -348,8 +311,6 @@ class Button
     }
 
     /**
-     * Set init.
-     *
      * @param array|null $init
      *
      * @return $this
@@ -366,8 +327,6 @@ class Button
     }
 
     /**
-     * Get key.
-     *
      * @return string|null
      */
     public function getKey()
@@ -376,8 +335,6 @@ class Button
     }
 
     /**
-     * Set key.
-     *
      * @param string|null $key
      *
      * @return $this
@@ -390,8 +347,6 @@ class Button
     }
 
     /**
-     * Get name.
-     *
      * @return string|null
      */
     public function getName()
@@ -400,8 +355,6 @@ class Button
     }
 
     /**
-     * Set name.
-     *
      * @param string|null $name
      *
      * @return $this
@@ -414,8 +367,6 @@ class Button
     }
 
     /**
-     * Get namespace.
-     *
      * @return string|null
      */
     public function getNamespace()
@@ -424,8 +375,6 @@ class Button
     }
 
     /**
-     * Set namespace.
-     *
      * @param string|null $namespace
      *
      * @return $this
@@ -438,8 +387,6 @@ class Button
     }
 
     /**
-     * Get text.
-     *
      * @return string|null
      */
     public function getText()
@@ -448,8 +395,6 @@ class Button
     }
 
     /**
-     * Set text.
-     *
      * @param string|null $text
      *
      * @return $this
@@ -462,8 +407,6 @@ class Button
     }
 
     /**
-     * Get titleAttr.
-     *
      * @return string|null
      */
     public function getTitleAttr()
@@ -472,8 +415,6 @@ class Button
     }
 
     /**
-     * Set titleAttr.
-     *
      * @param string|null $titleAttr
      *
      * @return $this
@@ -486,8 +427,6 @@ class Button
     }
 
     /**
-     * Get buttonOptions.
-     *
      * @return array|null
      */
     public function getButtonOptions()
@@ -496,8 +435,6 @@ class Button
     }
 
     /**
-     * Set buttonOptions.
-     *
      * @param array|null $buttonOptions
      *
      * @return $this

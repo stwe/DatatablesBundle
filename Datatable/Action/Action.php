@@ -18,12 +18,8 @@ use Sg\DatatablesBundle\Datatable\OptionsTrait;
 use Sg\DatatablesBundle\Datatable\RenderIfTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class Action.
- */
 class Action
 {
-    // Use the OptionsResolver.
     use OptionsTrait;
 
     // Render an Action only if conditions are TRUE.
@@ -122,13 +118,7 @@ class Action
      */
     protected $datatableName;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
     /**
-     * Action constructor.
-     *
      * @param string $datatableName
      */
     public function __construct($datatableName)
@@ -186,8 +176,6 @@ class Action
     //-------------------------------------------------
 
     /**
-     * Get route.
-     *
      * @return string|null
      */
     public function getRoute()
@@ -196,8 +184,6 @@ class Action
     }
 
     /**
-     * Set route.
-     *
      * @param string|null $route
      *
      * @return $this
@@ -210,8 +196,6 @@ class Action
     }
 
     /**
-     * Get routeParameters.
-     *
      * @return array|Closure|null
      */
     public function getRouteParameters()
@@ -220,8 +204,6 @@ class Action
     }
 
     /**
-     * Set routeParameters.
-     *
      * @param array|Closure|null $routeParameters
      *
      * @return $this
@@ -234,8 +216,6 @@ class Action
     }
 
     /**
-     * Get icon.
-     *
      * @return string|null
      */
     public function getIcon()
@@ -244,8 +224,6 @@ class Action
     }
 
     /**
-     * Set icon.
-     *
      * @param string|null $icon
      *
      * @return $this
@@ -258,8 +236,6 @@ class Action
     }
 
     /**
-     * Get label.
-     *
      * @return string|null
      */
     public function getLabel()
@@ -268,8 +244,6 @@ class Action
     }
 
     /**
-     * Set label.
-     *
      * @param string|null $label
      *
      * @return $this
@@ -282,8 +256,6 @@ class Action
     }
 
     /**
-     * Get confirm.
-     *
      * @return bool
      */
     public function isConfirm()
@@ -292,8 +264,6 @@ class Action
     }
 
     /**
-     * Set confirm.
-     *
      * @param bool $confirm
      *
      * @return $this
@@ -306,8 +276,6 @@ class Action
     }
 
     /**
-     * Get confirmMessage.
-     *
      * @return string|null
      */
     public function getConfirmMessage()
@@ -316,8 +284,6 @@ class Action
     }
 
     /**
-     * Set confirmMessage.
-     *
      * @param string|null $confirmMessage
      *
      * @return $this
@@ -330,8 +296,6 @@ class Action
     }
 
     /**
-     * Get attributes.
-     *
      * @return array|Closure|null
      */
     public function getAttributes()
@@ -340,8 +304,6 @@ class Action
     }
 
     /**
-     * Set attributes.
-     *
      * @param array|Closure|null $attributes
      *
      * @throws Exception
@@ -366,8 +328,6 @@ class Action
     }
 
     /**
-     * Get button.
-     *
      * @return bool
      */
     public function isButton()
@@ -376,8 +336,6 @@ class Action
     }
 
     /**
-     * Set button.
-     *
      * @param bool $button
      *
      * @return $this
@@ -390,8 +348,6 @@ class Action
     }
 
     /**
-     * Get buttonValue.
-     *
      * @return string|null
      */
     public function getButtonValue()
@@ -400,8 +356,6 @@ class Action
     }
 
     /**
-     * Set buttonValue.
-     *
      * @param string|null $buttonValue
      *
      * @return $this
@@ -414,8 +368,6 @@ class Action
     }
 
     /**
-     * Get buttonValuePrefix.
-     *
      * @return bool
      */
     public function isButtonValuePrefix()
@@ -424,8 +376,6 @@ class Action
     }
 
     /**
-     * Set buttonValuePrefix.
-     *
      * @param bool $buttonValuePrefix
      *
      * @return $this
@@ -438,8 +388,6 @@ class Action
     }
 
     /**
-     * Get datatableName.
-     *
      * @return string
      */
     public function getDatatableName()
@@ -448,8 +396,6 @@ class Action
     }
 
     /**
-     * Set datatableName.
-     *
      * @param string $datatableName
      *
      * @return $this

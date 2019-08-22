@@ -13,12 +13,8 @@ namespace Sg\DatatablesBundle\Datatable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class Features.
- */
 class Features
 {
-    // Use the OptionsResolver.
     use OptionsTrait;
 
     //--------------------------------------------------------------------------------------------------
@@ -126,13 +122,6 @@ class Features
      */
     protected $stateSave;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Features constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -143,8 +132,6 @@ class Features
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -183,8 +170,6 @@ class Features
     //-------------------------------------------------
 
     /**
-     * Get autoWidth.
-     *
      * @return bool|null
      */
     public function getAutoWidth()
@@ -193,8 +178,6 @@ class Features
     }
 
     /**
-     * Set autoWidth.
-     *
      * @param bool|null $autoWidth
      *
      * @return $this
@@ -207,8 +190,6 @@ class Features
     }
 
     /**
-     * Get deferRender.
-     *
      * @return bool|null
      */
     public function getDeferRender()
@@ -217,8 +198,6 @@ class Features
     }
 
     /**
-     * Set deferRender.
-     *
      * @param bool|null $deferRender
      *
      * @return $this
@@ -231,8 +210,6 @@ class Features
     }
 
     /**
-     * Get info.
-     *
      * @return bool|null
      */
     public function getInfo()
@@ -241,8 +218,6 @@ class Features
     }
 
     /**
-     * Set info.
-     *
      * @param bool|null $info
      *
      * @return $this
@@ -255,8 +230,6 @@ class Features
     }
 
     /**
-     * Get lengthChange.
-     *
      * @return bool|null
      */
     public function getLengthChange()
@@ -265,8 +238,6 @@ class Features
     }
 
     /**
-     * Set lengthChange.
-     *
      * @param bool|null $lengthChange
      *
      * @return $this
@@ -279,8 +250,6 @@ class Features
     }
 
     /**
-     * Get ordering.
-     *
      * @return bool|null
      */
     public function getOrdering()
@@ -289,8 +258,6 @@ class Features
     }
 
     /**
-     * Set ordering.
-     *
      * @param bool|null $ordering
      *
      * @return $this
@@ -303,8 +270,6 @@ class Features
     }
 
     /**
-     * Get paging.
-     *
      * @return bool|null
      */
     public function getPaging()
@@ -313,8 +278,6 @@ class Features
     }
 
     /**
-     * Set paging.
-     *
      * @param bool|null $paging
      *
      * @return $this
@@ -327,8 +290,6 @@ class Features
     }
 
     /**
-     * Get processing.
-     *
      * @return bool|null
      */
     public function getProcessing()
@@ -337,8 +298,6 @@ class Features
     }
 
     /**
-     * Set processing.
-     *
      * @param bool|null $processing
      *
      * @return $this
@@ -351,8 +310,6 @@ class Features
     }
 
     /**
-     * Get scrollX.
-     *
      * @return bool|null
      */
     public function getScrollX()
@@ -361,8 +318,6 @@ class Features
     }
 
     /**
-     * Set scrollX.
-     *
      * @param bool|null $scrollX
      *
      * @return $this
@@ -375,8 +330,6 @@ class Features
     }
 
     /**
-     * Get scrollY.
-     *
      * @return string|null
      */
     public function getScrollY()
@@ -385,8 +338,6 @@ class Features
     }
 
     /**
-     * Set scrollY.
-     *
      * @param string|null $scrollY
      *
      * @return $this
@@ -399,8 +350,6 @@ class Features
     }
 
     /**
-     * Get searching.
-     *
      * @return bool|null
      */
     public function getSearching()
@@ -409,8 +358,6 @@ class Features
     }
 
     /**
-     * Set searching.
-     *
      * @param bool|null $searching
      *
      * @return $this
@@ -423,8 +370,6 @@ class Features
     }
 
     /**
-     * Get stateSave.
-     *
      * @return bool|null
      */
     public function getStateSave()
@@ -433,8 +378,6 @@ class Features
     }
 
     /**
-     * Set stateSave.
-     *
      * @param bool|null $stateSave
      *
      * @return $this

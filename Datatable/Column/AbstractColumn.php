@@ -21,12 +21,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Twig_Environment;
 
-/**
- * Class AbstractColumn.
- */
 abstract class AbstractColumn implements ColumnInterface
 {
-    // Use the OptionsResolver.
     use OptionsTrait;
 
     // Use an 'add_if' option to check in ColumnBuilder if the Column can be added.
@@ -305,8 +301,6 @@ abstract class AbstractColumn implements ColumnInterface
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -484,8 +478,6 @@ abstract class AbstractColumn implements ColumnInterface
     //-------------------------------------------------
 
     /**
-     * Get cellType.
-     *
      * @return string|null
      */
     public function getCellType()
@@ -494,8 +486,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set cellType.
-     *
      * @param string|null $cellType
      *
      * @return $this
@@ -508,8 +498,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get className.
-     *
      * @return string|null
      */
     public function getClassName()
@@ -518,8 +506,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set className.
-     *
      * @param string|null $className
      *
      * @return $this
@@ -532,8 +518,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get contentPadding.
-     *
      * @return string|null
      */
     public function getContentPadding()
@@ -542,8 +526,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set contentPadding.
-     *
      * @param string|null $contentPadding
      *
      * @return $this
@@ -556,8 +538,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get data.
-     *
      * @return string|null
      */
     public function getData()
@@ -566,8 +546,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set data.
-     *
      * @param string|null $data
      *
      * @return $this
@@ -580,8 +558,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get defaultContent.
-     *
      * @return string|null
      */
     public function getDefaultContent()
@@ -590,8 +566,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set defaultContent.
-     *
      * @param string|null $defaultContent
      *
      * @return $this
@@ -604,8 +578,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get name.
-     *
      * @return string|null
      */
     public function getName()
@@ -614,8 +586,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set name.
-     *
      * @param string|null $name
      *
      * @return $this
@@ -628,8 +598,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get orderable.
-     *
      * @return bool
      */
     public function getOrderable()
@@ -638,8 +606,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set orderable.
-     *
      * @param bool $orderable
      *
      * @return $this
@@ -652,8 +618,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get orderData.
-     *
      * @return array|int|null
      */
     public function getOrderData()
@@ -666,8 +630,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set orderData.
-     *
      * @param array|int|null $orderData
      *
      * @return $this
@@ -680,8 +642,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get orderSequence.
-     *
      * @return array|null
      */
     public function getOrderSequence()
@@ -694,8 +654,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set orderSequence.
-     *
      * @param array|null $orderSequence
      *
      * @return $this
@@ -708,8 +666,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get searchable.
-     *
      * @return bool
      */
     public function getSearchable()
@@ -718,8 +674,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set searchable.
-     *
      * @param bool $searchable
      *
      * @return $this
@@ -732,8 +686,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get title.
-     *
      * @return string|null
      */
     public function getTitle()
@@ -742,8 +694,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set title.
-     *
      * @param string|null $title
      *
      * @return $this
@@ -756,8 +706,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get visible.
-     *
      * @return bool
      */
     public function getVisible()
@@ -766,8 +714,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set visible.
-     *
      * @param bool $visible
      *
      * @return $this
@@ -780,8 +726,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get width.
-     *
      * @return string|null
      */
     public function getWidth()
@@ -790,8 +734,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set width.
-     *
      * @param string|null $width
      *
      * @return $this
@@ -852,8 +794,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get responsivePriority.
-     *
      * @return int|null
      */
     public function getResponsivePriority()
@@ -862,8 +802,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set responsivePriority.
-     *
      * @param int|null $responsivePriority
      *
      * @return $this
@@ -876,8 +814,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get dql.
-     *
      * @return string|null
      */
     public function getDql()
@@ -886,8 +822,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set dql.
-     *
      * @param string|null $dql
      *
      * @throws Exception
@@ -906,8 +840,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get customDql.
-     *
      * @return bool
      */
     public function isCustomDql()
@@ -916,8 +848,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set customDql.
-     *
      * @param bool $customDql
      *
      * @return $this
@@ -930,8 +860,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get Twig.
-     *
      * @return Twig_Environment
      */
     public function getTwig()
@@ -940,8 +868,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set Twig.
-     *
      * @return $this
      */
     public function setTwig(Twig_Environment $twig)
@@ -952,8 +878,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get Router.
-     *
      * @return RouterInterface
      */
     public function getRouter()
@@ -962,8 +886,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set Router.
-     *
      * @return $this
      */
     public function setRouter(RouterInterface $router)
@@ -974,8 +896,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get index.
-     *
      * @return int
      */
     public function getIndex()
@@ -984,8 +904,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set index.
-     *
      * @param int $index
      *
      * @return $this
@@ -998,8 +916,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get datatableName.
-     *
      * @return string
      */
     public function getDatatableName()
@@ -1008,8 +924,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set datatableName.
-     *
      * @param string $datatableName
      *
      * @return $this
@@ -1022,8 +936,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get entityClassName.
-     *
      * @return string
      */
     public function getEntityClassName()
@@ -1032,8 +944,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set entityClassName.
-     *
      * @param string $entityClassName
      *
      * @return $this
@@ -1046,8 +956,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get typeOfAssociation.
-     *
      * @return array|null
      */
     public function getTypeOfAssociation()
@@ -1056,8 +964,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set typeOfAssociation.
-     *
      * @param array|null $typeOfAssociation
      *
      * @return $this
@@ -1084,8 +990,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get originalTypeOfField.
-     *
      * @return string|null
      */
     public function getOriginalTypeOfField()
@@ -1094,8 +998,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set originalTypeOfField.
-     *
      * @param string|null $originalTypeOfField
      *
      * @return $this
@@ -1108,8 +1010,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get sentInResponse.
-     *
      * @return bool
      */
     public function getSentInResponse()
@@ -1118,8 +1018,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set sentIntResponse.
-     *
      * @param bool $sentInResponse
      *
      * @return $this

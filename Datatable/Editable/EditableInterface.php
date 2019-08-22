@@ -17,8 +17,6 @@ namespace Sg\DatatablesBundle\Datatable\Editable;
 interface EditableInterface
 {
     /**
-     * Get type.
-     *
      * @return string
      */
     public function getType();
@@ -31,15 +29,11 @@ interface EditableInterface
     public function callEditableIfClosure(array $row = []);
 
     /**
-     * Get pk.
-     *
      * @return string
      */
     public function getPk();
 
     /**
-     * Get emptyText.
-     *
      * @return string
      */
     public function getEmptyText();

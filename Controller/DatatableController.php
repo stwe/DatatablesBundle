@@ -22,9 +22,6 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-/**
- * Class DatatableController
- */
 class DatatableController extends Controller
 {
     //-------------------------------------------------
@@ -94,10 +91,8 @@ class DatatableController extends Controller
      * Finds an object by its primary key / identifier.
      *
      * @param string $entityClassName
-     *
-     * @return object
      */
-    private function getEntityByPk($entityClassName, $pk)
+    private function getEntityByPk($entityClassName, $pk): object
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -110,8 +105,6 @@ class DatatableController extends Controller
     }
 
     /**
-     * Normalize value.
-     *
      * @throws Exception
      *
      * @return bool|DateTime|float|int|string|null
@@ -152,8 +145,6 @@ class DatatableController extends Controller
     }
 
     /**
-     * String to boolean.
-     *
      * @throws Exception
      */
     private function strToBool(string $str): ?bool

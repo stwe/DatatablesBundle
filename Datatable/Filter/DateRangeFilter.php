@@ -16,9 +16,6 @@ use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class DateRangeFilter.
- */
 class DateRangeFilter extends AbstractFilter
 {
     //-------------------------------------------------
@@ -54,8 +51,6 @@ class DateRangeFilter extends AbstractFilter
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)

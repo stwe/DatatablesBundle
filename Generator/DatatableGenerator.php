@@ -15,9 +15,6 @@ use Exception;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
-/**
- * Class DatatableGenerator.
- */
 class DatatableGenerator extends Generator
 {
     /**
@@ -30,13 +27,6 @@ class DatatableGenerator extends Generator
      */
     private $classPath;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * DatatableGenerator constructor.
-     */
     public function __construct()
     {
         $this->className = '';

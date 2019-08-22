@@ -17,12 +17,8 @@ use Sg\DatatablesBundle\Datatable\Helper;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class ImageColumn.
- */
 class ImageColumn extends AbstractColumn
 {
-    // The Column is filterable.
     use FilterableTrait;
 
     /**
@@ -152,8 +148,6 @@ class ImageColumn extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -197,8 +191,6 @@ class ImageColumn extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Get imagineFilter.
-     *
      * @return string
      */
     public function getImagineFilter()
@@ -207,8 +199,6 @@ class ImageColumn extends AbstractColumn
     }
 
     /**
-     * Set imagineFilter.
-     *
      * @param string $imagineFilter
      *
      * @return $this
@@ -221,8 +211,6 @@ class ImageColumn extends AbstractColumn
     }
 
     /**
-     * Get imagineFilterEnlarged.
-     *
      * @return string|null
      */
     public function getImagineFilterEnlarged()
@@ -231,8 +219,6 @@ class ImageColumn extends AbstractColumn
     }
 
     /**
-     * Set imagineFilterEnlarged.
-     *
      * @param string|null $imagineFilterEnlarged
      *
      * @return $this
@@ -245,8 +231,6 @@ class ImageColumn extends AbstractColumn
     }
 
     /**
-     * Get relativePath.
-     *
      * @return string
      */
     public function getRelativePath()
@@ -255,8 +239,6 @@ class ImageColumn extends AbstractColumn
     }
 
     /**
-     * Set relativePath.
-     *
      * @param string $relativePath
      *
      * @return $this
@@ -269,8 +251,6 @@ class ImageColumn extends AbstractColumn
     }
 
     /**
-     * Get holderUrl.
-     *
      * @return string|null
      */
     public function getHolderUrl()
@@ -279,8 +259,6 @@ class ImageColumn extends AbstractColumn
     }
 
     /**
-     * Set holderUrl.
-     *
      * @param string|null $holderUrl
      *
      * @return $this
@@ -293,8 +271,6 @@ class ImageColumn extends AbstractColumn
     }
 
     /**
-     * Get holderWidth.
-     *
      * @return string
      */
     public function getHolderWidth()
@@ -303,8 +279,6 @@ class ImageColumn extends AbstractColumn
     }
 
     /**
-     * Set holderWidth.
-     *
      * @param string $holderWidth
      *
      * @return $this
@@ -317,8 +291,6 @@ class ImageColumn extends AbstractColumn
     }
 
     /**
-     * Get holderHeight.
-     *
      * @return string
      */
     public function getHolderHeight()
@@ -327,8 +299,6 @@ class ImageColumn extends AbstractColumn
     }
 
     /**
-     * Set holderHeight.
-     *
      * @param string $holderHeight
      *
      * @return $this
@@ -341,8 +311,6 @@ class ImageColumn extends AbstractColumn
     }
 
     /**
-     * Get enlarge.
-     *
      * @return bool
      */
     public function isEnlarge()
@@ -351,8 +319,6 @@ class ImageColumn extends AbstractColumn
     }
 
     /**
-     * Set enlarge.
-     *
      * @param bool $enlarge
      *
      * @return $this

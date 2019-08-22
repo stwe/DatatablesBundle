@@ -11,9 +11,6 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
-/**
- * Class HtmlContainerTrait.
- */
 trait HtmlContainerTrait
 {
     /**
@@ -35,8 +32,6 @@ trait HtmlContainerTrait
     //-------------------------------------------------
 
     /**
-     * Get startHtml.
-     *
      * @return string|null
      */
     public function getStartHtml()
@@ -45,8 +40,6 @@ trait HtmlContainerTrait
     }
 
     /**
-     * Set startHtml.
-     *
      * @param string|null $startHtml
      *
      * @return $this
@@ -59,8 +52,6 @@ trait HtmlContainerTrait
     }
 
     /**
-     * Get endHtml.
-     *
      * @return string|null
      */
     public function getEndHtml()
@@ -69,8 +60,6 @@ trait HtmlContainerTrait
     }
 
     /**
-     * Set endHtml.
-     *
      * @param string|null $endHtml
      *
      * @return $this

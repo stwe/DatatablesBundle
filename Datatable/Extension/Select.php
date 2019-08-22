@@ -14,12 +14,8 @@ namespace Sg\DatatablesBundle\Datatable\Extension;
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class Select.
- */
 class Select
 {
-    // Use the OptionsResolver.
     use OptionsTrait;
 
     //-------------------------------------------------
@@ -68,13 +64,6 @@ class Select
      */
     protected $style;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Select constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -119,8 +108,6 @@ class Select
     //-------------------------------------------------
 
     /**
-     * Get blurable.
-     *
      * @return bool|null
      */
     public function getBlurable()
@@ -129,8 +116,6 @@ class Select
     }
 
     /**
-     * Set blurable.
-     *
      * @param string|null $blurable
      *
      * @return $this
@@ -143,8 +128,6 @@ class Select
     }
 
     /**
-     * Get className.
-     *
      * @return string|null
      */
     public function getClassName()
@@ -153,8 +136,6 @@ class Select
     }
 
     /**
-     * Set className.
-     *
      * @param string|null $className
      *
      * @return $this
@@ -167,8 +148,6 @@ class Select
     }
 
     /**
-     * Get info.
-     *
      * @return bool|null
      */
     public function getInfo()
@@ -177,8 +156,6 @@ class Select
     }
 
     /**
-     * Set info.
-     *
      * @param bool|null $info
      *
      * @return $this
@@ -191,8 +168,6 @@ class Select
     }
 
     /**
-     * Get items.
-     *
      * @return string|null
      */
     public function getItems()
@@ -201,8 +176,6 @@ class Select
     }
 
     /**
-     * Set items.
-     *
      * @param string|null $items
      *
      * @return $this
@@ -215,8 +188,6 @@ class Select
     }
 
     /**
-     * Get selector.
-     *
      * @return string|null
      */
     public function getSelector()
@@ -225,8 +196,6 @@ class Select
     }
 
     /**
-     * Set selector.
-     *
      * @param string|null $selector
      *
      * @return $this
@@ -239,8 +208,6 @@ class Select
     }
 
     /**
-     * Get style.
-     *
      * @return string|null
      */
     public function getStyle()
@@ -249,8 +216,6 @@ class Select
     }
 
     /**
-     * Set style.
-     *
      * @param string|null $style
      *
      * @return $this

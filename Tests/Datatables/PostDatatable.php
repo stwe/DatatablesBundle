@@ -14,9 +14,6 @@ namespace Sg\DatatablesBundle\Tests\Datatables;
 use Sg\DatatablesBundle\Datatable\AbstractDatatable;
 use Sg\DatatablesBundle\Datatable\Column\Column;
 
-/**
- * Class PostDatatable.
- */
 class PostDatatable extends AbstractDatatable
 {
     /**

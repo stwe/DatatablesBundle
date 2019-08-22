@@ -17,15 +17,10 @@ use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
 use Sg\DatatablesBundle\Datatable\Helper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class DateTimeColumn.
- */
 class DateTimeColumn extends AbstractColumn
 {
-    // This Column is editable.
     use EditableTrait;
 
-    // The Column is filterable.
     use FilterableTrait;
 
     /**
@@ -139,8 +134,6 @@ class DateTimeColumn extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -197,8 +190,6 @@ class DateTimeColumn extends AbstractColumn
     }
 
     /**
-     * Get timeago.
-     *
      * @return bool
      */
     public function isTimeago()
@@ -207,8 +198,6 @@ class DateTimeColumn extends AbstractColumn
     }
 
     /**
-     * Set timeago.
-     *
      * @param bool $timeago
      *
      * @return $this

@@ -13,12 +13,8 @@ namespace Sg\DatatablesBundle\Datatable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class Language.
- */
 class Language
 {
-    // Use the OptionsResolver.
     use OptionsTrait;
 
     /**
@@ -114,13 +110,6 @@ class Language
      */
     protected $language;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Options constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -131,8 +120,6 @@ class Language
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -155,8 +142,6 @@ class Language
     //-------------------------------------------------
 
     /**
-     * Get languageCDNFile.
-     *
      * @return array
      */
     public function getLanguageCDNFile()
@@ -165,8 +150,6 @@ class Language
     }
 
     /**
-     * Get cdnLanguageByLocale.
-     *
      * @return bool
      */
     public function isCdnLanguageByLocale()
@@ -175,8 +158,6 @@ class Language
     }
 
     /**
-     * Set cdnLanguageByLocale.
-     *
      * @param bool $cdnLanguageByLocale
      *
      * @return $this
@@ -189,8 +170,6 @@ class Language
     }
 
     /**
-     * Get languageByLocale.
-     *
      * @return bool
      */
     public function isLanguageByLocale()
@@ -199,8 +178,6 @@ class Language
     }
 
     /**
-     * Set languageByLocale.
-     *
      * @param bool $languageByLocale
      *
      * @return $this
@@ -213,8 +190,6 @@ class Language
     }
 
     /**
-     * Get language.
-     *
      * @return string|null
      */
     public function getLanguage()
@@ -223,8 +198,6 @@ class Language
     }
 
     /**
-     * Set language.
-     *
      * @param string|null $language
      *
      * @return $this

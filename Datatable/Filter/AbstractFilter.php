@@ -18,12 +18,8 @@ use Doctrine\ORM\QueryBuilder;
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class AbstractFilter.
- */
 abstract class AbstractFilter implements FilterInterface
 {
-    // Use the OptionsResolver.
     use OptionsTrait;
 
     /**
@@ -82,13 +78,6 @@ abstract class AbstractFilter implements FilterInterface
      */
     protected $placeholderText;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * AbstractFilter constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -99,8 +88,6 @@ abstract class AbstractFilter implements FilterInterface
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -133,8 +120,6 @@ abstract class AbstractFilter implements FilterInterface
     //-------------------------------------------------
 
     /**
-     * Get searchType.
-     *
      * @return string
      */
     public function getSearchType()
@@ -143,8 +128,6 @@ abstract class AbstractFilter implements FilterInterface
     }
 
     /**
-     * Set searchType.
-     *
      * @param string $searchType
      *
      * @return $this
@@ -157,8 +140,6 @@ abstract class AbstractFilter implements FilterInterface
     }
 
     /**
-     * Get searchColumn.
-     *
      * @return string|null
      */
     public function getSearchColumn()
@@ -167,8 +148,6 @@ abstract class AbstractFilter implements FilterInterface
     }
 
     /**
-     * Set searchColumn.
-     *
      * @param string|null $searchColumn
      *
      * @return $this
@@ -181,8 +160,6 @@ abstract class AbstractFilter implements FilterInterface
     }
 
     /**
-     * Get initialSearch.
-     *
      * @return string|null
      */
     public function getInitialSearch()
@@ -191,8 +168,6 @@ abstract class AbstractFilter implements FilterInterface
     }
 
     /**
-     * Set initialSearch.
-     *
      * @param string|null $initialSearch
      *
      * @return $this
@@ -205,8 +180,6 @@ abstract class AbstractFilter implements FilterInterface
     }
 
     /**
-     * Get classes.
-     *
      * @return string|null
      */
     public function getClasses()
@@ -215,8 +188,6 @@ abstract class AbstractFilter implements FilterInterface
     }
 
     /**
-     * Set classes.
-     *
      * @param string|null $classes
      *
      * @return $this
@@ -229,8 +200,6 @@ abstract class AbstractFilter implements FilterInterface
     }
 
     /**
-     * Get cancelButton.
-     *
      * @return bool
      */
     public function isCancelButton()
@@ -239,8 +208,6 @@ abstract class AbstractFilter implements FilterInterface
     }
 
     /**
-     * Set cancelButton.
-     *
      * @param bool $cancelButton
      *
      * @return $this
@@ -253,8 +220,6 @@ abstract class AbstractFilter implements FilterInterface
     }
 
     /**
-     * Get placeholder.
-     *
      * @return bool
      */
     public function isPlaceholder()
@@ -263,8 +228,6 @@ abstract class AbstractFilter implements FilterInterface
     }
 
     /**
-     * Set placeholder.
-     *
      * @param bool $placeholder
      *
      * @return $this
@@ -277,8 +240,6 @@ abstract class AbstractFilter implements FilterInterface
     }
 
     /**
-     * Get placeholderText.
-     *
      * @return string|null
      */
     public function getPlaceholderText()
@@ -287,8 +248,6 @@ abstract class AbstractFilter implements FilterInterface
     }
 
     /**
-     * Set placeholderText.
-     *
      * @param string|null $placeholderText
      *
      * @return $this

@@ -13,9 +13,6 @@ namespace Sg\DatatablesBundle\Datatable;
 
 use Exception;
 
-/**
- * Class Factory.
- */
 class Factory
 {
     /**

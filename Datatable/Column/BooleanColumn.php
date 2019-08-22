@@ -17,15 +17,10 @@ use Sg\DatatablesBundle\Datatable\Helper;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class BooleanColumn.
- */
 class BooleanColumn extends AbstractColumn
 {
-    // This Column is editable.
     use EditableTrait;
 
-    // The Column is filterable.
     use FilterableTrait;
 
     /**
@@ -163,8 +158,6 @@ class BooleanColumn extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -219,8 +212,6 @@ class BooleanColumn extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Get trueIcon.
-     *
      * @return string|null
      */
     public function getTrueIcon()
@@ -229,8 +220,6 @@ class BooleanColumn extends AbstractColumn
     }
 
     /**
-     * Set trueIcon.
-     *
      * @param string|null $trueIcon
      *
      * @return $this
@@ -243,8 +232,6 @@ class BooleanColumn extends AbstractColumn
     }
 
     /**
-     * Get falseIcon.
-     *
      * @return string|null
      */
     public function getFalseIcon()
@@ -253,8 +240,6 @@ class BooleanColumn extends AbstractColumn
     }
 
     /**
-     * Set falseIcon.
-     *
      * @param string|null $falseIcon
      *
      * @return $this
@@ -267,8 +252,6 @@ class BooleanColumn extends AbstractColumn
     }
 
     /**
-     * Get trueLabel.
-     *
      * @return string|null
      */
     public function getTrueLabel()
@@ -277,8 +260,6 @@ class BooleanColumn extends AbstractColumn
     }
 
     /**
-     * Set trueLabel.
-     *
      * @param string|null $trueLabel
      *
      * @return $this
@@ -291,8 +272,6 @@ class BooleanColumn extends AbstractColumn
     }
 
     /**
-     * Get falseLabel.
-     *
      * @return string|null
      */
     public function getFalseLabel()
@@ -301,8 +280,6 @@ class BooleanColumn extends AbstractColumn
     }
 
     /**
-     * Set falseLabel.
-     *
      * @param string|null $falseLabel
      *
      * @return $this

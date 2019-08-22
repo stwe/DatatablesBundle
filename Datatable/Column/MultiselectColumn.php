@@ -16,9 +16,6 @@ use Sg\DatatablesBundle\Datatable\Action\MultiselectAction;
 use Sg\DatatablesBundle\Datatable\RenderIfTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class MultiselectColumn.
- */
 class MultiselectColumn extends ActionColumn
 {
     // Render a Checkbox only if conditions are TRUE.
@@ -173,8 +170,6 @@ class MultiselectColumn extends ActionColumn
     //-------------------------------------------------
 
     /**
-     * Set actions.
-     *
      * @throws Exception
      *
      * @return $this
@@ -206,8 +201,6 @@ class MultiselectColumn extends ActionColumn
     }
 
     /**
-     * Get attributes.
-     *
      * @return array|null
      */
     public function getAttributes()
@@ -216,8 +209,6 @@ class MultiselectColumn extends ActionColumn
     }
 
     /**
-     * Set attributes.
-     *
      * @param array|null $attributes
      *
      * @throws Exception
@@ -258,8 +249,6 @@ class MultiselectColumn extends ActionColumn
     }
 
     /**
-     * Get value.
-     *
      * @return string
      */
     public function getValue()
@@ -268,8 +257,6 @@ class MultiselectColumn extends ActionColumn
     }
 
     /**
-     * Set value.
-     *
      * @param string $value
      *
      * @return $this
@@ -306,8 +293,6 @@ class MultiselectColumn extends ActionColumn
     }
 
     /**
-     * Get renderActionsToId.
-     *
      * @return string|null
      */
     public function getRenderActionsToId()
@@ -316,8 +301,6 @@ class MultiselectColumn extends ActionColumn
     }
 
     /**
-     * Set renderActionsToId.
-     *
      * @param string|null $renderActionsToId
      *
      * @return $this
