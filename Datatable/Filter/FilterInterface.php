@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,19 +11,15 @@
 
 namespace Sg\DatatablesBundle\Datatable\Filter;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Andx;
+use Doctrine\ORM\QueryBuilder;
 
 /**
- * Interface FilterInterface
- *
- * @package Sg\DatatablesBundle\Datatable\Filter
+ * Interface FilterInterface.
  */
 interface FilterInterface
 {
     /**
-     * Get template.
-     *
      * @return string
      */
     public function getTemplate();
@@ -31,12 +27,9 @@ interface FilterInterface
     /**
      * Add an and condition.
      *
-     * @param Andx         $andExpr
-     * @param QueryBuilder $qb
-     * @param string       $searchField
-     * @param mixed        $searchValue
-     * @param string       $searchTypeOfField
-     * @param int          $parameterCounter
+     * @param string $searchField
+     * @param string $searchTypeOfField
+     * @param int    $parameterCounter
      *
      * @return Andx
      */

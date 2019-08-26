@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,19 +11,14 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Twig_Environment;
 use Exception;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Twig_Environment;
 
-/**
- * Class DatatableFactory
- *
- * @package Sg\DatatablesBundle\Datatable
- */
 class DatatableFactory
 {
     /**
@@ -68,20 +63,6 @@ class DatatableFactory
      */
     protected $twig;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * DatatableFactory constructor.
-     *
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param TokenStorageInterface         $securityToken
-     * @param TranslatorInterface           $translator
-     * @param RouterInterface               $router
-     * @param EntityManagerInterface        $em
-     * @param Twig_Environment              $twig
-     */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $securityToken,
@@ -103,25 +84,25 @@ class DatatableFactory
     //-------------------------------------------------
 
     /**
-     * Create Datatable.
-     *
      * @param string $class
      *
-     * @return DatatableInterface
      * @throws Exception
+     *
+     * @return DatatableInterface
      */
     public function create($class)
     {
-        if (!is_string($class)) {
-            $type = gettype($class);
-            throw new Exception("DatatableFactory::create(): String expected, $type given");
+        if (! \is_string($class)) {
+            $type = \gettype($class);
+
+            throw new Exception("DatatableFactory::create(): String expected, {$type} given");
         }
 
         if (false === class_exists($class)) {
-            throw new Exception("DatatableFactory::create(): $class does not exist");
+            throw new Exception("DatatableFactory::create(): {$class} does not exist");
         }
 
-        if (in_array(DatatableInterface::class, class_implements($class))) {
+        if (\in_array(DatatableInterface::class, class_implements($class), true)) {
             return new $class(
                 $this->authorizationChecker,
                 $this->securityToken,
@@ -130,8 +111,8 @@ class DatatableFactory
                 $this->em,
                 $this->twig
             );
-        } else {
-            throw new Exception("DatatableFactory::create(): The class $class should implement the DatatableInterface.");
         }
+
+        throw new Exception("DatatableFactory::create(): The class {$class} should implement the DatatableInterface.");
     }
 }

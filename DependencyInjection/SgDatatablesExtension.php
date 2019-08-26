@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,21 +11,16 @@
 
 namespace Sg\DatatablesBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-/**
- * Class SgDatatablesExtension
- *
- * @package Sg\DatatablesBundle\DependencyInjection
- */
 class SgDatatablesExtension extends Extension implements PrependExtensionInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -39,21 +34,21 @@ class SgDatatablesExtension extends Extension implements PrependExtensionInterfa
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function prepend(ContainerBuilder $container)
     {
         $container->prependExtensionConfig(
             'framework',
-            array(
-                'assets' => array(
-                    'packages' => array(
-                        'datatables_cdn' => array(
+            [
+                'assets' => [
+                    'packages' => [
+                        'datatables_cdn' => [
                             'base_url' => 'https://cdn.datatables.net/plug-ins/1.10.13/i18n/',
-                        ),
-                    ),
-                ),
-            )
+                        ],
+                    ],
+                ],
+            ]
         );
     }
 }

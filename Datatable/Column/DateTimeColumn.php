@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,35 +11,23 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
-use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
-use Sg\DatatablesBundle\Datatable\Helper;
-
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Exception;
+use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
+use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
+use Sg\DatatablesBundle\Datatable\Helper;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class DateTimeColumn
- *
- * @package Sg\DatatablesBundle\Datatable\Column
- */
 class DateTimeColumn extends AbstractColumn
 {
-    /**
-     * This Column is editable.
-     */
     use EditableTrait;
 
-    /**
-     * The Column is filterable.
-     */
     use FilterableTrait;
 
     /**
      * Moment.js date format.
-     * Default: 'lll'
+     * Default: 'lll'.
      *
-     * @link http://momentjs.com/
+     * @see http://momentjs.com/
      *
      * @var string
      */
@@ -47,7 +35,7 @@ class DateTimeColumn extends AbstractColumn
 
     /**
      * Use the time ago format.
-     * Default: false
+     * Default: false.
      *
      * @var bool
      */
@@ -65,7 +53,6 @@ class DateTimeColumn extends AbstractColumn
         $path = Helper::getDataPropertyPath($this->data);
 
         if ($this->accessor->isReadable($row, $path)) {
-
             if (true === $this->isEditableContentRequired($row)) {
                 $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
             } else {
@@ -73,7 +60,6 @@ class DateTimeColumn extends AbstractColumn
             }
 
             $this->accessor->setValue($row, $path, $content);
-
         }
 
         return $this;
@@ -88,12 +74,11 @@ class DateTimeColumn extends AbstractColumn
         $path = Helper::getDataPropertyPath($this->data, $value);
 
         if ($this->accessor->isReadable($row, $path)) {
-
             $entries = $this->accessor->getValue($row, $path);
 
-            if (count($entries) > 0) {
+            if (null !== $entries && \count($entries) > 0) {
                 foreach ($entries as $key => $entry) {
-                    $currentPath = $path . '[' . $key . ']' . $value;
+                    $currentPath = $path.'['.$key.']'.$value;
                     $currentObjectPath = Helper::getPropertyPathObjectNotation($path, $key, $value);
 
                     if (true === $this->isEditableContentRequired($row)) {
@@ -108,10 +93,8 @@ class DateTimeColumn extends AbstractColumn
 
                     $this->accessor->setValue($row, $currentPath, $content);
                 }
-            } else {
-                // no placeholder - leave this blank
             }
-
+            // no placeholder - leave this blank
         }
 
         return $this;
@@ -133,13 +116,13 @@ class DateTimeColumn extends AbstractColumn
         if ($this->editable instanceof EditableInterface) {
             return $this->twig->render(
                 '@SgDatatables/column/column_post_create_dt.js.twig',
-                array(
+                [
                     'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
                     'editable_options' => $this->editable,
                     'entity_class_name' => $this->getEntityClassName(),
                     'column_dql' => $this->dql,
                     'original_type_of_field' => $this->getOriginalTypeOfField(),
-                )
+                ]
             );
         }
 
@@ -151,27 +134,23 @@ class DateTimeColumn extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
-     * @param OptionsResolver $resolver
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'date_format' => 'lll',
             'timeago' => false,
-            'filter' => array(TextFilter::class, array()),
+            'filter' => [TextFilter::class, []],
             'editable' => null,
-        ));
+        ]);
 
         $resolver->setAllowedTypes('date_format', 'string');
         $resolver->setAllowedTypes('timeago', 'bool');
         $resolver->setAllowedTypes('filter', 'array');
-        $resolver->setAllowedTypes('editable', array('null', 'array'));
+        $resolver->setAllowedTypes('editable', ['null', 'array']);
 
         return $this;
     }
@@ -195,12 +174,13 @@ class DateTimeColumn extends AbstractColumn
      *
      * @param string $dateFormat
      *
-     * @return $this
      * @throws Exception
+     *
+     * @return $this
      */
     public function setDateFormat($dateFormat)
     {
-        if (empty($dateFormat) || !is_string($dateFormat)) {
+        if (empty($dateFormat) || ! \is_string($dateFormat)) {
             throw new Exception('DateTimeColumn::setDateFormat(): A non-empty string is expected.');
         }
 
@@ -210,8 +190,6 @@ class DateTimeColumn extends AbstractColumn
     }
 
     /**
-     * Get timeago.
-     *
      * @return bool
      */
     public function isTimeago()
@@ -220,8 +198,6 @@ class DateTimeColumn extends AbstractColumn
     }
 
     /**
-     * Set timeago.
-     *
      * @param bool $timeago
      *
      * @return $this
@@ -248,22 +224,22 @@ class DateTimeColumn extends AbstractColumn
      */
     private function renderTemplate($data, $pk = null, $path = null)
     {
-        $renderVars = array(
+        $renderVars = [
             'data' => $data,
             'default_content' => $this->getDefaultContent(),
             'date_format' => $this->dateFormat,
             'timeago' => $this->timeago,
             'datatable_name' => $this->getDatatableName(),
             'row_id' => Helper::generateUniqueID(),
-        );
+        ];
 
         // editable vars
         if (null !== $pk) {
-            $renderVars = array_merge($renderVars, array(
+            $renderVars = array_merge($renderVars, [
                 'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
                 'pk' => $pk,
                 'path' => $path,
-            ));
+            ]);
         }
 
         return $this->twig->render(

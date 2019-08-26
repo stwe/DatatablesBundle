@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -18,14 +18,13 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Twig\Environment;
+use Twig_Environment;
 
 /**
- * Class DatatableTest
- *
- * @package Sg\DatatablesBundle\Tests
+ * @internal
+ * @coversNothing
  */
-class DatatableTest extends \PHPUnit_Framework_TestCase
+final class DatatableTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * testCreate.
@@ -43,12 +42,19 @@ class DatatableTest extends \PHPUnit_Framework_TestCase
         /** @noinspection PhpUndefinedMethodInspection */
         $router = $this->createMock(RouterInterface::class);
         /** @noinspection PhpUndefinedMethodInspection */
-        $twig = $this->createMock(Environment::class);
-        /** @noinspection PhpUndefinedMethodInspection */
-        $em = $this->createMock(EntityManager::class);
+        $twig = $this->createMock(Twig_Environment::class);
 
         /** @noinspection PhpUndefinedMethodInspection */
-        $em->expects($this->any())
+        $em = $this->getMockBuilder(EntityManager::class)
+            ->disableOriginalConstructor()
+            ->setMethods(
+                ['getClassMetadata']
+            )
+            ->getMock()
+        ;
+
+        // @noinspection PhpUndefinedMethodInspection
+        $em->expects(static::any())
             ->method('getClassMetadata')
             ->willReturn($this->getClassMetadataMock());
 
@@ -56,25 +62,22 @@ class DatatableTest extends \PHPUnit_Framework_TestCase
         $table = new $tableClass($authorizationChecker, $securityToken, $translator, $router, $em, $twig);
 
         /** @noinspection PhpUndefinedMethodInspection */
-        $this->assertEquals('post_datatable', $table->getName());
+        static::assertSame('post_datatable', $table->getName());
 
         $table->buildDatatable();
     }
 
-    /**
-     * Get classMetadataMock.
-     *
-     * @return mixed
-     */
     public function getClassMetadataMock()
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        $mock = $this->createPartialMock(ClassMetadata::class, [
-            'getEntityShortName'
-        ]);
+        $mock = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadata')
+            ->disableOriginalConstructor()
+            ->setMethods(['getEntityShortName'])
+            ->getMock()
+        ;
 
-        /** @noinspection PhpUndefinedMethodInspection */
-        $mock->expects($this->any())
+        // @noinspection PhpUndefinedMethodInspection
+        $mock->expects(static::any())
             ->method('getEntityShortName')
             ->willReturn('{entityShortName}');
 

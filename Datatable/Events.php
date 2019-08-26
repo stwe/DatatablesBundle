@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -13,16 +13,8 @@ namespace Sg\DatatablesBundle\Datatable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class Events
- *
- * @package Sg\DatatablesBundle\Datatable
- */
 class Events
 {
-    /**
-     * Use the OptionsResolver.
-     */
     use OptionsTrait;
 
     //-------------------------------------------------
@@ -35,115 +27,108 @@ class Events
     /**
      * Fired when the column widths are recalculated.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $columnSizing;
 
     /**
      * Fired when the visibility of a column changes.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $columnVisibility;
 
     /**
      * Fired when a table is destroyed.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $destroy;
 
     /**
      * An error has occurred during DataTables processing of data.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $error;
 
     /**
      * Fired when the page length is changed.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $length;
 
     /**
      * Fired when the data contained in the table is ordered.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $order;
 
     /**
      * Fired when the table's paging is updated.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $page;
 
     /**
      * Triggered immediately before data load.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $preInit;
 
     /**
      * Fired before an Ajax request is made.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $preXhr;
 
     /**
      * Fired when DataTables is processing data.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $processing;
 
     /**
      * Fired when the table is filtered.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $search;
 
     /**
      * Fired once state has been loaded and applied.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $stateLoaded;
 
     /**
      * Fired when loading state from storage.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $stateLoadParams;
 
     /**
      * Fired when saving table state information.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $stateSaveParams;
 
     /**
      * Fired when an Ajax request is completed.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $xhr;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Callbacks constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -156,13 +141,11 @@ class Events
     /**
      * Configure options.
      *
-     * @param OptionsResolver $resolver
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'column_sizing' => null,
             'column_visibility' => null,
             'destroy' => null,
@@ -178,23 +161,23 @@ class Events
             'state_load_params' => null,
             'state_save_params' => null,
             'xhr' => null,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('column_sizing', array('null', 'array'));
-        $resolver->setAllowedTypes('column_visibility', array('null', 'array'));
-        $resolver->setAllowedTypes('destroy', array('null', 'array'));
-        $resolver->setAllowedTypes('error', array('null', 'array'));
-        $resolver->setAllowedTypes('length', array('null', 'array'));
-        $resolver->setAllowedTypes('order', array('null', 'array'));
-        $resolver->setAllowedTypes('page', array('null', 'array'));
-        $resolver->setAllowedTypes('pre_init', array('null', 'array'));
-        $resolver->setAllowedTypes('pre_xhr', array('null', 'array'));
-        $resolver->setAllowedTypes('processing', array('null', 'array'));
-        $resolver->setAllowedTypes('search', array('null', 'array'));
-        $resolver->setAllowedTypes('state_loaded', array('null', 'array'));
-        $resolver->setAllowedTypes('state_load_params', array('null', 'array'));
-        $resolver->setAllowedTypes('state_save_params', array('null', 'array'));
-        $resolver->setAllowedTypes('xhr', array('null', 'array'));
+        $resolver->setAllowedTypes('column_sizing', ['null', 'array']);
+        $resolver->setAllowedTypes('column_visibility', ['null', 'array']);
+        $resolver->setAllowedTypes('destroy', ['null', 'array']);
+        $resolver->setAllowedTypes('error', ['null', 'array']);
+        $resolver->setAllowedTypes('length', ['null', 'array']);
+        $resolver->setAllowedTypes('order', ['null', 'array']);
+        $resolver->setAllowedTypes('page', ['null', 'array']);
+        $resolver->setAllowedTypes('pre_init', ['null', 'array']);
+        $resolver->setAllowedTypes('pre_xhr', ['null', 'array']);
+        $resolver->setAllowedTypes('processing', ['null', 'array']);
+        $resolver->setAllowedTypes('search', ['null', 'array']);
+        $resolver->setAllowedTypes('state_loaded', ['null', 'array']);
+        $resolver->setAllowedTypes('state_load_params', ['null', 'array']);
+        $resolver->setAllowedTypes('state_save_params', ['null', 'array']);
+        $resolver->setAllowedTypes('xhr', ['null', 'array']);
 
         return $this;
     }
@@ -204,8 +187,6 @@ class Events
     //-------------------------------------------------
 
     /**
-     * Get columnSizing.
-     *
      * @return array|null
      */
     public function getColumnSizing()
@@ -214,15 +195,13 @@ class Events
     }
 
     /**
-     * Set columnSizing.
-     *
      * @param array|null $columnSizing
      *
      * @return $this
      */
     public function setColumnSizing($columnSizing)
     {
-        if (is_array($columnSizing)) {
+        if (\is_array($columnSizing)) {
             $this->validateArrayForTemplateAndOther($columnSizing);
         }
 
@@ -232,8 +211,6 @@ class Events
     }
 
     /**
-     * Get columnVisibility.
-     *
      * @return array|null
      */
     public function getColumnVisibility()
@@ -242,15 +219,13 @@ class Events
     }
 
     /**
-     * Set columnVisibility.
-     *
      * @param array|null $columnVisibility
      *
      * @return $this
      */
     public function setColumnVisibility($columnVisibility)
     {
-        if (is_array($columnVisibility)) {
+        if (\is_array($columnVisibility)) {
             $this->validateArrayForTemplateAndOther($columnVisibility);
         }
 
@@ -260,8 +235,6 @@ class Events
     }
 
     /**
-     * Get destroy.
-     *
      * @return array|null
      */
     public function getDestroy()
@@ -270,15 +243,13 @@ class Events
     }
 
     /**
-     * Set destroy.
-     *
      * @param array|null $destroy
      *
      * @return $this
      */
     public function setDestroy($destroy)
     {
-        if (is_array($destroy)) {
+        if (\is_array($destroy)) {
             $this->validateArrayForTemplateAndOther($destroy);
         }
 
@@ -288,8 +259,6 @@ class Events
     }
 
     /**
-     * Get error.
-     *
      * @return array|null
      */
     public function getError()
@@ -298,15 +267,13 @@ class Events
     }
 
     /**
-     * Set error.
-     *
      * @param array|null $error
      *
      * @return $this
      */
     public function setError($error)
     {
-        if (is_array($error)) {
+        if (\is_array($error)) {
             $this->validateArrayForTemplateAndOther($error);
         }
 
@@ -316,8 +283,6 @@ class Events
     }
 
     /**
-     * Get length.
-     *
      * @return array|null
      */
     public function getLength()
@@ -326,15 +291,13 @@ class Events
     }
 
     /**
-     * Set length.
-     *
      * @param array|null $length
      *
      * @return $this
      */
     public function setLength($length)
     {
-        if (is_array($length)) {
+        if (\is_array($length)) {
             $this->validateArrayForTemplateAndOther($length);
         }
 
@@ -344,8 +307,6 @@ class Events
     }
 
     /**
-     * Get order.
-     *
      * @return array|null
      */
     public function getOrder()
@@ -354,15 +315,13 @@ class Events
     }
 
     /**
-     * Set order.
-     *
      * @param array|null $order
      *
      * @return $this
      */
     public function setOrder($order)
     {
-        if (is_array($order)) {
+        if (\is_array($order)) {
             $this->validateArrayForTemplateAndOther($order);
         }
 
@@ -372,8 +331,6 @@ class Events
     }
 
     /**
-     * Get page.
-     *
      * @return array|null
      */
     public function getPage()
@@ -382,15 +339,13 @@ class Events
     }
 
     /**
-     * Set page.
-     *
      * @param array|null $page
      *
      * @return $this
      */
     public function setPage($page)
     {
-        if (is_array($page)) {
+        if (\is_array($page)) {
             $this->validateArrayForTemplateAndOther($page);
         }
 
@@ -400,8 +355,6 @@ class Events
     }
 
     /**
-     * Get preInit.
-     *
      * @return array|null
      */
     public function getPreInit()
@@ -410,15 +363,13 @@ class Events
     }
 
     /**
-     * Set preInit.
-     *
      * @param array|null $preInit
      *
      * @return $this
      */
     public function setPreInit($preInit)
     {
-        if (is_array($preInit)) {
+        if (\is_array($preInit)) {
             $this->validateArrayForTemplateAndOther($preInit);
         }
 
@@ -428,8 +379,6 @@ class Events
     }
 
     /**
-     * Get preXhr.
-     *
      * @return array|null
      */
     public function getPreXhr()
@@ -438,15 +387,13 @@ class Events
     }
 
     /**
-     * Set preXhr.
-     *
      * @param array|null $preXhr
      *
      * @return $this
      */
     public function setPreXhr($preXhr)
     {
-        if (is_array($preXhr)) {
+        if (\is_array($preXhr)) {
             $this->validateArrayForTemplateAndOther($preXhr);
         }
 
@@ -456,8 +403,6 @@ class Events
     }
 
     /**
-     * Get processing.
-     *
      * @return array|null
      */
     public function getProcessing()
@@ -466,15 +411,13 @@ class Events
     }
 
     /**
-     * Set processing.
-     *
      * @param array|null $processing
      *
      * @return $this
      */
     public function setProcessing($processing)
     {
-        if (is_array($processing)) {
+        if (\is_array($processing)) {
             $this->validateArrayForTemplateAndOther($processing);
         }
 
@@ -484,8 +427,6 @@ class Events
     }
 
     /**
-     * Get search.
-     *
      * @return array|null
      */
     public function getSearch()
@@ -494,15 +435,13 @@ class Events
     }
 
     /**
-     * Set search.
-     *
      * @param array|null $search
      *
      * @return $this
      */
     public function setSearch($search)
     {
-        if (is_array($search)) {
+        if (\is_array($search)) {
             $this->validateArrayForTemplateAndOther($search);
         }
 
@@ -512,8 +451,6 @@ class Events
     }
 
     /**
-     * Get stateLoaded.
-     *
      * @return array|null
      */
     public function getStateLoaded()
@@ -522,15 +459,13 @@ class Events
     }
 
     /**
-     * Set stateLoaded.
-     *
      * @param array|null $stateLoaded
      *
      * @return $this
      */
     public function setStateLoaded($stateLoaded)
     {
-        if (is_array($stateLoaded)) {
+        if (\is_array($stateLoaded)) {
             $this->validateArrayForTemplateAndOther($stateLoaded);
         }
 
@@ -540,8 +475,6 @@ class Events
     }
 
     /**
-     * Get stateLoadParams.
-     *
      * @return array|null
      */
     public function getStateLoadParams()
@@ -550,15 +483,13 @@ class Events
     }
 
     /**
-     * Set stateLoadParams.
-     *
      * @param array|null $stateLoadParams
      *
      * @return $this
      */
     public function setStateLoadParams($stateLoadParams)
     {
-        if (is_array($stateLoadParams)) {
+        if (\is_array($stateLoadParams)) {
             $this->validateArrayForTemplateAndOther($stateLoadParams);
         }
 
@@ -568,8 +499,6 @@ class Events
     }
 
     /**
-     * Get stateSaveParams.
-     *
      * @return array|null
      */
     public function getStateSaveParams()
@@ -578,15 +507,13 @@ class Events
     }
 
     /**
-     * Set stateSaveParams.
-     *
      * @param array|null $stateSaveParams
      *
      * @return $this
      */
     public function setStateSaveParams($stateSaveParams)
     {
-        if (is_array($stateSaveParams)) {
+        if (\is_array($stateSaveParams)) {
             $this->validateArrayForTemplateAndOther($stateSaveParams);
         }
 
@@ -596,8 +523,6 @@ class Events
     }
 
     /**
-     * Get xhr.
-     *
      * @return array|null
      */
     public function getXhr()
@@ -606,15 +531,13 @@ class Events
     }
 
     /**
-     * Set xhr.
-     *
      * @param array|null $xhr
      *
      * @return $this
      */
     public function setXhr($xhr)
     {
-        if (is_array($xhr)) {
+        if (\is_array($xhr)) {
             $this->validateArrayForTemplateAndOther($xhr);
         }
 

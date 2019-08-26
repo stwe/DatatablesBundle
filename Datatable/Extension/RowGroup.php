@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,21 +11,12 @@
 
 namespace Sg\DatatablesBundle\Datatable\Extension;
 
-use Sg\DatatablesBundle\Datatable\OptionsTrait;
-
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Exception;
+use Sg\DatatablesBundle\Datatable\OptionsTrait;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class RowGroup
- *
- * @package Sg\DatatablesBundle\Datatable\Extension
- */
 class RowGroup
 {
-    /**
-     * Use the OptionsResolver.
-     */
     use OptionsTrait;
 
     //-------------------------------------------------
@@ -96,13 +87,6 @@ class RowGroup
      */
     protected $startClassName;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * RowGroup constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -113,10 +97,6 @@ class RowGroup
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
-     * @param OptionsResolver $resolver
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -130,18 +110,18 @@ class RowGroup
         $resolver->setDefined('end_class_name');
         $resolver->setDefined('start_class_name');
 
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'enable' => true,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('data_src', array('string'));
-        $resolver->setAllowedTypes('start_render', array('array'));
-        $resolver->setAllowedTypes('end_render', array('array'));
-        $resolver->setAllowedTypes('enable', array('bool'));
-        $resolver->setAllowedTypes('class_name', array('string'));
-        $resolver->setAllowedTypes('empty_data_group', array('string'));
-        $resolver->setAllowedTypes('end_class_name', array('string'));
-        $resolver->setAllowedTypes('start_class_name', array('string'));
+        $resolver->setAllowedTypes('data_src', ['string']);
+        $resolver->setAllowedTypes('start_render', ['array']);
+        $resolver->setAllowedTypes('end_render', ['array']);
+        $resolver->setAllowedTypes('enable', ['bool']);
+        $resolver->setAllowedTypes('class_name', ['string']);
+        $resolver->setAllowedTypes('empty_data_group', ['string']);
+        $resolver->setAllowedTypes('end_class_name', ['string']);
+        $resolver->setAllowedTypes('start_class_name', ['string']);
 
         return $this;
     }
@@ -151,8 +131,6 @@ class RowGroup
     //-------------------------------------------------
 
     /**
-     * Get details.
-     *
      * @return string
      */
     public function getDataSrc()
@@ -161,18 +139,17 @@ class RowGroup
     }
 
     /**
-     * Set details.
-     *
      * @param string $dataSrc
      *
-     * @return $this
      * @throws Exception
+     *
+     * @return $this
      */
     public function setDataSrc($dataSrc)
     {
-        if (is_string($dataSrc) && empty($dataSrc)) {
+        if (\is_string($dataSrc) && empty($dataSrc)) {
             throw new \Exception(
-                "RowGroup::setDataSrc(): the column name is empty."
+                'RowGroup::setDataSrc(): the column name is empty.'
             );
         }
 
@@ -191,20 +168,21 @@ class RowGroup
 
     /**
      * @param string $startRender
+     *
      * @return RowGroup
      */
     public function setStartRender($startRender)
     {
-        if (false === array_key_exists('template', $startRender)) {
+        if (false === \array_key_exists('template', $startRender)) {
             throw new Exception(
                 'RowGroup::setStartRender(): The "template" option is required.'
             );
         }
 
         foreach ($startRender as $key => $value) {
-            if (false === in_array($key, array('template', 'vars',))) {
+            if (false === \in_array($key, ['template', 'vars'], true)) {
                 throw new Exception(
-                    "RowGroup::setStartRender(): $key is not a valid option."
+                    "RowGroup::setStartRender(): {$key} is not a valid option."
                 );
             }
         }
@@ -224,20 +202,21 @@ class RowGroup
 
     /**
      * @param string $endRender
+     *
      * @return RowGroup
      */
     public function setEndRender($endRender)
     {
-        if (false === array_key_exists('template', $startRender)) {
+        if (false === \array_key_exists('template', $startRender)) {
             throw new Exception(
                 'RowGroup::setEndRender(): The "template" option is required.'
             );
         }
 
         foreach ($startRender as $key => $value) {
-            if (false === in_array($key, array('template', 'vars',))) {
+            if (false === \in_array($key, ['template', 'vars'], true)) {
                 throw new Exception(
-                    "RowGroup::setEndRender(): $key is not a valid option."
+                    "RowGroup::setEndRender(): {$key} is not a valid option."
                 );
             }
         }
@@ -257,13 +236,14 @@ class RowGroup
 
     /**
      * @param string $className
+     *
      * @return RowGroup
      */
     public function setClassName($className)
     {
-        if (is_string($className) && empty($className)) {
+        if (\is_string($className) && empty($className)) {
             throw new \Exception(
-                "RowGroup::setClassName(): the class name is empty."
+                'RowGroup::setClassName(): the class name is empty.'
             );
         }
 
@@ -282,13 +262,14 @@ class RowGroup
 
     /**
      * @param string $emptyDataGroup
+     *
      * @return RowGroup
      */
     public function setEmptyDataGroup($emptyDataGroup)
     {
-        if (is_string($emptyDataGroup) && empty($emptyDataGroup)) {
+        if (\is_string($emptyDataGroup) && empty($emptyDataGroup)) {
             throw new \Exception(
-                "RowGroup::setEmptyDataGroup(): the empty data group text is empty."
+                'RowGroup::setEmptyDataGroup(): the empty data group text is empty.'
             );
         }
 
@@ -307,6 +288,7 @@ class RowGroup
 
     /**
      * @param bool $enable
+     *
      * @return RowGroup
      */
     public function setEnable($enable)
@@ -326,13 +308,14 @@ class RowGroup
 
     /**
      * @param string $endClassName
+     *
      * @return RowGroup
      */
     public function setEndClassName($endClassName)
     {
-        if (is_string($endClassName) && empty($endClassName)) {
+        if (\is_string($endClassName) && empty($endClassName)) {
             throw new \Exception(
-                "RowGroup::setEndClassName(): the end class name is empty."
+                'RowGroup::setEndClassName(): the end class name is empty.'
             );
         }
 
@@ -351,13 +334,14 @@ class RowGroup
 
     /**
      * @param string $startClassName
+     *
      * @return RowGroup
      */
     public function setStartClassName($startClassName)
     {
-        if (is_string($startClassName) && empty($startClassName)) {
+        if (\is_string($startClassName) && empty($startClassName)) {
             throw new \Exception(
-                "RowGroup::setStartClassName(): the start class name is empty."
+                'RowGroup::setStartClassName(): the start class name is empty.'
             );
         }
 

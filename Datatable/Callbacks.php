@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -13,16 +13,8 @@ namespace Sg\DatatablesBundle\Datatable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class Callbacks
- *
- * @package Sg\DatatablesBundle\Datatable
- */
 class Callbacks
 {
-    /**
-     * Use the OptionsResolver.
-     */
     use OptionsTrait;
 
     //-------------------------------------------------
@@ -32,108 +24,101 @@ class Callbacks
     /**
      * Callback for whenever a TR element is created for the table's body.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $createdRow;
 
     /**
      * Function that is called every time DataTables performs a draw.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $drawCallback;
 
     /**
      * Footer display callback function.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $footerCallback;
 
     /**
      * Number formatting callback function.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $formatNumber;
 
     /**
      * Header display callback function.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $headerCallback;
 
     /**
      * Table summary information display callback.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $infoCallback;
 
     /**
      * Initialisation complete callback.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $initComplete;
 
     /**
      * Pre-draw callback.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $preDrawCallback;
 
     /**
      * Row draw callback.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $rowCallback;
 
     /**
      * Callback that defines where and how a saved state should be loaded.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $stateLoadCallback;
 
     /**
      * State loaded callback.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $stateLoaded;
 
     /**
      * State loaded - data manipulation callback.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $stateLoadParams;
 
     /**
      * Callback that defines how the table state is stored and where.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $stateSaveCallback;
 
     /**
      * State save - data manipulation callback.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $stateSaveParams;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Callbacks constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -146,13 +131,11 @@ class Callbacks
     /**
      * Configure options.
      *
-     * @param OptionsResolver $resolver
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'created_row' => null,
             'draw_callback' => null,
             'footer_callback' => null,
@@ -167,22 +150,22 @@ class Callbacks
             'state_load_params' => null,
             'state_save_callback' => null,
             'state_save_params' => null,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('created_row', array('null', 'array'));
-        $resolver->setAllowedTypes('draw_callback', array('null', 'array'));
-        $resolver->setAllowedTypes('footer_callback', array('null', 'array'));
-        $resolver->setAllowedTypes('format_number', array('null', 'array'));
-        $resolver->setAllowedTypes('header_callback', array('null', 'array'));
-        $resolver->setAllowedTypes('info_callback', array('null', 'array'));
-        $resolver->setAllowedTypes('init_complete', array('null', 'array'));
-        $resolver->setAllowedTypes('pre_draw_callback', array('null', 'array'));
-        $resolver->setAllowedTypes('row_callback', array('null', 'array'));
-        $resolver->setAllowedTypes('state_load_callback', array('null', 'array'));
-        $resolver->setAllowedTypes('state_loaded', array('null', 'array'));
-        $resolver->setAllowedTypes('state_load_params', array('null', 'array'));
-        $resolver->setAllowedTypes('state_save_callback', array('null', 'array'));
-        $resolver->setAllowedTypes('state_save_params', array('null', 'array'));
+        $resolver->setAllowedTypes('created_row', ['null', 'array']);
+        $resolver->setAllowedTypes('draw_callback', ['null', 'array']);
+        $resolver->setAllowedTypes('footer_callback', ['null', 'array']);
+        $resolver->setAllowedTypes('format_number', ['null', 'array']);
+        $resolver->setAllowedTypes('header_callback', ['null', 'array']);
+        $resolver->setAllowedTypes('info_callback', ['null', 'array']);
+        $resolver->setAllowedTypes('init_complete', ['null', 'array']);
+        $resolver->setAllowedTypes('pre_draw_callback', ['null', 'array']);
+        $resolver->setAllowedTypes('row_callback', ['null', 'array']);
+        $resolver->setAllowedTypes('state_load_callback', ['null', 'array']);
+        $resolver->setAllowedTypes('state_loaded', ['null', 'array']);
+        $resolver->setAllowedTypes('state_load_params', ['null', 'array']);
+        $resolver->setAllowedTypes('state_save_callback', ['null', 'array']);
+        $resolver->setAllowedTypes('state_save_params', ['null', 'array']);
 
         return $this;
     }
@@ -192,8 +175,6 @@ class Callbacks
     //-------------------------------------------------
 
     /**
-     * Get createdRow.
-     *
      * @return array|null
      */
     public function getCreatedRow()
@@ -202,15 +183,13 @@ class Callbacks
     }
 
     /**
-     * Set createdRow.
-     *
      * @param array|null $createdRow
      *
      * @return $this
      */
     public function setCreatedRow($createdRow)
     {
-        if (is_array($createdRow)) {
+        if (\is_array($createdRow)) {
             $this->validateArrayForTemplateAndOther($createdRow);
         }
 
@@ -220,8 +199,6 @@ class Callbacks
     }
 
     /**
-     * Get drawCallback.
-     *
      * @return array|null
      */
     public function getDrawCallback()
@@ -230,15 +207,13 @@ class Callbacks
     }
 
     /**
-     * Set drawCallback.
-     *
      * @param array|null $drawCallback
      *
      * @return $this
      */
     public function setDrawCallback($drawCallback)
     {
-        if (is_array($drawCallback)) {
+        if (\is_array($drawCallback)) {
             $this->validateArrayForTemplateAndOther($drawCallback);
         }
 
@@ -248,8 +223,6 @@ class Callbacks
     }
 
     /**
-     * Get footerCallback.
-     *
      * @return array|null
      */
     public function getFooterCallback()
@@ -258,15 +231,13 @@ class Callbacks
     }
 
     /**
-     * Set footerCallback.
-     *
      * @param array|null $footerCallback
      *
      * @return $this
      */
     public function setFooterCallback($footerCallback)
     {
-        if (is_array($footerCallback)) {
+        if (\is_array($footerCallback)) {
             $this->validateArrayForTemplateAndOther($footerCallback);
         }
 
@@ -276,8 +247,6 @@ class Callbacks
     }
 
     /**
-     * Get formatNumber.
-     *
      * @return array|null
      */
     public function getFormatNumber()
@@ -286,15 +255,13 @@ class Callbacks
     }
 
     /**
-     * Set formatNumber.
-     *
      * @param array|null $formatNumber
      *
      * @return $this
      */
     public function setFormatNumber($formatNumber)
     {
-        if (is_array($formatNumber)) {
+        if (\is_array($formatNumber)) {
             $this->validateArrayForTemplateAndOther($formatNumber);
         }
 
@@ -304,8 +271,6 @@ class Callbacks
     }
 
     /**
-     * Get headerCallback.
-     *
      * @return array|null
      */
     public function getHeaderCallback()
@@ -314,15 +279,13 @@ class Callbacks
     }
 
     /**
-     * Set headerCallback.
-     *
      * @param array|null $headerCallback
      *
      * @return $this
      */
     public function setHeaderCallback($headerCallback)
     {
-        if (is_array($headerCallback)) {
+        if (\is_array($headerCallback)) {
             $this->validateArrayForTemplateAndOther($headerCallback);
         }
 
@@ -332,8 +295,6 @@ class Callbacks
     }
 
     /**
-     * Get infoCallback.
-     *
      * @return array|null
      */
     public function getInfoCallback()
@@ -342,15 +303,13 @@ class Callbacks
     }
 
     /**
-     * Set infoCallback.
-     *
      * @param array|null $infoCallback
      *
      * @return $this
      */
     public function setInfoCallback($infoCallback)
     {
-        if (is_array($infoCallback)) {
+        if (\is_array($infoCallback)) {
             $this->validateArrayForTemplateAndOther($infoCallback);
         }
 
@@ -360,8 +319,6 @@ class Callbacks
     }
 
     /**
-     * Get initComplete.
-     *
      * @return array|null
      */
     public function getInitComplete()
@@ -370,15 +327,13 @@ class Callbacks
     }
 
     /**
-     * Set initComplete.
-     *
      * @param array|null $initComplete
      *
      * @return $this
      */
     public function setInitComplete($initComplete)
     {
-        if (is_array($initComplete)) {
+        if (\is_array($initComplete)) {
             $this->validateArrayForTemplateAndOther($initComplete);
         }
 
@@ -388,8 +343,6 @@ class Callbacks
     }
 
     /**
-     * Get preDrawCallback.
-     *
      * @return array|null
      */
     public function getPreDrawCallback()
@@ -398,15 +351,13 @@ class Callbacks
     }
 
     /**
-     * Set preDrawCallback.
-     *
      * @param array|null $preDrawCallback
      *
      * @return $this
      */
     public function setPreDrawCallback($preDrawCallback)
     {
-        if (is_array($preDrawCallback)) {
+        if (\is_array($preDrawCallback)) {
             $this->validateArrayForTemplateAndOther($preDrawCallback);
         }
 
@@ -416,8 +367,6 @@ class Callbacks
     }
 
     /**
-     * Get rowCallback.
-     *
      * @return array|null
      */
     public function getRowCallback()
@@ -426,15 +375,13 @@ class Callbacks
     }
 
     /**
-     * Set rowCallback.
-     *
      * @param array|null $rowCallback
      *
      * @return $this
      */
     public function setRowCallback($rowCallback)
     {
-        if (is_array($rowCallback)) {
+        if (\is_array($rowCallback)) {
             $this->validateArrayForTemplateAndOther($rowCallback);
         }
 
@@ -444,8 +391,6 @@ class Callbacks
     }
 
     /**
-     * Get stateLoadCallback.
-     *
      * @return array|null
      */
     public function getStateLoadCallback()
@@ -454,15 +399,13 @@ class Callbacks
     }
 
     /**
-     * Set stateLoadCallback.
-     *
      * @param array|null $stateLoadCallback
      *
      * @return $this
      */
     public function setStateLoadCallback($stateLoadCallback)
     {
-        if (is_array($stateLoadCallback)) {
+        if (\is_array($stateLoadCallback)) {
             $this->validateArrayForTemplateAndOther($stateLoadCallback);
         }
 
@@ -472,8 +415,6 @@ class Callbacks
     }
 
     /**
-     * Get stateLoaded.
-     *
      * @return array|null
      */
     public function getStateLoaded()
@@ -482,15 +423,13 @@ class Callbacks
     }
 
     /**
-     * Set stateLoaded.
-     *
      * @param array|null $stateLoaded
      *
      * @return $this
      */
     public function setStateLoaded($stateLoaded)
     {
-        if (is_array($stateLoaded)) {
+        if (\is_array($stateLoaded)) {
             $this->validateArrayForTemplateAndOther($stateLoaded);
         }
 
@@ -500,8 +439,6 @@ class Callbacks
     }
 
     /**
-     * Get stateLoadParams.
-     *
      * @return array|null
      */
     public function getStateLoadParams()
@@ -510,15 +447,13 @@ class Callbacks
     }
 
     /**
-     * Set stateLoadParams.
-     *
      * @param array|null $stateLoadParams
      *
      * @return $this
      */
     public function setStateLoadParams($stateLoadParams)
     {
-        if (is_array($stateLoadParams)) {
+        if (\is_array($stateLoadParams)) {
             $this->validateArrayForTemplateAndOther($stateLoadParams);
         }
 
@@ -528,8 +463,6 @@ class Callbacks
     }
 
     /**
-     * Get stateSaveCallback.
-     *
      * @return array|null
      */
     public function getStateSaveCallback()
@@ -538,15 +471,13 @@ class Callbacks
     }
 
     /**
-     * Set stateSaveCallback.
-     *
      * @param array|null $stateSaveCallback
      *
      * @return $this
      */
     public function setStateSaveCallback($stateSaveCallback)
     {
-        if (is_array($stateSaveCallback)) {
+        if (\is_array($stateSaveCallback)) {
             $this->validateArrayForTemplateAndOther($stateSaveCallback);
         }
 
@@ -556,8 +487,6 @@ class Callbacks
     }
 
     /**
-     * Get stateSaveParams.
-     *
      * @return array|null
      */
     public function getStateSaveParams()
@@ -566,15 +495,13 @@ class Callbacks
     }
 
     /**
-     * Set stateSaveParams.
-     *
      * @param array|null $stateSaveParams
      *
      * @return $this
      */
     public function setStateSaveParams($stateSaveParams)
     {
-        if (is_array($stateSaveParams)) {
+        if (\is_array($stateSaveParams)) {
             $this->validateArrayForTemplateAndOther($stateSaveParams);
         }
 

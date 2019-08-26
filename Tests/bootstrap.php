@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -9,8 +9,8 @@
  * file that was distributed with this source code.
  */
 
-if (!($loader = @include __DIR__.'/../vendor/autoload.php')) {
-    echo <<<EOT
+if (! ($loader = @include __DIR__.'/../vendor/autoload.php')) {
+    echo <<<'EOT'
 You need to install the project dependencies using Composer:
 $ wget http://getcomposer.org/composer.phar
 OR

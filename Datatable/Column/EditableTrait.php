@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,23 +11,17 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Exception;
 use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
 use Sg\DatatablesBundle\Datatable\Factory;
 
-use Exception;
-
-/**
- * Class EditableTrait
- *
- * @package Sg\DatatablesBundle\Datatable\Column
- */
 trait EditableTrait
 {
     /**
      * An EditableInterface instance.
-     * Default: null
+     * Default: null.
      *
-     * @var null|EditableInterface
+     * @var EditableInterface|null
      */
     protected $editable;
 
@@ -36,9 +30,7 @@ trait EditableTrait
     //-------------------------------------------------
 
     /**
-     * Get editable.
-     *
-     * @return null|EditableInterface
+     * @return EditableInterface|null
      */
     public function getEditable()
     {
@@ -46,25 +38,24 @@ trait EditableTrait
     }
 
     /**
-     * Set editable.
+     * @param array|null $editableClassAndOptions
      *
-     * @param null|array $editableClassAndOptions
+     * @throws Exception
      *
      * @return $this
-     * @throws Exception
      */
     public function setEditable($editableClassAndOptions)
     {
-        if (is_array($editableClassAndOptions)) {
-            if (count($editableClassAndOptions) != 2) {
+        if (\is_array($editableClassAndOptions)) {
+            if (2 !== \count($editableClassAndOptions)) {
                 throw new Exception('EditableTrait::setEditable(): Two arguments expected.');
             }
 
-            if (!isset($editableClassAndOptions[0]) || !is_string($editableClassAndOptions[0]) && !$editableClassAndOptions[0] instanceof EditableInterface) {
+            if (! isset($editableClassAndOptions[0]) || ! \is_string($editableClassAndOptions[0]) && ! $editableClassAndOptions[0] instanceof EditableInterface) {
                 throw new Exception('EditableTrait::setEditable(): Set a Editable class.');
             }
 
-            if (!isset($editableClassAndOptions[1]) || !is_array($editableClassAndOptions[1])) {
+            if (! isset($editableClassAndOptions[1]) || ! \is_array($editableClassAndOptions[1])) {
                 throw new Exception('EditableTrait::setEditable(): Set an options array.');
             }
 

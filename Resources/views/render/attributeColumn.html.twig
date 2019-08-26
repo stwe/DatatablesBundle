@@ -6,10 +6,15 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-"columns": [
-    {% for column in sg_datatables_view.columnBuilder.columns %}
-        {% if column.sentInResponse %}
-            {% include column.getOptionsTemplate %}
-        {% endif %}
+
+{% import _self as macros %}
+
+{% macro attributes(attributes) %}
+    {% for key, value in attributes %}
+        data-{{ key }}="{{ value }}"
     {% endfor %}
-]
+{% endmacro %}
+
+<span {{ macros.attributes(attributes) }}>
+    {{ data|raw }}
+</span>
