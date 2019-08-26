@@ -14,11 +14,8 @@ namespace Sg\DatatablesBundle\Datatable\Column;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\MappingException;
-use Doctrine\ORM\EntityManagerInterface;
-use Sg\DatatablesBundle\Datatable\Factory;
 use Exception;
 use Sg\DatatablesBundle\Datatable\Factory;
-use Symfony\Component\Routing\RouterInterface;
 use Twig_Environment;
 
 class ColumnBuilder
@@ -118,16 +115,16 @@ class ColumnBuilder
      */
     public function add($dql, $class, array $options = [])
     {
-        if (is_object($class)) {
+        if (\is_object($class)) {
             $column = Factory::create($class, ColumnInterface::class);
             @trigger_error(sprintf('Using an object as column type is deprecated since 1.3 and will be removed in 2.0. Use a class name (FQCN) instead.'), E_USER_DEPRECATED);
         } else {
             $columns = [];
             foreach ($this->columnTypes as $column) {
-                $columns[get_class($column)] = $column;
+                $columns[\get_class($column)] = $column;
             }
 
-            if (! array_key_exists($class, $columns)) {
+            if (! \array_key_exists($class, $columns)) {
                 throw new \RuntimeException(sprintf('Column %s is not a service', $class));
             }
 

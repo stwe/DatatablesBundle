@@ -18,7 +18,6 @@ use Sg\DatatablesBundle\Datatable\AddIfTrait;
 use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Routing\RouterInterface;
 use Twig_Environment;
 
 abstract class AbstractColumn implements ColumnInterface

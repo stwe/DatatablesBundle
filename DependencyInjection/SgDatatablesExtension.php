@@ -12,7 +12,6 @@
 namespace Sg\DatatablesBundle\DependencyInjection;
 
 use Sg\DatatablesBundle\Datatable\Column\ColumnInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -34,7 +33,7 @@ class SgDatatablesExtension extends Extension implements PrependExtensionInterfa
 
         $container->setParameter('sg_datatables.datatable.query', $config['datatable']['query']);
         $container->registerForAutoconfiguration(ColumnInterface::class)
-                  ->addTag('sg_datatables.column')
+            ->addTag('sg_datatables.column')
         ;
     }
 
