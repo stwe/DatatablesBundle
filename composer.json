@@ -27,14 +27,12 @@
     },
     "require-dev": {
         "phpunit/phpunit": "5.7.*",
+        "friendsofphp/php-cs-fixer": "^2.15",
         "symfony/security": "^3.4|^4.1",
         "symfony/translation": "^3.4|^4.1",
         "twig/twig": "^2.9"
     },
     "autoload": {
         "psr-4": { "Sg\\DatatablesBundle\\": "" }
-    },
-    "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.15"
     }
 }

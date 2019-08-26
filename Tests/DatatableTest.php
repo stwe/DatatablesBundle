@@ -12,12 +12,11 @@
 namespace Sg\DatatablesBundle\Tests;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Sg\DatatablesBundle\Tests\Datatables\PostDatatable;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Twig_Environment;
 
 /**
@@ -56,7 +55,8 @@ final class DatatableTest extends \PHPUnit\Framework\TestCase
         // @noinspection PhpUndefinedMethodInspection
         $em->expects(static::any())
             ->method('getClassMetadata')
-            ->willReturn($this->getClassMetadataMock());
+            ->willReturn($this->getClassMetadataMock())
+        ;
 
         /** @var \Sg\DatatablesBundle\Tests\Datatables\PostDatatable $table */
         $table = new $tableClass($authorizationChecker, $securityToken, $translator, $router, $em, $twig);
@@ -79,7 +79,8 @@ final class DatatableTest extends \PHPUnit\Framework\TestCase
         // @noinspection PhpUndefinedMethodInspection
         $mock->expects(static::any())
             ->method('getEntityShortName')
-            ->willReturn('{entityShortName}');
+            ->willReturn('{entityShortName}')
+        ;
 
         return $mock;
     }

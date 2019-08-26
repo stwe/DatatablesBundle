@@ -43,29 +43,29 @@ class PostDatatable extends AbstractDatatable
             ->add('title', Column::class, [
                 'title' => 'Title',
             ])
-            ->add('boolean', BooleanColumn::class, array(
+            ->add('boolean', BooleanColumn::class, [
                 'title' => 'Boolean',
-            ))
-            ->add('datetime', DateTimeColumn::class, array(
+            ])
+            ->add('datetime', DateTimeColumn::class, [
                 'title' => 'DateTimeColumn',
-            ))
-            ->add('image', ImageColumn::class, array(
+            ])
+            ->add('image', ImageColumn::class, [
                 'title' => 'ImageColumn',
                 'imagine_filter' => '',
                 'relative_path' => '',
-            ))
-            ->add(null, ActionColumn::class, array(
+            ])
+            ->add(null, ActionColumn::class, [
                 'title' => 'ActionColumn',
                 'actions' => [
-                ]
-            ))
-            ->add('number', NumberColumn::class, array(
+                ],
+            ])
+            ->add('number', NumberColumn::class, [
                 'title' => 'NumberColumn',
-                'formatter' => new \NumberFormatter('en_US', \NumberFormatter::DECIMAL)
-            ))
-            ->add('virtual', VirtualColumn::class, array(
+                'formatter' => new \NumberFormatter('en_US', \NumberFormatter::DECIMAL),
+            ])
+            ->add('virtual', VirtualColumn::class, [
                 'title' => 'VirtualColumn',
-            ))
+            ])
         ;
     }
 
