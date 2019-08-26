@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,15 +11,10 @@
 
 namespace Sg\DatatablesBundle\Generator;
 
+use Exception;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-use Exception;
 
-/**
- * Class DatatableGenerator
- *
- * @package Sg\DatatablesBundle\Generator
- */
 class DatatableGenerator extends Generator
 {
     /**
@@ -32,13 +27,6 @@ class DatatableGenerator extends Generator
      */
     private $classPath;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * DatatableGenerator constructor.
-     */
     public function __construct()
     {
         $this->className = '';
@@ -54,15 +42,15 @@ class DatatableGenerator extends Generator
      *
      * @param BundleInterface $bundle    The bundle in which to create the Datatable
      * @param string          $entity    The entity class name
-     * @param array           $fields    The fields to create columns in the new Datatable.
-     * @param mixed           $id        The entity's primary key.
-     * @param array           $overwrite Allow to overwrite an existing Datatable.
+     * @param array           $fields    the fields to create columns in the new Datatable
+     * @param mixed           $id        the entity's primary key
+     * @param array           $overwrite allow to overwrite an existing Datatable
      *
      * @throws Exception
      */
     public function generate(BundleInterface $bundle, $entity, array $fields, $id, $overwrite)
     {
-        $parts = explode("\\", $entity);
+        $parts = explode('\\', $entity);
         $entityClass = array_pop($parts);
         $entityClassLowerCase = strtolower($entityClass);
 
@@ -70,7 +58,7 @@ class DatatableGenerator extends Generator
         $dirPath = $bundle->getPath().'/Datatables';
         $this->classPath = $dirPath.'/'.str_replace('\\', '/', $entity).'Datatable.php';
 
-        if (!$overwrite) {
+        if (! $overwrite) {
             if (file_exists($this->classPath)) {
                 throw new Exception(
                     sprintf(
@@ -85,7 +73,7 @@ class DatatableGenerator extends Generator
         $parts = explode('\\', $entity);
         array_pop($parts);
 
-        $this->renderFile('datatable.php.twig', $this->classPath, array(
+        $this->renderFile('datatable.php.twig', $this->classPath, [
             'namespace' => $bundle->getNamespace(),
             'entity_namespace' => implode('\\', $parts),
             'entity_class' => $entityClass,
@@ -95,7 +83,7 @@ class DatatableGenerator extends Generator
             'fields' => $fields,
             'route_pref' => $entityClassLowerCase,
             'id' => $id,
-        ));
+        ]);
     }
 
     //-------------------------------------------------

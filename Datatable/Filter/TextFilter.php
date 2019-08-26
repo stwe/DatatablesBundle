@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,14 +11,9 @@
 
 namespace Sg\DatatablesBundle\Datatable\Filter;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Andx;
+use Doctrine\ORM\QueryBuilder;
 
-/**
- * Class TextFilter
- *
- * @package Sg\DatatablesBundle\Datatable\Filter
- */
 class TextFilter extends AbstractFilter
 {
     //-------------------------------------------------

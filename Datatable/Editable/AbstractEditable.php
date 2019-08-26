@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,21 +11,12 @@
 
 namespace Sg\DatatablesBundle\Datatable\Editable;
 
-use Sg\DatatablesBundle\Datatable\OptionsTrait;
-
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Closure;
+use Sg\DatatablesBundle\Datatable\OptionsTrait;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class AbstractEditable
- *
- * @package Sg\DatatablesBundle\Datatable\Editable
- */
 abstract class AbstractEditable implements EditableInterface
 {
-    /**
-     * Use the OptionsResolver.
-     */
     use OptionsTrait;
 
     //-------------------------------------------------
@@ -34,7 +25,7 @@ abstract class AbstractEditable implements EditableInterface
 
     /**
      * Url for submit.
-     * Default: 'sg_datatables_edit'
+     * Default: 'sg_datatables_edit'.
      *
      * @var string
      */
@@ -42,23 +33,23 @@ abstract class AbstractEditable implements EditableInterface
 
     /**
      * Additional params for submit It is appended to original ajax data (pk, name and value).
-     * Default: null
+     * Default: null.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $params;
 
     /**
      * Value that will be displayed in input if original field value is empty (null|undefined|'').
-     * Default: null
+     * Default: null.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $defaultValue;
 
     /**
      * Css class applied when editable text is empty.
-     * Default: 'editable-empty'
+     * Default: 'editable-empty'.
      *
      * @var string
      */
@@ -66,7 +57,7 @@ abstract class AbstractEditable implements EditableInterface
 
     /**
      * Text shown when element is empty.
-     * Default: 'Empty'
+     * Default: 'Empty'.
      *
      * @var string
      */
@@ -74,7 +65,7 @@ abstract class AbstractEditable implements EditableInterface
 
     /**
      * Color used to highlight element after update.
-     * Default: '#FFFF80'
+     * Default: '#FFFF80'.
      *
      * @var string
      */
@@ -82,7 +73,7 @@ abstract class AbstractEditable implements EditableInterface
 
     /**
      * Mode of editable, can be 'popup' or 'inline'.
-     * Default: 'popup'
+     * Default: 'popup'.
      *
      * @var string
      */
@@ -90,15 +81,15 @@ abstract class AbstractEditable implements EditableInterface
 
     /**
      * Name of field. Will be submitted on server. Can be taken from id attribute.
-     * Default: null
+     * Default: null.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $name;
 
     /**
      * Primary key of editable object.
-     * Default: 'id'
+     * Default: 'id'.
      *
      * @var string
      */
@@ -111,17 +102,10 @@ abstract class AbstractEditable implements EditableInterface
     /**
      * Editable only if conditions are True.
      *
-     * @var null|Closure
+     * @var Closure|null
      */
     protected $editableIf;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * AbstractEditable constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -134,10 +118,10 @@ abstract class AbstractEditable implements EditableInterface
     /**
      * {@inheritdoc}
      */
-    public function callEditableIfClosure(array $row = array())
+    public function callEditableIfClosure(array $row = [])
     {
         if ($this->editableIf instanceof Closure) {
-            return call_user_func($this->editableIf, $row);
+            return \call_user_func($this->editableIf, $row);
         }
 
         return true;
@@ -164,15 +148,11 @@ abstract class AbstractEditable implements EditableInterface
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
-     * @param OptionsResolver $resolver
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'url' => 'sg_datatables_edit',
             'params' => null,
             'default_value' => null,
@@ -183,20 +163,20 @@ abstract class AbstractEditable implements EditableInterface
             'name' => null,
             'pk' => 'id',
             'editable_if' => null,
-        ));
+        ]);
 
         $resolver->setAllowedTypes('url', 'string');
-        $resolver->setAllowedTypes('params', array('null', 'array'));
-        $resolver->setAllowedTypes('default_value', array('string', 'null'));
+        $resolver->setAllowedTypes('params', ['null', 'array']);
+        $resolver->setAllowedTypes('default_value', ['string', 'null']);
         $resolver->setAllowedTypes('empty_class', 'string');
         $resolver->setAllowedTypes('empty_text', 'string');
         $resolver->setAllowedTypes('highlight', 'string');
         $resolver->setAllowedTypes('mode', 'string');
-        $resolver->setAllowedTypes('name', array('string', 'null'));
+        $resolver->setAllowedTypes('name', ['string', 'null']);
         $resolver->setAllowedTypes('pk', 'string');
-        $resolver->setAllowedTypes('editable_if', array('Closure', 'null'));
+        $resolver->setAllowedTypes('editable_if', ['Closure', 'null']);
 
-        $resolver->setAllowedValues('mode', array('popup', 'inline'));
+        $resolver->setAllowedValues('mode', ['popup', 'inline']);
 
         return $this;
     }
@@ -206,8 +186,6 @@ abstract class AbstractEditable implements EditableInterface
     //-------------------------------------------------
 
     /**
-     * Get url.
-     *
      * @return string
      */
     public function getUrl()
@@ -216,8 +194,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Set url.
-     *
      * @param string $url
      *
      * @return $this
@@ -230,9 +206,7 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Get params.
-     *
-     * @return null|array
+     * @return array|null
      */
     public function getParams()
     {
@@ -240,9 +214,7 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Set params.
-     *
-     * @param null|array $params
+     * @param array|null $params
      *
      * @return $this
      */
@@ -254,9 +226,7 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Get defaultValue.
-     *
-     * @return null|string
+     * @return string|null
      */
     public function getDefaultValue()
     {
@@ -264,9 +234,7 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Set defaultValue.
-     *
-     * @param null|string $defaultValue
+     * @param string|null $defaultValue
      *
      * @return $this
      */
@@ -278,8 +246,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Get emptyClass.
-     *
      * @return string
      */
     public function getEmptyClass()
@@ -288,8 +254,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Set emptyClass.
-     *
      * @param string $emptyClass
      *
      * @return $this
@@ -302,8 +266,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Set emptyText.
-     *
      * @param string $emptyText
      *
      * @return $this
@@ -316,8 +278,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Get highlight.
-     *
      * @return string
      */
     public function getHighlight()
@@ -326,8 +286,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Set highlight.
-     *
      * @param string $highlight
      *
      * @return $this
@@ -340,8 +298,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Get mode.
-     *
      * @return string
      */
     public function getMode()
@@ -350,8 +306,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Set mode.
-     *
      * @param string $mode
      *
      * @return $this
@@ -364,9 +318,7 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Get name.
-     *
-     * @return null|string
+     * @return string|null
      */
     public function getName()
     {
@@ -374,9 +326,7 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Set name.
-     *
-     * @param null|string $name
+     * @param string|null $name
      *
      * @return $this
      */
@@ -388,8 +338,6 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Set pk.
-     *
      * @param string $pk
      *
      * @return $this
@@ -402,9 +350,7 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Get editableIf.
-     *
-     * @return null|Closure
+     * @return Closure|null
      */
     public function getEditableIf()
     {
@@ -412,9 +358,7 @@ abstract class AbstractEditable implements EditableInterface
     }
 
     /**
-     * Set editableIf.
-     *
-     * @param null|Closure $editableIf
+     * @param Closure|null $editableIf
      *
      * @return $this
      */

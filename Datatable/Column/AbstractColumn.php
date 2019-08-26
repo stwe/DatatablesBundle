@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,32 +11,21 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Datatable\OptionsTrait;
-use Sg\DatatablesBundle\Datatable\AddIfTrait;
-use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
-
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Routing\RouterInterface;
 use Doctrine\DBAL\Types\Type as DoctrineType;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Twig_Environment;
 use Exception;
+use Sg\DatatablesBundle\Datatable\AddIfTrait;
+use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
+use Sg\DatatablesBundle\Datatable\OptionsTrait;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\RouterInterface;
+use Twig_Environment;
 
-/**
- * Class AbstractColumn
- *
- * @package Sg\DatatablesBundle\Datatable\Column
- */
 abstract class AbstractColumn implements ColumnInterface
 {
-    /**
-     * Use the OptionsResolver.
-     */
     use OptionsTrait;
 
-    /**
-     * Use an 'add_if' option to check in ColumnBuilder if the Column can be added.
-     */
+    // Use an 'add_if' option to check in ColumnBuilder if the Column can be added.
     use AddIfTrait;
 
     //-------------------------------------------------
@@ -75,25 +64,25 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Change the cell type created for the column - either TD cells or TH cells.
      * DataTables default: td
-     * Default: null
+     * Default: null.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $cellType;
 
     /**
      * Adds a class to each cell in a column.
-     * Default: null
+     * Default: null.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $className;
 
     /**
      * Add padding to the text content used when calculating the optimal with for a table.
-     * Default: null
+     * Default: null.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $contentPadding;
 
@@ -104,31 +93,31 @@ abstract class AbstractColumn implements ColumnInterface
      * This property has normally the same value as $this->dql.
      * Is set in the ColumnBuilder.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $data;
 
     /**
      * Set default, static, content for a column.
      * Show an information message for a field that can have a 'null' or 'undefined' value.
-     * Default: null
+     * Default: null.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $defaultContent;
 
     /**
      * Set a descriptive name for a column. Only needed when working with DataTables' API.
-     * Default: null
+     * Default: null.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $name;
 
     /**
      * Enable or disable ordering on this column.
      * DataTables default: true
-     * Default: true
+     * Default: true.
      *
      * @var bool
      */
@@ -137,25 +126,25 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Define multiple column ordering as the default order for a column.
      * DataTables default: Takes the index value of the column automatically.
-     * Default: null
+     * Default: null.
      *
-     * @var null|int|array
+     * @var array|int|null
      */
     protected $orderData;
 
     /**
      * Order direction application sequence.
      * DataTables default: ['asc', 'desc']
-     * Default: null
+     * Default: null.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $orderSequence;
 
     /**
      * Enable or disable filtering on the data in this column.
      * DataTables default: true
-     * Default: true
+     * Default: true.
      *
      * @var bool
      */
@@ -164,16 +153,16 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Set the column title.
      * DataTables default: Value read from the column's header cell.
-     * Default: null
+     * Default: null.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $title;
 
     /**
      * Enable or disable the display of this column.
      * DataTables default: true
-     * Default: true
+     * Default: true.
      *
      * @var bool
      */
@@ -182,9 +171,9 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Column width assignment.
      * DataTables default: Auto-detected from the table's content.
-     * Default: null
+     * Default: null.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $width;
 
@@ -194,7 +183,7 @@ abstract class AbstractColumn implements ColumnInterface
 
     /**
      * Join type (default: 'leftJoin'), if the column represents an association.
-     * Default: 'leftJoin'
+     * Default: 'leftJoin'.
      *
      * @var string
      */
@@ -203,9 +192,9 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * The data type of the column.
      * Is set automatically in ColumnBuilder when 'null'.
-     * Default: null
+     * Default: null.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $typeOfField;
 
@@ -214,7 +203,7 @@ abstract class AbstractColumn implements ColumnInterface
      * The DatatableQuery class works with this property.
      * If $dql is used as an option, the ColumnBuilder sets $customDql to true.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $dql;
 
@@ -225,9 +214,9 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Set column's visibility priority.
      * Requires the Responsive extension.
-     * Default: null
+     * Default: null.
      *
-     * @var null|int
+     * @var int|null
      */
     protected $responsivePriority;
 
@@ -279,7 +268,7 @@ abstract class AbstractColumn implements ColumnInterface
      * The type of association.
      * Is set in the ColumnBuilder.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $typeOfAssociation;
 
@@ -287,14 +276,14 @@ abstract class AbstractColumn implements ColumnInterface
      * Saves the original type of field for the DatatableController editAction.
      * Is set in the ColumnBuilder.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $originalTypeOfField;
 
     /**
      * If the field is sent in the response, to show in the webpage
      * Is set in the ColumnBuilder.
-     * Default: true
+     * Default: true.
      *
      * @var bool
      */
@@ -304,18 +293,14 @@ abstract class AbstractColumn implements ColumnInterface
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
-     * @param OptionsResolver $resolver
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         // 'dql' and 'data' options need no default value
-        $resolver->setDefined(array('dql', 'data'));
+        $resolver->setDefined(['dql', 'data']);
 
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'cell_type' => null,
             'class_name' => null,
             'content_padding' => null,
@@ -333,31 +318,31 @@ abstract class AbstractColumn implements ColumnInterface
             'type_of_field' => null,
             'responsive_priority' => null,
             'sent_in_response' => true,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('cell_type', array('null', 'string'));
-        $resolver->setAllowedTypes('class_name', array('null', 'string'));
-        $resolver->setAllowedTypes('content_padding', array('null', 'string'));
-        $resolver->setAllowedTypes('dql', array('null', 'string'));
-        $resolver->setAllowedTypes('data', array('null', 'string'));
-        $resolver->setAllowedTypes('default_content', array('null', 'string'));
-        $resolver->setAllowedTypes('name', array('null', 'string'));
+        $resolver->setAllowedTypes('cell_type', ['null', 'string']);
+        $resolver->setAllowedTypes('class_name', ['null', 'string']);
+        $resolver->setAllowedTypes('content_padding', ['null', 'string']);
+        $resolver->setAllowedTypes('dql', ['null', 'string']);
+        $resolver->setAllowedTypes('data', ['null', 'string']);
+        $resolver->setAllowedTypes('default_content', ['null', 'string']);
+        $resolver->setAllowedTypes('name', ['null', 'string']);
         $resolver->setAllowedTypes('orderable', 'bool');
-        $resolver->setAllowedTypes('order_data', array('null', 'array', 'int'));
-        $resolver->setAllowedTypes('order_sequence', array('null', 'array'));
+        $resolver->setAllowedTypes('order_data', ['null', 'array', 'int']);
+        $resolver->setAllowedTypes('order_sequence', ['null', 'array']);
         $resolver->setAllowedTypes('searchable', 'bool');
-        $resolver->setAllowedTypes('title', array('null', 'string'));
+        $resolver->setAllowedTypes('title', ['null', 'string']);
         $resolver->setAllowedTypes('visible', 'bool');
-        $resolver->setAllowedTypes('width', array('null', 'string'));
-        $resolver->setAllowedTypes('add_if', array('null', 'Closure'));
+        $resolver->setAllowedTypes('width', ['null', 'string']);
+        $resolver->setAllowedTypes('add_if', ['null', 'Closure']);
         $resolver->setAllowedTypes('join_type', 'string');
-        $resolver->setAllowedTypes('type_of_field', array('null', 'string'));
-        $resolver->setAllowedTypes('responsive_priority', array('null', 'int'));
-        $resolver->setAllowedTypes('sent_in_response', array('bool'));
+        $resolver->setAllowedTypes('type_of_field', ['null', 'string']);
+        $resolver->setAllowedTypes('responsive_priority', ['null', 'int']);
+        $resolver->setAllowedTypes('sent_in_response', ['bool']);
 
-        $resolver->setAllowedValues('cell_type', array(null, 'th', 'td'));
-        $resolver->setAllowedValues('join_type', array(null, 'join', 'leftJoin', 'innerJoin'));
-        $resolver->setAllowedValues('type_of_field', array_merge(array(null), array_keys(DoctrineType::getTypesMap())));
+        $resolver->setAllowedValues('cell_type', [null, 'th', 'td']);
+        $resolver->setAllowedValues('join_type', [null, 'join', 'leftJoin', 'innerJoin']);
+        $resolver->setAllowedValues('type_of_field', array_merge([null], array_keys(DoctrineType::getTypesMap())));
 
         return $this;
     }
@@ -373,9 +358,9 @@ abstract class AbstractColumn implements ColumnInterface
     {
         if (true === $this->isCustomDql()) {
             return true;
-        } else {
-            return preg_match('/^[a-zA-Z0-9_\\-\\.]+$/', $dql) ? true : false;
         }
+
+        return preg_match('/^[a-zA-Z0-9_\\-\\.]+$/', $dql) ? true : false;
     }
 
     /**
@@ -391,7 +376,7 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function isAssociation()
     {
-        return (false === strstr($this->dql, '.') ? false : true);
+        return false === strstr($this->dql, '.') ? false : true;
     }
 
     /**
@@ -400,11 +385,11 @@ abstract class AbstractColumn implements ColumnInterface
     public function isToManyAssociation()
     {
         if (true === $this->isAssociation() && null !== $this->typeOfAssociation) {
-            if (in_array(ClassMetadataInfo::ONE_TO_MANY, $this->typeOfAssociation) || in_array(ClassMetadataInfo::MANY_TO_MANY, $this->typeOfAssociation)) {
+            if (\in_array(ClassMetadataInfo::ONE_TO_MANY, $this->typeOfAssociation, true) || \in_array(ClassMetadataInfo::MANY_TO_MANY, $this->typeOfAssociation, true)) {
                 return true;
-            } else {
-                return false;
             }
+
+            return false;
         }
 
         return false;
@@ -485,9 +470,7 @@ abstract class AbstractColumn implements ColumnInterface
     //-------------------------------------------------
 
     /**
-     * Get cellType.
-     *
-     * @return null|string
+     * @return string|null
      */
     public function getCellType()
     {
@@ -495,9 +478,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set cellType.
-     *
-     * @param null|string $cellType
+     * @param string|null $cellType
      *
      * @return $this
      */
@@ -509,9 +490,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get className.
-     *
-     * @return null|string
+     * @return string|null
      */
     public function getClassName()
     {
@@ -519,9 +498,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set className.
-     *
-     * @param null|string $className
+     * @param string|null $className
      *
      * @return $this
      */
@@ -533,9 +510,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get contentPadding.
-     *
-     * @return null|string
+     * @return string|null
      */
     public function getContentPadding()
     {
@@ -543,9 +518,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set contentPadding.
-     *
-     * @param null|string $contentPadding
+     * @param string|null $contentPadding
      *
      * @return $this
      */
@@ -557,9 +530,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get data.
-     *
-     * @return null|string
+     * @return string|null
      */
     public function getData()
     {
@@ -567,9 +538,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set data.
-     *
-     * @param null|string $data
+     * @param string|null $data
      *
      * @return $this
      */
@@ -581,9 +550,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get defaultContent.
-     *
-     * @return null|string
+     * @return string|null
      */
     public function getDefaultContent()
     {
@@ -591,9 +558,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set defaultContent.
-     *
-     * @param null|string $defaultContent
+     * @param string|null $defaultContent
      *
      * @return $this
      */
@@ -605,9 +570,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get name.
-     *
-     * @return null|string
+     * @return string|null
      */
     public function getName()
     {
@@ -615,9 +578,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set name.
-     *
-     * @param null|string $name
+     * @param string|null $name
      *
      * @return $this
      */
@@ -629,8 +590,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get orderable.
-     *
      * @return bool
      */
     public function getOrderable()
@@ -639,8 +598,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set orderable.
-     *
      * @param bool $orderable
      *
      * @return $this
@@ -653,13 +610,11 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get orderData.
-     *
-     * @return null|array|int
+     * @return array|int|null
      */
     public function getOrderData()
     {
-        if (is_array($this->orderData)) {
+        if (\is_array($this->orderData)) {
             return $this->optionToJson($this->orderData);
         }
 
@@ -667,9 +622,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set orderData.
-     *
-     * @param null|array|int $orderData
+     * @param array|int|null $orderData
      *
      * @return $this
      */
@@ -681,13 +634,11 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get orderSequence.
-     *
-     * @return null|array
+     * @return array|null
      */
     public function getOrderSequence()
     {
-        if (is_array($this->orderSequence)) {
+        if (\is_array($this->orderSequence)) {
             return $this->optionToJson($this->orderSequence);
         }
 
@@ -695,9 +646,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set orderSequence.
-     *
-     * @param null|array $orderSequence
+     * @param array|null $orderSequence
      *
      * @return $this
      */
@@ -709,8 +658,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get searchable.
-     *
      * @return bool
      */
     public function getSearchable()
@@ -719,8 +666,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set searchable.
-     *
      * @param bool $searchable
      *
      * @return $this
@@ -733,9 +678,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get title.
-     *
-     * @return null|string
+     * @return string|null
      */
     public function getTitle()
     {
@@ -743,9 +686,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set title.
-     *
-     * @param null|string $title
+     * @param string|null $title
      *
      * @return $this
      */
@@ -757,8 +698,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get visible.
-     *
      * @return bool
      */
     public function getVisible()
@@ -767,8 +706,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set visible.
-     *
      * @param bool $visible
      *
      * @return $this
@@ -781,9 +718,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get width.
-     *
-     * @return null|string
+     * @return string|null
      */
     public function getWidth()
     {
@@ -791,9 +726,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set width.
-     *
-     * @param null|string $width
+     * @param string|null $width
      *
      * @return $this
      */
@@ -831,7 +764,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Get type of field.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getTypeOfField()
     {
@@ -841,7 +774,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Set type of field.
      *
-     * @param null|string $typeOfField
+     * @param string|null $typeOfField
      *
      * @return $this
      */
@@ -853,8 +786,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get responsivePriority.
-     *
      * @return int|null
      */
     public function getResponsivePriority()
@@ -863,8 +794,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set responsivePriority.
-     *
      * @param int|null $responsivePriority
      *
      * @return $this
@@ -877,9 +806,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get dql.
-     *
-     * @return null|string
+     * @return string|null
      */
     public function getDql()
     {
@@ -887,27 +814,24 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set dql.
+     * @param string|null $dql
      *
-     * @param null|string $dql
+     * @throws Exception
      *
      * @return $this
-     * @throws Exception
      */
     public function setDql($dql)
     {
         if (true === $this->dqlConstraint($dql)) {
             $this->dql = $dql;
         } else {
-            throw new Exception("AbstractColumn::setDql(): $dql is not valid for this Column.");
+            throw new Exception("AbstractColumn::setDql(): {$dql} is not valid for this Column.");
         }
 
         return $this;
     }
 
     /**
-     * Get customDql.
-     *
      * @return bool
      */
     public function isCustomDql()
@@ -916,8 +840,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set customDql.
-     *
      * @param bool $customDql
      *
      * @return $this
@@ -930,8 +852,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get Twig.
-     *
      * @return Twig_Environment
      */
     public function getTwig()
@@ -940,10 +860,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set Twig.
-     *
-     * @param Twig_Environment $twig
-     *
      * @return $this
      */
     public function setTwig(Twig_Environment $twig)
@@ -954,8 +870,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get index.
-     *
      * @return int
      */
     public function getIndex()
@@ -964,8 +878,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set index.
-     *
      * @param int $index
      *
      * @return $this
@@ -978,8 +890,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get datatableName.
-     *
      * @return string
      */
     public function getDatatableName()
@@ -988,8 +898,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set datatableName.
-     *
      * @param string $datatableName
      *
      * @return $this
@@ -1002,8 +910,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get entityClassName.
-     *
      * @return string
      */
     public function getEntityClassName()
@@ -1012,8 +918,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set entityClassName.
-     *
      * @param string $entityClassName
      *
      * @return $this
@@ -1026,9 +930,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get typeOfAssociation.
-     *
-     * @return null|array
+     * @return array|null
      */
     public function getTypeOfAssociation()
     {
@@ -1036,9 +938,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set typeOfAssociation.
-     *
-     * @param null|array $typeOfAssociation
+     * @param array|null $typeOfAssociation
      *
      * @return $this
      */
@@ -1064,9 +964,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get originalTypeOfField.
-     *
-     * @return null|string
+     * @return string|null
      */
     public function getOriginalTypeOfField()
     {
@@ -1074,9 +972,7 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set originalTypeOfField.
-     *
-     * @param null|string $originalTypeOfField
+     * @param string|null $originalTypeOfField
      *
      * @return $this
      */
@@ -1088,8 +984,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get sentInResponse.
-     *
      * @return bool
      */
     public function getSentInResponse()
@@ -1098,8 +992,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set sentIntResponse.
-     *
      * @param bool $sentInResponse
      *
      * @return $this
@@ -1110,5 +1002,4 @@ abstract class AbstractColumn implements ColumnInterface
 
         return $this;
     }
-
 }

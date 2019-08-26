@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,18 +11,12 @@
 
 namespace Sg\DatatablesBundle\Response;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Sg\DatatablesBundle\Datatable\Column\ColumnInterface;
 use Sg\DatatablesBundle\Datatable\DatatableInterface;
-
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
-/**
- * Class DatatableFormatter
- *
- * @package Sg\DatatablesBundle\Response
- */
 class DatatableFormatter
 {
     /**
@@ -40,16 +34,9 @@ class DatatableFormatter
      */
     private $accessor;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * DatatableFormatter constructor.
-     */
     public function __construct()
     {
-        $this->output = array('data' => array());
+        $this->output = ['data' => []];
 
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
@@ -60,9 +47,6 @@ class DatatableFormatter
 
     /**
      * Create the output array.
-     *
-     * @param Paginator          $paginator
-     * @param DatatableInterface $datatable
      */
     public function runFormatter(Paginator $paginator, DatatableInterface $datatable)
     {
@@ -78,13 +62,13 @@ class DatatableFormatter
 
             // Format custom DQL fields output ('custom.dql.name' => $row['custom']['dql']['name'] = 'value')
             foreach ($columns as $column) {
-                /** @noinspection PhpUndefinedMethodInspection */
+                // @noinspection PhpUndefinedMethodInspection
                 if (true === $column->isCustomDql()) {
                     /** @noinspection PhpUndefinedMethodInspection */
                     $columnAlias = str_replace('.', '_', $column->getData());
                     /** @noinspection PhpUndefinedMethodInspection */
                     $columnPath = '['.str_replace('.', '][', $column->getData()).']';
-                    /** @noinspection PhpUndefinedMethodInspection */
+                    // @noinspection PhpUndefinedMethodInspection
                     if ($columnAlias !== $column->getData()) {
                         $this->accessor->setValue($row, $columnPath, $row[$columnAlias]);
                         unset($row[$columnAlias]);
@@ -99,9 +83,9 @@ class DatatableFormatter
                 /** @noinspection PhpUndefinedMethodInspection */
                 $data = $column->getData();
 
-                /** @noinspection PhpUndefinedMethodInspection */
+                // @noinspection PhpUndefinedMethodInspection
                 if (false === $column->isAssociation()) {
-                    if (null !== $dql && $dql !== $data && false === array_key_exists($data, $row)) {
+                    if (null !== $dql && $dql !== $data && false === \array_key_exists($data, $row)) {
                         $row[$data] = $row[$dql];
                         unset($row[$dql]);
                     }
@@ -109,8 +93,8 @@ class DatatableFormatter
             }
 
             // 2. Call the the lineFormatter to format row items
-            if (null !== $lineFormatter && is_callable($lineFormatter)) {
-                $row = call_user_func($datatable->getLineFormatter(), $row);
+            if (null !== $lineFormatter && \is_callable($lineFormatter)) {
+                $row = \call_user_func($datatable->getLineFormatter(), $row);
             }
 
             /** @var ColumnInterface $column */
@@ -122,7 +106,7 @@ class DatatableFormatter
             }
 
             foreach ($columns as $column) {
-                if (!$column->getSentInResponse()) {
+                if (! $column->getSentInResponse()) {
                     unset($row[$column->getDql()]);
                 }
             }
@@ -136,8 +120,6 @@ class DatatableFormatter
     //-------------------------------------------------
 
     /**
-     * Get output.
-     *
      * @return array
      */
     public function getOutput()

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -13,16 +13,11 @@ namespace Sg\DatatablesBundle\Datatable\Filter;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class NumberFilter
- *
- * @package Sg\DatatablesBundle\Datatable\Filter
- */
 class NumberFilter extends TextFilter
 {
     /**
      * Minimum value.
-     * Default: '0'
+     * Default: '0'.
      *
      * @var string
      */
@@ -30,7 +25,7 @@ class NumberFilter extends TextFilter
 
     /**
      * Maximum value.
-     * Default: '100'
+     * Default: '100'.
      *
      * @var string
      */
@@ -38,7 +33,7 @@ class NumberFilter extends TextFilter
 
     /**
      * The Step scale factor of the slider.
-     * Default: '1'
+     * Default: '1'.
      *
      * @var string
      */
@@ -46,7 +41,7 @@ class NumberFilter extends TextFilter
 
     /**
      * Determines whether a label with the current value is displayed.
-     * Default: false
+     * Default: false.
      *
      * @var bool
      */
@@ -54,15 +49,15 @@ class NumberFilter extends TextFilter
 
     /**
      * Pre-defined values.
-     * Default: null
+     * Default: null.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $datalist;
 
     /**
      * The <input> type.
-     * Default: 'number'
+     * Default: 'number'.
      *
      * @var string
      */
@@ -73,10 +68,6 @@ class NumberFilter extends TextFilter
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
-     * @param OptionsResolver $resolver
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -86,23 +77,23 @@ class NumberFilter extends TextFilter
         $resolver->remove('placeholder');
         $resolver->remove('placeholder_text');
 
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'min' => '0',
             'max' => '100',
             'step' => '1',
             'show_label' => false,
             'datalist' => null,
             'type' => 'number',
-        ));
+        ]);
 
         $resolver->setAllowedTypes('min', 'string');
         $resolver->setAllowedTypes('max', 'string');
         $resolver->setAllowedTypes('step', 'string');
         $resolver->setAllowedTypes('show_label', 'bool');
-        $resolver->setAllowedTypes('datalist', array('null', 'array'));
+        $resolver->setAllowedTypes('datalist', ['null', 'array']);
         $resolver->setAllowedTypes('type', 'string');
 
-        $resolver->addAllowedValues('type', array('number', 'range'));
+        $resolver->addAllowedValues('type', ['number', 'range']);
 
         return $this;
     }
@@ -112,8 +103,6 @@ class NumberFilter extends TextFilter
     //-------------------------------------------------
 
     /**
-     * Get min.
-     *
      * @return string
      */
     public function getMin()
@@ -122,8 +111,6 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Set min.
-     *
      * @param string $min
      *
      * @return $this
@@ -136,8 +123,6 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Get max.
-     *
      * @return string
      */
     public function getMax()
@@ -146,8 +131,6 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Set max.
-     *
      * @param string $max
      *
      * @return $this
@@ -160,8 +143,6 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Get step.
-     *
      * @return string
      */
     public function getStep()
@@ -170,8 +151,6 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Set step.
-     *
      * @param string $step
      *
      * @return $this
@@ -184,8 +163,6 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Get showLabel.
-     *
      * @return bool
      */
     public function isShowLabel()
@@ -194,8 +171,6 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Set showLabel.
-     *
      * @param bool $showLabel
      *
      * @return $this
@@ -208,9 +183,7 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Get datalist.
-     *
-     * @return null|array
+     * @return array|null
      */
     public function getDatalist()
     {
@@ -218,9 +191,7 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Set datalist.
-     *
-     * @param null|array $datalist
+     * @param array|null $datalist
      *
      * @return $this
      */
@@ -232,8 +203,6 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Get type.
-     *
      * @return string
      */
     public function getType()
@@ -242,8 +211,6 @@ class NumberFilter extends TextFilter
     }
 
     /**
-     * Set type.
-     *
      * @param string $type
      *
      * @return $this

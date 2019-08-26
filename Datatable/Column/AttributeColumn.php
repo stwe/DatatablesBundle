@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,21 +11,15 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Datatable\Helper;
+use Closure;
+use Exception;
 use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
-
+use Sg\DatatablesBundle\Datatable\Helper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class AttributeColumn
- *
- * @package Sg\DatatablesBundle\Datatable\Column
- */
 class AttributeColumn extends AbstractColumn
 {
-    /**
-     * The AttributeColumn is filterable.
-     */
+    // The AttributeColumn is filterable.
     use FilterableTrait;
 
     /**
@@ -45,22 +39,21 @@ class AttributeColumn extends AbstractColumn
      */
     public function renderSingleField(array &$row)
     {
-        $renderAttributes = array();
+        $renderAttributes = [];
 
-        $renderAttributes = call_user_func($this->attributes, $row);
+        $renderAttributes = \call_user_func($this->attributes, $row);
 
         $path = Helper::getDataPropertyPath($this->data);
 
         $content = $this->twig->render(
             $this->getCellContentTemplate(),
-            array(
+            [
                 'attributes' => $renderAttributes,
-                'data'       => $this->accessor->getValue($row, $path)
-            )
+                'data' => $this->accessor->getValue($row, $path),
+            ]
         );
 
         $this->accessor->setValue($row, $path, $content);
-
     }
 
     /**
@@ -72,7 +65,6 @@ class AttributeColumn extends AbstractColumn
         $path = Helper::getDataPropertyPath($this->data, $value);
 
         if ($this->accessor->isReadable($row, $path)) {
-
             if ($this->isEditableContentRequired($row)) {
                 // e.g. comments[ ].createdBy.username
                 //     => $path = [comments]
@@ -80,9 +72,9 @@ class AttributeColumn extends AbstractColumn
 
                 $entries = $this->accessor->getValue($row, $path);
 
-                if (count($entries) > 0) {
+                if (\count($entries) > 0) {
                     foreach ($entries as $key => $entry) {
-                        $currentPath = $path . '[' . $key . ']' . $value;
+                        $currentPath = $path.'['.$key.']'.$value;
                         $currentObjectPath = Helper::getPropertyPathObjectNotation($path, $key, $value);
 
                         $content = $this->renderTemplate(
@@ -93,11 +85,9 @@ class AttributeColumn extends AbstractColumn
 
                         $this->accessor->setValue($row, $currentPath, $content);
                     }
-                } else {
-                    // no placeholder - leave this blank
                 }
+                // no placeholder - leave this blank
             }
-
         }
 
         return $this;
@@ -132,23 +122,41 @@ class AttributeColumn extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
-     * @param OptionsResolver $resolver
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefaults(array(
-            'filter'     => array(TextFilter::class, array()),
+        $resolver->setDefaults([
+            'filter' => [TextFilter::class, []],
             'attributes' => null,
-        ));
+        ]);
 
         $resolver->setAllowedTypes('filter', 'array');
-        $resolver->setAllowedTypes('attributes', array('null', 'array', 'Closure'));
+        $resolver->setAllowedTypes('attributes', ['null', 'array', 'Closure']);
+
+        return $this;
+    }
+
+    /**
+     * @return Attributes[]
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * @param Closure $attributes
+     *
+     * @throws Exception
+     *
+     * @return $this
+     */
+    public function setAttributes($attributes)
+    {
+        $this->attributes = $attributes;
 
         return $this;
     }
@@ -160,45 +168,15 @@ class AttributeColumn extends AbstractColumn
     /**
      * Render template.
      *
-     * @param string|null $data
-     * @param string      $pk
-     * @param string|null $path
-     *
      * @return mixed|string
      */
-    private function renderTemplate($data)
+    private function renderTemplate(?string $data)
     {
         return $this->twig->render(
             $this->getCellContentTemplate(),
-            array(
+            [
                 'data' => $data,
-            )
+            ]
         );
-    }
-
-
-    /**
-     * Get attributes.
-     *
-     * @return Attributes[]
-     */
-    public function getAttributes()
-    {
-        return $this->attributes;
-    }
-
-    /**
-     * Set attributes.
-     *
-     * @param Closure $attributes
-     *
-     * @return $this
-     * @throws Exception
-     */
-    public function setAttributes($attributes)
-    {
-        $this->attributes = $attributes;
-
-        return $this;
     }
 }

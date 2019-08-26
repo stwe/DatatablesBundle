@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,28 +11,23 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\Options;
 use Exception;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class VirtualColumn
- *
- * @package Sg\DatatablesBundle\Datatable\Column
- */
 class VirtualColumn extends Column
 {
     /**
      * Order field.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $orderColumn;
 
     /**
      * Search field.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $searchColumn;
 
@@ -41,10 +36,6 @@ class VirtualColumn extends Column
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
-     * @param OptionsResolver $resolver
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -55,15 +46,15 @@ class VirtualColumn extends Column
         $resolver->remove('join_type');
         $resolver->remove('editable');
 
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'orderable' => false,
             'searchable' => false,
             'order_column' => null,
             'search_column' => null,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('order_column', array('null', 'string'));
-        $resolver->setAllowedTypes('search_column', array('null', 'string'));
+        $resolver->setAllowedTypes('order_column', ['null', 'string']);
+        $resolver->setAllowedTypes('search_column', ['null', 'string']);
 
         $resolver->setNormalizer('orderable', function (Options $options, $value) {
             if (null === $options['order_column'] && true === $value) {
@@ -109,9 +100,7 @@ class VirtualColumn extends Column
     //-------------------------------------------------
 
     /**
-     * Get orderColumn.
-     *
-     * @return null|string
+     * @return string|null
      */
     public function getOrderColumn()
     {
@@ -119,9 +108,7 @@ class VirtualColumn extends Column
     }
 
     /**
-     * Set orderColumn.
-     *
-     * @param null|string $orderColumn
+     * @param string|null $orderColumn
      *
      * @return $this
      */
@@ -133,9 +120,7 @@ class VirtualColumn extends Column
     }
 
     /**
-     * Get searchColumn.
-     *
-     * @return null|string
+     * @return string|null
      */
     public function getSearchColumn()
     {
@@ -143,9 +128,7 @@ class VirtualColumn extends Column
     }
 
     /**
-     * Set searchColumn.
-     *
-     * @param null|string $searchColumn
+     * @param string|null $searchColumn
      *
      * @return $this
      */
