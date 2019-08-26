@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,16 +11,10 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
-use Sg\DatatablesBundle\Datatable\Factory;
-
 use Exception;
+use Sg\DatatablesBundle\Datatable\Factory;
+use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
 
-/**
- * Class FilterableTrait
- *
- * @package Sg\DatatablesBundle\Datatable\Column
- */
 trait FilterableTrait
 {
     /**
@@ -48,22 +42,21 @@ trait FilterableTrait
     /**
      * Set Filter instance.
      *
-     * @param array $filterClassAndOptions
+     * @throws Exception
      *
      * @return $this
-     * @throws Exception
      */
     public function setFilter(array $filterClassAndOptions)
     {
-        if (count($filterClassAndOptions) != 2) {
+        if (2 !== \count($filterClassAndOptions)) {
             throw new Exception('AbstractColumn::setFilter(): Two arguments expected.');
         }
 
-        if (!isset($filterClassAndOptions[0]) || !is_string($filterClassAndOptions[0]) && !$filterClassAndOptions[0] instanceof FilterInterface) {
+        if (! isset($filterClassAndOptions[0]) || ! \is_string($filterClassAndOptions[0]) && ! $filterClassAndOptions[0] instanceof FilterInterface) {
             throw new Exception('AbstractColumn::setFilter(): Set a Filter class.');
         }
 
-        if (!isset($filterClassAndOptions[1]) || !is_array($filterClassAndOptions[1])) {
+        if (! isset($filterClassAndOptions[1]) || ! \is_array($filterClassAndOptions[1])) {
             throw new Exception('AbstractColumn::setFilter(): Set an options array.');
         }
 

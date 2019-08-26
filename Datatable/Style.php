@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,11 +11,6 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
-/**
- * Class Style
- *
- * @package Sg\DatatablesBundle\Datatable
- */
 class Style
 {
     //-------------------------------------------------

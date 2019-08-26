@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,20 +11,14 @@
 
 namespace Sg\DatatablesBundle\Response;
 
-use Sg\DatatablesBundle\Datatable\DatatableInterface;
-use Sg\DatatablesBundle\Datatable\Column\ColumnInterface;
-
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;
+use Sg\DatatablesBundle\Datatable\Column\ColumnInterface;
+use Sg\DatatablesBundle\Datatable\DatatableInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
-/**
- * Class DatatableResponse
- *
- * @package Sg\DatatablesBundle\Response
- */
 class DatatableResponse
 {
     /**
@@ -43,30 +37,21 @@ class DatatableResponse
 
     /**
      * A DatatableInterface instance.
-     * Default: null
+     * Default: null.
      *
-     * @var null|DatatableInterface
+     * @var DatatableInterface|null
      */
     private $datatable;
 
     /**
      * A DatatableQueryBuilder instance.
      * This class generates a Query by given Columns.
-     * Default: null
+     * Default: null.
      *
-     * @var null|DatatableQueryBuilder
+     * @var DatatableQueryBuilder|null
      */
     private $datatableQueryBuilder;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * DatatableResponse constructor.
-     *
-     * @param RequestStack $requestStack
-     */
     public function __construct(RequestStack $requestStack)
     {
         $this->request = $requestStack->getCurrentRequest();
@@ -79,19 +64,16 @@ class DatatableResponse
     //-------------------------------------------------
 
     /**
-     * Set datatable.
-     *
-     * @param DatatableInterface $datatable
+     * @throws Exception
      *
      * @return $this
-     * @throws Exception
      */
     public function setDatatable(DatatableInterface $datatable)
     {
         $val = $this->validateColumnsPositions($datatable);
-        if (is_int($val)) {
-            throw new Exception("DatatableResponse::setDatatable(): The Column with the index $val is on a not allowed position.");
-        };
+        if (\is_int($val)) {
+            throw new Exception("DatatableResponse::setDatatable(): The Column with the index {$val} is on a not allowed position.");
+        }
 
         $this->datatable = $datatable;
         $this->datatableQueryBuilder = null;
@@ -106,7 +88,7 @@ class DatatableResponse
      */
     public function getDatatableQueryBuilder()
     {
-        return $this->datatableQueryBuilder ? : $this->createDatatableQueryBuilder();
+        return $this->datatableQueryBuilder ?: $this->createDatatableQueryBuilder();
     }
 
     //-------------------------------------------------
@@ -120,8 +102,9 @@ class DatatableResponse
      * @param bool $outputWalkers
      * @param bool $fetchJoinCollection
      *
-     * @return array
      * @throws Exception
+     *
+     * @return array
      */
     public function getData($countAllResults = true, $outputWalkers = false, $fetchJoinCollection = true)
     {
@@ -139,24 +122,23 @@ class DatatableResponse
         $formatter = new DatatableFormatter();
         $formatter->runFormatter($paginator, $this->datatable);
 
-        $outputHeader = array(
+        $outputHeader = [
             'draw' => (int) $this->requestParams['draw'],
-            'recordsFiltered' => count($paginator),
+            'recordsFiltered' => \count($paginator),
             'recordsTotal' => true === $countAllResults ? (int) $this->datatableQueryBuilder->getCountAllResults() : 0,
-        );
+        ];
 
         return array_merge($outputHeader, $formatter->getOutput());
     }
 
     /**
-     * Get response.
-     *
      * @param bool $countAllResults
      * @param bool $outputWalkers
      * @param bool $fetchJoinCollection
      *
-     * @return JsonResponse
      * @throws Exception
+     *
+     * @return JsonResponse
      */
     public function getResponse($countAllResults = true, $outputWalkers = false, $fetchJoinCollection = true)
     {
@@ -170,8 +152,9 @@ class DatatableResponse
     /**
      * Create a new DatatableQueryBuilder instance.
      *
-     * @return DatatableQueryBuilder
      * @throws Exception
+     *
+     * @return DatatableQueryBuilder
      */
     private function createDatatableQueryBuilder()
     {
@@ -209,28 +192,26 @@ class DatatableResponse
     /**
      * Checks Column positions.
      *
-     * @param DatatableInterface $datatable
-     *
-     * @return int|bool
+     * @return bool|int
      */
     private function validateColumnsPositions(DatatableInterface $datatable)
     {
         $columns = $datatable->getColumnBuilder()->getColumns();
-        $lastPosition = count($columns);
+        $lastPosition = \count($columns);
 
         /** @var ColumnInterface $column */
         foreach ($columns as $column) {
             $allowedPositions = $column->allowedPositions();
             /** @noinspection PhpUndefinedMethodInspection */
             $index = $column->getIndex();
-            if (is_array($allowedPositions)) {
+            if (\is_array($allowedPositions)) {
                 $allowedPositions = array_flip($allowedPositions);
-                if (array_key_exists(ColumnInterface::LAST_POSITION, $allowedPositions)) {
+                if (\array_key_exists(ColumnInterface::LAST_POSITION, $allowedPositions)) {
                     $allowedPositions[$lastPosition] = $allowedPositions[ColumnInterface::LAST_POSITION];
                     unset($allowedPositions[ColumnInterface::LAST_POSITION]);
                 }
 
-                if (false === array_key_exists($index, $allowedPositions)) {
+                if (false === \array_key_exists($index, $allowedPositions)) {
                     return $index;
                 }
             }

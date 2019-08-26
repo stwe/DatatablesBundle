@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,32 +11,21 @@
 
 namespace Sg\DatatablesBundle\Datatable\Action;
 
+use Closure;
+use Exception;
 use Sg\DatatablesBundle\Datatable\HtmlContainerTrait;
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
 use Sg\DatatablesBundle\Datatable\RenderIfTrait;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Exception;
-use Closure;
 
-/**
- * Class Action
- *
- * @package Sg\DatatablesBundle\Datatable\Action
- */
 class Action
 {
-    /**
-     * Use the OptionsResolver.
-     */
     use OptionsTrait;
 
-    /**
-     * Render an Action only if conditions are TRUE.
-     */
+    // Render an Action only if conditions are TRUE.
     use RenderIfTrait;
 
-    /**
+    /*
      * An Action has a 'start_html' and a 'end_html' option.
      * <startHtml>action</endHtml>
      */
@@ -44,39 +33,39 @@ class Action
 
     /**
      * The name of the Action route.
-     * Default: null
+     * Default: null.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $route;
 
     /**
      * The route parameters.
-     * Default: null
+     * Default: null.
      *
-     * @var null|array|Closure
+     * @var array|Closure|null
      */
     protected $routeParameters;
 
     /**
      * An icon for the Action.
-     * Default: null
+     * Default: null.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $icon;
 
     /**
      * A label for the Action.
-     * Default: null
+     * Default: null.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $label;
 
     /**
      * Show confirm message if true.
-     * Default: false
+     * Default: false.
      *
      * @var bool
      */
@@ -84,23 +73,23 @@ class Action
 
     /**
      * The confirm message.
-     * Default: null
+     * Default: null.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $confirmMessage;
 
     /**
      * HTML attributes (except 'href' and 'value').
-     * Default: null
+     * Default: null.
      *
-     * @var null|array|Closure
+     * @var array|Closure|null
      */
     protected $attributes;
 
     /**
      * Render a button instead of a link.
-     * Default: false
+     * Default: false.
      *
      * @var bool
      */
@@ -108,15 +97,15 @@ class Action
 
     /**
      * The button value.
-     * Default: null
+     * Default: null.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $buttonValue;
 
     /**
      * Use the Datatable-Name as prefix for the button value.
-     * Default: false
+     * Default: false.
      *
      * @var bool
      */
@@ -129,13 +118,7 @@ class Action
      */
     protected $datatableName;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
     /**
-     * Action constructor.
-     *
      * @param string $datatableName
      */
     public function __construct($datatableName)
@@ -151,13 +134,11 @@ class Action
     /**
      * Configure options.
      *
-     * @param OptionsResolver $resolver
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'route' => null,
             'route_parameters' => null,
             'icon' => null,
@@ -171,21 +152,21 @@ class Action
             'render_if' => null,
             'start_html' => null,
             'end_html' => null,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('route', array('null', 'string'));
-        $resolver->setAllowedTypes('route_parameters', array('null', 'array', 'Closure'));
-        $resolver->setAllowedTypes('icon', array('null', 'string'));
-        $resolver->setAllowedTypes('label', array('null', 'string'));
+        $resolver->setAllowedTypes('route', ['null', 'string']);
+        $resolver->setAllowedTypes('route_parameters', ['null', 'array', 'Closure']);
+        $resolver->setAllowedTypes('icon', ['null', 'string']);
+        $resolver->setAllowedTypes('label', ['null', 'string']);
         $resolver->setAllowedTypes('confirm', 'bool');
-        $resolver->setAllowedTypes('confirm_message', array('null', 'string'));
-        $resolver->setAllowedTypes('attributes', array('null', 'array', 'Closure'));
+        $resolver->setAllowedTypes('confirm_message', ['null', 'string']);
+        $resolver->setAllowedTypes('attributes', ['null', 'array', 'Closure']);
         $resolver->setAllowedTypes('button', 'bool');
-        $resolver->setAllowedTypes('button_value', array('null', 'string'));
+        $resolver->setAllowedTypes('button_value', ['null', 'string']);
         $resolver->setAllowedTypes('button_value_prefix', 'bool');
-        $resolver->setAllowedTypes('render_if', array('null', 'Closure'));
-        $resolver->setAllowedTypes('start_html', array('null', 'string'));
-        $resolver->setAllowedTypes('end_html', array('null', 'string'));
+        $resolver->setAllowedTypes('render_if', ['null', 'Closure']);
+        $resolver->setAllowedTypes('start_html', ['null', 'string']);
+        $resolver->setAllowedTypes('end_html', ['null', 'string']);
 
         return $this;
     }
@@ -195,9 +176,7 @@ class Action
     //-------------------------------------------------
 
     /**
-     * Get route.
-     *
-     * @return null|string
+     * @return string|null
      */
     public function getRoute()
     {
@@ -205,9 +184,7 @@ class Action
     }
 
     /**
-     * Set route.
-     *
-     * @param null|string $route
+     * @param string|null $route
      *
      * @return $this
      */
@@ -219,9 +196,7 @@ class Action
     }
 
     /**
-     * Get routeParameters.
-     *
-     * @return null|array|Closure
+     * @return array|Closure|null
      */
     public function getRouteParameters()
     {
@@ -229,9 +204,7 @@ class Action
     }
 
     /**
-     * Set routeParameters.
-     *
-     * @param null|array|Closure $routeParameters
+     * @param array|Closure|null $routeParameters
      *
      * @return $this
      */
@@ -243,9 +216,7 @@ class Action
     }
 
     /**
-     * Get icon.
-     *
-     * @return null|string
+     * @return string|null
      */
     public function getIcon()
     {
@@ -253,9 +224,7 @@ class Action
     }
 
     /**
-     * Set icon.
-     *
-     * @param null|string $icon
+     * @param string|null $icon
      *
      * @return $this
      */
@@ -267,9 +236,7 @@ class Action
     }
 
     /**
-     * Get label.
-     *
-     * @return null|string
+     * @return string|null
      */
     public function getLabel()
     {
@@ -277,9 +244,7 @@ class Action
     }
 
     /**
-     * Set label.
-     *
-     * @param null|string $label
+     * @param string|null $label
      *
      * @return $this
      */
@@ -291,8 +256,6 @@ class Action
     }
 
     /**
-     * Get confirm.
-     *
      * @return bool
      */
     public function isConfirm()
@@ -301,8 +264,6 @@ class Action
     }
 
     /**
-     * Set confirm.
-     *
      * @param bool $confirm
      *
      * @return $this
@@ -315,9 +276,7 @@ class Action
     }
 
     /**
-     * Get confirmMessage.
-     *
-     * @return null|string
+     * @return string|null
      */
     public function getConfirmMessage()
     {
@@ -325,9 +284,7 @@ class Action
     }
 
     /**
-     * Set confirmMessage.
-     *
-     * @param null|string $confirmMessage
+     * @param string|null $confirmMessage
      *
      * @return $this
      */
@@ -339,9 +296,7 @@ class Action
     }
 
     /**
-     * Get attributes.
-     *
-     * @return null|array|Closure
+     * @return array|Closure|null
      */
     public function getAttributes()
     {
@@ -349,21 +304,20 @@ class Action
     }
 
     /**
-     * Set attributes.
+     * @param array|Closure|null $attributes
      *
-     * @param null|array|Closure $attributes
+     * @throws Exception
      *
      * @return $this
-     * @throws Exception
      */
     public function setAttributes($attributes)
     {
-        if (is_array($attributes)) {
-            if (array_key_exists('href', $attributes)) {
+        if (\is_array($attributes)) {
+            if (\array_key_exists('href', $attributes)) {
                 throw new Exception('Action::setAttributes(): The href attribute is not allowed in this context.');
             }
 
-            if (array_key_exists('value', $attributes)) {
+            if (\array_key_exists('value', $attributes)) {
                 throw new Exception('Action::setAttributes(): The value attribute is not allowed in this context.');
             }
         }
@@ -374,8 +328,6 @@ class Action
     }
 
     /**
-     * Get button.
-     *
      * @return bool
      */
     public function isButton()
@@ -384,8 +336,6 @@ class Action
     }
 
     /**
-     * Set button.
-     *
      * @param bool $button
      *
      * @return $this
@@ -398,9 +348,7 @@ class Action
     }
 
     /**
-     * Get buttonValue.
-     *
-     * @return null|string
+     * @return string|null
      */
     public function getButtonValue()
     {
@@ -408,9 +356,7 @@ class Action
     }
 
     /**
-     * Set buttonValue.
-     *
-     * @param null|string $buttonValue
+     * @param string|null $buttonValue
      *
      * @return $this
      */
@@ -422,8 +368,6 @@ class Action
     }
 
     /**
-     * Get buttonValuePrefix.
-     *
      * @return bool
      */
     public function isButtonValuePrefix()
@@ -432,8 +376,6 @@ class Action
     }
 
     /**
-     * Set buttonValuePrefix.
-     *
      * @param bool $buttonValuePrefix
      *
      * @return $this
@@ -446,8 +388,6 @@ class Action
     }
 
     /**
-     * Get datatableName.
-     *
      * @return string
      */
     public function getDatatableName()
@@ -456,8 +396,6 @@ class Action
     }
 
     /**
-     * Set datatableName.
-     *
      * @param string $datatableName
      *
      * @return $this

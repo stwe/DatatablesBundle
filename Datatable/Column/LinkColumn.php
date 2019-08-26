@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,21 +11,13 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Datatable\Helper;
 use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
-
+use Sg\DatatablesBundle\Datatable\Helper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class LinkColumn
- *
- * @package Sg\DatatablesBundle\Datatable\Column
- */
 class LinkColumn extends AbstractColumn
 {
-    /**
-     * The LinkColumn is filterable.
-     */
+    // The LinkColumn is filterable.
     use FilterableTrait;
 
     /**
@@ -37,42 +29,42 @@ class LinkColumn extends AbstractColumn
     protected $route;
 
     /**
-     * The route params
+     * The route params.
      *
      * @var array|Closure
      */
     protected $routeParams;
 
     /**
-     * The text rendered if data is null
+     * The text rendered if data is null.
      *
      * @var string
      */
     protected $empty_value;
 
     /**
-     * The text displayed for each item in the link
+     * The text displayed for each item in the link.
      *
      * @var Closure|null
      */
     protected $text;
 
     /**
-     * The separator for to-many fields
+     * The separator for to-many fields.
      *
      * @var string
      */
     protected $separator;
 
     /**
-     * Function to filter the toMany results
+     * Function to filter the toMany results.
      *
      * @var Closure|null
      */
     protected $filterFunction;
 
     /**
-     * Boolean to indicate if it's an email link
+     * Boolean to indicate if it's an email link.
      */
     protected $email;
 
@@ -86,7 +78,7 @@ class LinkColumn extends AbstractColumn
     public function renderSingleField(array &$row, array &$resultRow)
     {
         $path = Helper::getDataPropertyPath($this->data);
-        $content = "";
+        $content = '';
 
         if ($this->accessor->isReadable($row, $path)) {
             if ($this->getEmail()) {
@@ -94,33 +86,31 @@ class LinkColumn extends AbstractColumn
                 $content .= $this->accessor->getValue($row, $path);
                 $content .= '">';
 
-                if (is_callable($this->text)) {
-                    $content .= call_user_func($this->text, $row);
-                }
-                else {
+                if (\is_callable($this->text)) {
+                    $content .= \call_user_func($this->text, $row);
+                } else {
                     $content .= $this->accessor->getValue($row, $path);
                 }
 
                 $content .= '</a>';
-            }
-            else {
-                $renderRouteParams = array();
+            } else {
+                $renderRouteParams = [];
 
-                if (is_callable($this->routeParams)) {
-                    $renderRouteParams = call_user_func($this->routeParams, $row);
+                if (\is_callable($this->routeParams)) {
+                    $renderRouteParams = \call_user_func($this->routeParams, $row);
                 } else {
                     $renderRouteParams = $this->routeParams;
                 }
 
-                if (in_array(null, $renderRouteParams)) {
+                if (\in_array(null, $renderRouteParams, true)) {
                     $content = $this->getEmptyValue();
                 } else {
                     $content = '<a href="';
                     $content .= $this->router->generate($this->getRoute(), $renderRouteParams);
                     $content .= '">';
 
-                    if (is_callable($this->text)) {
-                        $content .= call_user_func($this->text, $row);
+                    if (\is_callable($this->text)) {
+                        $content .= \call_user_func($this->text, $row);
                     } else {
                         $content .= $this->accessor->getValue($row, $path);
                     }
@@ -128,8 +118,7 @@ class LinkColumn extends AbstractColumn
                     $content .= '</a>';
                 }
             }
-        }
-        else {
+        } else {
             $content = $this->getEmptyValue();
         }
 
@@ -137,12 +126,12 @@ class LinkColumn extends AbstractColumn
         // (aaa is null)
         $keys = explode('.', $this->data);
 
-        if (count($keys) >= 2 && $resultRow[$keys[0]] === null) {
-            $resultRow[$keys[0]] = array($keys[1] => null);
+        if (\count($keys) >= 2 && null === $resultRow[$keys[0]]) {
+            $resultRow[$keys[0]] = [$keys[1] => null];
         }
 
-        if (count($keys) >= 3 && $resultRow[$keys[0]][$keys[1]] === null) {
-            $resultRow[$keys[0]][$keys[1]] = array($keys[2] => null);
+        if (\count($keys) >= 3 && null === $resultRow[$keys[0]][$keys[1]]) {
+            $resultRow[$keys[0]][$keys[1]] = [$keys[2] => null];
         }
 
         $this->accessor->setValue($resultRow, $path, $content);
@@ -154,9 +143,9 @@ class LinkColumn extends AbstractColumn
     public function renderToMany(array &$row, array &$resultRow)
     {
         $value = null;
-        $pathSource = Helper::getDataPropertyPath($this->dataSource === null ? $this->data : $this->dataSource, $value);
+        $pathSource = Helper::getDataPropertyPath(null === $this->dataSource ? $this->data : $this->dataSource, $value);
         $path = Helper::getDataPropertyPath($this->data, $value);
-        $content = "";
+        $content = '';
 
         if ($this->accessor->isReadable($row, $pathSource)) {
             $entries = $this->accessor->getValue($row, $pathSource);
@@ -166,9 +155,9 @@ class LinkColumn extends AbstractColumn
                 //     => $path = [comments]
                 //     => $value = [createdBy][username]
 
-                if (count($entries) > 0) {
+                if (\count($entries) > 0) {
                     foreach ($entries as $key => $entry) {
-                        $currentPath = $path . '[' . $key . ']' . $value;
+                        $currentPath = $path.'['.$key.']'.$value;
                         $currentObjectPath = Helper::getPropertyPathObjectNotation($path, $key, $value);
 
                         $content = $this->renderTemplate(
@@ -179,23 +168,20 @@ class LinkColumn extends AbstractColumn
 
                         $this->accessor->setValue($resultRow, $currentPath, $content);
                     }
-                } else {
-                    // no placeholder - leave this blank
                 }
-            }
-            else {
-                if ($this->getFilterFunction() !== null) {
+                // no placeholder - leave this blank
+            } else {
+                if (null !== $this->getFilterFunction()) {
                     $entries = array_values(array_filter($entries, $this->getFilterFunction()));
                 }
 
-                if (count($entries) > 0) {
-                    for ($i = 0; $i < count($entries); $i++) {
-                        $renderRouteParams = array();
+                if (\count($entries) > 0) {
+                    for ($i = 0; $i < \count($entries); ++$i) {
+                        $renderRouteParams = [];
 
-                        if (is_callable($this->routeParams)) {
-                            $renderRouteParams = call_user_func($this->routeParams, $entries[$i]);
-                        }
-                        else {
+                        if (\is_callable($this->routeParams)) {
+                            $renderRouteParams = \call_user_func($this->routeParams, $entries[$i]);
+                        } else {
                             $renderRouteParams = $this->routeParams;
                         }
 
@@ -203,28 +189,25 @@ class LinkColumn extends AbstractColumn
                         $content .= $this->router->generate($this->getRoute(), $renderRouteParams);
                         $content .= '">';
 
-                        if (is_callable($this->text)) {
-                            $content .= call_user_func($this->text, $entries[$i]);
-                        }
-                        else {
+                        if (\is_callable($this->text)) {
+                            $content .= \call_user_func($this->text, $entries[$i]);
+                        } else {
                             $content .= $this->text;
                         }
 
                         $content .= '</a>';
 
-                        if ($i < count($entries) - 1) {
+                        if ($i < \count($entries) - 1) {
                             $content .= $this->separator;
                         }
                     }
 
                     $this->accessor->setValue($resultRow, $path, $content);
-                }
-                else {
+                } else {
                     $this->accessor->setValue($resultRow, $path, $this->getEmptyValue());
                 }
             }
-        }
-        else {
+        } else {
             $this->accessor->setValue($resultRow, $path, $this->getEmptyValue());
         }
 
@@ -260,66 +243,36 @@ class LinkColumn extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
-     * @param OptionsResolver $resolver
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefaults(array(
-            'filter'         => array(TextFilter::class, array()),
-            'route'          => '',
-            'route_params'   => array(),
-            'empty_value'    => '',
-            'text'           => null,
-            'separator'      => '',
+        $resolver->setDefaults([
+            'filter' => [TextFilter::class, []],
+            'route' => '',
+            'route_params' => [],
+            'empty_value' => '',
+            'text' => null,
+            'separator' => '',
             'filterFunction' => null,
-            'email'          => false
-
-        ));
+            'email' => false,
+        ]);
 
         $resolver->setAllowedTypes('filter', 'array');
         $resolver->setAllowedTypes('route', 'string');
-        $resolver->setAllowedTypes('route_params', array('array', 'Closure'));
-        $resolver->setAllowedTypes('empty_value', array('string'));
-        $resolver->setAllowedTypes('text', array('Closure', 'null'));
-        $resolver->setAllowedTypes('separator', array('string'));
-        $resolver->setAllowedTypes('filterFunction', array('null', 'Closure'));
-        $resolver->setAllowedTypes('email', array('bool'));
+        $resolver->setAllowedTypes('route_params', ['array', 'Closure']);
+        $resolver->setAllowedTypes('empty_value', ['string']);
+        $resolver->setAllowedTypes('text', ['Closure', 'null']);
+        $resolver->setAllowedTypes('separator', ['string']);
+        $resolver->setAllowedTypes('filterFunction', ['null', 'Closure']);
+        $resolver->setAllowedTypes('email', ['bool']);
 
         return $this;
     }
 
-    //-------------------------------------------------
-    // Helper
-    //-------------------------------------------------
-
     /**
-     * Render template.
-     *
-     * @param string|null $data
-     * @param string|null $path
-     *
-     * @return mixed|string
-     */
-    private function renderTemplate($data)
-    {
-        return $this->twig->render(
-            $this->getCellContentTemplate(),
-            array(
-                'data' => $data,
-            )
-        );
-    }
-
-
-    /**
-     * Get route.
-     *
      * @return string
      */
     public function getRoute()
@@ -328,8 +281,6 @@ class LinkColumn extends AbstractColumn
     }
 
     /**
-     * Set route.
-     *
      * @param string $route
      *
      * @return $this
@@ -340,7 +291,6 @@ class LinkColumn extends AbstractColumn
 
         return $this;
     }
-
 
     /**
      * Get route params.
@@ -391,8 +341,6 @@ class LinkColumn extends AbstractColumn
     }
 
     /**
-     * Get text.
-     *
      * @return Closure|null
      */
     public function getText()
@@ -401,9 +349,7 @@ class LinkColumn extends AbstractColumn
     }
 
     /**
-     * Set text.
-     *
-     * @param null|Closure $text
+     * @param Closure|null $text
      *
      * @return $this
      */
@@ -415,8 +361,6 @@ class LinkColumn extends AbstractColumn
     }
 
     /**
-     * Get separator.
-     *
      * @return string
      */
     public function getSeparator()
@@ -425,8 +369,6 @@ class LinkColumn extends AbstractColumn
     }
 
     /**
-     * Set separator.
-     *
      * @param string $separator
      *
      * @return $this
@@ -484,5 +426,26 @@ class LinkColumn extends AbstractColumn
         $this->email = $email;
 
         return $this;
+    }
+
+    //-------------------------------------------------
+    // Helper
+    //-------------------------------------------------
+
+    /**
+     * Render template.
+     *
+     * @param string|null $data
+     *
+     * @return mixed|string
+     */
+    private function renderTemplate($data)
+    {
+        return $this->twig->render(
+            $this->getCellContentTemplate(),
+            [
+                'data' => $data,
+            ]
+        );
     }
 }

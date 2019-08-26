@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -13,16 +13,8 @@ namespace Sg\DatatablesBundle\Datatable;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class Ajax
- *
- * @package Sg\DatatablesBundle\Datatable
- */
 class Ajax
 {
-    /**
-     * Use the OptionsResolver.
-     */
     use OptionsTrait;
 
     //-------------------------------------------------
@@ -31,15 +23,15 @@ class Ajax
 
     /**
      * URL set as the Ajax data source for the table.
-     * Default: null
+     * Default: null.
      *
-     * @var null|string
+     * @var string|null
      */
     protected $url;
 
     /**
      * Send request as POST or GET.
-     * Default: 'GET'
+     * Default: 'GET'.
      *
      * @var string
      */
@@ -47,15 +39,15 @@ class Ajax
 
     /**
      * Data to be sent.
-     * Default: null
+     * Default: null.
      *
-     * @var null|array
+     * @var array|null
      */
     protected $data;
 
     /**
      * Use Datatables' Pipeline.
-     * Default: 0 (disable)
+     * Default: 0 (disable).
      *
      * @see https://datatables.net/examples/server_side/pipeline.html
      *
@@ -63,13 +55,6 @@ class Ajax
      */
     protected $pipeline;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Ajax constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -80,27 +65,23 @@ class Ajax
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
-     * @param OptionsResolver $resolver
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'url' => null,
             'method' => 'GET',
             'data' => null,
             'pipeline' => 0,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('url', array('null', 'string'));
+        $resolver->setAllowedTypes('url', ['null', 'string']);
         $resolver->setAllowedTypes('method', 'string');
-        $resolver->setAllowedTypes('data', array('null', 'array'));
+        $resolver->setAllowedTypes('data', ['null', 'array']);
         $resolver->setAllowedTypes('pipeline', 'int');
 
-        $resolver->setAllowedValues('method', array('GET', 'POST'));
+        $resolver->setAllowedValues('method', ['GET', 'POST']);
 
         return $this;
     }
@@ -110,9 +91,7 @@ class Ajax
     //-------------------------------------------------
 
     /**
-     * Get url.
-     *
-     * @return null|string
+     * @return string|null
      */
     public function getUrl()
     {
@@ -120,9 +99,7 @@ class Ajax
     }
 
     /**
-     * Set url.
-     *
-     * @param null|string $url
+     * @param string|null $url
      *
      * @return $this
      */
@@ -134,8 +111,6 @@ class Ajax
     }
 
     /**
-     * Get method.
-     *
      * @return string
      */
     public function getMethod()
@@ -145,6 +120,7 @@ class Ajax
 
     /**
      * @return string
+     *
      * @deprecated Use getMethod() instead
      */
     public function getType()
@@ -153,8 +129,6 @@ class Ajax
     }
 
     /**
-     * Set method.
-     *
      * @param string $method
      *
      * @return $this
@@ -170,6 +144,7 @@ class Ajax
      * @param $method
      *
      * @return \Sg\DatatablesBundle\Datatable\Ajax
+     *
      * @deprecated Use setMethod() instead
      */
     public function setType($method)
@@ -178,13 +153,11 @@ class Ajax
     }
 
     /**
-     * Get data.
-     *
-     * @return null|array
+     * @return array|null
      */
     public function getData()
     {
-        if (is_array($this->data)) {
+        if (\is_array($this->data)) {
             return $this->optionToJson($this->data);
         }
 
@@ -192,9 +165,7 @@ class Ajax
     }
 
     /**
-     * Set data.
-     *
-     * @param null|array $data
+     * @param array|null $data
      *
      * @return $this
      */
@@ -206,8 +177,6 @@ class Ajax
     }
 
     /**
-     * Get pipeline.
-     *
      * @return int
      */
     public function getPipeline()
@@ -216,8 +185,6 @@ class Ajax
     }
 
     /**
-     * Set pipeline.
-     *
      * @param int $pipeline
      *
      * @return $this

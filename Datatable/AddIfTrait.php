@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -13,17 +13,12 @@ namespace Sg\DatatablesBundle\Datatable;
 
 use Closure;
 
-/**
- * Class AddIfTrait
- *
- * @package Sg\DatatablesBundle\Datatable
- */
 trait AddIfTrait
 {
     /**
      * Add an object only if conditions are TRUE.
      *
-     * @var null|Closure
+     * @var Closure|null
      */
     protected $addIf;
 
@@ -39,7 +34,7 @@ trait AddIfTrait
     public function callAddIfClosure()
     {
         if ($this->addIf instanceof Closure) {
-            return call_user_func($this->addIf);
+            return \call_user_func($this->addIf);
         }
 
         return true;
@@ -50,9 +45,7 @@ trait AddIfTrait
     //-------------------------------------------------
 
     /**
-     * Get addIf.
-     *
-     * @return null|Closure
+     * @return Closure|null
      */
     public function getAddIf()
     {
@@ -60,9 +53,7 @@ trait AddIfTrait
     }
 
     /**
-     * Set addIf.
-     *
-     * @param null|Closure $addIf
+     * @param Closure|null $addIf
      *
      * @return $this
      */

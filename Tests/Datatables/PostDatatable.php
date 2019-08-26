@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -14,34 +14,29 @@ namespace Sg\DatatablesBundle\Tests\Datatables;
 use Sg\DatatablesBundle\Datatable\AbstractDatatable;
 use Sg\DatatablesBundle\Datatable\Column\Column;
 
-/**
- * Class PostDatatable
- *
- * @package Sg\DatatablesBundle\Tests\Datatables
- */
 class PostDatatable extends AbstractDatatable
 {
     /**
      * {@inheritdoc}
      */
-    public function buildDatatable(array $options = array())
+    public function buildDatatable(array $options = [])
     {
-        $this->ajax->set(array(
+        $this->ajax->set([
             'url' => '',
             'method' => 'GET',
-        ));
+        ]);
 
-        $this->options->set(array(
+        $this->options->set([
             'individual_filtering' => true,
-        ));
+        ]);
 
         $this->columnBuilder
-            ->add('id', Column::class, array(
+            ->add('id', Column::class, [
                 'title' => 'Id',
-            ))
-            ->add('title', Column::class, array(
+            ])
+            ->add('title', Column::class, [
                 'title' => 'Title',
-            ))
+            ])
         ;
     }
 

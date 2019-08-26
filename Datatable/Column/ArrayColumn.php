@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -10,10 +11,6 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-/**
- * Class ArrayColumn
- * @package Sg\DatatablesBundle\Datatable\Column
- */
 class ArrayColumn extends Column
 {
     /**
@@ -27,47 +24,47 @@ class ArrayColumn extends Column
     }
 
     /**
-     * @param array $array
      * @param int $tab
-     * @return string
      */
     protected function arrayToString(array $array, $tab = 0): string
     {
-        $arrayField = "";
+        $arrayField = '';
         $isArrayAssociative = $this->isAssociative($array);
         foreach ($array as $key => $arrayElement) {
-            for ($i = 0; $i < $tab; $i++) {
-                $arrayField .= "&nbsp&nbsp";
+            for ($i = 0; $i < $tab; ++$i) {
+                $arrayField .= '&nbsp&nbsp';
             }
 
             if ($isArrayAssociative) {
-                $arrayField .= $key . ': ';
+                $arrayField .= $key.': ';
             }
 
-            if (is_array($arrayElement)) {
-                $arrayField .= "[<br/>";
+            if (\is_array($arrayElement)) {
+                $arrayField .= '[<br/>';
                 $arrayField .= $this->arrayToString($arrayElement, $tab + 1);
-                $arrayField .= "]<br/>";
+                $arrayField .= ']<br/>';
+
                 continue;
             }
 
             if ($arrayElement instanceof \DateTime) {
-                $arrayField .= $arrayElement->format('Y-m-d') . '<br/>';
+                $arrayField .= $arrayElement->format('Y-m-d').'<br/>';
+
                 continue;
             }
 
-            $arrayField .= $arrayElement . '<br/>';
+            $arrayField .= $arrayElement.'<br/>';
         }
+
         return $arrayField;
     }
 
-    /**
-     * @param array $array
-     * @return bool
-     */
     protected function isAssociative(array $array): bool
     {
-        if (empty($array)) return false;
-        return array_keys($array) !== range(0, count($array) - 1);
+        if (empty($array)) {
+            return false;
+        }
+
+        return array_keys($array) !== range(0, \count($array) - 1);
     }
 }
