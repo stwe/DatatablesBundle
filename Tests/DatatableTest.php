@@ -25,9 +25,6 @@ use Twig_Environment;
  */
 final class DatatableTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * testCreate.
-     */
     public function testCreate()
     {
         $tableClass = PostDatatable::class;

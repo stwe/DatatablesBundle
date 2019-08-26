@@ -13,6 +13,7 @@ namespace Sg\DatatablesBundle\Tests\Datatables;
 
 use Sg\DatatablesBundle\Datatable\AbstractDatatable;
 use Sg\DatatablesBundle\Datatable\Column\ActionColumn;
+use Sg\DatatablesBundle\Datatable\Column\AttributeColumn;
 use Sg\DatatablesBundle\Datatable\Column\BooleanColumn;
 use Sg\DatatablesBundle\Datatable\Column\Column;
 use Sg\DatatablesBundle\Datatable\Column\DateTimeColumn;
@@ -45,6 +46,9 @@ class PostDatatable extends AbstractDatatable
             ])
             ->add('boolean', BooleanColumn::class, [
                 'title' => 'Boolean',
+            ])
+            ->add('attribute', AttributeColumn::class, [
+                'title' => 'Attribute',
             ])
             ->add('datetime', DateTimeColumn::class, [
                 'title' => 'DateTimeColumn',
