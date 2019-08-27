@@ -36,10 +36,5 @@
     },
     "autoload": {
         "psr-4": { "Sg\\DatatablesBundle\\": "" }
-    },
-    "extra": {
-        "symfony": {
-            "require": "^4.3.0"
-        }
     }
 }
