@@ -23,6 +23,9 @@
         "doctrine/orm": "^2.5",
         "symfony/options-resolver": "^3.4|^4.1",
         "symfony/property-access": "^3.4|^4.1",
+        "symfony/security": "^3.4|^4.1",
+        "symfony/translation": "^3.4|^4.1",
+        "symfony/framework-bundle": "^3.4|^4.1",
         "friendsofsymfony/jsrouting-bundle": "^1.6|^2.0"
     },
     "require-dev": {
@@ -34,5 +37,10 @@
     },
     "autoload": {
         "psr-4": { "Sg\\DatatablesBundle\\": "" }
+    },
+    "extra": {
+        "symfony": {
+            "require": "^4.3.0"
+        }
     }
 }
