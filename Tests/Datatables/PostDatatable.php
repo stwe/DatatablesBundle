@@ -13,6 +13,7 @@ namespace Sg\DatatablesBundle\Tests\Datatables;
 
 use Sg\DatatablesBundle\Datatable\AbstractDatatable;
 use Sg\DatatablesBundle\Datatable\Column\Column;
+use Sg\DatatablesBundle\Datatable\Column\LinkColumn;
 
 class PostDatatable extends AbstractDatatable
 {
@@ -32,6 +33,9 @@ class PostDatatable extends AbstractDatatable
 
         $this->columnBuilder
             ->add('id', Column::class, [
+                'title' => 'Id',
+            ])
+            ->add('id', LinkColumn::class, [
                 'title' => 'Id',
             ])
             ->add('title', Column::class, [
