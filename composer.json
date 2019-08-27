@@ -19,7 +19,6 @@
     },
     "require": {
         "php": ">=7.1",
-        "symfony/framework-bundle": "^3.4|^4.1",
         "doctrine/orm": "^2.5",
         "symfony/options-resolver": "^3.4|^4.1",
         "symfony/property-access": "^3.4|^4.1",
