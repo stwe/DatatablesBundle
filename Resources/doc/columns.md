@@ -526,10 +526,6 @@ ___
 
 Support for Bulk Actions.
 
-### Options template
-
-@SgDatatables/column/multiselect.html.twig
-
 ### Cell content template
 
 @SgDatatables/render/multiselect.html.twig
@@ -694,11 +690,6 @@ ___
 ## 9. Attribute column
 
 Represents a column, with a `span` tag with `data-*` attributes. The displayed data is in the `span` tag.
-
-
-### Options template
-
-@SgDatatables/column/attributeColumn.html.twig
 
 ### Options
 
