@@ -57,12 +57,7 @@ interface ColumnInterface
      */
     public function isSelectColumn();
 
-    /**
-     * Get the template, in which all DataTables-Columns-Options set.
-     *
-     * @return string
-     */
-    public function getOptionsTemplate();
+    public function getOptions(): array;
 
     /**
      * Sometimes it is necessary to add some special data to the output array.
