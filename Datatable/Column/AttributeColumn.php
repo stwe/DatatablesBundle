@@ -11,17 +11,24 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
+use Closure;
+use Exception;
 use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
 use Sg\DatatablesBundle\Datatable\Helper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class Column extends AbstractColumn
+class AttributeColumn extends AbstractColumn
 {
-    // The Column is editable.
-    use EditableTrait;
-
+    // The AttributeColumn is filterable.
     use FilterableTrait;
+
+    /**
+     * The Attributes container.
+     * A required option.
+     *
+     * @var Closure
+     */
+    protected $attributes;
 
     //-------------------------------------------------
     // ColumnInterface
@@ -32,16 +39,21 @@ class Column extends AbstractColumn
      */
     public function renderSingleField(array &$row)
     {
+        $renderAttributes = [];
+
+        $renderAttributes = \call_user_func($this->attributes, $row);
+
         $path = Helper::getDataPropertyPath($this->data);
 
-        if ($this->accessor->isReadable($row, $path)) {
-            if ($this->isEditableContentRequired($row)) {
-                $content = $this->renderTemplate($this->accessor->getValue($row, $path), $row[$this->editable->getPk()]);
-                $this->accessor->setValue($row, $path, $content);
-            }
-        }
+        $content = $this->twig->render(
+            $this->getCellContentTemplate(),
+            [
+                'attributes' => $renderAttributes,
+                'data' => $this->accessor->getValue($row, $path),
+            ]
+        );
 
-        return $this;
+        $this->accessor->setValue($row, $path, $content);
     }
 
     /**
@@ -86,7 +98,7 @@ class Column extends AbstractColumn
      */
     public function getCellContentTemplate()
     {
-        return '@SgDatatables/render/column.html.twig';
+        return '@SgDatatables/render/attributeColumn.html.twig';
     }
 
     /**
@@ -94,20 +106,15 @@ class Column extends AbstractColumn
      */
     public function renderPostCreateDatatableJsContent()
     {
-        if ($this->editable instanceof EditableInterface) {
-            return $this->twig->render(
-                '@SgDatatables/column/column_post_create_dt.js.twig',
-                [
-                    'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
-                    'editable_options' => $this->editable,
-                    'entity_class_name' => $this->getEntityClassName(),
-                    'column_dql' => $this->dql,
-                    'original_type_of_field' => $this->getOriginalTypeOfField(),
-                ]
-            );
-        }
-
         return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getColumnType()
+    {
+        return parent::ACTION_COLUMN;
     }
 
     //-------------------------------------------------
@@ -123,11 +130,33 @@ class Column extends AbstractColumn
 
         $resolver->setDefaults([
             'filter' => [TextFilter::class, []],
-            'editable' => null,
+            'attributes' => null,
         ]);
 
         $resolver->setAllowedTypes('filter', 'array');
-        $resolver->setAllowedTypes('editable', ['null', 'array']);
+        $resolver->setAllowedTypes('attributes', ['null', 'array', 'Closure']);
+
+        return $this;
+    }
+
+    /**
+     * @return Attributes[]
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * @param Closure $attributes
+     *
+     * @throws Exception
+     *
+     * @return $this
+     */
+    public function setAttributes($attributes)
+    {
+        $this->attributes = $attributes;
 
         return $this;
     }
@@ -139,21 +168,14 @@ class Column extends AbstractColumn
     /**
      * Render template.
      *
-     * @param string|null $data
-     * @param string      $pk
-     * @param string|null $path
-     *
      * @return mixed|string
      */
-    private function renderTemplate($data, $pk, $path = null)
+    private function renderTemplate(?string $data)
     {
         return $this->twig->render(
             $this->getCellContentTemplate(),
             [
                 'data' => $data,
-                'column_class_editable_selector' => $this->getColumnClassEditableSelector(),
-                'pk' => $pk,
-                'path' => $path,
             ]
         );
     }

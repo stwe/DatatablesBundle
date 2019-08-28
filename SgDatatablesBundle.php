@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -13,11 +13,6 @@ namespace Sg\DatatablesBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * Class SgDatatablesBundle
- *
- * @package Sg\DatatablesBundle
- */
 class SgDatatablesBundle extends Bundle
 {
 }

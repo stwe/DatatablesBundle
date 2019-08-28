@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,14 +11,11 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 
-use Doctrine\ORM\EntityManagerInterface;
-
 /**
- * Interface DatatableInterface
- *
- * @package Sg\DatatablesBundle\Datatable
+ * Interface DatatableInterface.
  */
 interface DatatableInterface
 {
@@ -26,10 +23,8 @@ interface DatatableInterface
 
     /**
      * Builds the datatable.
-     *
-     * @param array $options
      */
-    public function buildDatatable(array $options = array());
+    public function buildDatatable(array $options = []);
 
     /**
      * Returns a callable that modify the data row.
@@ -39,8 +34,6 @@ interface DatatableInterface
     public function getLineFormatter();
 
     /**
-     * Get ColumnBuilder.
-     *
      * @return ColumnBuilder
      */
     public function getColumnBuilder();

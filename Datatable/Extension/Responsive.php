@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,21 +11,12 @@
 
 namespace Sg\DatatablesBundle\Datatable\Extension;
 
-use Sg\DatatablesBundle\Datatable\OptionsTrait;
-
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Exception;
+use Sg\DatatablesBundle\Datatable\OptionsTrait;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class Responsive
- *
- * @package Sg\DatatablesBundle\Datatable\Extension
- */
 class Responsive
 {
-    /**
-     * Use the OptionsResolver.
-     */
     use OptionsTrait;
 
     //-------------------------------------------------
@@ -40,13 +31,6 @@ class Responsive
      */
     protected $details;
 
-    //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
-
-    /**
-     * Responsive constructor.
-     */
     public function __construct()
     {
         $this->initOptions();
@@ -57,17 +41,13 @@ class Responsive
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
-     * @param OptionsResolver $resolver
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired('details');
 
-        $resolver->setAllowedTypes('details', array('array', 'bool'));
+        $resolver->setAllowedTypes('details', ['array', 'bool']);
 
         return $this;
     }
@@ -77,8 +57,6 @@ class Responsive
     //-------------------------------------------------
 
     /**
-     * Get details.
-     *
      * @return array|bool
      */
     public function getDetails()
@@ -87,29 +65,28 @@ class Responsive
     }
 
     /**
-     * Set details.
-     *
      * @param array|bool $details
      *
-     * @return $this
      * @throws Exception
+     *
+     * @return $this
      */
     public function setDetails($details)
     {
-        if (is_array($details)) {
+        if (\is_array($details)) {
             foreach ($details as $key => $value) {
-                if (false === in_array($key, array('type', 'target', 'renderer', 'display'))) {
+                if (false === \in_array($key, ['type', 'target', 'renderer', 'display'], true)) {
                     throw new Exception(
-                        "Responsive::setDetails(): $key is not an valid option."
+                        "Responsive::setDetails(): {$key} is not an valid option."
                     );
                 }
             }
 
-            if (is_array($details['renderer'])) {
+            if (\is_array($details['renderer'])) {
                 $this->validateArrayForTemplateAndOther($details['renderer']);
             }
 
-            if (is_array($details['display'])) {
+            if (\is_array($details['display'])) {
                 $this->validateArrayForTemplateAndOther($details['display']);
             }
         }

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,22 +11,16 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
+use Closure;
+use Exception;
 use Sg\DatatablesBundle\Datatable\Action\Action;
 use Sg\DatatablesBundle\Datatable\Helper;
 use Sg\DatatablesBundle\Datatable\HtmlContainerTrait;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Closure;
-use Exception;
 
-/**
- * Class ActionColumn
- *
- * @package Sg\DatatablesBundle\Datatable\Column
- */
 class ActionColumn extends AbstractColumn
 {
-    /**
+    /*
      * This Column has a 'start_html' and a 'end_html' option.
      * <startHtml> action1 action2 actionX </endHtml>
      */
@@ -65,7 +59,7 @@ class ActionColumn extends AbstractColumn
      */
     public function addDataToOutputArray(array &$row)
     {
-        $actionRowItems = array();
+        $actionRowItems = [];
 
         /** @var Action $action */
         foreach ($this->actions as $actionKey => $action) {
@@ -80,14 +74,14 @@ class ActionColumn extends AbstractColumn
      */
     public function renderSingleField(array &$row)
     {
-        $parameters = array();
-        $attributes = array();
-        $values = array();
+        $parameters = [];
+        $attributes = [];
+        $values = [];
 
         /** @var Action $action */
         foreach ($this->actions as $actionKey => $action) {
             $routeParameters = $action->getRouteParameters();
-            if (is_array($routeParameters)) {
+            if (\is_array($routeParameters)) {
                 foreach ($routeParameters as $key => $value) {
                     if (isset($row[$value])) {
                         $parameters[$actionKey][$key] = $row[$value];
@@ -95,7 +89,7 @@ class ActionColumn extends AbstractColumn
                         $path = Helper::getDataPropertyPath($value);
                         $entry = $this->accessor->getValue($row, $path);
 
-                        if (!empty($entry)) {
+                        if (! empty($entry)) {
                             $parameters[$actionKey][$key] = $entry;
                         } else {
                             $parameters[$actionKey][$key] = $value;
@@ -103,18 +97,18 @@ class ActionColumn extends AbstractColumn
                     }
                 }
             } elseif ($routeParameters instanceof Closure) {
-                $parameters[$actionKey] = call_user_func($routeParameters, $row);
+                $parameters[$actionKey] = \call_user_func($routeParameters, $row);
             } else {
-                $parameters[$actionKey] = array();
+                $parameters[$actionKey] = [];
             }
 
             $actionAttributes = $action->getAttributes();
-            if (is_array($actionAttributes)) {
+            if (\is_array($actionAttributes)) {
                 $attributes[$actionKey] = $actionAttributes;
             } elseif ($actionAttributes instanceof Closure) {
-                $attributes[$actionKey] = call_user_func($actionAttributes, $row);
+                $attributes[$actionKey] = \call_user_func($actionAttributes, $row);
             } else {
-                $attributes[$actionKey] = array();
+                $attributes[$actionKey] = [];
             }
 
             if ($action->isButton()) {
@@ -125,7 +119,7 @@ class ActionColumn extends AbstractColumn
                         $values[$actionKey] = $action->getButtonValue();
                     }
 
-                    if (is_bool($values[$actionKey])) {
+                    if (\is_bool($values[$actionKey])) {
                         $values[$actionKey] = (int) $values[$actionKey];
                     }
 
@@ -140,7 +134,7 @@ class ActionColumn extends AbstractColumn
 
         $row[$this->getIndex()] = $this->twig->render(
             $this->getCellContentTemplate(),
-            array(
+            [
                 'actions' => $this->actions,
                 'route_parameters' => $parameters,
                 'attributes' => $attributes,
@@ -148,7 +142,7 @@ class ActionColumn extends AbstractColumn
                 'render_if_actions' => $row['sg_datatables_actions'][$this->index],
                 'start_html_container' => $this->startHtml,
                 'end_html_container' => $this->endHtml,
-            )
+            ]
         );
     }
 
@@ -181,10 +175,6 @@ class ActionColumn extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Config options.
-     *
-     * @param OptionsResolver $resolver
-     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -206,16 +196,16 @@ class ActionColumn extends AbstractColumn
         $resolver->remove('join_type');
         $resolver->remove('type_of_field');
 
-        $resolver->setRequired(array('actions'));
+        $resolver->setRequired(['actions']);
 
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'start_html' => null,
             'end_html' => null,
-        ));
+        ]);
 
         $resolver->setAllowedTypes('actions', 'array');
-        $resolver->setAllowedTypes('start_html', array('null', 'string'));
-        $resolver->setAllowedTypes('end_html', array('null', 'string'));
+        $resolver->setAllowedTypes('start_html', ['null', 'string']);
+        $resolver->setAllowedTypes('end_html', ['null', 'string']);
 
         return $this;
     }
@@ -225,8 +215,6 @@ class ActionColumn extends AbstractColumn
     //-------------------------------------------------
 
     /**
-     * Get actions.
-     *
      * @return Action[]
      */
     public function getActions()
@@ -235,16 +223,13 @@ class ActionColumn extends AbstractColumn
     }
 
     /**
-     * Set actions.
-     *
-     * @param array $actions
+     * @throws Exception
      *
      * @return $this
-     * @throws Exception
      */
     public function setActions(array $actions)
     {
-        if (count($actions) > 0) {
+        if (\count($actions) > 0) {
             foreach ($actions as $action) {
                 $this->addAction($action);
             }
@@ -257,8 +242,6 @@ class ActionColumn extends AbstractColumn
 
     /**
      * Add action.
-     *
-     * @param array $action
      *
      * @return $this
      */
@@ -273,15 +256,14 @@ class ActionColumn extends AbstractColumn
     /**
      * Remove action.
      *
-     * @param Action $action
-     *
      * @return $this
      */
     public function removeAction(Action $action)
     {
         foreach ($this->actions as $k => $a) {
-            if ($action == $a) {
+            if ($action === $a) {
                 unset($this->actions[$k]);
+
                 break;
             }
         }
@@ -290,8 +272,6 @@ class ActionColumn extends AbstractColumn
     }
 
     /**
-     * Get orderable.
-     *
      * @return bool
      */
     public function getOrderable()
@@ -300,8 +280,6 @@ class ActionColumn extends AbstractColumn
     }
 
     /**
-     * Get searchable.
-     *
      * @return bool
      */
     public function getSearchable()
