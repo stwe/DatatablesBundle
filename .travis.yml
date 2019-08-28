@@ -22,7 +22,7 @@ matrix:
     - php: hhvm
 
 env:
-  - SYMFONY_VERSION="3.4.*" DEPENDENCIES=dev COMPOSER_FLAGS="--prefer-stable"
+  - SYMFONY_REQUIRE="3.4.*" DEPENDENCIES=dev COMPOSER_FLAGS="--prefer-stable"
 
 before_install:
   - composer self-update
