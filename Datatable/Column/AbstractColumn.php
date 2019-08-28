@@ -376,7 +376,7 @@ abstract class AbstractColumn implements ColumnInterface
         }
 
         if (false === $this->visible) {
-            $options['className'] = ' never'.$this->className;
+            $options['className'] = 'never '.$this->className;
         }
 
         if (true === $this->orderable) {
