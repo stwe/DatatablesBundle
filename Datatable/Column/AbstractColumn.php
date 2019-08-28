@@ -355,7 +355,7 @@ abstract class AbstractColumn implements ColumnInterface
         return $this;
     }
 
-    public function getTwigOptions()
+    public function getOptions()
     {
         $options = [
             'cellType' => $this->cellType,
