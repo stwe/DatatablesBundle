@@ -42,8 +42,8 @@ class PostDatatable extends AbstractDatatable
             ->add('id', Column::class, [
                 'title' => 'Id',
             ])
-            ->add('id', LinkColumn::class, [
-                'title' => 'Id',
+            ->add('link', LinkColumn::class, [
+                'title' => 'Link',
             ])
             ->add('title', Column::class, [
                 'title' => 'Title',
