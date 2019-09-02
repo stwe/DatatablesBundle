@@ -72,7 +72,7 @@ class ActionColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function renderSingleField(array &$row)
+    public function renderSingleField(array &$row, array &$resultRow)
     {
         $parameters = [];
         $attributes = [];
@@ -132,7 +132,7 @@ class ActionColumn extends AbstractColumn
             }
         }
 
-        $row[$this->getIndex()] = $this->twig->render(
+        $resultRow[$this->getIndex()] = $this->twig->render(
             $this->getCellContentTemplate(),
             [
                 'actions' => $this->actions,
@@ -149,7 +149,7 @@ class ActionColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function renderToMany(array &$row)
+    public function renderToMany(array &$row, array &$resultRow)
     {
         throw new Exception('ActionColumn::renderToMany(): This function should never be called.');
     }

@@ -37,10 +37,8 @@ class AttributeColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function renderSingleField(array &$row)
+    public function renderSingleField(array &$row, array &$resultRow)
     {
-        $renderAttributes = [];
-
         $renderAttributes = \call_user_func($this->attributes, $row);
 
         $path = Helper::getDataPropertyPath($this->data);
@@ -53,13 +51,13 @@ class AttributeColumn extends AbstractColumn
             ]
         );
 
-        $this->accessor->setValue($row, $path, $content);
+        $this->accessor->setValue($resultRow, $path, $content);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function renderToMany(array &$row)
+    public function renderToMany(array &$row, array &$resultRow)
     {
         $value = null;
         $path = Helper::getDataPropertyPath($this->data, $value);
@@ -83,7 +81,7 @@ class AttributeColumn extends AbstractColumn
                             $currentObjectPath
                         );
 
-                        $this->accessor->setValue($row, $currentPath, $content);
+                        $this->accessor->setValue($resultRow, $currentPath, $content);
                     }
                 }
                 // no placeholder - leave this blank
@@ -122,6 +120,8 @@ class AttributeColumn extends AbstractColumn
     //-------------------------------------------------
 
     /**
+     * Config options.
+     *
      * @return $this
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -140,6 +140,8 @@ class AttributeColumn extends AbstractColumn
     }
 
     /**
+     * Get attributes.
+     *
      * @return Attributes[]
      */
     public function getAttributes()
@@ -148,6 +150,8 @@ class AttributeColumn extends AbstractColumn
     }
 
     /**
+     * Set attributes.
+     *
      * @param Closure $attributes
      *
      * @throws Exception
@@ -168,9 +172,11 @@ class AttributeColumn extends AbstractColumn
     /**
      * Render template.
      *
+     * @param string|null $data
+     *
      * @return mixed|string
      */
-    private function renderTemplate(?string $data)
+    private function renderTemplate($data)
     {
         return $this->twig->render(
             $this->getCellContentTemplate(),

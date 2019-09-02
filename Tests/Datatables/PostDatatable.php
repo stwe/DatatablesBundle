@@ -18,6 +18,7 @@ use Sg\DatatablesBundle\Datatable\Column\BooleanColumn;
 use Sg\DatatablesBundle\Datatable\Column\Column;
 use Sg\DatatablesBundle\Datatable\Column\DateTimeColumn;
 use Sg\DatatablesBundle\Datatable\Column\ImageColumn;
+use Sg\DatatablesBundle\Datatable\Column\LinkColumn;
 use Sg\DatatablesBundle\Datatable\Column\NumberColumn;
 use Sg\DatatablesBundle\Datatable\Column\VirtualColumn;
 
@@ -40,6 +41,9 @@ class PostDatatable extends AbstractDatatable
         $this->columnBuilder
             ->add('id', Column::class, [
                 'title' => 'Id',
+            ])
+            ->add('link', LinkColumn::class, [
+                'title' => 'Link',
             ])
             ->add('title', Column::class, [
                 'title' => 'Title',

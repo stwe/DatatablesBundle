@@ -91,14 +91,14 @@ class ImageColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function renderSingleField(array &$row)
+    public function renderSingleField(array &$row, array &$resultRow)
     {
         $path = Helper::getDataPropertyPath($this->data);
 
         if ($this->accessor->isReadable($row, $path)) {
             $content = $this->renderImageTemplate($this->accessor->getValue($row, $path), '-image');
 
-            $this->accessor->setValue($row, $path, $content);
+            $this->accessor->setValue($resultRow, $path, $content);
         }
 
         return $this;
@@ -107,7 +107,7 @@ class ImageColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function renderToMany(array &$row)
+    public function renderToMany(array &$row, array &$resultRow)
     {
         // e.g. images[ ].fileName
         //     => $path = [images]
@@ -122,13 +122,13 @@ class ImageColumn extends AbstractColumn
                 foreach ($images as $key => $image) {
                     $currentPath = $path.'['.$key.']'.$value;
                     $content = $this->renderImageTemplate($this->accessor->getValue($row, $currentPath), '-gallery-image');
-                    $this->accessor->setValue($row, $currentPath, $content);
+                    $this->accessor->setValue($resultRow, $currentPath, $content);
                 }
             } else {
                 // create an entry for the placeholder image
                 $currentPath = $path.'[0]'.$value;
                 $content = $this->renderImageTemplate(null, '-gallery-image');
-                $this->accessor->setValue($row, $currentPath, $content);
+                $this->accessor->setValue($resultRow, $currentPath, $content);
             }
         }
 
