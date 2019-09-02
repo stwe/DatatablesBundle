@@ -9,21 +9,26 @@ cache:
 matrix:
   fast_finish: true
   include:
-    - php: 7.1
-      env: DEPENDENCIES=beta
+    - php: 7.2
+      env: DEPENDENCIES=beta SYMFONY_REQUIRE="3.4.*"
+    - php: 7.2
+      env: DEPENDENCIES=beta SYMFONY_REQUIRE="4.3.*"
+    - php: 7.3
+      env: DEPENDENCIES=beta SYMFONY_REQUIRE="3.4.*"
+    - php: 7.3
+      env: DEPENDENCIES=beta SYMFONY_REQUIRE="4.3.*"
     - php: hhvm
   allow_failures:
     - php: hhvm
 
 env:
-  - SYMFONY_VERSION="3.0.*" DEPENDENCIES=dev COMPOSER_FLAGS="--prefer-stable"
+  - SYMFONY_REQUIRE="3.4.*" DEPENDENCIES=dev COMPOSER_FLAGS="--prefer-stable"
 
 before_install:
   - composer self-update
-  - if [ "$DEPENDENCIES" = "beta" ]; then composer config minimum-stability beta; fi;  
-  - if [ "$SYMFONY_VERSION" != "" ]; then composer require --dev --no-update symfony/framework-bundle=$SYMFONY_VERSION; fi
+  - composer global require --no-progress --no-scripts --no-plugins symfony/flex dev-master
+  - if [ "$DEPENDENCIES" = "beta" ]; then composer config minimum-stability beta; fi;
   - if [ "$DEPENDENCIES" = "dev" ]; then perl -pi -e 's/^}$/,"minimum-stability":"dev"}/' composer.json; fi;
-  - composer require --dev "phpunit/phpunit=5.7.*"
 
 install: composer update --prefer-dist --no-interaction $COMPOSER_FLAGS
 

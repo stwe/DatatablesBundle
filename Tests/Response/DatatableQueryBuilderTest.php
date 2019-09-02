@@ -100,13 +100,7 @@ final class DatatableQueryBuilderTest extends \PHPUnit\Framework\TestCase
         $this->getDataTableQueryBuilder($entityName, $shortName);
     }
 
-    /**
-     * @param string $entityName
-     * @param string $shortName
-     *
-     * @return DatatableQueryBuilder
-     */
-    private function getDataTableQueryBuilder($entityName, $shortName)
+    private function getDataTableQueryBuilder(string $entityName, string $shortName): DatatableQueryBuilder
     {
         $this->reflectionClass->getShortName()->willReturn($shortName);
         $this->classMetadata->getReflectionClass()->willReturn($this->reflectionClass->reveal());

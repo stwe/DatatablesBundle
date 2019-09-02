@@ -19,9 +19,6 @@ use Sg\DatatablesBundle\Datatable\Column\ArrayColumn;
  */
 final class ArrayColumnTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * testCreate.
-     */
     public function testIsAssociative()
     {
         $arrayColumn = new ArrayColumn();
@@ -29,9 +26,6 @@ final class ArrayColumnTest extends \PHPUnit\Framework\TestCase
         static::assertTrue($this->callMethod($arrayColumn, 'isAssociative', [['a' => 1, 'b' => 1]]));
     }
 
-    /**
-     * testCreate.
-     */
     public function testArrayToString()
     {
         $arrayColumn = new ArrayColumn();
