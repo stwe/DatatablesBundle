@@ -16,9 +16,9 @@ use Sg\DatatablesBundle\Datatable\Column\ActionColumn;
 use Sg\DatatablesBundle\Datatable\Column\AttributeColumn;
 use Sg\DatatablesBundle\Datatable\Column\BooleanColumn;
 use Sg\DatatablesBundle\Datatable\Column\Column;
-use Sg\DatatablesBundle\Datatable\Column\LinkColumn;
 use Sg\DatatablesBundle\Datatable\Column\DateTimeColumn;
 use Sg\DatatablesBundle\Datatable\Column\ImageColumn;
+use Sg\DatatablesBundle\Datatable\Column\LinkColumn;
 use Sg\DatatablesBundle\Datatable\Column\NumberColumn;
 use Sg\DatatablesBundle\Datatable\Column\VirtualColumn;
 

@@ -1021,8 +1021,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Add a typeOfAssociation.
-     *
      * @param int $typeOfAssociation
      *
      * @return $this
@@ -1055,8 +1053,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Get sentInResponse.
-     *
      * @return bool
      */
     public function getSentInResponse()
@@ -1065,8 +1061,6 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
-     * Set sentIntResponse.
-     *
      * @param bool $sentInResponse
      *
      * @return $this
