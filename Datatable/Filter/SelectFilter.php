@@ -171,7 +171,7 @@ class SelectFilter extends AbstractFilter
     /**
      * @throws Exception
      */
-    private function setSelectSearchType(string $searchValue)
+    private function setSelectSearchType(string $searchValue): void
     {
         $searchTypesCount = \count($this->selectSearchTypes);
 
