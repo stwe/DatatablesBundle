@@ -84,7 +84,7 @@ class MultiselectColumn extends ActionColumn
     /**
      * {@inheritdoc}
      */
-    public function renderSingleField(array &$row)
+    public function renderSingleField(array &$row, array &$resultRow)
     {
         $value = $row[$this->value];
 
@@ -96,7 +96,7 @@ class MultiselectColumn extends ActionColumn
             $value = 'sg-datatables-'.$this->getDatatableName().'-checkbox-'.$value;
         }
 
-        $row[$this->getIndex()] = $this->twig->render(
+        $resultRow[$this->getIndex()] = $this->twig->render(
             $this->getCellContentTemplate(),
             [
                 'attributes' => $this->attributes,
