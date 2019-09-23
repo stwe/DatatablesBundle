@@ -588,7 +588,7 @@ class DatatableQueryBuilder
     private function setLimit(QueryBuilder $qb)
     {
         if (true === $this->features->getPaging() || null === $this->features->getPaging()) {
-            if (isset($this->requestParams['start']) && self::DISABLE_PAGINATION !== $this->requestParams['length']) {
+            if (isset($this->requestParams['start']) && self::DISABLE_PAGINATION !== (int) $this->requestParams['length']) {
                 $qb->setFirstResult($this->requestParams['start'])->setMaxResults($this->requestParams['length']);
             }
         } elseif ($this->ajax->getPipeline() > 0) {
