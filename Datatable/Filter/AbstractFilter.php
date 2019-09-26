@@ -304,8 +304,8 @@ abstract class AbstractFilter implements FilterInterface
         ) {
             switch ($searchType) {
                 case 'like':
-                case 'like%':
                 case '%like':
+                case 'like%':
                     $searchType = 'eq';
 
                     break;
