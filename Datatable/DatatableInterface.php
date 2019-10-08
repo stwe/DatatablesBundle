@@ -132,4 +132,18 @@ interface DatatableInterface
      * @return string
      */
     public function getUniqueName();
+
+    /**
+     * Returns if a total line in the header should appear
+     *
+     * @return bool
+     */
+    public function getDisplayTotals();
+
+    /**
+     * Compute totals before rendering the datatable HTML code
+     *
+     * @return void
+     */
+    public function computeTotals();
 }

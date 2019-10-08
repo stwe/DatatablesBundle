@@ -54,6 +54,7 @@ With 'null' initialized options uses the default value of the DataTables plugin.
 | mapped              | bool               | true              |          | Allow to create columns not mapped in entity neither defined by DQL. |
 | is_association      | bool               | false             |          | Allow to force if the column is an association, usally used with `mapped` and `data_source`. |
 | data_source         | null or string     | null              |          | Specify the column source of the data to manipulate in the current column. Usally used with `mapped` and `data_source`. | 
+| compute_total       | bool               | false             |          | Compute the total of numbers of all the row selected by the query. Totals will be displayed on a header row. |
 
 ### Example
 
@@ -760,6 +761,7 @@ public function buildDatatable(array $options = array())
     ;
 }
 ```
+
 
 ## 10. Link column
 
