@@ -207,13 +207,13 @@ class RowGroup
      */
     public function setEndRender($endRender)
     {
-        if (false === \array_key_exists('template', $startRender)) {
+        if (false === \array_key_exists('template', $endRender)) {
             throw new Exception(
                 'RowGroup::setEndRender(): The "template" option is required.'
             );
         }
 
-        foreach ($startRender as $key => $value) {
+        foreach ($endRender as $key => $value) {
             if (false === \in_array($key, ['template', 'vars'], true)) {
                 throw new Exception(
                     "RowGroup::setEndRender(): {$key} is not a valid option."
