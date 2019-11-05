@@ -4,6 +4,7 @@
 2. [Responsive](#2-responsive)
 3. [Select](#3-select)
 4. [RowGroup](#4-rowgroup)
+5. [FixedHeader](#5-fixedheader)
 
 ## 1. Buttons
 
@@ -359,4 +360,65 @@ With the RowGroup class you can set the following options, for details see the [
 | endClassName      | string or null  | null  | Set the class name to be used for the grouping end rows |
 | endRender         | array or null   | null  | Provide a function that can be used to control the data shown in the end grouping row. |
 | startRender       | array or null   | null  | Provide a function that can be used to control the data shown in the start grouping row. |
+___
+
+## 5. FixedHeader
+
+**Be sure to install the [FixedHeader Extension](https://datatables.net/extensions/fixedheader/) before using.**
+
+### Template
+
+@SgDatatables/datatable/extensions.html.twig
+
+### Initialisation
+
+#### The easiest way
+
+The easiest way is to add `fixed_header` to your extensions options with the header/footer option defined respectively with `header` and `footer`.
+
+``` php
+public function buildDatatable(array $options = array())
+{
+    // ...
+
+    $this->extensions->set(array(
+        'fixed_header' => array(
+            'header' => true
+        ),
+    ));
+    
+    // ...
+}
+```
+
+#### Advanced example
+
+This example adds an offset to the header:
+
+``` php
+public function buildDatatable(array $options = array())
+{
+    // ...
+
+    $this->extensions->set(array(
+        'fixed_header' => array(
+            'header' => true,
+            'header_offset' => 50,
+        ),
+    ));
+    
+    // ...
+}
+```
+
+### FixedHeader class options
+
+With the FixedHeader class you can set the following options, for details see the [Plugin documentation](https://datatables.net/reference/option/#fixedheader).
+
+| Option    | Type            | Default |  Description                       |
+|-----------|-----------------|---------|------------------------------------|
+| footer           | boolean         | false  | Enable the fixing of the table footer (`true`) or disable (`false`) |
+| footerOffset     | integer         | 0      | Set the offset (in pixels) of the footer element's offset for the scrolling calculations |
+| header           | boolean         | false  | Enable the fixing of the table header (`true`) or disable (`false`) |
+| headerOffset     | integer         | 0      | Set the offset (in pixels) of the header element's offset for the scrolling calculations |
 ___

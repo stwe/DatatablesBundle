@@ -136,3 +136,21 @@
     {% endif %}
     },
 {% endif %}
+
+{# FixedHeader Extension #}
+{% if sg_datatables_view.extensions.fixedHeader is not same as(null) %}
+    fixedHeader: {
+    {% if sg_datatables_view.extensions.fixedHeader.header is defined and sg_datatables_view.extensions.fixedHeader.header is same as(true) %}
+        header: true,
+    {% endif %}
+    {% if sg_datatables_view.extensions.fixedHeader.headerOffset is defined and sg_datatables_view.extensions.fixedHeader.headerOffset is not same as(null) %}
+        headerOffset: '{{ sg_datatables_view.extensions.fixedHeader.headerOffset }}',
+    {% endif %}
+    {% if sg_datatables_view.extensions.fixedHeader.footer is defined and sg_datatables_view.extensions.fixedHeader.footer is same as(true) %}
+        footer: true,
+    {% endif %}
+    {% if sg_datatables_view.extensions.fixedHeader.footerOffset is defined and sg_datatables_view.extensions.fixedHeader.footerOffset is not same as(null) %}
+        footerOffset: '{{ sg_datatables_view.extensions.fixedHeader.footerOffset }}',
+    {% endif %}
+    },
+{% endif %}
