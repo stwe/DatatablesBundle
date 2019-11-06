@@ -83,6 +83,11 @@ class FixedHeader
         $resolver->setAllowedTypes('header', ['bool']);
         $resolver->setAllowedTypes('header_offset', ['int']);
 
+        $resolver->setDefault('footer', false);
+        $resolver->setDefault('footer_offset', 0);
+        $resolver->setDefault('header', false);
+        $resolver->setDefault('header_offset', 0);
+
         return $this;
     }
 
