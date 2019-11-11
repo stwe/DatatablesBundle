@@ -37,7 +37,7 @@ var search = $.fn.dataTable.util.throttle(
         options.searchDelay
 );
 
-$(selector + '-filterrow').find("input.sg-datatables-individual-filtering").on("input", search);
+$(selector + '-filterrow').find("input.sg-datatables-individual-filtering").on("input change", search);
 
 $(selector + '-filterrow').find("select.sg-datatables-individual-filtering").on("keyup change", function(event) {
     var searchValue = $(this).val();
