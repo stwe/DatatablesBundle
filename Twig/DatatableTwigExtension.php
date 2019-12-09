@@ -18,12 +18,12 @@ use Sg\DatatablesBundle\Datatable\DatatableInterface;
 use Sg\DatatablesBundle\Datatable\Filter\FilterInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Twig_Environment;
-use Twig_Extension;
-use Twig_SimpleFilter;
-use Twig_SimpleFunction;
+use Twig\Environment;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
-class DatatableTwigExtension extends Twig_Extension
+class DatatableTwigExtension extends AbstractExtension
 {
     /**
      * The PropertyAccessor.
@@ -55,27 +55,27 @@ class DatatableTwigExtension extends Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction(
+            new TwigFunction(
                 'sg_datatables_render',
                 [$this, 'datatablesRender'],
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
-            new Twig_SimpleFunction(
+            new TwigFunction(
                 'sg_datatables_render_html',
                 [$this, 'datatablesRenderHtml'],
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
-            new Twig_SimpleFunction(
+            new TwigFunction(
                 'sg_datatables_render_js',
                 [$this, 'datatablesRenderJs'],
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
-            new Twig_SimpleFunction(
+            new TwigFunction(
                 'sg_datatables_render_filter',
                 [$this, 'datatablesRenderFilter'],
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
-            new Twig_SimpleFunction(
+            new TwigFunction(
                 'sg_datatables_render_multiselect_actions',
                 [$this, 'datatablesRenderMultiselectActions'],
                 ['is_safe' => ['html'], 'needs_environment' => true]
@@ -89,7 +89,7 @@ class DatatableTwigExtension extends Twig_Extension
     public function getFilters()
     {
         return [
-            new Twig_SimpleFilter('sg_datatables_bool_var', [$this, 'boolVar']),
+            new TwigFilter('sg_datatables_bool_var', [$this, 'boolVar']),
         ];
     }
 
@@ -102,7 +102,7 @@ class DatatableTwigExtension extends Twig_Extension
      *
      * @return string
      */
-    public function datatablesRender(Twig_Environment $twig, DatatableInterface $datatable)
+    public function datatablesRender(Environment $twig, DatatableInterface $datatable)
     {
         return $twig->render(
             '@SgDatatables/datatable/datatable.html.twig',
@@ -117,7 +117,7 @@ class DatatableTwigExtension extends Twig_Extension
      *
      * @return string
      */
-    public function datatablesRenderHtml(Twig_Environment $twig, DatatableInterface $datatable)
+    public function datatablesRenderHtml(Environment $twig, DatatableInterface $datatable)
     {
         return $twig->render(
             '@SgDatatables/datatable/datatable_html.html.twig',
@@ -132,7 +132,7 @@ class DatatableTwigExtension extends Twig_Extension
      *
      * @return string
      */
-    public function datatablesRenderJs(Twig_Environment $twig, DatatableInterface $datatable)
+    public function datatablesRenderJs(Environment $twig, DatatableInterface $datatable)
     {
         return $twig->render(
             '@SgDatatables/datatable/datatable_js.html.twig',
@@ -149,7 +149,7 @@ class DatatableTwigExtension extends Twig_Extension
      *
      * @return string
      */
-    public function datatablesRenderFilter(Twig_Environment $twig, DatatableInterface $datatable, ColumnInterface $column, $position)
+    public function datatablesRenderFilter(Environment $twig, DatatableInterface $datatable, ColumnInterface $column, $position)
     {
         /** @var FilterInterface $filter */
         $filter = $this->accessor->getValue($column, 'filter');
@@ -181,7 +181,7 @@ class DatatableTwigExtension extends Twig_Extension
      *
      * @return string
      */
-    public function datatablesRenderMultiselectActions(Twig_Environment $twig, ColumnInterface $multiselectColumn, $pipeline)
+    public function datatablesRenderMultiselectActions(Environment $twig, ColumnInterface $multiselectColumn, $pipeline)
     {
         $parameters = [];
         $values = [];

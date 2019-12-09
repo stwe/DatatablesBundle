@@ -19,7 +19,7 @@ use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
-use Twig_Environment;
+use Twig\Environment;
 
 abstract class AbstractColumn implements ColumnInterface
 {
@@ -915,7 +915,7 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * @return $this
      */
-    public function setTwig(Twig_Environment $twig)
+    public function setTwig(Environment $twig)
     {
         $this->twig = $twig;
 

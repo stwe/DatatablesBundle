@@ -17,7 +17,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Twig_Environment;
+use Twig\Environment;
 
 /**
  * @internal
@@ -38,7 +38,7 @@ final class DatatableTest extends \PHPUnit\Framework\TestCase
         /** @noinspection PhpUndefinedMethodInspection */
         $router = $this->createMock(RouterInterface::class);
         /** @noinspection PhpUndefinedMethodInspection */
-        $twig = $this->createMock(Twig_Environment::class);
+        $twig = $this->createMock(Environment::class);
 
         /** @noinspection PhpUndefinedMethodInspection */
         $em = $this->getMockBuilder(EntityManager::class)
