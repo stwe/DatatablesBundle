@@ -29,7 +29,7 @@
         "symfony/options-resolver": "^3.4|^4.1|^5.0",
         "symfony/property-access": "^3.4|^4.1|^5.0",
         "symfony/routing": "^3.4|^4.1|^5.0",
-        "symfony/security": "^3.4|^4.1",
+        "symfony/security-core": "^3.4|^4.1|^5.0",
         "symfony/translation": "^3.4|^4.1|^5.0",
         "twig/twig": "^2.9|^3.0"
     },
