@@ -16,7 +16,8 @@ use Exception;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatorInterface as LegacyTranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 class DatatableFactory
@@ -66,13 +67,17 @@ class DatatableFactory
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $securityToken,
-        TranslatorInterface $translator,
+        object $translator,
         RouterInterface $router,
         EntityManagerInterface $em,
         Environment $twig
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->securityToken = $securityToken;
+
+        if (!($translator instanceof LegacyTranslatorInterface) && !($translator instanceof TranslatorInterface)) {
+            throw new \InvalidArgumentException(sprintf('The $translator argument of %s must be an instance of %s or %s, a %s was given.', static::class, LegacyTranslatorInterface::class, TranslatorInterface::class, get_class($translator)));
+        }
         $this->translator = $translator;
         $this->router = $router;
         $this->em = $em;
