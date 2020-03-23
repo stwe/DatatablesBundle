@@ -31,7 +31,7 @@ final class ArrayColumnTest extends \PHPUnit\Framework\TestCase
         $arrayColumn = new ArrayColumn();
         $result = $this->callMethod($arrayColumn, 'arrayToString', [['a', 'b' => ['d' => new \DateTime()]]]);
         static::assertNotEmpty($result);
-        static::assertInternalType('string', $result);
+        static::assertIsString($result);
     }
 
     /**

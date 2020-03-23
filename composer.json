@@ -21,15 +21,20 @@
         "php": ">=7.1",
         "doctrine/orm": "^2.5",
         "friendsofsymfony/jsrouting-bundle": "^1.6|^2.0",
-        "symfony/framework-bundle": "^3.4|^4.1",
-        "symfony/options-resolver": "^3.4|^4.1",
-        "symfony/property-access": "^3.4|^4.1",
-        "symfony/security": "^3.4|^4.1",
-        "symfony/translation": "^3.4|^4.1",
-        "twig/twig": "^2.9"
+        "symfony/config": "^3.4|^4.1|^5.0",
+        "symfony/dependency-injection": "^3.4|^4.1|^5.0",
+        "symfony/http-foundation": "^3.4|^4.1|^5.0",
+        "symfony/http-kernel": "^3.4|^4.1|^5.0",
+        "symfony/framework-bundle": "^3.4|^4.1|^5.0",
+        "symfony/options-resolver": "^3.4|^4.1|^5.0",
+        "symfony/property-access": "^3.4|^4.1|^5.0",
+        "symfony/routing": "^3.4|^4.1|^5.0",
+        "symfony/security-core": "^3.4|^4.1|^5.0",
+        "symfony/translation": "^3.4|^4.1|^5.0",
+        "twig/twig": "^2.9|^3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "5.7.*",
+        "phpunit/phpunit": "^7.5|^8.5",
         "friendsofphp/php-cs-fixer": "^2.15"
     },
     "autoload": {
