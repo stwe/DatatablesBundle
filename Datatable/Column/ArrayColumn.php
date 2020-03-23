@@ -16,11 +16,11 @@ class ArrayColumn extends Column
     /**
      * {@inheritdoc}
      */
-    public function renderSingleField(array &$row, array &$resultRow)
+    public function renderSingleField(array &$row)
     {
         $row[$this->data] = $this->arrayToString($row[$this->data] ?? []);
 
-        return parent::renderSingleField($row, $resultRow);
+        return parent::renderSingleField($row);
     }
 
     /**
