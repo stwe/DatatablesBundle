@@ -75,7 +75,7 @@ class LinkColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function renderSingleField(array &$row, array &$resultRow)
+    public function renderSingleField(array &$row)
     {
         $path = Helper::getDataPropertyPath($this->data);
         $content = '';
