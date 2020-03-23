@@ -71,7 +71,7 @@ class SelectFilter extends AbstractFilter
             return $andExpr->add($orExpr);
         }
 
-        $this->setSelectSearchType($searchValue);
+        $this->setSelectSearchType((string) $searchValue);
 
         return $this->getExpression($andExpr, $qb, $this->searchType, $searchField, $searchValue, $searchTypeOfField, $parameterCounter);
     }
