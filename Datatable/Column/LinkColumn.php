@@ -131,12 +131,11 @@ class LinkColumn extends AbstractColumn
     public function renderToMany(array &$row)
     {
         $value = null;
-        $pathSource = Helper::getDataPropertyPath(null === $this->dataSource ? $this->data : $this->dataSource, $value);
         $path = Helper::getDataPropertyPath($this->data, $value);
         $content = '';
 
-        if ($this->accessor->isReadable($row, $pathSource)) {
-            $entries = $this->accessor->getValue($row, $pathSource);
+        if ($this->accessor->isReadable($row, $path)) {
+            $entries = $this->accessor->getValue($row, $path);
 
             if ($this->isEditableContentRequired($row)) {
                 // e.g. comments[ ].createdBy.username
