@@ -532,7 +532,7 @@ class DatatableQueryBuilder
 
                     $searchValue = $this->requestParams['columns'][$key]['search']['value'];
 
-                    if ('' !== $searchValue && 'null' !== $searchValue && null !== $searchValue) {
+                    if ('' !== $searchValue && null !== $searchValue) {
                         /** @var FilterInterface $filter */
                         $filter = $this->accessor->getValue($column, 'filter');
                         $searchField = $this->searchColumns[$key];
