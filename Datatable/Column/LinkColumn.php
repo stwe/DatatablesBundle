@@ -118,11 +118,10 @@ class LinkColumn extends AbstractColumn
                     $content .= '</a>';
                 }
             }
-        } else {
-            $content = $this->getEmptyValue();
+            $this->accessor->setValue($row, $path, $content);
         }
 
-        $this->accessor->setValue($row, $path, $content);
+        return $this;
     }
 
     /**
@@ -194,8 +193,6 @@ class LinkColumn extends AbstractColumn
                     $this->accessor->setValue($row, $path, $this->getEmptyValue());
                 }
             }
-        } else {
-            $this->accessor->setValue($row, $path, $this->getEmptyValue());
         }
 
         return $this;
