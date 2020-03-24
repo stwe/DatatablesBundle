@@ -122,25 +122,13 @@ class LinkColumn extends AbstractColumn
             $content = $this->getEmptyValue();
         }
 
-        // Handle if we try to access to a child attribute (aaa.bbb) and the parent is null
-        // (aaa is null)
-        $keys = explode('.', $this->data);
-
-        if (\count($keys) >= 2 && null === $resultRow[$keys[0]]) {
-            $resultRow[$keys[0]] = [$keys[1] => null];
-        }
-
-        if (\count($keys) >= 3 && null === $resultRow[$keys[0]][$keys[1]]) {
-            $resultRow[$keys[0]][$keys[1]] = [$keys[2] => null];
-        }
-
-        $this->accessor->setValue($resultRow, $path, $content);
+        $this->accessor->setValue($row, $path, $content);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function renderToMany(array &$row, array &$resultRow)
+    public function renderToMany(array &$row)
     {
         $value = null;
         $pathSource = Helper::getDataPropertyPath(null === $this->dataSource ? $this->data : $this->dataSource, $value);
@@ -166,7 +154,7 @@ class LinkColumn extends AbstractColumn
                             $currentObjectPath
                         );
 
-                        $this->accessor->setValue($resultRow, $currentPath, $content);
+                        $this->accessor->setValue($row, $currentPath, $content);
                     }
                 }
                 // no placeholder - leave this blank
@@ -202,13 +190,13 @@ class LinkColumn extends AbstractColumn
                         }
                     }
 
-                    $this->accessor->setValue($resultRow, $path, $content);
+                    $this->accessor->setValue($row, $path, $content);
                 } else {
-                    $this->accessor->setValue($resultRow, $path, $this->getEmptyValue());
+                    $this->accessor->setValue($row, $path, $this->getEmptyValue());
                 }
             }
         } else {
-            $this->accessor->setValue($resultRow, $path, $this->getEmptyValue());
+            $this->accessor->setValue($row, $path, $this->getEmptyValue());
         }
 
         return $this;
