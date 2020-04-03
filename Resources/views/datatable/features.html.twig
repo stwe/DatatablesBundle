@@ -6,36 +6,36 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
-{% if sg_datatables_view.features.autoWidth is not null %}
+{% if sg_datatables_view.features.autoWidth is not same as(null) %}
     "autoWidth": {{ sg_datatables_view.features.autoWidth|sg_datatables_bool_var }},
 {% endif %}
-{% if sg_datatables_view.features.deferRender is not null %}
+{% if sg_datatables_view.features.deferRender is not same as(null) %}
     "deferRender": {{ sg_datatables_view.features.deferRender|sg_datatables_bool_var }},
 {% endif %}
-{% if sg_datatables_view.features.info is not null %}
+{% if sg_datatables_view.features.info is not same as(null) %}
     "info": {{ sg_datatables_view.features.info|sg_datatables_bool_var }},
 {% endif %}
-{% if sg_datatables_view.features.lengthChange is not null %}
+{% if sg_datatables_view.features.lengthChange is not same as(null) %}
     "lengthChange": {{ sg_datatables_view.features.lengthChange|sg_datatables_bool_var }},
 {% endif %}
-{% if sg_datatables_view.features.ordering is not null %}
+{% if sg_datatables_view.features.ordering is not same as(null) %}
     "ordering": {{ sg_datatables_view.features.ordering|sg_datatables_bool_var }},
 {% endif %}
-{% if sg_datatables_view.features.paging is not null %}
+{% if sg_datatables_view.features.paging is not same as(null) %}
     "paging": {{ sg_datatables_view.features.paging|sg_datatables_bool_var }},
 {% endif %}
-{% if sg_datatables_view.features.processing is not null %}
+{% if sg_datatables_view.features.processing is not same as(null) %}
     "processing": {{ sg_datatables_view.features.processing|sg_datatables_bool_var }},
 {% endif %}
-{% if sg_datatables_view.features.scrollX is not null %}
+{% if sg_datatables_view.features.scrollX is not same as(null) %}
     "scrollX": {{ sg_datatables_view.features.scrollX|sg_datatables_bool_var }},
 {% endif %}
-{% if sg_datatables_view.features.scrollY is not null %}
+{% if sg_datatables_view.features.scrollY is not same as(null) %}
     "scrollY": "{{ sg_datatables_view.features.scrollY }}",
 {% endif %}
-{% if sg_datatables_view.features.searching is not null %}
+{% if sg_datatables_view.features.searching is not same as(null) %}
     "searching": {{ sg_datatables_view.features.searching|sg_datatables_bool_var }},
 {% endif %}
-{% if sg_datatables_view.features.stateSave is not null %}
+{% if sg_datatables_view.features.stateSave is not same as(null) %}
     "stateSave": {{ sg_datatables_view.features.stateSave|sg_datatables_bool_var }},
 {% endif %}

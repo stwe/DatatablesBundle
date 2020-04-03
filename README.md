@@ -1,32 +1,25 @@
 # SgDatatablesBundle
 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/61803d08-17ab-4a69-ad13-6ec448762332/big.png)](https://insight.sensiolabs.com/projects/61803d08-17ab-4a69-ad13-6ec448762332)
-
 [![knpbundles.com](http://knpbundles.com/stwe/DatatablesBundle/badge)](http://knpbundles.com/stwe/DatatablesBundle)
 
 [![Build Status](https://travis-ci.org/stwe/DatatablesBundle.svg?branch=master)](https://travis-ci.org/stwe/DatatablesBundle)
 
 [![Latest Stable Version](https://poser.pugx.org/sg/datatablesbundle/v/stable)](https://packagist.org/packages/sg/datatablesbundle) [![Total Downloads](https://poser.pugx.org/sg/datatablesbundle/downloads)](https://packagist.org/packages/sg/datatablesbundle) [![Latest Unstable Version](https://poser.pugx.org/sg/datatablesbundle/v/unstable)](https://packagist.org/packages/sg/datatablesbundle) [![License](https://poser.pugx.org/sg/datatablesbundle/license)](https://packagist.org/packages/sg/datatablesbundle)
 
-**If you're using the SgDatatablesBundle for production, use the [latest stable release](https://github.com/stwe/DatatablesBundle/tree/v0.13) and not dev-master!** 
+## A new version is available
 
-This bundle is currently under heavy development and the dev-master branch contains the new codebase for v1.0.
-
-**[The current state of development of v1.0](https://github.com/stwe/DatatablesBundle/blob/master/FEATURES.md)**
+**[The features of v1.0](https://github.com/stwe/DatatablesBundle/blob/master/FEATURES.md)**
 
 ## Documentation
 
-### v0.13
+[Documentation for v1.0](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/index.md)
 
-[Documentation for v0.13](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/index013.md)
+[Demo Application for v1.0](https://github.com/stwe/DtBundleDemo10)
 
-[Demo Application for v0.13](https://github.com/stwe/DtBundleDemo)
+## Info about PostgreSQL
 
-### Dev-master
-
-[Documentation for dev-master](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/index.md)
-
-[Demo Application for dev-master](https://github.com/stwe/DtBundleDemo10)
+**Hey folks. Bad news: I'm not working with PostgreSQL. I have no idea about it and therefore can not write any good software supporting PostgreSQL. 
+I also don' t like it. For those reasons I will close all issues on this subject. Feel free to forke the bundle. Thanks for your understanding.**
 
 ## Friendly License
 

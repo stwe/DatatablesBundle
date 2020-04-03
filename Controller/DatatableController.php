@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,23 +11,18 @@
 
 namespace Sg\DatatablesBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use DateTime;
 use Doctrine\DBAL\Types\Type;
 use Exception;
-use DateTime;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-/**
- * Class DatatableController
- *
- * @package Sg\DatatablesBundle\Controller
- */
-class DatatableController extends Controller
+class DatatableController extends AbstractController
 {
     //-------------------------------------------------
     // Actions
@@ -36,44 +31,48 @@ class DatatableController extends Controller
     /**
      * Edit field.
      *
-     * @param Request $request
+     * @Route("/datatables/edit/field", methods={"POST"}, name="sg_datatables_edit")
      *
-     * @Route("/sg/datatables/edit/field", name="sg_datatables_edit")
-     * @Method("POST")
+     * @throws Exception
      *
      * @return Response
-     * @throws Exception
      */
     public function editAction(Request $request)
     {
         if ($request->isXmlHttpRequest()) {
-            // default params
-            $pk = $request->request->get('pk');
-            $field = $request->request->get('name');
-            $value = $request->request->get('value');
+            // x-editable sends some default parameters
+            $pk = $request->request->get('pk');       // entity primary key
+            $field = $request->request->get('name');  // e.g. comments.createdBy.username
+            $value = $request->request->get('value'); // the new value
 
             // additional params
-            $entityClassName = $request->request->get('entityClassName');
+            $entityClassName = $request->request->get('entityClassName'); // e.g. AppBundle\Entity\Post
             $token = $request->request->get('token');
+            $originalTypeOfField = $request->request->get('originalTypeOfField');
+            $path = $request->request->get('path'); // for toMany - the current element
 
             // check token
-            if (!$this->isCsrfTokenValid('sg-datatables-editable', $token)) {
+            if (! $this->isCsrfTokenValid('sg-datatables-editable', $token)) {
                 throw new AccessDeniedException('DatatableController::editAction(): The CSRF token is invalid.');
             }
 
             // get an object by its primary key
             $entity = $this->getEntityByPk($entityClassName, $pk);
 
-            // generate accessor
-            $accessor = PropertyAccess::createPropertyAccessor();
+            /** @var PropertyAccessor $accessor */
+            /** @noinspection PhpUndefinedMethodInspection */
+            $accessor = PropertyAccess::createPropertyAccessorBuilder()
+                ->enableMagicCall()
+                ->getPropertyAccessor()
+            ;
 
-            // prepare value
-            $value = $this->prepareValue($entityClassName, $field, $value);
+            // normalize the new value
+            $value = $this->normalizeValue($originalTypeOfField, $value);
 
-            // write value
-            $accessor->setValue($entity, $field, $value);
+            // set new value
+            null !== $path ? $accessor->setValue($entity, $path, $value) : $accessor->setValue($entity, $field, $value);
 
-            // save
+            // save all
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -92,16 +91,13 @@ class DatatableController extends Controller
      * Finds an object by its primary key / identifier.
      *
      * @param string $entityClassName
-     * @param mixed  $pk
-     *
-     * @return object
      */
-    private function getEntityByPk($entityClassName, $pk)
+    private function getEntityByPk($entityClassName, $pk): object
     {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository($entityClassName)->find($pk);
-        if (!$entity) {
+        if (! $entity) {
             throw $this->createNotFoundException('DatatableController::getEntityByPk(): The entity does not exist.');
         }
 
@@ -109,37 +105,20 @@ class DatatableController extends Controller
     }
 
     /**
-     * Prepare value.
-     *
-     * @param string $entityClassName
-     * @param string $field
-     * @param mixed  $value
-     *
-     * @return bool|\DateTime|float|int
      * @throws Exception
+     *
+     * @return bool|DateTime|float|int|string|null
      */
-    private function prepareValue($entityClassName, $field, $value)
+    private function normalizeValue(string $originalTypeOfField, $value)
     {
-        /** @var \Doctrine\ORM\EntityManagerInterface $em */
-        $em = $this->getDoctrine()->getManager();
-        $metadata = $em->getClassMetadata($entityClassName);
-
-        if (false === strstr($field, '.')) {
-            $fieldType = $metadata->getTypeOfField($field);
-        } else {
-            // @todo: unlim. associations
-            $parts = explode('.', $field);
-            $targetClass = $metadata->getAssociationTargetClass($parts[0]);
-            $targetMeta = $em->getClassMetadata($targetClass);
-            $fieldType = $targetMeta->getTypeOfField($parts[1]);
-        }
-
-        switch ($fieldType) {
+        switch ($originalTypeOfField) {
             case Type::DATETIME:
                 $value = new DateTime($value);
+
                 break;
             case Type::BOOLEAN:
                 $value = $this->strToBool($value);
+
                 break;
             case Type::TEXT:
             case Type::STRING:
@@ -147,30 +126,28 @@ class DatatableController extends Controller
             case Type::SMALLINT:
             case Type::INTEGER:
                 $value = (int) $value;
+
                 break;
             case Type::BIGINT:
                 $value = (string) $value;
+
                 break;
             case Type::FLOAT:
             case Type::DECIMAL:
                 $value = (float) $value;
+
                 break;
             default:
-                throw new Exception("DatatableController::prepareValue(): The field type {$fieldType} is not supported.");
+                throw new Exception("DatatableController::prepareValue(): The field type {$originalTypeOfField} is not editable.");
         }
 
         return $value;
     }
 
     /**
-     * String to boolean.
-     *
-     * @param string $str
-     *
-     * @return null|bool
      * @throws Exception
      */
-    private function strToBool($str)
+    private function strToBool(string $str): ?bool
     {
         $str = strtolower($str);
 
@@ -178,12 +155,14 @@ class DatatableController extends Controller
             return null;
         }
 
-        if ($str === 'true' || $str === '1') {
+        if ('true' === $str || '1' === $str) {
             return true;
-        } elseif ($str === 'false' || $str === '0') {
-            return false;
-        } else {
-            throw new Exception('DatatableController::strToBool(): Cannot convert string to boolean, expected string "true" or "false".');
         }
+
+        if ('false' === $str || '0' === $str) {
+            return false;
+        }
+
+        throw new Exception('DatatableController::strToBool(): Cannot convert string to boolean, expected string "true" or "false".');
     }
 }

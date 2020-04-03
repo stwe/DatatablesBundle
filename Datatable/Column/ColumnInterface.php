@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -12,9 +12,7 @@
 namespace Sg\DatatablesBundle\Datatable\Column;
 
 /**
- * Interface ColumnInterface
- *
- * @package Sg\DatatablesBundle\Datatable\Column
+ * Interface ColumnInterface.
  */
 interface ColumnInterface
 {
@@ -25,8 +23,6 @@ interface ColumnInterface
 
     /**
      * Validates $dql. Normally a non-empty string is expected.
-     *
-     * @param mixed $dql
      *
      * @return bool
      */
@@ -72,8 +68,6 @@ interface ColumnInterface
      * Sometimes it is necessary to add some special data to the output array.
      * For example, the visibility of actions.
      *
-     * @param array $row
-     *
      * @return $this
      */
     public function addDataToOutputArray(array &$row);
@@ -81,12 +75,22 @@ interface ColumnInterface
     /**
      * Render images or any other special content.
      * This function works similar to the DataTables Plugin 'columns.render'.
-     *
-     * @param array $row
-     *
-     * @return mixed
      */
     public function renderCellContent(array &$row);
+
+    /**
+     * Render single field.
+     *
+     * @return $this
+     */
+    public function renderSingleField(array &$row);
+
+    /**
+     * Render toMany.
+     *
+     * @return $this
+     */
+    public function renderToMany(array &$row);
 
     /**
      * Get the template for the 'renderCellContent' function.
@@ -99,15 +103,13 @@ interface ColumnInterface
      * Implementation of the 'Draw Event' - fired once the table has completed a draw.
      * With this function can javascript execute after drawing the whole table.
      * Used - for example - for the Editable function.
-     *
-     * @return mixed
      */
     public function renderPostCreateDatatableJsContent();
 
     /**
      * The allowed Column positions as array.
      *
-     * @return null|array
+     * @return array|null
      */
     public function allowedPositions();
 
@@ -117,4 +119,11 @@ interface ColumnInterface
      * @return string
      */
     public function getColumnType();
+
+    /**
+     * Does special content need to be rendered for editable?
+     *
+     * @return bool
+     */
+    public function isEditableContentRequired(array $row);
 }

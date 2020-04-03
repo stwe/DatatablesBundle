@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,11 +11,6 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
-/**
- * Class Helper
- *
- * @package Sg\DatatablesBundle\Datatable
- */
 class Helper
 {
     /**
@@ -33,14 +28,46 @@ class Helper
     }
 
     /**
-     * Returns a property path for the Accessor.
+     * Returns a array notated property path for the Accessor.
      *
-     * @param string $data
+     * @param string      $data
+     * @param string|null $value
      *
      * @return string
      */
-    public static function getDataPropertyPath($data)
+    public static function getDataPropertyPath($data, &$value = null)
     {
+        // handle nested array case
+        if (true === \is_int(strpos($data, '['))) {
+            $before = strstr($data, '[', true);
+            $value = strstr($data, ']', false);
+
+            // remove needle
+            $value = str_replace('].', '', $value);
+            // format value
+            $value = '['.str_replace('.', '][', $value).']';
+
+            $data = $before;
+        }
+
+        // e.g. 'createdBy.allowed' => [createdBy][allowed]
         return '['.str_replace('.', '][', $data).']';
+    }
+
+    /**
+     * Returns object notated property path.
+     *
+     * @param string $path
+     * @param int    $key
+     * @param string $value
+     *
+     * @return string
+     */
+    public static function getPropertyPathObjectNotation($path, $key, $value)
+    {
+        $objectValue = str_replace('][', '.', $value);
+        $objectValue = str_replace(['[', ']'], '', $objectValue);
+
+        return str_replace(['[', ']'], '', $path).'['.$key.'].'.$objectValue;
     }
 }

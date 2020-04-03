@@ -1,0 +1,23 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{% if data %}
+    {% set path = image.relativePath ~ '/' ~ data %}
+    {% if image.enlarge is same as(true) %}
+        {% set enlargedPath = asset(path)|imagine_filter(image.imagineFilterEnlarged) %}
+        <a href="javascript:void(0);" data-featherlight="{{ enlargedPath | default(asset(path)) }}">
+            <img class="{{ image_class }}" src="{{ path | imagine_filter(image.imagineFilter) }}" />
+        </a>
+    {% else %}
+        <img class="{{ image_class }}" src="{{ path | imagine_filter(image.imagineFilter) }}" />
+    {% endif %}
+{% else %}
+    {% if image.holderUrl is not same as(null) %}
+        <img src="{{ image.holderUrl }}/{{ image.holderWidth }}x{{ image.holderHeight }}" />
+    {% endif %}
+{% endif %}

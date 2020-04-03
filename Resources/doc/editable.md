@@ -55,7 +55,7 @@ __
 
 ### Template
 
-SgDatatablesBundle:column:column_post_create_dt.js.twig
+@SgDatatables/column/column_post_create_dt.js.twig
 
 ### Options
 
@@ -96,7 +96,7 @@ __
 
 ### Template
 
-SgDatatablesBundle:column:column_post_create_dt.js.twig
+@SgDatatables/column/column_post_create_dt.js.twig
 
 ### Options
 
@@ -127,7 +127,7 @@ __
 
 ### Template
 
-SgDatatablesBundle:column:column_post_create_dt.js.twig
+@SgDatatables/column/column_post_create_dt.js.twig
 
 ### Options
 
@@ -135,9 +135,9 @@ All options of [Text Editable](#2-text-editable).
 
 **Additional:**
 
-| Option | Type  | Default | Description           |
-|--------|-------|---------|-----------------------|
-| source | array | array() | Source data for list. |
+| Option | Type  | Default | Required | Description          |
+|--------|-------|---------|----------|----------------------|
+| source | array |         | x        |Source data for list. |
 
 ### Example
 
@@ -187,7 +187,7 @@ __
 
 ### Template
 
-SgDatatablesBundle:column:column_post_create_dt.js.twig
+@SgDatatables/column/column_post_create_dt.js.twig
 
 ### Options
 
@@ -199,6 +199,11 @@ All options of [Text Editable](#2-text-editable).
 |-------------|----------------|-----------------------|-----------------------------|
 | format      | string         | 'YYYY-MM-DD'          | Format used for sending value to server. |
 | view_format | string or null | null (same as format) | Format used for displaying date. If not specified equals to $format. |
+| min_year    | int            | 1970                  | Minimum value in years dropdown. |
+| max_year    | int            | 2035                  | Maximum value in years dropdown. |
+| minute_step | int            | 5                     | Step of values in minutes dropdown. |
+| second_step | int            | 1                     | Step of values in seconds dropdown. |
+| smart_days  | bool           | false                 | Number of days in dropdown is always 31 or not. |
 
 ### Example
 
@@ -214,7 +219,8 @@ $this->columnBuilder
         'editable' => array(CombodateEditable::class, array(
             'format' => 'YYYY-MM-DD',
             'view_format' => 'DD.MM.YYYY',
-            //'pk' => 'cid'
+            'max_year' => 2025,
+            //'pk' => 'cid',
         )),
         'timeago' => true
     ))

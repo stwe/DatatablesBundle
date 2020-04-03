@@ -1,0 +1,128 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{% if sg_datatables_view.events.columnSizing is not same as(null) %}
+    {% if sg_datatables_view.events.columnSizing['vars'] is defined %}
+        {% set vars = sg_datatables_view.events.columnSizing['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('column-sizing.dt', {% include sg_datatables_view.events.columnSizing['template'] with vars %})
+{% endif %}
+{% if sg_datatables_view.events.columnVisibility is not same as(null) %}
+    {% if sg_datatables_view.events.columnVisibility['vars'] is defined %}
+        {% set vars = sg_datatables_view.events.columnVisibility['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('column-visibility.dt', {% include sg_datatables_view.events.columnVisibility['template'] with vars %})
+{% endif %}
+{% if sg_datatables_view.events.destroy is not same as(null) %}
+    {% if sg_datatables_view.events.destroy['vars'] is defined %}
+        {% set vars = sg_datatables_view.events.destroy['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('destroy.dt', {% include sg_datatables_view.events.destroy['template'] with vars %})
+{% endif %}
+{% if sg_datatables_view.events.error is not same as(null) %}
+    {% if sg_datatables_view.events.error['vars'] is defined %}
+        {% set vars = sg_datatables_view.events.error['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('error.dt', {% include sg_datatables_view.events.error['template'] with vars %})
+{% endif %}
+{% if sg_datatables_view.events.length is not same as(null) %}
+    {% if sg_datatables_view.events.length['vars'] is defined %}
+        {% set vars = sg_datatables_view.events.length['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('length.dt', {% include sg_datatables_view.events.length['template'] with vars %})
+{% endif %}
+{% if sg_datatables_view.events.order is not same as(null) %}
+    {% if sg_datatables_view.events.order['vars'] is defined %}
+        {% set vars = sg_datatables_view.events.order['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('order.dt', {% include sg_datatables_view.events.order['template'] with vars %})
+{% endif %}
+{% if sg_datatables_view.events.page is not same as(null) %}
+    {% if sg_datatables_view.events.page['vars'] is defined %}
+        {% set vars = sg_datatables_view.events.page['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('page.dt', {% include sg_datatables_view.events.page['template'] with vars %})
+{% endif %}
+{% if sg_datatables_view.events.preInit is not same as(null) %}
+    {% if sg_datatables_view.events.preInit['vars'] is defined %}
+        {% set vars = sg_datatables_view.events.preInit['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('preInit.dt', {% include sg_datatables_view.events.preInit['template'] with vars %})
+{% endif %}
+{% if sg_datatables_view.events.preXhr is not same as(null) %}
+    {% if sg_datatables_view.events.preXhr['vars'] is defined %}
+        {% set vars = sg_datatables_view.events.preXhr['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('preXhr.dt', {% include sg_datatables_view.events.preXhr['template'] with vars %})
+{% endif %}
+{% if sg_datatables_view.events.processing is not same as(null) %}
+    {% if sg_datatables_view.events.processing['vars'] is defined %}
+        {% set vars = sg_datatables_view.events.processing['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('processing.dt', {% include sg_datatables_view.events.processing['template'] with vars %})
+{% endif %}
+{% if sg_datatables_view.events.search is not same as(null) %}
+    {% if sg_datatables_view.events.search['vars'] is defined %}
+        {% set vars = sg_datatables_view.events.search['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('search.dt', {% include sg_datatables_view.events.search['template'] with vars %})
+{% endif %}
+{% if sg_datatables_view.events.stateLoaded is not same as(null) %}
+    {% if sg_datatables_view.events.stateLoaded['vars'] is defined %}
+        {% set vars = sg_datatables_view.events.stateLoaded['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('stateLoaded.dt', {% include sg_datatables_view.events.stateLoaded['template'] with vars %})
+{% endif %}
+{% if sg_datatables_view.events.stateLoadParams is not same as(null) %}
+    {% if sg_datatables_view.events.stateLoadParams['vars'] is defined %}
+        {% set vars = sg_datatables_view.events.stateLoadParams['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('stateLoadParams.dt', {% include sg_datatables_view.events.stateLoadParams['template'] with vars %})
+{% endif %}
+{% if sg_datatables_view.events.stateSaveParams is not same as(null) %}
+    {% if sg_datatables_view.events.stateSaveParams['vars'] is defined %}
+        {% set vars = sg_datatables_view.events.stateSaveParams['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('stateSaveParams.dt', {% include sg_datatables_view.events.stateSaveParams['template'] with vars %})
+{% endif %}
+{% if sg_datatables_view.events.xhr is not same as(null) %}
+    {% if sg_datatables_view.events.xhr['vars'] is defined %}
+        {% set vars = sg_datatables_view.events.xhr['vars'] %}
+    {% else %}
+        {% set vars = {} %}
+    {% endif %}
+    .on('xhr.dt', {% include sg_datatables_view.events.xhr['template'] with vars %})
+{% endif %}

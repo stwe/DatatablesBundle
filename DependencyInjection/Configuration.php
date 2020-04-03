@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -15,20 +15,20 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-/**
- * Class Configuration
- *
- * @package Sg\DatatablesBundle\DependencyInjection
- */
 class Configuration implements ConfigurationInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('sg_datatables');
+        $treeBuilder = new TreeBuilder('sg_datatables');
+        if (method_exists($treeBuilder, 'getRootNode')) {
+            $rootNode = $treeBuilder->getRootNode();
+        } else {
+            // BC layer for symfony/config 4.1 and older
+            $rootNode = $treeBuilder->root('sg_datatables');
+        }
 
         $this->addDatatableSection($rootNode);
 
@@ -37,24 +37,22 @@ class Configuration implements ConfigurationInterface
 
     /**
      * Add datatable section.
-     *
-     * @param ArrayNodeDefinition $rootNode
      */
     private function addDatatableSection(ArrayNodeDefinition $rootNode)
     {
         $rootNode
             ->children()
-                ->arrayNode('datatable')->addDefaultsIfNotSet()
-                    ->children()
-                        ->arrayNode('query')->addDefaultsIfNotSet()
-                            ->children()
-                                ->booleanNode('translation_query_hints')
-                                    ->defaultFalse()
-                                ->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
+            ->arrayNode('datatable')->addDefaultsIfNotSet()
+            ->children()
+            ->arrayNode('query')->addDefaultsIfNotSet()
+            ->children()
+            ->booleanNode('translation_query_hints')
+            ->defaultFalse()
+            ->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end()
             ->end()
         ;
     }

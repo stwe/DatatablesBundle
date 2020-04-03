@@ -6,9 +6,11 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
+{% import _self as macros %}
+
 {% macro link_title(action) %}
-    {% if action.label is null and action.icon is null %}
-        {% if action.route is not null %}
+    {% if action.label is same as(null) and action.icon is same as(null) %}
+        {% if action.route is not same as(null) %}
             {{ action.route }}
         {% else %}
             null
@@ -25,8 +27,8 @@
 {% endmacro %}
 
 {% macro confirm_dialog(action) %}
-    {% if true == action.confirm %}
-        {% if action.confirmMessage is not null %}
+    {% if action.confirm is same as(true) %}
+        {% if action.confirmMessage is not same as(null) %}
             data-message="{{ action.confirmMessage }}"
         {% else %}
             data-message="{{ 'sg.datatables.confirmMessage'|trans({}, 'messages') }}"
@@ -35,7 +37,7 @@
 {% endmacro %}
 
 {% macro href(action, route_parameters) %}
-    {% if action.routeParameters is not null %}
+    {% if action.routeParameters is not same as(null) %}
         {% if app.request.locale is defined and app.request.locale is not null %}
             {% if '_locale' in route_parameters|keys %}
                 {% set route_parameters = route_parameters|merge({ '_locale': app.request.locale }) %}
@@ -43,7 +45,7 @@
         {% endif %}
     {% endif %}
 
-    {% if action.route is not null %}
+    {% if action.route is not same as(null) %}
         href="{{ path(action.route, route_parameters) }}"
     {% else %}
         href="javascript:void(0);"
@@ -58,17 +60,17 @@
 
 {% set multiselect_actions %}
     {% for actionKey, action in actions %}
-        {% if true == action.callRenderIfClosure %}
+        {% if action.callRenderIfClosure is same as(true) %}
             {% if action.button is same as(false) %}
                 {{ action.startHtml|raw }}
-                <a {{ _self.href(action, route_parameters[actionKey]) }} {{ _self.attributes(action) }} {{ _self.confirm_dialog(action) }}>
-                    {{ _self.link_title(action) }}
+                <a {{ macros.href(action, route_parameters[actionKey]) }} {{ macros.attributes(action) }} {{ macros.confirm_dialog(action) }}>
+                    {{ macros.link_title(action) }}
                 </a>
                 {{ action.endHtml|raw }}
             {% else %}
                 {{ action.startHtml|raw }}
-                <button type="button" {{ _self.value(values[actionKey]) }} {{ _self.attributes(action) }} {{ _self.confirm_dialog(action) }}>
-                    {{ _self.link_title(action) }}
+                <button type="button" {{ macros.value(values[actionKey]) }} {{ macros.attributes(action) }} {{ macros.confirm_dialog(action) }}>
+                    {{ macros.link_title(action) }}
                 </button>
                 {{ action.endHtml|raw }}
             {% endif %}
@@ -88,18 +90,30 @@ function updateCheckAll() {
     var cbox_all = $("#sg-datatables-{{ datatable_name }} tbody input.sg-datatables-{{ datatable_name }}-multiselect-checkbox:checkbox");
     var cbox_checked = $("#sg-datatables-{{ datatable_name }} tbody input.sg-datatables-{{ datatable_name }}-multiselect-checkbox:checkbox:checked");
     var cbox_checkall = $("#sg-datatables-{{ datatable_name }} input.sg-datatables-{{ datatable_name }}-multiselect-checkall:checkbox");
+    var action_links = $(".sg-datatables-{{ datatable_name }}-multiselect-action");
 
     if(cbox_checked.length === 0){
         cbox_checkall.prop('checked', false);
         cbox_checkall.prop('indeterminate', false);
+        action_links.prop('disabled', true);
+        action_links.addClass('disabled');
     } else if (cbox_checked.length === cbox_all.length){
         cbox_checkall.prop('checked', true);
         cbox_checkall.prop('indeterminate', false);
+        action_links.prop('disabled', false);
+        action_links.removeClass('disabled');
     } else {
         cbox_checkall.prop('checked', false);
         cbox_checkall.prop('indeterminate', true);
+        action_links.prop('disabled', false);
+        action_links.removeClass('disabled');
     }
 }
+
+{# handle table redraw #}
+$("#sg-datatables-{{ datatable_name }}").on("draw.dt", function () {
+    updateCheckAll();
+});
 
 {# handle row <tr> click #}
 $("#sg-datatables-{{ datatable_name }} tbody").on("click", "tr", function () {
@@ -135,6 +149,7 @@ $("#sg-datatables-{{ datatable_name }}").on("click", "input.sg-datatables-{{ dat
             }
         }
     });
+    updateCheckAll();
 });
 
 {# handle multiselect action click #}
@@ -160,7 +175,7 @@ $(".sg-datatables-{{ datatable_name }}-multiselect-action").on("click", function
         if (url != null) {
             $.ajax({
                 url: url,
-                type: "POST",
+                method: "POST",
                 cache: false,
                 data: {
                     'data': items,

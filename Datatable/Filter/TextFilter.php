@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,14 +11,9 @@
 
 namespace Sg\DatatablesBundle\Datatable\Filter;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Andx;
+use Doctrine\ORM\QueryBuilder;
 
-/**
- * Class TextFilter
- *
- * @package Sg\DatatablesBundle\Datatable\Filter
- */
 class TextFilter extends AbstractFilter
 {
     //-------------------------------------------------
@@ -30,18 +25,15 @@ class TextFilter extends AbstractFilter
      */
     public function getTemplate()
     {
-        return 'SgDatatablesBundle:filter:input.html.twig';
+        return '@SgDatatables/filter/input.html.twig';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, &$parameterCounter)
+    public function addAndExpression(Andx $andExpr, QueryBuilder $qb, $searchField, $searchValue, $searchTypeOfField, &$parameterCounter)
     {
-        $andExpr = $this->getAndExpression($andExpr, $qb, $searchField, $searchValue, $parameterCounter);
-        $parameterCounter++;
-
-        return $andExpr;
+        return $this->getExpression($andExpr, $qb, $this->searchType, $searchField, $searchValue, $searchTypeOfField, $parameterCounter);
     }
 
     //-------------------------------------------------

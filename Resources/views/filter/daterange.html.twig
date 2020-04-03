@@ -19,16 +19,16 @@
 {%- endset -%}
 
 {% set filter_classes %}
-    class="sg-datatables-individual-filtering{% if column.filter.classes is not null %} {{ column.filter.classes }}{% endif %}"
+    class="sg-datatables-individual-filtering{% if column.filter.classes is not same as(null) %} {{ column.filter.classes }}{% endif %}"
 {% endset %}
 
 {% set filter_width %}
-    {% if column.width is not null %}style="width:{{ column.width }};"{% endif %}
+    {% if column.width is not same as(null) %}style="width:{{ column.width }};"{% endif %}
 {% endset %}
 
 {% set filter_input_placeholder %}
-    {% if true == column.filter.placeholder %}
-        placeholder="{% if column.filter.placeholderText is not null %}{{ column.filter.placeholderText }}{% else %}{{ column.title|striptags|trim }}{% endif %}"
+    {% if column.filter.placeholder is same as(true) %}
+        placeholder="{% if column.filter.placeholderText is not same as(null) %}{{ column.filter.placeholderText }}{% else %}{{ column.title|striptags|trim }}{% endif %}"
     {% endif %}
 {% endset %}
 
@@ -37,7 +37,7 @@
 {% endset %}
 
 {% set filter_column_name %}
-    {% if column.name is not null %}name="{{ column.name }}"{% endif %}
+    {% if column.name is not same as(null) %}name="{{ column.name }}"{% endif %}
 {% endset %}
 
 {% set filter_input_initial_search %}

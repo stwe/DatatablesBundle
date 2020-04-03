@@ -11,22 +11,24 @@ services:
         arguments:
             - '@security.authorization_checker'
             - '@security.token_storage'
-            - '@translator.default'
+            - '@translator'
             - '@router'
             - '@doctrine.orm.entity_manager'
             - '@twig'
 
     sg_datatables.response:
         class: Sg\DatatablesBundle\Response\DatatableResponse
+        public: true
         arguments:
             - '@request_stack'
 
     sg_datatables.factory:
         class: Sg\DatatablesBundle\Datatable\DatatableFactory
+        public: true
         arguments:
             - '@security.authorization_checker'
             - '@security.token_storage'
-            - '@translator.default'
+            - '@translator'
             - '@router'
             - '@doctrine.orm.entity_manager'
             - '@twig'

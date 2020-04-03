@@ -3,9 +3,14 @@
 1. [Column](#1-column)
 2. [Boolean Column](#2-boolean-column)
 3. [DateTime Column](#3-datetime-column)
-4. [Virtual Column](#4-virtual-column)
-5. [Action Column](#5-action-column)
-6. [Multiselect Column](#6-multiselect-column)
+4. [Image Column](#4-image-column)
+5. [Virtual Column](#5-virtual-column)
+6. [Action Column](#6-action-column)
+7. [Multiselect Column](#7-multiselect-column)
+8. [Number Column](#8-number-column)
+9. [Attribute Column](#9-number-column)
+10. [Link Column](#10-link-column)
+11. [Array Column](#11-array-column)
 
 ## 1. Column
 
@@ -13,37 +18,42 @@ Represents the most basic column.
 
 ### Options template
 
-SgDatatablesBundle:column:column.html.twig
+@SgDatatables/column/column.html.twig
 
 ### Cell content template
 
-SgDatatablesBundle:render:column.html.twig
+@SgDatatables/render/column.html.twig
 
 ### Options
 
 With 'null' initialized options uses the default value of the DataTables plugin.
 
-| Option          | Type               | Default           | Required | Description |
-|-----------------|--------------------|-------------------|----------|-------------|
-| cell_type       | null or string     | null              |          | Cell type to be created for a column. |
-| class_name      | null or string     | null              |          | Class to assign to each cell in the column. |
-| content_padding | null or string     | null              |          | Add padding to the text content used when calculating the optimal with for a table. |
-| dql             | null or string     |                   |          | Custom DQL code for the column. |
-| data            | null or string     |                   |          | The data source for the column. |
-| default_content | null or string     | null              |          | Set default, static, content for a column. |
-| name            | null or string     | null              |          | Set a descriptive name for a column. |
-| orderable       | bool               | true              |          | Enable or disable ordering on this column. |
-| order_data      | null, array or int | null              |          | Define multiple column ordering as the default order for a column. |
-| order_sequence  | null or array      | null              |          | Order direction application sequence. |
-| searchable      | bool               | true              |          | Enable or disable filtering on the data in this column. |
-| title           | null or string     | null              |          | Set the column title. |
-| visible         | bool               | true              |          | Enable or disable the display of this column. |
-| width           | null or string     | null              |          | Column width assignment. |
-| add_if          | null or Closure    | null              |          | Add column only if conditions are TRUE. |
-| join_type       | string             | 'leftJoin'        |          | Join type (default: 'leftJoin'), if the column represents an association. |
-| type_of_field   | null or string     | null (autodetect) |          | Set the data type itself for ordering (example: integer instead string). |
-| filter          | array              | TextFilter        |          | A Filter instance for individual filtering. |
-| editable        | array or null      | null              |          | An Editable instance for in-place editing. |
+| Option              | Type               | Default           | Required | Description |
+|---------------------|--------------------|-------------------|----------|-------------|
+| cell_type           | null or string     | null              |          | Cell type to be created for a column. |
+| class_name          | null or string     | null              |          | Class to assign to each cell in the column. |
+| content_padding     | null or string     | null              |          | Add padding to the text content used when calculating the optimal with for a table. |
+| dql                 | null or string     |                   |          | Custom DQL code for the column. |
+| data                | null or string     |                   |          | The data source for the column. |
+| default_content     | null or string     | null              |          | Set default, static, content for a column. |
+| name                | null or string     | null              |          | Set a descriptive name for a column. |
+| orderable           | bool               | true              |          | Enable or disable ordering on this column. |
+| order_data          | null, array or int | null              |          | Define multiple column ordering as the default order for a column. |
+| order_sequence      | null or array      | null              |          | Order direction application sequence. |
+| searchable          | bool               | true              |          | Enable or disable filtering on the data in this column. |
+| title               | null or string     | null              |          | Set the column title. |
+| visible             | bool               | true              |          | Enable or disable the display of this column. |
+| sent_in_response    | bool               | true              |          | When set to `false`, allows to access to this field in the `$row` array in Closures without sending this column to the browser (parameter `visible` set to `false` only hides the column in the rendered table). |
+| width               | null or string     | null              |          | Column width assignment. |
+| add_if              | null or Closure    | null              |          | Add column only if conditions are TRUE. |
+| join_type           | string             | 'leftJoin'        |          | Join type (default: 'leftJoin'), if the column represents an association. |
+| type_of_field       | null or string     | null (autodetect) |          | Set the data type itself for ordering (example: integer instead string). |
+| responsive_priority | null or int        | null              |          | Set column's visibility priority. Requires the Responsive extension. |
+| filter              | array              | TextFilter        |          | A Filter instance for individual filtering. |
+| editable            | array or null      | null              |          | An Editable instance for in-place editing. |
+| mapped              | bool               | true              |          | Allow to create columns not mapped in entity neither defined by DQL. |
+| is_association      | bool               | false             |          | Allow to force if the column is an association, usally used with `mapped` and `data_source`. |
+| data_source         | null or string     | null              |          | Specify the column source of the data to manipulate in the current column. Usally used with `mapped` and `data_source`. | 
 
 ### Example
 
@@ -135,6 +145,7 @@ $this->columnBuilder
     ->add('full_name', Column::class, array(
         'title' => 'Full name',
         'dql' => "CONCAT(user.firstname, ' ', user.lastname)",
+        'type_of_field' => 'string',
         'searchable' => true,
         'orderable' => true,
     ))
@@ -143,6 +154,7 @@ $this->columnBuilder
     ->add('post_count', Column::class, array(
         'title' => 'User posts count',
         'dql' => '(SELECT COUNT({p}) FROM MyBundle:Post {p} WHERE {p}.user = user)',
+        'type_of_field' => 'integer',
         'searchable' => true,
         'orderable' => true,
     ))
@@ -156,11 +168,11 @@ Represents a column, optimized for boolean values.
 
 ### Options template
 
-SgDatatablesBundle:column:column.html.twig
+@SgDatatables/column/column.html.twig
 
 ### Cell content template
 
-SgDatatablesBundle:render:boolean.html.twig
+@SgDatatables/render/boolean.html.twig
 
 ### Options
 
@@ -220,16 +232,15 @@ ___
 
 Represents a column, optimized for date time values.
 
-**Be sure to install the [Moment.js](https://momentjs.com/) plugin before using this column.**
 **Be sure to install the [Bootstrap Date Range Picker](http://www.daterangepicker.com/) plugin before using the DateRangeFilter.**
 
 ### Options template
 
-SgDatatablesBundle:column:column.html.twig
+@SgDatatables/column/column.html.twig
 
 ### Cell content template
 
-SgDatatablesBundle:render:datetime.html.twig
+@SgDatatables/render/datetime.html.twig
 
 ### Options
 
@@ -239,8 +250,7 @@ All options of [Column](#1-column).
 
 | Option      | Type   | Default | Required | Description              |
 |-------------|--------|---------|----------|--------------------------|
-| date_format | string | lll     |          | Moment.js date format.   |
-| timeago     | bool   | false   |          | Use the time ago format. |
+| date_format | string | lll     |          | PHP date format.         |
 
 ### Example
 
@@ -264,17 +274,87 @@ $this->columnBuilder
 ```
 ___
 
-## 4. Virtual column
+## 4. Image column
+
+Represents a column, optimized for images.
+
+**The LiipImagineBundle is required. Please follow all steps as described [here](http://symfony.com/doc/master/bundles/LiipImagineBundle/installation.html).**
+
+**To upload images, I recommend the VichUploaderBundle. You can follow all steps as described [here](https://github.com/dustin10/VichUploaderBundle/blob/master/Resources/doc/index.md).**
+
+**Be sure to install the [Featherlight.js](http://noelboss.github.io/featherlight/) plugin before using this column.**
+
+A complete example of an ImageColumn can be found in the [demo bundle](https://github.com/stwe/DtBundleDemo10).
+
+### Options template
+
+@SgDatatables/column/column.html.twig
+
+### Cell content template
+
+@SgDatatables/render/thumb.html.twig
+
+### Options
+
+All options of [Column](#1-column), except `editable`.
+
+**Additional:**
+
+| Option                   | Type           | Default | Required | Description              |
+|--------------------------|----------------|---------|----------|--------------------------|
+| imagine_filter           | string         |         | x        | The imagine filter used to display image preview. |
+| relative_path            | string         |         | x        | The relative path. |
+| imagine_filter_enlarged  | string or null | null    |          | The imagine filter used to display the enlarged image's size. |
+| holder_url               | string or null | null    |          | The placeholder url (e.g. "http://placehold.it"). |
+| holder_width             | string         | '50'    |          | The default width of the placeholder. |
+| holder_height            | string         | '50'    |          | The default height of the placeholder. |
+| enlarge                  | bool           | false   |          | Enlarge thumbnail. |
+
+### Example
+
+#### Image
+
+``` php
+$this->columnBuilder
+    ->add('image', ImageColumn::class, array(
+        'title' => 'Image',
+        'imagine_filter' => 'thumbnail_50_x_50',
+        'imagine_filter_enlarged' => 'thumbnail_250_x_250',
+        'relative_path' => 'images',
+        'holder_url' => 'https://placehold.it',
+        'enlarge' => true,
+    ))
+;
+```
+
+#### Gallery (one-to-many association)
+
+``` php
+$this->columnBuilder
+    ->add('images.fileName', ImageColumn::class, array(
+        'title' => 'Images',
+        'data' => 'images[ ].fileName',
+        'imagine_filter' => 'thumbnail_50_x_50',
+        'imagine_filter_enlarged' => 'thumbnail_250_x_250',
+        'relative_path' => 'images',
+        'holder_url' => 'https://placehold.it',
+        'enlarge' => true,
+    ))
+;
+```
+___
+
+## 5. Virtual column
 
 Represents a virtual column.
 
 ### Options template
 
-SgDatatablesBundle:Column:column.html.twig
+@SgDatatables/column/column.html.twig
 
 ### Options
 
-All options of [Column](#1-column), except `data`, `join_type`, `editable` and `editable_if`.
+All options of [Column](#1-column), except `data`, `join_type` and `editable`.
 
 The options `searchable` and `orderable` are set to `false` by default.
 
@@ -329,17 +409,17 @@ public function buildDatatable(array $options = array())
 ```
 ___
 
-## 5. Action column
+## 6. Action column
 
 A Column to display CRUD action labels or buttons.
 
 ### Options template
 
-SgDatatablesBundle:Column:column.html.twig
+@SgDatatables/column/column.html.twig
 
 ### Cell content template
 
-SgDatatablesBundle:render:action.html.twig
+@SgDatatables/render/action.html.twig
 
 ### Action column options
 
@@ -367,7 +447,7 @@ SgDatatablesBundle:render:action.html.twig
 | label               | null or string         | null    |          | A label for the Action. |
 | confirm             | bool                   | false   |          | Show confirm message if true. |
 | confirm_message     | null or string         | null    |          | The confirm message. |
-| attributes          | null or array          | null    |          | HTML Tag attributes (except 'href' and 'value'). |
+| attributes          | null, array or Closure | null    |          | HTML Tag attributes (except 'href' and 'value'). |
 | button              | bool                   | false   |          | Render a button instead of a link. |
 | button_value        | null or string         | null    |          | The button value. |
 | button_value_prefix | bool                   | false   |          | Use the Datatable-Name as prefix for the button value. |
@@ -377,7 +457,7 @@ SgDatatablesBundle:render:action.html.twig
 
 ### Example
 
-**Don't forget to add the following to your route annotation:**
+**Don't forget to add the following to your route annotations:**
 
 ``` php
 options = {"expose" = true}
@@ -466,17 +546,17 @@ $this->columnBuilder
 ```
 ___
 
-## 6. Multiselect column
+## 7. Multiselect column
 
 Support for Bulk Actions.
 
 ### Options template
 
-SgDatatablesBundle:Column:multiselect.html.twig
+@SgDatatables/column/multiselect.html.twig
 
 ### Cell content template
 
-SgDatatablesBundle:render:multiselect.html.twig
+@SgDatatables/render/multiselect.html.twig
 
 ### Options
 
@@ -585,3 +665,171 @@ $this->columnBuilder
 ```
 ___
 
+## 8. Number column
+
+Represents a column, optimized for numbers.
+
+**The intl extension is needed.**
+
+### Options template
+
+@SgDatatables/column/column.html.twig
+
+### Options
+
+All options of [Column](#1-column).
+
+**Additional:**
+
+| Option              | Type                   | Default                               | Required | Description     |
+|---------------------|------------------------|---------------------------------------|----------|-----------------|
+| formatter           | NumberFormatter Object |                                       | X        | A NumberFormatter instance. |
+| use_format_currency | bool                   | false                                 |          | Use NumberFormatter::formatCurrency instead NumberFormatter::format to format the value. |
+| currency            | null or string         | NumberFormatter::INTL_CURRENCY_SYMBOL |          | The currency code (e.g. EUR). |
+| suffix_string       | null or string         | null                                  |          | An optionna string to display after the number. |
+
+### Example
+
+``` php
+public function buildDatatable(array $options = array())
+{
+    // ...
+
+    $formatter = new \NumberFormatter("de_DE", \NumberFormatter::CURRENCY);
+    
+    // other example:
+    // $numberFormatter = new \NumberFormatter('en_US', \NumberFormatter::DECIMAL);
+    // $numberFormatter->setAttribute(\NumberFormatter::FRACTION_DIGITS, 2);
+
+    $this->columnBuilder
+        ->add('currency', NumberColumn::class, array(
+            'formatter' => $formatter,
+            'use_format_currency' => true, // needed for \NumberFormatter::CURRENCY
+            'currency' => 'EUR',
+            'searchable' => true,
+            'orderable' => true,
+            'editable' => array(TextEditable::class, array(
+                'pk' => 'id',
+                'mode' => 'inline',
+            )),
+        ))
+
+        // ...
+    ;
+}
+```
+___
+## 9. Attribute column
+
+Represents a column, with a `span` tag with `data-*` attributes. The displayed data is in the `span` tag.
+
+
+### Options template
+
+@SgDatatables/column/attributeColumn.html.twig
+
+### Options
+
+All options of [Column](#1-column).
+
+**Additional:**
+
+| Option              | Type                      | Default                               | Required | Description     |
+|---------------------|---------------------------|---------------------------------------|----------|-----------------|
+| attributes          | null or string or Closure |                                       | X        | Attributes to display in `data-*` attributes |
+
+
+### Example
+
+``` php
+public function buildDatatable(array $options = array())
+{
+    // ...
+
+    $this->columnBuilder
+        ->add('description', AttributeColumn::class, array(
+            'title'      => 'Message',
+            'attributes' => function($row) {
+                return array(
+                    'severity' => $row['severity']
+                );
+            }
+        ))
+
+        // ...
+    ;
+}
+```
+
+## 10. Link column
+
+Represents a column, with a link in each cell.
+
+
+### Options
+
+All options of [Column](#1-column).
+
+**Additional:**
+
+| Option              | Type                      | Default                               | Required | Description     |
+|---------------------|---------------------------|---------------------------------------|----------|-----------------|
+| route               | string                    | an empty string                       |          | Name of the route to generate. |
+| route_params        | array or Closure          | an empty array                        |          | Parameters needed to generate the route. |
+| empty_value         | string                    | an empty string                       |          | String to display if the content is empty. |
+| text                | null or Closure           | null                                  |          | An eventual function to transform the text of the link to display. |
+| separator           | string                    | an empty string                       |          | The separator between each element to display when there is an association. |
+| filterFunction      | null or Closure           | null                                  |          | An eventual function to filter the elements to display if there is an association. |
+| email               | bool                      | false                                 |          | Generate a link to an email address. |
+
+
+### Example
+
+``` php
+public function buildDatatable(array $options = array())
+{
+    // ...
+
+    $this->columnBuilder
+        ->add('referents', LinkColumn::class, array(
+            'title'           => "Referents",
+            'empty_value'     => '<span class="comment">none</span>',
+            'separator'       => ', ',
+            'filterFunction'  => function($projectPerson) {
+                return $projectPerson['isInChargeOf'] === false; // I want to display only person not in charge, this data is selected with a column with sent_in_response=False
+            },
+            'text'            => function($projectPerson) {
+                return $projectPerson['person']['firstName'] . " " . $projectPerson['person']['lastName'];
+            },
+            'route'           => 'subvention_person_view',
+            'route_params'    => function($projectPerson) {
+                return array(
+                    'id' => $projectPerson['person']['id']
+                );
+            }
+        ))
+
+        // ...
+    ;
+}
+```
+
+## 11. Array column
+
+Represents a column, with array content from column types (array, json_array, simple_array)
+public function buildDatatable(array $options = array())
+
+### Example
+{
+    // ...
+
+    $this->columnBuilder
+        ->add('notes', ArrayColumn::class, array(
+            'title'           => "Notes",
+            'empty_value'     => [],
+        ))
+
+    // ...
+   
+}
+```

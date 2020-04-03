@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,23 +11,17 @@
 
 namespace Sg\DatatablesBundle\Command;
 
-use Sg\DatatablesBundle\Generator\DatatableGenerator;
-
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCommand;
-use Sensio\Bundle\GeneratorBundle\Command\Validators;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Exception;
+use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCommand;
+use Sensio\Bundle\GeneratorBundle\Command\Validators;
+use Sg\DatatablesBundle\Generator\DatatableGenerator;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
-/**
- * Class CreateDatatableCommand
- *
- * @package Sg\DatatablesBundle\Command
- */
 class CreateDatatableCommand extends GenerateDoctrineCommand
 {
     //-------------------------------------------------
@@ -41,11 +35,12 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
     {
         $this
             ->setName('sg:datatable:generate')
-            ->setAliases(array('sg:datatables:generate', 'sg:generate:datatable', 'sg:generate:datatables'))
+            ->setAliases(['sg:datatables:generate', 'sg:generate:datatable', 'sg:generate:datatables'])
             ->setDescription('Generates a new Datatable based on a Doctrine entity.')
             ->addArgument('entity', InputArgument::REQUIRED, 'The entity class name (shortcut notation).')
             ->addOption('fields', 'f', InputOption::VALUE_OPTIONAL, 'The fields to create columns in the new Datatable.')
-            ->addOption('overwrite', 'o', InputOption::VALUE_NONE, 'Allow to overwrite an existing Datatable.');
+            ->addOption('overwrite', 'o', InputOption::VALUE_NONE, 'Allow to overwrite an existing Datatable.')
+        ;
     }
 
     /**
@@ -58,7 +53,7 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
         list($bundle, $entity) = $this->parseShortcutNotation($entity);
 
         // get entity's metadata
-        $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle)."\\".$entity;
+        $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle).'\\'.$entity;
         $metadata = $this->getEntityMetadata($entityClass);
 
         // get fields option
@@ -100,7 +95,7 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
      */
     protected function getSkeletonDirs(BundleInterface $bundle = null)
     {
-        $skeletonDirs = array();
+        $skeletonDirs = [];
         $skeletonDirs[] = $this->getContainer()->get('kernel')->locateResource('@SgDatatablesBundle/Resources/views/skeleton');
 
         return $skeletonDirs;
@@ -119,12 +114,12 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
      */
     private static function parseFields($input)
     {
-        $fields = array();
+        $fields = [];
 
         foreach (explode(' ', $input) as $value) {
             $elements = explode(':', $value);
 
-            $row = array();
+            $row = [];
             $row['property'] = $elements[0];
             $row['column_type'] = 'Column::class';
             $row['data'] = null;
@@ -134,9 +129,11 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
                 switch ($elements[1]) {
                     case 'datetime':
                         $row['column_type'] = 'DateTimeColumn::class';
+
                         break;
                     case 'boolean':
                         $row['column_type'] = 'BooleanColumn::class';
+
                         break;
                 }
             }
@@ -150,14 +147,11 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
     /**
      * Get Id from metadata.
      *
-     * @param array $metadata
-     *
-     * @return mixed
      * @throws Exception
      */
     private function getIdentifierFromMetadata(array $metadata)
     {
-        if (count($metadata[0]->identifier) > 1) {
+        if (\count($metadata[0]->identifier) > 1) {
             throw new Exception('CreateDatatableCommand::getIdentifierFromMetadata(): The Datatable generator does not support entities with multiple primary keys.');
         }
 
@@ -168,24 +162,24 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
      * Returns an array of fields. Fields can be both column fields and
      * association fields.
      *
-     * @param ClassMetadataInfo $metadata
-     *
      * @return array $fields
      */
     private function getFieldsFromMetadata(ClassMetadataInfo $metadata)
     {
-        $fields = array();
+        $fields = [];
 
         foreach ($metadata->fieldMappings as $field) {
-            $row = array();
+            $row = [];
             $row['property'] = $field['fieldName'];
 
             switch ($field['type']) {
                 case 'datetime':
                     $row['column_type'] = 'DateTimeColumn::class';
+
                     break;
                 case 'boolean':
                     $row['column_type'] = 'BooleanColumn::class';
+
                     break;
                 default:
                     $row['column_type'] = 'Column::class';
@@ -201,11 +195,11 @@ class CreateDatatableCommand extends GenerateDoctrineCommand
             $targetMetadata = $this->getEntityMetadata($targetClass);
 
             foreach ($targetMetadata[0]->fieldMappings as $field) {
-                $row = array();
+                $row = [];
                 $row['property'] = $relation['fieldName'].'.'.$field['fieldName'];
                 $row['column_type'] = 'Column::class';
                 $row['title'] = ucwords(str_replace('.', ' ', $row['property']));
-                if ($relation['type'] === ClassMetadataInfo::ONE_TO_MANY || $relation['type'] === ClassMetadataInfo::MANY_TO_MANY) {
+                if (ClassMetadataInfo::ONE_TO_MANY === $relation['type'] || ClassMetadataInfo::MANY_TO_MANY === $relation['type']) {
                     $row['data'] = $relation['fieldName'].'[, ].'.$field['fieldName'];
                 } else {
                     $row['data'] = null;

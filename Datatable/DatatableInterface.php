@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,14 +11,11 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
-use Sg\DatatablesBundle\Datatable\Column\ColumnInterface;
-
 use Doctrine\ORM\EntityManagerInterface;
+use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 
 /**
- * Interface DatatableInterface
- *
- * @package Sg\DatatablesBundle\Datatable
+ * Interface DatatableInterface.
  */
 interface DatatableInterface
 {
@@ -26,10 +23,8 @@ interface DatatableInterface
 
     /**
      * Builds the datatable.
-     *
-     * @param array $options
      */
-    public function buildDatatable(array $options = array());
+    public function buildDatatable(array $options = []);
 
     /**
      * Returns a callable that modify the data row.
@@ -39,25 +34,9 @@ interface DatatableInterface
     public function getLineFormatter();
 
     /**
-     * Get all generated Columns.
-     *
-     * @return array
+     * @return ColumnBuilder
      */
-    public function getColumns();
-
-    /**
-     * Get an array of Column names as keys and Column ids as values.
-     *
-     * @return array
-     */
-    public function getColumnNames();
-
-    /**
-     * Returns a MultiselectColumn if it exists.
-     *
-     * @return null|ColumnInterface
-     */
-    public function getMultiselectColumn();
+    public function getColumnBuilder();
 
     /**
      * Get Ajax instance.
@@ -86,6 +65,20 @@ interface DatatableInterface
      * @return Callbacks
      */
     public function getCallbacks();
+
+    /**
+     * Get Events instance.
+     *
+     * @return Events
+     */
+    public function getEvents();
+
+    /**
+     * Get Extensions instance.
+     *
+     * @return Extensions
+     */
+    public function getExtensions();
 
     /**
      * Get Language instance.
@@ -125,4 +118,18 @@ interface DatatableInterface
      * @return string
      */
     public function getName();
+
+    /**
+     * Returns the unique id of this datatable view.
+     *
+     * @return int
+     */
+    public function getUniqueId();
+
+    /**
+     * Returns the unique name of this datatable view.
+     *
+     * @return string
+     */
+    public function getUniqueName();
 }

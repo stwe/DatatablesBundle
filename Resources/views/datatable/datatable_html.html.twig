@@ -14,37 +14,50 @@
     {% endif %}
 {% endif %}
 
-<table id="sg-datatables-{{ sg_datatables_view.name }}" class="{{ sg_datatables_view.options.classes }}" cellspacing="0" width="100%">
+<table id="sg-datatables-{{ sg_datatables_view.uniqueName }}" class="{{ sg_datatables_view.options.classes }}" cellspacing="0" width="100%">
     <thead>
         {% if true == individual_filtering %}
             {% if 'head' == sg_datatables_view.options.individualFilteringPosition or 'both' == sg_datatables_view.options.individualFilteringPosition%}
                 <tr>
-                    {% for column in sg_datatables_view.columns %}
-                        <th>{{ column.title }}</th>
+                    {% for column in sg_datatables_view.columnBuilder.columns %}
+                        {% if column.sentInResponse %}
+                            <th>{{ column.title }}</th>
+                        {% endif %}
                     {% endfor %}
                 </tr>
-                <tr id="sg-datatables-{{ sg_datatables_view.name }}-filterrow">
-                    {% for column in sg_datatables_view.columns %}
-                        <th>
-                            {% if column.searchable %}
-                                {{ sg_datatables_render_filter(sg_datatables_view, column, 'head') }}
-                            {% endif %}
-                        </th>
+                <tr id="sg-datatables-{{ sg_datatables_view.uniqueName }}-filterrow">
+                    {% for column in sg_datatables_view.columnBuilder.columns %}
+                        {% if column.sentInResponse %}
+                            <th>
+                                {% if column.searchable %}
+                                    {{ sg_datatables_render_filter(sg_datatables_view, column, 'head') }}
+                                {% endif %}
+                            </th>
+                        {% endif %}
                     {% endfor %}
                 </tr>
             {% endif %}
         {% endif %}
+        <tr>
+            {% for column in sg_datatables_view.columnBuilder.columns %}
+                {% if column.sentInResponse %}
+                    <th>{{ column.title }}</th>
+                {% endif %}
+            {% endfor %}
+        </tr>
     </thead>
         {% if true == individual_filtering %}
             {% if 'foot' == sg_datatables_view.options.individualFilteringPosition or 'both' == sg_datatables_view.options.individualFilteringPosition%}
             <tfoot>
                     <tr>
-                        {% for column in sg_datatables_view.columns %}
-                            <td>
-                                {% if column.searchable %}
-                                    {{ sg_datatables_render_filter(sg_datatables_view, column, 'foot') }}
-                                {% endif %}
-                            </td>
+                        {% for column in sg_datatables_view.columnBuilder.columns %}
+                            {% if column.sentInResponse %}
+                                <td>
+                                    {% if column.searchable %}
+                                        {{ sg_datatables_render_filter(sg_datatables_view, column, 'foot') }}
+                                    {% endif %}
+                                </td>
+                            {% endif %}
                         {% endfor %}
                     </tr>
                 </tfoot>
@@ -54,6 +67,6 @@
     </tbody>
 </table>
 
-{% if sg_datatables_view.multiselectColumn is not null %}
-    <div id="sg-datatables-{{ sg_datatables_view.name }}-multiselect-actions"></div>
+{% if sg_datatables_view.columnBuilder.uniqueColumn('multiselect') is not same as(null) %}
+    <div id="sg-datatables-{{ sg_datatables_view.uniqueName }}-multiselect-actions"></div>
 {% endif %}

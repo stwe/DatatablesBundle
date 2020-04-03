@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the SgDatatablesBundle package.
  *
  * (c) stwe <https://github.com/stwe/DatatablesBundle>
@@ -11,23 +11,18 @@
 
 namespace Sg\DatatablesBundle\Datatable;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
-
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Doctrine\ORM\EntityManagerInterface;
-use Twig_Environment;
-use Exception;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Translation\TranslatorInterface as LegacyTranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
-/**
- * Class AbstractDatatable
- *
- * @package Sg\DatatablesBundle\Datatable
- */
 abstract class AbstractDatatable implements DatatableInterface
 {
     /**
@@ -68,7 +63,7 @@ abstract class AbstractDatatable implements DatatableInterface
     /**
      * The Twig Environment.
      *
-     * @var Twig_Environment
+     * @var Environment
      */
     protected $twig;
 
@@ -108,11 +103,32 @@ abstract class AbstractDatatable implements DatatableInterface
     protected $callbacks;
 
     /**
+     * A Events instance.
+     *
+     * @var Events
+     */
+    protected $events;
+
+    /**
+     * An Extensions instance.
+     *
+     * @var Extensions
+     */
+    protected $extensions;
+
+    /**
      * A Language instance.
      *
      * @var Language
      */
     protected $language;
+
+    /**
+     * The unique id for this instance.
+     *
+     * @var int
+     */
+    protected $uniqueId;
 
     /**
      * The PropertyAccessor.
@@ -122,45 +138,53 @@ abstract class AbstractDatatable implements DatatableInterface
     protected $accessor;
 
     //-------------------------------------------------
-    // Ctor.
-    //-------------------------------------------------
 
     /**
-     * AbstractDatatable constructor.
+     * Used to generate unique names.
      *
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param TokenStorageInterface         $securityToken
-     * @param TranslatorInterface           $translator
-     * @param RouterInterface               $router
-     * @param EntityManagerInterface        $em
-     * @param Twig_Environment              $twig
-     *
+     * @var array
+     */
+    protected static $uniqueCounter = [];
+
+    /**
      * @throws Exception
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $securityToken,
-        TranslatorInterface $translator,
+        $translator,
         RouterInterface $router,
         EntityManagerInterface $em,
-        Twig_Environment $twig
+        Environment $twig
     ) {
         $this->validateName();
 
+        if (isset(self::$uniqueCounter[$this->getName()])) {
+            $this->uniqueId = ++self::$uniqueCounter[$this->getName()];
+        } else {
+            $this->uniqueId = self::$uniqueCounter[$this->getName()] = 1;
+        }
+
         $this->authorizationChecker = $authorizationChecker;
         $this->securityToken = $securityToken;
+
+        if (!($translator instanceof LegacyTranslatorInterface) && !($translator instanceof TranslatorInterface)) {
+            throw new \InvalidArgumentException(sprintf('The $translator argument of %s must be an instance of %s or %s, a %s was given.', static::class, LegacyTranslatorInterface::class, TranslatorInterface::class, get_class($translator)));
+        }
         $this->translator = $translator;
         $this->router = $router;
         $this->em = $em;
         $this->twig = $twig;
 
         $metadata = $em->getClassMetadata($this->getEntity());
-        $this->columnBuilder = new ColumnBuilder($metadata, $twig, $this->getName(), $em);
+        $this->columnBuilder = new ColumnBuilder($metadata, $twig, $router, $this->getName(), $em);
 
         $this->ajax = new Ajax();
         $this->options = new Options();
         $this->features = new Features();
         $this->callbacks = new Callbacks();
+        $this->events = new Events();
+        $this->extensions = new Extensions();
         $this->language = new Language();
 
         $this->accessor = PropertyAccess::createPropertyAccessor();
@@ -181,25 +205,9 @@ abstract class AbstractDatatable implements DatatableInterface
     /**
      * {@inheritdoc}
      */
-    public function getColumns()
+    public function getColumnBuilder()
     {
-        return $this->columnBuilder->getColumns();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getColumnNames()
-    {
-        return $this->columnBuilder->getColumnNames();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMultiselectColumn()
-    {
-        return $this->columnBuilder->getMultiselectColumn();
+        return $this->columnBuilder;
     }
 
     /**
@@ -237,6 +245,22 @@ abstract class AbstractDatatable implements DatatableInterface
     /**
      * {@inheritdoc}
      */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExtensions()
+    {
+        return $this->extensions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getLanguage()
     {
         return $this->language;
@@ -255,7 +279,7 @@ abstract class AbstractDatatable implements DatatableInterface
      */
     public function getOptionsArrayFromEntities($entities, $keyFrom = 'id', $valueFrom = 'name')
     {
-        $options = array();
+        $options = [];
 
         foreach ($entities as $entity) {
             if (true === $this->accessor->isReadable($entity, $keyFrom) && true === $this->accessor->isReadable($entity, $valueFrom)) {
@@ -264,6 +288,22 @@ abstract class AbstractDatatable implements DatatableInterface
         }
 
         return $options;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUniqueId()
+    {
+        return $this->uniqueId;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUniqueName()
+    {
+        return $this->getName().($this->getUniqueId() > 1 ? '-'.$this->getUniqueId() : '');
     }
 
     //-------------------------------------------------

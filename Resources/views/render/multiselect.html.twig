@@ -6,14 +6,16 @@
  # For the full copyright and license information, please view the LICENSE
  # file that was distributed with this source code.
  #}
+{% import _self as macros %}
+
 {% macro attributes(attributes) %}
     {% for key, value in attributes %}
         {{ key }}="{{ value }}"
     {% endfor %}
 {% endmacro %}
 
-{% if true == render_if_cbox %}
+{% if render_if_cbox is same as(true) %}
     {{ start_html|raw }}
-    <input type="checkbox" {{ _self.attributes(attributes) }} value="{{ value }}" />
+    <input type="checkbox" {{ macros.attributes(attributes) }} value="{{ value }}" />
     {{ end_html|raw }}
 {% endif %}
