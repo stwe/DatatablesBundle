@@ -76,21 +76,21 @@ interface ColumnInterface
      * Render images or any other special content.
      * This function works similar to the DataTables Plugin 'columns.render'.
      */
-    public function renderCellContent(array &$row, array &$resultRow);
+    public function renderCellContent(array &$row);
 
     /**
      * Render single field.
      *
      * @return $this
      */
-    public function renderSingleField(array &$row, array &$resultRow);
+    public function renderSingleField(array &$row);
 
     /**
      * Render toMany.
      *
      * @return $this
      */
-    public function renderToMany(array &$row, array &$resultRow);
+    public function renderToMany(array &$row);
 
     /**
      * Get the template for the 'renderCellContent' function.

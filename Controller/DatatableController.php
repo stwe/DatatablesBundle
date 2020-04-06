@@ -14,7 +14,7 @@ namespace Sg\DatatablesBundle\Controller;
 use DateTime;
 use Doctrine\DBAL\Types\Type;
 use Exception;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -22,7 +22,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class DatatableController extends Controller
+class DatatableController extends AbstractController
 {
     //-------------------------------------------------
     // Actions

@@ -16,7 +16,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Exception;
 use Sg\DatatablesBundle\Datatable\Factory;
-use Twig_Environment;
+use Symfony\Component\Routing\RouterInterface;
+use Twig\Environment;
 
 class ColumnBuilder
 {
@@ -85,7 +86,7 @@ class ColumnBuilder
     /**
      * @param string $datatableName
      */
-    public function __construct(ClassMetadata $metadata, Twig_Environment $twig, $datatableName, EntityManagerInterface $em, iterable $columnTypes)
+    public function __construct(ClassMetadata $metadata, Environment $twig, $datatableName, EntityManagerInterface $em, iterable $columnTypes)
     {
         $this->metadata = $metadata;
         $this->twig = $twig;
@@ -117,7 +118,7 @@ class ColumnBuilder
     {
         if (\is_object($class)) {
             $column = Factory::create($class, ColumnInterface::class);
-            @trigger_error(sprintf('Using an object as column type is deprecated since 1.3 and will be removed in 2.0. Use a class name (FQCN) instead.'), E_USER_DEPRECATED);
+            @trigger_error(sprintf('Using an object as column type is deprecated and will be removed in 2.0. Use a class name (FQCN) instead.'), E_USER_DEPRECATED);
         } else {
             $columns = [];
             foreach ($this->columnTypes as $column) {

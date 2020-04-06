@@ -12,11 +12,15 @@ matrix:
     - php: 7.2
       env: DEPENDENCIES=beta SYMFONY_REQUIRE="3.4.*"
     - php: 7.2
-      env: DEPENDENCIES=beta SYMFONY_REQUIRE="4.3.*"
+      env: DEPENDENCIES=beta SYMFONY_REQUIRE="4.4.*"
+    - php: 7.2
+      env: DEPENDENCIES=beta SYMFONY_REQUIRE="5.0.*"
     - php: 7.3
       env: DEPENDENCIES=beta SYMFONY_REQUIRE="3.4.*"
     - php: 7.3
-      env: DEPENDENCIES=beta SYMFONY_REQUIRE="4.3.*"
+      env: DEPENDENCIES=beta SYMFONY_REQUIRE="4.4.*"
+    - php: 7.3
+      env: DEPENDENCIES=beta SYMFONY_REQUIRE="5.0.*"
     - php: hhvm
   allow_failures:
     - php: hhvm

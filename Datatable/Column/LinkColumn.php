@@ -86,7 +86,7 @@ class LinkColumn extends AbstractColumn
     /**
      * {@inheritdoc}
      */
-    public function renderSingleField(array &$row, array &$resultRow)
+    public function renderSingleField(array &$row)
     {
         $path = Helper::getDataPropertyPath($this->data);
         $content = '';
@@ -129,37 +129,23 @@ class LinkColumn extends AbstractColumn
                     $content .= '</a>';
                 }
             }
-        } else {
-            $content = $this->getEmptyValue();
+            $this->accessor->setValue($row, $path, $content);
         }
 
-        // Handle if we try to access to a child attribute (aaa.bbb) and the parent is null
-        // (aaa is null)
-        $keys = explode('.', $this->data);
-
-        if (\count($keys) >= 2 && null === $resultRow[$keys[0]]) {
-            $resultRow[$keys[0]] = [$keys[1] => null];
-        }
-
-        if (\count($keys) >= 3 && null === $resultRow[$keys[0]][$keys[1]]) {
-            $resultRow[$keys[0]][$keys[1]] = [$keys[2] => null];
-        }
-
-        $this->accessor->setValue($resultRow, $path, $content);
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function renderToMany(array &$row, array &$resultRow)
+    public function renderToMany(array &$row)
     {
         $value = null;
-        $pathSource = Helper::getDataPropertyPath(null === $this->dataSource ? $this->data : $this->dataSource, $value);
         $path = Helper::getDataPropertyPath($this->data, $value);
         $content = '';
 
-        if ($this->accessor->isReadable($row, $pathSource)) {
-            $entries = $this->accessor->getValue($row, $pathSource);
+        if ($this->accessor->isReadable($row, $path)) {
+            $entries = $this->accessor->getValue($row, $path);
 
             if ($this->isEditableContentRequired($row)) {
                 // e.g. comments[ ].createdBy.username
@@ -177,7 +163,7 @@ class LinkColumn extends AbstractColumn
                             $currentObjectPath
                         );
 
-                        $this->accessor->setValue($resultRow, $currentPath, $content);
+                        $this->accessor->setValue($row, $currentPath, $content);
                     }
                 }
                 // no placeholder - leave this blank
@@ -213,13 +199,11 @@ class LinkColumn extends AbstractColumn
                         }
                     }
 
-                    $this->accessor->setValue($resultRow, $path, $content);
+                    $this->accessor->setValue($row, $path, $content);
                 } else {
-                    $this->accessor->setValue($resultRow, $path, $this->getEmptyValue());
+                    $this->accessor->setValue($row, $path, $this->getEmptyValue());
                 }
             }
-        } else {
-            $this->accessor->setValue($resultRow, $path, $this->getEmptyValue());
         }
 
         return $this;

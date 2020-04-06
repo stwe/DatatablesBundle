@@ -18,7 +18,8 @@ use Sg\DatatablesBundle\Datatable\AddIfTrait;
 use Sg\DatatablesBundle\Datatable\Editable\EditableInterface;
 use Sg\DatatablesBundle\Datatable\OptionsTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Twig_Environment;
+use Symfony\Component\Routing\RouterInterface;
+use Twig\Environment;
 
 abstract class AbstractColumn implements ColumnInterface
 {
@@ -287,39 +288,6 @@ abstract class AbstractColumn implements ColumnInterface
      * @var bool
      */
     protected $sentInResponse;
-
-    /**
-     * If this column displays the total of its cells in its head
-     * Default: false.
-     *
-     * @var bool
-     */
-    protected $computeTotal;
-
-    /**
-     * Contains the eventually computed total of the column.
-     *
-     * @var mixed
-     */
-    protected $total;
-
-    /**
-     * If the column represents a real column in the database.
-     *
-     * @var bool
-     */
-    protected $mapped;
-
-    /**
-     * Force the association property.
-     */
-    protected $isAssociation;
-
-    /**
-     * The source of data, if different from title and no dql specified.
-     */
-    protected $dataSource;
-
     //-------------------------------------------------
     // Options
     //-------------------------------------------------
@@ -350,10 +318,6 @@ abstract class AbstractColumn implements ColumnInterface
             'type_of_field' => null,
             'responsive_priority' => null,
             'sent_in_response' => true,
-            'compute_total' => false,
-            'mapped' => true,
-            'is_association' => false,
-            'data_source' => null,
         ]);
 
         $resolver->setAllowedTypes('cell_type', ['null', 'string']);
@@ -375,10 +339,6 @@ abstract class AbstractColumn implements ColumnInterface
         $resolver->setAllowedTypes('type_of_field', ['null', 'string']);
         $resolver->setAllowedTypes('responsive_priority', ['null', 'int']);
         $resolver->setAllowedTypes('sent_in_response', ['bool']);
-        $resolver->setAllowedTypes('compute_total', ['bool']);
-        $resolver->setAllowedTypes('mapped', ['bool']);
-        $resolver->setAllowedTypes('is_association', ['bool']);
-        $resolver->setAllowedTypes('data_source', ['string', 'null']);
 
         $resolver->setAllowedValues('cell_type', [null, 'th', 'td']);
         $resolver->setAllowedValues('join_type', [null, 'join', 'leftJoin', 'innerJoin']);
@@ -424,10 +384,6 @@ abstract class AbstractColumn implements ColumnInterface
      */
     public function isToManyAssociation()
     {
-        if ($this->isAssociation) {
-            return true;
-        }
-
         if (true === $this->isAssociation() && null !== $this->typeOfAssociation) {
             if (\in_array(ClassMetadataInfo::ONE_TO_MANY, $this->typeOfAssociation, true) || \in_array(ClassMetadataInfo::MANY_TO_MANY, $this->typeOfAssociation, true)) {
                 return true;
@@ -466,9 +422,9 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * {@inheritdoc}
      */
-    public function renderCellContent(array &$row, array &$resultRow)
+    public function renderCellContent(array &$row)
     {
-        $this->isToManyAssociation() ? $this->renderToMany($row, $resultRow) : $this->renderSingleField($row, $resultRow);
+        $this->isToManyAssociation() ? $this->renderToMany($row) : $this->renderSingleField($row);
     }
 
     /**
@@ -906,9 +862,27 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * @return $this
      */
-    public function setTwig(Twig_Environment $twig)
+    public function setTwig(Environment $twig)
     {
         $this->twig = $twig;
+
+        return $this;
+    }
+
+    /**
+     * @return RouterInterface
+     */
+    public function getRouter()
+    {
+        return $this->router;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setRouter(RouterInterface $router)
+    {
+        $this->router = $router;
 
         return $this;
     }
@@ -994,6 +968,8 @@ abstract class AbstractColumn implements ColumnInterface
     }
 
     /**
+     * Add a typeOfAssociation.
+     *
      * @param int $typeOfAssociation
      *
      * @return $this
@@ -1041,124 +1017,6 @@ abstract class AbstractColumn implements ColumnInterface
     public function setSentInResponse($sentInResponse)
     {
         $this->sentInResponse = $sentInResponse;
-
-        return $this;
-    }
-
-    /**
-     * Get computeTotal.
-     *
-     * @return bool
-     */
-    public function getComputeTotal()
-    {
-        return $this->computeTotal;
-    }
-
-    /**
-     * Set sentIntResponse.
-     *
-     * @param bool $computeTotal
-     *
-     * @return $this
-     */
-    public function setComputeTotal($computeTotal)
-    {
-        $this->computeTotal = $computeTotal;
-
-        return $this;
-    }
-
-    /**
-     * Get total.
-     */
-    public function getTotal()
-    {
-        return $this->total;
-    }
-
-    /**
-     * Set total.
-     *
-     * @param $total
-     *
-     * @return $this
-     */
-    public function setTotal($total)
-    {
-        $this->total = $total;
-
-        return $this;
-    }
-
-    /**
-     * Get mapped.
-     *
-     * @return bool
-     */
-    public function getMapped()
-    {
-        return $this->mapped;
-    }
-
-    /**
-     * Set mapped.
-     *
-     * @param bool $mapped
-     *
-     * @return $this
-     */
-    public function setMapped($mapped)
-    {
-        $this->mapped = $mapped;
-
-        return $this;
-    }
-
-    /**
-     * Get isAssociation.
-     *
-     * @return bool
-     */
-    public function getIsAssociation()
-    {
-        return $this->isAssociation;
-    }
-
-    /**
-     * Set isAssociation.
-     *
-     * @param bool $isAssociation
-     *
-     * @return $this
-     */
-    public function setIsAssociation($isAssociation)
-    {
-        $this->isAssociation = $isAssociation;
-
-        return $this;
-    }
-
-    /**
-     * Get data source.
-     *
-     * @return string|null
-     */
-    public function getDataSource()
-    {
-        return $this->isAssociation;
-    }
-
-    /**
-     * Set data source.
-     *
-     * @param string|null $dataSource
-     *
-     * @return $this
-     */
-    public function setDataSource($dataSource)
-    {
-        $this->dataSource = $dataSource;
 
         return $this;
     }

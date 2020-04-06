@@ -47,7 +47,7 @@ class NumberColumn extends Column
     /**
      * {@inheritdoc}
      */
-    public function renderSingleField(array &$row, array &$resultRow)
+    public function renderSingleField(array &$row)
     {
         $path = Helper::getDataPropertyPath($this->data);
 
@@ -58,7 +58,7 @@ class NumberColumn extends Column
                 $content = $this->renderTemplate($this->accessor->getValue($row, $path));
             }
 
-            $this->accessor->setValue($resultRow, $path, $content);
+            $this->accessor->setValue($row, $path, $content);
         }
 
         return $this;
@@ -67,7 +67,7 @@ class NumberColumn extends Column
     /**
      * {@inheritdoc}
      */
-    public function renderToMany(array &$row, array &$resultRow)
+    public function renderToMany(array &$row)
     {
         $value = null;
         $path = Helper::getDataPropertyPath($this->data, $value);
@@ -90,7 +90,7 @@ class NumberColumn extends Column
                         $content = $this->renderTemplate($this->accessor->getValue($row, $currentPath));
                     }
 
-                    $this->accessor->setValue($resultRow, $currentPath, $content);
+                    $this->accessor->setValue($row, $currentPath, $content);
                 }
             }
             // no placeholder - leave this blank

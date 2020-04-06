@@ -19,8 +19,9 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Twig_Environment;
+use Symfony\Component\Translation\TranslatorInterface as LegacyTranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 abstract class AbstractDatatable implements DatatableInterface
 {
@@ -62,7 +63,7 @@ abstract class AbstractDatatable implements DatatableInterface
     /**
      * The Twig Environment.
      *
-     * @var Twig_Environment
+     * @var Environment
      */
     protected $twig;
 
@@ -151,10 +152,10 @@ abstract class AbstractDatatable implements DatatableInterface
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $securityToken,
-        TranslatorInterface $translator,
+        $translator,
         RouterInterface $router,
         EntityManagerInterface $em,
-        Twig_Environment $twig,
+        Environment $twig,
         iterable $columnTypes
     ) {
         $this->validateName();
@@ -167,13 +168,17 @@ abstract class AbstractDatatable implements DatatableInterface
 
         $this->authorizationChecker = $authorizationChecker;
         $this->securityToken = $securityToken;
+
+        if (!($translator instanceof LegacyTranslatorInterface) && !($translator instanceof TranslatorInterface)) {
+            throw new \InvalidArgumentException(sprintf('The $translator argument of %s must be an instance of %s or %s, a %s was given.', static::class, LegacyTranslatorInterface::class, TranslatorInterface::class, get_class($translator)));
+        }
         $this->translator = $translator;
         $this->router = $router;
         $this->em = $em;
         $this->twig = $twig;
 
         $metadata = $em->getClassMetadata($this->getEntity());
-        $this->columnBuilder = new ColumnBuilder($metadata, $twig, $this->getName(), $em, $columnTypes);
+        $this->columnBuilder = new ColumnBuilder($metadata, $twig, $router, $this->getName(), $em, $columnTypes);
 
         $this->ajax = new Ajax();
         $this->options = new Options();
