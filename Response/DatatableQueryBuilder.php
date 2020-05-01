@@ -208,6 +208,7 @@ class DatatableQueryBuilder
         $this->accessor = PropertyAccess::createPropertyAccessor();
 
         $this->columns = $datatable->getColumnBuilder()->getColumns();
+        $this->columnNames = $datatable->getColumnBuilder()->getColumnNames();
 
         $this->selectColumns = [];
         $this->searchColumns = [];
@@ -427,7 +428,9 @@ class DatatableQueryBuilder
                     $orderColumn = $this->accessor->getValue($column, 'orderColumn');
                     $orderParts = explode('.', $orderColumn);
                     if (\count($orderParts) < 2) {
-                        $orderColumn = $this->entityShortName.'.'.$orderColumn;
+                        if (!isset($this->columnNames[$orderColumn]) || null == $this->accessor->getValue($this->columns[$this->columnNames[$orderColumn]], 'customDql')) {
+                            $orderColumn = $this->entityShortName.'.'.$orderColumn;
+                        }
                     }
                     $this->orderColumns[] = $orderColumn;
                 } else {
