@@ -360,10 +360,10 @@ The options `searchable` and `orderable` are set to `false` by default.
 
 **Additional:**
 
-| Option        | Type               | Default | Required | Description     |
-|---------------|--------------------|---------|----------|-----------------|
-| order_column  | null or string     | null    |          | The name of an existing column that is used for ordering. |
-| search_column | null or string     | null    |          | The name of an existing column that is used for searching. |
+| Option        | Type                  | Default | Required | Description     |
+|---------------|-----------------------|---------|----------|-----------------|
+| order_column  | null, string or array | null    |          | The name of an existing column that is used for ordering. |
+| search_column | null, string or array | null    |          | The name of an existing column that is used for searching. |
 
 ### Example
 

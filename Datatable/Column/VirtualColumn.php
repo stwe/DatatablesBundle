@@ -53,8 +53,8 @@ class VirtualColumn extends Column
             'search_column' => null,
         ]);
 
-        $resolver->setAllowedTypes('order_column', ['null', 'string']);
-        $resolver->setAllowedTypes('search_column', ['null', 'string']);
+        $resolver->setAllowedTypes('order_column', ['null', 'string', 'array']);
+        $resolver->setAllowedTypes('search_column', ['null', 'string', 'array']);
 
         $resolver->setNormalizer('orderable', function (Options $options, $value) {
             if (null === $options['order_column'] && true === $value) {
