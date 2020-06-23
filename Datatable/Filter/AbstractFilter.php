@@ -353,23 +353,23 @@ abstract class AbstractFilter implements FilterInterface
 
         switch ($searchType) {
             case 'like':
-                $expr->add($qb->expr()->like($searchField, '?'.$parameterCounter));
-                $qb->setParameter($parameterCounter, '%'.$searchValue.'%');
+                $expr->add($qb->expr()->like($qb->expr()->lower($searchField), '?'.$parameterCounter));
+                $qb->setParameter(strtolower($parameterCounter), '%'.$searchValue.'%');
 
                 break;
             case '%like':
-                $expr->add($qb->expr()->like($searchField, '?'.$parameterCounter));
-                $qb->setParameter($parameterCounter, '%'.$searchValue);
+                $expr->add($qb->expr()->like($qb->expr()->lower($searchField), '?'.$parameterCounter));
+                $qb->setParameter(strtolower($parameterCounter), '%'.$searchValue);
 
                 break;
             case 'like%':
-                $expr->add($qb->expr()->like($searchField, '?'.$parameterCounter));
-                $qb->setParameter($parameterCounter, $searchValue.'%');
+                $expr->add($qb->expr()->like($qb->expr()->lower($searchField), '?'.$parameterCounter));
+                $qb->setParameter(strtolower($parameterCounter), $searchValue.'%');
 
                 break;
             case 'notLike':
-                $expr->add($qb->expr()->notLike($searchField, '?'.$parameterCounter));
-                $qb->setParameter($parameterCounter, '%'.$searchValue.'%');
+                $expr->add($qb->expr()->notLike($qb->expr()->lower($searchField), '?'.$parameterCounter));
+                $qb->setParameter(strtolower($parameterCounter), '%'.$searchValue.'%');
 
                 break;
             case 'eq':
