@@ -11,7 +11,7 @@
 
 namespace Sg\DatatablesBundle\Datatable\Column;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Exception;
