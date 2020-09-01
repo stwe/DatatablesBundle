@@ -12,8 +12,8 @@
 namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\MappingException;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use Exception;
 use Sg\DatatablesBundle\Datatable\Factory;
 use Symfony\Component\Routing\RouterInterface;
