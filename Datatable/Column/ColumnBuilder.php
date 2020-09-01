@@ -12,7 +12,7 @@
 namespace Sg\DatatablesBundle\Datatable\Column;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\MappingException;
 use Exception;
 use Sg\DatatablesBundle\Datatable\Factory;
