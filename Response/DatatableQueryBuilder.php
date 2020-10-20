@@ -11,12 +11,12 @@
 
 namespace Sg\DatatablesBundle\Response;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use Exception;
 use Sg\DatatablesBundle\Datatable\Ajax;
 use Sg\DatatablesBundle\Datatable\Column\ColumnInterface;
@@ -208,6 +208,7 @@ class DatatableQueryBuilder
         $this->accessor = PropertyAccess::createPropertyAccessor();
 
         $this->columns = $datatable->getColumnBuilder()->getColumns();
+        $this->columnNames = $datatable->getColumnBuilder()->getColumnNames();
 
         $this->selectColumns = [];
         $this->searchColumns = [];
@@ -424,24 +425,30 @@ class DatatableQueryBuilder
             } else {
                 // Add Order-Field for VirtualColumn
                 if ($this->accessor->isReadable($column, 'orderColumn') && true === $this->accessor->getValue($column, 'orderable')) {
-                    $orderColumn = $this->accessor->getValue($column, 'orderColumn');
-                    $orderParts = explode('.', $orderColumn);
-                    if (\count($orderParts) < 2) {
-                        $orderColumn = $this->entityShortName.'.'.$orderColumn;
+                    $orderColumns = (array) $this->accessor->getValue($column, 'orderColumn');
+                    foreach ($orderColumns as $orderColumn) {
+                        $orderParts = explode('.', $orderColumn);
+                        if (\count($orderParts) < 2) {
+                            if (!isset($this->columnNames[$orderColumn]) || null == $this->accessor->getValue($this->columns[$this->columnNames[$orderColumn]], 'customDql')) {
+                                $orderColumn = $this->entityShortName.'.'.$orderColumn;
+                            }
+                        }
+                        $this->orderColumns[$key][] = $orderColumn;
                     }
-                    $this->orderColumns[] = $orderColumn;
                 } else {
                     $this->orderColumns[] = null;
                 }
 
                 // Add Search-Field for VirtualColumn
                 if ($this->accessor->isReadable($column, 'searchColumn') && true === $this->accessor->getValue($column, 'searchable')) {
-                    $searchColumn = $this->accessor->getValue($column, 'searchColumn');
-                    $searchParts = explode('.', $searchColumn);
-                    if (\count($searchParts) < 2) {
-                        $searchColumn = $this->entityShortName.'.'.$searchColumn;
+                    $searchColumns = (array) $this->accessor->getValue($column, 'searchColumn');
+                    foreach ($searchColumns as $searchColumn) {
+                        $searchParts = explode('.', $searchColumn);
+                        if (\count($searchParts) < 2) {
+                            $searchColumn = $this->entityShortName . '.' . $searchColumn;
+                        }
+                        $this->searchColumns[$key][] = $searchColumn;
                     }
-                    $this->searchColumns[] = $searchColumn;
                 } else {
                     $this->searchColumns[] = null;
                 }
@@ -505,10 +512,12 @@ class DatatableQueryBuilder
                     /** @var AbstractFilter $filter */
                     $filter = $this->accessor->getValue($column, 'filter');
                     $searchType = $globalSearchType;
-                    $searchField = $this->searchColumns[$key];
+                    $searchFields = (array) $this->searchColumns[$key];
                     $searchValue = $globalSearch;
                     $searchTypeOfField = $column->getTypeOfField();
-                    $orExpr = $filter->addOrExpression($orExpr, $qb, $searchType, $searchField, $searchValue, $searchTypeOfField, $key);
+                    foreach ($searchFields as $searchField) {
+                        $orExpr = $filter->addOrExpression($orExpr, $qb, $searchType, $searchField, $searchValue, $searchTypeOfField, $key);
+                    }
                 }
             }
 
@@ -565,10 +574,12 @@ class DatatableQueryBuilder
                 $requestColumn = $this->requestParams['columns'][$columnIdx];
 
                 if ('true' === $requestColumn['orderable']) {
-                    $columnName = $this->orderColumns[$columnIdx];
+                    $columnNames = (array) $this->orderColumns[$columnIdx];
                     $orderDirection = $this->requestParams['order'][$i]['dir'];
 
-                    $qb->addOrderBy($columnName, $orderDirection);
+                    foreach ($columnNames as $columnName) {
+                        $qb->addOrderBy($columnName, $orderDirection);
+                    }
                 }
             }
         }

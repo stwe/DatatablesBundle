@@ -11,12 +11,12 @@
 
 namespace Sg\DatatablesBundle\Tests\Response;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
-use Doctrine\Common\Persistence\Mapping\ClassMetadataFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\Mapping\ClassMetadata;
+use Doctrine\Persistence\Mapping\ClassMetadataFactory;
 use Prophecy\Prophecy\ObjectProphecy;
 use Sg\DatatablesBundle\Datatable\Ajax;
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
