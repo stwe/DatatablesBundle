@@ -500,37 +500,67 @@ class DatatableQueryBuilder
      */
     private function setWhere(QueryBuilder $qb)
     {
+        // Retrieving parameter counter
+        $parameterCounter = self::INIT_PARAMETER_COUNTER;
+        
         // global filtering
         if (isset($this->requestParams['search']) && '' !== $this->requestParams['search']['value']) {
-            $orExpr = $qb->expr()->orX();
 
             $globalSearch = $this->requestParams['search']['value'];
             $globalSearchType = $this->options->getGlobalSearchType();
 
-            foreach ($this->columns as $key => $column) {
-                if (true === $this->isSearchableColumn($column)) {
-                    /** @var AbstractFilter $filter */
-                    $filter = $this->accessor->getValue($column, 'filter');
-                    $searchType = $globalSearchType;
-                    $searchFields = (array) $this->searchColumns[$key];
-                    $searchValue = $globalSearch;
-                    $searchTypeOfField = $column->getTypeOfField();
-                    foreach ($searchFields as $searchField) {
-                        $orExpr = $filter->addOrExpression($orExpr, $qb, $searchType, $searchField, $searchValue, $searchTypeOfField, $key);
+            // If global search type is a list of key words
+            if ($globalSearchType == 'keywords_string') {
+                
+                // Removing unnecessary spaces at the beginning and at the end
+                $globalSearch = trim($globalSearch);
+                
+                // Removing multiples spaces
+                $globalSearch = preg_replace('!\s+!', ' ', $globalSearch);
+                
+                // Parsing search value to array of keywords
+                $keywords = explode(' ', $globalSearch);
+                
+                // Setting type of search type to 'like'
+                $globalSearchType = 'like';
+            
+            // Else considering only one searchstring
+            } else {
+                $keywords = [$globalSearch];
+            }
+            
+            // Iterating through each keyword
+            foreach ($keywords as $k => $word) {
+                
+                // Initialising 'OR' expression
+                $orExpr = $qb->expr()->orX();
+                
+                // Iterating through columns
+                foreach ($this->columns as $key => $column) {
+                    
+                    if (true === $this->isSearchableColumn($column)) {
+                        /** @var AbstractFilter $filter */
+                        $filter = $this->accessor->getValue($column, 'filter');
+                        $searchType = $globalSearchType;
+                        $searchFields = (array) $this->searchColumns[$key];
+                        $searchValue = $keywords[$k];
+                        $searchTypeOfField = $column->getTypeOfField();
+                        foreach ($searchFields as $searchField) {
+                            $orExpr = $filter->addOrExpression($orExpr, $qb, $searchType, $searchField, $searchValue, $searchTypeOfField, $parameterCounter);
+                        }
                     }
                 }
-            }
-
-            if ($orExpr->count() > 0) {
-                $qb->andWhere($orExpr);
+                
+                // Adding 'OR' expression to global 'WHERE'
+                if ($orExpr->count() > 0) {
+                    $qb->andWhere($orExpr);
+                }
             }
         }
 
         // individual filtering
         if (true === $this->accessor->getValue($this->options, 'individualFiltering')) {
             $andExpr = $qb->expr()->andX();
-
-            $parameterCounter = self::INIT_PARAMETER_COUNTER;
 
             foreach ($this->columns as $key => $column) {
                 if (true === $this->isSearchableColumn($column)) {
