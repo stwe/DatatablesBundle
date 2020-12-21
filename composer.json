@@ -1,9 +1,9 @@
 {
-    "name": "sg/datatablesbundle",
+    "name": "matteocacciola/datatablesbundle",
     "type": "symfony-bundle",
     "description": "Symfony Datatable Bundle For Doctrine2 Entities",
-    "keywords": ["symfony3", "datatable", "datatables", "data-table", "grid", "table", "datagrid", "pagination"],
-    "homepage": "https://github.com/stwe/DatatablesBundle",
+    "keywords": ["symfony5", "datatable", "datatables", "data-table", "grid", "table", "datagrid", "pagination"],
+    "homepage": "https://github.com/matteocacciola/DatatablesBundle",
     "license": "MIT",
     "authors": [
         {
