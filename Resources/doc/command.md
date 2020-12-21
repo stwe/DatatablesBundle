@@ -1,7 +1,7 @@
 # Use the Datatable generator
 
 ``` bash
-$ php bin/console sg:datatable:generate AppBundle:Post
+$ php bin/console make:datatable Post
 ```
 
 ## Available arguments
@@ -9,7 +9,7 @@ $ php bin/console sg:datatable:generate AppBundle:Post
 - `entity` (required): The entity class name as shortcut notation.
 
 ``` bash
-$ php bin/console sg:datatable:generate AppBundle:Post
+$ php bin/console make:datatable Post
 ```
 
 ## Available options
@@ -17,11 +17,11 @@ $ php bin/console sg:datatable:generate AppBundle:Post
 - `--fields` or `-f` (optional): The fields to create columns in the Datatable.
 
 ``` bash
-$ php bin/console sg:datatable:generate AppBundle:Post --fields="id name createdAt:datetime"
+$ php bin/console make:datatable Post --fields="id name createdAt:datetime"
 ```
 
 - `--overwrite` or `-o` (optional): Allow to overwrite an existing Datatable.
 
 ``` bash
-$ php bin/console sg:datatable:generate AppBundle:Post -o
+$ php bin/console make:datatable Post -o
 ```

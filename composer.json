@@ -10,12 +10,16 @@
             "name": "stwe"
         },
         {
+            "name": "Matteo Cacciola",
+            "email": "matteo.cacciola@gmail.com"
+        },
+        {
             "name": "SgDatatablesBundle contributors",
             "homepage": "https://github.com/stwe/DatatablesBundle/graphs/contributors"
         }
     ],
     "support": {
-        "issues": "https://github.com/stwe/DatatablesBundle/issues"
+        "issues": "https://github.com/matteocacciola/DatatablesBundle/issues"
     },
     "require": {
         "php": ">=7.1",

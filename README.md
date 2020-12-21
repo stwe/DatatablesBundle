@@ -1,18 +1,12 @@
 # SgDatatablesBundle
 
-[![knpbundles.com](http://knpbundles.com/stwe/DatatablesBundle/badge)](http://knpbundles.com/stwe/DatatablesBundle)
-
-[![Build Status](https://travis-ci.org/stwe/DatatablesBundle.svg?branch=master)](https://travis-ci.org/stwe/DatatablesBundle)
-
-[![Latest Stable Version](https://poser.pugx.org/sg/datatablesbundle/v/stable)](https://packagist.org/packages/sg/datatablesbundle) [![Total Downloads](https://poser.pugx.org/sg/datatablesbundle/downloads)](https://packagist.org/packages/sg/datatablesbundle) [![Latest Unstable Version](https://poser.pugx.org/sg/datatablesbundle/v/unstable)](https://packagist.org/packages/sg/datatablesbundle) [![License](https://poser.pugx.org/sg/datatablesbundle/license)](https://packagist.org/packages/sg/datatablesbundle)
-
 ## A new version is available
 
-**[The features of v1.0](https://github.com/stwe/DatatablesBundle/blob/master/FEATURES.md)**
+**[The features of v1.0](https://github.com/matteocacciola/DatatablesBundle/blob/master/FEATURES.md)**
 
 ## Documentation
 
-[Documentation for v1.0](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/index.md)
+[Documentation for v1.0](https://github.com/matteocacciola/DatatablesBundle/blob/master/Resources/doc/index.md)
 
 [Demo Application for v1.0](https://github.com/stwe/DtBundleDemo10)
 

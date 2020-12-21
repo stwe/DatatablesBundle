@@ -11,13 +11,13 @@ This Bundle integrates the jQuery DataTables 1.10.12 (or higher) plugin into you
 
 This bundle requires the following additional packages:
 
-* PHP 5.5.9
+* PHP 7.1
 * Doctrine 2.5
-* Symfony 3.x.x
+* Symfony 5
 * jQuery (choose a Version, I use 3.1.1)
 * DataTables 1.10.12 or higher
 * Moment.js 2.8.4 or higher (choose a Version, I use 2.15.1)
-* FOSJsRoutingBundle 2.0.0 ***Please follow all steps described [here](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/2.0.0/Resources/doc/installation.rst).***
+* FOSJsRoutingBundle 2 ***Please follow all steps described [here](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/blob/2.0.0/Resources/doc/installation.rst).***
 
 ### Translations
 
@@ -134,12 +134,12 @@ The easiest way is to load all files with your base layout with CDN.
 
 ### Step 1: Create a Datatable class
 
-The `sg:datatable:generate` [Console Command](https://github.com/stwe/DatatablesBundle/blob/master/Resources/doc/command.md) generates a Datatable for a given entity located in a given bundle.
+The `make:datatable` [Console Command](https://github.com/matteocacciola/DatatablesBundle/blob/master/Resources/doc/command.md) generates a Datatable for a given entity located in a given bundle.
 
 **Example:**
 
 ``` bash
-$ php bin/console sg:datatable:generate AppBundle:Post
+$ php bin/console make:datatable Post
 ```
 
 **You can also write the class yourself.**

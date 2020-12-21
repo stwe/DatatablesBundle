@@ -284,7 +284,7 @@ Represents a column, optimized for images.
 
 **Be sure to install the [Featherlight.js](http://noelboss.github.io/featherlight/) plugin before using this column.**
 
-A complete example of an ImageColumn can be found in the [demo bundle](https://github.com/stwe/DtBundleDemo10).
+A complete example of an ImageColumn can be found in the [demo bundle](https://github.com/matteocacciola/DtBundleDemo10).
 
 ### Options template
 
