@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Maker;
+namespace Sg\DatatablesBundle\Maker;
 
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
