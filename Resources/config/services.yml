@@ -32,3 +32,12 @@ services:
             - '@router'
             - '@doctrine.orm.entity_manager'
             - '@twig'
+
+    maker.maker.make_datatable:
+        class: Sg\DatatablesBundle\Maker\MakeDatatable
+        arguments:
+            $doctrineHelper: '@maker.doctrine_helper'
+            $generator: '@maker.generator'
+            $fileManager: '@maker.file_manager'
+        tags:
+            - { name: maker.command }
