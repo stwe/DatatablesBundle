@@ -24,12 +24,13 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Bundle\MakerBundle\MakerInterface;
 
 /**
  * Class MakeDatatable
  *
  */
-class MakeDatatable extends AbstractMaker
+class MakeDatatable extends AbstractMaker implements MakerInterface
 {
     /** @var DoctrineHelper $doctrineHelper */
     private $doctrineHelper;
