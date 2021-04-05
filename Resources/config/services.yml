@@ -32,3 +32,11 @@ services:
             - '@router'
             - '@doctrine.orm.entity_manager'
             - '@twig'
+
+    Sg\DatatablesBundle\Response\DatatableResponse:
+        alias: sg_datatables.response
+        public: false
+
+    Sg\DatatablesBundle\Datatable\DatatableFactory:
+        alias: sg_datatables.factory
+        public: false
