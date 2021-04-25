@@ -65,12 +65,11 @@ class MultiselectColumn extends ActionColumn
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getOptionsTemplate()
+    public function getOptions(): array
     {
-        return '@SgDatatables/column/multiselect.html.twig';
+        return [
+            'title' => "<input type='checkbox' name='sg-datatables-{{ sg_datatables_view.uniqueName }}-multiselect-checkall' class='sg-datatables-{{ sg_datatables_view.uniqueName }}-multiselect-checkall' />",
+        ];
     }
 
     /**

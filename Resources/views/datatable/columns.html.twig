@@ -9,7 +9,7 @@
 "columns": [
     {% for column in sg_datatables_view.columnBuilder.columns %}
         {% if column.sentInResponse %}
-            {% include column.getOptionsTemplate %}
+            {{ column.getOptions()|json_encode|raw }},
         {% endif %}
     {% endfor %}
 ]

@@ -355,6 +355,39 @@ abstract class AbstractColumn implements ColumnInterface
         return $this;
     }
 
+    public function getOptions(): array
+    {
+        $options = [
+            'cellType' => $this->cellType,
+            'contentPadding' => $this->contentPadding,
+            'defaultContent' => $this->defaultContent,
+            'name' => $this->name,
+            'width' => $this->width,
+            'title' => $this->title,
+            'searchable' => $this->searchable,
+            'visible' => $this->visible,
+            'orderable' => $this->orderable,
+            'responsivePriority' => $this->responsivePriority,
+            'data' => $this->data,
+        ];
+
+        if (true === $this->visible) {
+            $options['className'] = $this->className;
+        }
+
+        if (false === $this->visible) {
+            $options['className'] = 'never '.$this->className;
+        }
+
+        if (true === $this->orderable) {
+            $options['orderSequence'] = $this->orderSequence;
+            $options['orderData'] = $this->orderData;
+        }
+
+        // ignore null values
+        return array_filter($options);
+    }
+
     //-------------------------------------------------
     // ColumnInterface
     //-------------------------------------------------
@@ -409,14 +442,6 @@ abstract class AbstractColumn implements ColumnInterface
     public function isSelectColumn()
     {
         return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOptionsTemplate()
-    {
-        return '@SgDatatables/column/column.html.twig';
     }
 
     /**
