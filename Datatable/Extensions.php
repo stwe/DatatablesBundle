@@ -15,6 +15,7 @@ use Sg\DatatablesBundle\Datatable\Extension\Buttons;
 use Sg\DatatablesBundle\Datatable\Extension\Responsive;
 use Sg\DatatablesBundle\Datatable\Extension\RowGroup;
 use Sg\DatatablesBundle\Datatable\Extension\Select;
+use Sg\DatatablesBundle\Datatable\Extension\FixedHeader;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Extensions
@@ -60,6 +61,15 @@ class Extensions
      */
     protected $rowGroup;
 
+    /**
+     * The FixedHeader Extension.
+     * Shows table's header and / or footer fixed to the top or bottom of the scrolling window.
+     * Default: null.
+     *
+     * @var array|bool|RowGroup|null
+     */
+    protected $fixedHeader;
+
     public function __construct()
     {
         $this->initOptions();
@@ -79,12 +89,14 @@ class Extensions
             'responsive' => null,
             'select' => null,
             'row_group' => null,
+            'fixed_header' => null,
         ]);
 
         $resolver->setAllowedTypes('buttons', ['null', 'array', 'bool']);
         $resolver->setAllowedTypes('responsive', ['null', 'array', 'bool']);
         $resolver->setAllowedTypes('select', ['null', 'array', 'bool']);
         $resolver->setAllowedTypes('row_group', ['null', 'array', 'bool']);
+        $resolver->setAllowedTypes('fixed_header', ['null', 'array', 'bool']);
 
         return $this;
     }
@@ -190,6 +202,34 @@ class Extensions
             $this->rowGroup = $newRowGroup->set($rowGroup);
         } else {
             $this->rowGroup = $rowGroup;
+        }
+
+        return $this;
+    }
+
+
+
+    /**
+     * @return array|bool|FixedHeader|null
+     */
+    public function getFixedHeader()
+    {
+        return $this->fixedHeader;
+    }
+
+    /**
+     * @param array|bool|null $fixedHeader
+     *
+     * @return $this
+     * @throws \Exception
+     */
+    public function setFixedHeader($fixedHeader)
+    {
+        if (\is_array($fixedHeader)) {
+            $newFixedHeader = new FixedHeader();
+            $this->fixedHeader = $newFixedHeader->set($fixedHeader);
+        } else {
+            $this->fixedHeader = $fixedHeader;
         }
 
         return $this;
