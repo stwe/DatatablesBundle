@@ -26,7 +26,7 @@ With 'null' initialized options uses the default value of the DataTables plugin.
 | individual_filtering          | bool               | false     | Enable or disable individual filtering. |
 | individual_filtering_position | string             | 'head'    | Position of individual search filter ('head', 'foot' or 'both'). |
 | search_in_non_visible_columns | bool               | false     | Determines whether to search in non-visible columns. |
-| global_search_type            | string             | 'like'    | The global search type (example: 'eq'). |
+| global_search_type            | string             | 'like'    | The global search type (example: 'eq'). Use 'keywords_string' to search by multiple keywords. |
 
 ``` php
 class PostDatatable extends AbstractDatatable
