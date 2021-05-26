@@ -113,6 +113,7 @@ class DatatableController extends AbstractController
     {
         switch ($originalTypeOfField) {
             case Type::DATETIME:
+            case Type::TIME:
                 $value = new DateTime($value);
 
                 break;
