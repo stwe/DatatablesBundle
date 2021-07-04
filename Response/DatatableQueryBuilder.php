@@ -543,9 +543,11 @@ class DatatableQueryBuilder
                     if ('' !== $searchValue && null !== $searchValue) {
                         /** @var FilterInterface $filter */
                         $filter = $this->accessor->getValue($column, 'filter');
-                        $searchField = $this->searchColumns[$key];
+                        $searchFields = (array) $this->searchColumns[$key];
                         $searchTypeOfField = $column->getTypeOfField();
-                        $andExpr = $filter->addAndExpression($andExpr, $qb, $searchField, $searchValue, $searchTypeOfField, $parameterCounter);
+                        foreach ($searchFields as $searchField) {
+                            $andExpr = $filter->addAndExpression($andExpr, $qb, $searchField, $searchValue, $searchTypeOfField, $parameterCounter);
+                        }
                     }
                 }
             }
