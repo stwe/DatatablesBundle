@@ -12,7 +12,7 @@
 namespace Sg\DatatablesBundle\Controller;
 
 use DateTime;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -112,28 +112,28 @@ class DatatableController extends AbstractController
     private function normalizeValue(string $originalTypeOfField, $value)
     {
         switch ($originalTypeOfField) {
-            case Type::DATETIME:
+            case Types::DATETIME_MUTABLE:
                 $value = new DateTime($value);
 
                 break;
-            case Type::BOOLEAN:
+            case Types::BOOLEAN:
                 $value = $this->strToBool($value);
 
                 break;
-            case Type::TEXT:
-            case Type::STRING:
+            case Types::TEXT:
+            case Types::STRING:
                 break;
-            case Type::SMALLINT:
-            case Type::INTEGER:
+            case Types::SMALLINT:
+            case Types::INTEGER:
                 $value = (int) $value;
 
                 break;
-            case Type::BIGINT:
+            case Types::BIGINT:
                 $value = (string) $value;
 
                 break;
-            case Type::FLOAT:
-            case Type::DECIMAL:
+            case Types::FLOAT:
+            case Types::DECIMAL:
                 $value = (float) $value;
 
                 break;
