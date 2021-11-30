@@ -221,6 +221,8 @@ class NumberColumn extends Column
             }
 
             $data = $this->formatter->formatCurrency($data, $this->currency);
+        } elseif ($data === null) {
+            $data = null;
         } else {
             // expected number (int or float), other values will be converted to a numeric value
             $data = $this->formatter->format($data);
