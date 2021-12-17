@@ -12,6 +12,8 @@
 namespace Sg\DatatablesBundle\Tests;
 
 use Doctrine\ORM\EntityManager;
+use ReflectionClass;
+use Sg\DatatablesBundle\Datatable\AbstractDatatable;
 use Sg\DatatablesBundle\Tests\Datatables\PostDatatable;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -62,6 +64,50 @@ final class DatatableTest extends \PHPUnit\Framework\TestCase
         static::assertSame('post_datatable', $table->getName());
 
         $table->buildDatatable();
+    }
+
+    public function testInvalidName()
+    {
+        /** @noinspection PhpUndefinedMethodInspection */
+        $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
+        /** @noinspection PhpUndefinedMethodInspection */
+        $securityToken = $this->createMock(TokenStorageInterface::class);
+        /** @noinspection PhpUndefinedMethodInspection */
+        $translator = $this->createMock(TranslatorInterface::class);
+        /** @noinspection PhpUndefinedMethodInspection */
+        $router = $this->createMock(RouterInterface::class);
+        /** @noinspection PhpUndefinedMethodInspection */
+        $twig = $this->createMock(Environment::class);
+
+        /** @noinspection PhpUndefinedMethodInspection */
+        $em = $this->getMockBuilder(EntityManager::class)
+            ->disableOriginalConstructor()
+            ->setMethods(
+                ['getClassMetadata']
+            )
+            ->getMock()
+        ;
+
+        // @noinspection PhpUndefinedMethodInspection
+        $em->expects(static::any())
+            ->method('getClassMetadata')
+            ->willReturn($this->getClassMetadataMock())
+        ;
+
+        $mock = $this->getMockBuilder(AbstractDatatable::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getName'])
+            ->getMockForAbstractClass()
+        ;
+        $mock->expects(static::any())
+            ->method('getName')
+            ->willReturn('invalid.name')
+        ;
+
+        $refledtionClass = new ReflectionClass(AbstractDatatable::class);
+        $constructor = $refledtionClass->getConstructor();
+        $this->expectException(\LogicException::class);
+        $constructor->invoke($mock, $authorizationChecker, $securityToken, $translator, $router, $em, $twig);
     }
 
     public function getClassMetadataMock()
