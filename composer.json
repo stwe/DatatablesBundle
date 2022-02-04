@@ -2,7 +2,7 @@
     "name": "sg/datatablesbundle",
     "type": "symfony-bundle",
     "description": "Symfony Datatable Bundle For Doctrine2 Entities",
-    "keywords": ["symfony3", "datatable", "datatables", "data-table", "grid", "table", "datagrid", "pagination"],
+    "keywords": ["symfony", "datatable", "datatables", "data-table", "grid", "table", "datagrid", "pagination"],
     "homepage": "https://github.com/stwe/DatatablesBundle",
     "license": "MIT",
     "authors": [
@@ -18,23 +18,23 @@
         "issues": "https://github.com/stwe/DatatablesBundle/issues"
     },
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.2|>=8.0",
         "doctrine/orm": "^2.5",
-        "friendsofsymfony/jsrouting-bundle": "^1.6|^2.0|^3.0",
-        "symfony/config": "^3.4|^4.1|^5.0",
-        "symfony/dependency-injection": "^3.4|^4.1|^5.0",
-        "symfony/http-foundation": "^3.4|^4.1|^5.0",
-        "symfony/http-kernel": "^3.4|^4.1|^5.0",
-        "symfony/framework-bundle": "^3.4|^4.1|^5.0",
-        "symfony/options-resolver": "^3.4|^4.1|^5.0",
-        "symfony/property-access": "^3.4|^4.1|^5.0",
-        "symfony/routing": "^3.4|^4.1|^5.0",
-        "symfony/security-core": "^3.4|^4.1|^5.0",
-        "symfony/translation": "^3.4|^4.1|^5.0",
+        "friendsofsymfony/jsrouting-bundle": "^2.0|^3.0",
+        "symfony/config": "^4.4|^5.4|^6.0",
+        "symfony/dependency-injection": "^4.4|^5.4|^6.0",
+        "symfony/http-foundation": "^4.4|^5.4|^6.0",
+        "symfony/http-kernel": "^4.4|^5.4|^6.0",
+        "symfony/framework-bundle": "^4.4|^5.4|^6.0",
+        "symfony/options-resolver": "^4.4|^5.4|^6.0",
+        "symfony/property-access": "^4.4|^5.4|^6.0",
+        "symfony/routing": "^4.4|^5.4|^6.0",
+        "symfony/security-core": "^4.4|^5.4|^6.0",
+        "symfony/translation": "^4.4|^5.4|^6.0",
         "twig/twig": "^2.9|^3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.5|^8.5",
+        "phpunit/phpunit": "^8.5|^9.5",
         "friendsofphp/php-cs-fixer": "^3.6"
     },
     "autoload": {

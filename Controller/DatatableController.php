@@ -13,6 +13,7 @@ namespace Sg\DatatablesBundle\Controller;
 
 use DateTime;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +38,7 @@ class DatatableController extends AbstractController
      *
      * @return Response
      */
-    public function editAction(Request $request)
+    public function editAction(Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->isXmlHttpRequest()) {
             // x-editable sends some default parameters
@@ -57,7 +58,7 @@ class DatatableController extends AbstractController
             }
 
             // get an object by its primary key
-            $entity = $this->getEntityByPk($entityClassName, $pk);
+            $entity = $this->getEntityByPk($entityClassName, $pk, $entityManager);
 
             /** @var PropertyAccessor $accessor */
             /** @noinspection PhpUndefinedMethodInspection */
@@ -73,9 +74,8 @@ class DatatableController extends AbstractController
             null !== $path ? $accessor->setValue($entity, $path, $value) : $accessor->setValue($entity, $field, $value);
 
             // save all
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
+            $entityManager->persist($entity);
+            $entityManager->flush();
 
             return new Response('Success', 200);
         }
@@ -92,11 +92,9 @@ class DatatableController extends AbstractController
      *
      * @param string $entityClassName
      */
-    private function getEntityByPk($entityClassName, $pk): object
+    private function getEntityByPk($entityClassName, $pk, EntityManagerInterface $entityManager): object
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository($entityClassName)->find($pk);
+        $entity = $entityManager->getRepository($entityClassName)->find($pk);
         if (! $entity) {
             throw $this->createNotFoundException('DatatableController::getEntityByPk(): The entity does not exist.');
         }
