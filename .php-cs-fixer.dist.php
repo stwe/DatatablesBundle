@@ -15,10 +15,9 @@ $finder = PhpCsFixer\Finder::create()
     ->append([__DIR__.'/php-cs-fixer'])
 ;
 
-$config = PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules([
-        '@PHP56Migration' => true,
         '@PhpCsFixer' => true,
         '@PhpCsFixer:risky' => true,
         '@PHPUnit60Migration:risky' => true,
@@ -31,7 +30,4 @@ $config = PhpCsFixer\Config::create()
         'no_useless_return' => true,
         'not_operator_with_successor_space' => true,
     ])
-    ->setFinder($finder)
-;
-
-return $config;
+    ->setFinder($finder);

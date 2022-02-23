@@ -76,9 +76,7 @@ class Responsive
         if (\is_array($details)) {
             foreach ($details as $key => $value) {
                 if (false === \in_array($key, ['type', 'target', 'renderer', 'display'], true)) {
-                    throw new Exception(
-                        "Responsive::setDetails(): {$key} is not an valid option."
-                    );
+                    throw new Exception("Responsive::setDetails(): {$key} is not an valid option.");
                 }
             }
 

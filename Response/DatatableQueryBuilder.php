@@ -36,12 +36,12 @@ class DatatableQueryBuilder
     /**
      * @internal
      */
-    const DISABLE_PAGINATION = -1;
+    public const DISABLE_PAGINATION = -1;
 
     /**
      * @internal
      */
-    const INIT_PARAMETER_COUNTER = 100;
+    public const INIT_PARAMETER_COUNTER = 100;
 
     /**
      * $_GET or $_POST parameters.
@@ -80,8 +80,6 @@ class DatatableQueryBuilder
 
     /**
      * The root ID of the entity.
-     *
-     * @var mixed
      */
     private $rootEntityIdentifier;
 
@@ -429,7 +427,7 @@ class DatatableQueryBuilder
                     foreach ($orderColumns as $orderColumn) {
                         $orderParts = explode('.', $orderColumn);
                         if (\count($orderParts) < 2) {
-                            if (!isset($this->columnNames[$orderColumn]) || null == $this->accessor->getValue($this->columns[$this->columnNames[$orderColumn]], 'customDql')) {
+                            if (! isset($this->columnNames[$orderColumn]) || null === $this->accessor->getValue($this->columns[$this->columnNames[$orderColumn]], 'customDql')) {
                                 $orderColumn = $this->entityShortName.'.'.$orderColumn;
                             }
                         }
@@ -445,7 +443,7 @@ class DatatableQueryBuilder
                     foreach ($searchColumns as $searchColumn) {
                         $searchParts = explode('.', $searchColumn);
                         if (\count($searchParts) < 2) {
-                            $searchColumn = $this->entityShortName . '.' . $searchColumn;
+                            $searchColumn = $this->entityShortName.'.'.$searchColumn;
                         }
                         $this->searchColumns[$key][] = $searchColumn;
                     }

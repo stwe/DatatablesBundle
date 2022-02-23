@@ -19,7 +19,7 @@ use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
  */
 interface DatatableInterface
 {
-    const NAME_REGEX = '/^[a-zA-Z0-9\-\_]+$/';
+    public const NAME_REGEX = '/^[a-zA-Z0-9\-\_]+$/';
 
     /**
      * Builds the datatable.

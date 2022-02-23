@@ -23,10 +23,10 @@ use Twig\Environment;
 
 abstract class AbstractColumn implements ColumnInterface
 {
-    use OptionsTrait;
-
     // Use an 'add_if' option to check in ColumnBuilder if the Column can be added.
     use AddIfTrait;
+
+    use OptionsTrait;
 
     //-------------------------------------------------
     // Column Types
@@ -35,22 +35,22 @@ abstract class AbstractColumn implements ColumnInterface
     /**
      * Identifies a Data Column.
      */
-    const DATA_COLUMN = 'data';
+    public const DATA_COLUMN = 'data';
 
     /**
      * Identifies an Action Column.
      */
-    const ACTION_COLUMN = 'action';
+    public const ACTION_COLUMN = 'action';
 
     /**
      * Identifies a Multiselect Column.
      */
-    const MULTISELECT_COLUMN = 'multiselect';
+    public const MULTISELECT_COLUMN = 'multiselect';
 
     /**
      * Identifies a Virtual Column.
      */
-    const VIRTUAL_COLUMN = 'virtual';
+    public const VIRTUAL_COLUMN = 'virtual';
 
     //--------------------------------------------------------------------------------------------------
     // DataTables - Columns Options

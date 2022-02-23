@@ -148,9 +148,7 @@ class RowGroup
     public function setDataSrc($dataSrc)
     {
         if (\is_string($dataSrc) && empty($dataSrc)) {
-            throw new \Exception(
-                'RowGroup::setDataSrc(): the column name is empty.'
-            );
+            throw new \Exception('RowGroup::setDataSrc(): the column name is empty.');
         }
 
         $this->dataSrc = $dataSrc;
@@ -174,16 +172,12 @@ class RowGroup
     public function setStartRender($startRender)
     {
         if (false === \array_key_exists('template', $startRender)) {
-            throw new Exception(
-                'RowGroup::setStartRender(): The "template" option is required.'
-            );
+            throw new Exception('RowGroup::setStartRender(): The "template" option is required.');
         }
 
         foreach ($startRender as $key => $value) {
             if (false === \in_array($key, ['template', 'vars'], true)) {
-                throw new Exception(
-                    "RowGroup::setStartRender(): {$key} is not a valid option."
-                );
+                throw new Exception("RowGroup::setStartRender(): {$key} is not a valid option.");
             }
         }
 
@@ -208,16 +202,12 @@ class RowGroup
     public function setEndRender($endRender)
     {
         if (false === \array_key_exists('template', $endRender)) {
-            throw new Exception(
-                'RowGroup::setEndRender(): The "template" option is required.'
-            );
+            throw new Exception('RowGroup::setEndRender(): The "template" option is required.');
         }
 
         foreach ($endRender as $key => $value) {
             if (false === \in_array($key, ['template', 'vars'], true)) {
-                throw new Exception(
-                    "RowGroup::setEndRender(): {$key} is not a valid option."
-                );
+                throw new Exception("RowGroup::setEndRender(): {$key} is not a valid option.");
             }
         }
 
@@ -242,9 +232,7 @@ class RowGroup
     public function setClassName($className)
     {
         if (\is_string($className) && empty($className)) {
-            throw new \Exception(
-                'RowGroup::setClassName(): the class name is empty.'
-            );
+            throw new \Exception('RowGroup::setClassName(): the class name is empty.');
         }
 
         $this->className = $className;
@@ -268,9 +256,7 @@ class RowGroup
     public function setEmptyDataGroup($emptyDataGroup)
     {
         if (\is_string($emptyDataGroup) && empty($emptyDataGroup)) {
-            throw new \Exception(
-                'RowGroup::setEmptyDataGroup(): the empty data group text is empty.'
-            );
+            throw new \Exception('RowGroup::setEmptyDataGroup(): the empty data group text is empty.');
         }
 
         $this->emptyDataGroup = $emptyDataGroup;
@@ -314,9 +300,7 @@ class RowGroup
     public function setEndClassName($endClassName)
     {
         if (\is_string($endClassName) && empty($endClassName)) {
-            throw new \Exception(
-                'RowGroup::setEndClassName(): the end class name is empty.'
-            );
+            throw new \Exception('RowGroup::setEndClassName(): the end class name is empty.');
         }
 
         $this->endClassName = $endClassName;
@@ -340,9 +324,7 @@ class RowGroup
     public function setStartClassName($startClassName)
     {
         if (\is_string($startClassName) && empty($startClassName)) {
-            throw new \Exception(
-                'RowGroup::setStartClassName(): the start class name is empty.'
-            );
+            throw new \Exception('RowGroup::setStartClassName(): the start class name is empty.');
         }
 
         $this->startClassName = $startClassName;
