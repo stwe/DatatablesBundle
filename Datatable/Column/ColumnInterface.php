@@ -19,7 +19,7 @@ interface ColumnInterface
     /**
      * @var int
      */
-    const LAST_POSITION = -1;
+    public const LAST_POSITION = -1;
 
     /**
      * Validates $dql. Normally a non-empty string is expected.

@@ -60,7 +60,7 @@ final class DatatableTest extends \PHPUnit\Framework\TestCase
         /** @var \Sg\DatatablesBundle\Tests\Datatables\PostDatatable $table */
         $table = new $tableClass($authorizationChecker, $securityToken, $translator, $router, $em, $twig);
 
-        /** @noinspection PhpUndefinedMethodInspection */
+        /* @noinspection PhpUndefinedMethodInspection */
         static::assertSame('post_datatable', $table->getName());
 
         $table->buildDatatable();

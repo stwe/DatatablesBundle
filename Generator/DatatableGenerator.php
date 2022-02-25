@@ -60,13 +60,7 @@ class DatatableGenerator extends Generator
 
         if (! $overwrite) {
             if (file_exists($this->classPath)) {
-                throw new Exception(
-                    sprintf(
-                        'Unable to generate the %s as it already exists under the %s.',
-                        $this->className,
-                        $this->classPath
-                    )
-                );
+                throw new Exception(sprintf('Unable to generate the %s as it already exists under the %s.', $this->className, $this->classPath));
             }
         }
 

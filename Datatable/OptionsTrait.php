@@ -98,16 +98,12 @@ trait OptionsTrait
     protected function validateArrayForTemplateAndOther(array $array, array $other = ['template', 'vars'])
     {
         if (false === \array_key_exists('template', $array)) {
-            throw new Exception(
-                'OptionsTrait::validateArrayForTemplateAndOther(): The "template" option is required.'
-            );
+            throw new Exception('OptionsTrait::validateArrayForTemplateAndOther(): The "template" option is required.');
         }
 
         foreach ($array as $key => $value) {
             if (false === \in_array($key, $other, true)) {
-                throw new Exception(
-                    "OptionsTrait::validateArrayForTemplateAndOther(): {$key} is not an valid option."
-                );
+                throw new Exception("OptionsTrait::validateArrayForTemplateAndOther(): {$key} is not an valid option.");
             }
         }
 
