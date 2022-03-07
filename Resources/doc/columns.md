@@ -16,10 +16,6 @@
 
 Represents the most basic column.
 
-### Options template
-
-@SgDatatables/column/column.html.twig
-
 ### Cell content template
 
 @SgDatatables/render/column.html.twig
@@ -166,10 +162,6 @@ ___
 
 Represents a column, optimized for boolean values.
 
-### Options template
-
-@SgDatatables/column/column.html.twig
-
 ### Cell content template
 
 @SgDatatables/render/boolean.html.twig
@@ -234,10 +226,6 @@ Represents a column, optimized for date time values.
 
 **Be sure to install the [Bootstrap Date Range Picker](http://www.daterangepicker.com/) plugin before using the DateRangeFilter.**
 
-### Options template
-
-@SgDatatables/column/column.html.twig
-
 ### Cell content template
 
 @SgDatatables/render/datetime.html.twig
@@ -285,10 +273,6 @@ Represents a column, optimized for images.
 **Be sure to install the [Featherlight.js](http://noelboss.github.io/featherlight/) plugin before using this column.**
 
 A complete example of an ImageColumn can be found in the [demo bundle](https://github.com/stwe/DtBundleDemo10).
-
-### Options template
-
-@SgDatatables/column/column.html.twig
 
 ### Cell content template
 
@@ -347,10 +331,6 @@ ___
 ## 5. Virtual column
 
 Represents a virtual column.
-
-### Options template
-
-@SgDatatables/column/column.html.twig
 
 ### Options
 
@@ -412,10 +392,6 @@ ___
 ## 6. Action column
 
 A Column to display CRUD action labels or buttons.
-
-### Options template
-
-@SgDatatables/column/column.html.twig
 
 ### Cell content template
 
@@ -550,10 +526,6 @@ ___
 
 Support for Bulk Actions.
 
-### Options template
-
-@SgDatatables/column/multiselect.html.twig
-
 ### Cell content template
 
 @SgDatatables/render/multiselect.html.twig
@@ -671,10 +643,6 @@ Represents a column, optimized for numbers.
 
 **The intl extension is needed.**
 
-### Options template
-
-@SgDatatables/column/column.html.twig
-
 ### Options
 
 All options of [Column](#1-column).
@@ -722,11 +690,6 @@ ___
 ## 9. Attribute column
 
 Represents a column, with a `span` tag with `data-*` attributes. The displayed data is in the `span` tag.
-
-
-### Options template
-
-@SgDatatables/column/attributeColumn.html.twig
 
 ### Options
 
