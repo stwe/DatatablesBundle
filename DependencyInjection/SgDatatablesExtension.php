@@ -31,6 +31,12 @@ class SgDatatablesExtension extends Extension implements PrependExtensionInterfa
         $loader->load('services.yml');
 
         $container->setParameter('sg_datatables.datatable.query', $config['datatable']['query']);
+
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if(isset($bundles['MakerBundle'])) {
+            $loader->load('maker.yml');
+        }
     }
 
     /**
