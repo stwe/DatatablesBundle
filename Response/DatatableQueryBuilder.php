@@ -188,6 +188,7 @@ class DatatableQueryBuilder
     //-------------------------------------------------
     // Ctor. && Init column arrays
     //-------------------------------------------------
+    private $columnNames;
 
     /**
      * @throws Exception
