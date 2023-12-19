@@ -359,6 +359,11 @@ class PostDatatable extends AbstractDatatable
 }
 ```
 
+**Important:**
+When declaring datatable "by hand" as extending `AbstractDatatable` class watch out for datatable name as returned from
+`getName()` method. Valid datatable name may contains only letters ([a-zA-Z]), digits (0-9), dashes (-) and underscores 
+(_). Putting any other character in name will cause `\LogicException` to be thrown.
+
 ### Step 2: (Optional) Registering your Datatable as a Service
 
 ``` yaml

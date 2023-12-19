@@ -12,7 +12,7 @@
 namespace Sg\DatatablesBundle\Datatable;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
+use LogicException;
 use Sg\DatatablesBundle\Datatable\Column\ColumnBuilder;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -147,7 +147,7 @@ abstract class AbstractDatatable implements DatatableInterface
     protected static $uniqueCounter = [];
 
     /**
-     * @throws Exception
+     * @throws LogicException
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -169,8 +169,8 @@ abstract class AbstractDatatable implements DatatableInterface
         $this->authorizationChecker = $authorizationChecker;
         $this->securityToken = $securityToken;
 
-        if (!($translator instanceof LegacyTranslatorInterface) && !($translator instanceof TranslatorInterface)) {
-            throw new \InvalidArgumentException(sprintf('The $translator argument of %s must be an instance of %s or %s, a %s was given.', static::class, LegacyTranslatorInterface::class, TranslatorInterface::class, get_class($translator)));
+        if (! ($translator instanceof LegacyTranslatorInterface) && ! ($translator instanceof TranslatorInterface)) {
+            throw new \InvalidArgumentException(sprintf('The $translator argument of %s must be an instance of %s or %s, a %s was given.', static::class, LegacyTranslatorInterface::class, TranslatorInterface::class, \get_class($translator)));
         }
         $this->translator = $translator;
         $this->router = $router;
@@ -314,12 +314,13 @@ abstract class AbstractDatatable implements DatatableInterface
     /**
      * Checks the name only contains letters, numbers, underscores or dashes.
      *
-     * @throws Exception
+     * @throws LogicException
      */
     private function validateName()
     {
-        if (1 !== preg_match(self::NAME_REGEX, $this->getName())) {
-            throw new Exception('AbstractDatatable::validateName(): The result of the getName method can only contain letters, numbers, underscore and dashes.');
+        $name = $this->getName();
+        if (1 !== preg_match(self::NAME_REGEX, $name)) {
+            throw new LogicException(sprintf('AbstractDatatable::validateName(): "%s" is invalid Datatable Name. Name can only contain letters, numbers, underscore and dashes.', $name));
         }
     }
 }

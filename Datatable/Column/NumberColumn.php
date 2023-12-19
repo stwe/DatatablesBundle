@@ -149,7 +149,7 @@ class NumberColumn extends Column
     /**
      * @return $this
      */
-    public function setFormatter(\NumberFormatter  $formatter)
+    public function setFormatter(\NumberFormatter $formatter)
     {
         $this->formatter = $formatter;
 

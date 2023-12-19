@@ -26,12 +26,12 @@ class BooleanColumn extends AbstractColumn
     /**
      * @internal
      */
-    const RENDER_TRUE_VALUE = 'true';
+    public const RENDER_TRUE_VALUE = 'true';
 
     /**
      * @internal
      */
-    const RENDER_FALSE_VALUE = 'false';
+    public const RENDER_FALSE_VALUE = 'false';
 
     /**
      * The icon for a value that is true.
