@@ -36,13 +36,6 @@ class ColumnBuilder
     private $twig;
 
     /**
-     * The router.
-     *
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
      * The name of the associated Datatable.
      *
      * @var string
@@ -86,13 +79,17 @@ class ColumnBuilder
     private $entityClassName;
 
     /**
+     * @var iterable
+     */
+    private $columnTypes;
+
+    /**
      * @param string $datatableName
      */
-    public function __construct(ClassMetadata $metadata, Environment $twig, RouterInterface $router, $datatableName, EntityManagerInterface $em)
+    public function __construct(ClassMetadata $metadata, Environment $twig, $datatableName, EntityManagerInterface $em, iterable $columnTypes)
     {
         $this->metadata = $metadata;
         $this->twig = $twig;
-        $this->router = $router;
         $this->datatableName = $datatableName;
         $this->em = $em;
 
@@ -100,6 +97,7 @@ class ColumnBuilder
         $this->columnNames = [];
         $this->uniqueColumns = [];
         $this->entityClassName = $metadata->getName();
+        $this->columnTypes = $columnTypes;
     }
 
     //-------------------------------------------------
@@ -118,7 +116,22 @@ class ColumnBuilder
      */
     public function add($dql, $class, array $options = [])
     {
-        $column = Factory::create($class, ColumnInterface::class);
+        if (\is_object($class)) {
+            $column = Factory::create($class, ColumnInterface::class);
+            @trigger_error(sprintf('Using an object as column type is deprecated and will be removed in 2.0. Use a class name (FQCN) instead.'), E_USER_DEPRECATED);
+        } else {
+            $columns = [];
+            foreach ($this->columnTypes as $column) {
+                $columns[\get_class($column)] = $column;
+            }
+
+            if (! \array_key_exists($class, $columns)) {
+                throw new \RuntimeException(sprintf('Column %s is not a service', $class));
+            }
+
+            $column = clone $columns[$class];
+        }
+
         $column->initOptions();
 
         $this->handleDqlProperties($dql, $options, $column);
@@ -269,7 +282,6 @@ class ColumnBuilder
         $column->setDatatableName($this->datatableName);
         $column->setEntityClassName($this->entityClassName);
         $column->setTwig($this->twig);
-        $column->setRouter($this->router);
 
         return $this;
     }

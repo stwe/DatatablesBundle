@@ -241,14 +241,6 @@ abstract class AbstractColumn implements ColumnInterface
     protected $twig;
 
     /**
-     * The Router.
-     * Is set in the ColumnBuilder.
-     *
-     * @var RouterInterface
-     */
-    protected $router;
-
-    /**
      * The position in the Columns array.
      * Is set in the ColumnBuilder.
      *

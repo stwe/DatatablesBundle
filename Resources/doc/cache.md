@@ -12,9 +12,10 @@ Doctrine Query when creating response for DataTable.
 
 ``` php
 <?php
+use Sg\DatatablesBundle\Response\DatatableResponse;
 // ...
 if ($isAjax) {
-    $responseService = $this->get('sg_datatables.response');
+    $responseService = $this->get(DatatableResponse::class);
     $responseService->setDatatable($datatable);
 
     $datatableQueryBuilder = $responseService->getDatatableQueryBuilder();
